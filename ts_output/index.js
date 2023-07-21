@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PocTsBGFramework = exports.xy_ = exports.Xy = exports.Utils = exports.spr_ = exports.Sprite = exports.FillPattern = exports.transparent = exports.TransparentColor = exports.SolidColor = exports.CompositeColor = void 0;
+// TODO: consider naming types in a way which allows to easily spot which one should be imported as a type and which one as a non-type
+var Color_1 = require("./Color");
+Object.defineProperty(exports, "CompositeColor", { enumerable: true, get: function () { return Color_1.CompositeColor; } });
+Object.defineProperty(exports, "SolidColor", { enumerable: true, get: function () { return Color_1.SolidColor; } });
+Object.defineProperty(exports, "TransparentColor", { enumerable: true, get: function () { return Color_1.TransparentColor; } });
+Object.defineProperty(exports, "transparent", { enumerable: true, get: function () { return Color_1.transparent; } });
+var FillPattern_1 = require("./draw_api/FillPattern");
+Object.defineProperty(exports, "FillPattern", { enumerable: true, get: function () { return FillPattern_1.FillPattern; } });
+var Sprite_1 = require("./Sprite");
+Object.defineProperty(exports, "Sprite", { enumerable: true, get: function () { return Sprite_1.Sprite; } });
+Object.defineProperty(exports, "spr_", { enumerable: true, get: function () { return Sprite_1.spr_; } });
+var Utils_1 = require("./Utils");
+Object.defineProperty(exports, "Utils", { enumerable: true, get: function () { return Utils_1.Utils; } });
+var Xy_1 = require("./Xy");
+Object.defineProperty(exports, "Xy", { enumerable: true, get: function () { return Xy_1.Xy; } });
+Object.defineProperty(exports, "xy_", { enumerable: true, get: function () { return Xy_1.xy_; } });
+var PocTsBGFramework_1 = require("./PocTsBGFramework");
+Object.defineProperty(exports, "PocTsBGFramework", { enumerable: true, get: function () { return PocTsBGFramework_1.PocTsBGFramework; } });
