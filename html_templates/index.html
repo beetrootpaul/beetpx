@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="icon" type="image/svg+xml" href="/test-image.png" />
+
+    <title>poc--typescript-web-game</title>
+
+    <!-- Keep these particular styles embedded in HTML here, because external
+         CSS file is loaded by Vite in a way which makes GUI flicker. -->
+    <style>
+      /* TODO rework these all styles */
+
+      /* v v v v v v v v v v v v v v v v v v v v v v v v v v v v
+               CHANGE THESE values to whatever you looks good for you:
+            */
+      :root {
+        --loading-bg-color: #000000;
+        /* TODO: we do not need any fancy loading screen yet, since it is super fast. We will need it once we implement loading of assets from the internet. */
+        /*--loading-bg-color: #1d2b53;*/
+        /*--loading-fg-color: #ffccaa;*/
+      }
+
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      body {
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      #display {
+        visibility: hidden;
+      }
+
+      .touch_controls_area_left {
+        display: none;
+      }
+
+      .touch_controls_area_right {
+        display: none;
+      }
+
+      .touch_controls_area_bottom {
+        display: none;
+      }
+
+      #loading {
+        position: absolute;
+        width: 100vw;
+        height: 100vh;
+        background-color: var(--loading-bg-color);
+        /* TODO: we do not need any fancy loading screen yet, since it is super fast. We will need it once we implement loading of assets from the internet. */
+        /*display: flex;*/
+        /*justify-content: center;*/
+        /*align-items: center;*/
+        /*font-size: 8vh;*/
+        /*font-family: monospace;*/
+        /*color: var(--loading-fg-color);*/
+      }
+
+      .app_loaded #loading {
+        display: none;
+      }
+
+      * {
+        /* Prevent panning on touch-drag: https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#touch-action_css_property */
+        touch-action: none;
+      }
+
+      #display {
+        width: 100vw;
+        height: 100vh;
+        /* We need this bg color to be set on the element which is zoomed in when in a full
+                                 screen and we cannot do this for the entire <body>, because Safari ignores
+                                 body's bg color on full screen, and includes only the zoomed in element. */
+        background-color: #000000;
+        display: flex;
+        flex-direction: row;
+      }
+
+      /* TODO: add a framework-specific prefix to `app_loaded` class */
+      .app_loaded #display {
+        visibility: visible;
+      }
+
+      #canvas {
+        width: 80vw;
+        height: 100vh;
+        /* TODO: Do I need to add anything more for a wide browser support of pixelated rendering? */
+        image-rendering: pixelated;
+      }
+
+      /* MOUSE & TOUCH CONTROLS
+                 See:
+                   - https://ferie.medium.com/detect-a-touch-device-with-only-css-9f8e30fa1134
+                   - https://caniuse.com/css-media-interaction
+              */
+
+      .mouse_controls_area_left {
+        width: 10vw;
+        height: 100vh;
+      }
+
+      .mouse_controls_area_right {
+        width: 10vw;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+      }
+
+      .mouse_controls_area_right button {
+        margin: 1vw;
+        width: 8vw;
+        height: 8vw;
+      }
+
+      .mouse_controls_area_right button.controls_mute_toggle {
+        font-size: 0.6em;
+      }
+
+      .touch_controls_area_left {
+        --margin: 1vh;
+        margin: var(--margin);
+        width: 25vw;
+        height: calc(100vh - 2 * var(--margin));
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .touch_controls_area_left .touch_button {
+        margin: 0;
+        border-radius: 1vw;
+        width: 8vw;
+        height: 8vw;
+        background-color: #83769c;
+        line-height: 8vw;
+        font-size: 4vw;
+        text-align: center;
+        font-family: monospace;
+        color: #fff1e8;
+      }
+
+      .touch_controls_area_left .touch_buttons_row {
+        width: 24vw;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .touch_controls_area_right {
+        width: 25vw;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: end;
+        align-items: end;
+      }
+
+      .touch_controls_area_right .touch_button {
+        margin: 1vw;
+        border-radius: 1vw;
+        width: 8vw;
+        height: 8vw;
+        background-color: #83769c;
+        line-height: 8vw;
+        font-size: 4vw;
+        text-align: center;
+        font-family: monospace;
+        color: #fff1e8;
+      }
+
+      .touch_controls_area_right .touch_button.controls_mute_toggle {
+        font-size: 2vw;
+        line-height: 4vw;
+      }
+
+      .touch_controls_area_bottom {
+        --margin: 2vh;
+        margin: var(--margin);
+        width: calc(100vw - 2 * var(--margin));
+        height: 50vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .touch_controls_area_bottom .touch_button {
+        margin: 0;
+        border-radius: 2vw;
+        width: 10vh;
+        height: 10vh;
+        background-color: #83769c;
+        line-height: 10vh;
+        font-size: 5vw;
+        text-align: center;
+        font-family: monospace;
+        color: #fff1e8;
+      }
+
+      .touch_controls_area_bottom .spacer {
+        flex-grow: 1;
+      }
+
+      .touch_controls_area_bottom .touch_buttons_row.controls_left_right {
+        width: 30vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .touch_controls_area_bottom .touch_buttons_row.controls_toggles {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .touch_controls_area_bottom
+        .touch_buttons_row.controls_toggles
+        .touch_button {
+        width: 6vh;
+        height: 6vh;
+        line-height: 6vh;
+        font-size: 3vw;
+      }
+
+      .touch_controls_area_bottom
+        .touch_buttons_row.controls_toggles
+        .touch_button.controls_mute_toggle {
+        line-height: 2.75vh;
+        font-size: 1.75vw;
+      }
+
+      @media (any-pointer: coarse) {
+        #canvas {
+          width: 50vw;
+        }
+
+        .mouse_controls_area_left {
+          display: none;
+        }
+
+        .mouse_controls_area_right {
+          display: none;
+        }
+
+        .touch_controls_area_left {
+          display: flex;
+        }
+
+        .touch_controls_area_right {
+          display: flex;
+        }
+
+        .touch_controls_area_bottom {
+          display: none;
+        }
+      }
+
+      @media (any-pointer: coarse) and (orientation: portrait) {
+        #display {
+          flex-direction: column;
+        }
+
+        #canvas {
+          width: 100vw;
+          height: 50vh;
+        }
+
+        .mouse_controls_area_left {
+          display: none;
+        }
+
+        .mouse_controls_area_right {
+          display: none;
+        }
+
+        .touch_controls_area_left {
+          display: none;
+        }
+
+        .touch_controls_area_right {
+          display: none;
+        }
+
+        .touch_controls_area_bottom {
+          display: flex;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- TODO: we do not need any fancy loading screen yet, since it is super fast. We will need it once we implement loading of assets from the internet. -->
+    <div id="loading"></div>
+    <!--<div id="loading">loading…</div>-->
+
+    <main id="display">
+      <div class="mouse_controls_area_left"></div>
+      <div class="touch_controls touch_controls_area_left">
+        <div class="touch_button controls_up">W</div>
+        <div class="touch_buttons_row">
+          <div class="touch_button controls_left">A</div>
+          <div class="touch_button controls_right">D</div>
+        </div>
+        <div class="touch_button controls_down">S</div>
+      </div>
+      <canvas id="canvas"></canvas>
+      <div class="mouse_controls_area_right">
+        <button class="controls_mute_toggle">mute<br />unmute</button>
+        <button class="controls_fullscreen_toggle">FS</button>
+      </div>
+      <div class="touch_controls_area_right">
+        <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
+        <div class="touch_button controls_fullscreen_toggle">FS</div>
+      </div>
+      <div class="touch_controls touch_controls_area_bottom">
+        <div class="touch_button controls_up">W</div>
+        <div class="touch_buttons_row controls_left_right">
+          <div class="touch_button controls_left">A</div>
+          <div class="touch_button controls_right">D</div>
+        </div>
+        <div class="touch_button controls_down">S</div>
+        <div class="spacer">S</div>
+        <div class="touch_buttons_row controls_toggles">
+          <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
+          <div class="touch_button controls_fullscreen_toggle">FS</div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module" src="src/beetpx_entrypoint.ts"></script>
+  </body>
+</html>

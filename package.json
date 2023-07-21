@@ -1,0 +1,42 @@
+{
+  "name": "beetpx",
+  "version": "0.1.0",
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "description": "A mini framework for low-res browser games, written in TypeScript.",
+  "homepage": "https://github.com/beetrootpaul/beetpx#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beetrootpaul/beetpx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/beetrootpaul/beetpx/issues"
+  },
+  "bin": {
+    "beetpx": "cli/beetpx-cli.js"
+  },
+  "main": "./ts_output/",
+  "scripts": {
+    "prepare": "husky install",
+    "test": "jest",
+    "start": "npm run cleanup && npm run compile:watch",
+    "compile": "tsc",
+    "compile:watch": "tsc --watch",
+    "format": "prettier --ignore-path .gitignore --write cli/ html_templates/ src/",
+    "cleanup": "rimraf ./ts_output/"
+  },
+  "dependencies": {
+    "cross-zip": "4.0.0",
+    "jquery": "3.7.0",
+    "vite": "4.4.6",
+    "yargs": "17.7.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "29.6.1",
+    "husky": "8.0.3",
+    "prettier": "3.0.0",
+    "rimraf": "5.0.1",
+    "ts-jest": "29.1.1",
+    "typescript": "5.1.6"
+  }
+}
