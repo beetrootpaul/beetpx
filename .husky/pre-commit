@@ -1,7 +1,19 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+
+# If version go bumped in package.json: to update the version in package-lock.json as well
+npm install
+
+# To make sure everything is formatted as desired
 npm run format
+
+# To make sure tests didn't break due to most recent changes
 npm test
+
+# To generate up-to-date JS and .d.ts files out of the TypeScript source
+# (thanks to it users can refer to any commit of this repo as their used version on BeetPx)
 npm run compile
+
+# Whatever was changed due to commands above, let's add it to the commit
 git add --all .
