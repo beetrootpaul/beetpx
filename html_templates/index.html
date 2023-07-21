@@ -5,7 +5,15 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" type="image/svg+xml" href="/test-image.png" />
+    <!-- BASE64 content generated with:
+           base64 -i logo/BeetPx\ logo\ \(x5\).png
+    -->
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="80x80"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAVdJREFUeJzt3MFNw0AQQFFAdMCRymiCrjlSQyiAPVh5o7Uh/x2jCIevlQd7Y55vnx+3pwfy9vX7te/3+9/34h/psRUQFRAVEL2uXlydQP8z+X1bgaiAqICogKiAqICogKiAqIBoeSXyF61uNR3VlciJCogKiAqItgyR6RP80T2M6c+y0gpEBUQFRAVE40Pk6gNj+hitQFRAVEBUQERDZPqveiGDQLQCUQFRAVEB0eEhsmNgHD2GXGGstCdyogKiAqICosNDZMctpOnPMn3clVYgKiAqICogGt8T2TEw5NZVeyIXU0BUQFRAtOXbWdN7E2dd2ay0AlEBUQFRAdGWPZHpfzWyet9ZT9m3AlEBUQFRAdFpDxtO31Y6SysQFRAVEBUQ0RCRE/yOZzh2aAWiAqICogKi8W9nTf+8Kw2MlVYgKiAqICogWg6RKz1EeHWtQFRAVEBUQPQDHRdHQWx83G0AAAAASUVORK5CYII="
+    />
 
     <title>poc--typescript-web-game</title>
 
@@ -15,8 +23,8 @@
       /* TODO rework these all styles */
 
       /* v v v v v v v v v v v v v v v v v v v v v v v v v v v v
-               CHANGE THESE values to whatever you looks good for you:
-            */
+         CHANGE THESE values to whatever you looks good for you:
+      */
       :root {
         --loading-bg-color: #000000;
         /* TODO: we do not need any fancy loading screen yet, since it is super fast. We will need it once we implement loading of assets from the internet. */
@@ -83,8 +91,8 @@
         width: 100vw;
         height: 100vh;
         /* We need this bg color to be set on the element which is zoomed in when in a full
-                                 screen and we cannot do this for the entire <body>, because Safari ignores
-                                 body's bg color on full screen, and includes only the zoomed in element. */
+           screen and we cannot do this for the entire <body>, because Safari ignores
+           body's bg color on full screen, and includes only the zoomed in element. */
         background-color: #000000;
         display: flex;
         flex-direction: row;
@@ -103,10 +111,10 @@
       }
 
       /* MOUSE & TOUCH CONTROLS
-                 See:
-                   - https://ferie.medium.com/detect-a-touch-device-with-only-css-9f8e30fa1134
-                   - https://caniuse.com/css-media-interaction
-              */
+         See:
+           - https://ferie.medium.com/detect-a-touch-device-with-only-css-9f8e30fa1134
+           - https://caniuse.com/css-media-interaction
+      */
 
       .mouse_controls_area_left {
         width: 10vw;
