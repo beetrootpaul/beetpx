@@ -6,7 +6,7 @@ import { FullScreen } from "./FullScreen";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
-import { PocTsBGFramework } from "./PocTsBGFramework";
+import { BeetPx } from "./BeetPx";
 import { StorageApi } from "./StorageApi";
 import { Xy, xy_ } from "./Xy";
 
@@ -143,9 +143,9 @@ export class Framework {
 
     this.#storageApi = new StorageApi();
 
-    PocTsBGFramework.drawApi = this.#drawApi;
-    PocTsBGFramework.audio = this.#audio;
-    PocTsBGFramework.storageApi = this.#storageApi;
+    BeetPx.drawApi = this.#drawApi;
+    BeetPx.audio = this.#audio;
+    BeetPx.storageApi = this.#storageApi;
   }
 
   // TODO: type the startGame fn or the entire object inside resolved Promise
@@ -199,9 +199,9 @@ export class Framework {
           this.#audio.resumeAudioContextIfNeeded();
         }
 
-        PocTsBGFramework.frameNumber = frameNumber;
-        PocTsBGFramework.continuousInputEvents = continuousEvents;
-        PocTsBGFramework.fireOnceInputEvents = fireOnceEvents;
+        BeetPx.frameNumber = frameNumber;
+        BeetPx.continuousInputEvents = continuousEvents;
+        BeetPx.fireOnceInputEvents = fireOnceEvents;
 
         this.#onUpdate?.();
       },

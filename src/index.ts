@@ -13,4 +13,4 @@ export { Sprite, spr_ } from "./Sprite";
 export { Utils } from "./Utils";
 export { Xy, xy_ } from "./Xy";
 
-export { PocTsBGFramework } from "./PocTsBGFramework";
+export { BeetPx } from "./BeetPx";

@@ -20,7 +20,7 @@ const FullScreen_1 = require("./FullScreen");
 const GameInput_1 = require("./game_input/GameInput");
 const GameLoop_1 = require("./game_loop/GameLoop");
 const Loading_1 = require("./Loading");
-const PocTsBGFramework_1 = require("./PocTsBGFramework");
+const BeetPx_1 = require("./BeetPx");
 const StorageApi_1 = require("./StorageApi");
 const Xy_1 = require("./Xy");
 class Framework {
@@ -107,9 +107,9 @@ class Framework {
             assets: __classPrivateFieldGet(this, _Framework_assets, "f"),
         }), "f");
         __classPrivateFieldSet(this, _Framework_storageApi, new StorageApi_1.StorageApi(), "f");
-        PocTsBGFramework_1.PocTsBGFramework.drawApi = __classPrivateFieldGet(this, _Framework_drawApi, "f");
-        PocTsBGFramework_1.PocTsBGFramework.audio = __classPrivateFieldGet(this, _Framework_audio, "f");
-        PocTsBGFramework_1.PocTsBGFramework.storageApi = __classPrivateFieldGet(this, _Framework_storageApi, "f");
+        BeetPx_1.BeetPx.drawApi = __classPrivateFieldGet(this, _Framework_drawApi, "f");
+        BeetPx_1.BeetPx.audio = __classPrivateFieldGet(this, _Framework_audio, "f");
+        BeetPx_1.BeetPx.storageApi = __classPrivateFieldGet(this, _Framework_storageApi, "f");
     }
     // TODO: type the startGame fn or the entire object inside resolved Promise
     loadAssets(assetsToLoad) {
@@ -151,9 +151,9 @@ _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = 
             if (fireOnceEvents.size > 0 || continuousEvents.size > 0) {
                 __classPrivateFieldGet(this, _Framework_audio, "f").resumeAudioContextIfNeeded();
             }
-            PocTsBGFramework_1.PocTsBGFramework.frameNumber = frameNumber;
-            PocTsBGFramework_1.PocTsBGFramework.continuousInputEvents = continuousEvents;
-            PocTsBGFramework_1.PocTsBGFramework.fireOnceInputEvents = fireOnceEvents;
+            BeetPx_1.BeetPx.frameNumber = frameNumber;
+            BeetPx_1.BeetPx.continuousInputEvents = continuousEvents;
+            BeetPx_1.BeetPx.fireOnceInputEvents = fireOnceEvents;
             __classPrivateFieldGet(this, _Framework_onUpdate, "f")?.call(this);
         },
         renderFn: () => {

@@ -13,7 +13,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _FpsLoggerAverage_samples, _FpsLoggerAverage_nextIndex;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FpsLoggerAverage = exports.FpsLoggerNoop = void 0;
-const PocTsBGFramework_1 = require("../PocTsBGFramework");
+const BeetPx_1 = require("../BeetPx");
 class FpsLoggerNoop {
     track(_fps) { }
 }
@@ -32,7 +32,7 @@ class FpsLoggerAverage {
             const s = __classPrivateFieldGet(this, _FpsLoggerAverage_samples, "f").reduce((sum, nextFps) => sum + nextFps, 0);
             const averageFps = Math.floor(s / __classPrivateFieldGet(this, _FpsLoggerAverage_samples, "f").length);
             console.info("FPS: ", averageFps);
-            PocTsBGFramework_1.PocTsBGFramework.averageFps = averageFps;
+            BeetPx_1.BeetPx.averageFps = averageFps;
         }
     }
 }

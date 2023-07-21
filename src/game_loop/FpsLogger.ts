@@ -1,4 +1,4 @@
-import { PocTsBGFramework } from "../PocTsBGFramework";
+import { BeetPx } from "../BeetPx";
 
 export interface FpsLogger {
   track(fps: number): void;
@@ -20,7 +20,7 @@ export class FpsLoggerAverage implements FpsLogger {
       const s = this.#samples.reduce((sum, nextFps) => sum + nextFps, 0);
       const averageFps = Math.floor(s / this.#samples.length);
       console.info("FPS: ", averageFps);
-      PocTsBGFramework.averageFps = averageFps;
+      BeetPx.averageFps = averageFps;
     }
   }
 }

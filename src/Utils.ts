@@ -1,5 +1,5 @@
 import { SolidColor } from "./Color";
-import { PocTsBGFramework } from "./PocTsBGFramework";
+import { BeetPx } from "./BeetPx";
 import { Xy, xy_ } from "./Xy";
 
 export class Utils {
@@ -14,7 +14,7 @@ export class Utils {
 
   // TODO: tests for edge cases
   static booleanChangingEveryNthFrame(n: number): boolean {
-    return PocTsBGFramework.frameNumber % (n * 2) < n;
+    return BeetPx.frameNumber % (n * 2) < n;
   }
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
@@ -33,8 +33,7 @@ export class Utils {
 
   // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
   static measureTextSize(text: string): Xy {
-    const charSprites =
-      PocTsBGFramework.drawApi.getFont()?.spritesFor(text) ?? [];
+    const charSprites = BeetPx.drawApi.getFont()?.spritesFor(text) ?? [];
     return charSprites.reduce(
       (sizeSoFar, nextSprite) =>
         Xy.max(
@@ -52,9 +51,9 @@ export class Utils {
     outlineColor: SolidColor,
   ): void {
     Utils.offset8Directions.forEach((offset) => {
-      PocTsBGFramework.drawApi.print(text, canvasXy1.add(offset), outlineColor);
+      BeetPx.drawApi.print(text, canvasXy1.add(offset), outlineColor);
     });
-    PocTsBGFramework.drawApi.print(text, canvasXy1, textColor);
+    BeetPx.drawApi.print(text, canvasXy1, textColor);
   }
 
   // to be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`

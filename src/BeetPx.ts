@@ -12,7 +12,7 @@ import { StorageApi } from "./StorageApi";
 // TODO: flatten to have to use a single dot only. Flat API is OK
 // TODO: review the whole public API and rename from the usage point of view
 // TODO: after name for the framework gets chosen: rename this to the framework name or to its abbreviation
-export class PocTsBGFramework {
+export class BeetPx {
   static #framework: Framework;
 
   // The most important function, has to be called first in order
@@ -24,8 +24,8 @@ export class PocTsBGFramework {
     frameworkOptions: FrameworkOptions,
     assetsToLoad: AssetsToLoad,
   ): Promise<{ startGame: (onStart?: () => void) => void }> {
-    PocTsBGFramework.#framework = new Framework(frameworkOptions);
-    return PocTsBGFramework.#framework.loadAssets(assetsToLoad);
+    BeetPx.#framework = new Framework(frameworkOptions);
+    return BeetPx.#framework.loadAssets(assetsToLoad);
   }
 
   // Framework's lifecycle methods, exposed for a static access.
@@ -33,11 +33,11 @@ export class PocTsBGFramework {
   //
 
   static setOnUpdate(onUpdate: () => void) {
-    PocTsBGFramework.#framework.setOnUpdate(onUpdate);
+    BeetPx.#framework.setOnUpdate(onUpdate);
   }
 
   static setOnDraw(onDraw: () => void): void {
-    PocTsBGFramework.#framework.setOnDraw(onDraw);
+    BeetPx.#framework.setOnDraw(onDraw);
   }
 
   // The rest of the globally and statically available API.
@@ -56,6 +56,6 @@ export class PocTsBGFramework {
   //
 
   static get debug(): boolean {
-    return PocTsBGFramework.#framework.debug;
+    return BeetPx.#framework.debug;
   }
 }
