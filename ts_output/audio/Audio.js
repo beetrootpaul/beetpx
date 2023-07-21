@@ -1,19 +1,22 @@
 "use strict";
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
 var _Audio_instances, _Audio_assets, _Audio_audioContext, _Audio_globalGainNode, _Audio_muteUnmuteExponentialTimeConstant, _Audio_isGloballyMuted, _Audio_loopedSounds, _Audio_muteUnmuteTimeConstant, _Audio_mute, _Audio_unmute;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Audio = void 0;
 class Audio {
+    get audioContext() {
+        return __classPrivateFieldGet(this, _Audio_audioContext, "f");
+    }
     constructor(assets, audioContext) {
         _Audio_instances.add(this);
         _Audio_assets.set(this, void 0);

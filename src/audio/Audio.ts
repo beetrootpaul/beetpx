@@ -18,6 +18,10 @@ export class Audio {
 
   readonly #muteUnmuteTimeConstant = 0.1;
 
+  get audioContext(): AudioContext {
+    return this.#audioContext;
+  }
+
   constructor(assets: Assets, audioContext: AudioContext) {
     this.#assets = assets;
     this.#audioContext = audioContext;

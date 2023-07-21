@@ -1,6 +1,7 @@
 import { Assets, SoundUrl } from "../Assets";
 export declare class Audio {
     #private;
+    get audioContext(): AudioContext;
     constructor(assets: Assets, audioContext: AudioContext);
     resumeAudioContextIfNeeded(): void;
     toggleMuteUnmute(): void;
