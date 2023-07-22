@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawPixel_canvasBytes, _DrawPixel_canvasSize;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrawPixel = void 0;
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 class DrawPixel {
     constructor(canvasBytes, canvasSize) {
         _DrawPixel_canvasBytes.set(this, void 0);
@@ -22,7 +22,7 @@ class DrawPixel {
         __classPrivateFieldSet(this, _DrawPixel_canvasSize, canvasSize, "f");
     }
     draw(xy, color) {
-        if (xy.gte(Xy_1.Xy.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
+        if (xy.gte(Vector2d_1.Vector2d.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
             const i = 4 * (xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f").x + xy.x);
             __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i] = color.r;
             __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 1] = color.g;

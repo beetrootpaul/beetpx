@@ -1,7 +1,7 @@
 "use strict";
+// noinspection JSUnusedGlobalSymbols
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BeetPx = exports.xy_ = exports.Xy = exports.Utils = exports.spr_ = exports.Sprite = exports.FillPattern = exports.transparent = exports.TransparentColor = exports.SolidColor = exports.CompositeColor = void 0;
-// TODO: consider naming types in a way which allows to easily spot which one should be imported as a type and which one as a non-type
+exports.BeetPx = exports.v_ = exports.Vector2d = exports.Utils = exports.spr_ = exports.Sprite = exports.FillPattern = exports.transparent = exports.TransparentColor = exports.SolidColor = exports.CompositeColor = void 0;
 var Color_1 = require("./Color");
 Object.defineProperty(exports, "CompositeColor", { enumerable: true, get: function () { return Color_1.CompositeColor; } });
 Object.defineProperty(exports, "SolidColor", { enumerable: true, get: function () { return Color_1.SolidColor; } });
@@ -14,8 +14,8 @@ Object.defineProperty(exports, "Sprite", { enumerable: true, get: function () { 
 Object.defineProperty(exports, "spr_", { enumerable: true, get: function () { return Sprite_1.spr_; } });
 var Utils_1 = require("./Utils");
 Object.defineProperty(exports, "Utils", { enumerable: true, get: function () { return Utils_1.Utils; } });
-var Xy_1 = require("./Xy");
-Object.defineProperty(exports, "Xy", { enumerable: true, get: function () { return Xy_1.Xy; } });
-Object.defineProperty(exports, "xy_", { enumerable: true, get: function () { return Xy_1.xy_; } });
+var Vector2d_1 = require("./Vector2d");
+Object.defineProperty(exports, "Vector2d", { enumerable: true, get: function () { return Vector2d_1.Vector2d; } });
+Object.defineProperty(exports, "v_", { enumerable: true, get: function () { return Vector2d_1.v_; } });
 var BeetPx_1 = require("./BeetPx");
 Object.defineProperty(exports, "BeetPx", { enumerable: true, get: function () { return BeetPx_1.BeetPx; } });

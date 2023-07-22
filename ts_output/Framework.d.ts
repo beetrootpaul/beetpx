@@ -1,9 +1,9 @@
 import { AssetsToLoad } from "./Assets";
 import { SolidColor } from "./Color";
-import { Xy } from "./Xy";
+import { Vector2d } from "./Vector2d";
 export type FrameworkOptions = {
     htmlCanvasBackground: SolidColor;
-    gameCanvasSize: Xy;
+    gameCanvasSize: Vector2d;
     desiredFps: number;
     logActualFps?: boolean;
     debug?: {

@@ -1,6 +1,6 @@
 import { SolidColor } from "./Color";
 import { BeetPx } from "./BeetPx";
-import { Xy, xy_ } from "./Xy";
+import { Vector2d, v_ } from "./Vector2d";
 
 export class Utils {
   // Returns the middle number. Example usage: `clamp(min, value, max)`
@@ -18,35 +18,35 @@ export class Utils {
   }
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
-  static get offset8Directions(): Xy[] {
+  static get offset8Directions(): Vector2d[] {
     return [
-      xy_(-1, -1),
-      xy_(0, -1),
-      xy_(1, -1),
-      xy_(1, 0),
-      xy_(1, 1),
-      xy_(0, 1),
-      xy_(-1, 1),
-      xy_(-1, 0),
+      v_(-1, -1),
+      v_(0, -1),
+      v_(1, -1),
+      v_(1, 0),
+      v_(1, 1),
+      v_(0, 1),
+      v_(-1, 1),
+      v_(-1, 0),
     ];
   }
 
   // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
-  static measureTextSize(text: string): Xy {
+  static measureTextSize(text: string): Vector2d {
     const charSprites = BeetPx.drawApi.getFont()?.spritesFor(text) ?? [];
     return charSprites.reduce(
       (sizeSoFar, nextSprite) =>
-        Xy.max(
+        Vector2d.max(
           sizeSoFar,
           nextSprite.positionInText.add(nextSprite.sprite.size()),
         ),
-      Xy.zero,
+      Vector2d.zero,
     );
   }
 
   static printWithOutline(
     text: string,
-    canvasXy1: Xy,
+    canvasXy1: Vector2d,
     textColor: SolidColor,
     outlineColor: SolidColor,
   ): void {

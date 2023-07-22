@@ -16,7 +16,7 @@ exports.DrawSprite = void 0;
 const Color_1 = require("../Color");
 const Sprite_1 = require("../Sprite");
 const Utils_1 = require("../Utils");
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 const DrawPixel_1 = require("./DrawPixel");
 class DrawSprite {
     constructor(canvasBytes, canvasSize) {
@@ -44,7 +44,7 @@ class DrawSprite {
                     : Color_1.transparent;
                 color = colorMapping.get(color.id()) ?? color;
                 if (color instanceof Color_1.SolidColor) {
-                    const canvasXy = targetXy1.add((0, Xy_1.xy_)(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
+                    const canvasXy = targetXy1.add((0, Vector2d_1.v_)(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
                     __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
                 }
             }

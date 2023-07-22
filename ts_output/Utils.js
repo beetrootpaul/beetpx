@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Utils = void 0;
 const BeetPx_1 = require("./BeetPx");
-const Xy_1 = require("./Xy");
+const Vector2d_1 = require("./Vector2d");
 class Utils {
     // Returns the middle number. Example usage: `clamp(min, value, max)`
     //   in order to find a value which is:
@@ -19,20 +19,20 @@ class Utils {
     // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
     static get offset8Directions() {
         return [
-            (0, Xy_1.xy_)(-1, -1),
-            (0, Xy_1.xy_)(0, -1),
-            (0, Xy_1.xy_)(1, -1),
-            (0, Xy_1.xy_)(1, 0),
-            (0, Xy_1.xy_)(1, 1),
-            (0, Xy_1.xy_)(0, 1),
-            (0, Xy_1.xy_)(-1, 1),
-            (0, Xy_1.xy_)(-1, 0),
+            (0, Vector2d_1.v_)(-1, -1),
+            (0, Vector2d_1.v_)(0, -1),
+            (0, Vector2d_1.v_)(1, -1),
+            (0, Vector2d_1.v_)(1, 0),
+            (0, Vector2d_1.v_)(1, 1),
+            (0, Vector2d_1.v_)(0, 1),
+            (0, Vector2d_1.v_)(-1, 1),
+            (0, Vector2d_1.v_)(-1, 0),
         ];
     }
     // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
     static measureTextSize(text) {
         const charSprites = BeetPx_1.BeetPx.drawApi.getFont()?.spritesFor(text) ?? [];
-        return charSprites.reduce((sizeSoFar, nextSprite) => Xy_1.Xy.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), Xy_1.Xy.zero);
+        return charSprites.reduce((sizeSoFar, nextSprite) => Vector2d_1.Vector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), Vector2d_1.Vector2d.zero);
     }
     static printWithOutline(text, canvasXy1, textColor, outlineColor) {
         Utils.offset8Directions.forEach((offset) => {

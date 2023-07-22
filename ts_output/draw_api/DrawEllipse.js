@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawEllipse_canvasBytes, _DrawEllipse_canvasSize, _DrawEllipse_pixel;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrawEllipse = void 0;
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 const DrawPixel_1 = require("./DrawPixel");
 const FillPattern_1 = require("./FillPattern");
 class DrawEllipse {
@@ -34,8 +34,8 @@ class DrawEllipse {
         }
         // swap coordinates to make sure xy1 is the left-bottom corner and xy2 is the right-top one
         [xy1, xy2] = [
-            (0, Xy_1.xy_)(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y)),
-            (0, Xy_1.xy_)(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y)),
+            (0, Vector2d_1.v_)(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y)),
+            (0, Vector2d_1.v_)(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y)),
         ];
         //
         // PREPARE
@@ -57,17 +57,17 @@ class DrawEllipse {
             // DRAW NEXT PIXEL IN EACH QUADRANT
             //
             // TODO: update the implementation below to honor fill pattern
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(right, bottom), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(left, bottom), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(left, top), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(right, top), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, bottom), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left, bottom), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left, top), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, top), color);
             if (fill) {
                 // TODO: update the implementation below to honor fill pattern
-                Xy_1.Xy.forEachIntXyWithinRectOf((0, Xy_1.xy_)(left + 1, bottom), (0, Xy_1.xy_)(right - 1, bottom).add(1), true, (xy) => {
+                Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, bottom), (0, Vector2d_1.v_)(right - 1, bottom).add(1), true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color);
                 });
                 // TODO: update the implementation below to honor fill pattern
-                Xy_1.Xy.forEachIntXyWithinRectOf((0, Xy_1.xy_)(left + 1, top), (0, Xy_1.xy_)(right - 1, top).add(1), true, (xy) => {
+                Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, top), (0, Vector2d_1.v_)(right - 1, top).add(1), true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color);
                 });
             }
@@ -95,11 +95,11 @@ class DrawEllipse {
         // TODO: Cover this with tests
         while (bottom - top < b) {
             // TODO: update the implementation below to honor fill pattern
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(left - 1, bottom), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(right + 1, bottom), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left - 1, bottom), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right + 1, bottom), color);
             bottom += 1;
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(left - 1, top), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Xy_1.xy_)(right + 1, top), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left - 1, top), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right + 1, top), color);
             top -= 1;
         }
     }

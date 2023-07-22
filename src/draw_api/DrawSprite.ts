@@ -2,16 +2,16 @@ import { ImageAsset } from "../Assets";
 import { type Color, ColorId, SolidColor, transparent } from "../Color";
 import { spr_, Sprite } from "../Sprite";
 import { Utils } from "../Utils";
-import { Xy, xy_ } from "../Xy";
+import { Vector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 
 export class DrawSprite {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Xy;
+  readonly #canvasSize: Vector2d;
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Xy) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
@@ -21,7 +21,7 @@ export class DrawSprite {
   draw(
     sourceImageAsset: ImageAsset,
     sprite: Sprite,
-    targetXy1: Xy,
+    targetXy1: Vector2d,
     colorMapping: Map<ColorId, Color> = new Map(),
   ): void {
     const {
@@ -67,7 +67,7 @@ export class DrawSprite {
 
         if (color instanceof SolidColor) {
           const canvasXy = targetXy1.add(
-            xy_(imgX - sprite.xy1.x, imgY - sprite.xy1.y),
+            v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y),
           );
           this.#pixel.draw(canvasXy, color);
         }

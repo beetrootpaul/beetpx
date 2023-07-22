@@ -9,11 +9,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TestCanvas = void 0;
 const globals_1 = require("@jest/globals");
 const Color_1 = require("../Color");
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 class TestCanvas {
     constructor(width, height, color) {
         _TestCanvas_instances.add(this);
-        this.size = (0, Xy_1.xy_)(width, height);
+        this.size = (0, Vector2d_1.v_)(width, height);
         this.bytes = new Uint8ClampedArray(4 * width * height);
         for (let i = 0; i < width * height; i += 1) {
             this.bytes[4 * i] = color.r;

@@ -1,15 +1,15 @@
 import { FontAsset } from "../Assets";
 import { SolidColor, transparent } from "../Color";
-import { Xy } from "../Xy";
+import { Vector2d } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 
 export class DrawText {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Xy;
+  readonly #canvasSize: Vector2d;
 
   readonly #sprite: DrawSprite;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Xy) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
@@ -19,7 +19,7 @@ export class DrawText {
   // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
   draw(
     text: string,
-    canvasXy1: Xy,
+    canvasXy1: Vector2d,
     fontAsset: FontAsset,
     color: SolidColor,
   ): void {

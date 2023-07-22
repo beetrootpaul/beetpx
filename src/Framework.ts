@@ -8,11 +8,11 @@ import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
 import { BeetPx } from "./BeetPx";
 import { StorageApi } from "./StorageApi";
-import { Xy, xy_ } from "./Xy";
+import { Vector2d, v_ } from "./Vector2d";
 
 export type FrameworkOptions = {
   htmlCanvasBackground: SolidColor;
-  gameCanvasSize: Xy;
+  gameCanvasSize: Vector2d;
   desiredFps: number;
   logActualFps?: boolean;
   debug?: {
@@ -38,7 +38,7 @@ export class Framework {
     return this.#debug;
   }
 
-  readonly #gameCanvasSize: Xy;
+  readonly #gameCanvasSize: Vector2d;
   readonly #htmlCanvasBackground: SolidColor;
 
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
@@ -60,7 +60,7 @@ export class Framework {
   #onDraw?: () => void;
 
   #scaleToFill = 1;
-  #centeringOffset = Xy.zero;
+  #centeringOffset = Vector2d.zero;
 
   constructor(options: FrameworkOptions) {
     this.#debugOptions = options.debug ?? {
@@ -237,7 +237,7 @@ export class Framework {
   #render(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
-    const htmlCanvasSize = xy_(
+    const htmlCanvasSize = v_(
       this.#htmlCanvasContext.canvas.width,
       this.#htmlCanvasContext.canvas.height,
     );

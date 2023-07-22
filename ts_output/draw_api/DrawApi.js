@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrawApi = void 0;
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 const DrawClear_1 = require("./DrawClear");
 const DrawEllipse_1 = require("./DrawEllipse");
 const DrawPixel_1 = require("./DrawPixel");
@@ -30,7 +30,7 @@ class DrawApi {
         _DrawApi_ellipse.set(this, void 0);
         _DrawApi_sprite.set(this, void 0);
         _DrawApi_text.set(this, void 0);
-        _DrawApi_cameraOffset.set(this, (0, Xy_1.xy_)(0, 0));
+        _DrawApi_cameraOffset.set(this, (0, Vector2d_1.v_)(0, 0));
         _DrawApi_fillPattern.set(this, FillPattern_1.FillPattern.primaryOnly);
         _DrawApi_fontAsset.set(this, null);
         _DrawApi_spriteColorMapping.set(this, new Map());

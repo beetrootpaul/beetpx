@@ -2,7 +2,7 @@ import { Assets, FontAsset, ImageUrl } from "../Assets";
 import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
 import { Font } from "../font/Font";
 import { Sprite } from "../Sprite";
-import { Xy, xy_ } from "../Xy";
+import { Vector2d, v_ } from "../Vector2d";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawPixel } from "./DrawPixel";
@@ -14,7 +14,7 @@ import { FillPattern } from "./FillPattern";
 type DrawApiOptions = {
   // TODO: better name to indicate in-out nature of this param? Or some info in JSDoc?
   canvasBytes: Uint8ClampedArray;
-  canvasSize: Xy;
+  canvasSize: Vector2d;
   assets: Assets;
 };
 
@@ -28,7 +28,7 @@ export class DrawApi {
   readonly #sprite: DrawSprite;
   readonly #text: DrawText;
 
-  #cameraOffset: Xy = xy_(0, 0);
+  #cameraOffset: Vector2d = v_(0, 0);
 
   #fillPattern: FillPattern = FillPattern.primaryOnly;
 
@@ -61,7 +61,7 @@ export class DrawApi {
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
   // noinspection JSUnusedGlobalSymbols
-  setCameraOffset(offset: Xy): void {
+  setCameraOffset(offset: Vector2d): void {
     this.#cameraOffset = offset.round();
   }
 
@@ -99,12 +99,12 @@ export class DrawApi {
   }
 
   // noinspection JSUnusedGlobalSymbols
-  pixel(xy: Xy, color: SolidColor): void {
+  pixel(xy: Vector2d, color: SolidColor): void {
     this.#pixel.draw(xy.sub(this.#cameraOffset).round(), color);
   }
 
   // noinspection JSUnusedGlobalSymbols
-  rect(xy1: Xy, xy2: Xy, color: SolidColor): void {
+  rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
     this.#rect.draw(
       xy1.sub(this.#cameraOffset).round(),
       xy2.sub(this.#cameraOffset).round(),
@@ -115,7 +115,11 @@ export class DrawApi {
   }
 
   // noinspection JSUnusedGlobalSymbols
-  rectFilled(xy1: Xy, xy2: Xy, color: SolidColor | CompositeColor): void {
+  rectFilled(
+    xy1: Vector2d,
+    xy2: Vector2d,
+    color: SolidColor | CompositeColor,
+  ): void {
     this.#rect.draw(
       xy1.sub(this.#cameraOffset).round(),
       xy2.sub(this.#cameraOffset).round(),
@@ -126,7 +130,7 @@ export class DrawApi {
   }
 
   // noinspection JSUnusedGlobalSymbols
-  ellipse(xy1: Xy, xy2: Xy, color: SolidColor): void {
+  ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
     this.#ellipse.draw(
       xy1.sub(this.#cameraOffset).round(),
       xy2.sub(this.#cameraOffset).round(),
@@ -137,7 +141,7 @@ export class DrawApi {
   }
 
   // noinspection JSUnusedGlobalSymbols
-  ellipseFilled(xy1: Xy, xy2: Xy, color: SolidColor): void {
+  ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
     this.#ellipse.draw(
       xy1.sub(this.#cameraOffset).round(),
       xy2.sub(this.#cameraOffset).round(),
@@ -149,7 +153,7 @@ export class DrawApi {
 
   // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
   // noinspection JSUnusedGlobalSymbols
-  sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Xy): void {
+  sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void {
     const sourceImageAsset = this.#assets.getImage(spriteImageUrl);
     this.#sprite.draw(
       sourceImageAsset,
@@ -160,7 +164,7 @@ export class DrawApi {
   }
 
   // TODO: cover with tests
-  print(text: string, canvasXy1: Xy, color: SolidColor): void {
+  print(text: string, canvasXy1: Vector2d, color: SolidColor): void {
     if (this.#fontAsset) {
       this.#text.draw(
         text,

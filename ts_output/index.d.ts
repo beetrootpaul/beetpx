@@ -3,5 +3,5 @@ export { FillPattern } from "./draw_api/FillPattern";
 export { type CharSprite, type Font } from "./font/Font";
 export { Sprite, spr_ } from "./Sprite";
 export { Utils } from "./Utils";
-export { Xy, xy_ } from "./Xy";
+export { Vector2d, v_ } from "./Vector2d";
 export { BeetPx } from "./BeetPx";

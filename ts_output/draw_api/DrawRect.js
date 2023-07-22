@@ -14,7 +14,7 @@ var _DrawRect_canvasBytes, _DrawRect_canvasSize, _DrawRect_pixel;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrawRect = void 0;
 const Color_1 = require("../Color");
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 const DrawPixel_1 = require("./DrawPixel");
 const FillPattern_1 = require("./FillPattern");
 class DrawRect {
@@ -27,7 +27,7 @@ class DrawRect {
         __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f")), "f");
     }
     draw(xy1, xy2, color, fill, fillPattern = FillPattern_1.FillPattern.primaryOnly) {
-        Xy_1.Xy.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
+        Vector2d_1.Vector2d.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 if (color instanceof Color_1.CompositeColor) {
                     if (color.primary instanceof Color_1.SolidColor) {

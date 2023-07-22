@@ -22,7 +22,7 @@ const GameLoop_1 = require("./game_loop/GameLoop");
 const Loading_1 = require("./Loading");
 const BeetPx_1 = require("./BeetPx");
 const StorageApi_1 = require("./StorageApi");
-const Xy_1 = require("./Xy");
+const Vector2d_1 = require("./Vector2d");
 class Framework {
     get debug() {
         return __classPrivateFieldGet(this, _Framework_debug, "f");
@@ -51,7 +51,7 @@ class Framework {
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
-        _Framework_centeringOffset.set(this, Xy_1.Xy.zero);
+        _Framework_centeringOffset.set(this, Vector2d_1.Vector2d.zero);
         __classPrivateFieldSet(this, _Framework_debugOptions, options.debug ?? {
             enabledOnInit: false,
         }, "f");
@@ -175,7 +175,7 @@ _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = 
     __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillRect(0, 0, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
 }, _Framework_render = function _Framework_render() {
     __classPrivateFieldGet(this, _Framework_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _Framework_offscreenImageData, "f"), 0, 0);
-    const htmlCanvasSize = (0, Xy_1.xy_)(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
+    const htmlCanvasSize = (0, Vector2d_1.v_)(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
     // TODO: encapsulate this calculation and related fields
     __classPrivateFieldSet(this, _Framework_scaleToFill, Math.min(htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().x, htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().y), "f");
     __classPrivateFieldSet(this, _Framework_centeringOffset, htmlCanvasSize

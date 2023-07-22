@@ -1,15 +1,15 @@
 import { CompositeColor, SolidColor } from "../Color";
-import { Xy } from "../Xy";
+import { Vector2d } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
 
 export class DrawRect {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Xy;
+  readonly #canvasSize: Vector2d;
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Xy) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
@@ -17,13 +17,13 @@ export class DrawRect {
   }
 
   draw(
-    xy1: Xy,
-    xy2: Xy,
+    xy1: Vector2d,
+    xy2: Vector2d,
     color: SolidColor | CompositeColor,
     fill: boolean,
     fillPattern: FillPattern = FillPattern.primaryOnly,
   ): void {
-    Xy.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
+    Vector2d.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
       if (fillPattern.hasPrimaryColorAt(xy)) {
         if (color instanceof CompositeColor) {
           if (color.primary instanceof SolidColor) {

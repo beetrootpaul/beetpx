@@ -1,6 +1,6 @@
 import { describe, test } from "@jest/globals";
 import { CompositeColor, SolidColor, transparent } from "../Color";
-import { xy_ } from "../Xy";
+import { v_ } from "../Vector2d";
 import { DrawRect } from "./DrawRect";
 import { FillPattern } from "./FillPattern";
 import { TestCanvas } from "./TestCanvas";
@@ -21,7 +21,7 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       rect.draw(xy1, xy1.add(1), c1, false);
 
       // then
@@ -41,8 +41,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
-      rect.draw(xy1, xy1.add(xy_(4, 3)), c1, false);
+      const xy1 = v_(1, 1);
+      rect.draw(xy1, xy1.add(v_(4, 3)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -63,8 +63,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(0, 0);
-      rect.draw(xy1, xy1.add(xy_(4, 3)), c1, false);
+      const xy1 = v_(0, 0);
+      rect.draw(xy1, xy1.add(v_(4, 3)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -83,7 +83,7 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       rect.draw(xy1, xy1, c1, false);
 
       // then
@@ -103,7 +103,7 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(-1, -1);
+      const xy1 = v_(-1, -1);
       rect.draw(xy1, xy1.add(3), c1, false);
 
       // then
@@ -123,8 +123,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(5, 4);
-      rect.draw(xy1, xy1.add(xy_(-4, -3)), c1, false);
+      const xy1 = v_(5, 4);
+      rect.draw(xy1, xy1.add(v_(-4, -3)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -145,8 +145,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(-2, 1);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, false);
+      const xy1 = v_(-2, 1);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -168,8 +168,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(4, 1);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, false);
+      const xy1 = v_(4, 1);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -191,8 +191,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, -2);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, false);
+      const xy1 = v_(1, -2);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -214,8 +214,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 4);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, false);
+      const xy1 = v_(1, 4);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -238,8 +238,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(0, 0),
-        xy_(4, 4),
+        v_(0, 0),
+        v_(4, 4),
         c1,
         false,
         FillPattern.of(0b0000_0001_0011_0111),
@@ -264,8 +264,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(0, 0),
-        xy_(4, 4),
+        v_(0, 0),
+        v_(4, 4),
         new CompositeColor(c1, c2),
         false,
         FillPattern.of(0b0000_0001_0011_0111),
@@ -290,8 +290,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(0, 0),
-        xy_(10, 10),
+        v_(0, 0),
+        v_(10, 10),
         new CompositeColor(c4, c1),
         false,
         FillPattern.primaryOnly,
@@ -316,8 +316,8 @@ describe("DrawRect", () => {
 
       // and when
       rect.draw(
-        xy_(2, 2),
-        xy_(8, 8),
+        v_(2, 2),
+        v_(8, 8),
         new CompositeColor(c4, c2),
         false,
         FillPattern.secondaryOnly,
@@ -342,8 +342,8 @@ describe("DrawRect", () => {
 
       // and when
       rect.draw(
-        xy_(0, 0),
-        xy_(10, 10),
+        v_(0, 0),
+        v_(10, 10),
         new CompositeColor(c3, ct),
         false,
         FillPattern.of(0b0000_0001_0011_0111),
@@ -368,15 +368,15 @@ describe("DrawRect", () => {
 
       // and when
       rect.draw(
-        xy_(0, 0),
-        xy_(10, 5),
+        v_(0, 0),
+        v_(10, 5),
         new CompositeColor(c5, ct),
         false,
         FillPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
-        xy_(0, 5),
-        xy_(10, 10),
+        v_(0, 5),
+        v_(10, 10),
         new CompositeColor(c5, c1),
         false,
         FillPattern.of(0b1100_1100_1100_1100),
@@ -407,8 +407,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(1, 1),
-        xy_(10, 10),
+        v_(1, 1),
+        v_(10, 10),
         new CompositeColor(c1, ct),
         false,
         FillPattern.of(0b0000_0001_0011_0111),
@@ -441,7 +441,7 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       rect.draw(xy1, xy1.add(1), c1, true);
 
       // then
@@ -461,8 +461,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
-      rect.draw(xy1, xy1.add(xy_(4, 3)), c1, true);
+      const xy1 = v_(1, 1);
+      rect.draw(xy1, xy1.add(v_(4, 3)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -483,8 +483,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(0, 0);
-      rect.draw(xy1, xy1.add(xy_(4, 3)), c1, true);
+      const xy1 = v_(0, 0);
+      rect.draw(xy1, xy1.add(v_(4, 3)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -503,7 +503,7 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       rect.draw(xy1, xy1, c1, true);
 
       // then
@@ -523,7 +523,7 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(-1, -1);
+      const xy1 = v_(-1, -1);
       rect.draw(xy1, xy1.add(3), c1, true);
 
       // then
@@ -543,8 +543,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(5, 4);
-      rect.draw(xy1, xy1.add(xy_(-4, -3)), c1, true);
+      const xy1 = v_(5, 4);
+      rect.draw(xy1, xy1.add(v_(-4, -3)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -565,8 +565,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(-2, 1);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, true);
+      const xy1 = v_(-2, 1);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -588,8 +588,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(4, 1);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, true);
+      const xy1 = v_(4, 1);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -611,8 +611,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, -2);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, true);
+      const xy1 = v_(1, -2);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -634,8 +634,8 @@ describe("DrawRect", () => {
       const rect = new DrawRect(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 4);
-      rect.draw(xy1, xy1.add(xy_(4, 4)), c1, true);
+      const xy1 = v_(1, 4);
+      rect.draw(xy1, xy1.add(v_(4, 4)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -658,8 +658,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(0, 0),
-        xy_(4, 4),
+        v_(0, 0),
+        v_(4, 4),
         c1,
         true,
         FillPattern.of(0b0000_0001_0011_0111),
@@ -684,8 +684,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(0, 0),
-        xy_(4, 4),
+        v_(0, 0),
+        v_(4, 4),
         new CompositeColor(c1, c2),
         true,
         FillPattern.of(0b0000_0001_0011_0111),
@@ -710,8 +710,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(0, 0),
-        xy_(10, 10),
+        v_(0, 0),
+        v_(10, 10),
         new CompositeColor(c4, c1),
         true,
         FillPattern.primaryOnly,
@@ -736,8 +736,8 @@ describe("DrawRect", () => {
 
       // and when
       rect.draw(
-        xy_(2, 2),
-        xy_(8, 8),
+        v_(2, 2),
+        v_(8, 8),
         new CompositeColor(c4, c2),
         true,
         FillPattern.secondaryOnly,
@@ -762,8 +762,8 @@ describe("DrawRect", () => {
 
       // and when
       rect.draw(
-        xy_(0, 0),
-        xy_(10, 10),
+        v_(0, 0),
+        v_(10, 10),
         new CompositeColor(c3, ct),
         true,
         FillPattern.of(0b0000_0001_0011_0111),
@@ -788,15 +788,15 @@ describe("DrawRect", () => {
 
       // and when
       rect.draw(
-        xy_(0, 0),
-        xy_(10, 5),
+        v_(0, 0),
+        v_(10, 5),
         new CompositeColor(c5, ct),
         true,
         FillPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
-        xy_(0, 5),
-        xy_(10, 10),
+        v_(0, 5),
+        v_(10, 10),
         new CompositeColor(c5, c1),
         true,
         FillPattern.of(0b1100_1100_1100_1100),
@@ -827,8 +827,8 @@ describe("DrawRect", () => {
 
       // when
       rect.draw(
-        xy_(1, 1),
-        xy_(10, 10),
+        v_(1, 1),
+        v_(10, 10),
         new CompositeColor(c1, ct),
         true,
         FillPattern.of(0b0000_0001_0011_0111),

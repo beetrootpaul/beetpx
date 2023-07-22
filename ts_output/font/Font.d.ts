@@ -1,7 +1,7 @@
 import { Sprite } from "../Sprite";
-import { Xy } from "../Xy";
+import { Vector2d } from "../Vector2d";
 export type CharSprite = {
-    positionInText: Xy;
+    positionInText: Vector2d;
     sprite: Sprite;
 };
 export interface Font {
