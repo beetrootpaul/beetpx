@@ -1,12 +1,12 @@
 import { describe, test } from "@jest/globals";
-import { CompositeColor, SolidColor, transparent } from "../Color";
+import { CompositeColor, SolidColor, transparent_ } from "../Color";
 import { v_ } from "../Vector2d";
 import { DrawRect } from "./DrawRect";
 import { FillPattern } from "./FillPattern";
 import { TestCanvas } from "./TestCanvas";
 
 describe("DrawRect", () => {
-  const ct = transparent;
+  const ct = transparent_;
   const c0 = SolidColor.fromRgbCssHex("#010203");
   const c1 = SolidColor.fromRgbCssHex("#111213");
   const c2 = SolidColor.fromRgbCssHex("#212223");

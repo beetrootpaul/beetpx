@@ -6,7 +6,8 @@ function spr_(x1, y1, x2, y2) {
     return new Sprite((0, Vector2d_1.v_)(x1, y1), (0, Vector2d_1.v_)(x2, y2));
 }
 exports.spr_ = spr_;
-// TODO: maybe add a sprite sheet ID or just an image ID?
+// TODO: maybe add a sprite sheet ID or just an image ID? There is no need for it, but it
+//       would express the fact that sprite is related to a specific sprite sheet only
 class Sprite {
     constructor(xy1, xy2) {
         this.xy1 = xy1;

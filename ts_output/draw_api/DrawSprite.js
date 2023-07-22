@@ -41,7 +41,7 @@ class DrawSprite {
                 }
                 let color = imgBytes[imgBytesIndex + 3] > 0xff / 2
                     ? new Color_1.SolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
-                    : Color_1.transparent;
+                    : Color_1.transparent_;
                 color = colorMapping.get(color.id()) ?? color;
                 if (color instanceof Color_1.SolidColor) {
                     const canvasXy = targetXy1.add((0, Vector2d_1.v_)(imgX - sprite.xy1.x, imgY - sprite.xy1.y));

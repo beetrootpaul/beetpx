@@ -9,7 +9,7 @@ const TestCanvas_1 = require("./TestCanvas");
 const TestImage_1 = require("./TestImage");
 // TODO: tests for fill pattern
 (0, globals_1.describe)("DrawSprite", () => {
-    const ct = Color_1.transparent;
+    const ct = Color_1.transparent_;
     const c0 = Color_1.SolidColor.fromRgbCssHex("#010203");
     const c1 = Color_1.SolidColor.fromRgbCssHex("#111213");
     const c2 = Color_1.SolidColor.fromRgbCssHex("#212223");

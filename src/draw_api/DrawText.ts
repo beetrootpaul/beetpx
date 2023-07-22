@@ -1,5 +1,5 @@
 import { FontAsset } from "../Assets";
-import { SolidColor, transparent } from "../Color";
+import { SolidColor, transparent_ } from "../Color";
 import { Vector2d } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 
@@ -30,7 +30,7 @@ export class DrawText {
         canvasXy1.add(charSprite.positionInText),
         new Map([
           [fontAsset.imageTextColor.id(), color],
-          [fontAsset.imageBgColor.id(), transparent],
+          [fontAsset.imageBgColor.id(), transparent_],
         ]),
       );
     }

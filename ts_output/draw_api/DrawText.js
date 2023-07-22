@@ -29,7 +29,7 @@ class DrawText {
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy1.add(charSprite.positionInText), new Map([
                 [fontAsset.imageTextColor.id(), color],
-                [fontAsset.imageBgColor.id(), Color_1.transparent],
+                [fontAsset.imageBgColor.id(), Color_1.transparent_],
             ]));
         }
     }

@@ -1,5 +1,5 @@
 import { ImageAsset } from "../Assets";
-import { type Color, ColorId, SolidColor, transparent } from "../Color";
+import { type Color, ColorId, SolidColor, transparent_ } from "../Color";
 import { spr_, Sprite } from "../Sprite";
 import { Utils } from "../Utils";
 import { Vector2d, v_ } from "../Vector2d";
@@ -62,7 +62,7 @@ export class DrawSprite {
                 imgBytes[imgBytesIndex + 1]!,
                 imgBytes[imgBytesIndex + 2]!,
               )
-            : transparent;
+            : transparent_;
         color = colorMapping.get(color.id()) ?? color;
 
         if (color instanceof SolidColor) {

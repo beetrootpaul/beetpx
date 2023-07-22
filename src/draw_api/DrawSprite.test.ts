@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { SolidColor, transparent } from "../Color";
+import { SolidColor, transparent_ } from "../Color";
 import { spr_ } from "../Sprite";
 import { v_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
@@ -9,7 +9,7 @@ import { TestImage } from "./TestImage";
 // TODO: tests for fill pattern
 
 describe("DrawSprite", () => {
-  const ct = transparent;
+  const ct = transparent_;
   const c0 = SolidColor.fromRgbCssHex("#010203");
   const c1 = SolidColor.fromRgbCssHex("#111213");
   const c2 = SolidColor.fromRgbCssHex("#212223");
