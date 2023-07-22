@@ -3,6 +3,6 @@ export declare class StorageApi {
     #private;
     store<StorageApiValue extends StorageApiValueConstraint>(value: StorageApiValue): void;
     load<StorageApiValue extends StorageApiValueConstraint>(): StorageApiValue | null;
-    clear(): void;
+    clearStorage(): void;
 }
 export {};

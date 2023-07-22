@@ -28,7 +28,6 @@ class GameLoop {
         _GameLoop_accumulatedTimeStep.set(this, void 0);
         _GameLoop_frameNumber.set(this, void 0);
         _GameLoop_callbacks.set(this, void 0);
-        // TODO: seems like the game runs faster on a mobile browser than on a desktop one
         // Keep this function as an arrow one in order to avoid issues with `this`.
         _GameLoop_tick.set(this, (currentTime) => {
             // In the 1st frame, we don't have this.#previousTime yet, therefore we take currentTime
@@ -65,7 +64,7 @@ class GameLoop {
                 }
             }
             while (__classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f") >= __classPrivateFieldGet(this, _GameLoop_expectedTimeStep, "f")) {
-                __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(__classPrivateFieldGet(this, _GameLoop_frameNumber, "f"));
+                __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(__classPrivateFieldGet(this, _GameLoop_frameNumber, "f"), __classPrivateFieldGet(this, _GameLoop_fpsLogger, "f").mostRecentAverageFps);
                 __classPrivateFieldSet(this, _GameLoop_frameNumber, __classPrivateFieldGet(this, _GameLoop_frameNumber, "f") == Number.MAX_SAFE_INTEGER
                     ? 0
                     : __classPrivateFieldGet(this, _GameLoop_frameNumber, "f") + 1, "f");

@@ -1,5 +1,5 @@
 export type GameLoopCallbacks = {
-    updateFn: (frameNumber: number) => void;
+    updateFn: (frameNumber: number, averageFps: number) => void;
     renderFn: () => void;
 };
 type GameLoopOptions = {

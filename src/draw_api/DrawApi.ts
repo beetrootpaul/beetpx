@@ -60,19 +60,16 @@ export class DrawApi {
   }
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
-  // noinspection JSUnusedGlobalSymbols
   setCameraOffset(offset: Vector2d): void {
     this.#cameraOffset = offset.round();
   }
 
   // TODO: cover it with tests
-  // noinspection JSUnusedGlobalSymbols
   setFillPattern(fillPattern: FillPattern): void {
     this.#fillPattern = fillPattern;
   }
 
   // TODO: cover it with tests
-  // noinspection JSUnusedGlobalSymbols
   mapSpriteColor(from: Color, to: Color): void {
     // TODO: consider writing a custom equality check function
     if (from.id() === to.id()) {
@@ -83,27 +80,22 @@ export class DrawApi {
   }
 
   // TODO: cover it with tests
-  // noinspection JSUnusedGlobalSymbols
   setFont(fontImageUrl: string | null): void {
     this.#fontAsset = fontImageUrl ? this.#assets.getFont(fontImageUrl) : null;
   }
 
-  // noinspection JSUnusedGlobalSymbols
   getFont(): Font | null {
     return this.#fontAsset?.font ?? null;
   }
 
-  // noinspection JSUnusedGlobalSymbols
-  clear(color: SolidColor): void {
+  clearCanvas(color: SolidColor): void {
     this.#clear.draw(color);
   }
 
-  // noinspection JSUnusedGlobalSymbols
   pixel(xy: Vector2d, color: SolidColor): void {
     this.#pixel.draw(xy.sub(this.#cameraOffset).round(), color);
   }
 
-  // noinspection JSUnusedGlobalSymbols
   rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
     this.#rect.draw(
       xy1.sub(this.#cameraOffset).round(),
@@ -114,7 +106,6 @@ export class DrawApi {
     );
   }
 
-  // noinspection JSUnusedGlobalSymbols
   rectFilled(
     xy1: Vector2d,
     xy2: Vector2d,
@@ -129,7 +120,6 @@ export class DrawApi {
     );
   }
 
-  // noinspection JSUnusedGlobalSymbols
   ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
     this.#ellipse.draw(
       xy1.sub(this.#cameraOffset).round(),
@@ -140,7 +130,6 @@ export class DrawApi {
     );
   }
 
-  // noinspection JSUnusedGlobalSymbols
   ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
     this.#ellipse.draw(
       xy1.sub(this.#cameraOffset).round(),
@@ -152,7 +141,6 @@ export class DrawApi {
   }
 
   // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
-  // noinspection JSUnusedGlobalSymbols
   sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void {
     const sourceImageAsset = this.#assets.getImage(spriteImageUrl);
     this.#sprite.draw(

@@ -1,16 +1,28 @@
-import { BeetPx } from "../BeetPx";
-
 export interface FpsLogger {
+  get mostRecentAverageFps(): number;
+
   track(fps: number): void;
 }
 
 export class FpsLoggerNoop implements FpsLogger {
+  // TODO: rework to *always* count average FPS and only decided whether to *log* it to the console.
+  //       Probably there will be no need for FpsLoggerNoop vs FpsLoggerAverage.
+  //       Or maybe even just make logging dependent on *debug* flag.
+  get mostRecentAverageFps(): number {
+    return 1;
+  }
+
   track(_fps: number): void {}
 }
 
 export class FpsLoggerAverage implements FpsLogger {
   readonly #samples: number[] = Array.from({ length: 60 });
   #nextIndex: number = 0;
+  #averageFps = 1;
+
+  get mostRecentAverageFps(): number {
+    return this.#averageFps;
+  }
 
   // TODO: consider creation of a generic logger which could be used in a game in order to avoid spamming with `console.log`s every frame
   track(fps: number): void {
@@ -18,11 +30,8 @@ export class FpsLoggerAverage implements FpsLogger {
     this.#nextIndex = this.#nextIndex % this.#samples.length;
     if (this.#nextIndex === 0) {
       const s = this.#samples.reduce((sum, nextFps) => sum + nextFps, 0);
-      const averageFps = Math.floor(s / this.#samples.length);
-      console.info("FPS: ", averageFps);
-      BeetPx.averageFps = averageFps;
+      this.#averageFps = Math.floor(s / this.#samples.length);
+      console.info("FPS: ", this.#averageFps);
     }
   }
 }
-
-// TODO: expose FPS to the game so it can print it on screen if needed

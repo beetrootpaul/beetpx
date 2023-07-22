@@ -6,9 +6,7 @@ export class FillPattern {
     return new FillPattern(bits);
   }
 
-  // noinspection JSUnusedGlobalSymbols
   static primaryOnly = new FillPattern(0b0000_0000_0000_0000);
-  // noinspection JSUnusedGlobalSymbols
   static secondaryOnly = new FillPattern(0b1111_1111_1111_1111);
 
   readonly #bits: number;

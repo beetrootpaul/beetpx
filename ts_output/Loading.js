@@ -1,6 +1,4 @@
 "use strict";
-// TODO: When the loading of assets gets implemented, we will have to wait a bit more for the game to start.
-//      We will need a minimum wait then in order to avoid a case when game loads super fast, making the loading screen flicker.
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -19,7 +17,6 @@ class Loading {
         }
         __classPrivateFieldSet(this, _Loading_displayElement, displayElement, "f");
     }
-    // TODO: rename to hideLoadingScreen maybe?
     showApp() {
         // TODO: externalize this class as a parameter coming from the game itself
         document.body.classList.add("app_loaded");

@@ -2,7 +2,7 @@ import { BeetPx } from "../BeetPx";
 import { FpsLogger, FpsLoggerAverage, FpsLoggerNoop } from "./FpsLogger";
 
 export type GameLoopCallbacks = {
-  updateFn: (frameNumber: number) => void;
+  updateFn: (frameNumber: number, averageFps: number) => void;
   renderFn: () => void;
 };
 
@@ -57,8 +57,6 @@ export class GameLoop {
     this.#requestAnimationFrameFn(this.#tick);
   }
 
-  // TODO: seems like the game runs faster on a mobile browser than on a desktop one
-
   // Keep this function as an arrow one in order to avoid issues with `this`.
   #tick = (currentTime: DOMHighResTimeStamp): void => {
     // In the 1st frame, we don't have this.#previousTime yet, therefore we take currentTime
@@ -112,7 +110,10 @@ export class GameLoop {
     }
 
     while (this.#accumulatedTimeStep >= this.#expectedTimeStep) {
-      this.#callbacks.updateFn(this.#frameNumber);
+      this.#callbacks.updateFn(
+        this.#frameNumber,
+        this.#fpsLogger.mostRecentAverageFps,
+      );
 
       this.#frameNumber =
         this.#frameNumber == Number.MAX_SAFE_INTEGER

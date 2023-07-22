@@ -1,6 +1,6 @@
 import { Assets, SoundUrl } from "../Assets";
 
-export class Audio {
+export class AudioApi {
   readonly #assets: Assets;
 
   readonly #audioContext: AudioContext;

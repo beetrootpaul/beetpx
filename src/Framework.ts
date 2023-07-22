@@ -1,14 +1,13 @@
 import { Assets, AssetsToLoad } from "./Assets";
-import { Audio } from "./audio/Audio";
+import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
-import { GameInput } from "./game_input/GameInput";
+import { GameInput, GameInputEvent } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
-import { BeetPx } from "./BeetPx";
 import { StorageApi } from "./StorageApi";
-import { Vector2d, v_ } from "./Vector2d";
+import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
   htmlCanvasBackground: SolidColor;
@@ -24,6 +23,10 @@ export type FrameworkOptions = {
      */
     toggleKey?: string;
   };
+};
+
+export type OnAssetsLoaded = {
+  startGame: (onStart?: () => void) => void;
 };
 
 export class Framework {
@@ -48,19 +51,24 @@ export class Framework {
   readonly #loading: Loading;
   readonly #gameInput: GameInput;
   readonly #gameLoop: GameLoop;
-  readonly #audio: Audio;
+  readonly audioApi: AudioApi;
   readonly #fullScreen: FullScreen;
 
   readonly #assets: Assets;
 
-  readonly #drawApi: DrawApi;
-  readonly #storageApi: StorageApi;
+  readonly drawApi: DrawApi;
+  readonly storageApi: StorageApi;
 
   #onUpdate?: () => void;
   #onDraw?: () => void;
 
   #scaleToFill = 1;
   #centeringOffset = Vector2d.zero;
+
+  frameNumber: number = 0;
+  averageFps: number = 1;
+  continuousInputEvents: Set<GameInputEvent> = new Set();
+  fireOnceInputEvents: Set<GameInputEvent> = new Set();
 
   constructor(options: FrameworkOptions) {
     this.#debugOptions = options.debug ?? {
@@ -124,7 +132,7 @@ export class Framework {
         audioContext.decodeAudioData(arrayBuffer),
     });
 
-    this.#audio = new Audio(this.#assets, audioContext);
+    this.audioApi = new AudioApi(this.#assets, audioContext);
 
     this.#fullScreen = FullScreen.newFor(
       this.#htmlDisplaySelector,
@@ -135,23 +143,16 @@ export class Framework {
       this.#offscreenContext.canvas.width,
       this.#offscreenContext.canvas.height,
     );
-    this.#drawApi = new DrawApi({
+    this.drawApi = new DrawApi({
       canvasBytes: this.#offscreenImageData.data,
       canvasSize: this.#gameCanvasSize,
       assets: this.#assets,
     });
 
-    this.#storageApi = new StorageApi();
-
-    BeetPx.drawApi = this.#drawApi;
-    BeetPx.audio = this.#audio;
-    BeetPx.storageApi = this.#storageApi;
+    this.storageApi = new StorageApi();
   }
 
-  // TODO: type the startGame fn or the entire object inside resolved Promise
-  loadAssets(
-    assetsToLoad: AssetsToLoad,
-  ): Promise<{ startGame: (onStart?: () => void) => void }> {
+  loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
     return this.#assets.loadAssets(assetsToLoad).then(() => ({
       startGame: this.#startGame.bind(this),
     }));
@@ -180,13 +181,13 @@ export class Framework {
     this.#gameInput.startListening();
 
     this.#gameLoop.start({
-      updateFn: (frameNumber) => {
+      updateFn: (frameNumber, averageFps) => {
         const fireOnceEvents = this.#gameInput.consumeFireOnceEvents();
         if (fireOnceEvents.has("full_screen")) {
           this.#fullScreen.toggle();
         }
         if (fireOnceEvents.has("mute_unmute_toggle")) {
-          this.#audio.toggleMuteUnmute();
+          this.audioApi.toggleMuteUnmute();
         }
         if (fireOnceEvents.has("debug_toggle")) {
           this.#debug = !this.#debug;
@@ -196,12 +197,13 @@ export class Framework {
         const continuousEvents = this.#gameInput.getCurrentContinuousEvents();
 
         if (fireOnceEvents.size > 0 || continuousEvents.size > 0) {
-          this.#audio.resumeAudioContextIfNeeded();
+          this.audioApi.resumeAudioContextIfNeeded();
         }
 
-        BeetPx.frameNumber = frameNumber;
-        BeetPx.continuousInputEvents = continuousEvents;
-        BeetPx.fireOnceInputEvents = fireOnceEvents;
+        this.frameNumber = frameNumber;
+        this.averageFps = averageFps;
+        this.continuousInputEvents = continuousEvents;
+        this.fireOnceInputEvents = fireOnceEvents;
 
         this.#onUpdate?.();
       },

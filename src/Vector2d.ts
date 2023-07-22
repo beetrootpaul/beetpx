@@ -1,7 +1,7 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { PrintDebug } from "./debug/PrintDebug";
 import { Utils } from "./Utils";
-
-// TODO: Consider Vector2d and v_
 
 export function v_(x: number, y: number): Vector2d {
   return new Vector2d(x, y);

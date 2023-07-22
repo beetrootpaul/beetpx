@@ -17,7 +17,7 @@ export declare class DrawApi {
     mapSpriteColor(from: Color, to: Color): void;
     setFont(fontImageUrl: string | null): void;
     getFont(): Font | null;
-    clear(color: SolidColor): void;
+    clearCanvas(color: SolidColor): void;
     pixel(xy: Vector2d, color: SolidColor): void;
     rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     rectFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor | CompositeColor): void;

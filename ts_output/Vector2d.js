@@ -1,8 +1,8 @@
 "use strict";
+// noinspection JSUnusedGlobalSymbols
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Vector2d = exports.v_ = void 0;
 const Utils_1 = require("./Utils");
-// TODO: Consider Vector2d and v_
 function v_(x, y) {
     return new Vector2d(x, y);
 }
