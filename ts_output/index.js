@@ -1,5 +1,5 @@
 "use strict";
-// noinspection JSUnusedGlobalSymbols
+/// <reference path="./__IS_PROD__.d.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BeetPx = exports.v_ = exports.spr_ = exports.transparent_ = exports.BpxVector2d = exports.BpxUtils = exports.BpxSprite = exports.BpxFillPattern = exports.TransparentColor = exports.BpxSolidColor = exports.BpxCompositeColor = void 0;
 var Color_1 = require("./Color");

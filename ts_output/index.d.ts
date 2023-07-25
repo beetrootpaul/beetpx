@@ -1,3 +1,4 @@
+/// <reference path="../src/__IS_PROD__.d.ts" />
 export { type ColorId as BpxColorId, type Color as BpxColor, CompositeColor as BpxCompositeColor, SolidColor as BpxSolidColor, TransparentColor as TransparentColor, } from "./Color";
 export { FillPattern as BpxFillPattern } from "./draw_api/FillPattern";
 export { type CharSprite as BpxCharSprite, type Font as BpxFont, } from "./font/Font";

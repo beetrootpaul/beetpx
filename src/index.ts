@@ -1,4 +1,4 @@
-// noinspection JSUnusedGlobalSymbols
+/// <reference path="./__IS_PROD__.d.ts" />
 
 export {
   type ColorId as BpxColorId,
