@@ -6,10 +6,6 @@ import { DrawApi } from "./draw_api/DrawApi";
 import { Framework, type FrameworkOptions } from "./Framework";
 import { StorageApi } from "./StorageApi";
 
-//  This class is only a facade over other capabilities of this game framework.
-//    It serves as a public, global, statically accessible API.
-//    Inspiration: [PICO-8's API](https://www.lexaloffle.com/dl/docs/pico-8_manual.html).
-
 export class BeetPx {
   static #framework: Framework;
 
@@ -30,27 +26,27 @@ export class BeetPx {
   //
 
   static get frameNumber(): Framework["frameNumber"] {
-    return BeetPx.#framework.frameNumber;
+    return this.#tryGetFramework().frameNumber;
   }
 
   static get averageFps(): Framework["averageFps"] {
-    return BeetPx.#framework.averageFps;
+    return this.#tryGetFramework().averageFps;
   }
 
   static get continuousInputEvents(): Framework["continuousInputEvents"] {
-    return BeetPx.#framework.continuousInputEvents;
+    return this.#tryGetFramework().continuousInputEvents;
   }
 
   static get fireOnceInputEvents(): Framework["fireOnceInputEvents"] {
-    return BeetPx.#framework.fireOnceInputEvents;
+    return this.#tryGetFramework().fireOnceInputEvents;
   }
 
   static get audioContext(): AudioApi["audioContext"] {
-    return this.#framework.audioApi.audioContext;
+    return this.#tryGetFramework().audioApi.audioContext;
   }
 
   static get debug(): Framework["debug"] {
-    return BeetPx.#framework.debug;
+    return this.#tryGetFramework().debug;
   }
 
   //
@@ -58,11 +54,11 @@ export class BeetPx {
   //
 
   static setOnUpdate: Framework["setOnUpdate"] = (...args) => {
-    return this.#framework.setOnUpdate(...args);
+    return this.#tryGetFramework().setOnUpdate(...args);
   };
 
   static setOnDraw: Framework["setOnDraw"] = (...args) => {
-    return this.#framework.setOnDraw(...args);
+    return this.#tryGetFramework().setOnDraw(...args);
   };
 
   //
@@ -70,55 +66,55 @@ export class BeetPx {
   //
 
   static setCameraOffset: DrawApi["setCameraOffset"] = (...args) => {
-    return this.#framework.drawApi.setCameraOffset(...args);
+    return this.#tryGetFramework().drawApi.setCameraOffset(...args);
   };
 
   static setFillPattern: DrawApi["setFillPattern"] = (...args) => {
-    return this.#framework.drawApi.setFillPattern(...args);
+    return this.#tryGetFramework().drawApi.setFillPattern(...args);
   };
 
   static mapSpriteColor: DrawApi["mapSpriteColor"] = (...args) => {
-    return this.#framework.drawApi.mapSpriteColor(...args);
+    return this.#tryGetFramework().drawApi.mapSpriteColor(...args);
   };
 
   static setFont: DrawApi["setFont"] = (...args) => {
-    return this.#framework.drawApi.setFont(...args);
+    return this.#tryGetFramework().drawApi.setFont(...args);
   };
 
   static getFont: DrawApi["getFont"] = (...args) => {
-    return this.#framework.drawApi.getFont(...args);
+    return this.#tryGetFramework().drawApi.getFont(...args);
   };
 
   static clearCanvas: DrawApi["clearCanvas"] = (...args) => {
-    return this.#framework.drawApi.clearCanvas(...args);
+    return this.#tryGetFramework().drawApi.clearCanvas(...args);
   };
 
   static pixel: DrawApi["pixel"] = (...args) => {
-    return this.#framework.drawApi.pixel(...args);
+    return this.#tryGetFramework().drawApi.pixel(...args);
   };
 
   static rect: DrawApi["rect"] = (...args) => {
-    return this.#framework.drawApi.rect(...args);
+    return this.#tryGetFramework().drawApi.rect(...args);
   };
 
   static rectFilled: DrawApi["rectFilled"] = (...args) => {
-    return this.#framework.drawApi.rectFilled(...args);
+    return this.#tryGetFramework().drawApi.rectFilled(...args);
   };
 
   static ellipse: DrawApi["ellipse"] = (...args) => {
-    return this.#framework.drawApi.ellipse(...args);
+    return this.#tryGetFramework().drawApi.ellipse(...args);
   };
 
   static ellipseFilled: DrawApi["ellipseFilled"] = (...args) => {
-    return this.#framework.drawApi.ellipseFilled(...args);
+    return this.#tryGetFramework().drawApi.ellipseFilled(...args);
   };
 
   static sprite: DrawApi["sprite"] = (...args) => {
-    return this.#framework.drawApi.sprite(...args);
+    return this.#tryGetFramework().drawApi.sprite(...args);
   };
 
   static print: DrawApi["print"] = (...args) => {
-    return this.#framework.drawApi.print(...args);
+    return this.#tryGetFramework().drawApi.print(...args);
   };
 
   //
@@ -126,23 +122,23 @@ export class BeetPx {
   //
 
   static toggleMuteUnmute: AudioApi["toggleMuteUnmute"] = (...args) => {
-    return this.#framework.audioApi.toggleMuteUnmute(...args);
+    return this.#tryGetFramework().audioApi.toggleMuteUnmute(...args);
   };
 
   static playSoundOnce: AudioApi["playSoundOnce"] = (...args) => {
-    return this.#framework.audioApi.playSoundOnce(...args);
+    return this.#tryGetFramework().audioApi.playSoundOnce(...args);
   };
 
   static playSoundLooped: AudioApi["playSoundLooped"] = (...args) => {
-    return this.#framework.audioApi.playSoundLooped(...args);
+    return this.#tryGetFramework().audioApi.playSoundLooped(...args);
   };
 
   static muteSound: AudioApi["muteSound"] = (...args) => {
-    return this.#framework.audioApi.muteSound(...args);
+    return this.#tryGetFramework().audioApi.muteSound(...args);
   };
 
   static unmuteSound: AudioApi["unmuteSound"] = (...args) => {
-    return this.#framework.audioApi.unmuteSound(...args);
+    return this.#tryGetFramework().audioApi.unmuteSound(...args);
   };
 
   //
@@ -150,14 +146,27 @@ export class BeetPx {
   //
 
   static store: StorageApi["store"] = (...args) => {
-    return this.#framework.storageApi.store(...args);
+    return this.#tryGetFramework().storageApi.store(...args);
   };
 
   static load: StorageApi["load"] = (...args) => {
-    return this.#framework.storageApi.load(...args);
+    return this.#tryGetFramework().storageApi.load(...args);
   };
 
   static clearStorage: StorageApi["clearStorage"] = (...args) => {
-    return this.#framework.storageApi.clearStorage(...args);
+    return this.#tryGetFramework().storageApi.clearStorage(...args);
   };
+
+  //
+  // private helpers
+  //
+
+  static #tryGetFramework(): Framework {
+    if (!this.#framework) {
+      throw Error(
+        `Tried to access BeetPx API without calling BeetPx.init(…) first.`,
+      );
+    }
+    return this.#framework;
+  }
 }
