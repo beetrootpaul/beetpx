@@ -10,19 +10,18 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _Framework_htmlDisplaySelector, _Framework_htmlCanvasSelector, _Framework_htmlControlsFullscreenSelector, _Framework_htmlControlsMuteSelector, _Framework_debugOptions, _Framework_debug, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameInput, _Framework_gameLoop, _Framework_audio, _Framework_fullScreen, _Framework_assets, _Framework_drawApi, _Framework_storageApi, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
+var _Framework_instances, _Framework_htmlDisplaySelector, _Framework_htmlCanvasSelector, _Framework_htmlControlsFullscreenSelector, _Framework_htmlControlsMuteSelector, _Framework_debugOptions, _Framework_debug, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameInput, _Framework_gameLoop, _Framework_fullScreen, _Framework_assets, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Framework = void 0;
 const Assets_1 = require("./Assets");
-const Audio_1 = require("./audio/Audio");
+const AudioApi_1 = require("./audio/AudioApi");
 const DrawApi_1 = require("./draw_api/DrawApi");
 const FullScreen_1 = require("./FullScreen");
 const GameInput_1 = require("./game_input/GameInput");
 const GameLoop_1 = require("./game_loop/GameLoop");
 const Loading_1 = require("./Loading");
-const PocTsBGFramework_1 = require("./PocTsBGFramework");
 const StorageApi_1 = require("./StorageApi");
-const Xy_1 = require("./Xy");
+const Vector2d_1 = require("./Vector2d");
 class Framework {
     get debug() {
         return __classPrivateFieldGet(this, _Framework_debug, "f");
@@ -43,15 +42,16 @@ class Framework {
         _Framework_loading.set(this, void 0);
         _Framework_gameInput.set(this, void 0);
         _Framework_gameLoop.set(this, void 0);
-        _Framework_audio.set(this, void 0);
         _Framework_fullScreen.set(this, void 0);
         _Framework_assets.set(this, void 0);
-        _Framework_drawApi.set(this, void 0);
-        _Framework_storageApi.set(this, void 0);
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
-        _Framework_centeringOffset.set(this, Xy_1.Xy.zero);
+        _Framework_centeringOffset.set(this, Vector2d_1.Vector2d.zero);
+        this.frameNumber = 0;
+        this.averageFps = 1;
+        this.continuousInputEvents = new Set();
+        this.fireOnceInputEvents = new Set();
         __classPrivateFieldSet(this, _Framework_debugOptions, options.debug ?? {
             enabledOnInit: false,
         }, "f");
@@ -98,20 +98,16 @@ class Framework {
         __classPrivateFieldSet(this, _Framework_assets, new Assets_1.Assets({
             decodeAudioData: (arrayBuffer) => audioContext.decodeAudioData(arrayBuffer),
         }), "f");
-        __classPrivateFieldSet(this, _Framework_audio, new Audio_1.Audio(__classPrivateFieldGet(this, _Framework_assets, "f"), audioContext), "f");
+        this.audioApi = new AudioApi_1.AudioApi(__classPrivateFieldGet(this, _Framework_assets, "f"), audioContext);
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen_1.FullScreen.newFor(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f"), __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f")), "f");
         __classPrivateFieldSet(this, _Framework_offscreenImageData, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height), "f");
-        __classPrivateFieldSet(this, _Framework_drawApi, new DrawApi_1.DrawApi({
+        this.drawApi = new DrawApi_1.DrawApi({
             canvasBytes: __classPrivateFieldGet(this, _Framework_offscreenImageData, "f").data,
             canvasSize: __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"),
             assets: __classPrivateFieldGet(this, _Framework_assets, "f"),
-        }), "f");
-        __classPrivateFieldSet(this, _Framework_storageApi, new StorageApi_1.StorageApi(), "f");
-        PocTsBGFramework_1.PocTsBGFramework.drawApi = __classPrivateFieldGet(this, _Framework_drawApi, "f");
-        PocTsBGFramework_1.PocTsBGFramework.audio = __classPrivateFieldGet(this, _Framework_audio, "f");
-        PocTsBGFramework_1.PocTsBGFramework.storageApi = __classPrivateFieldGet(this, _Framework_storageApi, "f");
+        });
+        this.storageApi = new StorageApi_1.StorageApi();
     }
-    // TODO: type the startGame fn or the entire object inside resolved Promise
     loadAssets(assetsToLoad) {
         return __classPrivateFieldGet(this, _Framework_assets, "f").loadAssets(assetsToLoad).then(() => ({
             startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
@@ -125,7 +121,7 @@ class Framework {
     }
 }
 exports.Framework = Framework;
-_Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = new WeakMap(), _Framework_htmlControlsFullscreenSelector = new WeakMap(), _Framework_htmlControlsMuteSelector = new WeakMap(), _Framework_debugOptions = new WeakMap(), _Framework_debug = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameInput = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_audio = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_assets = new WeakMap(), _Framework_drawApi = new WeakMap(), _Framework_storageApi = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame(onStart) {
+_Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = new WeakMap(), _Framework_htmlControlsFullscreenSelector = new WeakMap(), _Framework_htmlControlsMuteSelector = new WeakMap(), _Framework_debugOptions = new WeakMap(), _Framework_debug = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameInput = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_assets = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame(onStart) {
     __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_setupHtmlCanvas).call(this);
     window.addEventListener("resize", (_event) => {
         __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_setupHtmlCanvas).call(this);
@@ -135,13 +131,13 @@ _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = 
     __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
     __classPrivateFieldGet(this, _Framework_gameInput, "f").startListening();
     __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
-        updateFn: (frameNumber) => {
+        updateFn: (frameNumber, averageFps) => {
             const fireOnceEvents = __classPrivateFieldGet(this, _Framework_gameInput, "f").consumeFireOnceEvents();
             if (fireOnceEvents.has("full_screen")) {
                 __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
             }
             if (fireOnceEvents.has("mute_unmute_toggle")) {
-                __classPrivateFieldGet(this, _Framework_audio, "f").toggleMuteUnmute();
+                this.audioApi.toggleMuteUnmute();
             }
             if (fireOnceEvents.has("debug_toggle")) {
                 __classPrivateFieldSet(this, _Framework_debug, !__classPrivateFieldGet(this, _Framework_debug, "f"), "f");
@@ -149,11 +145,12 @@ _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = 
             }
             const continuousEvents = __classPrivateFieldGet(this, _Framework_gameInput, "f").getCurrentContinuousEvents();
             if (fireOnceEvents.size > 0 || continuousEvents.size > 0) {
-                __classPrivateFieldGet(this, _Framework_audio, "f").resumeAudioContextIfNeeded();
+                this.audioApi.resumeAudioContextIfNeeded();
             }
-            PocTsBGFramework_1.PocTsBGFramework.frameNumber = frameNumber;
-            PocTsBGFramework_1.PocTsBGFramework.continuousInputEvents = continuousEvents;
-            PocTsBGFramework_1.PocTsBGFramework.fireOnceInputEvents = fireOnceEvents;
+            this.frameNumber = frameNumber;
+            this.averageFps = averageFps;
+            this.continuousInputEvents = continuousEvents;
+            this.fireOnceInputEvents = fireOnceEvents;
             __classPrivateFieldGet(this, _Framework_onUpdate, "f")?.call(this);
         },
         renderFn: () => {
@@ -175,7 +172,7 @@ _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = 
     __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillRect(0, 0, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
 }, _Framework_render = function _Framework_render() {
     __classPrivateFieldGet(this, _Framework_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _Framework_offscreenImageData, "f"), 0, 0);
-    const htmlCanvasSize = (0, Xy_1.xy_)(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
+    const htmlCanvasSize = (0, Vector2d_1.v_)(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
     // TODO: encapsulate this calculation and related fields
     __classPrivateFieldSet(this, _Framework_scaleToFill, Math.min(htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().x, htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().y), "f");
     __classPrivateFieldSet(this, _Framework_centeringOffset, htmlCanvasSize

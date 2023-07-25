@@ -11,7 +11,7 @@ export class TransparentColor implements Color {
   }
 }
 
-export const transparent = new TransparentColor();
+export const transparent_ = new TransparentColor();
 
 // Red, green, and blue, each one as value between 0 and 255.
 export class SolidColor implements Color {

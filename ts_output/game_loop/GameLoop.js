@@ -13,7 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _GameLoop_desiredFps, _GameLoop_adjustedFps, _GameLoop_requestAnimationFrameFn, _GameLoop_fpsLogger, _GameLoop_previousTime, _GameLoop_expectedTimeStep, _GameLoop_safetyMaxTimeStep, _GameLoop_accumulatedTimeStep, _GameLoop_frameNumber, _GameLoop_callbacks, _GameLoop_tick;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameLoop = void 0;
-const PocTsBGFramework_1 = require("../PocTsBGFramework");
+const BeetPx_1 = require("../BeetPx");
 const FpsLogger_1 = require("./FpsLogger");
 // TODO: consider aggregating a total time from the very beginning and then adjusting FPS to match it in order to sync with audio
 class GameLoop {
@@ -28,7 +28,6 @@ class GameLoop {
         _GameLoop_accumulatedTimeStep.set(this, void 0);
         _GameLoop_frameNumber.set(this, void 0);
         _GameLoop_callbacks.set(this, void 0);
-        // TODO: seems like the game runs faster on a mobile browser than on a desktop one
         // Keep this function as an arrow one in order to avoid issues with `this`.
         _GameLoop_tick.set(this, (currentTime) => {
             // In the 1st frame, we don't have this.#previousTime yet, therefore we take currentTime
@@ -38,7 +37,7 @@ class GameLoop {
             __classPrivateFieldSet(this, _GameLoop_accumulatedTimeStep, __classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f") + deltaTime, "f");
             // A safety net in case of a long time spent on another tab, letting delta accumulate a lot in this one:
             if (__classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f") > __classPrivateFieldGet(this, _GameLoop_safetyMaxTimeStep, "f")) {
-                if (PocTsBGFramework_1.PocTsBGFramework.debug) {
+                if (BeetPx_1.BeetPx.debug) {
                     console.debug(`Accumulated time step of ${__classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f")} was greater than safety max time step of ${__classPrivateFieldGet(this, _GameLoop_safetyMaxTimeStep, "f")}.`);
                 }
                 __classPrivateFieldSet(this, _GameLoop_accumulatedTimeStep, __classPrivateFieldGet(this, _GameLoop_safetyMaxTimeStep, "f"), "f");
@@ -51,7 +50,7 @@ class GameLoop {
                     __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") > __classPrivateFieldGet(this, _GameLoop_desiredFps, "f") / 2) {
                     __classPrivateFieldSet(this, _GameLoop_adjustedFps, __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") - 1, "f");
                     __classPrivateFieldSet(this, _GameLoop_expectedTimeStep, 1000 / __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f"), "f");
-                    if (PocTsBGFramework_1.PocTsBGFramework.debug) {
+                    if (BeetPx_1.BeetPx.debug) {
                         console.debug(`Decreasing the adjusted FPS by 1. New = ${__classPrivateFieldGet(this, _GameLoop_adjustedFps, "f")}`);
                     }
                 }
@@ -59,13 +58,13 @@ class GameLoop {
                     __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") < __classPrivateFieldGet(this, _GameLoop_desiredFps, "f") * 2) {
                     __classPrivateFieldSet(this, _GameLoop_adjustedFps, __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") + 1, "f");
                     __classPrivateFieldSet(this, _GameLoop_expectedTimeStep, 1000 / __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f"), "f");
-                    if (PocTsBGFramework_1.PocTsBGFramework.debug) {
+                    if (BeetPx_1.BeetPx.debug) {
                         console.debug(`Increasing the adjusted FPS by 1. New = ${__classPrivateFieldGet(this, _GameLoop_adjustedFps, "f")}`);
                     }
                 }
             }
             while (__classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f") >= __classPrivateFieldGet(this, _GameLoop_expectedTimeStep, "f")) {
-                __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(__classPrivateFieldGet(this, _GameLoop_frameNumber, "f"));
+                __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(__classPrivateFieldGet(this, _GameLoop_frameNumber, "f"), __classPrivateFieldGet(this, _GameLoop_fpsLogger, "f").mostRecentAverageFps);
                 __classPrivateFieldSet(this, _GameLoop_frameNumber, __classPrivateFieldGet(this, _GameLoop_frameNumber, "f") == Number.MAX_SAFE_INTEGER
                     ? 0
                     : __classPrivateFieldGet(this, _GameLoop_frameNumber, "f") + 1, "f");

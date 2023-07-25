@@ -1,8 +1,8 @@
-import { PocTsBGFramework } from "../PocTsBGFramework";
+import { BeetPx } from "../BeetPx";
 import { FpsLogger, FpsLoggerAverage, FpsLoggerNoop } from "./FpsLogger";
 
 export type GameLoopCallbacks = {
-  updateFn: (frameNumber: number) => void;
+  updateFn: (frameNumber: number, averageFps: number) => void;
   renderFn: () => void;
 };
 
@@ -57,8 +57,6 @@ export class GameLoop {
     this.#requestAnimationFrameFn(this.#tick);
   }
 
-  // TODO: seems like the game runs faster on a mobile browser than on a desktop one
-
   // Keep this function as an arrow one in order to avoid issues with `this`.
   #tick = (currentTime: DOMHighResTimeStamp): void => {
     // In the 1st frame, we don't have this.#previousTime yet, therefore we take currentTime
@@ -69,7 +67,7 @@ export class GameLoop {
     this.#accumulatedTimeStep += deltaTime;
     // A safety net in case of a long time spent on another tab, letting delta accumulate a lot in this one:
     if (this.#accumulatedTimeStep > this.#safetyMaxTimeStep) {
-      if (PocTsBGFramework.debug) {
+      if (BeetPx.debug) {
         console.debug(
           `Accumulated time step of ${
             this.#accumulatedTimeStep
@@ -92,7 +90,7 @@ export class GameLoop {
       ) {
         this.#adjustedFps -= 1;
         this.#expectedTimeStep = 1000 / this.#adjustedFps;
-        if (PocTsBGFramework.debug) {
+        if (BeetPx.debug) {
           console.debug(
             `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
           );
@@ -103,7 +101,7 @@ export class GameLoop {
       ) {
         this.#adjustedFps += 1;
         this.#expectedTimeStep = 1000 / this.#adjustedFps;
-        if (PocTsBGFramework.debug) {
+        if (BeetPx.debug) {
           console.debug(
             `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
           );
@@ -112,7 +110,10 @@ export class GameLoop {
     }
 
     while (this.#accumulatedTimeStep >= this.#expectedTimeStep) {
-      this.#callbacks.updateFn(this.#frameNumber);
+      this.#callbacks.updateFn(
+        this.#frameNumber,
+        this.#fpsLogger.mostRecentAverageFps,
+      );
 
       this.#frameNumber =
         this.#frameNumber == Number.MAX_SAFE_INTEGER

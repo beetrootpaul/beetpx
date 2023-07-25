@@ -1,6 +1,6 @@
 import { describe, test } from "@jest/globals";
 import { SolidColor } from "../Color";
-import { xy_ } from "../Xy";
+import { v_ } from "../Vector2d";
 import { DrawEllipse } from "./DrawEllipse";
 import { TestCanvas } from "./TestCanvas";
 
@@ -17,7 +17,7 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       ellipse.draw(xy1, xy1, c1, false);
 
       // then
@@ -37,7 +37,7 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       ellipse.draw(xy1, xy1.add(1), c1, false);
 
       // then
@@ -57,7 +57,7 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       ellipse.draw(xy1, xy1.add(2), c1, false);
 
       // then
@@ -78,8 +78,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
-      ellipse.draw(xy1, xy1.add(xy_(4, 3)), c1, false);
+      const xy1 = v_(1, 1);
+      ellipse.draw(xy1, xy1.add(v_(4, 3)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -100,8 +100,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, false);
+      const xy1 = v_(1, 1);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -124,8 +124,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(13, 6);
-      ellipse.draw(xy1, xy1.add(xy_(-12, -5)), c1, false);
+      const xy1 = v_(13, 6);
+      ellipse.draw(xy1, xy1.add(v_(-12, -5)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -148,8 +148,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(-6, 1);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, false);
+      const xy1 = v_(-6, 1);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -172,8 +172,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(8, 1);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, false);
+      const xy1 = v_(8, 1);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -196,8 +196,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, -2);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, false);
+      const xy1 = v_(1, -2);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -220,8 +220,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 4);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, false);
+      const xy1 = v_(1, 4);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, false);
 
       // then
       canvas.expectToEqual({
@@ -246,7 +246,7 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       ellipse.draw(xy1, xy1, c1, true);
 
       // then
@@ -266,7 +266,7 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       ellipse.draw(xy1, xy1.add(1), c1, true);
 
       // then
@@ -286,7 +286,7 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
+      const xy1 = v_(1, 1);
       ellipse.draw(xy1, xy1.add(2), c1, true);
 
       // then
@@ -307,8 +307,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
-      ellipse.draw(xy1, xy1.add(xy_(4, 3)), c1, true);
+      const xy1 = v_(1, 1);
+      ellipse.draw(xy1, xy1.add(v_(4, 3)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -329,8 +329,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 1);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, true);
+      const xy1 = v_(1, 1);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -353,8 +353,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(13, 6);
-      ellipse.draw(xy1, xy1.add(xy_(-12, -5)), c1, true);
+      const xy1 = v_(13, 6);
+      ellipse.draw(xy1, xy1.add(v_(-12, -5)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -377,8 +377,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(-6, 1);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, true);
+      const xy1 = v_(-6, 1);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -401,8 +401,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(8, 1);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, true);
+      const xy1 = v_(8, 1);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -425,8 +425,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, -2);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, true);
+      const xy1 = v_(1, -2);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, true);
 
       // then
       canvas.expectToEqual({
@@ -449,8 +449,8 @@ describe("DrawEllipse", () => {
       const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
 
       // when
-      const xy1 = xy_(1, 4);
-      ellipse.draw(xy1, xy1.add(xy_(12, 5)), c1, true);
+      const xy1 = v_(1, 4);
+      ellipse.draw(xy1, xy1.add(v_(12, 5)), c1, true);
 
       // then
       canvas.expectToEqual({

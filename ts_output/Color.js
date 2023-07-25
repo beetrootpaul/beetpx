@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CompositeColor = exports.SolidColor = exports.transparent = exports.TransparentColor = void 0;
+exports.CompositeColor = exports.SolidColor = exports.transparent_ = exports.TransparentColor = void 0;
 class TransparentColor {
     id() {
         return "transparent";
     }
 }
 exports.TransparentColor = TransparentColor;
-exports.transparent = new TransparentColor();
+exports.transparent_ = new TransparentColor();
 // Red, green, and blue, each one as value between 0 and 255.
 class SolidColor {
     constructor(r, g, b) {

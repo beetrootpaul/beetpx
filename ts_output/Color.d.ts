@@ -5,7 +5,7 @@ export interface Color {
 export declare class TransparentColor implements Color {
     id(): ColorId;
 }
-export declare const transparent: TransparentColor;
+export declare const transparent_: TransparentColor;
 export declare class SolidColor implements Color {
     readonly r: number;
     readonly g: number;

@@ -1,7 +1,10 @@
-import { SolidColor } from "./Color";
-import { PocTsBGFramework } from "./PocTsBGFramework";
-import { Xy, xy_ } from "./Xy";
+// noinspection JSUnusedGlobalSymbols
 
+import { SolidColor } from "./Color";
+import { BeetPx } from "./BeetPx";
+import { v_, Vector2d } from "./Vector2d";
+
+// TODO: consider exposing those utils as BeetPx global API methods
 export class Utils {
   // Returns the middle number. Example usage: `clamp(min, value, max)`
   //   in order to find a value which is:
@@ -14,47 +17,47 @@ export class Utils {
 
   // TODO: tests for edge cases
   static booleanChangingEveryNthFrame(n: number): boolean {
-    return PocTsBGFramework.frameNumber % (n * 2) < n;
+    return BeetPx.frameNumber % (n * 2) < n;
   }
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
-  static get offset8Directions(): Xy[] {
+  static get offset8Directions(): Vector2d[] {
     return [
-      xy_(-1, -1),
-      xy_(0, -1),
-      xy_(1, -1),
-      xy_(1, 0),
-      xy_(1, 1),
-      xy_(0, 1),
-      xy_(-1, 1),
-      xy_(-1, 0),
+      v_(-1, -1),
+      v_(0, -1),
+      v_(1, -1),
+      v_(1, 0),
+      v_(1, 1),
+      v_(0, 1),
+      v_(-1, 1),
+      v_(-1, 0),
     ];
   }
 
   // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
-  static measureTextSize(text: string): Xy {
-    const charSprites =
-      PocTsBGFramework.drawApi.getFont()?.spritesFor(text) ?? [];
+  static measureTextSize(text: string): Vector2d {
+    const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
     return charSprites.reduce(
       (sizeSoFar, nextSprite) =>
-        Xy.max(
+        Vector2d.max(
           sizeSoFar,
           nextSprite.positionInText.add(nextSprite.sprite.size()),
         ),
-      Xy.zero,
+      Vector2d.zero,
     );
   }
 
+  // TODO: consider moving this to either DrawApi or the game itself
   static printWithOutline(
     text: string,
-    canvasXy1: Xy,
+    canvasXy1: Vector2d,
     textColor: SolidColor,
     outlineColor: SolidColor,
   ): void {
     Utils.offset8Directions.forEach((offset) => {
-      PocTsBGFramework.drawApi.print(text, canvasXy1.add(offset), outlineColor);
+      BeetPx.print(text, canvasXy1.add(offset), outlineColor);
     });
-    PocTsBGFramework.drawApi.print(text, canvasXy1, textColor);
+    BeetPx.print(text, canvasXy1, textColor);
   }
 
   // to be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`

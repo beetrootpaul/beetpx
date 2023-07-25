@@ -25,7 +25,7 @@ export class StorageApi {
     return maybeValue ? JSON.parse(maybeValue) : null;
   }
 
-  clear(): void {
+  clearStorage(): void {
     window.localStorage.removeItem(StorageApi.#key);
   }
 }

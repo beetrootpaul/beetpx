@@ -1,15 +1,15 @@
 import { SolidColor } from "../Color";
-import { Xy, xy_ } from "../Xy";
+import { Vector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
 
 export class DrawEllipse {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Xy;
+  readonly #canvasSize: Vector2d;
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Xy) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
@@ -18,8 +18,8 @@ export class DrawEllipse {
 
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
-    xy1: Xy,
-    xy2: Xy,
+    xy1: Vector2d,
+    xy2: Vector2d,
     color: SolidColor,
     fill: boolean,
     // TODO: implement fill pattern for the ellipse
@@ -31,8 +31,8 @@ export class DrawEllipse {
 
     // swap coordinates to make sure xy1 is the left-bottom corner and xy2 is the right-top one
     [xy1, xy2] = [
-      xy_(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y)),
-      xy_(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y)),
+      v_(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y)),
+      v_(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y)),
     ];
 
     //
@@ -61,24 +61,24 @@ export class DrawEllipse {
       //
 
       // TODO: update the implementation below to honor fill pattern
-      this.#pixel.draw(xy_(right, bottom), color);
-      this.#pixel.draw(xy_(left, bottom), color);
-      this.#pixel.draw(xy_(left, top), color);
-      this.#pixel.draw(xy_(right, top), color);
+      this.#pixel.draw(v_(right, bottom), color);
+      this.#pixel.draw(v_(left, bottom), color);
+      this.#pixel.draw(v_(left, top), color);
+      this.#pixel.draw(v_(right, top), color);
       if (fill) {
         // TODO: update the implementation below to honor fill pattern
-        Xy.forEachIntXyWithinRectOf(
-          xy_(left + 1, bottom),
-          xy_(right - 1, bottom).add(1),
+        Vector2d.forEachIntXyWithinRectOf(
+          v_(left + 1, bottom),
+          v_(right - 1, bottom).add(1),
           true,
           (xy) => {
             this.#pixel.draw(xy, color);
           },
         );
         // TODO: update the implementation below to honor fill pattern
-        Xy.forEachIntXyWithinRectOf(
-          xy_(left + 1, top),
-          xy_(right - 1, top).add(1),
+        Vector2d.forEachIntXyWithinRectOf(
+          v_(left + 1, top),
+          v_(right - 1, top).add(1),
           true,
           (xy) => {
             this.#pixel.draw(xy, color);
@@ -115,11 +115,11 @@ export class DrawEllipse {
     // TODO: Cover this with tests
     while (bottom - top < b) {
       // TODO: update the implementation below to honor fill pattern
-      this.#pixel.draw(xy_(left - 1, bottom), color);
-      this.#pixel.draw(xy_(right + 1, bottom), color);
+      this.#pixel.draw(v_(left - 1, bottom), color);
+      this.#pixel.draw(v_(right + 1, bottom), color);
       bottom += 1;
-      this.#pixel.draw(xy_(left - 1, top), color);
-      this.#pixel.draw(xy_(right + 1, top), color);
+      this.#pixel.draw(v_(left - 1, top), color);
+      this.#pixel.draw(v_(right + 1, top), color);
       top -= 1;
     }
   }

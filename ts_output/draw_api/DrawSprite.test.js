@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("@jest/globals");
 const Color_1 = require("../Color");
 const Sprite_1 = require("../Sprite");
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 const DrawSprite_1 = require("./DrawSprite");
 const TestCanvas_1 = require("./TestCanvas");
 const TestImage_1 = require("./TestImage");
 // TODO: tests for fill pattern
 (0, globals_1.describe)("DrawSprite", () => {
-    const ct = Color_1.transparent;
+    const ct = Color_1.transparent_;
     const c0 = Color_1.SolidColor.fromRgbCssHex("#010203");
     const c1 = Color_1.SolidColor.fromRgbCssHex("#111213");
     const c2 = Color_1.SolidColor.fromRgbCssHex("#212223");
@@ -27,7 +27,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 1, 1), (0, Xy_1.xy_)(1, 1), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 1, 1), (0, Vector2d_1.v_)(1, 1), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1 },
@@ -51,7 +51,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 5, 3), (0, Xy_1.xy_)(3, 2), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 5, 3), (0, Vector2d_1.v_)(3, 2), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -79,7 +79,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, 1, 3, 3), (0, Xy_1.xy_)(2, 1), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, 1, 3, 3), (0, Vector2d_1.v_)(2, 1), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -105,7 +105,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, 1, 1, 1), (0, Xy_1.xy_)(2, 1), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, 1, 1, 1), (0, Vector2d_1.v_)(2, 1), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -131,7 +131,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(3, 3, 1, 1), (0, Xy_1.xy_)(2, 1), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(3, 3, 1, 1), (0, Vector2d_1.v_)(2, 1), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -157,7 +157,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(-2, 1, 2, 3), (0, Xy_1.xy_)(3, 3), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(-2, 1, 2, 3), (0, Vector2d_1.v_)(3, 3), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -187,7 +187,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(2, 1, 6, 3), (0, Xy_1.xy_)(3, 3), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(2, 1, 6, 3), (0, Vector2d_1.v_)(3, 3), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -217,7 +217,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, -2, 3, 2), (0, Xy_1.xy_)(3, 3), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, -2, 3, 2), (0, Vector2d_1.v_)(3, 3), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -247,7 +247,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, 2, 3, 6), (0, Xy_1.xy_)(3, 3), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(1, 2, 3, 6), (0, Vector2d_1.v_)(3, 3), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -277,7 +277,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Xy_1.xy_)(-2, 1), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Vector2d_1.v_)(-2, 1), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -305,7 +305,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Xy_1.xy_)(4, 1), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Vector2d_1.v_)(4, 1), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -333,7 +333,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Xy_1.xy_)(1, -2), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Vector2d_1.v_)(1, -2), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -361,7 +361,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Xy_1.xy_)(1, 4), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Vector2d_1.v_)(1, 4), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -389,10 +389,10 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Xy_1.xy_)(0, 0), new Map());
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(4, 0, 8, 4), (0, Xy_1.xy_)(0, 0), new Map());
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(8, 0, 12, 4), (0, Xy_1.xy_)(0, 0), new Map());
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(12, 0, 16, 4), (0, Xy_1.xy_)(0, 0), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Vector2d_1.v_)(0, 0), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(4, 0, 8, 4), (0, Vector2d_1.v_)(0, 0), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(8, 0, 12, 4), (0, Vector2d_1.v_)(0, 0), new Map());
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(12, 0, 16, 4), (0, Vector2d_1.v_)(0, 0), new Map());
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -418,7 +418,7 @@ const TestImage_1 = require("./TestImage");
       `,
         });
         // when
-        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Xy_1.xy_)(0, 0), new Map([
+        sprite.draw(image.asset, (0, Sprite_1.spr_)(0, 0, 4, 4), (0, Vector2d_1.v_)(0, 0), new Map([
             [c1.id(), c4],
             [c2.id(), c5],
             [c3.id(), ct],

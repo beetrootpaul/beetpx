@@ -80,6 +80,9 @@ function runDevCommand() {
         open: itchIoSimulationHtml,
         hmr: true,
       },
+      define: {
+        __BEETPX_IS_PROD__: false,
+      },
       logLevel: "info",
     })
     .then((devServer) =>
@@ -122,6 +125,9 @@ function runBuildCommand() {
           buildOutDirAsExpectedByVitePreview,
         ),
         emptyOutDir: true,
+      },
+      define: {
+        __BEETPX_IS_PROD__: true,
       },
       logLevel: "info",
     })

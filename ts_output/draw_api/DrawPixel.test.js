@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const globals_1 = require("@jest/globals");
 const Color_1 = require("../Color");
-const Xy_1 = require("../Xy");
+const Vector2d_1 = require("../Vector2d");
 const DrawPixel_1 = require("./DrawPixel");
 const TestCanvas_1 = require("./TestCanvas");
 (0, globals_1.describe)("DrawPixel", () => {
@@ -16,8 +16,8 @@ const TestCanvas_1 = require("./TestCanvas");
         const canvas = new TestCanvas_1.TestCanvas(3, 3, c0);
         const pixel = new DrawPixel_1.DrawPixel(canvas.bytes, canvas.size);
         // when
-        const xy1 = (0, Xy_1.xy_)(1, 1);
-        pixel.draw((0, Xy_1.xy_)(1, 1), c1);
+        const xy1 = (0, Vector2d_1.v_)(1, 1);
+        pixel.draw((0, Vector2d_1.v_)(1, 1), c1);
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1 },
@@ -33,10 +33,10 @@ const TestCanvas_1 = require("./TestCanvas");
         const canvas = new TestCanvas_1.TestCanvas(3, 3, c0);
         const pixel = new DrawPixel_1.DrawPixel(canvas.bytes, canvas.size);
         // when
-        pixel.draw((0, Xy_1.xy_)(0, 0), c1);
-        pixel.draw((0, Xy_1.xy_)(2, 0), c2);
-        pixel.draw((0, Xy_1.xy_)(0, 2), c3);
-        pixel.draw((0, Xy_1.xy_)(2, 2), c4);
+        pixel.draw((0, Vector2d_1.v_)(0, 0), c1);
+        pixel.draw((0, Vector2d_1.v_)(2, 0), c2);
+        pixel.draw((0, Vector2d_1.v_)(0, 2), c3);
+        pixel.draw((0, Vector2d_1.v_)(2, 2), c4);
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -52,10 +52,10 @@ const TestCanvas_1 = require("./TestCanvas");
         const canvas = new TestCanvas_1.TestCanvas(3, 3, c0);
         const pixel = new DrawPixel_1.DrawPixel(canvas.bytes, canvas.size);
         // when
-        pixel.draw((0, Xy_1.xy_)(-1, 1), c1);
-        pixel.draw((0, Xy_1.xy_)(3, 1), c1);
-        pixel.draw((0, Xy_1.xy_)(1, -1), c1);
-        pixel.draw((0, Xy_1.xy_)(1, 3), c1);
+        pixel.draw((0, Vector2d_1.v_)(-1, 1), c1);
+        pixel.draw((0, Vector2d_1.v_)(3, 1), c1);
+        pixel.draw((0, Vector2d_1.v_)(1, -1), c1);
+        pixel.draw((0, Vector2d_1.v_)(1, 3), c1);
         // then
         canvas.expectToEqual({
             withMapping: { "-": c0, "#": c1 },

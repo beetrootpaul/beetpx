@@ -16,7 +16,7 @@ class StorageApi {
         const maybeValue = window.localStorage.getItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key));
         return maybeValue ? JSON.parse(maybeValue) : null;
     }
-    clear() {
+    clearStorage() {
         window.localStorage.removeItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key));
     }
 }

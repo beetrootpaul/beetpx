@@ -32,7 +32,5 @@ class FillPattern {
 }
 exports.FillPattern = FillPattern;
 _FillPattern_bits = new WeakMap();
-// noinspection JSUnusedGlobalSymbols
 FillPattern.primaryOnly = new FillPattern(0);
-// noinspection JSUnusedGlobalSymbols
 FillPattern.secondaryOnly = new FillPattern(65535);

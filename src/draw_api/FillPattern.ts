@@ -1,4 +1,4 @@
-import { Xy } from "../Xy";
+import { Vector2d } from "../Vector2d";
 
 export class FillPattern {
   // TODO: create a helper to generate FillPattern from ASCII
@@ -6,9 +6,7 @@ export class FillPattern {
     return new FillPattern(bits);
   }
 
-  // noinspection JSUnusedGlobalSymbols
   static primaryOnly = new FillPattern(0b0000_0000_0000_0000);
-  // noinspection JSUnusedGlobalSymbols
   static secondaryOnly = new FillPattern(0b1111_1111_1111_1111);
 
   readonly #bits: number;
@@ -18,7 +16,7 @@ export class FillPattern {
     this.#bits = bits;
   }
 
-  hasPrimaryColorAt(xy: Xy): boolean {
+  hasPrimaryColorAt(xy: Vector2d): boolean {
     const patternXy = xy.mod(4);
     const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;
     const isSecondary = Boolean(this.#bits & (1 << bitPosition));

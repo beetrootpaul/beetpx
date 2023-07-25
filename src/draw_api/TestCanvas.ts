@@ -1,13 +1,13 @@
 import { expect } from "@jest/globals";
 import { ColorId, SolidColor } from "../Color";
-import { Xy, xy_ } from "../Xy";
+import { Vector2d, v_ } from "../Vector2d";
 
 export class TestCanvas {
-  readonly size: Xy;
+  readonly size: Vector2d;
   readonly bytes: Uint8ClampedArray;
 
   constructor(width: number, height: number, color: SolidColor) {
-    this.size = xy_(width, height);
+    this.size = v_(width, height);
     this.bytes = new Uint8ClampedArray(4 * width * height);
     for (let i = 0; i < width * height; i += 1) {
       this.bytes[4 * i] = color.r;

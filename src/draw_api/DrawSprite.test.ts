@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals";
-import { SolidColor, transparent } from "../Color";
+import { SolidColor, transparent_ } from "../Color";
 import { spr_ } from "../Sprite";
-import { xy_ } from "../Xy";
+import { v_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { TestCanvas } from "./TestCanvas";
 import { TestImage } from "./TestImage";
@@ -9,7 +9,7 @@ import { TestImage } from "./TestImage";
 // TODO: tests for fill pattern
 
 describe("DrawSprite", () => {
-  const ct = transparent;
+  const ct = transparent_;
   const c0 = SolidColor.fromRgbCssHex("#010203");
   const c1 = SolidColor.fromRgbCssHex("#111213");
   const c2 = SolidColor.fromRgbCssHex("#212223");
@@ -29,7 +29,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(0, 0, 1, 1), xy_(1, 1), new Map());
+    sprite.draw(image.asset, spr_(0, 0, 1, 1), v_(1, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -56,7 +56,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(0, 0, 5, 3), xy_(3, 2), new Map());
+    sprite.draw(image.asset, spr_(0, 0, 5, 3), v_(3, 2), new Map());
 
     // then
     canvas.expectToEqual({
@@ -87,7 +87,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, 1, 3, 3), xy_(2, 1), new Map());
+    sprite.draw(image.asset, spr_(1, 1, 3, 3), v_(2, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -116,7 +116,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, 1, 1, 1), xy_(2, 1), new Map());
+    sprite.draw(image.asset, spr_(1, 1, 1, 1), v_(2, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -145,7 +145,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(3, 3, 1, 1), xy_(2, 1), new Map());
+    sprite.draw(image.asset, spr_(3, 3, 1, 1), v_(2, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -174,7 +174,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(-2, 1, 2, 3), xy_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(-2, 1, 2, 3), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -207,7 +207,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(2, 1, 6, 3), xy_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(2, 1, 6, 3), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -240,7 +240,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, -2, 3, 2), xy_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(1, -2, 3, 2), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -273,7 +273,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, 2, 3, 6), xy_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(1, 2, 3, 6), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -306,7 +306,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(0, 0, 4, 4), xy_(-2, 1), new Map());
+    sprite.draw(image.asset, spr_(0, 0, 4, 4), v_(-2, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -337,7 +337,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(0, 0, 4, 4), xy_(4, 1), new Map());
+    sprite.draw(image.asset, spr_(0, 0, 4, 4), v_(4, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -368,7 +368,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(0, 0, 4, 4), xy_(1, -2), new Map());
+    sprite.draw(image.asset, spr_(0, 0, 4, 4), v_(1, -2), new Map());
 
     // then
     canvas.expectToEqual({
@@ -399,7 +399,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(0, 0, 4, 4), xy_(1, 4), new Map());
+    sprite.draw(image.asset, spr_(0, 0, 4, 4), v_(1, 4), new Map());
 
     // then
     canvas.expectToEqual({
@@ -430,10 +430,10 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(0, 0, 4, 4), xy_(0, 0), new Map());
-    sprite.draw(image.asset, spr_(4, 0, 8, 4), xy_(0, 0), new Map());
-    sprite.draw(image.asset, spr_(8, 0, 12, 4), xy_(0, 0), new Map());
-    sprite.draw(image.asset, spr_(12, 0, 16, 4), xy_(0, 0), new Map());
+    sprite.draw(image.asset, spr_(0, 0, 4, 4), v_(0, 0), new Map());
+    sprite.draw(image.asset, spr_(4, 0, 8, 4), v_(0, 0), new Map());
+    sprite.draw(image.asset, spr_(8, 0, 12, 4), v_(0, 0), new Map());
+    sprite.draw(image.asset, spr_(12, 0, 16, 4), v_(0, 0), new Map());
 
     // then
     canvas.expectToEqual({
@@ -465,7 +465,7 @@ describe("DrawSprite", () => {
     sprite.draw(
       image.asset,
       spr_(0, 0, 4, 4),
-      xy_(0, 0),
+      v_(0, 0),
       new Map([
         [c1.id(), c4],
         [c2.id(), c5],
