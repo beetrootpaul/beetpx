@@ -4,7 +4,15 @@
 
 > A mini framework for low-res browser games, written in TypeScript.
 
-## Setup
+## Getting Started
+
+A section with code snippets is planned to be added here, but for now, please take a look at how following projects are
+using BeetPx:
+
+- https://github.com/beetrootpaul/towers-of-survival-beetpx
+- https://github.com/beetrootpaul/avoid-your-past-beetpx
+
+## Development Setup
 
 This projects is developed on [Node.js 18.16.0](https://nodejs.org/dist/latest-v18.x/docs/api/).
 
