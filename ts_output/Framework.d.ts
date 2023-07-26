@@ -1,12 +1,10 @@
 import { AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { SolidColor } from "./Color";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInputEvent } from "./game_input/GameInput";
 import { StorageApi } from "./StorageApi";
 import { Vector2d } from "./Vector2d";
 export type FrameworkOptions = {
-    htmlCanvasBackground: SolidColor;
     gameCanvasSize: Vector2d;
     desiredFps: number;
     logActualFps?: boolean;

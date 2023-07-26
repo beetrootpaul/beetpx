@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Framework = void 0;
 const Assets_1 = require("./Assets");
 const AudioApi_1 = require("./audio/AudioApi");
+const Color_1 = require("./Color");
 const DrawApi_1 = require("./draw_api/DrawApi");
 const FullScreen_1 = require("./FullScreen");
 const GameInput_1 = require("./game_input/GameInput");
@@ -35,7 +36,7 @@ class Framework {
         _Framework_debugOptions.set(this, void 0);
         _Framework_debug.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
-        _Framework_htmlCanvasBackground.set(this, void 0);
+        _Framework_htmlCanvasBackground.set(this, Color_1.SolidColor.fromRgbCssHex("#000000"));
         _Framework_htmlCanvasContext.set(this, void 0);
         _Framework_offscreenContext.set(this, void 0);
         _Framework_offscreenImageData.set(this, void 0);
@@ -58,7 +59,6 @@ class Framework {
         __classPrivateFieldSet(this, _Framework_debug, __classPrivateFieldGet(this, _Framework_debugOptions, "f")?.enabledOnInit, "f");
         __classPrivateFieldSet(this, _Framework_loading, new Loading_1.Loading(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f")), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize.floor(), "f");
-        __classPrivateFieldSet(this, _Framework_htmlCanvasBackground, options.htmlCanvasBackground, "f");
         const htmlCanvas = document.querySelector(__classPrivateFieldGet(this, _Framework_htmlCanvasSelector, "f"));
         if (!htmlCanvas) {
             throw Error(`Was unable to find <canvas> by selector '${__classPrivateFieldGet(this, _Framework_htmlCanvasSelector, "f")}'`);
