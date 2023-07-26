@@ -73,8 +73,8 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.setFillPattern(...args);
   };
 
-  static mapSpriteColor: DrawApi["mapSpriteColor"] = (...args) => {
-    return this.#tryGetFramework().drawApi.mapSpriteColor(...args);
+  static mapSpriteColors: DrawApi["mapSpriteColors"] = (...args) => {
+    return this.#tryGetFramework().drawApi.mapSpriteColors(...args);
   };
 
   static setFont: DrawApi["setFont"] = (...args) => {

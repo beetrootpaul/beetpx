@@ -14,7 +14,10 @@ export declare class DrawApi {
     constructor(options: DrawApiOptions);
     setCameraOffset(offset: Vector2d): void;
     setFillPattern(fillPattern: FillPattern): void;
-    mapSpriteColor(from: Color, to: Color): void;
+    mapSpriteColors(mappings: Array<{
+        from: Color;
+        to: Color;
+    }>): void;
     setFont(fontImageUrl: string | null): void;
     getFont(): Font | null;
     clearCanvas(color: SolidColor): void;

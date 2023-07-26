@@ -16,7 +16,7 @@ export declare class BeetPx {
     static setOnDraw: Framework["setOnDraw"];
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setFillPattern: DrawApi["setFillPattern"];
-    static mapSpriteColor: DrawApi["mapSpriteColor"];
+    static mapSpriteColors: DrawApi["mapSpriteColors"];
     static setFont: DrawApi["setFont"];
     static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];

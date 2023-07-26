@@ -51,14 +51,16 @@ class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_fillPattern, fillPattern, "f");
     }
     // TODO: cover it with tests
-    mapSpriteColor(from, to) {
-        // TODO: consider writing a custom equality check function
-        if (from.id() === to.id()) {
-            __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id());
-        }
-        else {
-            __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").set(from.id(), to);
-        }
+    mapSpriteColors(mappings) {
+        mappings.forEach(({ from, to }) => {
+            // TODO: consider writing a custom equality check function
+            if (from.id() === to.id()) {
+                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id());
+            }
+            else {
+                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").set(from.id(), to);
+            }
+        });
     }
     // TODO: cover it with tests
     setFont(fontImageUrl) {

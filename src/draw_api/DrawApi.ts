@@ -2,7 +2,7 @@ import { Assets, FontAsset, ImageUrl } from "../Assets";
 import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
 import { Font } from "../font/Font";
 import { Sprite } from "../Sprite";
-import { Vector2d, v_ } from "../Vector2d";
+import { v_, Vector2d } from "../Vector2d";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawPixel } from "./DrawPixel";
@@ -70,13 +70,15 @@ export class DrawApi {
   }
 
   // TODO: cover it with tests
-  mapSpriteColor(from: Color, to: Color): void {
-    // TODO: consider writing a custom equality check function
-    if (from.id() === to.id()) {
-      this.#spriteColorMapping.delete(from.id());
-    } else {
-      this.#spriteColorMapping.set(from.id(), to);
-    }
+  mapSpriteColors(mappings: Array<{ from: Color; to: Color }>): void {
+    mappings.forEach(({ from, to }) => {
+      // TODO: consider writing a custom equality check function
+      if (from.id() === to.id()) {
+        this.#spriteColorMapping.delete(from.id());
+      } else {
+        this.#spriteColorMapping.set(from.id(), to);
+      }
+    });
   }
 
   // TODO: cover it with tests
