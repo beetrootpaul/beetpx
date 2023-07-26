@@ -90,22 +90,24 @@ export class GameLoop {
       ) {
         this.#adjustedFps -= 1;
         this.#expectedTimeStep = 1000 / this.#adjustedFps;
-        if (BeetPx.debug) {
-          console.debug(
-            `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-          );
-        }
+        // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
+        // if (BeetPx.debug) {
+        //   console.debug(
+        //     `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
+        //   );
+        // }
       } else if (
         actualFps < this.#desiredFps / 1.1 &&
         this.#adjustedFps < this.#desiredFps * 2
       ) {
         this.#adjustedFps += 1;
         this.#expectedTimeStep = 1000 / this.#adjustedFps;
-        if (BeetPx.debug) {
-          console.debug(
-            `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-          );
-        }
+        // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
+        // if (BeetPx.debug) {
+        //   console.debug(
+        //     `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
+        //   );
+        // }
       }
     }
 

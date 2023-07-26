@@ -40,7 +40,8 @@ class FpsLoggerAverage {
         if (__classPrivateFieldGet(this, _FpsLoggerAverage_nextIndex, "f") === 0) {
             const s = __classPrivateFieldGet(this, _FpsLoggerAverage_samples, "f").reduce((sum, nextFps) => sum + nextFps, 0);
             __classPrivateFieldSet(this, _FpsLoggerAverage_averageFps, Math.floor(s / __classPrivateFieldGet(this, _FpsLoggerAverage_samples, "f").length), "f");
-            console.info("FPS: ", __classPrivateFieldGet(this, _FpsLoggerAverage_averageFps, "f"));
+            // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console, especially since the game can log it by itself when needed
+            // console.info("FPS: ", this.#averageFps);
         }
     }
 }
