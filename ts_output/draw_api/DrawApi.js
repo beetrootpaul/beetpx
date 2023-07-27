@@ -98,7 +98,7 @@ class DrawApi {
             __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color);
         }
         else {
-            console.info(`print: (${canvasXy1.x},${canvasXy1.y}) [${color.asRgbCssHex()}] ${text}`);
+            console.info(`print: (${canvasXy1.x},${canvasXy1.y}) [${typeof color === "function" ? "computed" : color.asRgbCssHex()}] ${text}`);
         }
     }
 }

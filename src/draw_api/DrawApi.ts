@@ -1,6 +1,6 @@
 import { Assets, FontAsset, ImageUrl } from "../Assets";
 import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
-import { Font } from "../font/Font";
+import { CharSprite, Font } from "../font/Font";
 import { Sprite } from "../Sprite";
 import { v_, Vector2d } from "../Vector2d";
 import { DrawClear } from "./DrawClear";
@@ -154,7 +154,11 @@ export class DrawApi {
   }
 
   // TODO: cover with tests
-  print(text: string, canvasXy1: Vector2d, color: SolidColor): void {
+  print(
+    text: string,
+    canvasXy1: Vector2d,
+    color: SolidColor | ((charSprite: CharSprite) => SolidColor),
+  ): void {
     if (this.#fontAsset) {
       this.#text.draw(
         text,
@@ -164,9 +168,9 @@ export class DrawApi {
       );
     } else {
       console.info(
-        `print: (${canvasXy1.x},${
-          canvasXy1.y
-        }) [${color.asRgbCssHex()}] ${text}`,
+        `print: (${canvasXy1.x},${canvasXy1.y}) [${
+          typeof color === "function" ? "computed" : color.asRgbCssHex()
+        }] ${text}`,
       );
     }
   }

@@ -1,6 +1,6 @@
 import { Assets, ImageUrl } from "../Assets";
 import { Color, CompositeColor, SolidColor } from "../Color";
-import { Font } from "../font/Font";
+import { CharSprite, Font } from "../font/Font";
 import { Sprite } from "../Sprite";
 import { Vector2d } from "../Vector2d";
 import { FillPattern } from "./FillPattern";
@@ -27,6 +27,6 @@ export declare class DrawApi {
     ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void;
-    print(text: string, canvasXy1: Vector2d, color: SolidColor): void;
+    print(text: string, canvasXy1: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
 export {};

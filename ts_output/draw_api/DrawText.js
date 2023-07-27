@@ -26,9 +26,10 @@ class DrawText {
     }
     // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
     draw(text, canvasXy1, fontAsset, color) {
+        const colorFn = typeof color === "function" ? color : () => color;
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy1.add(charSprite.positionInText), new Map([
-                [fontAsset.imageTextColor.id(), color],
+                [fontAsset.imageTextColor.id(), colorFn(charSprite)],
                 [fontAsset.imageBgColor.id(), Color_1.transparent_],
             ]));
         }
