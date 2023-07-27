@@ -14,6 +14,11 @@ class Utils {
     static clamp(a, b, c) {
         return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
     }
+    static repeatN(n, callback) {
+        Array.from({ length: n }).forEach((_element, i) => {
+            callback(i);
+        });
+    }
     // TODO: tests for edge cases
     static booleanChangingEveryNthFrame(n) {
         return BeetPx_1.BeetPx.frameNumber % (n * 2) < n;

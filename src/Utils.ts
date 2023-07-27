@@ -15,6 +15,12 @@ export class Utils {
     return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
   }
 
+  static repeatN(n: number, callback: (i: number) => void): void {
+    Array.from({ length: n }).forEach((_element, i) => {
+      callback(i);
+    });
+  }
+
   // TODO: tests for edge cases
   static booleanChangingEveryNthFrame(n: number): boolean {
     return BeetPx.frameNumber % (n * 2) < n;
