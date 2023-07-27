@@ -87,7 +87,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, 1, 3, 3), v_(2, 1), new Map());
+    sprite.draw(image.asset, spr_(1, 1, 2, 2), v_(2, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -116,7 +116,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, 1, 1, 1), v_(2, 1), new Map());
+    sprite.draw(image.asset, spr_(1, 1, 0, 0), v_(2, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -145,7 +145,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(3, 3, 1, 1), v_(2, 1), new Map());
+    sprite.draw(image.asset, spr_(3, 3, -2, -2), v_(2, 1), new Map());
 
     // then
     canvas.expectToEqual({
@@ -174,7 +174,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(-2, 1, 2, 3), v_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(-2, 1, 4, 2), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -207,7 +207,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(2, 1, 6, 3), v_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(2, 1, 4, 2), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -240,7 +240,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, -2, 3, 2), v_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(1, -2, 2, 4), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -273,7 +273,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, spr_(1, 2, 3, 6), v_(3, 3), new Map());
+    sprite.draw(image.asset, spr_(1, 2, 2, 4), v_(3, 3), new Map());
 
     // then
     canvas.expectToEqual({
@@ -431,9 +431,9 @@ describe("DrawSprite", () => {
 
     // when
     sprite.draw(image.asset, spr_(0, 0, 4, 4), v_(0, 0), new Map());
-    sprite.draw(image.asset, spr_(4, 0, 8, 4), v_(0, 0), new Map());
-    sprite.draw(image.asset, spr_(8, 0, 12, 4), v_(0, 0), new Map());
-    sprite.draw(image.asset, spr_(12, 0, 16, 4), v_(0, 0), new Map());
+    sprite.draw(image.asset, spr_(4, 0, 4, 4), v_(0, 0), new Map());
+    sprite.draw(image.asset, spr_(8, 0, 4, 4), v_(0, 0), new Map());
+    sprite.draw(image.asset, spr_(12, 0, 4, 4), v_(0, 0), new Map());
 
     // then
     canvas.expectToEqual({

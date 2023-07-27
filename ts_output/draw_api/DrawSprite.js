@@ -30,9 +30,9 @@ class DrawSprite {
     draw(sourceImageAsset, sprite, targetXy1, colorMapping = new Map()) {
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
-        sprite = (0, Sprite_1.spr_)(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y), Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y));
+        sprite = new Sprite_1.Sprite((0, Vector2d_1.v_)(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), (0, Vector2d_1.v_)(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
         // clip sprite by image edges
-        sprite = (0, Sprite_1.spr_)(Utils_1.Utils.clamp(0, sprite.xy1.x, imgW), Utils_1.Utils.clamp(0, sprite.xy1.y, imgH), Utils_1.Utils.clamp(0, sprite.xy2.x, imgW), Utils_1.Utils.clamp(0, sprite.xy2.y, imgH));
+        sprite = new Sprite_1.Sprite((0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy1.x, imgW), Utils_1.Utils.clamp(0, sprite.xy1.y, imgH)), (0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy2.x, imgW), Utils_1.Utils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
                 const imgBytesIndex = (imgY * imgW + imgX) * 4;

@@ -1,8 +1,8 @@
 import { ImageAsset } from "../Assets";
 import { type Color, ColorId, SolidColor, transparent_ } from "../Color";
-import { spr_, Sprite } from "../Sprite";
+import { Sprite } from "../Sprite";
 import { Utils } from "../Utils";
-import { Vector2d, v_ } from "../Vector2d";
+import { v_, Vector2d } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 
 export class DrawSprite {
@@ -31,19 +31,27 @@ export class DrawSprite {
     } = sourceImageAsset;
 
     // make sure xy1 is top-left and xy2 is bottom right
-    sprite = spr_(
-      Math.min(sprite.xy1.x, sprite.xy2.x),
-      Math.min(sprite.xy1.y, sprite.xy2.y),
-      Math.max(sprite.xy1.x, sprite.xy2.x),
-      Math.max(sprite.xy1.y, sprite.xy2.y),
+    sprite = new Sprite(
+      v_(
+        Math.min(sprite.xy1.x, sprite.xy2.x),
+        Math.min(sprite.xy1.y, sprite.xy2.y),
+      ),
+      v_(
+        Math.max(sprite.xy1.x, sprite.xy2.x),
+        Math.max(sprite.xy1.y, sprite.xy2.y),
+      ),
     );
 
     // clip sprite by image edges
-    sprite = spr_(
-      Utils.clamp(0, sprite.xy1.x, imgW),
-      Utils.clamp(0, sprite.xy1.y, imgH),
-      Utils.clamp(0, sprite.xy2.x, imgW),
-      Utils.clamp(0, sprite.xy2.y, imgH),
+    sprite = new Sprite(
+      v_(
+        Utils.clamp(0, sprite.xy1.x, imgW),
+        Utils.clamp(0, sprite.xy1.y, imgH),
+      ),
+      v_(
+        Utils.clamp(0, sprite.xy2.x, imgW),
+        Utils.clamp(0, sprite.xy2.y, imgH),
+      ),
     );
 
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
