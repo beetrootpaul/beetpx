@@ -73,12 +73,12 @@ export class Assets {
       },
     );
 
-    const imageUrls = [
+    const uniqueImageUrls = new Set([
       ...assetsToLoad.images.map(({ url }) => url),
       ...assetsToLoad.fonts.map(({ url }) => url),
-    ];
+    ]);
     await Promise.all(
-      imageUrls.map(async (url) => {
+      Array.from(uniqueImageUrls).map(async (url) => {
         const htmlImage = new Image();
         htmlImage.src = url;
         await htmlImage.decode();
