@@ -9,6 +9,8 @@ export type GameInputEvent =
   | "right"
   | "up"
   | "down"
+  | "button_x"
+  | "button_o"
   | "mute_unmute_toggle"
   | "full_screen"
   | "debug_toggle";

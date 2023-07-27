@@ -8,6 +8,7 @@ var _GamepadGameInput_axisMapping;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GamepadGameInput = void 0;
 // TODO: implement support for gameInputEventBehavior[gameInputEvent]?.fireOnce
+// TODO: implement X and O
 class GamepadGameInput {
     constructor() {
         this.buttonMapping = new Map([
