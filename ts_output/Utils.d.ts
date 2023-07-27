@@ -1,6 +1,7 @@
 import { SolidColor } from "./Color";
 import { Vector2d } from "./Vector2d";
 export declare class Utils {
+    static noop(): void;
     static clamp(a: number, b: number, c: number): number;
     static repeatN(n: number, callback: (i: number) => void): void;
     static booleanChangingEveryNthFrame(n: number): boolean;

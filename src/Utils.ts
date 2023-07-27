@@ -6,6 +6,8 @@ import { v_, Vector2d } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
 export class Utils {
+  static noop(): void {}
+
   // Returns the middle number. Example usage: `clamp(min, value, max)`
   //   in order to find a value which is:
   //   - `value` if it is `>= min` and `<= max`
