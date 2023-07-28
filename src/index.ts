@@ -12,6 +12,7 @@ export {
   type CharSprite as BpxCharSprite,
   type Font as BpxFont,
 } from "./font/Font";
+export { GameInputEvent as BpxGameInputEvent } from "./game_input/GameInput";
 export { Sprite as BpxSprite } from "./Sprite";
 export { Utils as BpxUtils } from "./Utils";
 export { Vector2d as BpxVector2d } from "./Vector2d";
