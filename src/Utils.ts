@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { SolidColor } from "./Color";
 import { BeetPx } from "./BeetPx";
+import { SolidColor } from "./Color";
 import { v_, Vector2d } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods

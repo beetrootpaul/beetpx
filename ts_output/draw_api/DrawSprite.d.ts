@@ -1,5 +1,5 @@
 import { ImageAsset } from "../Assets";
-import { type Color, ColorId } from "../Color";
+import { ColorId, type Color } from "../Color";
 import { Sprite } from "../Sprite";
 import { Vector2d } from "../Vector2d";
 export declare class DrawSprite {

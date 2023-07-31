@@ -1,5 +1,5 @@
 import { ImageAsset } from "../Assets";
-import { type Color, SolidColor } from "../Color";
+import { SolidColor, type Color } from "../Color";
 
 export class TestImage {
   readonly asset: ImageAsset;

@@ -153,6 +153,7 @@ export class DrawApi {
     );
   }
 
+  // TODO: consider using `Bpx` prefixed types everywhere inside the framework as well, because without it IDE's type completion is a bit misleading, showing non-Bpx names for params etc.
   // TODO: cover with tests
   print(
     text: string,

@@ -92,6 +92,7 @@ class DrawApi {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImage(spriteImageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"));
     }
+    // TODO: consider using `Bpx` prefixed types everywhere inside the framework as well, because without it IDE's type completion is a bit misleading, showing non-Bpx names for params etc.
     // TODO: cover with tests
     print(text, canvasXy1, color) {
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {

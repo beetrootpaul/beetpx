@@ -1,8 +1,8 @@
 import { ImageAsset } from "../Assets";
-import { type Color, ColorId, SolidColor, transparent_ } from "../Color";
+import { ColorId, SolidColor, transparent_, type Color } from "../Color";
 import { Sprite } from "../Sprite";
 import { Utils } from "../Utils";
-import { v_, Vector2d } from "../Vector2d";
+import { Vector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 
 export class DrawSprite {
