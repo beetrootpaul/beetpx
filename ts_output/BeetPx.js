@@ -86,6 +86,9 @@ BeetPx.clearCanvas = (...args) => {
 BeetPx.pixel = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixel(...args);
 };
+BeetPx.line = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.line(...args);
+};
 BeetPx.rect = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.rect(...args);
 };

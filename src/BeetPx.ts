@@ -93,6 +93,10 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.pixel(...args);
   };
 
+  static line: DrawApi["line"] = (...args) => {
+    return this.#tryGetFramework().drawApi.line(...args);
+  };
+
   static rect: DrawApi["rect"] = (...args) => {
     return this.#tryGetFramework().drawApi.rect(...args);
   };

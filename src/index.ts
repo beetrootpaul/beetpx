@@ -22,3 +22,7 @@ export { spr_ } from "./Sprite";
 export { v_ } from "./Vector2d";
 
 export { BeetPx } from "./BeetPx";
+
+// TODO: remove comments from HTMLs from the generated game
+
+// TODO: do not emit tests

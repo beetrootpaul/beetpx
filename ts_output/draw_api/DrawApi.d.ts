@@ -22,6 +22,7 @@ export declare class DrawApi {
     getFont(): Font | null;
     clearCanvas(color: SolidColor): void;
     pixel(xy: Vector2d, color: SolidColor): void;
+    line(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     rectFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor | CompositeColor): void;
     ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;

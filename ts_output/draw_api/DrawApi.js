@@ -10,12 +10,13 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
+var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrawApi = void 0;
 const Vector2d_1 = require("../Vector2d");
 const DrawClear_1 = require("./DrawClear");
 const DrawEllipse_1 = require("./DrawEllipse");
+const DrawLine_1 = require("./DrawLine");
 const DrawPixel_1 = require("./DrawPixel");
 const DrawRect_1 = require("./DrawRect");
 const DrawSprite_1 = require("./DrawSprite");
@@ -26,6 +27,7 @@ class DrawApi {
         _DrawApi_assets.set(this, void 0);
         _DrawApi_clear.set(this, void 0);
         _DrawApi_pixel.set(this, void 0);
+        _DrawApi_line.set(this, void 0);
         _DrawApi_rect.set(this, void 0);
         _DrawApi_ellipse.set(this, void 0);
         _DrawApi_sprite.set(this, void 0);
@@ -37,6 +39,7 @@ class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
         __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear_1.DrawClear(options.canvasBytes, options.canvasSize.round()), "f");
         __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel_1.DrawPixel(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_line, new DrawLine_1.DrawLine(options.canvasBytes, options.canvasSize.round()), "f");
         __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect_1.DrawRect(options.canvasBytes, options.canvasSize.round()), "f");
         __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse_1.DrawEllipse(options.canvasBytes, options.canvasSize.round()), "f");
         __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite_1.DrawSprite(options.canvasBytes, options.canvasSize.round()), "f");
@@ -75,6 +78,9 @@ class DrawApi {
     pixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), color);
     }
+    line(xy1, xy2, color) {
+        __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), xy2.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), color, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"));
+    }
     rect(xy1, xy2, color) {
         __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), xy2.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), color, false, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"));
     }
@@ -104,4 +110,4 @@ class DrawApi {
     }
 }
 exports.DrawApi = DrawApi;
-_DrawApi_assets = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();
+_DrawApi_assets = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();

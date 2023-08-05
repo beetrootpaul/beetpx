@@ -57,7 +57,7 @@ export class DrawEllipse {
 
     do {
       //
-      // DRAW NEXT PIXEL IN EACH QUADRANT
+      // DRAW THE CURRENT PIXEL IN EACH QUADRANT
       //
 
       // TODO: update the implementation below to honor fill pattern

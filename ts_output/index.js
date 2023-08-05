@@ -22,3 +22,5 @@ var Vector2d_2 = require("./Vector2d");
 Object.defineProperty(exports, "v_", { enumerable: true, get: function () { return Vector2d_2.v_; } });
 var BeetPx_1 = require("./BeetPx");
 Object.defineProperty(exports, "BeetPx", { enumerable: true, get: function () { return BeetPx_1.BeetPx; } });
+// TODO: remove comments from HTMLs from the generated game
+// TODO: do not emit tests

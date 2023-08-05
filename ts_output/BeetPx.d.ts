@@ -21,6 +21,7 @@ export declare class BeetPx {
     static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
+    static line: DrawApi["line"];
     static rect: DrawApi["rect"];
     static rectFilled: DrawApi["rectFilled"];
     static ellipse: DrawApi["ellipse"];

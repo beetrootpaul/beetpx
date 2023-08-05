@@ -5,6 +5,7 @@ import { Sprite } from "../Sprite";
 import { v_, Vector2d } from "../Vector2d";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
+import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
@@ -23,6 +24,7 @@ export class DrawApi {
 
   readonly #clear: DrawClear;
   readonly #pixel: DrawPixel;
+  readonly #line: DrawLine;
   readonly #rect: DrawRect;
   readonly #ellipse: DrawEllipse;
   readonly #sprite: DrawSprite;
@@ -47,6 +49,7 @@ export class DrawApi {
       options.canvasBytes,
       options.canvasSize.round(),
     );
+    this.#line = new DrawLine(options.canvasBytes, options.canvasSize.round());
     this.#rect = new DrawRect(options.canvasBytes, options.canvasSize.round());
     this.#ellipse = new DrawEllipse(
       options.canvasBytes,
@@ -96,6 +99,15 @@ export class DrawApi {
 
   pixel(xy: Vector2d, color: SolidColor): void {
     this.#pixel.draw(xy.sub(this.#cameraOffset).round(), color);
+  }
+
+  line(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+    this.#line.draw(
+      xy1.sub(this.#cameraOffset).round(),
+      xy2.sub(this.#cameraOffset).round(),
+      color,
+      this.#fillPattern,
+    );
   }
 
   rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {

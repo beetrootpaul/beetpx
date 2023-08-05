@@ -1,0 +1,76 @@
+"use strict";
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _DrawLine_canvasBytes, _DrawLine_canvasSize, _DrawLine_pixel;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DrawLine = void 0;
+const Vector2d_1 = require("../Vector2d");
+const DrawPixel_1 = require("./DrawPixel");
+const FillPattern_1 = require("./FillPattern");
+class DrawLine {
+    constructor(canvasBytes, canvasSize) {
+        _DrawLine_canvasBytes.set(this, void 0);
+        _DrawLine_canvasSize.set(this, void 0);
+        _DrawLine_pixel.set(this, void 0);
+        __classPrivateFieldSet(this, _DrawLine_canvasBytes, canvasBytes, "f");
+        __classPrivateFieldSet(this, _DrawLine_canvasSize, canvasSize, "f");
+        __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawLine_canvasSize, "f")), "f");
+    }
+    // TODO: Consider rect and ellipse and line APIs to operate on *inclusive* xy2.
+    //       It is strange to have to set xy2 to be at least 1 higher than xy1 in order to draw a straight line.
+    // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
+    // Based on http://members.chello.at/easyfilter/bresenham.html
+    draw(xy1, xy2, color, 
+    // TODO: implement fill pattern for the line (?)
+    fillPattern = FillPattern_1.FillPattern.primaryOnly) {
+        if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
+            return;
+        }
+        // adjust coordinates from right-bottom excluded to included
+        [xy1, xy2] = [
+            // TODO: add a variant of Vector2d functions that takes 2 params as numbers, w/o a need to wrap with `v_(…)`
+            xy1.sub((0, Vector2d_1.v_)(xy1.x < xy2.x ? 0 : 1, xy1.y < xy2.y ? 0 : 1)),
+            xy2.sub((0, Vector2d_1.v_)(xy2.x < xy1.x ? 0 : 1, xy2.y < xy1.y ? 0 : 1)),
+        ];
+        //
+        // PREPARE
+        //
+        let dXy = (0, Vector2d_1.v_)(Math.abs(xy2.x - xy1.x), -Math.abs(xy2.y - xy1.y));
+        let currentXy = xy1;
+        const targetXy = xy2;
+        // TODO: introduce `sign` and do `xy2.sub(xy1).sign().mul(1)` here
+        const step = (0, Vector2d_1.v_)(xy1.x < xy2.x ? 1 : -1, xy1.y < xy2.y ? 1 : -1);
+        let err = dXy.x + dXy.y;
+        while (true) {
+            //
+            // DRAW THE CURRENT PIXEL
+            //
+            __classPrivateFieldGet(this, _DrawLine_pixel, "f").draw(currentXy, color);
+            if (currentXy.eq(targetXy))
+                break;
+            //
+            // STEP TO THE NEXT PIXEL
+            //
+            const errBeforeStep = err;
+            if (2 * errBeforeStep >= dXy.y) {
+                currentXy = currentXy.add((0, Vector2d_1.v_)(step.x, 0));
+                err += dXy.y;
+            }
+            if (2 * errBeforeStep <= dXy.x) {
+                currentXy = currentXy.add((0, Vector2d_1.v_)(0, step.y));
+                err += dXy.x;
+            }
+        }
+    }
+}
+exports.DrawLine = DrawLine;
+_DrawLine_canvasBytes = new WeakMap(), _DrawLine_canvasSize = new WeakMap(), _DrawLine_pixel = new WeakMap();

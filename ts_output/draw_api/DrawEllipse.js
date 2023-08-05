@@ -54,7 +54,7 @@ class DrawEllipse {
         b1 = 8 * b * b;
         do {
             //
-            // DRAW NEXT PIXEL IN EACH QUADRANT
+            // DRAW THE CURRENT PIXEL IN EACH QUADRANT
             //
             // TODO: update the implementation below to honor fill pattern
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, bottom), color);
