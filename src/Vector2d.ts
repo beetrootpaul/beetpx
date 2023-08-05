@@ -74,24 +74,44 @@ export class Vector2d implements PrintDebug {
     return new Vector2d(Math.round(this.x), Math.round(this.y));
   }
 
-  eq(other: Vector2d): boolean {
-    return this.x === other.x && this.y === other.y;
+  eq(other: Vector2d): boolean;
+  eq(value: number): boolean;
+  eq(otherOrValue: Vector2d | number): boolean {
+    return typeof otherOrValue !== "number"
+      ? this.x === otherOrValue.x && this.y === otherOrValue.y
+      : this.x === otherOrValue && this.y === otherOrValue;
   }
 
-  gt(other: Vector2d): boolean {
-    return this.x > other.x && this.y > other.y;
+  gt(other: Vector2d): boolean;
+  gt(value: number): boolean;
+  gt(otherOrValue: Vector2d | number): boolean {
+    return typeof otherOrValue !== "number"
+      ? this.x > otherOrValue.x && this.y > otherOrValue.y
+      : this.x > otherOrValue && this.y > otherOrValue;
   }
 
-  gte(other: Vector2d): boolean {
-    return this.x >= other.x && this.y >= other.y;
+  gte(other: Vector2d): boolean;
+  gte(value: number): boolean;
+  gte(otherOrValue: Vector2d | number): boolean {
+    return typeof otherOrValue !== "number"
+      ? this.x >= otherOrValue.x && this.y >= otherOrValue.y
+      : this.x >= otherOrValue && this.y >= otherOrValue;
   }
 
-  lt(other: Vector2d): boolean {
-    return this.x < other.x && this.y < other.y;
+  lt(other: Vector2d): boolean;
+  lt(value: number): boolean;
+  lt(otherOrValue: Vector2d | number): boolean {
+    return typeof otherOrValue !== "number"
+      ? this.x < otherOrValue.x && this.y < otherOrValue.y
+      : this.x < otherOrValue && this.y < otherOrValue;
   }
 
-  lte(other: Vector2d): boolean {
-    return this.x <= other.x && this.y <= other.y;
+  lte(other: Vector2d): boolean;
+  lte(value: number): boolean;
+  lte(otherOrValue: Vector2d | number): boolean {
+    return typeof otherOrValue !== "number"
+      ? this.x <= otherOrValue.x && this.y <= otherOrValue.y
+      : this.x <= otherOrValue && this.y <= otherOrValue;
   }
 
   clamp(xy1: Vector2d, xy2: Vector2d): Vector2d {
@@ -101,34 +121,64 @@ export class Vector2d implements PrintDebug {
     );
   }
 
-  mod(other: Vector2d | number): Vector2d {
-    return typeof other === "number"
-      ? new Vector2d(this.x % other, this.y % other)
-      : new Vector2d(this.x % other.x, this.y % other.y);
+  mod(other: Vector2d): Vector2d;
+  mod(value: number): Vector2d;
+  mod(x: number, y: number): Vector2d;
+  mod(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+    return typeof otherOrValueOrX !== "number"
+      ? new Vector2d(this.x % otherOrValueOrX.x, this.y % otherOrValueOrX.y)
+      : new Vector2d(
+          this.x % otherOrValueOrX,
+          this.y % (maybeY ?? otherOrValueOrX),
+        );
   }
 
-  add(other: Vector2d | number): Vector2d {
-    return typeof other === "number"
-      ? new Vector2d(this.x + other, this.y + other)
-      : new Vector2d(this.x + other.x, this.y + other.y);
+  add(other: Vector2d): Vector2d;
+  add(value: number): Vector2d;
+  add(x: number, y: number): Vector2d;
+  add(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+    return typeof otherOrValueOrX !== "number"
+      ? new Vector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
+      : new Vector2d(
+          this.x + otherOrValueOrX,
+          this.y + (maybeY ?? otherOrValueOrX),
+        );
   }
 
-  sub(other: Vector2d | number): Vector2d {
-    return typeof other === "number"
-      ? new Vector2d(this.x - other, this.y - other)
-      : new Vector2d(this.x - other.x, this.y - other.y);
+  sub(other: Vector2d): Vector2d;
+  sub(value: number): Vector2d;
+  sub(x: number, y: number): Vector2d;
+  sub(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+    return typeof otherOrValueOrX !== "number"
+      ? new Vector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
+      : new Vector2d(
+          this.x - otherOrValueOrX,
+          this.y - (maybeY ?? otherOrValueOrX),
+        );
   }
 
-  mul(other: Vector2d | number): Vector2d {
-    return typeof other === "number"
-      ? new Vector2d(this.x * other, this.y * other)
-      : new Vector2d(this.x * other.x, this.y * other.y);
+  mul(other: Vector2d): Vector2d;
+  mul(value: number): Vector2d;
+  mul(x: number, y: number): Vector2d;
+  mul(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+    return typeof otherOrValueOrX !== "number"
+      ? new Vector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
+      : new Vector2d(
+          this.x * otherOrValueOrX,
+          this.y * (maybeY ?? otherOrValueOrX),
+        );
   }
 
-  div(other: Vector2d | number): Vector2d {
-    return typeof other === "number"
-      ? new Vector2d(this.x / other, this.y / other)
-      : new Vector2d(this.x / other.x, this.y / other.y);
+  div(other: Vector2d): Vector2d;
+  div(value: number): Vector2d;
+  div(x: number, y: number): Vector2d;
+  div(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+    return typeof otherOrValueOrX !== "number"
+      ? new Vector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
+      : new Vector2d(
+          this.x / otherOrValueOrX,
+          this.y / (maybeY ?? otherOrValueOrX),
+        );
   }
 
   d(): string {
