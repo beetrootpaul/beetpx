@@ -74,6 +74,9 @@ BeetPx.setFillPattern = (...args) => {
 BeetPx.mapSpriteColors = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.mapSpriteColors(...args);
 };
+BeetPx.getMappedSpriteColor = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.getMappedSpriteColor(...args);
+};
 BeetPx.setFont = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFont(...args);
 };

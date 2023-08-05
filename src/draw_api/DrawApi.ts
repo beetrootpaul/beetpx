@@ -84,6 +84,10 @@ export class DrawApi {
     });
   }
 
+  getMappedSpriteColor(from: Color): Color {
+    return this.#spriteColorMapping.get(from.id()) ?? from;
+  }
+
   // TODO: cover it with tests
   setFont(fontImageUrl: string | null): void {
     this.#fontAsset = fontImageUrl ? this.#assets.getFont(fontImageUrl) : null;

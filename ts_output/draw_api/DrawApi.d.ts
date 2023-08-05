@@ -18,6 +18,7 @@ export declare class DrawApi {
         from: Color;
         to: Color;
     }>): void;
+    getMappedSpriteColor(from: Color): Color;
     setFont(fontImageUrl: string | null): void;
     getFont(): Font | null;
     clearCanvas(color: SolidColor): void;
