@@ -1,5 +1,6 @@
 import { SolidColor } from "../Color";
 import { Vector2d } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 
 export class DrawClear {
   readonly #canvasBytes: Uint8ClampedArray;
@@ -10,7 +11,8 @@ export class DrawClear {
     this.#canvasSize = canvasSize;
   }
 
-  draw(color: SolidColor): void {
+  // TODO: support ClippingRegion + cover with tests
+  draw(color: SolidColor, clippingRegion: ClippingRegion | null = null): void {
     for (
       let pixel = 0;
       pixel < this.#canvasSize.x * this.#canvasSize.y;

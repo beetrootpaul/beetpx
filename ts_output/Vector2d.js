@@ -54,48 +54,58 @@ class Vector2d {
     round() {
         return new Vector2d(Math.round(this.x), Math.round(this.y));
     }
-    eq(other) {
-        return this.x === other.x && this.y === other.y;
+    eq(otherOrValue) {
+        return typeof otherOrValue !== "number"
+            ? this.x === otherOrValue.x && this.y === otherOrValue.y
+            : this.x === otherOrValue && this.y === otherOrValue;
     }
-    gt(other) {
-        return this.x > other.x && this.y > other.y;
+    gt(otherOrValue) {
+        return typeof otherOrValue !== "number"
+            ? this.x > otherOrValue.x && this.y > otherOrValue.y
+            : this.x > otherOrValue && this.y > otherOrValue;
     }
-    gte(other) {
-        return this.x >= other.x && this.y >= other.y;
+    gte(otherOrValue) {
+        return typeof otherOrValue !== "number"
+            ? this.x >= otherOrValue.x && this.y >= otherOrValue.y
+            : this.x >= otherOrValue && this.y >= otherOrValue;
     }
-    lt(other) {
-        return this.x < other.x && this.y < other.y;
+    lt(otherOrValue) {
+        return typeof otherOrValue !== "number"
+            ? this.x < otherOrValue.x && this.y < otherOrValue.y
+            : this.x < otherOrValue && this.y < otherOrValue;
     }
-    lte(other) {
-        return this.x <= other.x && this.y <= other.y;
+    lte(otherOrValue) {
+        return typeof otherOrValue !== "number"
+            ? this.x <= otherOrValue.x && this.y <= otherOrValue.y
+            : this.x <= otherOrValue && this.y <= otherOrValue;
     }
     clamp(xy1, xy2) {
         return new Vector2d(Utils_1.Utils.clamp(xy1.x, this.x, xy2.x), Utils_1.Utils.clamp(xy1.y, this.y, xy2.y));
     }
-    mod(other) {
-        return typeof other === "number"
-            ? new Vector2d(this.x % other, this.y % other)
-            : new Vector2d(this.x % other.x, this.y % other.y);
+    mod(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number"
+            ? new Vector2d(this.x % otherOrValueOrX.x, this.y % otherOrValueOrX.y)
+            : new Vector2d(this.x % otherOrValueOrX, this.y % (maybeY ?? otherOrValueOrX));
     }
-    add(other) {
-        return typeof other === "number"
-            ? new Vector2d(this.x + other, this.y + other)
-            : new Vector2d(this.x + other.x, this.y + other.y);
+    add(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number"
+            ? new Vector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
+            : new Vector2d(this.x + otherOrValueOrX, this.y + (maybeY ?? otherOrValueOrX));
     }
-    sub(other) {
-        return typeof other === "number"
-            ? new Vector2d(this.x - other, this.y - other)
-            : new Vector2d(this.x - other.x, this.y - other.y);
+    sub(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number"
+            ? new Vector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
+            : new Vector2d(this.x - otherOrValueOrX, this.y - (maybeY ?? otherOrValueOrX));
     }
-    mul(other) {
-        return typeof other === "number"
-            ? new Vector2d(this.x * other, this.y * other)
-            : new Vector2d(this.x * other.x, this.y * other.y);
+    mul(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number"
+            ? new Vector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
+            : new Vector2d(this.x * otherOrValueOrX, this.y * (maybeY ?? otherOrValueOrX));
     }
-    div(other) {
-        return typeof other === "number"
-            ? new Vector2d(this.x / other, this.y / other)
-            : new Vector2d(this.x / other.x, this.y / other.y);
+    div(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number"
+            ? new Vector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
+            : new Vector2d(this.x / otherOrValueOrX, this.y / (maybeY ?? otherOrValueOrX));
     }
     d() {
         return `(${this.x},${this.y})`;

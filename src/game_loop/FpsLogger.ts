@@ -31,7 +31,8 @@ export class FpsLoggerAverage implements FpsLogger {
     if (this.#nextIndex === 0) {
       const s = this.#samples.reduce((sum, nextFps) => sum + nextFps, 0);
       this.#averageFps = Math.floor(s / this.#samples.length);
-      console.info("FPS: ", this.#averageFps);
+      // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console, especially since the game can log it by itself when needed
+      // console.info("FPS: ", this.#averageFps);
     }
   }
 }

@@ -21,7 +21,11 @@ class DrawPixel {
         __classPrivateFieldSet(this, _DrawPixel_canvasBytes, canvasBytes, "f");
         __classPrivateFieldSet(this, _DrawPixel_canvasSize, canvasSize, "f");
     }
-    draw(xy, color) {
+    // TODO: cover ClippingRegion with tests
+    draw(xy, color, clippingRegion = null) {
+        if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
+            return;
+        }
         if (xy.gte(Vector2d_1.Vector2d.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
             const i = 4 * (xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f").x + xy.x);
             __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i] = color.r;

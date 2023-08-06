@@ -25,12 +25,14 @@ class DrawText {
         __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite_1.DrawSprite(__classPrivateFieldGet(this, _DrawText_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawText_canvasSize, "f")), "f");
     }
     // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
-    draw(text, canvasXy1, fontAsset, color) {
+    // TODO: cover ClippingRegion with tests
+    draw(text, canvasXy1, fontAsset, color, clippingRegion = null) {
+        const colorFn = typeof color === "function" ? color : () => color;
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy1.add(charSprite.positionInText), new Map([
-                [fontAsset.imageTextColor.id(), color],
+                [fontAsset.imageTextColor.id(), colorFn(charSprite)],
                 [fontAsset.imageBgColor.id(), Color_1.transparent_],
-            ]));
+            ]), clippingRegion);
         }
     }
 }

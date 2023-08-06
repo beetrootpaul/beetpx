@@ -1,11 +1,13 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { SolidColor } from "./Color";
 import { BeetPx } from "./BeetPx";
+import { SolidColor } from "./Color";
 import { v_, Vector2d } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
 export class Utils {
+  static noop(): void {}
+
   // Returns the middle number. Example usage: `clamp(min, value, max)`
   //   in order to find a value which is:
   //   - `value` if it is `>= min` and `<= max`
@@ -13,6 +15,12 @@ export class Utils {
   //   - `max` if `value` is `> max`
   static clamp(a: number, b: number, c: number): number {
     return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
+  }
+
+  static repeatN(n: number, callback: (i: number) => void): void {
+    Array.from({ length: n }).forEach((_element, i) => {
+      callback(i);
+    });
   }
 
   // TODO: tests for edge cases

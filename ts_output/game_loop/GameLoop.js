@@ -50,17 +50,23 @@ class GameLoop {
                     __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") > __classPrivateFieldGet(this, _GameLoop_desiredFps, "f") / 2) {
                     __classPrivateFieldSet(this, _GameLoop_adjustedFps, __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") - 1, "f");
                     __classPrivateFieldSet(this, _GameLoop_expectedTimeStep, 1000 / __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f"), "f");
-                    if (BeetPx_1.BeetPx.debug) {
-                        console.debug(`Decreasing the adjusted FPS by 1. New = ${__classPrivateFieldGet(this, _GameLoop_adjustedFps, "f")}`);
-                    }
+                    // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
+                    // if (BeetPx.debug) {
+                    //   console.debug(
+                    //     `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
+                    //   );
+                    // }
                 }
                 else if (actualFps < __classPrivateFieldGet(this, _GameLoop_desiredFps, "f") / 1.1 &&
                     __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") < __classPrivateFieldGet(this, _GameLoop_desiredFps, "f") * 2) {
                     __classPrivateFieldSet(this, _GameLoop_adjustedFps, __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") + 1, "f");
                     __classPrivateFieldSet(this, _GameLoop_expectedTimeStep, 1000 / __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f"), "f");
-                    if (BeetPx_1.BeetPx.debug) {
-                        console.debug(`Increasing the adjusted FPS by 1. New = ${__classPrivateFieldGet(this, _GameLoop_adjustedFps, "f")}`);
-                    }
+                    // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
+                    // if (BeetPx.debug) {
+                    //   console.debug(
+                    //     `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
+                    //   );
+                    // }
                 }
             }
             while (__classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f") >= __classPrivateFieldGet(this, _GameLoop_expectedTimeStep, "f")) {

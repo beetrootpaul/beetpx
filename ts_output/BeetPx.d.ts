@@ -15,12 +15,15 @@ export declare class BeetPx {
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
     static setCameraOffset: DrawApi["setCameraOffset"];
+    static setClippingRegion: DrawApi["setClippingRegion"];
     static setFillPattern: DrawApi["setFillPattern"];
-    static mapSpriteColor: DrawApi["mapSpriteColor"];
+    static mapSpriteColors: DrawApi["mapSpriteColors"];
+    static getMappedSpriteColor: DrawApi["getMappedSpriteColor"];
     static setFont: DrawApi["setFont"];
     static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
+    static line: DrawApi["line"];
     static rect: DrawApi["rect"];
     static rectFilled: DrawApi["rectFilled"];
     static ellipse: DrawApi["ellipse"];

@@ -1,5 +1,7 @@
 import { GameInputEvent } from "./GameInput";
 
+// TODO: implement X and O
+
 type GuiGameInputParams = {
   muteButtonsSelector: string;
   fullScreenButtonsSelector: string;

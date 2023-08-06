@@ -1,10 +1,12 @@
 import { Assets, FontAsset, ImageUrl } from "../Assets";
 import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
-import { Font } from "../font/Font";
+import { CharSprite, Font } from "../font/Font";
 import { Sprite } from "../Sprite";
-import { Vector2d, v_ } from "../Vector2d";
+import { v_, Vector2d } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
+import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
@@ -18,17 +20,22 @@ type DrawApiOptions = {
   assets: Assets;
 };
 
+// TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
+
 export class DrawApi {
   readonly #assets: Assets;
 
   readonly #clear: DrawClear;
   readonly #pixel: DrawPixel;
+  readonly #line: DrawLine;
   readonly #rect: DrawRect;
   readonly #ellipse: DrawEllipse;
   readonly #sprite: DrawSprite;
   readonly #text: DrawText;
 
   #cameraOffset: Vector2d = v_(0, 0);
+
+  #clippingRegion: ClippingRegion | null = null;
 
   #fillPattern: FillPattern = FillPattern.primaryOnly;
 
@@ -47,6 +54,7 @@ export class DrawApi {
       options.canvasBytes,
       options.canvasSize.round(),
     );
+    this.#line = new DrawLine(options.canvasBytes, options.canvasSize.round());
     this.#rect = new DrawRect(options.canvasBytes, options.canvasSize.round());
     this.#ellipse = new DrawEllipse(
       options.canvasBytes,
@@ -64,19 +72,29 @@ export class DrawApi {
     this.#cameraOffset = offset.round();
   }
 
+  setClippingRegion(clippingRegion: ClippingRegion | null): void {
+    this.#clippingRegion = clippingRegion;
+  }
+
   // TODO: cover it with tests
   setFillPattern(fillPattern: FillPattern): void {
     this.#fillPattern = fillPattern;
   }
 
   // TODO: cover it with tests
-  mapSpriteColor(from: Color, to: Color): void {
-    // TODO: consider writing a custom equality check function
-    if (from.id() === to.id()) {
-      this.#spriteColorMapping.delete(from.id());
-    } else {
-      this.#spriteColorMapping.set(from.id(), to);
-    }
+  mapSpriteColors(mappings: Array<{ from: Color; to: Color }>): void {
+    mappings.forEach(({ from, to }) => {
+      // TODO: consider writing a custom equality check function
+      if (from.id() === to.id()) {
+        this.#spriteColorMapping.delete(from.id());
+      } else {
+        this.#spriteColorMapping.set(from.id(), to);
+      }
+    });
+  }
+
+  getMappedSpriteColor(from: Color): Color {
+    return this.#spriteColorMapping.get(from.id()) ?? from;
   }
 
   // TODO: cover it with tests
@@ -89,11 +107,25 @@ export class DrawApi {
   }
 
   clearCanvas(color: SolidColor): void {
-    this.#clear.draw(color);
+    this.#clear.draw(color, this.#clippingRegion);
   }
 
   pixel(xy: Vector2d, color: SolidColor): void {
-    this.#pixel.draw(xy.sub(this.#cameraOffset).round(), color);
+    this.#pixel.draw(
+      xy.sub(this.#cameraOffset).round(),
+      color,
+      this.#clippingRegion,
+    );
+  }
+
+  line(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+    this.#line.draw(
+      xy1.sub(this.#cameraOffset).round(),
+      xy2.sub(this.#cameraOffset).round(),
+      color,
+      this.#fillPattern,
+      this.#clippingRegion,
+    );
   }
 
   rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
@@ -103,6 +135,7 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -117,6 +150,7 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -127,6 +161,7 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -137,6 +172,7 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -148,23 +184,30 @@ export class DrawApi {
       sprite,
       canvasXy1.sub(this.#cameraOffset).round(),
       this.#spriteColorMapping,
+      this.#clippingRegion,
     );
   }
 
+  // TODO: consider using `Bpx` prefixed types everywhere inside the framework as well, because without it IDE's type completion is a bit misleading, showing non-Bpx names for params etc.
   // TODO: cover with tests
-  print(text: string, canvasXy1: Vector2d, color: SolidColor): void {
+  print(
+    text: string,
+    canvasXy1: Vector2d,
+    color: SolidColor | ((charSprite: CharSprite) => SolidColor),
+  ): void {
     if (this.#fontAsset) {
       this.#text.draw(
         text,
         canvasXy1.sub(this.#cameraOffset).round(),
         this.#fontAsset,
         color,
+        this.#clippingRegion,
       );
     } else {
       console.info(
-        `print: (${canvasXy1.x},${
-          canvasXy1.y
-        }) [${color.asRgbCssHex()}] ${text}`,
+        `print: (${canvasXy1.x},${canvasXy1.y}) [${
+          typeof color === "function" ? "computed" : color.asRgbCssHex()
+        }] ${text}`,
       );
     }
   }

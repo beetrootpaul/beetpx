@@ -6,6 +6,7 @@ const BeetPx_1 = require("./BeetPx");
 const Vector2d_1 = require("./Vector2d");
 // TODO: consider exposing those utils as BeetPx global API methods
 class Utils {
+    static noop() { }
     // Returns the middle number. Example usage: `clamp(min, value, max)`
     //   in order to find a value which is:
     //   - `value` if it is `>= min` and `<= max`
@@ -13,6 +14,11 @@ class Utils {
     //   - `max` if `value` is `> max`
     static clamp(a, b, c) {
         return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
+    }
+    static repeatN(n, callback) {
+        Array.from({ length: n }).forEach((_element, i) => {
+            callback(i);
+        });
     }
     // TODO: tests for edge cases
     static booleanChangingEveryNthFrame(n) {

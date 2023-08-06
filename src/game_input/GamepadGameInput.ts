@@ -2,6 +2,8 @@ import { GameInputEvent } from "./GameInput";
 
 // TODO: implement support for gameInputEventBehavior[gameInputEvent]?.fireOnce
 
+// TODO: implement X and O
+
 export class GamepadGameInput {
   readonly buttonMapping: Map<number, GameInputEvent> = new Map<
     number,

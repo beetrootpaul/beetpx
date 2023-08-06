@@ -10,26 +10,23 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawClear_canvasBytes, _DrawClear_canvasSize;
+var _ClippingRegion_xy1, _ClippingRegion_xy2;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DrawClear = void 0;
-class DrawClear {
-    constructor(canvasBytes, canvasSize) {
-        _DrawClear_canvasBytes.set(this, void 0);
-        _DrawClear_canvasSize.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawClear_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawClear_canvasSize, canvasSize, "f");
+exports.ClippingRegion = void 0;
+const Vector2d_1 = require("../Vector2d");
+class ClippingRegion {
+    static of(xy1, xy2) {
+        return new ClippingRegion(xy1, xy2);
     }
-    // TODO: support ClippingRegion + cover with tests
-    draw(color, clippingRegion = null) {
-        for (let pixel = 0; pixel < __classPrivateFieldGet(this, _DrawClear_canvasSize, "f").x * __classPrivateFieldGet(this, _DrawClear_canvasSize, "f").y; pixel += 1) {
-            const i = pixel * 4;
-            __classPrivateFieldGet(this, _DrawClear_canvasBytes, "f")[i] = color.r;
-            __classPrivateFieldGet(this, _DrawClear_canvasBytes, "f")[i + 1] = color.g;
-            __classPrivateFieldGet(this, _DrawClear_canvasBytes, "f")[i + 2] = color.b;
-            __classPrivateFieldGet(this, _DrawClear_canvasBytes, "f")[i + 3] = 0xff;
-        }
+    constructor(xy1, xy2) {
+        var _a, _b;
+        _ClippingRegion_xy1.set(this, void 0);
+        _ClippingRegion_xy2.set(this, void 0);
+        _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _ClippingRegion_xy1, _c, "f"); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _ClippingRegion_xy2, _c, "f"); } }).value] = [Vector2d_1.Vector2d.min(xy1, xy2), Vector2d_1.Vector2d.max(xy1, xy2)];
+    }
+    allowsDrawingAt(xy) {
+        return xy.gte(__classPrivateFieldGet(this, _ClippingRegion_xy1, "f")) && xy.lt(__classPrivateFieldGet(this, _ClippingRegion_xy2, "f"));
     }
 }
-exports.DrawClear = DrawClear;
-_DrawClear_canvasBytes = new WeakMap(), _DrawClear_canvasSize = new WeakMap();
+exports.ClippingRegion = ClippingRegion;
+_ClippingRegion_xy1 = new WeakMap(), _ClippingRegion_xy2 = new WeakMap();

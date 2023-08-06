@@ -1,4 +1,4 @@
-export type GameInputEvent = null | "left" | "right" | "up" | "down" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
+export type GameInputEvent = null | "left" | "right" | "up" | "down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
 export declare const gameInputEventBehavior: Record<string, {
     fireOnce?: boolean;
 }>;

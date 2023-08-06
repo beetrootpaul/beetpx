@@ -25,10 +25,11 @@ class DrawEllipse {
         __classPrivateFieldSet(this, _DrawEllipse_canvasSize, canvasSize, "f");
         __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f")), "f");
     }
+    // TODO: cover ClippingRegion with tests
     // Based on http://members.chello.at/easyfilter/bresenham.html
     draw(xy1, xy2, color, fill, 
     // TODO: implement fill pattern for the ellipse
-    fillPattern = FillPattern_1.FillPattern.primaryOnly) {
+    fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
         if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
             return;
         }
@@ -54,21 +55,21 @@ class DrawEllipse {
         b1 = 8 * b * b;
         do {
             //
-            // DRAW NEXT PIXEL IN EACH QUADRANT
+            // DRAW THE CURRENT PIXEL IN EACH QUADRANT
             //
             // TODO: update the implementation below to honor fill pattern
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, bottom), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left, bottom), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left, top), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, top), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, bottom), color, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left, bottom), color, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left, top), color, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, top), color, clippingRegion);
             if (fill) {
                 // TODO: update the implementation below to honor fill pattern
                 Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, bottom), (0, Vector2d_1.v_)(right - 1, bottom).add(1), true, (xy) => {
-                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color);
+                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion);
                 });
                 // TODO: update the implementation below to honor fill pattern
                 Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, top), (0, Vector2d_1.v_)(right - 1, top).add(1), true, (xy) => {
-                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color);
+                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion);
                 });
             }
             //
@@ -95,11 +96,11 @@ class DrawEllipse {
         // TODO: Cover this with tests
         while (bottom - top < b) {
             // TODO: update the implementation below to honor fill pattern
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left - 1, bottom), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right + 1, bottom), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left - 1, bottom), color, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right + 1, bottom), color, clippingRegion);
             bottom += 1;
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left - 1, top), color);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right + 1, top), color);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(left - 1, top), color, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right + 1, top), color, clippingRegion);
             top -= 1;
         }
     }

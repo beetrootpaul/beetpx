@@ -69,12 +69,20 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.setCameraOffset(...args);
   };
 
+  static setClippingRegion: DrawApi["setClippingRegion"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setClippingRegion(...args);
+  };
+
   static setFillPattern: DrawApi["setFillPattern"] = (...args) => {
     return this.#tryGetFramework().drawApi.setFillPattern(...args);
   };
 
-  static mapSpriteColor: DrawApi["mapSpriteColor"] = (...args) => {
-    return this.#tryGetFramework().drawApi.mapSpriteColor(...args);
+  static mapSpriteColors: DrawApi["mapSpriteColors"] = (...args) => {
+    return this.#tryGetFramework().drawApi.mapSpriteColors(...args);
+  };
+
+  static getMappedSpriteColor: DrawApi["getMappedSpriteColor"] = (...args) => {
+    return this.#tryGetFramework().drawApi.getMappedSpriteColor(...args);
   };
 
   static setFont: DrawApi["setFont"] = (...args) => {
@@ -91,6 +99,10 @@ export class BeetPx {
 
   static pixel: DrawApi["pixel"] = (...args) => {
     return this.#tryGetFramework().drawApi.pixel(...args);
+  };
+
+  static line: DrawApi["line"] = (...args) => {
+    return this.#tryGetFramework().drawApi.line(...args);
   };
 
   static rect: DrawApi["rect"] = (...args) => {

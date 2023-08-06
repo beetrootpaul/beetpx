@@ -27,11 +27,11 @@ class Assets {
         assetsToLoad.fonts.forEach(({ url, font, imageTextColor, imageBgColor }) => {
             __classPrivateFieldGet(this, _Assets_fonts, "f").set(url, { font, imageTextColor, imageBgColor });
         });
-        const imageUrls = [
+        const uniqueImageUrls = new Set([
             ...assetsToLoad.images.map(({ url }) => url),
             ...assetsToLoad.fonts.map(({ url }) => url),
-        ];
-        await Promise.all(imageUrls.map(async (url) => {
+        ]);
+        await Promise.all(Array.from(uniqueImageUrls).map(async (url) => {
             const htmlImage = new Image();
             htmlImage.src = url;
             await htmlImage.decode();

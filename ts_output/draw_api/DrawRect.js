@@ -26,22 +26,23 @@ class DrawRect {
         __classPrivateFieldSet(this, _DrawRect_canvasSize, canvasSize, "f");
         __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f")), "f");
     }
-    draw(xy1, xy2, color, fill, fillPattern = FillPattern_1.FillPattern.primaryOnly) {
+    // TODO: cover ClippingRegion with tests
+    draw(xy1, xy2, color, fill, fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
         Vector2d_1.Vector2d.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 if (color instanceof Color_1.CompositeColor) {
                     if (color.primary instanceof Color_1.SolidColor) {
-                        __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color.primary);
+                        __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color.primary, clippingRegion);
                     }
                 }
                 else {
-                    __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color);
+                    __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color, clippingRegion);
                 }
             }
             else {
                 if (color instanceof Color_1.CompositeColor) {
                     if (color.secondary instanceof Color_1.SolidColor) {
-                        __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color.secondary);
+                        __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color.secondary, clippingRegion);
                     }
                 }
             }

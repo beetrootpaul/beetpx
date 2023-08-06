@@ -10,7 +10,6 @@ import { StorageApi } from "./StorageApi";
 import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
-  htmlCanvasBackground: SolidColor;
   gameCanvasSize: Vector2d;
   desiredFps: number;
   logActualFps?: boolean;
@@ -42,7 +41,8 @@ export class Framework {
   }
 
   readonly #gameCanvasSize: Vector2d;
-  readonly #htmlCanvasBackground: SolidColor;
+  readonly #htmlCanvasBackground: SolidColor =
+    SolidColor.fromRgbCssHex("#000000");
 
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
   readonly #offscreenContext: OffscreenCanvasRenderingContext2D;
@@ -79,7 +79,6 @@ export class Framework {
     this.#loading = new Loading(this.#htmlDisplaySelector);
 
     this.#gameCanvasSize = options.gameCanvasSize.floor();
-    this.#htmlCanvasBackground = options.htmlCanvasBackground;
 
     const htmlCanvas = document.querySelector<HTMLCanvasElement>(
       this.#htmlCanvasSelector,

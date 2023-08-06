@@ -8,6 +8,7 @@ var _TouchGameInput_instances, _TouchGameInput_buttonsAndEvents, _TouchGameInput
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TouchGameInput = void 0;
 // TODO: implement support for gameInputEventBehavior[gameInputEvent]?.fireOnce
+// TODO: implement X and O
 class TouchGameInput {
     constructor() {
         _TouchGameInput_instances.add(this);

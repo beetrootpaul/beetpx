@@ -1,7 +1,17 @@
-import { Vector2d, v_ } from "./Vector2d";
+import { v_, Vector2d } from "./Vector2d";
 
-export function spr_(x1: number, y1: number, x2: number, y2: number): Sprite {
-  return new Sprite(v_(x1, y1), v_(x2, y2));
+export function spr_(x1: number, y1: number, wh: Vector2d): Sprite;
+export function spr_(x1: number, y1: number, w: number, h: number): Sprite;
+export function spr_(
+  x1: number,
+  y1: number,
+  wh: Vector2d | number,
+  h?: number,
+): Sprite {
+  const xy1 = v_(x1, y1);
+  return wh instanceof Vector2d
+    ? new Sprite(xy1, xy1.add(wh))
+    : new Sprite(xy1, xy1.add(v_(wh, h!)));
 }
 
 // TODO: maybe add a sprite sheet ID or just an image ID? There is no need for it, but it
