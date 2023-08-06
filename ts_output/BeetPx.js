@@ -24,7 +24,7 @@ class BeetPx {
         return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).loadAssets(assetsToLoad);
     }
     //
-    // field-like getters
+    // field-like getters, the ones meant to be used
     //
     static get frameNumber() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frameNumber;
@@ -38,8 +38,14 @@ class BeetPx {
     static get fireOnceInputEvents() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).fireOnceInputEvents;
     }
+    //
+    // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
+    //
     static get audioContext() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).audioApi.audioContext;
+    }
+    static get globalGainNode() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).audioApi.globalGainNode;
     }
     static get debug() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).debug;
@@ -144,7 +150,7 @@ BeetPx.clearStorage = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearStorage(...args);
 };
 //
-// Assets (not really needed, unless it is needed for some reason)
+// Assets (not really needed, unless it is needed for some reason ¯\_(ツ)_/¯ )
 //
 BeetPx.getImageAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getImageAsset(...args);

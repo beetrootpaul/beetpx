@@ -11,6 +11,7 @@ export declare class BeetPx {
     static get continuousInputEvents(): Framework["continuousInputEvents"];
     static get fireOnceInputEvents(): Framework["fireOnceInputEvents"];
     static get audioContext(): AudioApi["audioContext"];
+    static get globalGainNode(): AudioApi["globalGainNode"];
     static get debug(): Framework["debug"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];

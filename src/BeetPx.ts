@@ -22,7 +22,7 @@ export class BeetPx {
   }
 
   //
-  // field-like getters
+  // field-like getters, the ones meant to be used
   //
 
   static get frameNumber(): Framework["frameNumber"] {
@@ -41,8 +41,16 @@ export class BeetPx {
     return this.#tryGetFramework().fireOnceInputEvents;
   }
 
+  //
+  // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
+  //
+
   static get audioContext(): AudioApi["audioContext"] {
     return this.#tryGetFramework().audioApi.audioContext;
+  }
+
+  static get globalGainNode(): AudioApi["globalGainNode"] {
+    return this.#tryGetFramework().audioApi.globalGainNode;
   }
 
   static get debug(): Framework["debug"] {
@@ -170,7 +178,7 @@ export class BeetPx {
   };
 
   //
-  // Assets (not really needed, unless it is needed for some reason)
+  // Assets (not really needed, unless it is needed for some reason ¯\_(ツ)_/¯ )
   //
 
   static getImageAsset: Assets["getImageAsset"] = (...args) => {

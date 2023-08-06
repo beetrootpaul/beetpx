@@ -22,6 +22,10 @@ export class AudioApi {
     return this.#audioContext;
   }
 
+  get globalGainNode(): GainNode {
+    return this.#globalGainNode;
+  }
+
   constructor(assets: Assets, audioContext: AudioContext) {
     this.#assets = assets;
     this.#audioContext = audioContext;

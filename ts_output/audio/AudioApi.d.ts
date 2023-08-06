@@ -2,6 +2,7 @@ import { Assets, SoundUrl } from "../Assets";
 export declare class AudioApi {
     #private;
     get audioContext(): AudioContext;
+    get globalGainNode(): GainNode;
     constructor(assets: Assets, audioContext: AudioContext);
     resumeAudioContextIfNeeded(): void;
     toggleMuteUnmute(): void;

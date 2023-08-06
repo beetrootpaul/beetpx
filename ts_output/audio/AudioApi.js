@@ -17,6 +17,9 @@ class AudioApi {
     get audioContext() {
         return __classPrivateFieldGet(this, _AudioApi_audioContext, "f");
     }
+    get globalGainNode() {
+        return __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f");
+    }
     constructor(assets, audioContext) {
         _AudioApi_instances.add(this);
         _AudioApi_assets.set(this, void 0);
