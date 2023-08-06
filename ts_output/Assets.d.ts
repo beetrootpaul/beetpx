@@ -40,8 +40,8 @@ export declare class Assets {
     #private;
     constructor(params: AssetsParams);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<void>;
-    getImage(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset;
-    getFont(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset;
-    getSound(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
+    getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset;
+    getFontAsset(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset;
+    getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
 }
 export {};

@@ -143,3 +143,15 @@ BeetPx.load = (...args) => {
 BeetPx.clearStorage = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearStorage(...args);
 };
+//
+// Assets (not really needed, unless it is needed for some reason)
+//
+BeetPx.getImageAsset = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getImageAsset(...args);
+};
+BeetPx.getFontAsset = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getFontAsset(...args);
+};
+BeetPx.getSoundAsset = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getSoundAsset(...args);
+};

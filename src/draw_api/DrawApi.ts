@@ -99,7 +99,9 @@ export class DrawApi {
 
   // TODO: cover it with tests
   setFont(fontImageUrl: string | null): void {
-    this.#fontAsset = fontImageUrl ? this.#assets.getFont(fontImageUrl) : null;
+    this.#fontAsset = fontImageUrl
+      ? this.#assets.getFontAsset(fontImageUrl)
+      : null;
   }
 
   getFont(): Font | null {
@@ -178,7 +180,7 @@ export class DrawApi {
 
   // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
   sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void {
-    const sourceImageAsset = this.#assets.getImage(spriteImageUrl);
+    const sourceImageAsset = this.#assets.getImageAsset(spriteImageUrl);
     this.#sprite.draw(
       sourceImageAsset,
       sprite,

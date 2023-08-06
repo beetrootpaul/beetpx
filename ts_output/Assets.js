@@ -64,7 +64,7 @@ class Assets {
         }));
     }
     // call `loadAssets` before this one
-    getImage(urlOfAlreadyLoadedImage) {
+    getImageAsset(urlOfAlreadyLoadedImage) {
         const imageAsset = __classPrivateFieldGet(this, _Assets_images, "f").get(urlOfAlreadyLoadedImage);
         if (!imageAsset) {
             throw Error(`Assets: There is no image loaded for: ${urlOfAlreadyLoadedImage}`);
@@ -72,18 +72,18 @@ class Assets {
         return imageAsset;
     }
     // call `loadAssets` before this one
-    getFont(urlOfAlreadyLoadedFontImage) {
+    getFontAsset(urlOfAlreadyLoadedFontImage) {
         const { font, imageTextColor, imageBgColor } = __classPrivateFieldGet(this, _Assets_fonts, "f").get(urlOfAlreadyLoadedFontImage) ??
             Utils_1.Utils.throwError(`Assets: font descriptor is missing for font image URL "${urlOfAlreadyLoadedFontImage}"`);
         return {
             font,
-            image: this.getImage(urlOfAlreadyLoadedFontImage),
+            image: this.getImageAsset(urlOfAlreadyLoadedFontImage),
             imageTextColor,
             imageBgColor,
         };
     }
     // call `loadAssets` before this one
-    getSound(urlOfAlreadyLoadedSound) {
+    getSoundAsset(urlOfAlreadyLoadedSound) {
         const soundAsset = __classPrivateFieldGet(this, _Assets_sounds, "f").get(urlOfAlreadyLoadedSound);
         if (!soundAsset) {
             throw Error(`Assets: There is no sound loaded for: ${urlOfAlreadyLoadedSound}`);

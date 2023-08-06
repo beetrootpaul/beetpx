@@ -75,7 +75,9 @@ class DrawApi {
     }
     // TODO: cover it with tests
     setFont(fontImageUrl) {
-        __classPrivateFieldSet(this, _DrawApi_fontAsset, fontImageUrl ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFont(fontImageUrl) : null, "f");
+        __classPrivateFieldSet(this, _DrawApi_fontAsset, fontImageUrl
+            ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontImageUrl)
+            : null, "f");
     }
     getFont() {
         return __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")?.font ?? null;
@@ -103,7 +105,7 @@ class DrawApi {
     }
     // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
     sprite(spriteImageUrl, sprite, canvasXy1) {
-        const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImage(spriteImageUrl);
+        const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(spriteImageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: consider using `Bpx` prefixed types everywhere inside the framework as well, because without it IDE's type completion is a bit misleading, showing non-Bpx names for params etc.

@@ -72,7 +72,7 @@ export class AudioApi {
   }
 
   playSoundOnce(soundUrl: SoundUrl): void {
-    const soundAsset = this.#assets.getSound(soundUrl);
+    const soundAsset = this.#assets.getSoundAsset(soundUrl);
 
     const sourceNode = this.#audioContext.createBufferSource();
     sourceNode.buffer = soundAsset.audioBuffer;
@@ -81,7 +81,7 @@ export class AudioApi {
   }
 
   playSoundLooped(soundUrl: SoundUrl, muteOnStart: boolean = false): void {
-    const soundAsset = this.#assets.getSound(soundUrl);
+    const soundAsset = this.#assets.getSoundAsset(soundUrl);
 
     const gainNode = this.#audioContext.createGain();
     gainNode.gain.value = muteOnStart ? 0 : 1;

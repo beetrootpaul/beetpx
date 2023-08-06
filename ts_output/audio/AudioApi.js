@@ -53,14 +53,14 @@ class AudioApi {
         }
     }
     playSoundOnce(soundUrl) {
-        const soundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSound(soundUrl);
+        const soundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(soundUrl);
         const sourceNode = __classPrivateFieldGet(this, _AudioApi_audioContext, "f").createBufferSource();
         sourceNode.buffer = soundAsset.audioBuffer;
         sourceNode.connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
         sourceNode.start();
     }
     playSoundLooped(soundUrl, muteOnStart = false) {
-        const soundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSound(soundUrl);
+        const soundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(soundUrl);
         const gainNode = __classPrivateFieldGet(this, _AudioApi_audioContext, "f").createGain();
         gainNode.gain.value = muteOnStart ? 0 : 1;
         gainNode.connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));

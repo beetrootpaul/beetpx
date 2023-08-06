@@ -1,4 +1,4 @@
-import { AssetsToLoad } from "./Assets";
+import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInputEvent } from "./game_input/GameInput";
@@ -25,6 +25,7 @@ export declare class Framework {
     #private;
     get debug(): boolean;
     readonly audioApi: AudioApi;
+    readonly assets: Assets;
     readonly drawApi: DrawApi;
     readonly storageApi: StorageApi;
     frameNumber: number;

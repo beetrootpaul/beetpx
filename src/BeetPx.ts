@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { AssetsToLoad } from "./Assets";
+import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Framework, type FrameworkOptions } from "./Framework";
@@ -167,6 +167,22 @@ export class BeetPx {
 
   static clearStorage: StorageApi["clearStorage"] = (...args) => {
     return this.#tryGetFramework().storageApi.clearStorage(...args);
+  };
+
+  //
+  // Assets (not really needed, unless it is needed for some reason)
+  //
+
+  static getImageAsset: Assets["getImageAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getImageAsset(...args);
+  };
+
+  static getFontAsset: Assets["getFontAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getFontAsset(...args);
+  };
+
+  static getSoundAsset: Assets["getSoundAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getSoundAsset(...args);
   };
 
   //
