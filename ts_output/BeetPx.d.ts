@@ -1,4 +1,4 @@
-import { AssetsToLoad } from "./Assets";
+import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Framework, type FrameworkOptions } from "./Framework";
@@ -11,6 +11,7 @@ export declare class BeetPx {
     static get continuousInputEvents(): Framework["continuousInputEvents"];
     static get fireOnceInputEvents(): Framework["fireOnceInputEvents"];
     static get audioContext(): AudioApi["audioContext"];
+    static get globalGainNode(): AudioApi["globalGainNode"];
     static get debug(): Framework["debug"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
@@ -33,9 +34,13 @@ export declare class BeetPx {
     static toggleMuteUnmute: AudioApi["toggleMuteUnmute"];
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
+    static playSoundSequence: AudioApi["playSoundSequence"];
     static muteSound: AudioApi["muteSound"];
     static unmuteSound: AudioApi["unmuteSound"];
     static store: StorageApi["store"];
     static load: StorageApi["load"];
     static clearStorage: StorageApi["clearStorage"];
+    static getImageAsset: Assets["getImageAsset"];
+    static getFontAsset: Assets["getFontAsset"];
+    static getSoundAsset: Assets["getSoundAsset"];
 }

@@ -54,7 +54,7 @@ export class Framework {
   readonly audioApi: AudioApi;
   readonly #fullScreen: FullScreen;
 
-  readonly #assets: Assets;
+  readonly assets: Assets;
 
   readonly drawApi: DrawApi;
   readonly storageApi: StorageApi;
@@ -126,12 +126,12 @@ export class Framework {
 
     const audioContext = new AudioContext();
 
-    this.#assets = new Assets({
+    this.assets = new Assets({
       decodeAudioData: (arrayBuffer: ArrayBuffer) =>
         audioContext.decodeAudioData(arrayBuffer),
     });
 
-    this.audioApi = new AudioApi(this.#assets, audioContext);
+    this.audioApi = new AudioApi(this.assets, audioContext);
 
     this.#fullScreen = FullScreen.newFor(
       this.#htmlDisplaySelector,
@@ -145,14 +145,14 @@ export class Framework {
     this.drawApi = new DrawApi({
       canvasBytes: this.#offscreenImageData.data,
       canvasSize: this.#gameCanvasSize,
-      assets: this.#assets,
+      assets: this.assets,
     });
 
     this.storageApi = new StorageApi();
   }
 
   loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
-    return this.#assets.loadAssets(assetsToLoad).then(() => ({
+    return this.assets.loadAssets(assetsToLoad).then(() => ({
       startGame: this.#startGame.bind(this),
     }));
   }

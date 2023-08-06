@@ -123,7 +123,7 @@ export class Assets {
   }
 
   // call `loadAssets` before this one
-  getImage(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset {
+  getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset {
     const imageAsset = this.#images.get(urlOfAlreadyLoadedImage);
     if (!imageAsset) {
       throw Error(
@@ -134,7 +134,7 @@ export class Assets {
   }
 
   // call `loadAssets` before this one
-  getFont(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset {
+  getFontAsset(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset {
     const { font, imageTextColor, imageBgColor } =
       this.#fonts.get(urlOfAlreadyLoadedFontImage) ??
       Utils.throwError(
@@ -142,14 +142,14 @@ export class Assets {
       );
     return {
       font,
-      image: this.getImage(urlOfAlreadyLoadedFontImage),
+      image: this.getImageAsset(urlOfAlreadyLoadedFontImage),
       imageTextColor,
       imageBgColor,
     };
   }
 
   // call `loadAssets` before this one
-  getSound(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset {
+  getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset {
     const soundAsset = this.#sounds.get(urlOfAlreadyLoadedSound);
     if (!soundAsset) {
       throw Error(

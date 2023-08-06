@@ -27,3 +27,5 @@ export { BeetPx } from "./BeetPx";
 // TODO: remove comments from HTMLs from the generated game
 
 // TODO: do not emit tests
+
+// TODO: improve bg color on itch around the game, but under the buttons

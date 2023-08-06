@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { AssetsToLoad } from "./Assets";
+import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Framework, type FrameworkOptions } from "./Framework";
@@ -22,7 +22,7 @@ export class BeetPx {
   }
 
   //
-  // field-like getters
+  // field-like getters, the ones meant to be used
   //
 
   static get frameNumber(): Framework["frameNumber"] {
@@ -41,8 +41,16 @@ export class BeetPx {
     return this.#tryGetFramework().fireOnceInputEvents;
   }
 
+  //
+  // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
+  //
+
   static get audioContext(): AudioApi["audioContext"] {
     return this.#tryGetFramework().audioApi.audioContext;
+  }
+
+  static get globalGainNode(): AudioApi["globalGainNode"] {
+    return this.#tryGetFramework().audioApi.globalGainNode;
   }
 
   static get debug(): Framework["debug"] {
@@ -145,6 +153,10 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.playSoundLooped(...args);
   };
 
+  static playSoundSequence: AudioApi["playSoundSequence"] = (...args) => {
+    return this.#tryGetFramework().audioApi.playSoundSequence(...args);
+  };
+
   static muteSound: AudioApi["muteSound"] = (...args) => {
     return this.#tryGetFramework().audioApi.muteSound(...args);
   };
@@ -167,6 +179,22 @@ export class BeetPx {
 
   static clearStorage: StorageApi["clearStorage"] = (...args) => {
     return this.#tryGetFramework().storageApi.clearStorage(...args);
+  };
+
+  //
+  // Assets (not really needed, unless it is needed for some reason ¯\_(ツ)_/¯ )
+  //
+
+  static getImageAsset: Assets["getImageAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getImageAsset(...args);
+  };
+
+  static getFontAsset: Assets["getFontAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getFontAsset(...args);
+  };
+
+  static getSoundAsset: Assets["getSoundAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getSoundAsset(...args);
   };
 
   //
