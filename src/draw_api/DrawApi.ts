@@ -3,6 +3,7 @@ import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
 import { CharSprite, Font } from "../font/Font";
 import { Sprite } from "../Sprite";
 import { v_, Vector2d } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
@@ -19,6 +20,8 @@ type DrawApiOptions = {
   assets: Assets;
 };
 
+// TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
+
 export class DrawApi {
   readonly #assets: Assets;
 
@@ -31,6 +34,8 @@ export class DrawApi {
   readonly #text: DrawText;
 
   #cameraOffset: Vector2d = v_(0, 0);
+
+  #clippingRegion: ClippingRegion | null = null;
 
   #fillPattern: FillPattern = FillPattern.primaryOnly;
 
@@ -67,6 +72,10 @@ export class DrawApi {
     this.#cameraOffset = offset.round();
   }
 
+  setClippingRegion(clippingRegion: ClippingRegion | null): void {
+    this.#clippingRegion = clippingRegion;
+  }
+
   // TODO: cover it with tests
   setFillPattern(fillPattern: FillPattern): void {
     this.#fillPattern = fillPattern;
@@ -98,11 +107,15 @@ export class DrawApi {
   }
 
   clearCanvas(color: SolidColor): void {
-    this.#clear.draw(color);
+    this.#clear.draw(color, this.#clippingRegion);
   }
 
   pixel(xy: Vector2d, color: SolidColor): void {
-    this.#pixel.draw(xy.sub(this.#cameraOffset).round(), color);
+    this.#pixel.draw(
+      xy.sub(this.#cameraOffset).round(),
+      color,
+      this.#clippingRegion,
+    );
   }
 
   line(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
@@ -111,6 +124,7 @@ export class DrawApi {
       xy2.sub(this.#cameraOffset).round(),
       color,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -121,6 +135,7 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -135,6 +150,7 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -145,6 +161,7 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -155,6 +172,7 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
+      this.#clippingRegion,
     );
   }
 
@@ -166,6 +184,7 @@ export class DrawApi {
       sprite,
       canvasXy1.sub(this.#cameraOffset).round(),
       this.#spriteColorMapping,
+      this.#clippingRegion,
     );
   }
 
@@ -182,6 +201,7 @@ export class DrawApi {
         canvasXy1.sub(this.#cameraOffset).round(),
         this.#fontAsset,
         color,
+        this.#clippingRegion,
       );
     } else {
       console.info(

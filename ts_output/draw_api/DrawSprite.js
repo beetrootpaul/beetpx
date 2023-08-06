@@ -27,7 +27,8 @@ class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_canvasSize, canvasSize, "f");
         __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawSprite_canvasSize, "f")), "f");
     }
-    draw(sourceImageAsset, sprite, targetXy1, colorMapping = new Map()) {
+    // TODO: cover clippingRegion with tests
+    draw(sourceImageAsset, sprite, targetXy1, colorMapping = new Map(), clippingRegion = null) {
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
         sprite = new Sprite_1.Sprite((0, Vector2d_1.v_)(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), (0, Vector2d_1.v_)(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
@@ -35,6 +36,10 @@ class DrawSprite {
         sprite = new Sprite_1.Sprite((0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy1.x, imgW), Utils_1.Utils.clamp(0, sprite.xy1.y, imgH)), (0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy2.x, imgW), Utils_1.Utils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
+                const canvasXy = targetXy1.add((0, Vector2d_1.v_)(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
+                if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
+                    continue;
+                }
                 const imgBytesIndex = (imgY * imgW + imgX) * 4;
                 if (imgBytes.length < imgBytesIndex + 4) {
                     throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
@@ -44,7 +49,6 @@ class DrawSprite {
                     : Color_1.transparent_;
                 color = colorMapping.get(color.id()) ?? color;
                 if (color instanceof Color_1.SolidColor) {
-                    const canvasXy = targetXy1.add((0, Vector2d_1.v_)(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
                     __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
                 }
             }

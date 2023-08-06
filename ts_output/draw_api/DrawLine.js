@@ -25,21 +25,21 @@ class DrawLine {
         __classPrivateFieldSet(this, _DrawLine_canvasSize, canvasSize, "f");
         __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawLine_canvasSize, "f")), "f");
     }
+    // TODO: cover ClippingRegion with tests
     // TODO: Consider rect and ellipse and line APIs to operate on *inclusive* xy2.
     //       It is strange to have to set xy2 to be at least 1 higher than xy1 in order to draw a straight line.
     // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
     // Based on http://members.chello.at/easyfilter/bresenham.html
     draw(xy1, xy2, color, 
     // TODO: implement fill pattern for the line (?)
-    fillPattern = FillPattern_1.FillPattern.primaryOnly) {
+    fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
         if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
             return;
         }
         // adjust coordinates from right-bottom excluded to included
         [xy1, xy2] = [
-            // TODO: add a variant of Vector2d functions that takes 2 params as numbers, w/o a need to wrap with `v_(…)`
-            xy1.sub((0, Vector2d_1.v_)(xy1.x < xy2.x ? 0 : 1, xy1.y < xy2.y ? 0 : 1)),
-            xy2.sub((0, Vector2d_1.v_)(xy2.x < xy1.x ? 0 : 1, xy2.y < xy1.y ? 0 : 1)),
+            xy1.sub(xy1.x < xy2.x ? 0 : 1, xy1.y < xy2.y ? 0 : 1),
+            xy2.sub(xy2.x < xy1.x ? 0 : 1, xy2.y < xy1.y ? 0 : 1),
         ];
         //
         // PREPARE
@@ -54,7 +54,7 @@ class DrawLine {
             //
             // DRAW THE CURRENT PIXEL
             //
-            __classPrivateFieldGet(this, _DrawLine_pixel, "f").draw(currentXy, color);
+            __classPrivateFieldGet(this, _DrawLine_pixel, "f").draw(currentXy, color, clippingRegion);
             if (currentXy.eq(targetXy))
                 break;
             //

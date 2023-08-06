@@ -3,6 +3,7 @@ import { Color, CompositeColor, SolidColor } from "../Color";
 import { CharSprite, Font } from "../font/Font";
 import { Sprite } from "../Sprite";
 import { Vector2d } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 import { FillPattern } from "./FillPattern";
 type DrawApiOptions = {
     canvasBytes: Uint8ClampedArray;
@@ -13,6 +14,7 @@ export declare class DrawApi {
     #private;
     constructor(options: DrawApiOptions);
     setCameraOffset(offset: Vector2d): void;
+    setClippingRegion(clippingRegion: ClippingRegion | null): void;
     setFillPattern(fillPattern: FillPattern): void;
     mapSpriteColors(mappings: Array<{
         from: Color;

@@ -69,6 +69,10 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.setCameraOffset(...args);
   };
 
+  static setClippingRegion: DrawApi["setClippingRegion"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setClippingRegion(...args);
+  };
+
   static setFillPattern: DrawApi["setFillPattern"] = (...args) => {
     return this.#tryGetFramework().drawApi.setFillPattern(...args);
   };

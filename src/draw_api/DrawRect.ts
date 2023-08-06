@@ -1,5 +1,6 @@
 import { CompositeColor, SolidColor } from "../Color";
 import { Vector2d } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
 
@@ -16,26 +17,28 @@ export class DrawRect {
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
   }
 
+  // TODO: cover ClippingRegion with tests
   draw(
     xy1: Vector2d,
     xy2: Vector2d,
     color: SolidColor | CompositeColor,
     fill: boolean,
     fillPattern: FillPattern = FillPattern.primaryOnly,
+    clippingRegion: ClippingRegion | null = null,
   ): void {
     Vector2d.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
       if (fillPattern.hasPrimaryColorAt(xy)) {
         if (color instanceof CompositeColor) {
           if (color.primary instanceof SolidColor) {
-            this.#pixel.draw(xy, color.primary);
+            this.#pixel.draw(xy, color.primary, clippingRegion);
           }
         } else {
-          this.#pixel.draw(xy, color);
+          this.#pixel.draw(xy, color, clippingRegion);
         }
       } else {
         if (color instanceof CompositeColor) {
           if (color.secondary instanceof SolidColor) {
-            this.#pixel.draw(xy, color.secondary);
+            this.#pixel.draw(xy, color.secondary, clippingRegion);
           }
         }
       }

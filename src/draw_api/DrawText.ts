@@ -2,6 +2,7 @@ import { FontAsset } from "../Assets";
 import { SolidColor, transparent_ } from "../Color";
 import { CharSprite } from "../font/Font";
 import { Vector2d } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
 
 export class DrawText {
@@ -18,11 +19,13 @@ export class DrawText {
   }
 
   // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
+  // TODO: cover ClippingRegion with tests
   draw(
     text: string,
     canvasXy1: Vector2d,
     fontAsset: FontAsset,
     color: SolidColor | ((charSprite: CharSprite) => SolidColor),
+    clippingRegion: ClippingRegion | null = null,
   ): void {
     const colorFn = typeof color === "function" ? color : () => color;
     for (const charSprite of fontAsset.font.spritesFor(text)) {
@@ -34,6 +37,7 @@ export class DrawText {
           [fontAsset.imageTextColor.id(), colorFn(charSprite)],
           [fontAsset.imageBgColor.id(), transparent_],
         ]),
+        clippingRegion,
       );
     }
   }

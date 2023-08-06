@@ -1,5 +1,6 @@
 import { SolidColor } from "../Color";
 import { Vector2d } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 
 export class DrawPixel {
   readonly #canvasBytes: Uint8ClampedArray;
@@ -10,7 +11,15 @@ export class DrawPixel {
     this.#canvasSize = canvasSize;
   }
 
-  draw(xy: Vector2d, color: SolidColor): void {
+  // TODO: cover ClippingRegion with tests
+  draw(
+    xy: Vector2d,
+    color: SolidColor,
+    clippingRegion: ClippingRegion | null = null,
+  ): void {
+    if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
+      return;
+    }
     if (xy.gte(Vector2d.zero) && xy.lt(this.#canvasSize)) {
       const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
       this.#canvasBytes[i] = color.r;

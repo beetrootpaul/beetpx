@@ -10,6 +10,7 @@ export {
 export { Sprite as BpxSprite } from "./Sprite";
 export { Utils as BpxUtils } from "./Utils";
 export { Vector2d as BpxVector2d } from "./Vector2d";
+export { ClippingRegion as BpxClippingRegion } from "./draw_api/ClippingRegion";
 export { FillPattern as BpxFillPattern } from "./draw_api/FillPattern";
 export {
   type CharSprite as BpxCharSprite,

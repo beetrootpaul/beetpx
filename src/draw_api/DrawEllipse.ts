@@ -1,5 +1,6 @@
 import { SolidColor } from "../Color";
 import { Vector2d, v_ } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
 
@@ -16,6 +17,7 @@ export class DrawEllipse {
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
   }
 
+  // TODO: cover ClippingRegion with tests
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
     xy1: Vector2d,
@@ -24,6 +26,7 @@ export class DrawEllipse {
     fill: boolean,
     // TODO: implement fill pattern for the ellipse
     fillPattern: FillPattern = FillPattern.primaryOnly,
+    clippingRegion: ClippingRegion | null = null,
   ): void {
     if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
       return;
@@ -61,10 +64,10 @@ export class DrawEllipse {
       //
 
       // TODO: update the implementation below to honor fill pattern
-      this.#pixel.draw(v_(right, bottom), color);
-      this.#pixel.draw(v_(left, bottom), color);
-      this.#pixel.draw(v_(left, top), color);
-      this.#pixel.draw(v_(right, top), color);
+      this.#pixel.draw(v_(right, bottom), color, clippingRegion);
+      this.#pixel.draw(v_(left, bottom), color, clippingRegion);
+      this.#pixel.draw(v_(left, top), color, clippingRegion);
+      this.#pixel.draw(v_(right, top), color, clippingRegion);
       if (fill) {
         // TODO: update the implementation below to honor fill pattern
         Vector2d.forEachIntXyWithinRectOf(
@@ -72,7 +75,7 @@ export class DrawEllipse {
           v_(right - 1, bottom).add(1),
           true,
           (xy) => {
-            this.#pixel.draw(xy, color);
+            this.#pixel.draw(xy, color, clippingRegion);
           },
         );
         // TODO: update the implementation below to honor fill pattern
@@ -81,7 +84,7 @@ export class DrawEllipse {
           v_(right - 1, top).add(1),
           true,
           (xy) => {
-            this.#pixel.draw(xy, color);
+            this.#pixel.draw(xy, color, clippingRegion);
           },
         );
       }
@@ -115,11 +118,11 @@ export class DrawEllipse {
     // TODO: Cover this with tests
     while (bottom - top < b) {
       // TODO: update the implementation below to honor fill pattern
-      this.#pixel.draw(v_(left - 1, bottom), color);
-      this.#pixel.draw(v_(right + 1, bottom), color);
+      this.#pixel.draw(v_(left - 1, bottom), color, clippingRegion);
+      this.#pixel.draw(v_(right + 1, bottom), color, clippingRegion);
       bottom += 1;
-      this.#pixel.draw(v_(left - 1, top), color);
-      this.#pixel.draw(v_(right + 1, top), color);
+      this.#pixel.draw(v_(left - 1, top), color, clippingRegion);
+      this.#pixel.draw(v_(right + 1, top), color, clippingRegion);
       top -= 1;
     }
   }
