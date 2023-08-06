@@ -34,6 +34,7 @@ export declare class BeetPx {
     static toggleMuteUnmute: AudioApi["toggleMuteUnmute"];
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
+    static playSoundSequence: AudioApi["playSoundSequence"];
     static muteSound: AudioApi["muteSound"];
     static unmuteSound: AudioApi["unmuteSound"];
     static store: StorageApi["store"];

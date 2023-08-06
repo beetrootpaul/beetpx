@@ -153,6 +153,10 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.playSoundLooped(...args);
   };
 
+  static playSoundSequence: AudioApi["playSoundSequence"] = (...args) => {
+    return this.#tryGetFramework().audioApi.playSoundSequence(...args);
+  };
+
   static muteSound: AudioApi["muteSound"] = (...args) => {
     return this.#tryGetFramework().audioApi.muteSound(...args);
   };

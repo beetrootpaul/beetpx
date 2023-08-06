@@ -1,4 +1,5 @@
 import { Assets, SoundUrl } from "../Assets";
+import { SoundSequence } from "./SoundSequence";
 export declare class AudioApi {
     #private;
     get audioContext(): AudioContext;
@@ -8,6 +9,7 @@ export declare class AudioApi {
     toggleMuteUnmute(): void;
     playSoundOnce(soundUrl: SoundUrl): void;
     playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): void;
+    playSoundSequence(soundSequence: SoundSequence): void;
     muteSound(loopedSoundUrl: SoundUrl): void;
     unmuteSound(loopedSoundUrl: SoundUrl): void;
 }
