@@ -12,6 +12,7 @@ import { v_, Vector2d } from "./Vector2d";
 export type FrameworkOptions = {
   gameCanvasSize: Vector2d;
   desiredFps: number;
+  // TODO: Does is still work?
   logActualFps?: boolean;
   debug?: {
     enabledOnInit: boolean;

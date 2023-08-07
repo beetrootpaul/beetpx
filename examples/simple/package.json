@@ -1,0 +1,15 @@
+{
+  "name": "beetpx-example-simple",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "scripts": {
+    "start": "beetpx dev",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "beetpx": "file:../../",
+    "typescript": "5.1.6"
+  }
+}

@@ -16,7 +16,7 @@ export {
   type CharSprite as BpxCharSprite,
   type Font as BpxFont,
 } from "./font/Font";
-export { GameInputEvent as BpxGameInputEvent } from "./game_input/GameInput";
+export { type GameInputEvent as BpxGameInputEvent } from "./game_input/GameInput";
 
 export { transparent_ } from "./Color";
 export { spr_ } from "./Sprite";

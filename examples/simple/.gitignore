@@ -1,0 +1,7 @@
+# BeetPx: generated and temporary files
+/.beetpx/
+/index.html
+/itch_io_simulation.html
+
+# Node.js: dependencies
+/node_modules/
