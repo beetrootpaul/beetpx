@@ -113,6 +113,7 @@ BeetPx.ellipse = (...args) => {
 BeetPx.ellipseFilled = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.ellipseFilled(...args);
 };
+// TODO: make sure the whole API gets nice JSDoc even shown in the game itself, in IDE
 BeetPx.sprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);
 };

@@ -5,8 +5,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- BASE64 content generated with:
-           base64 -i logo/BeetPx\ logo\ \(x5\).png
+    <!--
+    BASE64 content generated with:
+      base64 -i logo/BeetPx\ logo\ \(x5\).png
     -->
     <link
       rel="icon"
@@ -17,19 +18,12 @@
 
     <title>poc--typescript-web-game</title>
 
-    <!-- Keep these particular styles embedded in HTML here, because external
-         CSS file is loaded by Vite in a way which makes GUI flicker. -->
+    <!--
+    Keep styles embedded in HTML here, because external CSS file is loaded by Vite in a way which can make GUI flicker.
+    -->
     <style>
-      /* TODO rework these all styles */
-
-      /* v v v v v v v v v v v v v v v v v v v v v v v v v v v v
-         CHANGE THESE values to whatever you looks good for you:
-      */
       :root {
         --loading-bg-color: #000000;
-        /* TODO: we do not need any fancy loading screen yet, since it is super fast. We will need it once we implement loading of assets from the internet. */
-        /*--loading-bg-color: #1d2b53;*/
-        /*--loading-fg-color: #ffccaa;*/
       }
 
       * {
@@ -69,13 +63,6 @@
         width: 100vw;
         height: 100vh;
         background-color: var(--loading-bg-color);
-        /* TODO: we do not need any fancy loading screen yet, since it is super fast. We will need it once we implement loading of assets from the internet. */
-        /*display: flex;*/
-        /*justify-content: center;*/
-        /*align-items: center;*/
-        /*font-size: 8vh;*/
-        /*font-family: monospace;*/
-        /*color: var(--loading-fg-color);*/
       }
 
       .app_loaded #loading {
@@ -83,22 +70,26 @@
       }
 
       * {
-        /* Prevent panning on touch-drag: https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#touch-action_css_property */
+        /*
+        This prevents panning on touch-drag:
+          https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#touch-action_css_property
+        */
         touch-action: none;
       }
 
       #display {
         width: 100vw;
         height: 100vh;
-        /* We need this bg color to be set on the element which is zoomed in when in a full
-           screen and we cannot do this for the entire <body>, because Safari ignores
-           body's bg color on full screen, and includes only the zoomed in element. */
+        /*
+        We need this bg color to be set on the element which is zoomed in when in a full
+          screen and we cannot do this for the entire <body>, because Safari ignores
+          body's bg color on full screen, and includes only the zoomed in element.
+        */
         background-color: #000000;
         display: flex;
         flex-direction: row;
       }
 
-      /* TODO: add a framework-specific prefix to `app_loaded` class */
       .app_loaded #display {
         visibility: visible;
       }
@@ -106,14 +97,14 @@
       #canvas {
         width: 80vw;
         height: 100vh;
-        /* TODO: Do I need to add anything more for a wide browser support of pixelated rendering? */
         image-rendering: pixelated;
       }
 
-      /* MOUSE & TOUCH CONTROLS
-         See:
-           - https://ferie.medium.com/detect-a-touch-device-with-only-css-9f8e30fa1134
-           - https://caniuse.com/css-media-interaction
+      /*
+      MOUSE & TOUCH CONTROLS
+        See:
+          - https://ferie.medium.com/detect-a-touch-device-with-only-css-9f8e30fa1134
+          - https://caniuse.com/css-media-interaction
       */
 
       .mouse_controls_area_left {
@@ -311,9 +302,7 @@
     </style>
   </head>
   <body>
-    <!-- TODO: we do not need any fancy loading screen yet, since it is super fast. We will need it once we implement loading of assets from the internet. -->
     <div id="loading"></div>
-    <!--<div id="loading">loading…</div>-->
 
     <main id="display">
       <div class="mouse_controls_area_left"></div>

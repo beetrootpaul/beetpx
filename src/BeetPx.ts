@@ -129,6 +129,7 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.ellipseFilled(...args);
   };
 
+  // TODO: make sure the whole API gets nice JSDoc even shown in the game itself, in IDE
   static sprite: DrawApi["sprite"] = (...args) => {
     return this.#tryGetFramework().drawApi.sprite(...args);
   };
