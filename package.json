@@ -1,5 +1,5 @@
 {
-  "name": "beetpx",
+  "name": "@beetpx/beetpx",
   "version": "0.5.0",
   "author": "Beetroot Paul",
   "license": "MIT",
@@ -15,6 +15,14 @@
   "bin": {
     "beetpx": "cli/beetpx-cli.js"
   },
+  "files": [
+    "cli/",
+    "html_templates/",
+    "ts_output/",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
   "main": "./ts_output/",
   "scripts": {
     "prepare": "husky install",
