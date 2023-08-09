@@ -1,4 +1,6 @@
-/// <reference path="../src/__IS_PROD__.d.ts" />
+declare global {
+    const __BEETPX_IS_PROD__: boolean;
+}
 export { CompositeColor as BpxCompositeColor, SolidColor as BpxSolidColor, TransparentColor as TransparentColor, type Color as BpxColor, type ColorId as BpxColorId, } from "./Color";
 export { Sprite as BpxSprite } from "./Sprite";
 export { Utils as BpxUtils } from "./Utils";
