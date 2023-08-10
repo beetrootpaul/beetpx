@@ -8,11 +8,16 @@ npm install
 # To make sure everything is formatted as desired
 npm run format
 
+# To make sure types are OK
+npm run typecheck
+
 # To make sure tests didn't break due to most recent changes
 npm test
 
-# To generate up-to-date JS and .d.ts files out of the TypeScript source
-# (thanks to it users can refer to any commit of this repo as their used version on BeetPx)
+# To generate up-to-date JS and .d.ts files out of the TypeScript source.
+#   Thanks to this command being run on every commit, users can refer to
+#   any commit of this repo in their `package.json` files and have BeetPx
+#   ready to use there.
 npm run compile
 
 # Whatever was changed due to commands above, let's add it to the commit

@@ -5,7 +5,8 @@
     "target": "ES2020",
     "module": "CommonJS",
     "declaration": true,
-    "outDir": "./ts_output/",
+    "outDir": "./dist",
+    "declarationDir": "./.dist/",
     "strict": true,
     "noUncheckedIndexedAccess": true
   },

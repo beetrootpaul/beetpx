@@ -12,26 +12,29 @@
   "bugs": {
     "url": "https://github.com/beetrootpaul/beetpx/issues"
   },
-  "bin": {
-    "beetpx": "cli/beetpx-cli.js"
-  },
   "files": [
     "cli/",
+    "dist/",
     "html_templates/",
-    "ts_output/",
     "LICENSE",
     "package.json",
     "README.md"
   ],
-  "main": "./ts_output/",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "beetpx": "cli/beetpx-cli.cjs"
+  },
   "scripts": {
     "prepare": "husky install",
-    "test": "jest",
-    "start": "npm run cleanup && npm run compile:watch",
-    "compile": "tsc",
-    "compile:watch": "tsc --watch",
     "format": "prettier --ignore-path .gitignore --write cli/ html_templates/ src/",
-    "cleanup": "rimraf ./ts_output/"
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch",
+    "test": "jest",
+    "start": "npm run typecheck:watch",
+    "precompile": "rimraf ./.dist/* ./dist/*",
+    "compile": "tsc",
+    "postcompile": "rollup --config ./rollup.config.ts --configPlugin typescript"
   },
   "dependencies": {
     "cross-zip": "4.0.0",
@@ -41,11 +44,15 @@
   },
   "devDependencies": {
     "@jest/globals": "29.6.1",
+    "@rollup/plugin-typescript": "11.1.2",
     "husky": "8.0.3",
     "prettier": "3.0.0",
     "prettier-plugin-organize-imports": "3.2.3",
     "rimraf": "5.0.1",
+    "rollup": "3.28.0",
+    "rollup-plugin-dts": "5.3.1",
     "ts-jest": "29.1.1",
+    "tslib": "2.6.1",
     "typescript": "5.1.6"
   }
 }

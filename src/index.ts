@@ -3,22 +3,19 @@ declare global {
 }
 
 export {
-  CompositeColor as BpxCompositeColor,
-  SolidColor as BpxSolidColor,
-  TransparentColor as TransparentColor,
-  type Color as BpxColor,
-  type ColorId as BpxColorId,
+  CompositeColor,
+  SolidColor,
+  TransparentColor,
+  type Color,
+  type ColorId,
 } from "./Color";
-export { Sprite as BpxSprite } from "./Sprite";
-export { Utils as BpxUtils } from "./Utils";
-export { Vector2d as BpxVector2d } from "./Vector2d";
-export { ClippingRegion as BpxClippingRegion } from "./draw_api/ClippingRegion";
-export { FillPattern as BpxFillPattern } from "./draw_api/FillPattern";
-export {
-  type CharSprite as BpxCharSprite,
-  type Font as BpxFont,
-} from "./font/Font";
-export { type GameInputEvent as BpxGameInputEvent } from "./game_input/GameInput";
+export { Sprite } from "./Sprite";
+export { Utils } from "./Utils";
+export { Vector2d } from "./Vector2d";
+export { ClippingRegion } from "./draw_api/ClippingRegion";
+export { FillPattern } from "./draw_api/FillPattern";
+export { type CharSprite, type Font } from "./font/Font";
+export { type GameInputEvent } from "./game_input/GameInput";
 
 export { transparent_ } from "./Color";
 export { spr_ } from "./Sprite";
