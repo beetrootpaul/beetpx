@@ -51,6 +51,7 @@ export class AudioApi {
     }
   }
 
+  // TODO: remember mute/unmute state between page reloads
   toggleMuteUnmute(): void {
     if (this.#isGloballyMuted) {
       this.#unmute();

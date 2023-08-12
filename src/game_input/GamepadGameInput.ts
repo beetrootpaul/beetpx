@@ -9,10 +9,10 @@ export class GamepadGameInput {
     number,
     GameInputEvent
   >([
-    [14, "left"],
-    [15, "right"],
-    [12, "up"],
-    [13, "down"],
+    [14, "button_left"],
+    [15, "button_right"],
+    [12, "button_up"],
+    [13, "button_down"],
   ]);
 
   readonly axisThreshold: number = 0.6;
@@ -22,14 +22,14 @@ export class GamepadGameInput {
     GameInputEvent
   >([
     // keys here are: 100 * axis index + sign(axis value)
-    [-1, "left"],
-    [1, "right"],
-    [99, "up"],
-    [101, "down"],
-    [199, "left"],
-    [201, "right"],
-    [299, "up"],
-    [301, "down"],
+    [-1, "button_left"],
+    [1, "button_right"],
+    [99, "button_up"],
+    [101, "button_down"],
+    [199, "button_left"],
+    [201, "button_right"],
+    [299, "button_up"],
+    [301, "button_down"],
   ]);
 
   getCurrentContinuousEvents(): Set<GameInputEvent> {

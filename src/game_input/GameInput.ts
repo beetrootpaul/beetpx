@@ -5,10 +5,10 @@ import { TouchGameInput } from "./TouchGameInput";
 
 export type GameInputEvent =
   | null
-  | "left"
-  | "right"
-  | "up"
-  | "down"
+  | "button_left"
+  | "button_right"
+  | "button_up"
+  | "button_down"
   | "button_x"
   | "button_o"
   | "mute_unmute_toggle"

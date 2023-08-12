@@ -113,7 +113,7 @@ interface Font {
     spritesFor(text: string): CharSprite[];
 }
 
-type GameInputEvent = null | "left" | "right" | "up" | "down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
+type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
 
 type AssetsToLoad = {
     images: ImageAssetToLoad[];

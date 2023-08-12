@@ -48,6 +48,7 @@ class AudioApi {
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unmute).call(this);
         }
     }
+    // TODO: remember mute/unmute state between page reloads
     toggleMuteUnmute() {
         if (__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f")) {
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unmute).call(this);

@@ -16,10 +16,10 @@ class TouchGameInput {
         _TouchGameInput_currentContinuousEvents.set(this, new Set());
         // TODO: externalize these selectors as game params
         const selectorMapping = new Map([
-            [".controls_left", "left"],
-            [".controls_right", "right"],
-            [".controls_up", "up"],
-            [".controls_down", "down"],
+            [".controls_left", "button_left"],
+            [".controls_right", "button_right"],
+            [".controls_up", "button_up"],
+            [".controls_down", "button_down"],
         ]);
         for (const [selector, gameInputEvent] of selectorMapping.entries()) {
             document.querySelectorAll(selector).forEach((button) => {
