@@ -16,6 +16,7 @@ export { ClippingRegion } from "./draw_api/ClippingRegion";
 export { FillPattern } from "./draw_api/FillPattern";
 export { type CharSprite, type Font } from "./font/Font";
 export { type GameInputEvent } from "./game_input/GameInput";
+export { Timer } from "./misc/Timer";
 
 export { transparent_ } from "./Color";
 export { spr_ } from "./Sprite";

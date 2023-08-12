@@ -115,6 +115,17 @@ interface Font {
 
 type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
 
+declare class Timer {
+    #private;
+    constructor(params: {
+        frames: number;
+    });
+    get framesLeft(): number;
+    get progress(): number;
+    get hasFinished(): boolean;
+    update(): void;
+}
+
 type AssetsToLoad = {
     images: ImageAssetToLoad[];
     fonts: FontAssetToLoad[];
@@ -327,4 +338,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, CompositeColor, FillPattern, Font, GameInputEvent, SolidColor, Sprite, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, CompositeColor, FillPattern, Font, GameInputEvent, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
