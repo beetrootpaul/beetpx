@@ -12,39 +12,12 @@ export class Buttons {
   readonly #o: Button = new Button();
   readonly #x: Button = new Button();
 
-  wasJustPressed(button: ButtonName): boolean {
-    switch (button) {
-      case "left":
-        return this.#left.wasJustPressed;
-      case "right":
-        return this.#right.wasJustPressed;
-      case "up":
-        return this.#up.wasJustPressed;
-      case "down":
-        return this.#down.wasJustPressed;
-      case "o":
-        return this.#o.wasJustPressed;
-      case "x":
-        return this.#x.wasJustPressed;
-    }
-  }
-
-  wasJustReleased(button: ButtonName): boolean {
-    switch (button) {
-      case "left":
-        return this.#left.wasJustReleased;
-      case "right":
-        return this.#right.wasJustReleased;
-      case "up":
-        return this.#up.wasJustReleased;
-      case "down":
-        return this.#down.wasJustReleased;
-      case "o":
-        return this.#o.wasJustReleased;
-      case "x":
-        return this.#x.wasJustReleased;
-    }
-  }
+  #repeatingLeft: boolean = true;
+  #repeatingRight: boolean = true;
+  #repeatingUp: boolean = true;
+  #repeatingDown: boolean = true;
+  #repeatingO: boolean = true;
+  #repeatingX: boolean = true;
 
   isPressed(button: ButtonName): boolean {
     switch (button) {
@@ -60,6 +33,63 @@ export class Buttons {
         return this.#o.isPressed;
       case "x":
         return this.#x.isPressed;
+    }
+  }
+
+  setRepeating(button: ButtonName, repeating: boolean): void {
+    switch (button) {
+      case "left":
+        this.#repeatingLeft = repeating;
+        return;
+      case "right":
+        this.#repeatingRight = repeating;
+        return;
+      case "up":
+        this.#repeatingUp = repeating;
+        return;
+      case "down":
+        this.#repeatingDown = repeating;
+        return;
+      case "o":
+        this.#repeatingO = repeating;
+        return;
+      case "x":
+        this.#repeatingX = repeating;
+        return;
+    }
+  }
+
+  wasJustPressed(button: ButtonName): boolean {
+    switch (button) {
+      case "left":
+        return this.#left.wasJustPressed(this.#repeatingLeft);
+      case "right":
+        return this.#right.wasJustPressed(this.#repeatingRight);
+      case "up":
+        return this.#up.wasJustPressed(this.#repeatingUp);
+      case "down":
+        return this.#down.wasJustPressed(this.#repeatingDown);
+      case "o":
+        return this.#o.wasJustPressed(this.#repeatingO);
+      case "x":
+        return this.#x.wasJustPressed(this.#repeatingX);
+    }
+  }
+
+  wasJustReleased(button: ButtonName): boolean {
+    switch (button) {
+      case "left":
+        return this.#left.wasJustReleased(this.#repeatingLeft);
+      case "right":
+        return this.#right.wasJustReleased(this.#repeatingRight);
+      case "up":
+        return this.#up.wasJustReleased(this.#repeatingUp);
+      case "down":
+        return this.#down.wasJustReleased(this.#repeatingDown);
+      case "o":
+        return this.#o.wasJustReleased(this.#repeatingO);
+      case "x":
+        return this.#x.wasJustReleased(this.#repeatingX);
     }
   }
 

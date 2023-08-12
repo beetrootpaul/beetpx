@@ -77,16 +77,20 @@ export class BeetPx {
   // Buttons
   //
 
+  static isPressed: Buttons["isPressed"] = (...args) => {
+    return this.#tryGetFramework().buttons.isPressed(...args);
+  };
+
+  static setRepeating: Buttons["setRepeating"] = (...args) => {
+    return this.#tryGetFramework().buttons.setRepeating(...args);
+  };
+
   static wasJustPressed: Buttons["wasJustPressed"] = (...args) => {
     return this.#tryGetFramework().buttons.wasJustPressed(...args);
   };
 
   static wasJustReleased: Buttons["wasJustReleased"] = (...args) => {
     return this.#tryGetFramework().buttons.wasJustReleased(...args);
-  };
-
-  static isPressed: Buttons["isPressed"] = (...args) => {
-    return this.#tryGetFramework().buttons.isPressed(...args);
   };
 
   //

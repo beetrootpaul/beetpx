@@ -4,7 +4,13 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_o, _Buttons_x;
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_o, _Buttons_x, _Buttons_repeatingLeft, _Buttons_repeatingRight, _Buttons_repeatingUp, _Buttons_repeatingDown, _Buttons_repeatingO, _Buttons_repeatingX;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Buttons = void 0;
 const Button_1 = require("./Button");
@@ -16,38 +22,12 @@ class Buttons {
         _Buttons_down.set(this, new Button_1.Button());
         _Buttons_o.set(this, new Button_1.Button());
         _Buttons_x.set(this, new Button_1.Button());
-    }
-    wasJustPressed(button) {
-        switch (button) {
-            case "left":
-                return __classPrivateFieldGet(this, _Buttons_left, "f").wasJustPressed;
-            case "right":
-                return __classPrivateFieldGet(this, _Buttons_right, "f").wasJustPressed;
-            case "up":
-                return __classPrivateFieldGet(this, _Buttons_up, "f").wasJustPressed;
-            case "down":
-                return __classPrivateFieldGet(this, _Buttons_down, "f").wasJustPressed;
-            case "o":
-                return __classPrivateFieldGet(this, _Buttons_o, "f").wasJustPressed;
-            case "x":
-                return __classPrivateFieldGet(this, _Buttons_x, "f").wasJustPressed;
-        }
-    }
-    wasJustReleased(button) {
-        switch (button) {
-            case "left":
-                return __classPrivateFieldGet(this, _Buttons_left, "f").wasJustReleased;
-            case "right":
-                return __classPrivateFieldGet(this, _Buttons_right, "f").wasJustReleased;
-            case "up":
-                return __classPrivateFieldGet(this, _Buttons_up, "f").wasJustReleased;
-            case "down":
-                return __classPrivateFieldGet(this, _Buttons_down, "f").wasJustReleased;
-            case "o":
-                return __classPrivateFieldGet(this, _Buttons_o, "f").wasJustReleased;
-            case "x":
-                return __classPrivateFieldGet(this, _Buttons_x, "f").wasJustReleased;
-        }
+        _Buttons_repeatingLeft.set(this, true);
+        _Buttons_repeatingRight.set(this, true);
+        _Buttons_repeatingUp.set(this, true);
+        _Buttons_repeatingDown.set(this, true);
+        _Buttons_repeatingO.set(this, true);
+        _Buttons_repeatingX.set(this, true);
     }
     isPressed(button) {
         switch (button) {
@@ -65,6 +45,60 @@ class Buttons {
                 return __classPrivateFieldGet(this, _Buttons_x, "f").isPressed;
         }
     }
+    setRepeating(button, repeating) {
+        switch (button) {
+            case "left":
+                __classPrivateFieldSet(this, _Buttons_repeatingLeft, repeating, "f");
+                return;
+            case "right":
+                __classPrivateFieldSet(this, _Buttons_repeatingRight, repeating, "f");
+                return;
+            case "up":
+                __classPrivateFieldSet(this, _Buttons_repeatingUp, repeating, "f");
+                return;
+            case "down":
+                __classPrivateFieldSet(this, _Buttons_repeatingDown, repeating, "f");
+                return;
+            case "o":
+                __classPrivateFieldSet(this, _Buttons_repeatingO, repeating, "f");
+                return;
+            case "x":
+                __classPrivateFieldSet(this, _Buttons_repeatingX, repeating, "f");
+                return;
+        }
+    }
+    wasJustPressed(button) {
+        switch (button) {
+            case "left":
+                return __classPrivateFieldGet(this, _Buttons_left, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingLeft, "f"));
+            case "right":
+                return __classPrivateFieldGet(this, _Buttons_right, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingRight, "f"));
+            case "up":
+                return __classPrivateFieldGet(this, _Buttons_up, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingUp, "f"));
+            case "down":
+                return __classPrivateFieldGet(this, _Buttons_down, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingDown, "f"));
+            case "o":
+                return __classPrivateFieldGet(this, _Buttons_o, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingO, "f"));
+            case "x":
+                return __classPrivateFieldGet(this, _Buttons_x, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingX, "f"));
+        }
+    }
+    wasJustReleased(button) {
+        switch (button) {
+            case "left":
+                return __classPrivateFieldGet(this, _Buttons_left, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingLeft, "f"));
+            case "right":
+                return __classPrivateFieldGet(this, _Buttons_right, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingRight, "f"));
+            case "up":
+                return __classPrivateFieldGet(this, _Buttons_up, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingUp, "f"));
+            case "down":
+                return __classPrivateFieldGet(this, _Buttons_down, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingDown, "f"));
+            case "o":
+                return __classPrivateFieldGet(this, _Buttons_o, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingO, "f"));
+            case "x":
+                return __classPrivateFieldGet(this, _Buttons_x, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingX, "f"));
+        }
+    }
     update(continuousInputEvents) {
         __classPrivateFieldGet(this, _Buttons_left, "f").update(continuousInputEvents.has("button_left"));
         __classPrivateFieldGet(this, _Buttons_right, "f").update(continuousInputEvents.has("button_right"));
@@ -75,4 +109,4 @@ class Buttons {
     }
 }
 exports.Buttons = Buttons;
-_Buttons_left = new WeakMap(), _Buttons_right = new WeakMap(), _Buttons_up = new WeakMap(), _Buttons_down = new WeakMap(), _Buttons_o = new WeakMap(), _Buttons_x = new WeakMap();
+_Buttons_left = new WeakMap(), _Buttons_right = new WeakMap(), _Buttons_up = new WeakMap(), _Buttons_down = new WeakMap(), _Buttons_o = new WeakMap(), _Buttons_x = new WeakMap(), _Buttons_repeatingLeft = new WeakMap(), _Buttons_repeatingRight = new WeakMap(), _Buttons_repeatingUp = new WeakMap(), _Buttons_repeatingDown = new WeakMap(), _Buttons_repeatingO = new WeakMap(), _Buttons_repeatingX = new WeakMap();

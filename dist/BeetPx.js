@@ -71,14 +71,17 @@ BeetPx.setOnDraw = (...args) => {
 //
 // Buttons
 //
+BeetPx.isPressed = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.isPressed(...args);
+};
+BeetPx.setRepeating = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.setRepeating(...args);
+};
 BeetPx.wasJustPressed = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustPressed(...args);
 };
 BeetPx.wasJustReleased = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustReleased(...args);
-};
-BeetPx.isPressed = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.isPressed(...args);
 };
 //
 // Draw API

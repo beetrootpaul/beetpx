@@ -233,9 +233,10 @@ declare class DrawApi {
 type ButtonName = "left" | "right" | "up" | "down" | "o" | "x";
 declare class Buttons {
     #private;
+    isPressed(button: ButtonName): boolean;
+    setRepeating(button: ButtonName, repeating: boolean): void;
     wasJustPressed(button: ButtonName): boolean;
     wasJustReleased(button: ButtonName): boolean;
-    isPressed(button: ButtonName): boolean;
     update(continuousInputEvents: Set<GameInputEvent>): void;
 }
 
@@ -294,9 +295,10 @@ declare class BeetPx {
     static get debug(): Framework["debug"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
+    static isPressed: Buttons["isPressed"];
+    static setRepeating: Buttons["setRepeating"];
     static wasJustPressed: Buttons["wasJustPressed"];
     static wasJustReleased: Buttons["wasJustReleased"];
-    static isPressed: Buttons["isPressed"];
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setClippingRegion: DrawApi["setClippingRegion"];
     static setFillPattern: DrawApi["setFillPattern"];
