@@ -109,13 +109,6 @@ class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: cover with tests
-    /**
-     * Draws a text on the canvas
-     *
-     * @param text
-     * @param canvasXy1 top-left text corner
-     * @param color text color or a function which returns a text color for a given character
-     */
     print(text, canvasXy1, color) {
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {
             __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));

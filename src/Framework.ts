@@ -3,6 +3,7 @@ import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
+import { Buttons } from "./game_input/Buttons";
 import { GameInput, GameInputEvent } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
@@ -51,6 +52,7 @@ export class Framework {
 
   readonly #loading: Loading;
   readonly #gameInput: GameInput;
+  readonly buttons: Buttons;
   readonly #gameLoop: GameLoop;
   readonly audioApi: AudioApi;
   readonly #fullScreen: FullScreen;
@@ -118,6 +120,8 @@ export class Framework {
       fullScreenButtonsSelector: this.#htmlControlsFullscreenSelector,
       debugToggleKey: this.#debugOptions?.toggleKey,
     });
+
+    this.buttons = new Buttons();
 
     this.#gameLoop = new GameLoop({
       desiredFps: options.desiredFps,
@@ -195,6 +199,8 @@ export class Framework {
         }
 
         const continuousEvents = this.#gameInput.getCurrentContinuousEvents();
+
+        this.buttons.update(continuousEvents);
 
         if (fireOnceEvents.size > 0 || continuousEvents.size > 0) {
           this.audioApi.resumeAudioContextIfNeeded();

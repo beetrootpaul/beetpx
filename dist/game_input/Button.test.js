@@ -1,0 +1,46 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const globals_1 = require("@jest/globals");
+const Button_1 = require("./Button");
+(0, globals_1.describe)("Button", () => {
+    (0, globals_1.test)("#wasJustPressed", () => {
+        const button = new Button_1.Button();
+        button.update(false);
+        (0, globals_1.expect)(button.wasJustPressed).toBe(false);
+        button.update(true);
+        (0, globals_1.expect)(button.wasJustPressed).toBe(true);
+        button.update(true);
+        button.update(true);
+        button.update(true);
+        (0, globals_1.expect)(button.wasJustPressed).toBe(false);
+        button.update(false);
+        (0, globals_1.expect)(button.wasJustPressed).toBe(false);
+        button.update(true);
+        (0, globals_1.expect)(button.wasJustPressed).toBe(true);
+        button.update(true);
+        button.update(true);
+        button.update(true);
+        (0, globals_1.expect)(button.wasJustPressed).toBe(false);
+    });
+    (0, globals_1.test)("#wasJustReleased", () => {
+        const button = new Button_1.Button();
+        button.update(false);
+        (0, globals_1.expect)(button.wasJustReleased).toBe(false);
+        button.update(true);
+        (0, globals_1.expect)(button.wasJustReleased).toBe(false);
+        button.update(false);
+        (0, globals_1.expect)(button.wasJustReleased).toBe(true);
+        button.update(false);
+        button.update(false);
+        button.update(false);
+        (0, globals_1.expect)(button.wasJustReleased).toBe(false);
+        button.update(true);
+        (0, globals_1.expect)(button.wasJustReleased).toBe(false);
+        button.update(false);
+        (0, globals_1.expect)(button.wasJustReleased).toBe(true);
+        button.update(false);
+        button.update(false);
+        button.update(false);
+        (0, globals_1.expect)(button.wasJustReleased).toBe(false);
+    });
+});

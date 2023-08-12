@@ -18,6 +18,7 @@ const AudioApi_1 = require("./audio/AudioApi");
 const Color_1 = require("./Color");
 const DrawApi_1 = require("./draw_api/DrawApi");
 const FullScreen_1 = require("./FullScreen");
+const Buttons_1 = require("./game_input/Buttons");
 const GameInput_1 = require("./game_input/GameInput");
 const GameLoop_1 = require("./game_loop/GameLoop");
 const Loading_1 = require("./Loading");
@@ -88,6 +89,7 @@ class Framework {
             fullScreenButtonsSelector: __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f"),
             debugToggleKey: __classPrivateFieldGet(this, _Framework_debugOptions, "f")?.toggleKey,
         }), "f");
+        this.buttons = new Buttons_1.Buttons();
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop_1.GameLoop({
             desiredFps: options.desiredFps,
             logActualFps: options.logActualFps ?? false,
@@ -143,6 +145,7 @@ _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = 
                 __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_redrawDebugMargin).call(this);
             }
             const continuousEvents = __classPrivateFieldGet(this, _Framework_gameInput, "f").getCurrentContinuousEvents();
+            this.buttons.update(continuousEvents);
             if (fireOnceEvents.size > 0 || continuousEvents.size > 0) {
                 this.audioApi.resumeAudioContextIfNeeded();
             }

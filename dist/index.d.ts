@@ -216,14 +216,16 @@ declare class DrawApi {
     ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void;
-    /**
-     * Draws a text on the canvas
-     *
-     * @param text
-     * @param canvasXy1 top-left text corner
-     * @param color text color or a function which returns a text color for a given character
-     */
     print(text: string, canvasXy1: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
+}
+
+type ButtonName = "left" | "right" | "up" | "down" | "o" | "x";
+declare class Buttons {
+    #private;
+    wasJustPressed(button: ButtonName): boolean;
+    wasJustReleased(button: ButtonName): boolean;
+    isPressed(button: ButtonName): boolean;
+    update(continuousInputEvents: Set<GameInputEvent>): void;
 }
 
 type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
@@ -254,6 +256,7 @@ type OnAssetsLoaded = {
 declare class Framework {
     #private;
     get debug(): boolean;
+    readonly buttons: Buttons;
     readonly audioApi: AudioApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
@@ -280,6 +283,9 @@ declare class BeetPx {
     static get debug(): Framework["debug"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
+    static wasJustPressed: Buttons["wasJustPressed"];
+    static wasJustReleased: Buttons["wasJustReleased"];
+    static isPressed: Buttons["isPressed"];
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setClippingRegion: DrawApi["setClippingRegion"];
     static setFillPattern: DrawApi["setFillPattern"];
@@ -295,6 +301,13 @@ declare class BeetPx {
     static ellipse: DrawApi["ellipse"];
     static ellipseFilled: DrawApi["ellipseFilled"];
     static sprite: DrawApi["sprite"];
+    /**
+     * Draws a text on the canvas
+     *
+     * @param text
+     * @param canvasXy1 top-left text corner
+     * @param color text color or a function which returns a text color for a given character
+     */
     static print: DrawApi["print"];
     static toggleMuteUnmute: AudioApi["toggleMuteUnmute"];
     static playSoundOnce: AudioApi["playSoundOnce"];

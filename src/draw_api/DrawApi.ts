@@ -191,13 +191,6 @@ export class DrawApi {
   }
 
   // TODO: cover with tests
-  /**
-   * Draws a text on the canvas
-   *
-   * @param text
-   * @param canvasXy1 top-left text corner
-   * @param color text color or a function which returns a text color for a given character
-   */
   print(
     text: string,
     canvasXy1: Vector2d,

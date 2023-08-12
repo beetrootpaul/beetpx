@@ -3,12 +3,14 @@ import { GuiGameInput } from "./GuiGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { TouchGameInput } from "./TouchGameInput";
 
+// TODO: separate events available to pass as param for the continuous ones and for the fire once ones
 export type GameInputEvent =
   | null
   | "button_left"
   | "button_right"
   | "button_up"
   | "button_down"
+  // TODO: consider moving towards Z/X instead of O/X
   | "button_x"
   | "button_o"
   | "mute_unmute_toggle"
