@@ -49,8 +49,7 @@ export class DrawLine {
     let currentXy = xy1;
     const targetXy = xy2;
 
-    // TODO: introduce `sign` and do `xy2.sub(xy1).sign().mul(1)` here
-    const step = v_(xy1.x < xy2.x ? 1 : -1, xy1.y < xy2.y ? 1 : -1);
+    const step = xy2.sub(xy1).sign();
     let err = dXy.x + dXy.y;
 
     while (true) {

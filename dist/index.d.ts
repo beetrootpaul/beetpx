@@ -36,6 +36,7 @@ declare class Vector2d implements PrintDebug {
     readonly y: number;
     constructor(x: number, y: number);
     magnitude(): number;
+    sign(): Vector2d;
     abs(): Vector2d;
     floor(): Vector2d;
     round(): Vector2d;

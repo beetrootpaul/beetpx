@@ -45,6 +45,10 @@ class Vector2d {
     magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
+    // TODO: cover with tests
+    sign() {
+        return new Vector2d(Math.sign(this.x), Math.sign(this.y));
+    }
     abs() {
         return new Vector2d(Math.abs(this.x), Math.abs(this.y));
     }

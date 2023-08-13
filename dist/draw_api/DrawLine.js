@@ -47,8 +47,7 @@ class DrawLine {
         let dXy = (0, Vector2d_1.v_)(Math.abs(xy2.x - xy1.x), -Math.abs(xy2.y - xy1.y));
         let currentXy = xy1;
         const targetXy = xy2;
-        // TODO: introduce `sign` and do `xy2.sub(xy1).sign().mul(1)` here
-        const step = (0, Vector2d_1.v_)(xy1.x < xy2.x ? 1 : -1, xy1.y < xy2.y ? 1 : -1);
+        const step = xy2.sub(xy1).sign();
         let err = dXy.x + dXy.y;
         while (true) {
             //

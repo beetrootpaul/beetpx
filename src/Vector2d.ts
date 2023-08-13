@@ -62,6 +62,11 @@ export class Vector2d implements PrintDebug {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
+  // TODO: cover with tests
+  sign(): Vector2d {
+    return new Vector2d(Math.sign(this.x), Math.sign(this.y));
+  }
+
   abs(): Vector2d {
     return new Vector2d(Math.abs(this.x), Math.abs(this.y));
   }
