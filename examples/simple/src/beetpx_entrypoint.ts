@@ -1,4 +1,4 @@
-import { BeetPx, BpxSolidColor, BpxVector2d, spr_, v_ } from "../../../src";
+import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 
 BeetPx.init(
   {
@@ -15,7 +15,7 @@ BeetPx.init(
   console.log("BeetPx initialized");
 
   const logoPositionBase = v_((128 - 16) / 2, (128 - 16) / 2);
-  let logoPositionOffset = BpxVector2d.zero;
+  let logoPositionOffset = Vector2d.zero;
 
   BeetPx.setOnUpdate(() => {
     console.log(`FPS: ${BeetPx.averageFps}`);
@@ -27,10 +27,9 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
-    BeetPx.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
+    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
     BeetPx.sprite(
-      "logo.png",
-      spr_(0, 0, 16, 16),
+      spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
     );
   });
