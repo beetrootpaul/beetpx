@@ -118,20 +118,20 @@ export class DrawApi {
     );
   }
 
-  line(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  line(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
     this.#line.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       this.#fillPattern,
       this.#clippingRegion,
     );
   }
 
-  rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  rect(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
     this.#rect.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       false,
       this.#fillPattern,
@@ -140,13 +140,13 @@ export class DrawApi {
   }
 
   rectFilled(
-    xy1: Vector2d,
-    xy2: Vector2d,
+    xy: Vector2d,
+    wh: Vector2d,
     color: SolidColor | CompositeColor,
   ): void {
     this.#rect.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       true,
       this.#fillPattern,
@@ -154,10 +154,10 @@ export class DrawApi {
     );
   }
 
-  ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
     this.#ellipse.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       false,
       this.#fillPattern,
@@ -165,10 +165,10 @@ export class DrawApi {
     );
   }
 
-  ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
     this.#ellipse.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       true,
       this.#fillPattern,
@@ -177,12 +177,12 @@ export class DrawApi {
   }
 
   // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
-  sprite(sprite: Sprite, canvasXy1: Vector2d): void {
+  sprite(sprite: Sprite, canvasXy: Vector2d): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sourceImageAsset,
       sprite,
-      canvasXy1.sub(this.#cameraOffset).round(),
+      canvasXy.sub(this.#cameraOffset).round(),
       this.#spriteColorMapping,
       this.#clippingRegion,
     );
@@ -191,20 +191,20 @@ export class DrawApi {
   // TODO: cover with tests
   print(
     text: string,
-    canvasXy1: Vector2d,
+    canvasXy: Vector2d,
     color: SolidColor | ((charSprite: CharSprite) => SolidColor),
   ): void {
     if (this.#fontAsset) {
       this.#text.draw(
         text,
-        canvasXy1.sub(this.#cameraOffset).round(),
+        canvasXy.sub(this.#cameraOffset).round(),
         this.#fontAsset,
         color,
         this.#clippingRegion,
       );
     } else {
       console.info(
-        `print: (${canvasXy1.x},${canvasXy1.y}) [${
+        `print: (${canvasXy.x},${canvasXy.y}) [${
           typeof color === "function" ? "computed" : color.asRgbCssHex()
         }] ${text}`,
       );

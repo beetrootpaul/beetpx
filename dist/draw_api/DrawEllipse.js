@@ -10,10 +10,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawEllipse_canvasBytes, _DrawEllipse_canvasSize, _DrawEllipse_pixel;
+var _DrawEllipse_canvasBytes, _DrawEllipse_canvasSize, _DrawEllipse_pixel, _DrawEllipse_line;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrawEllipse = void 0;
 const Vector2d_1 = require("../Vector2d");
+const DrawLine_1 = require("./DrawLine");
 const DrawPixel_1 = require("./DrawPixel");
 const FillPattern_1 = require("./FillPattern");
 class DrawEllipse {
@@ -21,33 +22,31 @@ class DrawEllipse {
         _DrawEllipse_canvasBytes.set(this, void 0);
         _DrawEllipse_canvasSize.set(this, void 0);
         _DrawEllipse_pixel.set(this, void 0);
+        _DrawEllipse_line.set(this, void 0);
         __classPrivateFieldSet(this, _DrawEllipse_canvasBytes, canvasBytes, "f");
         __classPrivateFieldSet(this, _DrawEllipse_canvasSize, canvasSize, "f");
         __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawEllipse_line, new DrawLine_1.DrawLine(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f")), "f");
     }
     // TODO: cover ClippingRegion with tests
     // Based on http://members.chello.at/easyfilter/bresenham.html
-    draw(xy1, xy2, color, fill, 
+    draw(xy, wh, color, fill, 
     // TODO: implement fill pattern for the ellipse
     fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
-        if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
+        // check if wh has 0 width or height
+        if (wh.x * wh.y === 0) {
             return;
         }
-        // swap coordinates to make sure xy1 is the left-bottom corner and xy2 is the right-top one
-        [xy1, xy2] = [
-            (0, Vector2d_1.v_)(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y)),
-            (0, Vector2d_1.v_)(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y)),
-        ];
         //
         // PREPARE
         //
-        let a = xy2.x - xy1.x - 1;
-        let b = xy2.y - xy1.y - 1;
+        let [a, b] = wh.abs().asArray();
         let b1 = b & 1;
+        const [xy1, xy2] = Vector2d_1.Vector2d.minMax(xy, xy.add(wh));
         let left = xy1.x;
         let right = xy2.x - 1;
-        let bottom = xy1.y + Math.floor((b + 1) / 2);
-        let top = bottom - b1;
+        let bottom = xy1.y - 1 + Math.floor((b + 1) / 2);
+        let top = bottom - b1 + 1;
         let errIncrementX = 4 * (1 - a) * b * b;
         let errIncrementY = 4 * (b1 + 1) * a * a;
         let currentErr = errIncrementX + errIncrementY + b1 * a * a;
@@ -64,11 +63,11 @@ class DrawEllipse {
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw((0, Vector2d_1.v_)(right, top), color, clippingRegion);
             if (fill) {
                 // TODO: update the implementation below to honor fill pattern
-                Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, bottom), (0, Vector2d_1.v_)(right - 1, bottom).add(1), true, (xy) => {
+                Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, bottom), (0, Vector2d_1.v_)(right - left - 1, 1), true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion);
                 });
                 // TODO: update the implementation below to honor fill pattern
-                Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, top), (0, Vector2d_1.v_)(right - 1, top).add(1), true, (xy) => {
+                Vector2d_1.Vector2d.forEachIntXyWithinRectOf((0, Vector2d_1.v_)(left + 1, top), (0, Vector2d_1.v_)(right - left - 1, 1), true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion);
                 });
             }
@@ -106,4 +105,4 @@ class DrawEllipse {
     }
 }
 exports.DrawEllipse = DrawEllipse;
-_DrawEllipse_canvasBytes = new WeakMap(), _DrawEllipse_canvasSize = new WeakMap(), _DrawEllipse_pixel = new WeakMap();
+_DrawEllipse_canvasBytes = new WeakMap(), _DrawEllipse_canvasSize = new WeakMap(), _DrawEllipse_pixel = new WeakMap(), _DrawEllipse_line = new WeakMap();

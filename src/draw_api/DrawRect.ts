@@ -19,14 +19,14 @@ export class DrawRect {
 
   // TODO: cover ClippingRegion with tests
   draw(
-    xy1: Vector2d,
-    xy2: Vector2d,
+    xy: Vector2d,
+    wh: Vector2d,
     color: SolidColor | CompositeColor,
     fill: boolean,
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    Vector2d.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
+    Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
       if (fillPattern.hasPrimaryColorAt(xy)) {
         if (color instanceof CompositeColor) {
           if (color.primary instanceof SolidColor) {

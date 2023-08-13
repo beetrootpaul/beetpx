@@ -15,14 +15,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClippingRegion = void 0;
 const Vector2d_1 = require("../Vector2d");
 class ClippingRegion {
-    static of(xy1, xy2) {
-        return new ClippingRegion(xy1, xy2);
+    static of(xy, wh) {
+        return new ClippingRegion(xy, wh);
     }
-    constructor(xy1, xy2) {
+    constructor(xy, wh) {
         var _a, _b;
         _ClippingRegion_xy1.set(this, void 0);
         _ClippingRegion_xy2.set(this, void 0);
-        _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _ClippingRegion_xy1, _c, "f"); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _ClippingRegion_xy2, _c, "f"); } }).value] = [Vector2d_1.Vector2d.min(xy1, xy2), Vector2d_1.Vector2d.max(xy1, xy2)];
+        __classPrivateFieldSet(this, _ClippingRegion_xy1, xy, "f");
+        __classPrivateFieldSet(this, _ClippingRegion_xy2, xy.add(wh), "f");
+        _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _ClippingRegion_xy1, _c, "f"); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _ClippingRegion_xy2, _c, "f"); } }).value] = Vector2d_1.Vector2d.minMax(__classPrivateFieldGet(this, _ClippingRegion_xy1, "f"), __classPrivateFieldGet(this, _ClippingRegion_xy2, "f"));
     }
     allowsDrawingAt(xy) {
         return xy.gte(__classPrivateFieldGet(this, _ClippingRegion_xy1, "f")) && xy.lt(__classPrivateFieldGet(this, _ClippingRegion_xy2, "f"));

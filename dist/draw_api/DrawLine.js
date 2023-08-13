@@ -26,16 +26,16 @@ class DrawLine {
         __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawLine_canvasSize, "f")), "f");
     }
     // TODO: cover ClippingRegion with tests
-    // TODO: Consider rect and ellipse and line APIs to operate on *inclusive* xy2.
-    //       It is strange to have to set xy2 to be at least 1 higher than xy1 in order to draw a straight line.
     // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
     // Based on http://members.chello.at/easyfilter/bresenham.html
-    draw(xy1, xy2, color, 
+    draw(xy, wh, color, 
     // TODO: implement fill pattern for the line (?)
     fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
-        if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
+        // check if wh has 0 width or height
+        if (wh.x * wh.y === 0) {
             return;
         }
+        let [xy1, xy2] = [xy, xy.add(wh)];
         // adjust coordinates from right-bottom excluded to included
         [xy1, xy2] = [
             xy1.sub(xy1.x < xy2.x ? 0 : 1, xy1.y < xy2.y ? 0 : 1),

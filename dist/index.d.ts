@@ -31,10 +31,12 @@ declare class Vector2d implements PrintDebug {
     static zero: Vector2d;
     static min(xy1: Vector2d, xy2: Vector2d): Vector2d;
     static max(xy1: Vector2d, xy2: Vector2d): Vector2d;
-    static forEachIntXyWithinRectOf(xy1: Vector2d, xy2: Vector2d, fill: boolean, callback: (xy: Vector2d) => void): void;
+    static minMax(xy1: Vector2d, xy2: Vector2d): [Vector2d, Vector2d];
+    static forEachIntXyWithinRectOf(xy: Vector2d, wh: Vector2d, fill: boolean, callback: (xy: Vector2d) => void): void;
     readonly x: number;
     readonly y: number;
     constructor(x: number, y: number);
+    asArray(): [number, number];
     magnitude(): number;
     sign(): Vector2d;
     abs(): Vector2d;
@@ -148,7 +150,7 @@ declare class Utils {
 
 declare class ClippingRegion {
     #private;
-    static of(xy1: Vector2d, xy2: Vector2d): ClippingRegion;
+    static of(xy: Vector2d, wh: Vector2d): ClippingRegion;
     private constructor();
     allowsDrawingAt(xy: Vector2d): boolean;
 }
@@ -233,13 +235,13 @@ declare class DrawApi {
     getFont(): Font | null;
     clearCanvas(color: SolidColor): void;
     pixel(xy: Vector2d, color: SolidColor): void;
-    line(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
-    rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
-    rectFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor | CompositeColor): void;
-    ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
-    ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
-    sprite(sprite: Sprite, canvasXy1: Vector2d): void;
-    print(text: string, canvasXy1: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
+    line(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    rect(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    rectFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor): void;
+    ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    sprite(sprite: Sprite, canvasXy: Vector2d): void;
+    print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
 
 type ButtonName = "left" | "right" | "up" | "down" | "o" | "x";

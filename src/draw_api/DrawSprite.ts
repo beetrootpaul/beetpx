@@ -23,7 +23,7 @@ export class DrawSprite {
   draw(
     sourceImageAsset: ImageAsset,
     sprite: Sprite,
-    targetXy1: Vector2d,
+    targetXy: Vector2d,
     colorMapping: Map<ColorId, Color> = new Map(),
     clippingRegion: ClippingRegion | null = null,
   ): void {
@@ -61,7 +61,7 @@ export class DrawSprite {
 
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
       for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        const canvasXy = targetXy1.add(
+        const canvasXy = targetXy.add(
           v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y),
         );
         if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {

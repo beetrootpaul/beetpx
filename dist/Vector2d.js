@@ -14,24 +14,20 @@ class Vector2d {
     static max(xy1, xy2) {
         return new Vector2d(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y));
     }
-    static forEachIntXyWithinRectOf(xy1, xy2, fill, callback) {
-        xy1 = xy1.round();
-        xy2 = xy2.round();
-        const [xMinInclusive, xMaxExclusive] = [
-            Math.min(xy1.x, xy2.x),
-            Math.max(xy1.x, xy2.x),
-        ];
-        const [yMinInclusive, yMaxExclusive] = [
-            Math.min(xy1.y, xy2.y),
-            Math.max(xy1.y, xy2.y),
-        ];
-        for (let x = xMinInclusive; x < xMaxExclusive; x += 1) {
-            for (let y = yMinInclusive; y < yMaxExclusive; y += 1) {
+    static minMax(xy1, xy2) {
+        return [Vector2d.min(xy1, xy2), Vector2d.max(xy1, xy2)];
+    }
+    static forEachIntXyWithinRectOf(xy, wh, fill, callback) {
+        xy = xy.round();
+        wh = wh.round();
+        const [xyMinInclusive, xyMaxExclusive] = Vector2d.minMax(xy, xy.add(wh));
+        for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+            for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
                 if (fill ||
-                    x === xMinInclusive ||
-                    x === xMaxExclusive - 1 ||
-                    y === yMinInclusive ||
-                    y === yMaxExclusive - 1) {
+                    x === xyMinInclusive.x ||
+                    x === xyMaxExclusive.x - 1 ||
+                    y === xyMinInclusive.y ||
+                    y === xyMaxExclusive.y - 1) {
                     callback(v_(x, y));
                 }
             }
@@ -40,6 +36,9 @@ class Vector2d {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+    }
+    asArray() {
+        return [this.x, this.y];
     }
     // TODO: cover with tests
     magnitude() {

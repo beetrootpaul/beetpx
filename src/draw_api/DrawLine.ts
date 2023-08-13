@@ -18,21 +18,22 @@ export class DrawLine {
   }
 
   // TODO: cover ClippingRegion with tests
-  // TODO: Consider rect and ellipse and line APIs to operate on *inclusive* xy2.
-  //       It is strange to have to set xy2 to be at least 1 higher than xy1 in order to draw a straight line.
   // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
-    xy1: Vector2d,
-    xy2: Vector2d,
+    xy: Vector2d,
+    wh: Vector2d,
     color: SolidColor,
     // TODO: implement fill pattern for the line (?)
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
+    // check if wh has 0 width or height
+    if (wh.x * wh.y === 0) {
       return;
     }
+
+    let [xy1, xy2] = [xy, xy.add(wh)];
 
     // adjust coordinates from right-bottom excluded to included
     [xy1, xy2] = [

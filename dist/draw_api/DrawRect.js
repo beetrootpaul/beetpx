@@ -27,8 +27,8 @@ class DrawRect {
         __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f")), "f");
     }
     // TODO: cover ClippingRegion with tests
-    draw(xy1, xy2, color, fill, fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
-        Vector2d_1.Vector2d.forEachIntXyWithinRectOf(xy1, xy2, fill, (xy) => {
+    draw(xy, wh, color, fill, fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
+        Vector2d_1.Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 if (color instanceof Color_1.CompositeColor) {
                     if (color.primary instanceof Color_1.SolidColor) {

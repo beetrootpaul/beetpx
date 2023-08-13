@@ -6,7 +6,7 @@ describe("ClippingRegion", () => {
   describe("#allowsDrawingAt", () => {
     test("a regular region", () => {
       // given
-      const clippingRegion = ClippingRegion.of(v_(-100, -200), v_(300, 400));
+      const clippingRegion = ClippingRegion.of(v_(-100, -200), v_(400, 600));
 
       // top-left corner
       expect(clippingRegion.allowsDrawingAt(v_(-100, -200))).toBe(true);
@@ -31,7 +31,7 @@ describe("ClippingRegion", () => {
 
     test("a negative size region", () => {
       // given
-      const clippingRegion = ClippingRegion.of(v_(300, 400), v_(-100, -200));
+      const clippingRegion = ClippingRegion.of(v_(300, 400), v_(-400, -600));
 
       // top-left corner
       expect(clippingRegion.allowsDrawingAt(v_(-100, -200))).toBe(true);
