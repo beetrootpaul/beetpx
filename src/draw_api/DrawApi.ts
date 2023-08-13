@@ -13,6 +13,8 @@ import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { FillPattern } from "./FillPattern";
 
+export type ColorMapping = Array<{ from: Color; to: Color }>;
+
 type DrawApiOptions = {
   // TODO: better name to indicate in-out nature of this param? Or some info in JSDoc?
   canvasBytes: Uint8ClampedArray;
@@ -82,8 +84,13 @@ export class DrawApi {
   }
 
   // TODO: cover it with tests
-  mapSpriteColors(mappings: Array<{ from: Color; to: Color }>): void {
-    mappings.forEach(({ from, to }) => {
+  mapSpriteColors(mapping: ColorMapping): ColorMapping {
+    const previous: ColorMapping = [];
+    mapping.forEach(({ from, to }) => {
+      previous.push({
+        from,
+        to: this.#spriteColorMapping.get(from.id()) ?? from,
+      });
       // TODO: consider writing a custom equality check function
       if (from.id() === to.id()) {
         this.#spriteColorMapping.delete(from.id());
@@ -91,10 +98,7 @@ export class DrawApi {
         this.#spriteColorMapping.set(from.id(), to);
       }
     });
-  }
-
-  getMappedSpriteColor(from: Color): Color {
-    return this.#spriteColorMapping.get(from.id()) ?? from;
+    return previous;
   }
 
   // TODO: cover it with tests

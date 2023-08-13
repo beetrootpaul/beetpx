@@ -164,6 +164,35 @@ declare class FillPattern {
     hasPrimaryColorAt(xy: Vector2d): boolean;
 }
 
+type ColorMapping = Array<{
+    from: Color;
+    to: Color;
+}>;
+type DrawApiOptions = {
+    canvasBytes: Uint8ClampedArray;
+    canvasSize: Vector2d;
+    assets: Assets;
+};
+declare class DrawApi {
+    #private;
+    constructor(options: DrawApiOptions);
+    setCameraOffset(offset: Vector2d): void;
+    setClippingRegion(clippingRegion: ClippingRegion | null): void;
+    setFillPattern(fillPattern: FillPattern): void;
+    mapSpriteColors(mapping: ColorMapping): ColorMapping;
+    setFont(fontId: FontId | null): void;
+    getFont(): Font | null;
+    clearCanvas(color: SolidColor): void;
+    pixel(xy: Vector2d, color: SolidColor): void;
+    line(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    rect(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    rectFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor): void;
+    ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    sprite(sprite: Sprite, canvasXy: Vector2d): void;
+    print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
+}
+
 type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
 
 declare class Timer {
@@ -213,35 +242,6 @@ declare class AudioApi {
     playSoundSequence(soundSequence: SoundSequence): void;
     muteSound(loopedSoundUrl: SoundUrl): void;
     unmuteSound(loopedSoundUrl: SoundUrl): void;
-}
-
-type DrawApiOptions = {
-    canvasBytes: Uint8ClampedArray;
-    canvasSize: Vector2d;
-    assets: Assets;
-};
-declare class DrawApi {
-    #private;
-    constructor(options: DrawApiOptions);
-    setCameraOffset(offset: Vector2d): void;
-    setClippingRegion(clippingRegion: ClippingRegion | null): void;
-    setFillPattern(fillPattern: FillPattern): void;
-    mapSpriteColors(mappings: Array<{
-        from: Color;
-        to: Color;
-    }>): void;
-    getMappedSpriteColor(from: Color): Color;
-    setFont(fontId: FontId | null): void;
-    getFont(): Font | null;
-    clearCanvas(color: SolidColor): void;
-    pixel(xy: Vector2d, color: SolidColor): void;
-    line(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
-    rect(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
-    rectFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor): void;
-    ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
-    ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
-    sprite(sprite: Sprite, canvasXy: Vector2d): void;
-    print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
 
 type ButtonName = "left" | "right" | "up" | "down" | "o" | "x";
@@ -309,7 +309,6 @@ declare class BeetPx {
     static setClippingRegion: DrawApi["setClippingRegion"];
     static setFillPattern: DrawApi["setFillPattern"];
     static mapSpriteColors: DrawApi["mapSpriteColors"];
-    static getMappedSpriteColor: DrawApi["getMappedSpriteColor"];
     static setFont: DrawApi["setFont"];
     static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];
@@ -346,4 +345,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };

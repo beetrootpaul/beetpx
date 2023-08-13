@@ -14,6 +14,7 @@ export { Sprite } from "./Sprite";
 export { Utils } from "./Utils";
 export { Vector2d } from "./Vector2d";
 export { ClippingRegion } from "./draw_api/ClippingRegion";
+export { type ColorMapping } from "./draw_api/DrawApi";
 export { FillPattern } from "./draw_api/FillPattern";
 export { type CharSprite, type Font, type FontId } from "./font/Font";
 export { type GameInputEvent } from "./game_input/GameInput";
