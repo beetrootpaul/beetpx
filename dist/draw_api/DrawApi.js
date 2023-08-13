@@ -74,10 +74,8 @@ class DrawApi {
         return __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id()) ?? from;
     }
     // TODO: cover it with tests
-    setFont(fontImageUrl) {
-        __classPrivateFieldSet(this, _DrawApi_fontAsset, fontImageUrl
-            ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontImageUrl)
-            : null, "f");
+    setFont(fontId) {
+        __classPrivateFieldSet(this, _DrawApi_fontAsset, fontId ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontId) : null, "f");
     }
     getFont() {
         return __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")?.font ?? null;

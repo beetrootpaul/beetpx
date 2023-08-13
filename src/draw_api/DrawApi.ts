@@ -1,6 +1,6 @@
 import { Assets, FontAsset } from "../Assets";
 import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
-import { CharSprite, Font } from "../font/Font";
+import { CharSprite, Font, FontId } from "../font/Font";
 import { Sprite } from "../Sprite";
 import { v_, Vector2d } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
@@ -98,10 +98,8 @@ export class DrawApi {
   }
 
   // TODO: cover it with tests
-  setFont(fontImageUrl: string | null): void {
-    this.#fontAsset = fontImageUrl
-      ? this.#assets.getFontAsset(fontImageUrl)
-      : null;
+  setFont(fontId: FontId | null): void {
+    this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
   }
 
   getFont(): Font | null {

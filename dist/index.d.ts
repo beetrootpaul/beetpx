@@ -83,7 +83,9 @@ type CharSprite = {
     sprite: Sprite;
     char: string;
 };
+type FontId = string;
 interface Font {
+    readonly id: FontId;
     readonly imageUrl: ImageUrl;
     spritesFor(text: string): CharSprite[];
 }
@@ -128,7 +130,7 @@ declare class Assets {
     constructor(params: AssetsParams);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<void>;
     getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset;
-    getFontAsset(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset;
+    getFontAsset(fontId: FontId): FontAsset;
     getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
 }
 
@@ -226,7 +228,7 @@ declare class DrawApi {
         to: Color;
     }>): void;
     getMappedSpriteColor(from: Color): Color;
-    setFont(fontImageUrl: string | null): void;
+    setFont(fontId: FontId | null): void;
     getFont(): Font | null;
     clearCanvas(color: SolidColor): void;
     pixel(xy: Vector2d, color: SolidColor): void;
@@ -341,4 +343,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, CompositeColor, FillPattern, Font, GameInputEvent, ImageUrl, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
