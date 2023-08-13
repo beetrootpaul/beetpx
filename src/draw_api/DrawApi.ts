@@ -74,8 +74,12 @@ export class DrawApi {
     this.#cameraOffset = offset.round();
   }
 
-  setClippingRegion(clippingRegion: ClippingRegion | null): void {
-    this.#clippingRegion = clippingRegion;
+  setClippingRegion(xy: Vector2d, wh: Vector2d): void {
+    this.#clippingRegion = new ClippingRegion(xy, wh);
+  }
+
+  removeClippingRegion(): void {
+    this.#clippingRegion = null;
   }
 
   // TODO: cover it with tests

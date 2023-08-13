@@ -14,6 +14,7 @@ var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_line, _DrawApi_rec
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DrawApi = void 0;
 const Vector2d_1 = require("../Vector2d");
+const ClippingRegion_1 = require("./ClippingRegion");
 const DrawClear_1 = require("./DrawClear");
 const DrawEllipse_1 = require("./DrawEllipse");
 const DrawLine_1 = require("./DrawLine");
@@ -51,8 +52,11 @@ class DrawApi {
     setCameraOffset(offset) {
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset.round(), "f");
     }
-    setClippingRegion(clippingRegion) {
-        __classPrivateFieldSet(this, _DrawApi_clippingRegion, clippingRegion, "f");
+    setClippingRegion(xy, wh) {
+        __classPrivateFieldSet(this, _DrawApi_clippingRegion, new ClippingRegion_1.ClippingRegion(xy, wh), "f");
+    }
+    removeClippingRegion() {
+        __classPrivateFieldSet(this, _DrawApi_clippingRegion, null, "f");
     }
     // TODO: cover it with tests
     setFillPattern(fillPattern) {

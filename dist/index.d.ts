@@ -150,8 +150,7 @@ declare class Utils {
 
 declare class ClippingRegion {
     #private;
-    static of(xy: Vector2d, wh: Vector2d): ClippingRegion;
-    private constructor();
+    constructor(xy: Vector2d, wh: Vector2d);
     allowsDrawingAt(xy: Vector2d): boolean;
 }
 
@@ -177,7 +176,8 @@ declare class DrawApi {
     #private;
     constructor(options: DrawApiOptions);
     setCameraOffset(offset: Vector2d): void;
-    setClippingRegion(clippingRegion: ClippingRegion | null): void;
+    setClippingRegion(xy: Vector2d, wh: Vector2d): void;
+    removeClippingRegion(): void;
     setFillPattern(fillPattern: FillPattern): void;
     mapSpriteColors(mapping: ColorMapping): ColorMapping;
     setFont(fontId: FontId | null): void;
@@ -307,6 +307,7 @@ declare class BeetPx {
     static wasJustReleased: Buttons["wasJustReleased"];
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setClippingRegion: DrawApi["setClippingRegion"];
+    static removeClippingRegion: DrawApi["removeClippingRegion"];
     static setFillPattern: DrawApi["setFillPattern"];
     static mapSpriteColors: DrawApi["mapSpriteColors"];
     static setFont: DrawApi["setFont"];

@@ -6,7 +6,7 @@ describe("ClippingRegion", () => {
   describe("#allowsDrawingAt", () => {
     test("a regular region", () => {
       // given
-      const clippingRegion = ClippingRegion.of(v_(-100, -200), v_(400, 600));
+      const clippingRegion = new ClippingRegion(v_(-100, -200), v_(400, 600));
 
       // top-left corner
       expect(clippingRegion.allowsDrawingAt(v_(-100, -200))).toBe(true);
@@ -31,7 +31,7 @@ describe("ClippingRegion", () => {
 
     test("a negative size region", () => {
       // given
-      const clippingRegion = ClippingRegion.of(v_(300, 400), v_(-400, -600));
+      const clippingRegion = new ClippingRegion(v_(300, 400), v_(-400, -600));
 
       // top-left corner
       expect(clippingRegion.allowsDrawingAt(v_(-100, -200))).toBe(true);
@@ -56,7 +56,7 @@ describe("ClippingRegion", () => {
 
     test("1x1", () => {
       // given
-      const clippingRegion = ClippingRegion.of(v_(0, 0), v_(1, 1));
+      const clippingRegion = new ClippingRegion(v_(0, 0), v_(1, 1));
 
       // center
       expect(clippingRegion.allowsDrawingAt(v_(0, 0))).toBe(true);
@@ -74,7 +74,7 @@ describe("ClippingRegion", () => {
 
     test("0x0", () => {
       // given
-      const clippingRegion = ClippingRegion.of(v_(0, 0), v_(0, 0));
+      const clippingRegion = new ClippingRegion(v_(0, 0), v_(0, 0));
 
       expect(clippingRegion.allowsDrawingAt(v_(-1, -1))).toBe(false);
       expect(clippingRegion.allowsDrawingAt(v_(0, -1))).toBe(false);

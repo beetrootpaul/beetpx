@@ -15,9 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClippingRegion = void 0;
 const Vector2d_1 = require("../Vector2d");
 class ClippingRegion {
-    static of(xy, wh) {
-        return new ClippingRegion(xy, wh);
-    }
     constructor(xy, wh) {
         var _a, _b;
         _ClippingRegion_xy1.set(this, void 0);
