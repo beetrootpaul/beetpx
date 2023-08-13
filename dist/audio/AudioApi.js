@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _AudioApi_instances, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_loopedSounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode;
+var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_storageApi, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_loopedSounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AudioApi = void 0;
 const Utils_1 = require("../Utils");
@@ -21,10 +21,11 @@ class AudioApi {
     get globalGainNode() {
         return __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f");
     }
-    constructor(assets, audioContext) {
+    constructor(assets, audioContext, storageApi) {
         _AudioApi_instances.add(this);
         _AudioApi_assets.set(this, void 0);
         _AudioApi_audioContext.set(this, void 0);
+        _AudioApi_storageApi.set(this, void 0);
         _AudioApi_globalGainNode.set(this, void 0);
         _AudioApi_muteUnmuteExponentialTimeConstant.set(this, 0.1);
         _AudioApi_isGloballyMuted.set(this, void 0);
@@ -32,10 +33,11 @@ class AudioApi {
         _AudioApi_muteUnmuteTimeConstant.set(this, 0.1);
         __classPrivateFieldSet(this, _AudioApi_assets, assets, "f");
         __classPrivateFieldSet(this, _AudioApi_audioContext, audioContext, "f");
+        __classPrivateFieldSet(this, _AudioApi_storageApi, storageApi, "f");
+        __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_loadStoredGlobalMuteUnmuteState).call(this), "f");
         __classPrivateFieldSet(this, _AudioApi_globalGainNode, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").createGain(), "f");
-        __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.value = 1;
+        __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.value = __classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f") ? 0 : 1;
         __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").connect(__classPrivateFieldGet(this, _AudioApi_audioContext, "f").destination);
-        __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, false, "f");
     }
     // In some browsers audio should start in result of user interaction (e.g. button click).
     // Since we cannot assure it for every game setup, let' expose a function which tries to
@@ -113,12 +115,23 @@ class AudioApi {
     }
 }
 exports.AudioApi = AudioApi;
-_AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_muteUnmuteExponentialTimeConstant = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_loopedSounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_mute = function _AudioApi_mute() {
+_a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_storageApi = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_muteUnmuteExponentialTimeConstant = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_loopedSounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_mute = function _AudioApi_mute() {
+    __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, true);
     __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, true, "f");
     __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setTargetAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteExponentialTimeConstant, "f"));
 }, _AudioApi_unmute = function _AudioApi_unmute() {
+    __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, false);
     __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, false, "f");
     __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setTargetAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteExponentialTimeConstant, "f"));
+}, _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
+    return (window.localStorage.getItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey)) === "yes");
+}, _AudioApi_storeGlobalMuteUnmuteState = function _AudioApi_storeGlobalMuteUnmuteState(muted) {
+    if (muted) {
+        window.localStorage.setItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey), "yes");
+    }
+    else {
+        window.localStorage.removeItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey));
+    }
 }, _AudioApi_playSoundSequenceEntry = function _AudioApi_playSoundSequenceEntry(entry, onEntryEnded) {
     const [mainSound, ...additionalSounds] = entry;
     const mainSoundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(mainSound.url);
@@ -147,3 +160,4 @@ _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _Audio
     sourceNode.buffer = soundAsset.audioBuffer;
     return sourceNode;
 };
+_AudioApi_storageMuteUnmuteKey = { value: "audio_api__muted" };

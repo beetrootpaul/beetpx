@@ -1,11 +1,14 @@
 import { Assets, SoundAsset, SoundUrl } from "../Assets";
+import { StorageApi } from "../storage/StorageApi";
 import { Utils } from "../Utils";
 import { SoundSequence, SoundSequenceEntry } from "./SoundSequence";
 
 export class AudioApi {
-  readonly #assets: Assets;
+  static readonly #storageMuteUnmuteKey = "audio_api__muted";
 
+  readonly #assets: Assets;
   readonly #audioContext: AudioContext;
+  readonly #storageApi: StorageApi;
 
   readonly #globalGainNode: GainNode;
 
@@ -28,15 +31,20 @@ export class AudioApi {
     return this.#globalGainNode;
   }
 
-  constructor(assets: Assets, audioContext: AudioContext) {
+  constructor(
+    assets: Assets,
+    audioContext: AudioContext,
+    storageApi: StorageApi,
+  ) {
     this.#assets = assets;
     this.#audioContext = audioContext;
+    this.#storageApi = storageApi;
+
+    this.#isGloballyMuted = this.#loadStoredGlobalMuteUnmuteState();
 
     this.#globalGainNode = this.#audioContext.createGain();
-    this.#globalGainNode.gain.value = 1;
+    this.#globalGainNode.gain.value = this.#isGloballyMuted ? 0 : 1;
     this.#globalGainNode.connect(this.#audioContext.destination);
-
-    this.#isGloballyMuted = false;
   }
 
   // In some browsers audio should start in result of user interaction (e.g. button click).
@@ -61,6 +69,7 @@ export class AudioApi {
   }
 
   #mute(): void {
+    this.#storeGlobalMuteUnmuteState(true);
     this.#isGloballyMuted = true;
     this.#globalGainNode.gain.setTargetAtTime(
       0,
@@ -70,12 +79,27 @@ export class AudioApi {
   }
 
   #unmute(): void {
+    this.#storeGlobalMuteUnmuteState(false);
     this.#isGloballyMuted = false;
     this.#globalGainNode.gain.setTargetAtTime(
       1,
       this.#audioContext.currentTime,
       this.#muteUnmuteExponentialTimeConstant,
     );
+  }
+
+  #loadStoredGlobalMuteUnmuteState(): boolean {
+    return (
+      window.localStorage.getItem(AudioApi.#storageMuteUnmuteKey) === "yes"
+    );
+  }
+
+  #storeGlobalMuteUnmuteState(muted: boolean): void {
+    if (muted) {
+      window.localStorage.setItem(AudioApi.#storageMuteUnmuteKey, "yes");
+    } else {
+      window.localStorage.removeItem(AudioApi.#storageMuteUnmuteKey);
+    }
   }
 
   playSoundOnce(soundUrl: SoundUrl): void {

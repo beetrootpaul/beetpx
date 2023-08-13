@@ -171,6 +171,14 @@ declare class Assets {
     getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
 }
 
+type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
+declare class StorageApi {
+    #private;
+    store<StorageApiValue extends StorageApiValueConstraint>(value: StorageApiValue): void;
+    load<StorageApiValue extends StorageApiValueConstraint>(): StorageApiValue | null;
+    clearStorage(): void;
+}
+
 type SoundSequence = {
     sequence?: SoundSequenceEntry[];
     sequenceLooped?: SoundSequenceEntry[];
@@ -191,7 +199,7 @@ declare class AudioApi {
     #private;
     get audioContext(): AudioContext;
     get globalGainNode(): GainNode;
-    constructor(assets: Assets, audioContext: AudioContext);
+    constructor(assets: Assets, audioContext: AudioContext, storageApi: StorageApi);
     resumeAudioContextIfNeeded(): void;
     toggleMuteUnmute(): void;
     playSoundOnce(soundUrl: SoundUrl): void;
@@ -240,14 +248,6 @@ declare class Buttons {
     update(continuousInputEvents: Set<GameInputEvent>): void;
 }
 
-type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
-declare class StorageApi {
-    #private;
-    store<StorageApiValue extends StorageApiValueConstraint>(value: StorageApiValue): void;
-    load<StorageApiValue extends StorageApiValueConstraint>(): StorageApiValue | null;
-    clearStorage(): void;
-}
-
 type FrameworkOptions = {
     gameCanvasSize: Vector2d;
     desiredFps: number;
@@ -270,9 +270,9 @@ declare class Framework {
     get debug(): boolean;
     readonly buttons: Buttons;
     readonly audioApi: AudioApi;
+    readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
-    readonly storageApi: StorageApi;
     frameNumber: number;
     averageFps: number;
     continuousInputEvents: Set<GameInputEvent>;

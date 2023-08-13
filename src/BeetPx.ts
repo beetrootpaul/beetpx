@@ -7,7 +7,7 @@ import { DrawApi } from "./draw_api/DrawApi";
 import { CharSprite } from "./font/Font";
 import { Framework, type FrameworkOptions } from "./Framework";
 import { Buttons } from "./game_input/Buttons";
-import { StorageApi } from "./StorageApi";
+import { StorageApi } from "./storage/StorageApi";
 import { Vector2d } from "./Vector2d";
 
 export class BeetPx {

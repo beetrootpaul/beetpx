@@ -22,7 +22,7 @@ const Buttons_1 = require("./game_input/Buttons");
 const GameInput_1 = require("./game_input/GameInput");
 const GameLoop_1 = require("./game_loop/GameLoop");
 const Loading_1 = require("./Loading");
-const StorageApi_1 = require("./StorageApi");
+const StorageApi_1 = require("./storage/StorageApi");
 const Vector2d_1 = require("./Vector2d");
 class Framework {
     get debug() {
@@ -95,11 +95,12 @@ class Framework {
             logActualFps: options.logActualFps ?? false,
             requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
         }), "f");
+        this.storageApi = new StorageApi_1.StorageApi();
         const audioContext = new AudioContext();
         this.assets = new Assets_1.Assets({
             decodeAudioData: (arrayBuffer) => audioContext.decodeAudioData(arrayBuffer),
         });
-        this.audioApi = new AudioApi_1.AudioApi(this.assets, audioContext);
+        this.audioApi = new AudioApi_1.AudioApi(this.assets, audioContext, this.storageApi);
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen_1.FullScreen.newFor(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f"), __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f")), "f");
         __classPrivateFieldSet(this, _Framework_offscreenImageData, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height), "f");
         this.drawApi = new DrawApi_1.DrawApi({
@@ -107,9 +108,8 @@ class Framework {
             canvasSize: __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"),
             assets: this.assets,
         });
-        this.storageApi = new StorageApi_1.StorageApi();
     }
-    loadAssets(assetsToLoad) {
+    async loadAssets(assetsToLoad) {
         return this.assets.loadAssets(assetsToLoad).then(() => ({
             startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
         }));

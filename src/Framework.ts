@@ -7,7 +7,7 @@ import { Buttons } from "./game_input/Buttons";
 import { GameInput, GameInputEvent } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
-import { StorageApi } from "./StorageApi";
+import { StorageApi } from "./storage/StorageApi";
 import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
@@ -57,10 +57,11 @@ export class Framework {
   readonly audioApi: AudioApi;
   readonly #fullScreen: FullScreen;
 
+  readonly storageApi: StorageApi;
+
   readonly assets: Assets;
 
   readonly drawApi: DrawApi;
-  readonly storageApi: StorageApi;
 
   #onUpdate?: () => void;
   #onDraw?: () => void;
@@ -129,6 +130,8 @@ export class Framework {
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
     });
 
+    this.storageApi = new StorageApi();
+
     const audioContext = new AudioContext();
 
     this.assets = new Assets({
@@ -136,7 +139,7 @@ export class Framework {
         audioContext.decodeAudioData(arrayBuffer),
     });
 
-    this.audioApi = new AudioApi(this.assets, audioContext);
+    this.audioApi = new AudioApi(this.assets, audioContext, this.storageApi);
 
     this.#fullScreen = FullScreen.newFor(
       this.#htmlDisplaySelector,
@@ -152,11 +155,9 @@ export class Framework {
       canvasSize: this.#gameCanvasSize,
       assets: this.assets,
     });
-
-    this.storageApi = new StorageApi();
   }
 
-  loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
+  async loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
     return this.assets.loadAssets(assetsToLoad).then(() => ({
       startGame: this.#startGame.bind(this),
     }));

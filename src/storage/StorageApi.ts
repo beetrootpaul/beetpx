@@ -13,6 +13,10 @@ export class StorageApi {
       StorageApi.#key,
       JSON.stringify(value, null, 2),
     );
+    window.localStorage.setItem(
+      StorageApi.#key + "2",
+      JSON.stringify(value, null, 2),
+    );
   }
 
   // TODO: use zod or some other popular lib and validate value's shape here
