@@ -37,19 +37,14 @@ class DrawLine {
         if (wh.x * wh.y === 0) {
             return;
         }
-        let [xy1, xy2] = [xy, xy.add(wh)];
-        // adjust coordinates from right-bottom excluded to included
-        [xy1, xy2] = [
-            xy1.sub(xy1.x < xy2.x ? 0 : 1, xy1.y < xy2.y ? 0 : 1),
-            xy2.sub(xy2.x < xy1.x ? 0 : 1, xy2.y < xy1.y ? 0 : 1),
-        ];
+        const whSub1 = wh.sub(wh.sign());
         //
         // PREPARE
         //
-        let dXy = (0, Vector2d_1.v_)(Math.abs(xy2.x - xy1.x), -Math.abs(xy2.y - xy1.y));
-        let currentXy = xy1;
-        const targetXy = xy2;
-        const step = xy2.sub(xy1).sign();
+        let dXy = whSub1.abs().mul((0, Vector2d_1.v_)(1, -1));
+        let currentXy = xy;
+        const targetXy = xy.add(whSub1);
+        const step = whSub1.sign();
         let err = dXy.x + dXy.y;
         while (true) {
             //

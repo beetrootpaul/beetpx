@@ -148,7 +148,7 @@ describe("DrawLine", () => {
       const rect = new DrawLine(canvas.bytes, canvas.size);
 
       // when
-      rect.draw(v_(1, 8), v_(9, -7), c1);
+      rect.draw(v_(1, 7), v_(9, -7), c1);
 
       // then
       canvas.expectToEqual({
@@ -173,7 +173,7 @@ describe("DrawLine", () => {
       const rect = new DrawLine(canvas.bytes, canvas.size);
 
       // when
-      rect.draw(v_(10, 1), v_(-9, 7), c1);
+      rect.draw(v_(9, 1), v_(-9, 7), c1);
 
       // then
       canvas.expectToEqual({
@@ -198,7 +198,7 @@ describe("DrawLine", () => {
       const rect = new DrawLine(canvas.bytes, canvas.size);
 
       // when
-      rect.draw(v_(10, 8), v_(-9, -7), c1);
+      rect.draw(v_(9, 7), v_(-9, -7), c1);
 
       // then
       canvas.expectToEqual({
@@ -250,7 +250,7 @@ describe("DrawLine", () => {
       const rect = new DrawLine(canvas.bytes, canvas.size);
 
       // when
-      rect.draw(v_(1, 10), v_(7, -9), c1);
+      rect.draw(v_(1, 9), v_(7, -9), c1);
 
       // then
       canvas.expectToEqual({
@@ -277,7 +277,7 @@ describe("DrawLine", () => {
       const rect = new DrawLine(canvas.bytes, canvas.size);
 
       // when
-      rect.draw(v_(8, 1), v_(-7, 9), c1);
+      rect.draw(v_(7, 1), v_(-7, 9), c1);
 
       // then
       canvas.expectToEqual({
@@ -304,7 +304,7 @@ describe("DrawLine", () => {
       const rect = new DrawLine(canvas.bytes, canvas.size);
 
       // when
-      rect.draw(v_(8, 10), v_(-7, -9), c1);
+      rect.draw(v_(7, 9), v_(-7, -9), c1);
 
       // then
       canvas.expectToEqual({

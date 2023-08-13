@@ -36,24 +36,18 @@ export class DrawLine {
       return;
     }
 
-    let [xy1, xy2] = [xy, xy.add(wh)];
-
-    // adjust coordinates from right-bottom excluded to included
-    [xy1, xy2] = [
-      xy1.sub(xy1.x < xy2.x ? 0 : 1, xy1.y < xy2.y ? 0 : 1),
-      xy2.sub(xy2.x < xy1.x ? 0 : 1, xy2.y < xy1.y ? 0 : 1),
-    ];
+    const whSub1 = wh.sub(wh.sign());
 
     //
     // PREPARE
     //
 
-    let dXy = v_(Math.abs(xy2.x - xy1.x), -Math.abs(xy2.y - xy1.y));
+    let dXy = whSub1.abs().mul(v_(1, -1));
 
-    let currentXy = xy1;
-    const targetXy = xy2;
+    let currentXy = xy;
+    const targetXy = xy.add(whSub1);
 
-    const step = xy2.sub(xy1).sign();
+    const step = whSub1.sign();
     let err = dXy.x + dXy.y;
 
     while (true) {
