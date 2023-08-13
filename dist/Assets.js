@@ -24,12 +24,12 @@ class Assets {
     }
     // TODO: game loading screen during assets loading?
     async loadAssets(assetsToLoad) {
-        assetsToLoad.fonts.forEach(({ url, font, imageTextColor, imageBgColor }) => {
-            __classPrivateFieldGet(this, _Assets_fonts, "f").set(url, { font, imageTextColor, imageBgColor });
+        assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {
+            __classPrivateFieldGet(this, _Assets_fonts, "f").set(font.imageUrl, { font, imageTextColor, imageBgColor });
         });
         const uniqueImageUrls = new Set([
             ...assetsToLoad.images.map(({ url }) => url),
-            ...assetsToLoad.fonts.map(({ url }) => url),
+            ...assetsToLoad.fonts.map(({ font }) => font.imageUrl),
         ]);
         await Promise.all(Array.from(uniqueImageUrls).map(async (url) => {
             const htmlImage = new Image();

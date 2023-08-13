@@ -26,5 +26,4 @@ Object.defineProperty(exports, "v_", { enumerable: true, get: function () { retu
 var BeetPx_1 = require("./BeetPx");
 Object.defineProperty(exports, "BeetPx", { enumerable: true, get: function () { return BeetPx_1.BeetPx; } });
 // TODO: remove comments from HTMLs from the generated game
-// TODO: do not emit tests
 // TODO: improve bg color on itch around the game, but under the buttons

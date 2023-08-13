@@ -2,6 +2,7 @@ declare global {
   const __BEETPX_IS_PROD__: boolean;
 }
 
+export { type ImageUrl } from "./Assets";
 export {
   CompositeColor,
   SolidColor,
@@ -25,7 +26,5 @@ export { v_ } from "./Vector2d";
 export { BeetPx } from "./BeetPx";
 
 // TODO: remove comments from HTMLs from the generated game
-
-// TODO: do not emit tests
 
 // TODO: improve bg color on itch around the game, but under the buttons

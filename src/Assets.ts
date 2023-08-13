@@ -17,7 +17,6 @@ type ImageAssetToLoad = {
 
 type FontAssetToLoad = {
   font: Font;
-  url: ImageUrl;
   imageTextColor: SolidColor;
   imageBgColor: SolidColor;
 };
@@ -67,15 +66,13 @@ export class Assets {
 
   // TODO: game loading screen during assets loading?
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
-    assetsToLoad.fonts.forEach(
-      ({ url, font, imageTextColor, imageBgColor }) => {
-        this.#fonts.set(url, { font, imageTextColor, imageBgColor });
-      },
-    );
+    assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {
+      this.#fonts.set(font.imageUrl, { font, imageTextColor, imageBgColor });
+    });
 
     const uniqueImageUrls = new Set([
       ...assetsToLoad.images.map(({ url }) => url),
-      ...assetsToLoad.fonts.map(({ url }) => url),
+      ...assetsToLoad.fonts.map(({ font }) => font.imageUrl),
     ]);
     await Promise.all(
       Array.from(uniqueImageUrls).map(async (url) => {

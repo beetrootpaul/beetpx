@@ -68,12 +68,23 @@ declare class Vector2d implements PrintDebug {
     d(): string;
 }
 
+type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => Sprite;
+declare function spr_(imageUrl: ImageUrl): SpriteCreationHelper;
+declare class Sprite {
+    imageUrl: ImageUrl;
+    xy1: Vector2d;
+    xy2: Vector2d;
+    constructor(imageUrl: ImageUrl, xy1: Vector2d, xy2: Vector2d);
+    size(): Vector2d;
+}
+
 type CharSprite = {
     positionInText: Vector2d;
     sprite: Sprite;
     char: string;
 };
 interface Font {
+    readonly imageUrl: ImageUrl;
     spritesFor(text: string): CharSprite[];
 }
 
@@ -89,7 +100,6 @@ type ImageAssetToLoad = {
 };
 type FontAssetToLoad = {
     font: Font;
-    url: ImageUrl;
     imageTextColor: SolidColor;
     imageBgColor: SolidColor;
 };
@@ -120,16 +130,6 @@ declare class Assets {
     getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset;
     getFontAsset(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset;
     getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
-}
-
-type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => Sprite;
-declare function spr_(imageUrl: ImageUrl): SpriteCreationHelper;
-declare class Sprite {
-    imageUrl: ImageUrl;
-    xy1: Vector2d;
-    xy2: Vector2d;
-    constructor(imageUrl: ImageUrl, xy1: Vector2d, xy2: Vector2d);
-    size(): Vector2d;
 }
 
 declare class Utils {
@@ -341,4 +341,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, CompositeColor, FillPattern, Font, GameInputEvent, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, CompositeColor, FillPattern, Font, GameInputEvent, ImageUrl, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
