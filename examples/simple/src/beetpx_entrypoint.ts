@@ -5,6 +5,10 @@ BeetPx.init(
     gameCanvasSize: v_(128, 128),
     desiredFps: 30,
     logActualFps: true,
+    debug: {
+      available: !__BEETPX_IS_PROD__,
+      toggleKey: ";",
+    },
   },
   {
     images: [{ url: "logo.png" }],
@@ -32,6 +36,13 @@ BeetPx.init(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
     );
+    if (BeetPx.debug) {
+      BeetPx.line(
+        v_(0, 0),
+        logoPositionBase.add(logoPositionOffset),
+        SolidColor.fromRgbCssHex("#ff0000"),
+      );
+    }
   });
 
   startGame(() => {

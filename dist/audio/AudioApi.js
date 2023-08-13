@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_storageApi, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_loopedSounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode;
+var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_storageApi, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_loopedSounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AudioApi = void 0;
 const Utils_1 = require("../Utils");
@@ -124,10 +124,11 @@ _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new We
     __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, false, "f");
     __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setTargetAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteExponentialTimeConstant, "f"));
 }, _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
-    return (window.localStorage.getItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey)) === "yes");
+    return (window.localStorage.getItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey)) ===
+        __classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteTrue));
 }, _AudioApi_storeGlobalMuteUnmuteState = function _AudioApi_storeGlobalMuteUnmuteState(muted) {
     if (muted) {
-        window.localStorage.setItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey), "yes");
+        window.localStorage.setItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey), __classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteTrue));
     }
     else {
         window.localStorage.removeItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey));
@@ -161,3 +162,4 @@ _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new We
     return sourceNode;
 };
 _AudioApi_storageMuteUnmuteKey = { value: "audio_api__muted" };
+_AudioApi_storageMuteUnmuteTrue = { value: "yes" };

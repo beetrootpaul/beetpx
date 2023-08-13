@@ -5,6 +5,7 @@ import { SoundSequence, SoundSequenceEntry } from "./SoundSequence";
 
 export class AudioApi {
   static readonly #storageMuteUnmuteKey = "audio_api__muted";
+  static readonly #storageMuteUnmuteTrue = "yes";
 
   readonly #assets: Assets;
   readonly #audioContext: AudioContext;
@@ -90,13 +91,17 @@ export class AudioApi {
 
   #loadStoredGlobalMuteUnmuteState(): boolean {
     return (
-      window.localStorage.getItem(AudioApi.#storageMuteUnmuteKey) === "yes"
+      window.localStorage.getItem(AudioApi.#storageMuteUnmuteKey) ===
+      AudioApi.#storageMuteUnmuteTrue
     );
   }
 
   #storeGlobalMuteUnmuteState(muted: boolean): void {
     if (muted) {
-      window.localStorage.setItem(AudioApi.#storageMuteUnmuteKey, "yes");
+      window.localStorage.setItem(
+        AudioApi.#storageMuteUnmuteKey,
+        AudioApi.#storageMuteUnmuteTrue,
+      );
     } else {
       window.localStorage.removeItem(AudioApi.#storageMuteUnmuteKey);
     }

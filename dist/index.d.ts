@@ -259,7 +259,7 @@ type FrameworkOptions = {
     desiredFps: number;
     logActualFps?: boolean;
     debug?: {
-        enabledOnInit: boolean;
+        available: boolean;
         /**
          * A key to toggle debug mode on/off. Has to match a
          * [KeyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)

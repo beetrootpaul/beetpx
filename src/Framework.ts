@@ -16,7 +16,7 @@ export type FrameworkOptions = {
   // TODO: Does is still work?
   logActualFps?: boolean;
   debug?: {
-    enabledOnInit: boolean;
+    available: boolean;
     /**
      * A key to toggle debug mode on/off. Has to match a
      * [KeyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
@@ -31,6 +31,10 @@ export type OnAssetsLoaded = {
 };
 
 export class Framework {
+  // TODO: Move debug responsibility to a separate class
+  static readonly #storageDebugDisabledKey = "framework__debug_disabled";
+  static readonly #storageDebugDisabledTrue = "yes";
+
   readonly #htmlDisplaySelector = "#display";
   readonly #htmlCanvasSelector = "#canvas";
   readonly #htmlControlsFullscreenSelector = ".controls_fullscreen_toggle";
@@ -76,9 +80,12 @@ export class Framework {
 
   constructor(options: FrameworkOptions) {
     this.#debugOptions = options.debug ?? {
-      enabledOnInit: false,
+      available: false,
     };
-    this.#debug = this.#debugOptions?.enabledOnInit;
+    this.#debug = this.#debugOptions?.available
+      ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
+        Framework.#storageDebugDisabledTrue
+      : false;
 
     this.#loading = new Loading(this.#htmlDisplaySelector);
 
@@ -119,7 +126,9 @@ export class Framework {
     this.#gameInput = new GameInput({
       muteButtonsSelector: this.#htmlControlsMuteSelector,
       fullScreenButtonsSelector: this.#htmlControlsFullscreenSelector,
-      debugToggleKey: this.#debugOptions?.toggleKey,
+      debugToggleKey: this.#debugOptions?.available
+        ? this.#debugOptions?.toggleKey ?? ";"
+        : undefined,
     });
 
     this.buttons = new Buttons();
@@ -196,6 +205,14 @@ export class Framework {
         }
         if (fireOnceEvents.has("debug_toggle")) {
           this.#debug = !this.#debug;
+          if (this.#debug) {
+            window.localStorage.removeItem(Framework.#storageDebugDisabledKey);
+          } else {
+            window.localStorage.setItem(
+              Framework.#storageDebugDisabledKey,
+              Framework.#storageDebugDisabledTrue,
+            );
+          }
           this.#redrawDebugMargin();
         }
 
