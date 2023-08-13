@@ -31,12 +31,12 @@
   "scripts": {
     "prepare": "husky install",
     "format": "prettier --ignore-path .gitignore --write cli/ html_templates/ src/",
-    "typecheck": "tsc --noEmit",
-    "typecheck:watch": "tsc --noEmit --watch",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc --watch",
     "test": "jest",
     "start": "npm run typecheck:watch",
     "precompile": "rimraf ./.dist/* ./dist/*",
-    "compile": "tsc",
+    "compile": "tsc --project tsconfig.compile.json",
     "postcompile": "rollup --config ./rollup.config.ts --configPlugin typescript"
   },
   "dependencies": {
