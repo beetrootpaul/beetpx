@@ -31,6 +31,9 @@ export class DrawEllipse {
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
+    xy = xy.round();
+    wh = wh.round();
+
     // check if wh has 0 width or height
     if (wh.x * wh.y === 0) {
       return;

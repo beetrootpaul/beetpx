@@ -23,6 +23,7 @@ class DrawPixel {
     }
     // TODO: cover ClippingRegion with tests
     draw(xy, color, clippingRegion = null) {
+        xy = xy.round();
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }

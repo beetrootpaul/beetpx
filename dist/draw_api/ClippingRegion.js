@@ -22,8 +22,8 @@ class ClippingRegion {
         var _a, _b;
         _ClippingRegion_xy1.set(this, void 0);
         _ClippingRegion_xy2.set(this, void 0);
-        __classPrivateFieldSet(this, _ClippingRegion_xy1, xy, "f");
-        __classPrivateFieldSet(this, _ClippingRegion_xy2, xy.add(wh), "f");
+        __classPrivateFieldSet(this, _ClippingRegion_xy1, xy.round(), "f");
+        __classPrivateFieldSet(this, _ClippingRegion_xy2, xy.round().add(wh.round()), "f");
         _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _ClippingRegion_xy1, _c, "f"); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _ClippingRegion_xy2, _c, "f"); } }).value] = Vector2d_1.Vector2d.minMax(__classPrivateFieldGet(this, _ClippingRegion_xy1, "f"), __classPrivateFieldGet(this, _ClippingRegion_xy2, "f"));
     }
     allowsDrawingAt(xy) {

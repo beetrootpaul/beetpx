@@ -9,8 +9,8 @@ export class ClippingRegion {
   readonly #xy2: Vector2d;
 
   private constructor(xy: Vector2d, wh: Vector2d) {
-    this.#xy1 = xy;
-    this.#xy2 = xy.add(wh);
+    this.#xy1 = xy.round();
+    this.#xy2 = xy.round().add(wh.round());
     [this.#xy1, this.#xy2] = Vector2d.minMax(this.#xy1, this.#xy2);
   }
 

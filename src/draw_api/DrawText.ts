@@ -27,7 +27,10 @@ export class DrawText {
     color: SolidColor | ((charSprite: CharSprite) => SolidColor),
     clippingRegion: ClippingRegion | null = null,
   ): void {
+    canvasXy = canvasXy.round();
+
     const colorFn = typeof color === "function" ? color : () => color;
+
     for (const charSprite of fontAsset.font.spritesFor(text)) {
       this.#sprite.draw(
         fontAsset.image,

@@ -26,6 +26,9 @@ export class DrawRect {
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
+    xy = xy.round();
+    wh = wh.round();
+
     Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
       if (fillPattern.hasPrimaryColorAt(xy)) {
         if (color instanceof CompositeColor) {

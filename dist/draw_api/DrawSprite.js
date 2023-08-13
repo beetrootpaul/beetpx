@@ -29,6 +29,7 @@ class DrawSprite {
     }
     // TODO: cover clippingRegion with tests
     draw(sourceImageAsset, sprite, targetXy, colorMapping = new Map(), clippingRegion = null) {
+        targetXy = targetXy.round();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
         sprite = new Sprite_1.Sprite(sprite.imageUrl, (0, Vector2d_1.v_)(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), (0, Vector2d_1.v_)(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));

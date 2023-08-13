@@ -28,6 +28,8 @@ class DrawRect {
     }
     // TODO: cover ClippingRegion with tests
     draw(xy, wh, color, fill, fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
+        xy = xy.round();
+        wh = wh.round();
         Vector2d_1.Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 if (color instanceof Color_1.CompositeColor) {

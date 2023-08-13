@@ -27,6 +27,8 @@ export class DrawSprite {
     colorMapping: Map<ColorId, Color> = new Map(),
     clippingRegion: ClippingRegion | null = null,
   ): void {
+    targetXy = targetXy.round();
+
     const {
       width: imgW,
       height: imgH,

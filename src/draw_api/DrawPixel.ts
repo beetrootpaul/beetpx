@@ -17,9 +17,12 @@ export class DrawPixel {
     color: SolidColor,
     clippingRegion: ClippingRegion | null = null,
   ): void {
+    xy = xy.round();
+
     if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
       return;
     }
+
     if (xy.gte(Vector2d.zero) && xy.lt(this.#canvasSize)) {
       const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
       this.#canvasBytes[i] = color.r;
