@@ -1,4 +1,4 @@
-import { Assets, FontAsset, ImageUrl } from "../Assets";
+import { Assets, FontAsset } from "../Assets";
 import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
 import { CharSprite, Font } from "../font/Font";
 import { Sprite } from "../Sprite";
@@ -179,8 +179,8 @@ export class DrawApi {
   }
 
   // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
-  sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void {
-    const sourceImageAsset = this.#assets.getImageAsset(spriteImageUrl);
+  sprite(sprite: Sprite, canvasXy1: Vector2d): void {
+    const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sourceImageAsset,
       sprite,

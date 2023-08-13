@@ -104,8 +104,8 @@ class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), xy2.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
-    sprite(spriteImageUrl, sprite, canvasXy1) {
-        const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(spriteImageUrl);
+    sprite(sprite, canvasXy1) {
+        const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy1.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")).round(), __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: cover with tests

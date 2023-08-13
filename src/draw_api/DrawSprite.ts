@@ -35,6 +35,7 @@ export class DrawSprite {
 
     // make sure xy1 is top-left and xy2 is bottom right
     sprite = new Sprite(
+      sprite.imageUrl,
       v_(
         Math.min(sprite.xy1.x, sprite.xy2.x),
         Math.min(sprite.xy1.y, sprite.xy2.y),
@@ -47,6 +48,7 @@ export class DrawSprite {
 
     // clip sprite by image edges
     sprite = new Sprite(
+      sprite.imageUrl,
       v_(
         Utils.clamp(0, sprite.xy1.x, imgW),
         Utils.clamp(0, sprite.xy1.y, imgH),

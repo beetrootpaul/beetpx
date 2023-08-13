@@ -68,42 +68,6 @@ declare class Vector2d implements PrintDebug {
     d(): string;
 }
 
-declare function spr_(x1: number, y1: number, wh: Vector2d): Sprite;
-declare function spr_(x1: number, y1: number, w: number, h: number): Sprite;
-declare class Sprite {
-    xy1: Vector2d;
-    xy2: Vector2d;
-    constructor(xy1: Vector2d, xy2: Vector2d);
-    size(): Vector2d;
-}
-
-declare class Utils {
-    static noop(): void;
-    static clamp(a: number, b: number, c: number): number;
-    static repeatN(n: number, callback: (i: number) => void): void;
-    static booleanChangingEveryNthFrame(n: number): boolean;
-    static get offset8Directions(): Vector2d[];
-    static measureTextSize(text: string): Vector2d;
-    static printWithOutline(text: string, canvasXy1: Vector2d, textColor: SolidColor, outlineColor: SolidColor): void;
-    static throwError(message: string): never;
-}
-
-declare class ClippingRegion {
-    #private;
-    static of(xy1: Vector2d, xy2: Vector2d): ClippingRegion;
-    private constructor();
-    allowsDrawingAt(xy: Vector2d): boolean;
-}
-
-declare class FillPattern {
-    #private;
-    static of(bits: number): FillPattern;
-    static primaryOnly: FillPattern;
-    static secondaryOnly: FillPattern;
-    private constructor();
-    hasPrimaryColorAt(xy: Vector2d): boolean;
-}
-
 type CharSprite = {
     positionInText: Vector2d;
     sprite: Sprite;
@@ -111,19 +75,6 @@ type CharSprite = {
 };
 interface Font {
     spritesFor(text: string): CharSprite[];
-}
-
-type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
-
-declare class Timer {
-    #private;
-    constructor(params: {
-        frames: number;
-    });
-    get framesLeft(): number;
-    get progress(): number;
-    get hasFinished(): boolean;
-    update(): void;
 }
 
 type AssetsToLoad = {
@@ -169,6 +120,56 @@ declare class Assets {
     getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset;
     getFontAsset(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset;
     getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
+}
+
+type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => Sprite;
+declare function spr_(imageUrl: ImageUrl): SpriteCreationHelper;
+declare class Sprite {
+    imageUrl: ImageUrl;
+    xy1: Vector2d;
+    xy2: Vector2d;
+    constructor(imageUrl: ImageUrl, xy1: Vector2d, xy2: Vector2d);
+    size(): Vector2d;
+}
+
+declare class Utils {
+    static noop(): void;
+    static clamp(a: number, b: number, c: number): number;
+    static repeatN(n: number, callback: (i: number) => void): void;
+    static booleanChangingEveryNthFrame(n: number): boolean;
+    static get offset8Directions(): Vector2d[];
+    static measureTextSize(text: string): Vector2d;
+    static printWithOutline(text: string, canvasXy1: Vector2d, textColor: SolidColor, outlineColor: SolidColor): void;
+    static throwError(message: string): never;
+}
+
+declare class ClippingRegion {
+    #private;
+    static of(xy1: Vector2d, xy2: Vector2d): ClippingRegion;
+    private constructor();
+    allowsDrawingAt(xy: Vector2d): boolean;
+}
+
+declare class FillPattern {
+    #private;
+    static of(bits: number): FillPattern;
+    static primaryOnly: FillPattern;
+    static secondaryOnly: FillPattern;
+    private constructor();
+    hasPrimaryColorAt(xy: Vector2d): boolean;
+}
+
+type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
+
+declare class Timer {
+    #private;
+    constructor(params: {
+        frames: number;
+    });
+    get framesLeft(): number;
+    get progress(): number;
+    get hasFinished(): boolean;
+    update(): void;
 }
 
 type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
@@ -234,7 +235,7 @@ declare class DrawApi {
     rectFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor | CompositeColor): void;
     ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
     ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void;
-    sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void;
+    sprite(sprite: Sprite, canvasXy1: Vector2d): void;
     print(text: string, canvasXy1: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
 
