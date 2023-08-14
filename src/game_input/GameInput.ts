@@ -13,6 +13,7 @@ export type GameInputEvent =
   // TODO: consider moving towards Z/X instead of O/X
   | "button_x"
   | "button_o"
+  | "button_menu"
   | "mute_unmute_toggle"
   | "full_screen"
   | "debug_toggle"

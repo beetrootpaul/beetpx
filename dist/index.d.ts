@@ -193,7 +193,7 @@ declare class DrawApi {
     print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
 
-type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
+type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 
 declare class Timer {
     #private;
@@ -244,7 +244,7 @@ declare class AudioApi {
     unmuteSound(loopedSoundUrl: SoundUrl): void;
 }
 
-type ButtonName = "left" | "right" | "up" | "down" | "o" | "x";
+type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
 declare class Buttons {
     #private;
     isPressed(button: ButtonName): boolean;

@@ -2,7 +2,7 @@ import { Button } from "./Button";
 import { GameInputEvent } from "./GameInput";
 
 // TODO: consider moving towards Z/X instead of O/X
-export type ButtonName = "left" | "right" | "up" | "down" | "o" | "x";
+export type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
 
 export class Buttons {
   readonly #left: Button = new Button();
@@ -11,6 +11,7 @@ export class Buttons {
   readonly #down: Button = new Button();
   readonly #o: Button = new Button();
   readonly #x: Button = new Button();
+  readonly #menu: Button = new Button();
 
   #repeatingLeft: boolean = true;
   #repeatingRight: boolean = true;
@@ -18,6 +19,8 @@ export class Buttons {
   #repeatingDown: boolean = true;
   #repeatingO: boolean = true;
   #repeatingX: boolean = true;
+
+  #repeatingMenu: boolean = false;
 
   isPressed(button: ButtonName): boolean {
     switch (button) {
@@ -33,6 +36,8 @@ export class Buttons {
         return this.#o.isPressed;
       case "x":
         return this.#x.isPressed;
+      case "menu":
+        return this.#menu.isPressed;
     }
   }
 
@@ -56,6 +61,9 @@ export class Buttons {
       case "x":
         this.#repeatingX = repeating;
         return;
+      case "menu":
+        this.#repeatingMenu = repeating;
+        return;
     }
   }
 
@@ -73,6 +81,8 @@ export class Buttons {
         return this.#o.wasJustPressed(this.#repeatingO);
       case "x":
         return this.#x.wasJustPressed(this.#repeatingX);
+      case "menu":
+        return this.#menu.wasJustPressed(this.#repeatingMenu);
     }
   }
 
@@ -90,6 +100,8 @@ export class Buttons {
         return this.#o.wasJustReleased(this.#repeatingO);
       case "x":
         return this.#x.wasJustReleased(this.#repeatingX);
+      case "menu":
+        return this.#menu.wasJustReleased(this.#repeatingMenu);
     }
   }
 
@@ -100,5 +112,6 @@ export class Buttons {
     this.#down.update(continuousInputEvents.has("button_down"));
     this.#o.update(continuousInputEvents.has("button_o"));
     this.#x.update(continuousInputEvents.has("button_x"));
+    this.#menu.update(continuousInputEvents.has("button_menu"));
   }
 }

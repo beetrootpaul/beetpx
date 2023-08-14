@@ -28,6 +28,10 @@ class KeyboardGameInput {
             // TODO: what about different keyboard layouts where "z" is not on the left from "x"?
             ["z", "button_o"],
             ["z", "button_o"],
+            ["Escape", "button_menu"],
+            ["Enter", "button_menu"],
+            ["p", "button_menu"],
+            ["P", "button_menu"],
             ["m", "mute_unmute_toggle"],
             ["M", "mute_unmute_toggle"],
             ["f", "full_screen"],

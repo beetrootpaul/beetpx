@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_o, _Buttons_x, _Buttons_repeatingLeft, _Buttons_repeatingRight, _Buttons_repeatingUp, _Buttons_repeatingDown, _Buttons_repeatingO, _Buttons_repeatingX;
+var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_o, _Buttons_x, _Buttons_menu, _Buttons_repeatingLeft, _Buttons_repeatingRight, _Buttons_repeatingUp, _Buttons_repeatingDown, _Buttons_repeatingO, _Buttons_repeatingX, _Buttons_repeatingMenu;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Buttons = void 0;
 const Button_1 = require("./Button");
@@ -22,12 +22,14 @@ class Buttons {
         _Buttons_down.set(this, new Button_1.Button());
         _Buttons_o.set(this, new Button_1.Button());
         _Buttons_x.set(this, new Button_1.Button());
+        _Buttons_menu.set(this, new Button_1.Button());
         _Buttons_repeatingLeft.set(this, true);
         _Buttons_repeatingRight.set(this, true);
         _Buttons_repeatingUp.set(this, true);
         _Buttons_repeatingDown.set(this, true);
         _Buttons_repeatingO.set(this, true);
         _Buttons_repeatingX.set(this, true);
+        _Buttons_repeatingMenu.set(this, false);
     }
     isPressed(button) {
         switch (button) {
@@ -43,6 +45,8 @@ class Buttons {
                 return __classPrivateFieldGet(this, _Buttons_o, "f").isPressed;
             case "x":
                 return __classPrivateFieldGet(this, _Buttons_x, "f").isPressed;
+            case "menu":
+                return __classPrivateFieldGet(this, _Buttons_menu, "f").isPressed;
         }
     }
     setRepeating(button, repeating) {
@@ -65,6 +69,9 @@ class Buttons {
             case "x":
                 __classPrivateFieldSet(this, _Buttons_repeatingX, repeating, "f");
                 return;
+            case "menu":
+                __classPrivateFieldSet(this, _Buttons_repeatingMenu, repeating, "f");
+                return;
         }
     }
     wasJustPressed(button) {
@@ -81,6 +88,8 @@ class Buttons {
                 return __classPrivateFieldGet(this, _Buttons_o, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingO, "f"));
             case "x":
                 return __classPrivateFieldGet(this, _Buttons_x, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingX, "f"));
+            case "menu":
+                return __classPrivateFieldGet(this, _Buttons_menu, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingMenu, "f"));
         }
     }
     wasJustReleased(button) {
@@ -97,6 +106,8 @@ class Buttons {
                 return __classPrivateFieldGet(this, _Buttons_o, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingO, "f"));
             case "x":
                 return __classPrivateFieldGet(this, _Buttons_x, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingX, "f"));
+            case "menu":
+                return __classPrivateFieldGet(this, _Buttons_menu, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingMenu, "f"));
         }
     }
     update(continuousInputEvents) {
@@ -106,7 +117,8 @@ class Buttons {
         __classPrivateFieldGet(this, _Buttons_down, "f").update(continuousInputEvents.has("button_down"));
         __classPrivateFieldGet(this, _Buttons_o, "f").update(continuousInputEvents.has("button_o"));
         __classPrivateFieldGet(this, _Buttons_x, "f").update(continuousInputEvents.has("button_x"));
+        __classPrivateFieldGet(this, _Buttons_menu, "f").update(continuousInputEvents.has("button_menu"));
     }
 }
 exports.Buttons = Buttons;
-_Buttons_left = new WeakMap(), _Buttons_right = new WeakMap(), _Buttons_up = new WeakMap(), _Buttons_down = new WeakMap(), _Buttons_o = new WeakMap(), _Buttons_x = new WeakMap(), _Buttons_repeatingLeft = new WeakMap(), _Buttons_repeatingRight = new WeakMap(), _Buttons_repeatingUp = new WeakMap(), _Buttons_repeatingDown = new WeakMap(), _Buttons_repeatingO = new WeakMap(), _Buttons_repeatingX = new WeakMap();
+_Buttons_left = new WeakMap(), _Buttons_right = new WeakMap(), _Buttons_up = new WeakMap(), _Buttons_down = new WeakMap(), _Buttons_o = new WeakMap(), _Buttons_x = new WeakMap(), _Buttons_menu = new WeakMap(), _Buttons_repeatingLeft = new WeakMap(), _Buttons_repeatingRight = new WeakMap(), _Buttons_repeatingUp = new WeakMap(), _Buttons_repeatingDown = new WeakMap(), _Buttons_repeatingO = new WeakMap(), _Buttons_repeatingX = new WeakMap(), _Buttons_repeatingMenu = new WeakMap();
