@@ -148,6 +148,38 @@ declare class Utils {
     static throwError(message: string): never;
 }
 
+type SoundSequence = {
+    sequence?: SoundSequenceEntry[];
+    sequenceLooped?: SoundSequenceEntry[];
+};
+type SoundSequenceEntry = [
+    SoundSequenceEntrySoundMain,
+    ...SoundSequenceEntrySoundAdditional[]
+];
+type SoundSequenceEntrySoundMain = {
+    url: SoundUrl;
+    durationMs: (fullSoundDurationMs: number) => number;
+};
+type SoundSequenceEntrySoundAdditional = {
+    url: SoundUrl;
+};
+
+type AudioPlaybackId = number;
+declare class AudioApi {
+    #private;
+    get audioContext(): AudioContext;
+    get globalGainNode(): GainNode;
+    constructor(assets: Assets, audioContext: AudioContext);
+    resumeAudioContextIfNeeded(): void;
+    toggleMuteUnmute(): void;
+    stopAllSounds(): void;
+    playSoundOnce(soundUrl: SoundUrl): AudioPlaybackId;
+    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): AudioPlaybackId;
+    playSoundSequence(soundSequence: SoundSequence): AudioPlaybackId;
+    muteSound(playbackId: AudioPlaybackId): void;
+    unmuteSound(playbackId: AudioPlaybackId): void;
+}
+
 declare class ClippingRegion {
     #private;
     constructor(xy: Vector2d, wh: Vector2d);
@@ -206,44 +238,6 @@ declare class Timer {
     update(): void;
 }
 
-type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
-declare class StorageApi {
-    #private;
-    store<StorageApiValue extends StorageApiValueConstraint>(value: StorageApiValue): void;
-    load<StorageApiValue extends StorageApiValueConstraint>(): StorageApiValue | null;
-    clearStorage(): void;
-}
-
-type SoundSequence = {
-    sequence?: SoundSequenceEntry[];
-    sequenceLooped?: SoundSequenceEntry[];
-};
-type SoundSequenceEntry = [
-    SoundSequenceEntrySoundMain,
-    ...SoundSequenceEntrySoundAdditional[]
-];
-type SoundSequenceEntrySoundMain = {
-    url: SoundUrl;
-    durationMs: (fullSoundDurationMs: number) => number;
-};
-type SoundSequenceEntrySoundAdditional = {
-    url: SoundUrl;
-};
-
-declare class AudioApi {
-    #private;
-    get audioContext(): AudioContext;
-    get globalGainNode(): GainNode;
-    constructor(assets: Assets, audioContext: AudioContext, storageApi: StorageApi);
-    resumeAudioContextIfNeeded(): void;
-    toggleMuteUnmute(): void;
-    playSoundOnce(soundUrl: SoundUrl): void;
-    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): void;
-    playSoundSequence(soundSequence: SoundSequence): void;
-    muteSound(loopedSoundUrl: SoundUrl): void;
-    unmuteSound(loopedSoundUrl: SoundUrl): void;
-}
-
 type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
 declare class Buttons {
     #private;
@@ -252,6 +246,14 @@ declare class Buttons {
     wasJustPressed(button: ButtonName): boolean;
     wasJustReleased(button: ButtonName): boolean;
     update(continuousInputEvents: Set<GameInputEvent>): void;
+}
+
+type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
+declare class StorageApi {
+    #private;
+    store<StorageApiValue extends StorageApiValueConstraint>(value: StorageApiValue): void;
+    load<StorageApiValue extends StorageApiValueConstraint>(): StorageApiValue | null;
+    clearStorage(): void;
 }
 
 type FrameworkOptions = {
@@ -340,6 +342,7 @@ declare class BeetPx {
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
     static playSoundSequence: AudioApi["playSoundSequence"];
+    static stopAllSounds: AudioApi["stopAllSounds"];
     static muteSound: AudioApi["muteSound"];
     static unmuteSound: AudioApi["unmuteSound"];
     static store: StorageApi["store"];
@@ -354,4 +357,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, SolidColor, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { AudioPlaybackId, BeetPx, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, SolidColor, SoundSequence, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };

@@ -166,7 +166,7 @@ export class Framework {
         audioContext.decodeAudioData(arrayBuffer),
     });
 
-    this.audioApi = new AudioApi(this.assets, audioContext, this.storageApi);
+    this.audioApi = new AudioApi(this.assets, audioContext);
 
     this.#fullScreen = FullScreen.newFor(
       this.#htmlDisplaySelector,

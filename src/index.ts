@@ -13,6 +13,8 @@ export {
 export { Sprite } from "./Sprite";
 export { Utils } from "./Utils";
 export { Vector2d } from "./Vector2d";
+export { type AudioPlaybackId } from "./audio/AudioApi";
+export { type SoundSequence } from "./audio/SoundSequence";
 export { ClippingRegion } from "./draw_api/ClippingRegion";
 export { type ColorMapping } from "./draw_api/DrawApi";
 export { FillPattern } from "./draw_api/FillPattern";

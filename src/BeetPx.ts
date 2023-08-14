@@ -204,6 +204,10 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.playSoundSequence(...args);
   };
 
+  static stopAllSounds: AudioApi["stopAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.stopAllSounds(...args);
+  };
+
   static muteSound: AudioApi["muteSound"] = (...args) => {
     return this.#tryGetFramework().audioApi.muteSound(...args);
   };

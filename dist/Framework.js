@@ -118,7 +118,7 @@ class Framework {
         this.assets = new Assets_1.Assets({
             decodeAudioData: (arrayBuffer) => audioContext.decodeAudioData(arrayBuffer),
         });
-        this.audioApi = new AudioApi_1.AudioApi(this.assets, audioContext, this.storageApi);
+        this.audioApi = new AudioApi_1.AudioApi(this.assets, audioContext);
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen_1.FullScreen.newFor(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f"), __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f")), "f");
         __classPrivateFieldSet(this, _Framework_offscreenImageData, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height), "f");
         this.drawApi = new DrawApi_1.DrawApi({
