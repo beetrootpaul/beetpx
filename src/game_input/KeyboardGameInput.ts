@@ -2,6 +2,8 @@ import { GameInputEvent, gameInputEventBehavior } from "./GameInput";
 
 type KeyboardGameInputParams = {
   debugToggleKey?: string;
+  debugFrameByFrameActivateKey?: string;
+  debugFrameByFrameStepKey?: string;
 };
 
 export class KeyboardGameInput {
@@ -40,6 +42,18 @@ export class KeyboardGameInput {
   constructor(params: KeyboardGameInputParams) {
     if (params.debugToggleKey) {
       this.#keyMapping.set(params.debugToggleKey, "debug_toggle");
+    }
+    if (params.debugFrameByFrameActivateKey) {
+      this.#keyMapping.set(
+        params.debugFrameByFrameActivateKey,
+        "frame_by_frame_toggle",
+      );
+    }
+    if (params.debugFrameByFrameStepKey) {
+      this.#keyMapping.set(
+        params.debugFrameByFrameStepKey,
+        "frame_by_frame_step",
+      );
     }
   }
 

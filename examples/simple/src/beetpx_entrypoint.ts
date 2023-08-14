@@ -8,6 +8,10 @@ BeetPx.init(
     debug: {
       available: !__BEETPX_IS_PROD__,
       toggleKey: ";",
+      frameByFrame: {
+        activateKey: ",",
+        stepKey: ".",
+      },
     },
   },
   {

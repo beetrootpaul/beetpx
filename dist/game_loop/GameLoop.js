@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GameLoop_desiredFps, _GameLoop_adjustedFps, _GameLoop_requestAnimationFrameFn, _GameLoop_fpsLogger, _GameLoop_previousTime, _GameLoop_expectedTimeStep, _GameLoop_safetyMaxTimeStep, _GameLoop_accumulatedTimeStep, _GameLoop_frameNumber, _GameLoop_callbacks, _GameLoop_tick;
+var _GameLoop_desiredFps, _GameLoop_adjustedFps, _GameLoop_requestAnimationFrameFn, _GameLoop_fpsLogger, _GameLoop_previousTime, _GameLoop_expectedTimeStep, _GameLoop_safetyMaxTimeStep, _GameLoop_accumulatedTimeStep, _GameLoop_callbacks, _GameLoop_tick;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameLoop = void 0;
 const BeetPx_1 = require("../BeetPx");
@@ -26,7 +26,6 @@ class GameLoop {
         _GameLoop_expectedTimeStep.set(this, void 0);
         _GameLoop_safetyMaxTimeStep.set(this, void 0);
         _GameLoop_accumulatedTimeStep.set(this, void 0);
-        _GameLoop_frameNumber.set(this, void 0);
         _GameLoop_callbacks.set(this, void 0);
         // Keep this function as an arrow one in order to avoid issues with `this`.
         _GameLoop_tick.set(this, (currentTime) => {
@@ -70,10 +69,7 @@ class GameLoop {
                 }
             }
             while (__classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f") >= __classPrivateFieldGet(this, _GameLoop_expectedTimeStep, "f")) {
-                __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(__classPrivateFieldGet(this, _GameLoop_frameNumber, "f"), __classPrivateFieldGet(this, _GameLoop_fpsLogger, "f").mostRecentAverageFps);
-                __classPrivateFieldSet(this, _GameLoop_frameNumber, __classPrivateFieldGet(this, _GameLoop_frameNumber, "f") == Number.MAX_SAFE_INTEGER
-                    ? 0
-                    : __classPrivateFieldGet(this, _GameLoop_frameNumber, "f") + 1, "f");
+                __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(__classPrivateFieldGet(this, _GameLoop_fpsLogger, "f").mostRecentAverageFps);
                 __classPrivateFieldSet(this, _GameLoop_accumulatedTimeStep, __classPrivateFieldGet(this, _GameLoop_accumulatedTimeStep, "f") - __classPrivateFieldGet(this, _GameLoop_expectedTimeStep, "f"), "f");
             }
             __classPrivateFieldGet(this, _GameLoop_callbacks, "f").renderFn();
@@ -88,7 +84,6 @@ class GameLoop {
         __classPrivateFieldSet(this, _GameLoop_expectedTimeStep, 1000 / __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f"), "f");
         __classPrivateFieldSet(this, _GameLoop_safetyMaxTimeStep, 5 * __classPrivateFieldGet(this, _GameLoop_expectedTimeStep, "f"), "f");
         __classPrivateFieldSet(this, _GameLoop_accumulatedTimeStep, __classPrivateFieldGet(this, _GameLoop_expectedTimeStep, "f"), "f");
-        __classPrivateFieldSet(this, _GameLoop_frameNumber, 0, "f");
         __classPrivateFieldSet(this, _GameLoop_callbacks, {
             updateFn: () => { },
             renderFn: () => { },
@@ -100,4 +95,4 @@ class GameLoop {
     }
 }
 exports.GameLoop = GameLoop;
-_GameLoop_desiredFps = new WeakMap(), _GameLoop_adjustedFps = new WeakMap(), _GameLoop_requestAnimationFrameFn = new WeakMap(), _GameLoop_fpsLogger = new WeakMap(), _GameLoop_previousTime = new WeakMap(), _GameLoop_expectedTimeStep = new WeakMap(), _GameLoop_safetyMaxTimeStep = new WeakMap(), _GameLoop_accumulatedTimeStep = new WeakMap(), _GameLoop_frameNumber = new WeakMap(), _GameLoop_callbacks = new WeakMap(), _GameLoop_tick = new WeakMap();
+_GameLoop_desiredFps = new WeakMap(), _GameLoop_adjustedFps = new WeakMap(), _GameLoop_requestAnimationFrameFn = new WeakMap(), _GameLoop_fpsLogger = new WeakMap(), _GameLoop_previousTime = new WeakMap(), _GameLoop_expectedTimeStep = new WeakMap(), _GameLoop_safetyMaxTimeStep = new WeakMap(), _GameLoop_accumulatedTimeStep = new WeakMap(), _GameLoop_callbacks = new WeakMap(), _GameLoop_tick = new WeakMap();

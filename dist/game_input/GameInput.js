@@ -18,10 +18,13 @@ const GuiGameInput_1 = require("./GuiGameInput");
 const KeyboardGameInput_1 = require("./KeyboardGameInput");
 const TouchGameInput_1 = require("./TouchGameInput");
 exports.gameInputEventBehavior = {
+    // TODO: is it possible to make these keys type-safe?
     // TODO: move full_screen out of this set OR move its handling to TouchGameInput and similar ones
     mute_unmute_toggle: { fireOnce: true },
     full_screen: { fireOnce: true },
     debug_toggle: { fireOnce: true },
+    frame_by_frame_toggle: { fireOnce: true },
+    frame_by_frame_step: { fireOnce: true },
 };
 class GameInput {
     constructor(params) {
@@ -35,6 +38,8 @@ class GameInput {
         }), "f");
         __classPrivateFieldSet(this, _GameInput_keyboardGameInput, new KeyboardGameInput_1.KeyboardGameInput({
             debugToggleKey: params.debugToggleKey,
+            debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
+            debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
         }), "f");
         __classPrivateFieldSet(this, _GameInput_touchGameInput, new TouchGameInput_1.TouchGameInput(), "f");
         __classPrivateFieldSet(this, _GameInput_gamepadGameInput, new GamepadGameInput_1.GamepadGameInput(), "f");

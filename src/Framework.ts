@@ -23,6 +23,10 @@ export type FrameworkOptions = {
      * of a desired key.
      */
     toggleKey?: string;
+    frameByFrame?: {
+      activateKey?: string;
+      stepKey?: string;
+    };
   };
 };
 
@@ -42,6 +46,7 @@ export class Framework {
 
   readonly #debugOptions: FrameworkOptions["debug"];
   #debug: boolean;
+  #frameByFrame: boolean;
   get debug(): boolean {
     return this.#debug;
   }
@@ -73,10 +78,14 @@ export class Framework {
   #scaleToFill = 1;
   #centeringOffset = Vector2d.zero;
 
-  frameNumber: number = 0;
+  #frameNumber: number = 0;
   averageFps: number = 1;
   continuousInputEvents: Set<GameInputEvent> = new Set();
   fireOnceInputEvents: Set<GameInputEvent> = new Set();
+
+  get frameNumber(): number {
+    return this.#frameNumber;
+  }
 
   constructor(options: FrameworkOptions) {
     this.#debugOptions = options.debug ?? {
@@ -86,6 +95,7 @@ export class Framework {
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue
       : false;
+    this.#frameByFrame = false;
 
     this.#loading = new Loading(this.#htmlDisplaySelector);
 
@@ -126,8 +136,15 @@ export class Framework {
     this.#gameInput = new GameInput({
       muteButtonsSelector: this.#htmlControlsMuteSelector,
       fullScreenButtonsSelector: this.#htmlControlsFullscreenSelector,
+      // TODO: extract ";", ",", and "." to some file about debugging
       debugToggleKey: this.#debugOptions?.available
         ? this.#debugOptions?.toggleKey ?? ";"
+        : undefined,
+      debugFrameByFrameActivateKey: this.#debugOptions?.available
+        ? this.#debugOptions.frameByFrame?.activateKey ?? ","
+        : undefined,
+      debugFrameByFrameStepKey: this.#debugOptions?.available
+        ? this.#debugOptions.frameByFrame?.stepKey ?? "."
         : undefined,
     });
 
@@ -195,7 +212,7 @@ export class Framework {
     this.#gameInput.startListening();
 
     this.#gameLoop.start({
-      updateFn: (frameNumber, averageFps) => {
+      updateFn: (averageFps) => {
         const fireOnceEvents = this.#gameInput.consumeFireOnceEvents();
         if (fireOnceEvents.has("full_screen")) {
           this.#fullScreen.toggle();
@@ -205,6 +222,7 @@ export class Framework {
         }
         if (fireOnceEvents.has("debug_toggle")) {
           this.#debug = !this.#debug;
+          console.debug(`Debug flag set to: ${this.#debug}`);
           if (this.#debug) {
             window.localStorage.removeItem(Framework.#storageDebugDisabledKey);
           } else {
@@ -215,21 +233,35 @@ export class Framework {
           }
           this.#redrawDebugMargin();
         }
+        if (fireOnceEvents.has("frame_by_frame_toggle")) {
+          this.#frameByFrame = !this.#frameByFrame;
+          console.debug(`FrameByFrame mode set to: ${this.#frameByFrame}`);
+        }
 
         const continuousEvents = this.#gameInput.getCurrentContinuousEvents();
-
-        this.buttons.update(continuousEvents);
 
         if (fireOnceEvents.size > 0 || continuousEvents.size > 0) {
           this.audioApi.resumeAudioContextIfNeeded();
         }
 
-        this.frameNumber = frameNumber;
         this.averageFps = averageFps;
         this.continuousInputEvents = continuousEvents;
         this.fireOnceInputEvents = fireOnceEvents;
 
-        this.#onUpdate?.();
+        if (!this.#frameByFrame || fireOnceEvents.has("frame_by_frame_step")) {
+          if (this.#frameByFrame) {
+            console.debug(`Running onUpdate for frame: ${this.#frameNumber}`);
+          }
+
+          this.buttons.update(continuousEvents);
+
+          this.#onUpdate?.();
+
+          this.#frameNumber =
+            this.#frameNumber == Number.MAX_SAFE_INTEGER
+              ? 0
+              : this.#frameNumber + 1;
+        }
       },
       renderFn: () => {
         this.#onDraw?.();

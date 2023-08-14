@@ -193,7 +193,7 @@ declare class DrawApi {
     print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
 
-type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle";
+type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 
 declare class Timer {
     #private;
@@ -266,6 +266,10 @@ type FrameworkOptions = {
          * of a desired key.
          */
         toggleKey?: string;
+        frameByFrame?: {
+            activateKey?: string;
+            stepKey?: string;
+        };
     };
 };
 type OnAssetsLoaded = {
@@ -279,10 +283,10 @@ declare class Framework {
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
-    frameNumber: number;
     averageFps: number;
     continuousInputEvents: Set<GameInputEvent>;
     fireOnceInputEvents: Set<GameInputEvent>;
+    get frameNumber(): number;
     constructor(options: FrameworkOptions);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnUpdate(onUpdate: () => void): void;

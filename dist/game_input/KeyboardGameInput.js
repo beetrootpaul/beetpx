@@ -38,6 +38,12 @@ class KeyboardGameInput {
         if (params.debugToggleKey) {
             __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(params.debugToggleKey, "debug_toggle");
         }
+        if (params.debugFrameByFrameActivateKey) {
+            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(params.debugFrameByFrameActivateKey, "frame_by_frame_toggle");
+        }
+        if (params.debugFrameByFrameStepKey) {
+            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(params.debugFrameByFrameStepKey, "frame_by_frame_step");
+        }
     }
     startListening() {
         document.addEventListener("keydown", (keyboardEvent) => {

@@ -2,7 +2,7 @@ import { BeetPx } from "../BeetPx";
 import { FpsLogger, FpsLoggerAverage, FpsLoggerNoop } from "./FpsLogger";
 
 export type GameLoopCallbacks = {
-  updateFn: (frameNumber: number, averageFps: number) => void;
+  updateFn: (averageFps: number) => void;
   renderFn: () => void;
 };
 
@@ -27,8 +27,6 @@ export class GameLoop {
   readonly #safetyMaxTimeStep: number;
   #accumulatedTimeStep: number;
 
-  #frameNumber: number;
-
   #callbacks: GameLoopCallbacks;
 
   constructor(options: GameLoopOptions) {
@@ -43,8 +41,6 @@ export class GameLoop {
     this.#expectedTimeStep = 1000 / this.#adjustedFps;
     this.#safetyMaxTimeStep = 5 * this.#expectedTimeStep;
     this.#accumulatedTimeStep = this.#expectedTimeStep;
-
-    this.#frameNumber = 0;
 
     this.#callbacks = {
       updateFn: () => {},
@@ -112,16 +108,7 @@ export class GameLoop {
     }
 
     while (this.#accumulatedTimeStep >= this.#expectedTimeStep) {
-      this.#callbacks.updateFn(
-        this.#frameNumber,
-        this.#fpsLogger.mostRecentAverageFps,
-      );
-
-      this.#frameNumber =
-        this.#frameNumber == Number.MAX_SAFE_INTEGER
-          ? 0
-          : this.#frameNumber + 1;
-
+      this.#callbacks.updateFn(this.#fpsLogger.mostRecentAverageFps);
       this.#accumulatedTimeStep -= this.#expectedTimeStep;
     }
 
