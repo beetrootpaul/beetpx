@@ -199,6 +199,19 @@ export class Framework {
 
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
   #startGame(onStart?: () => void): void {
+    if (__BEETPX_IS_PROD__) {
+      // - returned message seems to be ignored by some browsers, therefore using `""`
+      // - this event is *not* always run when for example there was no mouse click inside
+      //   iframe with the game in Firefox
+      // - there are two ways of implementing this, because of browsers incompatibilities,
+      //   therefore using both of them here (`event.returnValue =` and `return`)
+      window.addEventListener("beforeunload", (event) => {
+        event.preventDefault();
+        event.returnValue = "";
+        return "";
+      });
+    }
+
     this.#setupHtmlCanvas();
     window.addEventListener("resize", (_event) => {
       this.#setupHtmlCanvas();

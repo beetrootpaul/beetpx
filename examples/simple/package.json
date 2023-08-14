@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "beetpx dev",
+    "build": "beetpx build && beetpx preview",
     "typecheck": "tsc"
   },
   "devDependencies": {

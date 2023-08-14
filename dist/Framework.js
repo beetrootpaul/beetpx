@@ -140,6 +140,18 @@ class Framework {
 }
 exports.Framework = Framework;
 _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = new WeakMap(), _Framework_htmlControlsFullscreenSelector = new WeakMap(), _Framework_htmlControlsMuteSelector = new WeakMap(), _Framework_debugOptions = new WeakMap(), _Framework_debug = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameInput = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame(onStart) {
+    if (__BEETPX_IS_PROD__) {
+        // - returned message seems to be ignored by some browsers, therefore using `""`
+        // - this event is *not* always run when for example there was no mouse click inside
+        //   iframe with the game in Firefox
+        // - there are two ways of implementing this, because of browsers incompatibilities,
+        //   therefore using both of them here (`event.returnValue =` and `return`)
+        window.addEventListener("beforeunload", (event) => {
+            event.preventDefault();
+            event.returnValue = "";
+            return "";
+        });
+    }
     __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_setupHtmlCanvas).call(this);
     window.addEventListener("resize", (_event) => {
         __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_setupHtmlCanvas).call(this);
