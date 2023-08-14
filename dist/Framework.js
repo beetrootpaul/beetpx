@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_htmlDisplaySelector, _Framework_htmlCanvasSelector, _Framework_htmlControlsFullscreenSelector, _Framework_htmlControlsMuteSelector, _Framework_debugOptions, _Framework_debug, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameInput, _Framework_gameLoop, _Framework_fullScreen, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_htmlDisplaySelector, _Framework_htmlCanvasSelector, _Framework_htmlControlsFullscreenSelector, _Framework_htmlControlsMuteSelector, _Framework_debugOptions, _Framework_debug, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameInput, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Framework = void 0;
 const Assets_1 = require("./Assets");
@@ -49,6 +49,7 @@ class Framework {
         _Framework_gameInput.set(this, void 0);
         _Framework_gameLoop.set(this, void 0);
         _Framework_fullScreen.set(this, void 0);
+        _Framework_onStarted.set(this, void 0);
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
@@ -131,15 +132,22 @@ class Framework {
             startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
         }));
     }
+    setOnStarted(onStarted) {
+        __classPrivateFieldSet(this, _Framework_onStarted, onStarted, "f");
+    }
     setOnUpdate(onUpdate) {
         __classPrivateFieldSet(this, _Framework_onUpdate, onUpdate, "f");
     }
     setOnDraw(onDraw) {
         __classPrivateFieldSet(this, _Framework_onDraw, onDraw, "f");
     }
+    restart() {
+        __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
+        __classPrivateFieldGet(this, _Framework_onStarted, "f")?.call(this);
+    }
 }
 exports.Framework = Framework;
-_a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = new WeakMap(), _Framework_htmlControlsFullscreenSelector = new WeakMap(), _Framework_htmlControlsMuteSelector = new WeakMap(), _Framework_debugOptions = new WeakMap(), _Framework_debug = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameInput = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame(onStart) {
+_a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = new WeakMap(), _Framework_htmlControlsFullscreenSelector = new WeakMap(), _Framework_htmlControlsMuteSelector = new WeakMap(), _Framework_debugOptions = new WeakMap(), _Framework_debug = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameInput = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     if (__BEETPX_IS_PROD__) {
         // - returned message seems to be ignored by some browsers, therefore using `""`
         // - this event is *not* always run when for example there was no mouse click inside
@@ -156,8 +164,7 @@ _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlC
     window.addEventListener("resize", (_event) => {
         __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_setupHtmlCanvas).call(this);
     });
-    // TODO: rename to make it clear this will happen before the game loop starts and game gets rendered
-    onStart?.();
+    __classPrivateFieldGet(this, _Framework_onStarted, "f")?.call(this);
     __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
     __classPrivateFieldGet(this, _Framework_gameInput, "f").startListening();
     __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({

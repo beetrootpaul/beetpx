@@ -65,12 +65,20 @@ export class BeetPx {
   // lifecycle methods
   //
 
+  static setOnStarted: Framework["setOnStarted"] = (...args) => {
+    return this.#tryGetFramework().setOnStarted(...args);
+  };
+
   static setOnUpdate: Framework["setOnUpdate"] = (...args) => {
     return this.#tryGetFramework().setOnUpdate(...args);
   };
 
   static setOnDraw: Framework["setOnDraw"] = (...args) => {
     return this.#tryGetFramework().setOnDraw(...args);
+  };
+
+  static restart: Framework["restart"] = (...args) => {
+    return this.#tryGetFramework().restart(...args);
   };
 
   //

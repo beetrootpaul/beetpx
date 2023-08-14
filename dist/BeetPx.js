@@ -62,11 +62,17 @@ _BeetPx_framework = { value: void 0 };
 //
 // lifecycle methods
 //
+BeetPx.setOnStarted = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).setOnStarted(...args);
+};
 BeetPx.setOnUpdate = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).setOnUpdate(...args);
 };
 BeetPx.setOnDraw = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).setOnDraw(...args);
+};
+BeetPx.restart = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).restart(...args);
 };
 //
 // Buttons

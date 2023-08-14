@@ -273,7 +273,7 @@ type FrameworkOptions = {
     };
 };
 type OnAssetsLoaded = {
-    startGame: (onStart?: () => void) => void;
+    startGame: () => void;
 };
 declare class Framework {
     #private;
@@ -289,8 +289,10 @@ declare class Framework {
     get frameNumber(): number;
     constructor(options: FrameworkOptions);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
+    setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
+    restart(): void;
 }
 
 declare class BeetPx {
@@ -303,8 +305,10 @@ declare class BeetPx {
     static get audioContext(): AudioApi["audioContext"];
     static get globalGainNode(): AudioApi["globalGainNode"];
     static get debug(): Framework["debug"];
+    static setOnStarted: Framework["setOnStarted"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
+    static restart: Framework["restart"];
     static isPressed: Buttons["isPressed"];
     static setRepeating: Buttons["setRepeating"];
     static wasJustPressed: Buttons["wasJustPressed"];

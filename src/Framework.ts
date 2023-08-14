@@ -31,7 +31,7 @@ export type FrameworkOptions = {
 };
 
 export type OnAssetsLoaded = {
-  startGame: (onStart?: () => void) => void;
+  startGame: () => void;
 };
 
 export class Framework {
@@ -72,6 +72,7 @@ export class Framework {
 
   readonly drawApi: DrawApi;
 
+  #onStarted?: () => void;
   #onUpdate?: () => void;
   #onDraw?: () => void;
 
@@ -189,6 +190,10 @@ export class Framework {
     }));
   }
 
+  setOnStarted(onStarted: () => void) {
+    this.#onStarted = onStarted;
+  }
+
   setOnUpdate(onUpdate: () => void) {
     this.#onUpdate = onUpdate;
   }
@@ -197,8 +202,13 @@ export class Framework {
     this.#onDraw = onDraw;
   }
 
+  restart() {
+    this.#frameNumber = 0;
+    this.#onStarted?.();
+  }
+
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
-  #startGame(onStart?: () => void): void {
+  #startGame(): void {
     if (__BEETPX_IS_PROD__) {
       // - returned message seems to be ignored by some browsers, therefore using `""`
       // - this event is *not* always run when for example there was no mouse click inside
@@ -217,8 +227,7 @@ export class Framework {
       this.#setupHtmlCanvas();
     });
 
-    // TODO: rename to make it clear this will happen before the game loop starts and game gets rendered
-    onStart?.();
+    this.#onStarted?.();
 
     this.#loading.showApp();
 

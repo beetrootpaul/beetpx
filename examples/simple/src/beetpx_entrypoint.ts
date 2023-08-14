@@ -22,8 +22,13 @@ BeetPx.init(
 ).then(({ startGame }) => {
   console.log("BeetPx initialized");
 
-  const logoPositionBase = v_((128 - 16) / 2, (128 - 16) / 2);
+  let logoPositionBase = Vector2d.zero;
   let logoPositionOffset = Vector2d.zero;
+
+  BeetPx.setOnStarted(() => {
+    logoPositionBase = v_((128 - 16) / 2, (128 - 16) / 2);
+    logoPositionOffset = Vector2d.zero;
+  });
 
   BeetPx.setOnUpdate(() => {
     console.log(`FPS: ${BeetPx.averageFps}`);
@@ -49,7 +54,5 @@ BeetPx.init(
     }
   });
 
-  startGame(() => {
-    console.log("Game started");
-  });
+  startGame();
 });
