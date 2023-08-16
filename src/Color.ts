@@ -1,9 +1,12 @@
 export type ColorId = string;
 
 export interface Color {
+  // TODO: `serialized()` might be a better name for it? As long as we provide `deserialize` as well…
   // meant to be used e.g. as textual key in `Map()`
   id(): ColorId;
 }
+
+// TODO: split colors into separate files?
 
 export class TransparentColor implements Color {
   id(): ColorId {
@@ -71,5 +74,41 @@ export class CompositeColor implements Color {
 
   id(): ColorId {
     return `composite:${this.primary.id()}:${this.secondary.id()}`;
+  }
+}
+
+// TODO: make it a function which allows to implement catch it all color
+export class MappingColor implements Color {
+  static #nextId = 1;
+
+  readonly #mapping: (canvasRgba: {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  }) => SolidColor | TransparentColor;
+
+  constructor(
+    mapping: (canvasRgba: {
+      r: number;
+      g: number;
+      b: number;
+      a: number;
+    }) => SolidColor | TransparentColor,
+  ) {
+    this.#mapping = mapping;
+  }
+
+  getMappedColorFor(
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+  ): SolidColor | TransparentColor {
+    return this.#mapping({ r, g, b, a });
+  }
+
+  id(): ColorId {
+    return `mapping:${MappingColor.#nextId++}`;
   }
 }

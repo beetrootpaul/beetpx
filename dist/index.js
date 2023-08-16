@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BeetPx = exports.v_ = exports.spr_ = exports.transparent_ = exports.Timer = exports.FillPattern = exports.ClippingRegion = exports.Vector2d = exports.Utils = exports.Sprite = exports.TransparentColor = exports.SolidColor = exports.CompositeColor = void 0;
+exports.BeetPx = exports.v_ = exports.spr_ = exports.transparent_ = exports.Timer = exports.FillPattern = exports.ClippingRegion = exports.Vector2d = exports.Utils = exports.Sprite = exports.TransparentColor = exports.SolidColor = exports.MappingColor = exports.CompositeColor = void 0;
 var Color_1 = require("./Color");
 Object.defineProperty(exports, "CompositeColor", { enumerable: true, get: function () { return Color_1.CompositeColor; } });
+Object.defineProperty(exports, "MappingColor", { enumerable: true, get: function () { return Color_1.MappingColor; } });
 Object.defineProperty(exports, "SolidColor", { enumerable: true, get: function () { return Color_1.SolidColor; } });
 Object.defineProperty(exports, "TransparentColor", { enumerable: true, get: function () { return Color_1.TransparentColor; } });
 var Sprite_1 = require("./Sprite");

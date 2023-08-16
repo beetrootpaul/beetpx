@@ -49,9 +49,10 @@ class DrawSprite {
                     ? new Color_1.SolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
                     : Color_1.transparent_;
                 color = colorMapping.get(color.id()) ?? color;
-                if (color instanceof Color_1.SolidColor) {
-                    __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
-                }
+                // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+                //       - ff614f became ff6e59
+                //       - 00555a became 125359
+                __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
             }
         }
     }

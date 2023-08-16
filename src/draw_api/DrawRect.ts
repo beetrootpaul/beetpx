@@ -1,4 +1,4 @@
-import { CompositeColor, SolidColor } from "../Color";
+import { CompositeColor, MappingColor, SolidColor } from "../Color";
 import { Vector2d } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
@@ -17,11 +17,14 @@ export class DrawRect {
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
   }
 
+  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor
+  // TODO: tests for CompositeColor and fillPattern
   // TODO: cover ClippingRegion with tests
   draw(
     xy: Vector2d,
     wh: Vector2d,
-    color: SolidColor | CompositeColor,
+    color: SolidColor | CompositeColor | MappingColor,
     fill: boolean,
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
@@ -31,18 +34,10 @@ export class DrawRect {
 
     Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
       if (fillPattern.hasPrimaryColorAt(xy)) {
-        if (color instanceof CompositeColor) {
-          if (color.primary instanceof SolidColor) {
-            this.#pixel.draw(xy, color.primary, clippingRegion);
-          }
-        } else {
-          this.#pixel.draw(xy, color, clippingRegion);
-        }
+        this.#pixel.draw(xy, color, clippingRegion);
       } else {
         if (color instanceof CompositeColor) {
-          if (color.secondary instanceof SolidColor) {
-            this.#pixel.draw(xy, color.secondary, clippingRegion);
-          }
+          this.#pixel.draw(xy, color.secondary, clippingRegion);
         }
       }
     });

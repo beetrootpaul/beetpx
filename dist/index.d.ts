@@ -21,6 +21,17 @@ declare class CompositeColor implements Color {
     constructor(primary: SolidColor | TransparentColor, secondary: SolidColor | TransparentColor);
     id(): ColorId;
 }
+declare class MappingColor implements Color {
+    #private;
+    constructor(mapping: (canvasRgba: {
+        r: number;
+        g: number;
+        b: number;
+        a: number;
+    }) => SolidColor | TransparentColor);
+    getMappedColorFor(r: number, g: number, b: number, a: number): SolidColor | TransparentColor;
+    id(): ColorId;
+}
 
 interface PrintDebug {
     d(): string;
@@ -196,8 +207,8 @@ declare class FillPattern {
 }
 
 type ColorMapping = Array<{
-    from: Color;
-    to: Color;
+    from: SolidColor;
+    to: SolidColor | TransparentColor;
 }>;
 type DrawApiOptions = {
     canvasBytes: Uint8ClampedArray;
@@ -216,11 +227,11 @@ declare class DrawApi {
     getFont(): Font | null;
     clearCanvas(color: SolidColor): void;
     pixel(xy: Vector2d, color: SolidColor): void;
-    line(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
-    rect(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
-    rectFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor): void;
-    ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
-    ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor): void;
+    line(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
+    rect(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
+    rectFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
+    ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
+    ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
     sprite(sprite: Sprite, canvasXy: Vector2d): void;
     print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
@@ -357,4 +368,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { AudioPlaybackId, BeetPx, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, SolidColor, SoundSequence, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { AudioPlaybackId, BeetPx, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, MappingColor, SolidColor, SoundSequence, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };

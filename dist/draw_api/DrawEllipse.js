@@ -28,6 +28,9 @@ class DrawEllipse {
         __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f")), "f");
         __classPrivateFieldSet(this, _DrawEllipse_line, new DrawLine_1.DrawLine(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f")), "f");
     }
+    // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+    // TODO: tests for MappingColor
+    // TODO: tests for CompositeColor and fillPattern
     // TODO: cover ClippingRegion with tests
     // Based on http://members.chello.at/easyfilter/bresenham.html
     draw(xy, wh, color, fill, 

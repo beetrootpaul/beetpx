@@ -1,5 +1,12 @@
 import { Assets, FontAsset } from "../Assets";
-import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
+import {
+  Color,
+  ColorId,
+  CompositeColor,
+  MappingColor,
+  SolidColor,
+  TransparentColor,
+} from "../Color";
 import { CharSprite, Font, FontId } from "../font/Font";
 import { Sprite } from "../Sprite";
 import { v_, Vector2d } from "../Vector2d";
@@ -13,7 +20,10 @@ import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { FillPattern } from "./FillPattern";
 
-export type ColorMapping = Array<{ from: Color; to: Color }>;
+export type ColorMapping = Array<{
+  from: SolidColor;
+  to: SolidColor | TransparentColor;
+}>;
 
 type DrawApiOptions = {
   // TODO: better name to indicate in-out nature of this param? Or some info in JSDoc?
@@ -126,7 +136,11 @@ export class DrawApi {
     );
   }
 
-  line(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
+  line(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#line.draw(
       xy.sub(this.#cameraOffset).round(),
       wh,
@@ -136,7 +150,11 @@ export class DrawApi {
     );
   }
 
-  rect(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
+  rect(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset).round(),
       wh,
@@ -150,7 +168,7 @@ export class DrawApi {
   rectFilled(
     xy: Vector2d,
     wh: Vector2d,
-    color: SolidColor | CompositeColor,
+    color: SolidColor | CompositeColor | MappingColor,
   ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset).round(),
@@ -162,7 +180,11 @@ export class DrawApi {
     );
   }
 
-  ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
+  ellipse(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset).round(),
       wh,
@@ -173,7 +195,11 @@ export class DrawApi {
     );
   }
 
-  ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor): void {
+  ellipseFilled(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset).round(),
       wh,

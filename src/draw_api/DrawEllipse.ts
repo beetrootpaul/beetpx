@@ -1,4 +1,4 @@
-import { SolidColor } from "../Color";
+import { CompositeColor, MappingColor, SolidColor } from "../Color";
 import { Vector2d, v_ } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
 import { DrawLine } from "./DrawLine";
@@ -20,12 +20,15 @@ export class DrawEllipse {
     this.#line = new DrawLine(this.#canvasBytes, this.#canvasSize);
   }
 
+  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor
+  // TODO: tests for CompositeColor and fillPattern
   // TODO: cover ClippingRegion with tests
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
     xy: Vector2d,
     wh: Vector2d,
-    color: SolidColor,
+    color: SolidColor | CompositeColor | MappingColor,
     fill: boolean,
     // TODO: implement fill pattern for the ellipse
     fillPattern: FillPattern = FillPattern.primaryOnly,

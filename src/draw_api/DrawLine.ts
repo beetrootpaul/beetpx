@@ -1,5 +1,5 @@
-import { SolidColor } from "../Color";
-import { v_, Vector2d } from "../Vector2d";
+import { CompositeColor, MappingColor, SolidColor } from "../Color";
+import { Vector2d, v_ } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
@@ -17,13 +17,16 @@ export class DrawLine {
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
   }
 
+  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor
+  // TODO: tests for CompositeColor and fillPattern
   // TODO: cover ClippingRegion with tests
   // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
     xy: Vector2d,
     wh: Vector2d,
-    color: SolidColor,
+    color: SolidColor | CompositeColor | MappingColor,
     // TODO: implement fill pattern for the line (?)
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,

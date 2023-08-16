@@ -5,6 +5,7 @@ declare global {
 export { type ImageUrl } from "./Assets";
 export {
   CompositeColor,
+  MappingColor,
   SolidColor,
   TransparentColor,
   type Color,
