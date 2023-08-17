@@ -268,7 +268,7 @@ declare class StorageApi {
 }
 
 type FrameworkOptions = {
-    gameCanvasSize: Vector2d;
+    gameCanvasSize: "64x64" | "128x128";
     desiredFps: number;
     logActualFps?: boolean;
     debug?: {

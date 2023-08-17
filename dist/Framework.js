@@ -23,6 +23,7 @@ const GameInput_1 = require("./game_input/GameInput");
 const GameLoop_1 = require("./game_loop/GameLoop");
 const Loading_1 = require("./Loading");
 const StorageApi_1 = require("./storage/StorageApi");
+const Utils_1 = require("./Utils");
 const Vector2d_1 = require("./Vector2d");
 class Framework {
     get debug() {
@@ -67,7 +68,11 @@ class Framework {
             : false, "f");
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_loading, new Loading_1.Loading(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f")), "f");
-        __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize.floor(), "f");
+        __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
+            ? (0, Vector2d_1.v_)(64, 64)
+            : options.gameCanvasSize === "128x128"
+                ? (0, Vector2d_1.v_)(128, 128)
+                : Utils_1.Utils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         const htmlCanvas = document.querySelector(__classPrivateFieldGet(this, _Framework_htmlCanvasSelector, "f"));
         if (!htmlCanvas) {
             throw Error(`Was unable to find <canvas> by selector '${__classPrivateFieldGet(this, _Framework_htmlCanvasSelector, "f")}'`);
@@ -83,8 +88,8 @@ class Framework {
         const offscreenCanvas = document
             .createElement("canvas")
             .transferControlToOffscreen();
-        offscreenCanvas.width = options.gameCanvasSize.x;
-        offscreenCanvas.height = options.gameCanvasSize.y;
+        offscreenCanvas.width = __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").x;
+        offscreenCanvas.height = __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").y;
         const offscreenContext = offscreenCanvas.getContext("2d", {
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
             alpha: false,

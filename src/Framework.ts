@@ -8,10 +8,11 @@ import { GameInput, GameInputEvent } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
 import { StorageApi } from "./storage/StorageApi";
+import { Utils } from "./Utils";
 import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
-  gameCanvasSize: Vector2d;
+  gameCanvasSize: "64x64" | "128x128";
   desiredFps: number;
   // TODO: Does is still work?
   logActualFps?: boolean;
@@ -100,7 +101,14 @@ export class Framework {
 
     this.#loading = new Loading(this.#htmlDisplaySelector);
 
-    this.#gameCanvasSize = options.gameCanvasSize.floor();
+    this.#gameCanvasSize =
+      options.gameCanvasSize === "64x64"
+        ? v_(64, 64)
+        : options.gameCanvasSize === "128x128"
+        ? v_(128, 128)
+        : Utils.throwError(
+            `Unsupported canvas size: "${options.gameCanvasSize}"`,
+          );
 
     const htmlCanvas = document.querySelector<HTMLCanvasElement>(
       this.#htmlCanvasSelector,
@@ -123,8 +131,8 @@ export class Framework {
     const offscreenCanvas = document
       .createElement("canvas")
       .transferControlToOffscreen();
-    offscreenCanvas.width = options.gameCanvasSize.x;
-    offscreenCanvas.height = options.gameCanvasSize.y;
+    offscreenCanvas.width = this.#gameCanvasSize.x;
+    offscreenCanvas.height = this.#gameCanvasSize.y;
     const offscreenContext = offscreenCanvas.getContext("2d", {
       // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
       alpha: false,
