@@ -24,12 +24,12 @@ class Assets {
     }
     // TODO: game loading screen during assets loading?
     async loadAssets(assetsToLoad) {
-        assetsToLoad.fonts.forEach(({ url, font, imageTextColor, imageBgColor }) => {
-            __classPrivateFieldGet(this, _Assets_fonts, "f").set(url, { font, imageTextColor, imageBgColor });
+        assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {
+            __classPrivateFieldGet(this, _Assets_fonts, "f").set(font.id, { font, imageTextColor, imageBgColor });
         });
         const uniqueImageUrls = new Set([
             ...assetsToLoad.images.map(({ url }) => url),
-            ...assetsToLoad.fonts.map(({ url }) => url),
+            ...assetsToLoad.fonts.map(({ font }) => font.imageUrl),
         ]);
         await Promise.all(Array.from(uniqueImageUrls).map(async (url) => {
             const htmlImage = new Image();
@@ -72,12 +72,12 @@ class Assets {
         return imageAsset;
     }
     // call `loadAssets` before this one
-    getFontAsset(urlOfAlreadyLoadedFontImage) {
-        const { font, imageTextColor, imageBgColor } = __classPrivateFieldGet(this, _Assets_fonts, "f").get(urlOfAlreadyLoadedFontImage) ??
-            Utils_1.Utils.throwError(`Assets: font descriptor is missing for font image URL "${urlOfAlreadyLoadedFontImage}"`);
+    getFontAsset(fontId) {
+        const { font, imageTextColor, imageBgColor } = __classPrivateFieldGet(this, _Assets_fonts, "f").get(fontId) ??
+            Utils_1.Utils.throwError(`Assets: font descriptor is missing for font ID "${fontId}"`);
         return {
             font,
-            image: this.getImageAsset(urlOfAlreadyLoadedFontImage),
+            image: this.getImageAsset(font.imageUrl),
             imageTextColor,
             imageBgColor,
         };

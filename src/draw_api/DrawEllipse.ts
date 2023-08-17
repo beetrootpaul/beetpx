@@ -1,6 +1,7 @@
-import { SolidColor } from "../Color";
+import { CompositeColor, MappingColor, SolidColor } from "../Color";
 import { Vector2d, v_ } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
+import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
 
@@ -9,47 +10,50 @@ export class DrawEllipse {
   readonly #canvasSize: Vector2d;
 
   readonly #pixel: DrawPixel;
+  readonly #line: DrawLine;
 
   constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
+    this.#line = new DrawLine(this.#canvasBytes, this.#canvasSize);
   }
 
+  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor
+  // TODO: tests for CompositeColor and fillPattern
   // TODO: cover ClippingRegion with tests
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
-    xy1: Vector2d,
-    xy2: Vector2d,
-    color: SolidColor,
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
     fill: boolean,
     // TODO: implement fill pattern for the ellipse
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
+    xy = xy.round();
+    wh = wh.round();
+
+    // check if wh has 0 width or height
+    if (wh.x * wh.y === 0) {
       return;
     }
-
-    // swap coordinates to make sure xy1 is the left-bottom corner and xy2 is the right-top one
-    [xy1, xy2] = [
-      v_(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y)),
-      v_(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y)),
-    ];
 
     //
     // PREPARE
     //
 
-    let a = xy2.x - xy1.x - 1;
-    let b = xy2.y - xy1.y - 1;
+    let [a, b] = wh.abs().asArray();
     let b1 = b & 1;
 
+    const [xy1, xy2] = Vector2d.minMax(xy, xy.add(wh));
     let left = xy1.x;
     let right = xy2.x - 1;
-    let bottom = xy1.y + Math.floor((b + 1) / 2);
-    let top = bottom - b1;
+    let bottom = xy1.y - 1 + Math.floor((b + 1) / 2);
+    let top = bottom - b1 + 1;
 
     let errIncrementX = 4 * (1 - a) * b * b;
     let errIncrementY = 4 * (b1 + 1) * a * a;
@@ -72,7 +76,7 @@ export class DrawEllipse {
         // TODO: update the implementation below to honor fill pattern
         Vector2d.forEachIntXyWithinRectOf(
           v_(left + 1, bottom),
-          v_(right - 1, bottom).add(1),
+          v_(right - left - 1, 1),
           true,
           (xy) => {
             this.#pixel.draw(xy, color, clippingRegion);
@@ -81,7 +85,7 @@ export class DrawEllipse {
         // TODO: update the implementation below to honor fill pattern
         Vector2d.forEachIntXyWithinRectOf(
           v_(left + 1, top),
-          v_(right - 1, top).add(1),
+          v_(right - left - 1, 1),
           true,
           (xy) => {
             this.#pixel.draw(xy, color, clippingRegion);

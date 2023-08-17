@@ -3,10 +3,11 @@ import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
+import { Buttons } from "./game_input/Buttons";
 import { GameInput, GameInputEvent } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
-import { StorageApi } from "./StorageApi";
+import { StorageApi } from "./storage/StorageApi";
 import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
@@ -15,21 +16,29 @@ export type FrameworkOptions = {
   // TODO: Does is still work?
   logActualFps?: boolean;
   debug?: {
-    enabledOnInit: boolean;
+    available: boolean;
     /**
      * A key to toggle debug mode on/off. Has to match a
      * [KeyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
      * of a desired key.
      */
     toggleKey?: string;
+    frameByFrame?: {
+      activateKey?: string;
+      stepKey?: string;
+    };
   };
 };
 
 export type OnAssetsLoaded = {
-  startGame: (onStart?: () => void) => void;
+  startGame: () => void;
 };
 
 export class Framework {
+  // TODO: Move debug responsibility to a separate class
+  static readonly #storageDebugDisabledKey = "framework__debug_disabled";
+  static readonly #storageDebugDisabledTrue = "yes";
+
   readonly #htmlDisplaySelector = "#display";
   readonly #htmlCanvasSelector = "#canvas";
   readonly #htmlControlsFullscreenSelector = ".controls_fullscreen_toggle";
@@ -37,6 +46,7 @@ export class Framework {
 
   readonly #debugOptions: FrameworkOptions["debug"];
   #debug: boolean;
+  #frameByFrame: boolean;
   get debug(): boolean {
     return this.#debug;
   }
@@ -51,31 +61,42 @@ export class Framework {
 
   readonly #loading: Loading;
   readonly #gameInput: GameInput;
+  readonly buttons: Buttons;
   readonly #gameLoop: GameLoop;
   readonly audioApi: AudioApi;
   readonly #fullScreen: FullScreen;
 
+  readonly storageApi: StorageApi;
+
   readonly assets: Assets;
 
   readonly drawApi: DrawApi;
-  readonly storageApi: StorageApi;
 
+  #onStarted?: () => void;
   #onUpdate?: () => void;
   #onDraw?: () => void;
 
   #scaleToFill = 1;
   #centeringOffset = Vector2d.zero;
 
-  frameNumber: number = 0;
+  #frameNumber: number = 0;
   averageFps: number = 1;
   continuousInputEvents: Set<GameInputEvent> = new Set();
   fireOnceInputEvents: Set<GameInputEvent> = new Set();
 
+  get frameNumber(): number {
+    return this.#frameNumber;
+  }
+
   constructor(options: FrameworkOptions) {
     this.#debugOptions = options.debug ?? {
-      enabledOnInit: false,
+      available: false,
     };
-    this.#debug = this.#debugOptions?.enabledOnInit;
+    this.#debug = this.#debugOptions?.available
+      ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
+        Framework.#storageDebugDisabledTrue
+      : false;
+    this.#frameByFrame = false;
 
     this.#loading = new Loading(this.#htmlDisplaySelector);
 
@@ -116,14 +137,27 @@ export class Framework {
     this.#gameInput = new GameInput({
       muteButtonsSelector: this.#htmlControlsMuteSelector,
       fullScreenButtonsSelector: this.#htmlControlsFullscreenSelector,
-      debugToggleKey: this.#debugOptions?.toggleKey,
+      // TODO: extract ";", ",", and "." to some file about debugging
+      debugToggleKey: this.#debugOptions?.available
+        ? this.#debugOptions?.toggleKey ?? ";"
+        : undefined,
+      debugFrameByFrameActivateKey: this.#debugOptions?.available
+        ? this.#debugOptions.frameByFrame?.activateKey ?? ","
+        : undefined,
+      debugFrameByFrameStepKey: this.#debugOptions?.available
+        ? this.#debugOptions.frameByFrame?.stepKey ?? "."
+        : undefined,
     });
+
+    this.buttons = new Buttons();
 
     this.#gameLoop = new GameLoop({
       desiredFps: options.desiredFps,
       logActualFps: options.logActualFps ?? false,
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
     });
+
+    this.storageApi = new StorageApi();
 
     const audioContext = new AudioContext();
 
@@ -148,14 +182,16 @@ export class Framework {
       canvasSize: this.#gameCanvasSize,
       assets: this.assets,
     });
-
-    this.storageApi = new StorageApi();
   }
 
-  loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
+  async loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
     return this.assets.loadAssets(assetsToLoad).then(() => ({
       startGame: this.#startGame.bind(this),
     }));
+  }
+
+  setOnStarted(onStarted: () => void) {
+    this.#onStarted = onStarted;
   }
 
   setOnUpdate(onUpdate: () => void) {
@@ -166,22 +202,39 @@ export class Framework {
     this.#onDraw = onDraw;
   }
 
+  restart() {
+    this.#frameNumber = 0;
+    this.#onStarted?.();
+  }
+
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
-  #startGame(onStart?: () => void): void {
+  #startGame(): void {
+    if (__BEETPX_IS_PROD__) {
+      // - returned message seems to be ignored by some browsers, therefore using `""`
+      // - this event is *not* always run when for example there was no mouse click inside
+      //   iframe with the game in Firefox
+      // - there are two ways of implementing this, because of browsers incompatibilities,
+      //   therefore using both of them here (`event.returnValue =` and `return`)
+      window.addEventListener("beforeunload", (event) => {
+        event.preventDefault();
+        event.returnValue = "";
+        return "";
+      });
+    }
+
     this.#setupHtmlCanvas();
     window.addEventListener("resize", (_event) => {
       this.#setupHtmlCanvas();
     });
 
-    // TODO: rename to make it clear this will happen before the game loop starts and game gets rendered
-    onStart?.();
+    this.#onStarted?.();
 
     this.#loading.showApp();
 
     this.#gameInput.startListening();
 
     this.#gameLoop.start({
-      updateFn: (frameNumber, averageFps) => {
+      updateFn: (averageFps) => {
         const fireOnceEvents = this.#gameInput.consumeFireOnceEvents();
         if (fireOnceEvents.has("full_screen")) {
           this.#fullScreen.toggle();
@@ -191,7 +244,20 @@ export class Framework {
         }
         if (fireOnceEvents.has("debug_toggle")) {
           this.#debug = !this.#debug;
+          console.debug(`Debug flag set to: ${this.#debug}`);
+          if (this.#debug) {
+            window.localStorage.removeItem(Framework.#storageDebugDisabledKey);
+          } else {
+            window.localStorage.setItem(
+              Framework.#storageDebugDisabledKey,
+              Framework.#storageDebugDisabledTrue,
+            );
+          }
           this.#redrawDebugMargin();
+        }
+        if (fireOnceEvents.has("frame_by_frame_toggle")) {
+          this.#frameByFrame = !this.#frameByFrame;
+          console.debug(`FrameByFrame mode set to: ${this.#frameByFrame}`);
         }
 
         const continuousEvents = this.#gameInput.getCurrentContinuousEvents();
@@ -200,12 +266,24 @@ export class Framework {
           this.audioApi.resumeAudioContextIfNeeded();
         }
 
-        this.frameNumber = frameNumber;
         this.averageFps = averageFps;
         this.continuousInputEvents = continuousEvents;
         this.fireOnceInputEvents = fireOnceEvents;
 
-        this.#onUpdate?.();
+        if (!this.#frameByFrame || fireOnceEvents.has("frame_by_frame_step")) {
+          if (this.#frameByFrame) {
+            console.debug(`Running onUpdate for frame: ${this.#frameNumber}`);
+          }
+
+          this.buttons.update(continuousEvents);
+
+          this.#onUpdate?.();
+
+          this.#frameNumber =
+            this.#frameNumber == Number.MAX_SAFE_INTEGER
+              ? 0
+              : this.#frameNumber + 1;
+        }
       },
       renderFn: () => {
         this.#onDraw?.();

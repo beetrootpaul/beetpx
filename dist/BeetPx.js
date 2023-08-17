@@ -62,11 +62,32 @@ _BeetPx_framework = { value: void 0 };
 //
 // lifecycle methods
 //
+BeetPx.setOnStarted = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).setOnStarted(...args);
+};
 BeetPx.setOnUpdate = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).setOnUpdate(...args);
 };
 BeetPx.setOnDraw = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).setOnDraw(...args);
+};
+BeetPx.restart = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).restart(...args);
+};
+//
+// Buttons
+//
+BeetPx.isPressed = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.isPressed(...args);
+};
+BeetPx.setRepeating = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.setRepeating(...args);
+};
+BeetPx.wasJustPressed = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustPressed(...args);
+};
+BeetPx.wasJustReleased = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustReleased(...args);
 };
 //
 // Draw API
@@ -77,14 +98,14 @@ BeetPx.setCameraOffset = (...args) => {
 BeetPx.setClippingRegion = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setClippingRegion(...args);
 };
+BeetPx.removeClippingRegion = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.removeClippingRegion(...args);
+};
 BeetPx.setFillPattern = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFillPattern(...args);
 };
 BeetPx.mapSpriteColors = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.mapSpriteColors(...args);
-};
-BeetPx.getMappedSpriteColor = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.getMappedSpriteColor(...args);
 };
 BeetPx.setFont = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFont(...args);
@@ -117,8 +138,16 @@ BeetPx.ellipseFilled = (...args) => {
 BeetPx.sprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);
 };
-BeetPx.print = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(...args);
+// TODO: Create a similar JSDocs API description for other API methods as well
+/**
+ * Draws a text on the canvas
+ *
+ * @param text
+ * @param canvasXy1 top-left text corner
+ * @param color text color or a function which returns a text color for a given character
+ */
+BeetPx.print = (text, canvasXy1, color) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(text, canvasXy1, color);
 };
 //
 // Audio API
@@ -134,6 +163,9 @@ BeetPx.playSoundLooped = (...args) => {
 };
 BeetPx.playSoundSequence = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundSequence(...args);
+};
+BeetPx.stopAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllSounds(...args);
 };
 BeetPx.muteSound = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteSound(...args);

@@ -1,5 +1,5 @@
-import { SolidColor } from "../Color";
-import { v_, Vector2d } from "../Vector2d";
+import { CompositeColor, MappingColor, SolidColor } from "../Color";
+import { Vector2d, v_ } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
@@ -17,40 +17,40 @@ export class DrawLine {
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
   }
 
+  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor
+  // TODO: tests for CompositeColor and fillPattern
   // TODO: cover ClippingRegion with tests
-  // TODO: Consider rect and ellipse and line APIs to operate on *inclusive* xy2.
-  //       It is strange to have to set xy2 to be at least 1 higher than xy1 in order to draw a straight line.
   // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
-    xy1: Vector2d,
-    xy2: Vector2d,
-    color: SolidColor,
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
     // TODO: implement fill pattern for the line (?)
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    if (Math.abs(xy2.x - xy1.x) <= 0 || Math.abs(xy2.y - xy1.y) <= 0) {
+    xy = xy.round();
+    wh = wh.round();
+
+    // check if wh has 0 width or height
+    if (wh.x * wh.y === 0) {
       return;
     }
 
-    // adjust coordinates from right-bottom excluded to included
-    [xy1, xy2] = [
-      xy1.sub(xy1.x < xy2.x ? 0 : 1, xy1.y < xy2.y ? 0 : 1),
-      xy2.sub(xy2.x < xy1.x ? 0 : 1, xy2.y < xy1.y ? 0 : 1),
-    ];
+    const whSub1 = wh.sub(wh.sign());
 
     //
     // PREPARE
     //
 
-    let dXy = v_(Math.abs(xy2.x - xy1.x), -Math.abs(xy2.y - xy1.y));
+    let dXy = whSub1.abs().mul(v_(1, -1));
 
-    let currentXy = xy1;
-    const targetXy = xy2;
+    let currentXy = xy;
+    const targetXy = xy.add(whSub1);
 
-    // TODO: introduce `sign` and do `xy2.sub(xy1).sign().mul(1)` here
-    const step = v_(xy1.x < xy2.x ? 1 : -1, xy1.y < xy2.y ? 1 : -1);
+    const step = whSub1.sign();
     let err = dXy.x + dXy.y;
 
     while (true) {

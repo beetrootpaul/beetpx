@@ -10,22 +10,28 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _ClippingRegion_xy1, _ClippingRegion_xy2;
+var _Timer_frames, _Timer_t;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ClippingRegion = void 0;
-const Vector2d_1 = require("../Vector2d");
-class ClippingRegion {
-    constructor(xy, wh) {
-        var _a, _b;
-        _ClippingRegion_xy1.set(this, void 0);
-        _ClippingRegion_xy2.set(this, void 0);
-        __classPrivateFieldSet(this, _ClippingRegion_xy1, xy.round(), "f");
-        __classPrivateFieldSet(this, _ClippingRegion_xy2, xy.round().add(wh.round()), "f");
-        _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _ClippingRegion_xy1, _c, "f"); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _ClippingRegion_xy2, _c, "f"); } }).value] = Vector2d_1.Vector2d.minMax(__classPrivateFieldGet(this, _ClippingRegion_xy1, "f"), __classPrivateFieldGet(this, _ClippingRegion_xy2, "f"));
+exports.Timer = void 0;
+class Timer {
+    constructor(params) {
+        _Timer_frames.set(this, void 0);
+        _Timer_t.set(this, void 0);
+        __classPrivateFieldSet(this, _Timer_frames, params.frames, "f");
+        __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_frames, "f")), "f");
     }
-    allowsDrawingAt(xy) {
-        return xy.gte(__classPrivateFieldGet(this, _ClippingRegion_xy1, "f")) && xy.lt(__classPrivateFieldGet(this, _ClippingRegion_xy2, "f"));
+    get framesLeft() {
+        return __classPrivateFieldGet(this, _Timer_t, "f");
+    }
+    get progress() {
+        return __classPrivateFieldGet(this, _Timer_frames, "f") > 0 ? 1 - __classPrivateFieldGet(this, _Timer_t, "f") / __classPrivateFieldGet(this, _Timer_frames, "f") : 1;
+    }
+    get hasFinished() {
+        return __classPrivateFieldGet(this, _Timer_t, "f") <= 0 || __classPrivateFieldGet(this, _Timer_frames, "f") <= 0;
+    }
+    update() {
+        __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_t, "f") - 1), "f");
     }
 }
-exports.ClippingRegion = ClippingRegion;
-_ClippingRegion_xy1 = new WeakMap(), _ClippingRegion_xy2 = new WeakMap();
+exports.Timer = Timer;
+_Timer_frames = new WeakMap(), _Timer_t = new WeakMap();

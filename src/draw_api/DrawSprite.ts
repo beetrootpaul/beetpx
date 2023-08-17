@@ -23,10 +23,12 @@ export class DrawSprite {
   draw(
     sourceImageAsset: ImageAsset,
     sprite: Sprite,
-    targetXy1: Vector2d,
+    targetXy: Vector2d,
     colorMapping: Map<ColorId, Color> = new Map(),
     clippingRegion: ClippingRegion | null = null,
   ): void {
+    targetXy = targetXy.round();
+
     const {
       width: imgW,
       height: imgH,
@@ -35,6 +37,7 @@ export class DrawSprite {
 
     // make sure xy1 is top-left and xy2 is bottom right
     sprite = new Sprite(
+      sprite.imageUrl,
       v_(
         Math.min(sprite.xy1.x, sprite.xy2.x),
         Math.min(sprite.xy1.y, sprite.xy2.y),
@@ -47,6 +50,7 @@ export class DrawSprite {
 
     // clip sprite by image edges
     sprite = new Sprite(
+      sprite.imageUrl,
       v_(
         Utils.clamp(0, sprite.xy1.x, imgW),
         Utils.clamp(0, sprite.xy1.y, imgH),
@@ -59,7 +63,7 @@ export class DrawSprite {
 
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
       for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        const canvasXy = targetXy1.add(
+        const canvasXy = targetXy.add(
           v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y),
         );
         if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
@@ -83,9 +87,10 @@ export class DrawSprite {
             : transparent_;
         color = colorMapping.get(color.id()) ?? color;
 
-        if (color instanceof SolidColor) {
-          this.#pixel.draw(canvasXy, color);
-        }
+        // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+        //       - ff614f became ff6e59
+        //       - 00555a became 125359
+        this.#pixel.draw(canvasXy, color);
       }
     }
   }

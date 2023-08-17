@@ -2,9 +2,13 @@
 
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { SolidColor } from "./Color";
 import { DrawApi } from "./draw_api/DrawApi";
+import { CharSprite } from "./font/Font";
 import { Framework, type FrameworkOptions } from "./Framework";
-import { StorageApi } from "./StorageApi";
+import { Buttons } from "./game_input/Buttons";
+import { StorageApi } from "./storage/StorageApi";
+import { Vector2d } from "./Vector2d";
 
 export class BeetPx {
   static #framework: Framework;
@@ -61,12 +65,40 @@ export class BeetPx {
   // lifecycle methods
   //
 
+  static setOnStarted: Framework["setOnStarted"] = (...args) => {
+    return this.#tryGetFramework().setOnStarted(...args);
+  };
+
   static setOnUpdate: Framework["setOnUpdate"] = (...args) => {
     return this.#tryGetFramework().setOnUpdate(...args);
   };
 
   static setOnDraw: Framework["setOnDraw"] = (...args) => {
     return this.#tryGetFramework().setOnDraw(...args);
+  };
+
+  static restart: Framework["restart"] = (...args) => {
+    return this.#tryGetFramework().restart(...args);
+  };
+
+  //
+  // Buttons
+  //
+
+  static isPressed: Buttons["isPressed"] = (...args) => {
+    return this.#tryGetFramework().buttons.isPressed(...args);
+  };
+
+  static setRepeating: Buttons["setRepeating"] = (...args) => {
+    return this.#tryGetFramework().buttons.setRepeating(...args);
+  };
+
+  static wasJustPressed: Buttons["wasJustPressed"] = (...args) => {
+    return this.#tryGetFramework().buttons.wasJustPressed(...args);
+  };
+
+  static wasJustReleased: Buttons["wasJustReleased"] = (...args) => {
+    return this.#tryGetFramework().buttons.wasJustReleased(...args);
   };
 
   //
@@ -81,16 +113,16 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.setClippingRegion(...args);
   };
 
+  static removeClippingRegion: DrawApi["removeClippingRegion"] = (...args) => {
+    return this.#tryGetFramework().drawApi.removeClippingRegion(...args);
+  };
+
   static setFillPattern: DrawApi["setFillPattern"] = (...args) => {
     return this.#tryGetFramework().drawApi.setFillPattern(...args);
   };
 
   static mapSpriteColors: DrawApi["mapSpriteColors"] = (...args) => {
     return this.#tryGetFramework().drawApi.mapSpriteColors(...args);
-  };
-
-  static getMappedSpriteColor: DrawApi["getMappedSpriteColor"] = (...args) => {
-    return this.#tryGetFramework().drawApi.getMappedSpriteColor(...args);
   };
 
   static setFont: DrawApi["setFont"] = (...args) => {
@@ -130,12 +162,26 @@ export class BeetPx {
   };
 
   // TODO: make sure the whole API gets nice JSDoc even shown in the game itself, in IDE
+
   static sprite: DrawApi["sprite"] = (...args) => {
     return this.#tryGetFramework().drawApi.sprite(...args);
   };
 
-  static print: DrawApi["print"] = (...args) => {
-    return this.#tryGetFramework().drawApi.print(...args);
+  // TODO: Create a similar JSDocs API description for other API methods as well
+
+  /**
+   * Draws a text on the canvas
+   *
+   * @param text
+   * @param canvasXy1 top-left text corner
+   * @param color text color or a function which returns a text color for a given character
+   */
+  static print: DrawApi["print"] = (
+    text: string,
+    canvasXy1: Vector2d,
+    color: SolidColor | ((charSprite: CharSprite) => SolidColor),
+  ) => {
+    return this.#tryGetFramework().drawApi.print(text, canvasXy1, color);
   };
 
   //
@@ -156,6 +202,10 @@ export class BeetPx {
 
   static playSoundSequence: AudioApi["playSoundSequence"] = (...args) => {
     return this.#tryGetFramework().audioApi.playSoundSequence(...args);
+  };
+
+  static stopAllSounds: AudioApi["stopAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.stopAllSounds(...args);
   };
 
   static muteSound: AudioApi["muteSound"] = (...args) => {

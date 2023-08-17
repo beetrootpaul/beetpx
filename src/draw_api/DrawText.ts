@@ -22,17 +22,20 @@ export class DrawText {
   // TODO: cover ClippingRegion with tests
   draw(
     text: string,
-    canvasXy1: Vector2d,
+    canvasXy: Vector2d,
     fontAsset: FontAsset,
     color: SolidColor | ((charSprite: CharSprite) => SolidColor),
     clippingRegion: ClippingRegion | null = null,
   ): void {
+    canvasXy = canvasXy.round();
+
     const colorFn = typeof color === "function" ? color : () => color;
+
     for (const charSprite of fontAsset.font.spritesFor(text)) {
       this.#sprite.draw(
         fontAsset.image,
         charSprite.sprite,
-        canvasXy1.add(charSprite.positionInText),
+        canvasXy.add(charSprite.positionInText),
         new Map([
           [fontAsset.imageTextColor.id(), colorFn(charSprite)],
           [fontAsset.imageBgColor.id(), transparent_],

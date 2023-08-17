@@ -1,10 +1,18 @@
-import { BeetPx, BpxSolidColor, BpxVector2d, spr_, v_ } from "../../../src";
+import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 
 BeetPx.init(
   {
     gameCanvasSize: v_(128, 128),
     desiredFps: 30,
     logActualFps: true,
+    debug: {
+      available: !__BEETPX_IS_PROD__,
+      toggleKey: ";",
+      frameByFrame: {
+        activateKey: ",",
+        stepKey: ".",
+      },
+    },
   },
   {
     images: [{ url: "logo.png" }],
@@ -14,8 +22,13 @@ BeetPx.init(
 ).then(({ startGame }) => {
   console.log("BeetPx initialized");
 
-  const logoPositionBase = v_((128 - 16) / 2, (128 - 16) / 2);
-  let logoPositionOffset = BpxVector2d.zero;
+  let logoPositionBase = Vector2d.zero;
+  let logoPositionOffset = Vector2d.zero;
+
+  BeetPx.setOnStarted(() => {
+    logoPositionBase = v_((128 - 16) / 2, (128 - 16) / 2);
+    logoPositionOffset = Vector2d.zero;
+  });
 
   BeetPx.setOnUpdate(() => {
     console.log(`FPS: ${BeetPx.averageFps}`);
@@ -27,15 +40,19 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
-    BeetPx.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
+    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
     BeetPx.sprite(
-      "logo.png",
-      spr_(0, 0, 16, 16),
+      spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
     );
+    if (BeetPx.debug) {
+      BeetPx.line(
+        v_(0, 0),
+        logoPositionBase.add(logoPositionOffset),
+        SolidColor.fromRgbCssHex("#ff0000"),
+      );
+    }
   });
 
-  startGame(() => {
-    console.log("Game started");
-  });
+  startGame();
 });

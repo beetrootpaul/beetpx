@@ -26,10 +26,11 @@ class DrawText {
     }
     // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
     // TODO: cover ClippingRegion with tests
-    draw(text, canvasXy1, fontAsset, color, clippingRegion = null) {
+    draw(text, canvasXy, fontAsset, color, clippingRegion = null) {
+        canvasXy = canvasXy.round();
         const colorFn = typeof color === "function" ? color : () => color;
         for (const charSprite of fontAsset.font.spritesFor(text)) {
-            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy1.add(charSprite.positionInText), new Map([
+            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), new Map([
                 [fontAsset.imageTextColor.id(), colorFn(charSprite)],
                 [fontAsset.imageBgColor.id(), Color_1.transparent_],
             ]), clippingRegion);

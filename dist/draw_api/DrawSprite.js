@@ -28,15 +28,16 @@ class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawSprite_canvasSize, "f")), "f");
     }
     // TODO: cover clippingRegion with tests
-    draw(sourceImageAsset, sprite, targetXy1, colorMapping = new Map(), clippingRegion = null) {
+    draw(sourceImageAsset, sprite, targetXy, colorMapping = new Map(), clippingRegion = null) {
+        targetXy = targetXy.round();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
-        sprite = new Sprite_1.Sprite((0, Vector2d_1.v_)(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), (0, Vector2d_1.v_)(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
+        sprite = new Sprite_1.Sprite(sprite.imageUrl, (0, Vector2d_1.v_)(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), (0, Vector2d_1.v_)(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
         // clip sprite by image edges
-        sprite = new Sprite_1.Sprite((0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy1.x, imgW), Utils_1.Utils.clamp(0, sprite.xy1.y, imgH)), (0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy2.x, imgW), Utils_1.Utils.clamp(0, sprite.xy2.y, imgH)));
+        sprite = new Sprite_1.Sprite(sprite.imageUrl, (0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy1.x, imgW), Utils_1.Utils.clamp(0, sprite.xy1.y, imgH)), (0, Vector2d_1.v_)(Utils_1.Utils.clamp(0, sprite.xy2.x, imgW), Utils_1.Utils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-                const canvasXy = targetXy1.add((0, Vector2d_1.v_)(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
+                const canvasXy = targetXy.add((0, Vector2d_1.v_)(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
                 if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
                     continue;
                 }
@@ -48,9 +49,10 @@ class DrawSprite {
                     ? new Color_1.SolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
                     : Color_1.transparent_;
                 color = colorMapping.get(color.id()) ?? color;
-                if (color instanceof Color_1.SolidColor) {
-                    __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
-                }
+                // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+                //       - ff614f became ff6e59
+                //       - 00555a became 125359
+                __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
             }
         }
     }

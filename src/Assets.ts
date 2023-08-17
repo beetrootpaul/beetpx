@@ -1,5 +1,5 @@
 import { SolidColor } from "./Color";
-import { Font } from "./font/Font";
+import { Font, FontId } from "./font/Font";
 import { Utils } from "./Utils";
 
 export type AssetsToLoad = {
@@ -17,7 +17,6 @@ type ImageAssetToLoad = {
 
 type FontAssetToLoad = {
   font: Font;
-  url: ImageUrl;
   imageTextColor: SolidColor;
   imageBgColor: SolidColor;
 };
@@ -52,7 +51,7 @@ export class Assets {
 
   #images: Map<ImageUrl, ImageAsset> = new Map();
   #fonts: Map<
-    ImageUrl,
+    FontId,
     {
       font: Font;
       imageTextColor: SolidColor;
@@ -67,15 +66,13 @@ export class Assets {
 
   // TODO: game loading screen during assets loading?
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
-    assetsToLoad.fonts.forEach(
-      ({ url, font, imageTextColor, imageBgColor }) => {
-        this.#fonts.set(url, { font, imageTextColor, imageBgColor });
-      },
-    );
+    assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {
+      this.#fonts.set(font.id, { font, imageTextColor, imageBgColor });
+    });
 
     const uniqueImageUrls = new Set([
       ...assetsToLoad.images.map(({ url }) => url),
-      ...assetsToLoad.fonts.map(({ url }) => url),
+      ...assetsToLoad.fonts.map(({ font }) => font.imageUrl),
     ]);
     await Promise.all(
       Array.from(uniqueImageUrls).map(async (url) => {
@@ -134,15 +131,15 @@ export class Assets {
   }
 
   // call `loadAssets` before this one
-  getFontAsset(urlOfAlreadyLoadedFontImage: ImageUrl): FontAsset {
+  getFontAsset(fontId: FontId): FontAsset {
     const { font, imageTextColor, imageBgColor } =
-      this.#fonts.get(urlOfAlreadyLoadedFontImage) ??
+      this.#fonts.get(fontId) ??
       Utils.throwError(
-        `Assets: font descriptor is missing for font image URL "${urlOfAlreadyLoadedFontImage}"`,
+        `Assets: font descriptor is missing for font ID "${fontId}"`,
       );
     return {
       font,
-      image: this.getImageAsset(urlOfAlreadyLoadedFontImage),
+      image: this.getImageAsset(font.imageUrl),
       imageTextColor,
       imageBgColor,
     };

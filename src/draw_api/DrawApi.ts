@@ -1,6 +1,13 @@
-import { Assets, FontAsset, ImageUrl } from "../Assets";
-import { Color, ColorId, CompositeColor, SolidColor } from "../Color";
-import { CharSprite, Font } from "../font/Font";
+import { Assets, FontAsset } from "../Assets";
+import {
+  Color,
+  ColorId,
+  CompositeColor,
+  MappingColor,
+  SolidColor,
+  TransparentColor,
+} from "../Color";
+import { CharSprite, Font, FontId } from "../font/Font";
 import { Sprite } from "../Sprite";
 import { v_, Vector2d } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
@@ -12,6 +19,11 @@ import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { FillPattern } from "./FillPattern";
+
+export type ColorMapping = Array<{
+  from: SolidColor;
+  to: SolidColor | TransparentColor;
+}>;
 
 type DrawApiOptions = {
   // TODO: better name to indicate in-out nature of this param? Or some info in JSDoc?
@@ -72,8 +84,12 @@ export class DrawApi {
     this.#cameraOffset = offset.round();
   }
 
-  setClippingRegion(clippingRegion: ClippingRegion | null): void {
-    this.#clippingRegion = clippingRegion;
+  setClippingRegion(xy: Vector2d, wh: Vector2d): void {
+    this.#clippingRegion = new ClippingRegion(xy, wh);
+  }
+
+  removeClippingRegion(): void {
+    this.#clippingRegion = null;
   }
 
   // TODO: cover it with tests
@@ -82,8 +98,13 @@ export class DrawApi {
   }
 
   // TODO: cover it with tests
-  mapSpriteColors(mappings: Array<{ from: Color; to: Color }>): void {
-    mappings.forEach(({ from, to }) => {
+  mapSpriteColors(mapping: ColorMapping): ColorMapping {
+    const previous: ColorMapping = [];
+    mapping.forEach(({ from, to }) => {
+      previous.push({
+        from,
+        to: this.#spriteColorMapping.get(from.id()) ?? from,
+      });
       // TODO: consider writing a custom equality check function
       if (from.id() === to.id()) {
         this.#spriteColorMapping.delete(from.id());
@@ -91,17 +112,12 @@ export class DrawApi {
         this.#spriteColorMapping.set(from.id(), to);
       }
     });
-  }
-
-  getMappedSpriteColor(from: Color): Color {
-    return this.#spriteColorMapping.get(from.id()) ?? from;
+    return previous;
   }
 
   // TODO: cover it with tests
-  setFont(fontImageUrl: string | null): void {
-    this.#fontAsset = fontImageUrl
-      ? this.#assets.getFontAsset(fontImageUrl)
-      : null;
+  setFont(fontId: FontId | null): void {
+    this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
   }
 
   getFont(): Font | null {
@@ -120,20 +136,28 @@ export class DrawApi {
     );
   }
 
-  line(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  line(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#line.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       this.#fillPattern,
       this.#clippingRegion,
     );
   }
 
-  rect(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  rect(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#rect.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       false,
       this.#fillPattern,
@@ -142,13 +166,13 @@ export class DrawApi {
   }
 
   rectFilled(
-    xy1: Vector2d,
-    xy2: Vector2d,
-    color: SolidColor | CompositeColor,
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
   ): void {
     this.#rect.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       true,
       this.#fillPattern,
@@ -156,10 +180,14 @@ export class DrawApi {
     );
   }
 
-  ellipse(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  ellipse(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#ellipse.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       false,
       this.#fillPattern,
@@ -167,10 +195,14 @@ export class DrawApi {
     );
   }
 
-  ellipseFilled(xy1: Vector2d, xy2: Vector2d, color: SolidColor): void {
+  ellipseFilled(
+    xy: Vector2d,
+    wh: Vector2d,
+    color: SolidColor | CompositeColor | MappingColor,
+  ): void {
     this.#ellipse.draw(
-      xy1.sub(this.#cameraOffset).round(),
-      xy2.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset).round(),
+      wh,
       color,
       true,
       this.#fillPattern,
@@ -179,41 +211,34 @@ export class DrawApi {
   }
 
   // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
-  sprite(spriteImageUrl: ImageUrl, sprite: Sprite, canvasXy1: Vector2d): void {
-    const sourceImageAsset = this.#assets.getImageAsset(spriteImageUrl);
+  sprite(sprite: Sprite, canvasXy: Vector2d): void {
+    const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sourceImageAsset,
       sprite,
-      canvasXy1.sub(this.#cameraOffset).round(),
+      canvasXy.sub(this.#cameraOffset).round(),
       this.#spriteColorMapping,
       this.#clippingRegion,
     );
   }
 
   // TODO: cover with tests
-  /**
-   * Draws a text on the canvas
-   *
-   * @param text
-   * @param canvasXy1 top-left text corner
-   * @param color text color or a function which returns a text color for a given character
-   */
   print(
     text: string,
-    canvasXy1: Vector2d,
+    canvasXy: Vector2d,
     color: SolidColor | ((charSprite: CharSprite) => SolidColor),
   ): void {
     if (this.#fontAsset) {
       this.#text.draw(
         text,
-        canvasXy1.sub(this.#cameraOffset).round(),
+        canvasXy.sub(this.#cameraOffset).round(),
         this.#fontAsset,
         color,
         this.#clippingRegion,
       );
     } else {
       console.info(
-        `print: (${canvasXy1.x},${canvasXy1.y}) [${
+        `print: (${canvasXy.x},${canvasXy.y}) [${
           typeof color === "function" ? "computed" : color.asRgbCssHex()
         }] ${text}`,
       );

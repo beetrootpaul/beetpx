@@ -10,6 +10,7 @@ exports.StorageApi = void 0;
 class StorageApi {
     store(value) {
         window.localStorage.setItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key), JSON.stringify(value, null, 2));
+        window.localStorage.setItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key) + "2", JSON.stringify(value, null, 2));
     }
     // TODO: use zod or some other popular lib and validate value's shape here
     load() {
