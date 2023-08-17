@@ -236,7 +236,50 @@ declare class DrawApi {
     print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
 }
 
+declare class Button {
+    #private;
+    static readonly repeatingFramesStart = 30;
+    static readonly repeatingFramesInterval = 8;
+    get isPressed(): boolean;
+    wasJustPressed(repeating: boolean): boolean;
+    wasJustReleased(repeating: boolean): boolean;
+    update(isPressed: boolean): void;
+}
+
+type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
+declare class Buttons {
+    #private;
+    update(events: Set<GameInputEvent>): void;
+    isPressed(button: ButtonName): boolean;
+    setRepeating(button: ButtonName, repeating: boolean): void;
+    wasAnyJustPressed(): boolean;
+    wasJustPressed(button: ButtonName): boolean;
+    wasJustReleased(button: ButtonName): boolean;
+}
+
 type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
+type GameInputParams = {
+    muteButtonsSelector: string;
+    fullScreenButtonsSelector: string;
+    debugToggleKey?: string;
+    debugFrameByFrameActivateKey?: string;
+    debugFrameByFrameStepKey?: string;
+};
+declare class GameInput {
+    #private;
+    readonly gameButtons: Buttons;
+    readonly buttonFullScreen: Button;
+    readonly buttonMuteUnmute: Button;
+    readonly buttonDebugToggle: Button;
+    readonly buttonFrameByFrameToggle: Button;
+    readonly buttonFrameByFrameStep: Button;
+    constructor(params: GameInputParams);
+    startListening(): void;
+    update(params: {
+        skipGameButtons: boolean;
+    }): void;
+    wasAnyButtonPressed(): boolean;
+}
 
 declare class Timer {
     #private;
@@ -247,16 +290,6 @@ declare class Timer {
     get progress(): number;
     get hasFinished(): boolean;
     update(): void;
-}
-
-type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
-declare class Buttons {
-    #private;
-    isPressed(button: ButtonName): boolean;
-    setRepeating(button: ButtonName, repeating: boolean): void;
-    wasJustPressed(button: ButtonName): boolean;
-    wasJustReleased(button: ButtonName): boolean;
-    update(continuousInputEvents: Set<GameInputEvent>): void;
 }
 
 type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
@@ -291,14 +324,12 @@ type OnAssetsLoaded = {
 declare class Framework {
     #private;
     get debug(): boolean;
-    readonly buttons: Buttons;
+    readonly gameInput: GameInput;
     readonly audioApi: AudioApi;
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
     averageFps: number;
-    continuousInputEvents: Set<GameInputEvent>;
-    fireOnceInputEvents: Set<GameInputEvent>;
     get frameNumber(): number;
     constructor(options: FrameworkOptions);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
@@ -313,8 +344,6 @@ declare class BeetPx {
     static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["loadAssets"]>;
     static get frameNumber(): Framework["frameNumber"];
     static get averageFps(): Framework["averageFps"];
-    static get continuousInputEvents(): Framework["continuousInputEvents"];
-    static get fireOnceInputEvents(): Framework["fireOnceInputEvents"];
     static get audioContext(): AudioApi["audioContext"];
     static get globalGainNode(): AudioApi["globalGainNode"];
     static get debug(): Framework["debug"];

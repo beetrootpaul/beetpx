@@ -4,10 +4,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _KeyboardGameInput_keyMapping, _KeyboardGameInput_currentContinuousEvents, _KeyboardGameInput_recentFireOnceEvents;
+var _KeyboardGameInput_keyMapping, _KeyboardGameInput_eventsSinceLastUpdate;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.KeyboardGameInput = void 0;
-const GameInput_1 = require("./GameInput");
 class KeyboardGameInput {
     constructor(params) {
         _KeyboardGameInput_keyMapping.set(this, new Map([
@@ -37,8 +36,7 @@ class KeyboardGameInput {
             ["f", "full_screen"],
             ["F", "full_screen"],
         ]));
-        _KeyboardGameInput_currentContinuousEvents.set(this, new Set());
-        _KeyboardGameInput_recentFireOnceEvents.set(this, new Set());
+        _KeyboardGameInput_eventsSinceLastUpdate.set(this, new Set());
         if (params.debugToggleKey) {
             __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(params.debugToggleKey, "debug_toggle");
         }
@@ -54,32 +52,22 @@ class KeyboardGameInput {
             const gameInputEvent = __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").get(keyboardEvent.key);
             if (gameInputEvent) {
                 keyboardEvent.preventDefault();
-                if (!GameInput_1.gameInputEventBehavior[gameInputEvent]?.fireOnce) {
-                    __classPrivateFieldGet(this, _KeyboardGameInput_currentContinuousEvents, "f").add(gameInputEvent);
-                }
+                __classPrivateFieldGet(this, _KeyboardGameInput_eventsSinceLastUpdate, "f").add(gameInputEvent);
             }
         });
         document.addEventListener("keyup", (keyboardEvent) => {
             const gameInputEvent = __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").get(keyboardEvent.key);
             if (gameInputEvent) {
                 keyboardEvent.preventDefault();
-                if (GameInput_1.gameInputEventBehavior[gameInputEvent]?.fireOnce) {
-                    __classPrivateFieldGet(this, _KeyboardGameInput_recentFireOnceEvents, "f").add(gameInputEvent);
-                }
-                else {
-                    __classPrivateFieldGet(this, _KeyboardGameInput_currentContinuousEvents, "f").delete(gameInputEvent);
-                }
+                __classPrivateFieldGet(this, _KeyboardGameInput_eventsSinceLastUpdate, "f").delete(gameInputEvent);
             }
         });
     }
-    getCurrentContinuousEvents() {
-        return __classPrivateFieldGet(this, _KeyboardGameInput_currentContinuousEvents, "f");
-    }
-    consumeFireOnceEvents() {
-        const events = new Set(__classPrivateFieldGet(this, _KeyboardGameInput_recentFireOnceEvents, "f"));
-        __classPrivateFieldGet(this, _KeyboardGameInput_recentFireOnceEvents, "f").clear();
-        return events;
+    update(eventsCollector) {
+        for (const event of __classPrivateFieldGet(this, _KeyboardGameInput_eventsSinceLastUpdate, "f")) {
+            eventsCollector.add(event);
+        }
     }
 }
 exports.KeyboardGameInput = KeyboardGameInput;
-_KeyboardGameInput_keyMapping = new WeakMap(), _KeyboardGameInput_currentContinuousEvents = new WeakMap(), _KeyboardGameInput_recentFireOnceEvents = new WeakMap();
+_KeyboardGameInput_keyMapping = new WeakMap(), _KeyboardGameInput_eventsSinceLastUpdate = new WeakMap();

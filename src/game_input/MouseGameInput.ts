@@ -1,18 +1,15 @@
 import { GameInputEvent } from "./GameInput";
-
-// TODO: implement X and O
+import { SpecializedGameInput } from "./SpecializedGameInput";
 
 type GuiGameInputParams = {
   muteButtonsSelector: string;
   fullScreenButtonsSelector: string;
 };
 
-export class GuiGameInput {
+export class MouseGameInput implements SpecializedGameInput {
   readonly #params: GuiGameInputParams;
 
-  readonly #currentContinuousEvents: Set<GameInputEvent> =
-    new Set<GameInputEvent>();
-  readonly #recentFireOnceEvents: Set<GameInputEvent> =
+  readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
     new Set<GameInputEvent>();
 
   constructor(params: GuiGameInputParams) {
@@ -24,25 +21,22 @@ export class GuiGameInput {
       .querySelectorAll<HTMLElement>(this.#params.muteButtonsSelector)
       .forEach((button) => {
         button.addEventListener("click", () => {
-          this.#recentFireOnceEvents.add("mute_unmute_toggle");
+          this.#eventsSinceLastUpdate.add("mute_unmute_toggle");
         });
       });
     document
       .querySelectorAll<HTMLElement>(this.#params.fullScreenButtonsSelector)
       .forEach((button) => {
         button.addEventListener("click", () => {
-          this.#recentFireOnceEvents.add("full_screen");
+          this.#eventsSinceLastUpdate.add("full_screen");
         });
       });
   }
 
-  getCurrentContinuousEvents(): Set<GameInputEvent> {
-    return this.#currentContinuousEvents;
-  }
-
-  consumeFireOnceEvents(): Set<GameInputEvent> {
-    const events = new Set(this.#recentFireOnceEvents);
-    this.#recentFireOnceEvents.clear();
-    return events;
+  update(eventsCollector: Set<GameInputEvent>): void {
+    for (const event of this.#eventsSinceLastUpdate) {
+      eventsCollector.add(event);
+    }
+    this.#eventsSinceLastUpdate.clear();
   }
 }

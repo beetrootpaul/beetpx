@@ -32,12 +32,6 @@ class BeetPx {
     static get averageFps() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).averageFps;
     }
-    static get continuousInputEvents() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).continuousInputEvents;
-    }
-    static get fireOnceInputEvents() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).fireOnceInputEvents;
-    }
     //
     // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
     //
@@ -78,16 +72,16 @@ BeetPx.restart = (...args) => {
 // Buttons
 //
 BeetPx.isPressed = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.isPressed(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.isPressed(...args);
 };
 BeetPx.setRepeating = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.setRepeating(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.setRepeating(...args);
 };
 BeetPx.wasJustPressed = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustPressed(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustPressed(...args);
 };
 BeetPx.wasJustReleased = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustReleased(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustReleased(...args);
 };
 //
 // Draw API

@@ -1,7 +1,7 @@
 import { Button } from "./Button";
 import { GameInputEvent } from "./GameInput";
 
-// TODO: consider moving towards Z/X instead of O/X
+// TODO: consider moving towards Z/X instead of O/X. Or some other keys?
 export type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
 
 export class Buttons {
@@ -21,6 +21,16 @@ export class Buttons {
   #repeatingX: boolean = true;
 
   #repeatingMenu: boolean = false;
+
+  update(events: Set<GameInputEvent>): void {
+    this.#left.update(events.has("button_left"));
+    this.#right.update(events.has("button_right"));
+    this.#up.update(events.has("button_up"));
+    this.#down.update(events.has("button_down"));
+    this.#o.update(events.has("button_o"));
+    this.#x.update(events.has("button_x"));
+    this.#menu.update(events.has("button_menu"));
+  }
 
   isPressed(button: ButtonName): boolean {
     switch (button) {
@@ -67,6 +77,18 @@ export class Buttons {
     }
   }
 
+  wasAnyJustPressed(): boolean {
+    return (
+      this.#left.wasJustPressed(this.#repeatingLeft) ||
+      this.#right.wasJustPressed(this.#repeatingRight) ||
+      this.#up.wasJustPressed(this.#repeatingUp) ||
+      this.#down.wasJustPressed(this.#repeatingDown) ||
+      this.#o.wasJustPressed(this.#repeatingO) ||
+      this.#x.wasJustPressed(this.#repeatingX) ||
+      this.#menu.wasJustPressed(this.#repeatingMenu)
+    );
+  }
+
   wasJustPressed(button: ButtonName): boolean {
     switch (button) {
       case "left":
@@ -103,15 +125,5 @@ export class Buttons {
       case "menu":
         return this.#menu.wasJustReleased(this.#repeatingMenu);
     }
-  }
-
-  update(continuousInputEvents: Set<GameInputEvent>): void {
-    this.#left.update(continuousInputEvents.has("button_left"));
-    this.#right.update(continuousInputEvents.has("button_right"));
-    this.#up.update(continuousInputEvents.has("button_up"));
-    this.#down.update(continuousInputEvents.has("button_down"));
-    this.#o.update(continuousInputEvents.has("button_o"));
-    this.#x.update(continuousInputEvents.has("button_x"));
-    this.#menu.update(continuousInputEvents.has("button_menu"));
   }
 }

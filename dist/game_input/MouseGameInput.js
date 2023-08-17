@@ -10,40 +10,37 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GuiGameInput_params, _GuiGameInput_currentContinuousEvents, _GuiGameInput_recentFireOnceEvents;
+var _MouseGameInput_params, _MouseGameInput_eventsSinceLastUpdate;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GuiGameInput = void 0;
-class GuiGameInput {
+exports.MouseGameInput = void 0;
+class MouseGameInput {
     constructor(params) {
-        _GuiGameInput_params.set(this, void 0);
-        _GuiGameInput_currentContinuousEvents.set(this, new Set());
-        _GuiGameInput_recentFireOnceEvents.set(this, new Set());
-        __classPrivateFieldSet(this, _GuiGameInput_params, params, "f");
+        _MouseGameInput_params.set(this, void 0);
+        _MouseGameInput_eventsSinceLastUpdate.set(this, new Set());
+        __classPrivateFieldSet(this, _MouseGameInput_params, params, "f");
     }
     startListening() {
         document
-            .querySelectorAll(__classPrivateFieldGet(this, _GuiGameInput_params, "f").muteButtonsSelector)
+            .querySelectorAll(__classPrivateFieldGet(this, _MouseGameInput_params, "f").muteButtonsSelector)
             .forEach((button) => {
             button.addEventListener("click", () => {
-                __classPrivateFieldGet(this, _GuiGameInput_recentFireOnceEvents, "f").add("mute_unmute_toggle");
+                __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").add("mute_unmute_toggle");
             });
         });
         document
-            .querySelectorAll(__classPrivateFieldGet(this, _GuiGameInput_params, "f").fullScreenButtonsSelector)
+            .querySelectorAll(__classPrivateFieldGet(this, _MouseGameInput_params, "f").fullScreenButtonsSelector)
             .forEach((button) => {
             button.addEventListener("click", () => {
-                __classPrivateFieldGet(this, _GuiGameInput_recentFireOnceEvents, "f").add("full_screen");
+                __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").add("full_screen");
             });
         });
     }
-    getCurrentContinuousEvents() {
-        return __classPrivateFieldGet(this, _GuiGameInput_currentContinuousEvents, "f");
-    }
-    consumeFireOnceEvents() {
-        const events = new Set(__classPrivateFieldGet(this, _GuiGameInput_recentFireOnceEvents, "f"));
-        __classPrivateFieldGet(this, _GuiGameInput_recentFireOnceEvents, "f").clear();
-        return events;
+    update(eventsCollector) {
+        for (const event of __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f")) {
+            eventsCollector.add(event);
+        }
+        __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").clear();
     }
 }
-exports.GuiGameInput = GuiGameInput;
-_GuiGameInput_params = new WeakMap(), _GuiGameInput_currentContinuousEvents = new WeakMap(), _GuiGameInput_recentFireOnceEvents = new WeakMap();
+exports.MouseGameInput = MouseGameInput;
+_MouseGameInput_params = new WeakMap(), _MouseGameInput_eventsSinceLastUpdate = new WeakMap();

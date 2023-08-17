@@ -1,4 +1,5 @@
-import { GameInputEvent, gameInputEventBehavior } from "./GameInput";
+import { GameInputEvent } from "./GameInput";
+import { SpecializedGameInput } from "./SpecializedGameInput";
 
 type KeyboardGameInputParams = {
   debugToggleKey?: string;
@@ -6,7 +7,7 @@ type KeyboardGameInputParams = {
   debugFrameByFrameStepKey?: string;
 };
 
-export class KeyboardGameInput {
+export class KeyboardGameInput implements SpecializedGameInput {
   readonly #keyMapping: Map<string, GameInputEvent> = new Map<
     string,
     GameInputEvent
@@ -44,9 +45,7 @@ export class KeyboardGameInput {
     ["F", "full_screen"],
   ]);
 
-  readonly #currentContinuousEvents: Set<GameInputEvent> =
-    new Set<GameInputEvent>();
-  readonly #recentFireOnceEvents: Set<GameInputEvent> =
+  readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
     new Set<GameInputEvent>();
 
   constructor(params: KeyboardGameInputParams) {
@@ -72,31 +71,21 @@ export class KeyboardGameInput {
       const gameInputEvent = this.#keyMapping.get(keyboardEvent.key);
       if (gameInputEvent) {
         keyboardEvent.preventDefault();
-        if (!gameInputEventBehavior[gameInputEvent]?.fireOnce) {
-          this.#currentContinuousEvents.add(gameInputEvent);
-        }
+        this.#eventsSinceLastUpdate.add(gameInputEvent);
       }
     });
-    document.addEventListener("keyup", (keyboardEvent) => {
+    document.addEventListener("keyup", (keyboardEvent: KeyboardEvent) => {
       const gameInputEvent = this.#keyMapping.get(keyboardEvent.key);
       if (gameInputEvent) {
         keyboardEvent.preventDefault();
-        if (gameInputEventBehavior[gameInputEvent]?.fireOnce) {
-          this.#recentFireOnceEvents.add(gameInputEvent);
-        } else {
-          this.#currentContinuousEvents.delete(gameInputEvent);
-        }
+        this.#eventsSinceLastUpdate.delete(gameInputEvent);
       }
     });
   }
 
-  getCurrentContinuousEvents(): Set<GameInputEvent> {
-    return this.#currentContinuousEvents;
-  }
-
-  consumeFireOnceEvents(): Set<GameInputEvent> {
-    const events = new Set(this.#recentFireOnceEvents);
-    this.#recentFireOnceEvents.clear();
-    return events;
+  update(eventsCollector: Set<GameInputEvent>): void {
+    for (const event of this.#eventsSinceLastUpdate) {
+      eventsCollector.add(event);
+    }
   }
 }

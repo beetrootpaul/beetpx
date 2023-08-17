@@ -37,14 +37,6 @@ export class BeetPx {
     return this.#tryGetFramework().averageFps;
   }
 
-  static get continuousInputEvents(): Framework["continuousInputEvents"] {
-    return this.#tryGetFramework().continuousInputEvents;
-  }
-
-  static get fireOnceInputEvents(): Framework["fireOnceInputEvents"] {
-    return this.#tryGetFramework().fireOnceInputEvents;
-  }
-
   //
   // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
   //
@@ -86,19 +78,23 @@ export class BeetPx {
   //
 
   static isPressed: Buttons["isPressed"] = (...args) => {
-    return this.#tryGetFramework().buttons.isPressed(...args);
+    return this.#tryGetFramework().gameInput.gameButtons.isPressed(...args);
   };
 
   static setRepeating: Buttons["setRepeating"] = (...args) => {
-    return this.#tryGetFramework().buttons.setRepeating(...args);
+    return this.#tryGetFramework().gameInput.gameButtons.setRepeating(...args);
   };
 
   static wasJustPressed: Buttons["wasJustPressed"] = (...args) => {
-    return this.#tryGetFramework().buttons.wasJustPressed(...args);
+    return this.#tryGetFramework().gameInput.gameButtons.wasJustPressed(
+      ...args,
+    );
   };
 
   static wasJustReleased: Buttons["wasJustReleased"] = (...args) => {
-    return this.#tryGetFramework().buttons.wasJustReleased(...args);
+    return this.#tryGetFramework().gameInput.gameButtons.wasJustReleased(
+      ...args,
+    );
   };
 
   //

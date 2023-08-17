@@ -31,6 +31,15 @@ class Buttons {
         _Buttons_repeatingX.set(this, true);
         _Buttons_repeatingMenu.set(this, false);
     }
+    update(events) {
+        __classPrivateFieldGet(this, _Buttons_left, "f").update(events.has("button_left"));
+        __classPrivateFieldGet(this, _Buttons_right, "f").update(events.has("button_right"));
+        __classPrivateFieldGet(this, _Buttons_up, "f").update(events.has("button_up"));
+        __classPrivateFieldGet(this, _Buttons_down, "f").update(events.has("button_down"));
+        __classPrivateFieldGet(this, _Buttons_o, "f").update(events.has("button_o"));
+        __classPrivateFieldGet(this, _Buttons_x, "f").update(events.has("button_x"));
+        __classPrivateFieldGet(this, _Buttons_menu, "f").update(events.has("button_menu"));
+    }
     isPressed(button) {
         switch (button) {
             case "left":
@@ -74,6 +83,15 @@ class Buttons {
                 return;
         }
     }
+    wasAnyJustPressed() {
+        return (__classPrivateFieldGet(this, _Buttons_left, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingLeft, "f")) ||
+            __classPrivateFieldGet(this, _Buttons_right, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingRight, "f")) ||
+            __classPrivateFieldGet(this, _Buttons_up, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingUp, "f")) ||
+            __classPrivateFieldGet(this, _Buttons_down, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingDown, "f")) ||
+            __classPrivateFieldGet(this, _Buttons_o, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingO, "f")) ||
+            __classPrivateFieldGet(this, _Buttons_x, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingX, "f")) ||
+            __classPrivateFieldGet(this, _Buttons_menu, "f").wasJustPressed(__classPrivateFieldGet(this, _Buttons_repeatingMenu, "f")));
+    }
     wasJustPressed(button) {
         switch (button) {
             case "left":
@@ -109,15 +127,6 @@ class Buttons {
             case "menu":
                 return __classPrivateFieldGet(this, _Buttons_menu, "f").wasJustReleased(__classPrivateFieldGet(this, _Buttons_repeatingMenu, "f"));
         }
-    }
-    update(continuousInputEvents) {
-        __classPrivateFieldGet(this, _Buttons_left, "f").update(continuousInputEvents.has("button_left"));
-        __classPrivateFieldGet(this, _Buttons_right, "f").update(continuousInputEvents.has("button_right"));
-        __classPrivateFieldGet(this, _Buttons_up, "f").update(continuousInputEvents.has("button_up"));
-        __classPrivateFieldGet(this, _Buttons_down, "f").update(continuousInputEvents.has("button_down"));
-        __classPrivateFieldGet(this, _Buttons_o, "f").update(continuousInputEvents.has("button_o"));
-        __classPrivateFieldGet(this, _Buttons_x, "f").update(continuousInputEvents.has("button_x"));
-        __classPrivateFieldGet(this, _Buttons_menu, "f").update(continuousInputEvents.has("button_menu"));
     }
 }
 exports.Buttons = Buttons;

@@ -28,3 +28,5 @@ var BeetPx_1 = require("./BeetPx");
 Object.defineProperty(exports, "BeetPx", { enumerable: true, get: function () { return BeetPx_1.BeetPx; } });
 // TODO: remove comments from HTMLs from the generated game
 // TODO: improve bg color on itch around the game, but under the buttons
+// TODO: refactor HTML templates, rework canvas vs buttons layout vs screen orientation
+// TODO: remove ability to select touch button's text

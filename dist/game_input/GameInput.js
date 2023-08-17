@@ -10,71 +10,65 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GameInput_guiGameInput, _GameInput_keyboardGameInput, _GameInput_touchGameInput, _GameInput_gamepadGameInput;
+var _GameInput_specializedGameInputs;
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.GameInput = exports.gameInputEventBehavior = void 0;
+exports.GameInput = void 0;
+const Button_1 = require("./Button");
+const Buttons_1 = require("./Buttons");
 const GamepadGameInput_1 = require("./GamepadGameInput");
-const GuiGameInput_1 = require("./GuiGameInput");
 const KeyboardGameInput_1 = require("./KeyboardGameInput");
+const MouseGameInput_1 = require("./MouseGameInput");
 const TouchGameInput_1 = require("./TouchGameInput");
-exports.gameInputEventBehavior = {
-    // TODO: is it possible to make these keys type-safe?
-    // TODO: move full_screen out of this set OR move its handling to TouchGameInput and similar ones
-    mute_unmute_toggle: { fireOnce: true },
-    full_screen: { fireOnce: true },
-    debug_toggle: { fireOnce: true },
-    frame_by_frame_toggle: { fireOnce: true },
-    frame_by_frame_step: { fireOnce: true },
-};
 class GameInput {
     constructor(params) {
-        _GameInput_guiGameInput.set(this, void 0);
-        _GameInput_keyboardGameInput.set(this, void 0);
-        _GameInput_touchGameInput.set(this, void 0);
-        _GameInput_gamepadGameInput.set(this, void 0);
-        __classPrivateFieldSet(this, _GameInput_guiGameInput, new GuiGameInput_1.GuiGameInput({
-            muteButtonsSelector: params.muteButtonsSelector,
-            fullScreenButtonsSelector: params.fullScreenButtonsSelector,
-        }), "f");
-        __classPrivateFieldSet(this, _GameInput_keyboardGameInput, new KeyboardGameInput_1.KeyboardGameInput({
-            debugToggleKey: params.debugToggleKey,
-            debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
-            debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
-        }), "f");
-        __classPrivateFieldSet(this, _GameInput_touchGameInput, new TouchGameInput_1.TouchGameInput(), "f");
-        __classPrivateFieldSet(this, _GameInput_gamepadGameInput, new GamepadGameInput_1.GamepadGameInput(), "f");
+        _GameInput_specializedGameInputs.set(this, void 0);
+        __classPrivateFieldSet(this, _GameInput_specializedGameInputs, [
+            new MouseGameInput_1.MouseGameInput({
+                muteButtonsSelector: params.muteButtonsSelector,
+                fullScreenButtonsSelector: params.fullScreenButtonsSelector,
+            }),
+            new KeyboardGameInput_1.KeyboardGameInput({
+                debugToggleKey: params.debugToggleKey,
+                debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
+                debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
+            }),
+            new TouchGameInput_1.TouchGameInput(),
+            new GamepadGameInput_1.GamepadGameInput(),
+        ], "f");
+        this.gameButtons = new Buttons_1.Buttons();
+        this.buttonFullScreen = new Button_1.Button();
+        this.buttonMuteUnmute = new Button_1.Button();
+        this.buttonDebugToggle = new Button_1.Button();
+        this.buttonFrameByFrameToggle = new Button_1.Button();
+        this.buttonFrameByFrameStep = new Button_1.Button();
     }
     startListening() {
-        __classPrivateFieldGet(this, _GameInput_guiGameInput, "f").startListening();
-        __classPrivateFieldGet(this, _GameInput_keyboardGameInput, "f").startListening();
-        __classPrivateFieldGet(this, _GameInput_touchGameInput, "f").startListening();
+        for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
+            sgi.startListening();
+        }
     }
-    getCurrentContinuousEvents() {
-        const detectedEvents = new Set();
-        for (const event of __classPrivateFieldGet(this, _GameInput_guiGameInput, "f").getCurrentContinuousEvents()) {
-            detectedEvents.add(event);
+    update(params) {
+        const events = new Set();
+        for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
+            sgi.update(events);
         }
-        for (const event of __classPrivateFieldGet(this, _GameInput_keyboardGameInput, "f").getCurrentContinuousEvents()) {
-            detectedEvents.add(event);
+        if (!params.skipGameButtons) {
+            this.gameButtons.update(events);
         }
-        for (const event of __classPrivateFieldGet(this, _GameInput_touchGameInput, "f").getCurrentContinuousEvents()) {
-            detectedEvents.add(event);
-        }
-        for (const event of __classPrivateFieldGet(this, _GameInput_gamepadGameInput, "f").getCurrentContinuousEvents()) {
-            detectedEvents.add(event);
-        }
-        return detectedEvents;
+        this.buttonFullScreen.update(events.has("full_screen"));
+        this.buttonMuteUnmute.update(events.has("mute_unmute_toggle"));
+        this.buttonDebugToggle.update(events.has("debug_toggle"));
+        this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
+        this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
     }
-    consumeFireOnceEvents() {
-        const detectedEvents = new Set();
-        for (const event of __classPrivateFieldGet(this, _GameInput_guiGameInput, "f").consumeFireOnceEvents()) {
-            detectedEvents.add(event);
-        }
-        for (const event of __classPrivateFieldGet(this, _GameInput_keyboardGameInput, "f").consumeFireOnceEvents()) {
-            detectedEvents.add(event);
-        }
-        return detectedEvents;
+    wasAnyButtonPressed() {
+        return (this.gameButtons.wasAnyJustPressed() ||
+            this.buttonFullScreen.wasJustPressed(false) ||
+            this.buttonMuteUnmute.wasJustPressed(false) ||
+            this.buttonDebugToggle.wasJustPressed(false) ||
+            this.buttonFrameByFrameToggle.wasJustPressed(false) ||
+            this.buttonFrameByFrameStep.wasJustPressed(false));
     }
 }
 exports.GameInput = GameInput;
-_GameInput_guiGameInput = new WeakMap(), _GameInput_keyboardGameInput = new WeakMap(), _GameInput_touchGameInput = new WeakMap(), _GameInput_gamepadGameInput = new WeakMap();
+_GameInput_specializedGameInputs = new WeakMap();
