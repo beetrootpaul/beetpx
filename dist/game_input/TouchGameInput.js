@@ -6,7 +6,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _TouchGameInput_instances, _TouchGameInput_eventsAndButtons, _TouchGameInput_eventsSinceLastUpdate, _TouchGameInput_handleTouchEvent;
 export class TouchGameInput {
     constructor() {
-        var _a, _b, _c, _d, _e, _f;
+        var _a, _b, _c, _d, _e, _f, _g;
         _TouchGameInput_instances.add(this);
         _TouchGameInput_eventsAndButtons.set(this, new Map([
             ["button_left", []],
@@ -26,11 +26,13 @@ export class TouchGameInput {
         (_c = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
             .get("button_up")) === null || _c === void 0 ? void 0 : _c.push(...document.querySelectorAll(".controls_up"));
         (_d = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_o")) === null || _d === void 0 ? void 0 : _d.push(...document.querySelectorAll(".controls_o"));
+            .get("button_down")) === null || _d === void 0 ? void 0 : _d.push(...document.querySelectorAll(".controls_down"));
         (_e = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_x")) === null || _e === void 0 ? void 0 : _e.push(...document.querySelectorAll(".controls_x"));
+            .get("button_o")) === null || _e === void 0 ? void 0 : _e.push(...document.querySelectorAll(".controls_o"));
         (_f = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_menu")) === null || _f === void 0 ? void 0 : _f.push(...document.querySelectorAll(".controls_menu"));
+            .get("button_x")) === null || _f === void 0 ? void 0 : _f.push(...document.querySelectorAll(".controls_x"));
+        (_g = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
+            .get("button_menu")) === null || _g === void 0 ? void 0 : _g.push(...document.querySelectorAll(".controls_menu"));
     }
     startListening() {
         document

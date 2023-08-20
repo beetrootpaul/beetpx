@@ -27,6 +27,9 @@ export class TouchGameInput implements SpecializedGameInput {
       .get("button_up")
       ?.push(...document.querySelectorAll<HTMLElement>(".controls_up"));
     this.#eventsAndButtons
+      .get("button_down")
+      ?.push(...document.querySelectorAll<HTMLElement>(".controls_down"));
+    this.#eventsAndButtons
       .get("button_o")
       ?.push(...document.querySelectorAll<HTMLElement>(".controls_o"));
     this.#eventsAndButtons
