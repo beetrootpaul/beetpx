@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -11,11 +10,9 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AudioApi = void 0;
-const Utils_1 = require("../Utils");
+import { Utils } from "../Utils";
 // TODO: refactor this big mess of a class, extract playbacks for example
-class AudioApi {
+export class AudioApi {
     get audioContext() {
         return __classPrivateFieldGet(this, _AudioApi_audioContext, "f");
     }
@@ -46,6 +43,7 @@ class AudioApi {
             __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
                 console.error(err);
             });
+            // TODO: are we sure we want to unmute here? What if it was intentionally muted?
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unmute).call(this);
         }
     }
@@ -101,9 +99,10 @@ class AudioApi {
     }
     playSoundSequence(soundSequence) {
         var _b, _c, _d;
-        const playbackId = (__classPrivateFieldSet(_b = AudioApi, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _AudioApi_nextPlaybackId), _c = _d++, _d), "f", _AudioApi_nextPlaybackId), _c);
-        const intro = soundSequence.sequence ?? [];
-        const loop = soundSequence.sequenceLooped ?? [];
+        var _e, _f, _g;
+        const playbackId = (__classPrivateFieldSet(_e = AudioApi, _a, (_g = __classPrivateFieldGet(_e, _a, "f", _AudioApi_nextPlaybackId), _f = _g++, _g), "f", _AudioApi_nextPlaybackId), _f);
+        const intro = (_b = soundSequence.sequence) !== null && _b !== void 0 ? _b : [];
+        const loop = (_c = soundSequence.sequenceLooped) !== null && _c !== void 0 ? _c : [];
         const playbackFns = Array.from({
             length: intro.length + loop.length,
         });
@@ -127,16 +126,16 @@ class AudioApi {
             };
         }
         // one more fn just to make loops above simpler, since there is always something on index `i+1`
-        playbackFns.push(Utils_1.Utils.noop);
+        playbackFns.push(Utils.noop);
         __classPrivateFieldGet(this, _AudioApi_sounds, "f").set(playbackId, { sourceNodes: [], gainNodes: [] });
-        playbackFns[0]?.();
+        (_d = playbackFns[0]) === null || _d === void 0 ? void 0 : _d.call(playbackFns);
         return playbackId;
     }
     // TODO: better API to make clear that only looped sounds can be muted individually?
     muteSound(playbackId) {
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
-        if (nodes?.gainNodes) {
-            for (const gainNode of nodes?.gainNodes) {
+        if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+            for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
                 gainNode.gain.setTargetAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteTimeConstant, "f"));
             }
         }
@@ -144,14 +143,13 @@ class AudioApi {
     // TODO: better API to make clear that only looped sounds can be muted individually?
     unmuteSound(playbackId) {
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
-        if (nodes?.gainNodes) {
-            for (const gainNode of nodes?.gainNodes) {
+        if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+            for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
                 gainNode.gain.setTargetAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteTimeConstant, "f"));
             }
         }
     }
 }
-exports.AudioApi = AudioApi;
 _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_muteUnmuteExponentialTimeConstant = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_sounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_mute = function _AudioApi_mute() {
     __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, true);
     __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, true, "f");

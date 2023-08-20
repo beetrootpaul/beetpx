@@ -3,15 +3,15 @@ import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
-import { Buttons } from "./game_input/Buttons";
-import { GameInput, GameInputEvent } from "./game_input/GameInput";
+import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
 import { StorageApi } from "./storage/StorageApi";
+import { Utils } from "./Utils";
 import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
-  gameCanvasSize: Vector2d;
+  gameCanvasSize: "64x64" | "128x128";
   desiredFps: number;
   // TODO: Does is still work?
   logActualFps?: boolean;
@@ -60,8 +60,7 @@ export class Framework {
   readonly #offscreenImageData: ImageData;
 
   readonly #loading: Loading;
-  readonly #gameInput: GameInput;
-  readonly buttons: Buttons;
+  readonly gameInput: GameInput;
   readonly #gameLoop: GameLoop;
   readonly audioApi: AudioApi;
   readonly #fullScreen: FullScreen;
@@ -81,8 +80,6 @@ export class Framework {
 
   #frameNumber: number = 0;
   averageFps: number = 1;
-  continuousInputEvents: Set<GameInputEvent> = new Set();
-  fireOnceInputEvents: Set<GameInputEvent> = new Set();
 
   get frameNumber(): number {
     return this.#frameNumber;
@@ -100,7 +97,14 @@ export class Framework {
 
     this.#loading = new Loading(this.#htmlDisplaySelector);
 
-    this.#gameCanvasSize = options.gameCanvasSize.floor();
+    this.#gameCanvasSize =
+      options.gameCanvasSize === "64x64"
+        ? v_(64, 64)
+        : options.gameCanvasSize === "128x128"
+        ? v_(128, 128)
+        : Utils.throwError(
+            `Unsupported canvas size: "${options.gameCanvasSize}"`,
+          );
 
     const htmlCanvas = document.querySelector<HTMLCanvasElement>(
       this.#htmlCanvasSelector,
@@ -123,8 +127,8 @@ export class Framework {
     const offscreenCanvas = document
       .createElement("canvas")
       .transferControlToOffscreen();
-    offscreenCanvas.width = options.gameCanvasSize.x;
-    offscreenCanvas.height = options.gameCanvasSize.y;
+    offscreenCanvas.width = this.#gameCanvasSize.x;
+    offscreenCanvas.height = this.#gameCanvasSize.y;
     const offscreenContext = offscreenCanvas.getContext("2d", {
       // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
       alpha: false,
@@ -134,7 +138,7 @@ export class Framework {
     }
     this.#offscreenContext = offscreenContext;
 
-    this.#gameInput = new GameInput({
+    this.gameInput = new GameInput({
       muteButtonsSelector: this.#htmlControlsMuteSelector,
       fullScreenButtonsSelector: this.#htmlControlsFullscreenSelector,
       // TODO: extract ";", ",", and "." to some file about debugging
@@ -148,8 +152,6 @@ export class Framework {
         ? this.#debugOptions.frameByFrame?.stepKey ?? "."
         : undefined,
     });
-
-    this.buttons = new Buttons();
 
     this.#gameLoop = new GameLoop({
       desiredFps: options.desiredFps,
@@ -231,18 +233,17 @@ export class Framework {
 
     this.#loading.showApp();
 
-    this.#gameInput.startListening();
+    this.gameInput.startListening();
 
     this.#gameLoop.start({
       updateFn: (averageFps) => {
-        const fireOnceEvents = this.#gameInput.consumeFireOnceEvents();
-        if (fireOnceEvents.has("full_screen")) {
+        if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
           this.#fullScreen.toggle();
         }
-        if (fireOnceEvents.has("mute_unmute_toggle")) {
+        if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
           this.audioApi.toggleMuteUnmute();
         }
-        if (fireOnceEvents.has("debug_toggle")) {
+        if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
           this.#debug = !this.#debug;
           console.debug(`Debug flag set to: ${this.#debug}`);
           if (this.#debug) {
@@ -255,27 +256,27 @@ export class Framework {
           }
           this.#redrawDebugMargin();
         }
-        if (fireOnceEvents.has("frame_by_frame_toggle")) {
+        if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
           this.#frameByFrame = !this.#frameByFrame;
           console.debug(`FrameByFrame mode set to: ${this.#frameByFrame}`);
         }
 
-        const continuousEvents = this.#gameInput.getCurrentContinuousEvents();
-
-        if (fireOnceEvents.size > 0 || continuousEvents.size > 0) {
+        if (this.gameInput.wasAnyButtonPressed()) {
           this.audioApi.resumeAudioContextIfNeeded();
         }
 
         this.averageFps = averageFps;
-        this.continuousInputEvents = continuousEvents;
-        this.fireOnceInputEvents = fireOnceEvents;
 
-        if (!this.#frameByFrame || fireOnceEvents.has("frame_by_frame_step")) {
+        const shouldUpdate =
+          !this.#frameByFrame ||
+          this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
+
+        this.gameInput.update({ skipGameButtons: !shouldUpdate });
+
+        if (shouldUpdate) {
           if (this.#frameByFrame) {
             console.debug(`Running onUpdate for frame: ${this.#frameNumber}`);
           }
-
-          this.buttons.update(continuousEvents);
 
           this.#onUpdate?.();
 

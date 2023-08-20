@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,18 +10,15 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _MappingColor_nextId, _MappingColor_mapping;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MappingColor = exports.CompositeColor = exports.SolidColor = exports.transparent_ = exports.TransparentColor = void 0;
 // TODO: split colors into separate files?
-class TransparentColor {
+export class TransparentColor {
     id() {
         return "transparent";
     }
 }
-exports.TransparentColor = TransparentColor;
-exports.transparent_ = new TransparentColor();
+export const transparent_ = new TransparentColor();
 // Red, green, and blue, each one as value between 0 and 255.
-class SolidColor {
+export class SolidColor {
     constructor(r, g, b) {
         if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
             throw Error(`One of color components is outside 0-255 range: r=${r}, g=${g}, b=${b}.`);
@@ -47,8 +43,7 @@ class SolidColor {
         return new SolidColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
     }
 }
-exports.SolidColor = SolidColor;
-class CompositeColor {
+export class CompositeColor {
     constructor(primary, secondary) {
         this.primary = primary;
         this.secondary = secondary;
@@ -57,9 +52,8 @@ class CompositeColor {
         return `composite:${this.primary.id()}:${this.secondary.id()}`;
     }
 }
-exports.CompositeColor = CompositeColor;
 // TODO: make it a function which allows to implement catch it all color
-class MappingColor {
+export class MappingColor {
     constructor(mapping) {
         _MappingColor_mapping.set(this, void 0);
         __classPrivateFieldSet(this, _MappingColor_mapping, mapping, "f");
@@ -72,6 +66,5 @@ class MappingColor {
         return `mapping:${__classPrivateFieldSet(_b = MappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _MappingColor_nextId), _c = _d++, _d), "f", _MappingColor_nextId), _c}`;
     }
 }
-exports.MappingColor = MappingColor;
 _a = MappingColor, _MappingColor_mapping = new WeakMap();
 _MappingColor_nextId = { value: 1 };

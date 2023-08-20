@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,39 +10,36 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawRect_canvasBytes, _DrawRect_canvasSize, _DrawRect_pixel;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DrawRect = void 0;
-const Color_1 = require("../Color");
-const Vector2d_1 = require("../Vector2d");
-const DrawPixel_1 = require("./DrawPixel");
-const FillPattern_1 = require("./FillPattern");
-class DrawRect {
+import { CompositeColor } from "../Color";
+import { Vector2d } from "../Vector2d";
+import { DrawPixel } from "./DrawPixel";
+import { FillPattern } from "./FillPattern";
+export class DrawRect {
     constructor(canvasBytes, canvasSize) {
         _DrawRect_canvasBytes.set(this, void 0);
         _DrawRect_canvasSize.set(this, void 0);
         _DrawRect_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawRect_canvasBytes, canvasBytes, "f");
         __classPrivateFieldSet(this, _DrawRect_canvasSize, canvasSize, "f");
-        __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel_1.DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f")), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
     // TODO: tests for MappingColor
     // TODO: tests for CompositeColor and fillPattern
     // TODO: cover ClippingRegion with tests
-    draw(xy, wh, color, fill, fillPattern = FillPattern_1.FillPattern.primaryOnly, clippingRegion = null) {
+    draw(xy, wh, color, fill, fillPattern = FillPattern.primaryOnly, clippingRegion = null) {
         xy = xy.round();
         wh = wh.round();
-        Vector2d_1.Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
+        Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color, clippingRegion);
             }
             else {
-                if (color instanceof Color_1.CompositeColor) {
+                if (color instanceof CompositeColor) {
                     __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color.secondary, clippingRegion);
                 }
             }
         });
     }
 }
-exports.DrawRect = DrawRect;
 _DrawRect_canvasBytes = new WeakMap(), _DrawRect_canvasSize = new WeakMap(), _DrawRect_pixel = new WeakMap();

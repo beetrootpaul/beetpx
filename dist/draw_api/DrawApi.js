@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,20 +10,18 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DrawApi = void 0;
-const Vector2d_1 = require("../Vector2d");
-const ClippingRegion_1 = require("./ClippingRegion");
-const DrawClear_1 = require("./DrawClear");
-const DrawEllipse_1 = require("./DrawEllipse");
-const DrawLine_1 = require("./DrawLine");
-const DrawPixel_1 = require("./DrawPixel");
-const DrawRect_1 = require("./DrawRect");
-const DrawSprite_1 = require("./DrawSprite");
-const DrawText_1 = require("./DrawText");
-const FillPattern_1 = require("./FillPattern");
+import { v_ } from "../Vector2d";
+import { ClippingRegion } from "./ClippingRegion";
+import { DrawClear } from "./DrawClear";
+import { DrawEllipse } from "./DrawEllipse";
+import { DrawLine } from "./DrawLine";
+import { DrawPixel } from "./DrawPixel";
+import { DrawRect } from "./DrawRect";
+import { DrawSprite } from "./DrawSprite";
+import { DrawText } from "./DrawText";
+import { FillPattern } from "./FillPattern";
 // TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
-class DrawApi {
+export class DrawApi {
     constructor(options) {
         _DrawApi_assets.set(this, void 0);
         _DrawApi_clear.set(this, void 0);
@@ -34,26 +31,26 @@ class DrawApi {
         _DrawApi_ellipse.set(this, void 0);
         _DrawApi_sprite.set(this, void 0);
         _DrawApi_text.set(this, void 0);
-        _DrawApi_cameraOffset.set(this, (0, Vector2d_1.v_)(0, 0));
+        _DrawApi_cameraOffset.set(this, v_(0, 0));
         _DrawApi_clippingRegion.set(this, null);
-        _DrawApi_fillPattern.set(this, FillPattern_1.FillPattern.primaryOnly);
+        _DrawApi_fillPattern.set(this, FillPattern.primaryOnly);
         _DrawApi_fontAsset.set(this, null);
         _DrawApi_spriteColorMapping.set(this, new Map());
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
-        __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear_1.DrawClear(options.canvasBytes, options.canvasSize.round()), "f");
-        __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel_1.DrawPixel(options.canvasBytes, options.canvasSize.round()), "f");
-        __classPrivateFieldSet(this, _DrawApi_line, new DrawLine_1.DrawLine(options.canvasBytes, options.canvasSize.round()), "f");
-        __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect_1.DrawRect(options.canvasBytes, options.canvasSize.round()), "f");
-        __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse_1.DrawEllipse(options.canvasBytes, options.canvasSize.round()), "f");
-        __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite_1.DrawSprite(options.canvasBytes, options.canvasSize.round()), "f");
-        __classPrivateFieldSet(this, _DrawApi_text, new DrawText_1.DrawText(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_line, new DrawLine(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvasBytes, options.canvasSize.round()), "f");
+        __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasBytes, options.canvasSize.round()), "f");
     }
     // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
     setCameraOffset(offset) {
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset.round(), "f");
     }
     setClippingRegion(xy, wh) {
-        __classPrivateFieldSet(this, _DrawApi_clippingRegion, new ClippingRegion_1.ClippingRegion(xy, wh), "f");
+        __classPrivateFieldSet(this, _DrawApi_clippingRegion, new ClippingRegion(xy, wh), "f");
     }
     removeClippingRegion() {
         __classPrivateFieldSet(this, _DrawApi_clippingRegion, null, "f");
@@ -66,9 +63,10 @@ class DrawApi {
     mapSpriteColors(mapping) {
         const previous = [];
         mapping.forEach(({ from, to }) => {
+            var _a;
             previous.push({
                 from,
-                to: __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id()) ?? from,
+                to: (_a = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id())) !== null && _a !== void 0 ? _a : from,
             });
             // TODO: consider writing a custom equality check function
             if (from.id() === to.id()) {
@@ -85,7 +83,8 @@ class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_fontAsset, fontId ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontId) : null, "f");
     }
     getFont() {
-        return __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")?.font ?? null;
+        var _a, _b;
+        return (_b = (_a = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) === null || _a === void 0 ? void 0 : _a.font) !== null && _b !== void 0 ? _b : null;
     }
     clearCanvas(color) {
         __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
@@ -123,5 +122,4 @@ class DrawApi {
         }
     }
 }
-exports.DrawApi = DrawApi;
 _DrawApi_assets = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_clippingRegion = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();

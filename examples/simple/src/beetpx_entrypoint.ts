@@ -2,7 +2,7 @@ import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 
 BeetPx.init(
   {
-    gameCanvasSize: v_(128, 128),
+    gameCanvasSize: "128x128",
     desiredFps: 30,
     logActualFps: true,
     debug: {

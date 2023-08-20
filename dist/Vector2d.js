@@ -1,13 +1,9 @@
-"use strict";
 // noinspection JSUnusedGlobalSymbols
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Vector2d = exports.v_ = void 0;
-const Utils_1 = require("./Utils");
-function v_(x, y) {
+import { Utils } from "./Utils";
+export function v_(x, y) {
     return new Vector2d(x, y);
 }
-exports.v_ = v_;
-class Vector2d {
+export class Vector2d {
     static min(xy1, xy2) {
         return new Vector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
     }
@@ -83,36 +79,35 @@ class Vector2d {
             : this.x <= otherOrValue && this.y <= otherOrValue;
     }
     clamp(xy1, xy2) {
-        return new Vector2d(Utils_1.Utils.clamp(xy1.x, this.x, xy2.x), Utils_1.Utils.clamp(xy1.y, this.y, xy2.y));
+        return new Vector2d(Utils.clamp(xy1.x, this.x, xy2.x), Utils.clamp(xy1.y, this.y, xy2.y));
     }
     mod(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new Vector2d(this.x % otherOrValueOrX.x, this.y % otherOrValueOrX.y)
-            : new Vector2d(this.x % otherOrValueOrX, this.y % (maybeY ?? otherOrValueOrX));
+            : new Vector2d(this.x % otherOrValueOrX, this.y % (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
     }
     add(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new Vector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
-            : new Vector2d(this.x + otherOrValueOrX, this.y + (maybeY ?? otherOrValueOrX));
+            : new Vector2d(this.x + otherOrValueOrX, this.y + (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
     }
     sub(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new Vector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
-            : new Vector2d(this.x - otherOrValueOrX, this.y - (maybeY ?? otherOrValueOrX));
+            : new Vector2d(this.x - otherOrValueOrX, this.y - (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
     }
     mul(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new Vector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
-            : new Vector2d(this.x * otherOrValueOrX, this.y * (maybeY ?? otherOrValueOrX));
+            : new Vector2d(this.x * otherOrValueOrX, this.y * (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
     }
     div(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new Vector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
-            : new Vector2d(this.x / otherOrValueOrX, this.y / (maybeY ?? otherOrValueOrX));
+            : new Vector2d(this.x / otherOrValueOrX, this.y / (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
     }
     d() {
         return `(${this.x},${this.y})`;
     }
 }
-exports.Vector2d = Vector2d;
 Vector2d.zero = new Vector2d(0, 0);

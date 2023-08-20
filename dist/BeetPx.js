@@ -1,4 +1,3 @@
-"use strict";
 // noinspection JSUnusedGlobalSymbols
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
@@ -12,15 +11,13 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BeetPx = void 0;
-const Framework_1 = require("./Framework");
-class BeetPx {
+import { Framework } from "./Framework";
+export class BeetPx {
     //
     // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
     //
     static init(frameworkOptions, assetsToLoad) {
-        __classPrivateFieldSet(this, _a, new Framework_1.Framework(frameworkOptions), "f", _BeetPx_framework);
+        __classPrivateFieldSet(this, _a, new Framework(frameworkOptions), "f", _BeetPx_framework);
         return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).loadAssets(assetsToLoad);
     }
     //
@@ -31,12 +28,6 @@ class BeetPx {
     }
     static get averageFps() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).averageFps;
-    }
-    static get continuousInputEvents() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).continuousInputEvents;
-    }
-    static get fireOnceInputEvents() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).fireOnceInputEvents;
     }
     //
     // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
@@ -51,7 +42,6 @@ class BeetPx {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).debug;
     }
 }
-exports.BeetPx = BeetPx;
 _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {
     if (!__classPrivateFieldGet(this, _a, "f", _BeetPx_framework)) {
         throw Error(`Tried to access BeetPx API without calling BeetPx.init(…) first.`);
@@ -78,16 +68,16 @@ BeetPx.restart = (...args) => {
 // Buttons
 //
 BeetPx.isPressed = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.isPressed(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.isPressed(...args);
 };
 BeetPx.setRepeating = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.setRepeating(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.setRepeating(...args);
 };
 BeetPx.wasJustPressed = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustPressed(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustPressed(...args);
 };
 BeetPx.wasJustReleased = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).buttons.wasJustReleased(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustReleased(...args);
 };
 //
 // Draw API

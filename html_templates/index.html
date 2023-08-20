@@ -181,9 +181,14 @@
         color: #fff1e8;
       }
 
+      .touch_controls_area_right .touch_button.controls_menu {
+        line-height: 8vw;
+        font-size: 3vw;
+      }
+
       .touch_controls_area_right .touch_button.controls_mute_toggle {
-        font-size: 2vw;
         line-height: 4vw;
+        font-size: 2vw;
       }
 
       .touch_controls_area_bottom {
@@ -234,6 +239,13 @@
         height: 6vh;
         line-height: 6vh;
         font-size: 3vw;
+      }
+
+      .touch_controls_area_bottom
+        .touch_buttons_row.controls_toggles
+        .touch_button.controls_menu {
+        line-height: 5.75vh;
+        font-size: 2.25vw;
       }
 
       .touch_controls_area_bottom
@@ -319,7 +331,10 @@
         <button class="controls_mute_toggle">mute<br />unmute</button>
         <button class="controls_fullscreen_toggle">FS</button>
       </div>
-      <div class="touch_controls_area_right">
+      <div class="touch_controls touch_controls_area_right">
+        <div class="touch_button controls_menu">menu</div>
+        <div class="touch_button controls_x">X</div>
+        <div class="touch_button controls_o">O</div>
         <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
         <div class="touch_button controls_fullscreen_toggle">FS</div>
       </div>
@@ -330,9 +345,12 @@
           <div class="touch_button controls_right">D</div>
         </div>
         <div class="touch_button controls_down">S</div>
-        <div class="spacer">S</div>
+        <div class="spacer"></div>
         <div class="touch_buttons_row controls_toggles">
           <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
+          <div class="touch_button controls_o">O</div>
+          <div class="touch_button controls_x">X</div>
+          <div class="touch_button controls_menu">menu</div>
           <div class="touch_button controls_fullscreen_toggle">FS</div>
         </div>
       </div>

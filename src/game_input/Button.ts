@@ -1,8 +1,7 @@
-// TODO: implement a PICO-8 like button press detection which starts to repeat after certain threshold
 import { Timer } from "../misc/Timer";
 
 export class Button {
-  // TODO: there numbers work good for 60 FPS. Make them depending on FPS to have the same durations in seconds
+  // TODO: these numbers work good for 60 FPS. Make them depending on FPS to have the same durations in seconds
   static readonly repeatingFramesStart = 30;
   static readonly repeatingFramesInterval = 8;
 

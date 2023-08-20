@@ -1,10 +1,7 @@
 import { GameInputEvent } from "./GameInput";
+import { SpecializedGameInput } from "./SpecializedGameInput";
 
-// TODO: implement support for gameInputEventBehavior[gameInputEvent]?.fireOnce
-
-// TODO: implement X and O
-
-export class GamepadGameInput {
+export class GamepadGameInput implements SpecializedGameInput {
   readonly buttonMapping: Map<number, GameInputEvent> = new Map<
     number,
     GameInputEvent
@@ -13,6 +10,14 @@ export class GamepadGameInput {
     [15, "button_right"],
     [12, "button_up"],
     [13, "button_down"],
+    //
+    [1, "button_o"],
+    [5, "button_o"],
+    [2, "button_x"],
+    [3, "button_x"],
+    //
+    [8, "button_menu"],
+    [16, "button_menu"],
   ]);
 
   readonly axisThreshold: number = 0.6;
@@ -32,16 +37,18 @@ export class GamepadGameInput {
     [301, "button_down"],
   ]);
 
-  getCurrentContinuousEvents(): Set<GameInputEvent> {
-    const events = new Set<GameInputEvent>();
+  startListening(): void {
+    // nothing to be done here
+  }
 
+  update(eventsCollector: Set<GameInputEvent>): void {
     navigator.getGamepads().forEach((gamepad) => {
       if (gamepad) {
         gamepad.buttons.forEach((button, buttonIndex) => {
           if (button.pressed || button.touched) {
             const gameInputEvent = this.buttonMapping.get(buttonIndex);
             if (gameInputEvent) {
-              events.add(gameInputEvent);
+              eventsCollector.add(gameInputEvent);
             }
           }
         });
@@ -51,13 +58,11 @@ export class GamepadGameInput {
               100 * axisIndex + Math.sign(axis),
             );
             if (gameInputEvent) {
-              events.add(gameInputEvent);
+              eventsCollector.add(gameInputEvent);
             }
           }
         });
       }
     });
-
-    return events;
   }
 }

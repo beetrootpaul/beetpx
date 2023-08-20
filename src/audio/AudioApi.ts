@@ -55,6 +55,7 @@ export class AudioApi {
       this.#audioContext.resume().catch((err) => {
         console.error(err);
       });
+      // TODO: are we sure we want to unmute here? What if it was intentionally muted?
       this.#unmute();
     }
   }

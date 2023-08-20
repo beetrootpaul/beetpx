@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -6,9 +5,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Loading_displayElement;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Loading = void 0;
-class Loading {
+export class Loading {
     constructor(htmlDisplaySelector) {
         _Loading_displayElement.set(this, void 0);
         const displayElement = document.querySelector(htmlDisplaySelector);
@@ -22,5 +19,4 @@ class Loading {
         document.body.classList.add("app_loaded");
     }
 }
-exports.Loading = Loading;
 _Loading_displayElement = new WeakMap();
