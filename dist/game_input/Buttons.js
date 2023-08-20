@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -11,18 +10,16 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_o, _Buttons_x, _Buttons_menu, _Buttons_repeatingLeft, _Buttons_repeatingRight, _Buttons_repeatingUp, _Buttons_repeatingDown, _Buttons_repeatingO, _Buttons_repeatingX, _Buttons_repeatingMenu;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Buttons = void 0;
-const Button_1 = require("./Button");
-class Buttons {
+import { Button } from "./Button";
+export class Buttons {
     constructor() {
-        _Buttons_left.set(this, new Button_1.Button());
-        _Buttons_right.set(this, new Button_1.Button());
-        _Buttons_up.set(this, new Button_1.Button());
-        _Buttons_down.set(this, new Button_1.Button());
-        _Buttons_o.set(this, new Button_1.Button());
-        _Buttons_x.set(this, new Button_1.Button());
-        _Buttons_menu.set(this, new Button_1.Button());
+        _Buttons_left.set(this, new Button());
+        _Buttons_right.set(this, new Button());
+        _Buttons_up.set(this, new Button());
+        _Buttons_down.set(this, new Button());
+        _Buttons_o.set(this, new Button());
+        _Buttons_x.set(this, new Button());
+        _Buttons_menu.set(this, new Button());
         _Buttons_repeatingLeft.set(this, true);
         _Buttons_repeatingRight.set(this, true);
         _Buttons_repeatingUp.set(this, true);
@@ -129,5 +126,4 @@ class Buttons {
         }
     }
 }
-exports.Buttons = Buttons;
 _Buttons_left = new WeakMap(), _Buttons_right = new WeakMap(), _Buttons_up = new WeakMap(), _Buttons_down = new WeakMap(), _Buttons_o = new WeakMap(), _Buttons_x = new WeakMap(), _Buttons_menu = new WeakMap(), _Buttons_repeatingLeft = new WeakMap(), _Buttons_repeatingRight = new WeakMap(), _Buttons_repeatingUp = new WeakMap(), _Buttons_repeatingDown = new WeakMap(), _Buttons_repeatingO = new WeakMap(), _Buttons_repeatingX = new WeakMap(), _Buttons_repeatingMenu = new WeakMap();

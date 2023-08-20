@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,11 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_drawSolid;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DrawPixel = void 0;
-const Color_1 = require("../Color");
-const Vector2d_1 = require("../Vector2d");
-class DrawPixel {
+import { CompositeColor, MappingColor, TransparentColor, } from "../Color";
+import { Vector2d } from "../Vector2d";
+export class DrawPixel {
     constructor(canvasBytes, canvasSize) {
         _DrawPixel_instances.add(this);
         _DrawPixel_canvasBytes.set(this, void 0);
@@ -32,12 +29,12 @@ class DrawPixel {
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }
-        if (xy.gte(Vector2d_1.Vector2d.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
+        if (xy.gte(Vector2d.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
             const i = 4 * (xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f").x + xy.x);
-            if (color instanceof Color_1.CompositeColor) {
+            if (color instanceof CompositeColor) {
                 __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.primary);
             }
-            else if (color instanceof Color_1.MappingColor) {
+            else if (color instanceof MappingColor) {
                 __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.getMappedColorFor(__classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 1], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 2], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 3]));
             }
             else {
@@ -46,9 +43,8 @@ class DrawPixel {
         }
     }
 }
-exports.DrawPixel = DrawPixel;
 _DrawPixel_canvasBytes = new WeakMap(), _DrawPixel_canvasSize = new WeakMap(), _DrawPixel_instances = new WeakSet(), _DrawPixel_drawSolid = function _DrawPixel_drawSolid(canvasIndex, color) {
-    if (color instanceof Color_1.TransparentColor) {
+    if (color instanceof TransparentColor) {
         return;
     }
     __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex] = color.r;

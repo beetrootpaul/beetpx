@@ -1,4 +1,3 @@
-"use strict";
 // noinspection JSUnusedGlobalSymbols
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
@@ -12,15 +11,13 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BeetPx = void 0;
-const Framework_1 = require("./Framework");
-class BeetPx {
+import { Framework } from "./Framework";
+export class BeetPx {
     //
     // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
     //
     static init(frameworkOptions, assetsToLoad) {
-        __classPrivateFieldSet(this, _a, new Framework_1.Framework(frameworkOptions), "f", _BeetPx_framework);
+        __classPrivateFieldSet(this, _a, new Framework(frameworkOptions), "f", _BeetPx_framework);
         return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).loadAssets(assetsToLoad);
     }
     //
@@ -45,7 +42,6 @@ class BeetPx {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).debug;
     }
 }
-exports.BeetPx = BeetPx;
 _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {
     if (!__classPrivateFieldGet(this, _a, "f", _BeetPx_framework)) {
         throw Error(`Tried to access BeetPx API without calling BeetPx.init(…) first.`);

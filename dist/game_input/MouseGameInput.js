@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,9 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _MouseGameInput_params, _MouseGameInput_eventsSinceLastUpdate;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.MouseGameInput = void 0;
-class MouseGameInput {
+export class MouseGameInput {
     constructor(params) {
         _MouseGameInput_params.set(this, void 0);
         _MouseGameInput_eventsSinceLastUpdate.set(this, new Set());
@@ -42,5 +39,4 @@ class MouseGameInput {
         __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").clear();
     }
 }
-exports.MouseGameInput = MouseGameInput;
 _MouseGameInput_params = new WeakMap(), _MouseGameInput_eventsSinceLastUpdate = new WeakMap();

@@ -1,4 +1,12 @@
-"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -11,20 +19,18 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_htmlDisplaySelector, _Framework_htmlCanvasSelector, _Framework_htmlControlsFullscreenSelector, _Framework_htmlControlsMuteSelector, _Framework_debugOptions, _Framework_debug, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Framework = void 0;
-const Assets_1 = require("./Assets");
-const AudioApi_1 = require("./audio/AudioApi");
-const Color_1 = require("./Color");
-const DrawApi_1 = require("./draw_api/DrawApi");
-const FullScreen_1 = require("./FullScreen");
-const GameInput_1 = require("./game_input/GameInput");
-const GameLoop_1 = require("./game_loop/GameLoop");
-const Loading_1 = require("./Loading");
-const StorageApi_1 = require("./storage/StorageApi");
-const Utils_1 = require("./Utils");
-const Vector2d_1 = require("./Vector2d");
-class Framework {
+import { Assets } from "./Assets";
+import { AudioApi } from "./audio/AudioApi";
+import { SolidColor } from "./Color";
+import { DrawApi } from "./draw_api/DrawApi";
+import { FullScreen } from "./FullScreen";
+import { GameInput } from "./game_input/GameInput";
+import { GameLoop } from "./game_loop/GameLoop";
+import { Loading } from "./Loading";
+import { StorageApi } from "./storage/StorageApi";
+import { Utils } from "./Utils";
+import { v_, Vector2d } from "./Vector2d";
+export class Framework {
     get debug() {
         return __classPrivateFieldGet(this, _Framework_debug, "f");
     }
@@ -32,6 +38,7 @@ class Framework {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
     }
     constructor(options) {
+        var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         _Framework_instances.add(this);
         _Framework_htmlDisplaySelector.set(this, "#display");
         _Framework_htmlCanvasSelector.set(this, "#canvas");
@@ -41,7 +48,7 @@ class Framework {
         _Framework_debug.set(this, void 0);
         _Framework_frameByFrame.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
-        _Framework_htmlCanvasBackground.set(this, Color_1.SolidColor.fromRgbCssHex("#000000"));
+        _Framework_htmlCanvasBackground.set(this, SolidColor.fromRgbCssHex("#000000"));
         _Framework_htmlCanvasContext.set(this, void 0);
         _Framework_offscreenContext.set(this, void 0);
         _Framework_offscreenImageData.set(this, void 0);
@@ -52,23 +59,23 @@ class Framework {
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
-        _Framework_centeringOffset.set(this, Vector2d_1.Vector2d.zero);
+        _Framework_centeringOffset.set(this, Vector2d.zero);
         _Framework_frameNumber.set(this, 0);
         this.averageFps = 1;
-        __classPrivateFieldSet(this, _Framework_debugOptions, options.debug ?? {
+        __classPrivateFieldSet(this, _Framework_debugOptions, (_b = options.debug) !== null && _b !== void 0 ? _b : {
             available: false,
         }, "f");
-        __classPrivateFieldSet(this, _Framework_debug, __classPrivateFieldGet(this, _Framework_debugOptions, "f")?.available
+        __classPrivateFieldSet(this, _Framework_debug, ((_c = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _c === void 0 ? void 0 : _c.available)
             ? window.localStorage.getItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey)) !==
                 __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue)
             : false, "f");
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
-        __classPrivateFieldSet(this, _Framework_loading, new Loading_1.Loading(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f")), "f");
+        __classPrivateFieldSet(this, _Framework_loading, new Loading(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f")), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
-            ? (0, Vector2d_1.v_)(64, 64)
+            ? v_(64, 64)
             : options.gameCanvasSize === "128x128"
-                ? (0, Vector2d_1.v_)(128, 128)
-                : Utils_1.Utils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
+                ? v_(128, 128)
+                : Utils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         const htmlCanvas = document.querySelector(__classPrivateFieldGet(this, _Framework_htmlCanvasSelector, "f"));
         if (!htmlCanvas) {
             throw Error(`Was unable to find <canvas> by selector '${__classPrivateFieldGet(this, _Framework_htmlCanvasSelector, "f")}'`);
@@ -94,43 +101,45 @@ class Framework {
             throw Error("Was unable to obtain OffscreenCanvas' 2D context");
         }
         __classPrivateFieldSet(this, _Framework_offscreenContext, offscreenContext, "f");
-        this.gameInput = new GameInput_1.GameInput({
+        this.gameInput = new GameInput({
             muteButtonsSelector: __classPrivateFieldGet(this, _Framework_htmlControlsMuteSelector, "f"),
             fullScreenButtonsSelector: __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f"),
             // TODO: extract ";", ",", and "." to some file about debugging
-            debugToggleKey: __classPrivateFieldGet(this, _Framework_debugOptions, "f")?.available
-                ? __classPrivateFieldGet(this, _Framework_debugOptions, "f")?.toggleKey ?? ";"
+            debugToggleKey: ((_d = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _d === void 0 ? void 0 : _d.available)
+                ? (_f = (_e = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _e === void 0 ? void 0 : _e.toggleKey) !== null && _f !== void 0 ? _f : ";"
                 : undefined,
-            debugFrameByFrameActivateKey: __classPrivateFieldGet(this, _Framework_debugOptions, "f")?.available
-                ? __classPrivateFieldGet(this, _Framework_debugOptions, "f").frameByFrame?.activateKey ?? ","
+            debugFrameByFrameActivateKey: ((_g = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _g === void 0 ? void 0 : _g.available)
+                ? (_j = (_h = __classPrivateFieldGet(this, _Framework_debugOptions, "f").frameByFrame) === null || _h === void 0 ? void 0 : _h.activateKey) !== null && _j !== void 0 ? _j : ","
                 : undefined,
-            debugFrameByFrameStepKey: __classPrivateFieldGet(this, _Framework_debugOptions, "f")?.available
-                ? __classPrivateFieldGet(this, _Framework_debugOptions, "f").frameByFrame?.stepKey ?? "."
+            debugFrameByFrameStepKey: ((_k = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _k === void 0 ? void 0 : _k.available)
+                ? (_m = (_l = __classPrivateFieldGet(this, _Framework_debugOptions, "f").frameByFrame) === null || _l === void 0 ? void 0 : _l.stepKey) !== null && _m !== void 0 ? _m : "."
                 : undefined,
         });
-        __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop_1.GameLoop({
+        __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
             desiredFps: options.desiredFps,
-            logActualFps: options.logActualFps ?? false,
+            logActualFps: (_o = options.logActualFps) !== null && _o !== void 0 ? _o : false,
             requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
         }), "f");
-        this.storageApi = new StorageApi_1.StorageApi();
+        this.storageApi = new StorageApi();
         const audioContext = new AudioContext();
-        this.assets = new Assets_1.Assets({
+        this.assets = new Assets({
             decodeAudioData: (arrayBuffer) => audioContext.decodeAudioData(arrayBuffer),
         });
-        this.audioApi = new AudioApi_1.AudioApi(this.assets, audioContext);
-        __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen_1.FullScreen.newFor(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f"), __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f")), "f");
+        this.audioApi = new AudioApi(this.assets, audioContext);
+        __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.newFor(__classPrivateFieldGet(this, _Framework_htmlDisplaySelector, "f"), __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f")), "f");
         __classPrivateFieldSet(this, _Framework_offscreenImageData, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height), "f");
-        this.drawApi = new DrawApi_1.DrawApi({
+        this.drawApi = new DrawApi({
             canvasBytes: __classPrivateFieldGet(this, _Framework_offscreenImageData, "f").data,
             canvasSize: __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"),
             assets: this.assets,
         });
     }
-    async loadAssets(assetsToLoad) {
-        return this.assets.loadAssets(assetsToLoad).then(() => ({
-            startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
-        }));
+    loadAssets(assetsToLoad) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.assets.loadAssets(assetsToLoad).then(() => ({
+                startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
+            }));
+        });
     }
     setOnStarted(onStarted) {
         __classPrivateFieldSet(this, _Framework_onStarted, onStarted, "f");
@@ -142,12 +151,13 @@ class Framework {
         __classPrivateFieldSet(this, _Framework_onDraw, onDraw, "f");
     }
     restart() {
+        var _b;
         __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
-        __classPrivateFieldGet(this, _Framework_onStarted, "f")?.call(this);
+        (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-exports.Framework = Framework;
 _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlCanvasSelector = new WeakMap(), _Framework_htmlControlsFullscreenSelector = new WeakMap(), _Framework_htmlControlsMuteSelector = new WeakMap(), _Framework_debugOptions = new WeakMap(), _Framework_debug = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+    var _b;
     if (__BEETPX_IS_PROD__) {
         // - returned message seems to be ignored by some browsers, therefore using `""`
         // - this event is *not* always run when for example there was no mouse click inside
@@ -164,11 +174,12 @@ _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlC
     window.addEventListener("resize", (_event) => {
         __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_setupHtmlCanvas).call(this);
     });
-    __classPrivateFieldGet(this, _Framework_onStarted, "f")?.call(this);
+    (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
     this.gameInput.startListening();
     __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
         updateFn: (averageFps) => {
+            var _b;
             if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
                 __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
             }
@@ -201,14 +212,15 @@ _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlC
                 if (__classPrivateFieldGet(this, _Framework_frameByFrame, "f")) {
                     console.debug(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_frameNumber, "f")}`);
                 }
-                __classPrivateFieldGet(this, _Framework_onUpdate, "f")?.call(this);
+                (_b = __classPrivateFieldGet(this, _Framework_onUpdate, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
                 __classPrivateFieldSet(this, _Framework_frameNumber, __classPrivateFieldGet(this, _Framework_frameNumber, "f") == Number.MAX_SAFE_INTEGER
                     ? 0
                     : __classPrivateFieldGet(this, _Framework_frameNumber, "f") + 1, "f");
             }
         },
         renderFn: () => {
-            __classPrivateFieldGet(this, _Framework_onDraw, "f")?.call(this);
+            var _b;
+            (_b = __classPrivateFieldGet(this, _Framework_onDraw, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
             __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_render).call(this);
         },
     });
@@ -226,7 +238,7 @@ _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlC
     __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillRect(0, 0, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
 }, _Framework_render = function _Framework_render() {
     __classPrivateFieldGet(this, _Framework_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _Framework_offscreenImageData, "f"), 0, 0);
-    const htmlCanvasSize = (0, Vector2d_1.v_)(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
+    const htmlCanvasSize = v_(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
     // TODO: encapsulate this calculation and related fields
     __classPrivateFieldSet(this, _Framework_scaleToFill, Math.min(htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().x, htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().y), "f");
     __classPrivateFieldSet(this, _Framework_centeringOffset, htmlCanvasSize
