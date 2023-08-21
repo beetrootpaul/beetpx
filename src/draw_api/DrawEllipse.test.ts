@@ -69,6 +69,27 @@ describe("DrawEllipse", () => {
       });
     });
 
+    test("3x3", () => {
+      // given
+      const canvas = new TestCanvas(5, 5, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(3, 3), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - - # - -
+          - # - # -
+          - - # - -
+          - - - - -
+        `,
+      });
+    });
+
     test("4x3", () => {
       // given
       const canvas = new TestCanvas(6, 5, c0);
@@ -86,6 +107,100 @@ describe("DrawEllipse", () => {
           - # - - # -
           - - # # - -
           - - - - - -
+        `,
+      });
+    });
+
+    test("4x4", () => {
+      // given
+      const canvas = new TestCanvas(6, 6, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(4, 4), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - - # # - -
+          - # - - # -
+          - # - - # -
+          - - # # - -
+          - - - - - -
+        `,
+      });
+    });
+
+    test("5x5", () => {
+      // given
+      const canvas = new TestCanvas(7, 7, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(5, 5), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - -
+          - - # # # - -
+          - # - - - # -
+          - # - - - # -
+          - # - - - # -
+          - - # # # - -
+          - - - - - - -
+        `,
+      });
+    });
+
+    test("6x6", () => {
+      // given
+      const canvas = new TestCanvas(8, 8, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(6, 6), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - -
+          - - - # # - - -
+          - - # - - # - -
+          - # - - - - # -
+          - # - - - - # -
+          - - # - - # - -
+          - - - # # - - -
+          - - - - - - - -
+        `,
+      });
+    });
+
+    test("7x7", () => {
+      // given
+      const canvas = new TestCanvas(9, 9, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(7, 7), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - -
+          - - - # # # - - -
+          - - # - - - # - -
+          - # - - - - - # -
+          - # - - - - - # -
+          - # - - - - - # -
+          - - # - - - # - -
+          - - - # # # - - -
+          - - - - - - - - -
         `,
       });
     });
@@ -133,6 +248,161 @@ describe("DrawEllipse", () => {
           - - - - # # # # # # - - - -
           - - - - - - - - - - - - - -
          `,
+      });
+    });
+
+    test("tall: 1x13", () => {
+      // given
+      const canvas = new TestCanvas(3, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(1, 13), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - - -
+        `,
+      });
+    });
+
+    test("tall: 2x13", () => {
+      // given
+      const canvas = new TestCanvas(4, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(2, 13), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - - - -
+        `,
+      });
+    });
+
+    test("tall: 3x13", () => {
+      // given
+      const canvas = new TestCanvas(5, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(3, 13), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - - # - -
+          - - # - -
+          - # - # -
+          - # - # -
+          - # - # -
+          - # - # -
+          - # - # -
+          - # - # -
+          - # - # -
+          - # - # -
+          - # - # -
+          - - # - -
+          - - # - -
+          - - - - -
+        `,
+      });
+    });
+
+    test("tall: 4x13", () => {
+      // given
+      const canvas = new TestCanvas(6, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(4, 13), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - - # # - -
+          - - # # - -
+          - - # # - -
+          - # - - # -
+          - # - - # -
+          - # - - # -
+          - # - - # -
+          - # - - # -
+          - # - - # -
+          - # - - # -
+          - - # # - -
+          - - # # - -
+          - - # # - -
+          - - - - - -
+        `,
+      });
+    });
+
+    test("tall: 5x13", () => {
+      // given
+      const canvas = new TestCanvas(7, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(5, 13), c1, false);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - -
+          - - - # - - -
+          - - # - # - -
+          - - # - # - -
+          - # - - - # -
+          - # - - - # -
+          - # - - - # -
+          - # - - - # -
+          - # - - - # -
+          - # - - - # -
+          - # - - - # -
+          - - # - # - -
+          - - # - # - -
+          - - - # - - -
+          - - - - - - -
+        `,
       });
     });
 
@@ -288,6 +558,27 @@ describe("DrawEllipse", () => {
       });
     });
 
+    test("3x3", () => {
+      // given
+      const canvas = new TestCanvas(5, 5, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(3, 3), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - - # - -
+          - # # # -
+          - - # - -
+          - - - - -
+        `,
+      });
+    });
+
     test("4x3", () => {
       // given
       const canvas = new TestCanvas(6, 5, c0);
@@ -305,6 +596,100 @@ describe("DrawEllipse", () => {
           - # # # # -
           - - # # - -
           - - - - - -
+        `,
+      });
+    });
+
+    test("4x4", () => {
+      // given
+      const canvas = new TestCanvas(6, 6, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(4, 4), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - - # # - -
+          - # # # # -
+          - # # # # -
+          - - # # - -
+          - - - - - -
+        `,
+      });
+    });
+
+    test("5x5", () => {
+      // given
+      const canvas = new TestCanvas(7, 7, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(5, 5), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - -
+          - - # # # - -
+          - # # # # # -
+          - # # # # # -
+          - # # # # # -
+          - - # # # - -
+          - - - - - - -
+        `,
+      });
+    });
+
+    test("6x6", () => {
+      // given
+      const canvas = new TestCanvas(8, 8, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(6, 6), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - -
+          - - - # # - - -
+          - - # # # # - -
+          - # # # # # # -
+          - # # # # # # -
+          - - # # # # - -
+          - - - # # - - -
+          - - - - - - - -
+        `,
+      });
+    });
+
+    test("7x7", () => {
+      // given
+      const canvas = new TestCanvas(9, 9, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(7, 7), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - -
+          - - - # # # - - -
+          - - # # # # # - -
+          - # # # # # # # -
+          - # # # # # # # -
+          - # # # # # # # -
+          - - # # # # # - -
+          - - - # # # - - -
+          - - - - - - - - -
         `,
       });
     });
@@ -352,6 +737,161 @@ describe("DrawEllipse", () => {
           - - - - # # # # # # - - - -
           - - - - - - - - - - - - - -
        `,
+      });
+    });
+
+    test("tall: 1x13", () => {
+      // given
+      const canvas = new TestCanvas(3, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(1, 13), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - # -
+          - - -
+        `,
+      });
+    });
+
+    test("tall: 2x13", () => {
+      // given
+      const canvas = new TestCanvas(4, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(2, 13), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - # # -
+          - - - -
+        `,
+      });
+    });
+
+    test("tall: 3x13", () => {
+      // given
+      const canvas = new TestCanvas(5, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(3, 13), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - - # - -
+          - - # - -
+          - # # # -
+          - # # # -
+          - # # # -
+          - # # # -
+          - # # # -
+          - # # # -
+          - # # # -
+          - # # # -
+          - # # # -
+          - - # - -
+          - - # - -
+          - - - - -
+        `,
+      });
+    });
+
+    test("tall: 4x13", () => {
+      // given
+      const canvas = new TestCanvas(6, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(4, 13), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - - # # - -
+          - - # # - -
+          - - # # - -
+          - # # # # -
+          - # # # # -
+          - # # # # -
+          - # # # # -
+          - # # # # -
+          - # # # # -
+          - # # # # -
+          - - # # - -
+          - - # # - -
+          - - # # - -
+          - - - - - -
+        `,
+      });
+    });
+
+    test("tall: 5x13", () => {
+      // given
+      const canvas = new TestCanvas(7, 15, c0);
+      const ellipse = new DrawEllipse(canvas.bytes, canvas.size);
+
+      // when
+      ellipse.draw(v_(1, 1), v_(5, 13), c1, true);
+
+      // then
+      canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - -
+          - - - # - - -
+          - - # # # - -
+          - - # # # - -
+          - # # # # # -
+          - # # # # # -
+          - # # # # # -
+          - # # # # # -
+          - # # # # # -
+          - # # # # # -
+          - # # # # # -
+          - - # # # - -
+          - - # # # - -
+          - - - # - - -
+          - - - - - - -
+        `,
       });
     });
 

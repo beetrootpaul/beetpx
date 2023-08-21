@@ -119,7 +119,6 @@ export class DrawEllipse {
     // DRAW MISSING TOP & BOTTOM PARTS
     //
 
-    // TODO: Cover this with tests
     while (bottom - top < b) {
       // TODO: update the implementation below to honor fill pattern
       this.#pixel.draw(v_(left - 1, bottom), color, clippingRegion);
