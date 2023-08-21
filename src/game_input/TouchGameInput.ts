@@ -1,7 +1,23 @@
+import { ButtonName } from "./Buttons";
 import { GameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class TouchGameInput implements SpecializedGameInput {
+  static mapping: Array<{
+    event: GameInputEvent;
+    button: ButtonName;
+    selector: string;
+  }> = [
+    // TODO: externalize these CSS selectors as framework params or some separate class which keeps all the CSS classes etc.
+    { event: "button_left", button: "left", selector: ".controls_left" },
+    { event: "button_right", button: "right", selector: ".controls_right" },
+    { event: "button_up", button: "up", selector: ".controls_up" },
+    { event: "button_down", button: "down", selector: ".controls_down" },
+    { event: "button_o", button: "o", selector: ".controls_o" },
+    { event: "button_x", button: "x", selector: ".controls_x" },
+    { event: "button_menu", button: "menu", selector: ".controls_menu" },
+  ];
+
   readonly #eventsAndButtons: Map<GameInputEvent, HTMLElement[]> = new Map([
     ["button_left", []],
     ["button_right", []],
@@ -15,29 +31,17 @@ export class TouchGameInput implements SpecializedGameInput {
   readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
     new Set<GameInputEvent>();
 
-  constructor() {
-    // TODO: externalize these CSS selectors as framework params or some separate class which keeps all the CSS classes etc.
-    this.#eventsAndButtons
-      .get("button_left")
-      ?.push(...document.querySelectorAll<HTMLElement>(".controls_left"));
-    this.#eventsAndButtons
-      .get("button_right")
-      ?.push(...document.querySelectorAll<HTMLElement>(".controls_right"));
-    this.#eventsAndButtons
-      .get("button_up")
-      ?.push(...document.querySelectorAll<HTMLElement>(".controls_up"));
-    this.#eventsAndButtons
-      .get("button_down")
-      ?.push(...document.querySelectorAll<HTMLElement>(".controls_down"));
-    this.#eventsAndButtons
-      .get("button_o")
-      ?.push(...document.querySelectorAll<HTMLElement>(".controls_o"));
-    this.#eventsAndButtons
-      .get("button_x")
-      ?.push(...document.querySelectorAll<HTMLElement>(".controls_x"));
-    this.#eventsAndButtons
-      .get("button_menu")
-      ?.push(...document.querySelectorAll<HTMLElement>(".controls_menu"));
+  constructor(params: { visibleButtons: ButtonName[] }) {
+    TouchGameInput.mapping.forEach(({ event, button, selector }) => {
+      const touchButtonElements =
+        document.querySelectorAll<HTMLElement>(selector);
+      this.#eventsAndButtons.get(event)!.push(...touchButtonElements);
+      if (params.visibleButtons.includes(button)) {
+        for (const el of touchButtonElements) {
+          el.classList.remove("hidden");
+        }
+      }
+    });
   }
 
   startListening(): void {

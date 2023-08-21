@@ -20,6 +20,7 @@ export { ClippingRegion } from "./draw_api/ClippingRegion";
 export { type ColorMapping } from "./draw_api/DrawApi";
 export { FillPattern } from "./draw_api/FillPattern";
 export { type CharSprite, type Font, type FontId } from "./font/Font";
+export { type ButtonName } from "./game_input/Buttons";
 export { type GameInputEvent } from "./game_input/GameInput";
 export { Timer } from "./misc/Timer";
 

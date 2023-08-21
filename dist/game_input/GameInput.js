@@ -29,7 +29,9 @@ export class GameInput {
                 debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
                 debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
             }),
-            new TouchGameInput(),
+            new TouchGameInput({
+                visibleButtons: params.visibleTouchButtons,
+            }),
             new GamepadGameInput(),
         ], "f");
         this.gameButtons = new Buttons();

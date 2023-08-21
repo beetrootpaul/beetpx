@@ -3,6 +3,7 @@ import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
+import { ButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
@@ -13,6 +14,7 @@ import { v_, Vector2d } from "./Vector2d";
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
   desiredFps: number;
+  visibleTouchButtons: ButtonName[];
   // TODO: Does is still work?
   logActualFps?: boolean;
   debug?: {
@@ -139,7 +141,10 @@ export class Framework {
     this.#offscreenContext = offscreenContext;
 
     this.gameInput = new GameInput({
+      visibleTouchButtons: options.visibleTouchButtons,
+      // TODO: are those selectors for both touch and mouse? Even if so, make them separate
       muteButtonsSelector: this.#htmlControlsMuteSelector,
+      // TODO: are those selectors for both touch and mouse? Even if so, make them separate
       fullScreenButtonsSelector: this.#htmlControlsFullscreenSelector,
       // TODO: extract ";", ",", and "." to some file about debugging
       debugToggleKey: this.#debugOptions?.available

@@ -5,8 +5,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _TouchGameInput_instances, _TouchGameInput_eventsAndButtons, _TouchGameInput_eventsSinceLastUpdate, _TouchGameInput_handleTouchEvent;
 export class TouchGameInput {
-    constructor() {
-        var _a, _b, _c, _d, _e, _f, _g;
+    constructor(params) {
         _TouchGameInput_instances.add(this);
         _TouchGameInput_eventsAndButtons.set(this, new Map([
             ["button_left", []],
@@ -18,21 +17,15 @@ export class TouchGameInput {
             ["button_menu", []],
         ]));
         _TouchGameInput_eventsSinceLastUpdate.set(this, new Set());
-        // TODO: externalize these CSS selectors as framework params or some separate class which keeps all the CSS classes etc.
-        (_a = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_left")) === null || _a === void 0 ? void 0 : _a.push(...document.querySelectorAll(".controls_left"));
-        (_b = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_right")) === null || _b === void 0 ? void 0 : _b.push(...document.querySelectorAll(".controls_right"));
-        (_c = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_up")) === null || _c === void 0 ? void 0 : _c.push(...document.querySelectorAll(".controls_up"));
-        (_d = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_down")) === null || _d === void 0 ? void 0 : _d.push(...document.querySelectorAll(".controls_down"));
-        (_e = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_o")) === null || _e === void 0 ? void 0 : _e.push(...document.querySelectorAll(".controls_o"));
-        (_f = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_x")) === null || _f === void 0 ? void 0 : _f.push(...document.querySelectorAll(".controls_x"));
-        (_g = __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f")
-            .get("button_menu")) === null || _g === void 0 ? void 0 : _g.push(...document.querySelectorAll(".controls_menu"));
+        TouchGameInput.mapping.forEach(({ event, button, selector }) => {
+            const touchButtonElements = document.querySelectorAll(selector);
+            __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f").get(event).push(...touchButtonElements);
+            if (params.visibleButtons.includes(button)) {
+                for (const el of touchButtonElements) {
+                    el.classList.remove("hidden");
+                }
+            }
+        });
     }
     startListening() {
         document
@@ -81,3 +74,13 @@ _TouchGameInput_eventsAndButtons = new WeakMap(), _TouchGameInput_eventsSinceLas
         }
     }
 };
+TouchGameInput.mapping = [
+    // TODO: externalize these CSS selectors as framework params or some separate class which keeps all the CSS classes etc.
+    { event: "button_left", button: "left", selector: ".controls_left" },
+    { event: "button_right", button: "right", selector: ".controls_right" },
+    { event: "button_up", button: "up", selector: ".controls_up" },
+    { event: "button_down", button: "down", selector: ".controls_down" },
+    { event: "button_o", button: "o", selector: ".controls_o" },
+    { event: "button_x", button: "x", selector: ".controls_x" },
+    { event: "button_menu", button: "menu", selector: ".controls_menu" },
+];

@@ -130,6 +130,10 @@
         font-size: 0.6em;
       }
 
+      .touch_button.hidden {
+        display: none;
+      }
+
       .touch_controls_area_left {
         --margin: 1vh;
         margin: var(--margin);
@@ -319,12 +323,12 @@
     <main id="display">
       <div class="mouse_controls_area_left"></div>
       <div class="touch_controls touch_controls_area_left">
-        <div class="touch_button controls_up">W</div>
+        <div class="touch_button controls_up hidden">W</div>
         <div class="touch_buttons_row">
-          <div class="touch_button controls_left">A</div>
-          <div class="touch_button controls_right">D</div>
+          <div class="touch_button controls_left hidden">A</div>
+          <div class="touch_button controls_right hidden">D</div>
         </div>
-        <div class="touch_button controls_down">S</div>
+        <div class="touch_button controls_down hidden">S</div>
       </div>
       <canvas id="canvas"></canvas>
       <div class="mouse_controls_area_right">
@@ -332,25 +336,25 @@
         <button class="controls_fullscreen_toggle">FS</button>
       </div>
       <div class="touch_controls touch_controls_area_right">
-        <div class="touch_button controls_menu">menu</div>
-        <div class="touch_button controls_x">X</div>
-        <div class="touch_button controls_o">O</div>
+        <div class="touch_button controls_menu hidden">menu</div>
+        <div class="touch_button controls_x hidden">X</div>
+        <div class="touch_button controls_o hidden">O</div>
         <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
         <div class="touch_button controls_fullscreen_toggle">FS</div>
       </div>
       <div class="touch_controls touch_controls_area_bottom">
-        <div class="touch_button controls_up">W</div>
+        <div class="touch_button controls_up hidden">W</div>
         <div class="touch_buttons_row controls_left_right">
-          <div class="touch_button controls_left">A</div>
-          <div class="touch_button controls_right">D</div>
+          <div class="touch_button controls_left hidden">A</div>
+          <div class="touch_button controls_right hidden">D</div>
         </div>
-        <div class="touch_button controls_down">S</div>
+        <div class="touch_button controls_down hidden">S</div>
         <div class="spacer"></div>
         <div class="touch_buttons_row controls_toggles">
           <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
-          <div class="touch_button controls_o">O</div>
-          <div class="touch_button controls_x">X</div>
-          <div class="touch_button controls_menu">menu</div>
+          <div class="touch_button controls_o hidden">O</div>
+          <div class="touch_button controls_x hidden">X</div>
+          <div class="touch_button controls_menu hidden">menu</div>
           <div class="touch_button controls_fullscreen_toggle">FS</div>
         </div>
       </div>

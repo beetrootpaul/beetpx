@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { Buttons } from "./Buttons";
+import { ButtonName, Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { MouseGameInput } from "./MouseGameInput";
@@ -24,6 +24,7 @@ export type GameInputEvent =
   | "frame_by_frame_step";
 
 type GameInputParams = {
+  visibleTouchButtons: ButtonName[];
   muteButtonsSelector: string;
   fullScreenButtonsSelector: string;
   debugToggleKey?: string;
@@ -53,7 +54,9 @@ export class GameInput {
         debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
         debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
       }),
-      new TouchGameInput(),
+      new TouchGameInput({
+        visibleButtons: params.visibleTouchButtons,
+      }),
       new GamepadGameInput(),
     ];
 

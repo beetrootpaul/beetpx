@@ -102,7 +102,10 @@ export class Framework {
         }
         __classPrivateFieldSet(this, _Framework_offscreenContext, offscreenContext, "f");
         this.gameInput = new GameInput({
+            visibleTouchButtons: options.visibleTouchButtons,
+            // TODO: are those selectors for both touch and mouse? Even if so, make them separate
             muteButtonsSelector: __classPrivateFieldGet(this, _Framework_htmlControlsMuteSelector, "f"),
+            // TODO: are those selectors for both touch and mouse? Even if so, make them separate
             fullScreenButtonsSelector: __classPrivateFieldGet(this, _Framework_htmlControlsFullscreenSelector, "f"),
             // TODO: extract ";", ",", and "." to some file about debugging
             debugToggleKey: ((_d = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _d === void 0 ? void 0 : _d.available)

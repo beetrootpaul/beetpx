@@ -246,19 +246,9 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
-type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
-declare class Buttons {
-    #private;
-    update(events: Set<GameInputEvent>): void;
-    isPressed(button: ButtonName): boolean;
-    setRepeating(button: ButtonName, repeating: boolean): void;
-    wasAnyJustPressed(): boolean;
-    wasJustPressed(button: ButtonName): boolean;
-    wasJustReleased(button: ButtonName): boolean;
-}
-
 type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 type GameInputParams = {
+    visibleTouchButtons: ButtonName[];
     muteButtonsSelector: string;
     fullScreenButtonsSelector: string;
     debugToggleKey?: string;
@@ -279,6 +269,17 @@ declare class GameInput {
         skipGameButtons: boolean;
     }): void;
     wasAnyButtonPressed(): boolean;
+}
+
+type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
+declare class Buttons {
+    #private;
+    update(events: Set<GameInputEvent>): void;
+    isPressed(button: ButtonName): boolean;
+    setRepeating(button: ButtonName, repeating: boolean): void;
+    wasAnyJustPressed(): boolean;
+    wasJustPressed(button: ButtonName): boolean;
+    wasJustReleased(button: ButtonName): boolean;
 }
 
 declare class Timer {
@@ -303,6 +304,7 @@ declare class StorageApi {
 type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128";
     desiredFps: number;
+    visibleTouchButtons: ButtonName[];
     logActualFps?: boolean;
     debug?: {
         available: boolean;
@@ -397,4 +399,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { AudioPlaybackId, BeetPx, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, MappingColor, SolidColor, SoundSequence, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { AudioPlaybackId, BeetPx, ButtonName, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, MappingColor, SolidColor, SoundSequence, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };

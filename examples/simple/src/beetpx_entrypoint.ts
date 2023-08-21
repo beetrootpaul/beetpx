@@ -4,6 +4,7 @@ BeetPx.init(
   {
     gameCanvasSize: "128x128",
     desiredFps: 30,
+    visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
     logActualFps: true,
     debug: {
       available: !__BEETPX_IS_PROD__,
