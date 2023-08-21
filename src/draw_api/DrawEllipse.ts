@@ -46,14 +46,16 @@ export class DrawEllipse {
     // PREPARE
     //
 
-    let [a, b] = wh.abs().asArray();
+    const [xy1, xy2] = Vector2d.minMax(xy, xy.add(wh));
+
+    let a = xy2.x - xy1.x - 1;
+    let b = xy2.y - xy1.y - 1;
     let b1 = b & 1;
 
-    const [xy1, xy2] = Vector2d.minMax(xy, xy.add(wh));
     let left = xy1.x;
     let right = xy2.x - 1;
-    let bottom = xy1.y - 1 + Math.floor((b + 1) / 2);
-    let top = bottom - b1 + 1;
+    let bottom = xy1.y + Math.floor((b + 1) / 2);
+    let top = bottom - b1;
 
     let errIncrementX = 4 * (1 - a) * b * b;
     let errIncrementY = 4 * (b1 + 1) * a * a;
@@ -119,7 +121,7 @@ export class DrawEllipse {
     // DRAW MISSING TOP & BOTTOM PARTS
     //
 
-    while (bottom - top < b) {
+    while (bottom - top <= b) {
       // TODO: update the implementation below to honor fill pattern
       this.#pixel.draw(v_(left - 1, bottom), color, clippingRegion);
       this.#pixel.draw(v_(right + 1, bottom), color, clippingRegion);
