@@ -57,3 +57,5 @@ BeetPx.init(
 
   startGame();
 });
+
+// TODO: this example, on itch, runs significantly faster when open on a mobile :thinking:
