@@ -1,6 +1,7 @@
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
+import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
 import { ButtonName } from "./game_input/Buttons";
@@ -47,11 +48,7 @@ export class Framework {
   readonly #htmlControlsMuteSelector = ".controls_mute_toggle";
 
   readonly #debugOptions: FrameworkOptions["debug"];
-  #debug: boolean;
   #frameByFrame: boolean;
-  get debug(): boolean {
-    return this.#debug;
-  }
 
   readonly #gameCanvasSize: Vector2d;
   readonly #htmlCanvasBackground: SolidColor =
@@ -81,17 +78,27 @@ export class Framework {
   #centeringOffset = Vector2d.zero;
 
   #frameNumber: number = 0;
+  #millisSinceStarted: number = 0;
+  #millisSinceLastUpdate: number = 0;
   averageFps: number = 1;
 
   get frameNumber(): number {
     return this.#frameNumber;
   }
 
+  get t(): number {
+    return this.#millisSinceStarted / 1000;
+  }
+
+  get dt(): number {
+    return this.#millisSinceLastUpdate / 1000;
+  }
+
   constructor(options: FrameworkOptions) {
     this.#debugOptions = options.debug ?? {
       available: false,
     };
-    this.#debug = this.#debugOptions?.available
+    DebugMode.enabled = this.#debugOptions?.available
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue
       : false;
@@ -211,6 +218,9 @@ export class Framework {
 
   restart() {
     this.#frameNumber = 0;
+    this.#millisSinceStarted = 0;
+    this.#millisSinceLastUpdate = 0;
+
     this.#onStarted?.();
   }
 
@@ -234,6 +244,10 @@ export class Framework {
       this.#setupHtmlCanvas();
     });
 
+    this.#frameNumber = 0;
+    this.#millisSinceStarted = 0;
+    this.#millisSinceLastUpdate = 0;
+
     this.#onStarted?.();
 
     this.#loading.showApp();
@@ -241,7 +255,7 @@ export class Framework {
     this.gameInput.startListening();
 
     this.#gameLoop.start({
-      updateFn: (averageFps) => {
+      updateFn: (averageFps, deltaMillis) => {
         if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
           this.#fullScreen.toggle();
         }
@@ -249,9 +263,10 @@ export class Framework {
           this.audioApi.toggleMuteUnmute();
         }
         if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
-          this.#debug = !this.#debug;
-          console.debug(`Debug flag set to: ${this.#debug}`);
-          if (this.#debug) {
+          DebugMode.enabled = !DebugMode.enabled;
+          // TODO: move this flag to setter inside DebugMode
+          console.log(`Debug flag set to: ${DebugMode.enabled}`);
+          if (DebugMode.enabled) {
             window.localStorage.removeItem(Framework.#storageDebugDisabledKey);
           } else {
             window.localStorage.setItem(
@@ -263,7 +278,7 @@ export class Framework {
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
           this.#frameByFrame = !this.#frameByFrame;
-          console.debug(`FrameByFrame mode set to: ${this.#frameByFrame}`);
+          console.log(`FrameByFrame mode set to: ${this.#frameByFrame}`);
         }
 
         if (this.gameInput.wasAnyButtonPressed()) {
@@ -280,15 +295,22 @@ export class Framework {
 
         if (shouldUpdate) {
           if (this.#frameByFrame) {
-            console.debug(`Running onUpdate for frame: ${this.#frameNumber}`);
+            console.log(`Running onUpdate for frame: ${this.#frameNumber}`);
           }
 
           this.#onUpdate?.();
 
           this.#frameNumber =
-            this.#frameNumber == Number.MAX_SAFE_INTEGER
+            this.#frameNumber >= Number.MAX_SAFE_INTEGER
               ? 0
               : this.#frameNumber + 1;
+
+          this.#millisSinceStarted =
+            this.#millisSinceStarted === Number.MAX_SAFE_INTEGER
+              ? 0
+              : this.#millisSinceStarted + deltaMillis;
+
+          this.#millisSinceLastUpdate = deltaMillis;
         }
       },
       renderFn: () => {
@@ -354,7 +376,7 @@ export class Framework {
 
   #redrawDebugMargin(): void {
     const debugBgMargin = 1;
-    this.#htmlCanvasContext.fillStyle = this.#debug
+    this.#htmlCanvasContext.fillStyle = DebugMode.enabled
       ? "#ff0000"
       : this.#htmlCanvasBackground.asRgbCssHex();
     this.#htmlCanvasContext.fillRect(

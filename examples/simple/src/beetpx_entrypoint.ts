@@ -3,7 +3,8 @@ import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 BeetPx.init(
   {
     gameCanvasSize: "128x128",
-    desiredFps: 30,
+    // TODO: consider dropping an ability to set FPS other than 60, since we use `BeetPx.dt` now…
+    desiredFps: 60,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
     logActualFps: true,
     debug: {
@@ -32,11 +33,16 @@ BeetPx.init(
   });
 
   BeetPx.setOnUpdate(() => {
-    console.log(`FPS: ${BeetPx.averageFps}`);
+    // TODO: expose a custom logger from BeetPx
+    if (BeetPx.debug) {
+      console.log(`FPS: ${BeetPx.averageFps}`);
+      console.log(`  t: ${BeetPx.t.toFixed(3)}s`);
+      console.log(` dt: ${BeetPx.dt.toFixed(3)}s`);
+    }
 
     logoPositionOffset = v_(
-      Math.cos(BeetPx.frameNumber / 12),
-      Math.sin(BeetPx.frameNumber / 12),
+      2 * Math.cos(BeetPx.t * Math.PI),
+      2 * Math.sin(BeetPx.t * Math.PI),
     ).mul(8);
   });
 

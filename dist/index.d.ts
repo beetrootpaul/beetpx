@@ -293,6 +293,10 @@ declare class Timer {
     update(): void;
 }
 
+declare class DebugMode {
+    static enabled: boolean;
+}
+
 type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
 declare class StorageApi {
     #private;
@@ -325,7 +329,6 @@ type OnAssetsLoaded = {
 };
 declare class Framework {
     #private;
-    get debug(): boolean;
     readonly gameInput: GameInput;
     readonly audioApi: AudioApi;
     readonly storageApi: StorageApi;
@@ -333,6 +336,8 @@ declare class Framework {
     readonly drawApi: DrawApi;
     averageFps: number;
     get frameNumber(): number;
+    get t(): number;
+    get dt(): number;
     constructor(options: FrameworkOptions);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
@@ -344,11 +349,25 @@ declare class Framework {
 declare class BeetPx {
     #private;
     static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["loadAssets"]>;
+    static get debug(): typeof DebugMode.enabled;
+    /**
+     * Number of frames processed since game started.
+     * It gets reset to 0 when `BeetPx.restart()` is called.
+     * It counts update calls, not draw calls.
+     */
     static get frameNumber(): Framework["frameNumber"];
+    /**
+     * Time since game started, in seconds.
+     * It gets reset to 0 when `BeetPx.restart()` is called.
+     */
+    static get t(): Framework["t"];
+    /**
+     * Delta time since last update call, in seconds.
+     */
+    static get dt(): Framework["dt"];
     static get averageFps(): Framework["averageFps"];
     static get audioContext(): AudioApi["audioContext"];
     static get globalGainNode(): AudioApi["globalGainNode"];
-    static get debug(): Framework["debug"];
     static setOnStarted: Framework["setOnStarted"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
