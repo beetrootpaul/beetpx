@@ -18,8 +18,8 @@ export class Utils {
         });
     }
     // TODO: tests for edge cases
-    static booleanChangingEveryNthFrame(n) {
-        return BeetPx.frameNumber % (n * 2) < n;
+    static booleanChangingEveryNSeconds(n) {
+        return BeetPx.t % (n * 2) < n;
     }
     // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
     static get offset8Directions() {

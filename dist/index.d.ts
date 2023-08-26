@@ -152,7 +152,7 @@ declare class Utils {
     static noop(): void;
     static clamp(a: number, b: number, c: number): number;
     static repeatN(n: number, callback: (i: number) => void): void;
-    static booleanChangingEveryNthFrame(n: number): boolean;
+    static booleanChangingEveryNSeconds(n: number): boolean;
     static get offset8Directions(): Vector2d[];
     static measureText(text: string): Vector2d;
     static printWithOutline(text: string, canvasXy1: Vector2d, textColor: SolidColor, outlineColor: SolidColor): void;
@@ -432,6 +432,16 @@ declare class BeetPx {
 }
 
 declare global {
+    /**
+     * A globally available variable which tells whether you are using
+     *   a production bundle of the game (built with `beetpx prod`)
+     *   or not (e.g. run with `beetpx dev`).
+     *
+     * Note: the generated documentation marks this variable as "Not Exported".
+     *   This is *not* true.
+     *
+     * @notExported
+     */
     const __BEETPX_IS_PROD__: boolean;
 }
 
