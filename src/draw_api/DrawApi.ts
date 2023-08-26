@@ -99,6 +99,7 @@ export class DrawApi {
     this.#fillPattern = fillPattern;
   }
 
+  // TODO: ability to remove all mappings
   // TODO: cover it with tests
   mapSpriteColors(mapping: ColorMapping): ColorMapping {
     const previous: ColorMapping = [];

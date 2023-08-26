@@ -6,6 +6,14 @@
 
 ## Getting Started
 
+Add it to your project with: 
+
+```sh
+npm install --save-dev --save-exact @beetpx/beetpx
+```
+
+It might make sense in a future to drop `--save-exact` flag, but for now better be safe than sorry – in this early phase of development the framework constantly evolves and quite often breaking changes are introduced.
+
 There is a simple example in [./examples/simple/](examples/simple/README.md) . Run it as described in [its README](examples/simple/README.md).
 
 Also, you might want to take a look at how following projects are using BeetPx:

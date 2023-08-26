@@ -61,6 +61,7 @@ export class DrawApi {
     setFillPattern(fillPattern) {
         __classPrivateFieldSet(this, _DrawApi_fillPattern, fillPattern, "f");
     }
+    // TODO: ability to remove all mappings
     // TODO: cover it with tests
     mapSpriteColors(mapping) {
         const previous = [];
