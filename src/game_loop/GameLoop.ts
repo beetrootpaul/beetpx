@@ -59,7 +59,6 @@ export class GameLoop {
     this.#requestAnimationFrameFn(this.#tick);
   }
 
-  // TODO: extract logger which honors `if (BeetPx.debug)`
   // TODO: rework all of this. The variety of time-related state is confusing.
   // Keep this function as an arrow one in order to avoid issues with `this`.
   #tick = (currentTimeMillis: DOMHighResTimeStamp): void => {

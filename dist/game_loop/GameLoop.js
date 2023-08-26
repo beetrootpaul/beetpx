@@ -25,7 +25,6 @@ export class GameLoop {
         _GameLoop_accumulatedTimeStepMillis.set(this, void 0);
         _GameLoop_accumulatedDeltaTimeMillis.set(this, void 0);
         _GameLoop_callbacks.set(this, void 0);
-        // TODO: extract logger which honors `if (BeetPx.debug)`
         // TODO: rework all of this. The variety of time-related state is confusing.
         // Keep this function as an arrow one in order to avoid issues with `this`.
         _GameLoop_tick.set(this, (currentTimeMillis) => {
