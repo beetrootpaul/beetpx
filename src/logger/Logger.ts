@@ -8,7 +8,11 @@ export class Logger {
   }
   static debug(...args: any[]): void {
     if (DebugMode.enabled) {
-      console.debug(...args);
+      console.debug(
+        ...args.map((value) =>
+          value.__printDebug ? value.__printDebug() : value,
+        ),
+      );
     }
   }
 
@@ -16,20 +20,32 @@ export class Logger {
     Logger.info(Logger.#prefix, ...args);
   }
   static info(...args: any[]): void {
-    console.info(...args);
+    console.info(
+      ...args.map((value) =>
+        value.__printDebug ? value.__printDebug() : value,
+      ),
+    );
   }
 
   static warnBeetPx(...args: any[]): void {
     Logger.warn(Logger.#prefix, ...args);
   }
   static warn(...args: any[]): void {
-    console.warn(...args);
+    console.warn(
+      ...args.map((value) =>
+        value.__printDebug ? value.__printDebug() : value,
+      ),
+    );
   }
 
   static errorBeetPx(...args: any[]): void {
     Logger.error(Logger.#prefix, ...args);
   }
   static error(...args: any[]): void {
-    console.error(...args);
+    console.error(
+      ...args.map((value) =>
+        value.__printDebug ? value.__printDebug() : value,
+      ),
+    );
   }
 }

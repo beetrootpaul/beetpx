@@ -187,7 +187,7 @@ export class Vector2d implements PrintDebug {
         );
   }
 
-  d(): string {
+  __printDebug(): string {
     return `(${this.x},${this.y})`;
   }
 }

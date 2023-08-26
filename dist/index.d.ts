@@ -34,7 +34,7 @@ declare class MappingColor implements Color {
 }
 
 interface PrintDebug {
-    d(): string;
+    __printDebug(): string;
 }
 
 declare function v_(x: number, y: number): Vector2d;
@@ -79,7 +79,7 @@ declare class Vector2d implements PrintDebug {
     div(other: Vector2d): Vector2d;
     div(value: number): Vector2d;
     div(x: number, y: number): Vector2d;
-    d(): string;
+    __printDebug(): string;
 }
 
 type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => Sprite;
