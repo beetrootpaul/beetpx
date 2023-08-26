@@ -16,10 +16,7 @@ import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
-  desiredFps: number;
   visibleTouchButtons: ButtonName[];
-  // TODO: Does is still work?
-  logActualFps?: boolean;
   debug?: {
     available: boolean;
     /**
@@ -163,8 +160,7 @@ export class Framework {
     });
 
     this.#gameLoop = new GameLoop({
-      desiredFps: options.desiredFps,
-      logActualFps: options.logActualFps ?? false,
+      desiredFps: 60,
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
     });
 

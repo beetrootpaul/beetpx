@@ -3,10 +3,7 @@ import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 BeetPx.init(
   {
     gameCanvasSize: "128x128",
-    // TODO: consider dropping an ability to set FPS other than 60, since we use `BeetPx.dt` now…
-    desiredFps: 60,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
-    logActualFps: true,
     debug: {
       available: !__BEETPX_IS_PROD__,
       toggleKey: ";",

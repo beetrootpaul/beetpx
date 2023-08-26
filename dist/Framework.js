@@ -44,7 +44,7 @@ export class Framework {
         return __classPrivateFieldGet(this, _Framework_millisSinceLastUpdate, "f") / 1000;
     }
     constructor(options) {
-        var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
+        var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
         _Framework_instances.add(this);
         _Framework_debugOptions.set(this, void 0);
         _Framework_frameByFrame.set(this, void 0);
@@ -122,8 +122,7 @@ export class Framework {
                 : undefined,
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
-            desiredFps: options.desiredFps,
-            logActualFps: (_o = options.logActualFps) !== null && _o !== void 0 ? _o : false,
+            desiredFps: 60,
             requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
         }), "f");
         this.storageApi = new StorageApi();

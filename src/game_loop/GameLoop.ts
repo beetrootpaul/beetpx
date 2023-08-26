@@ -1,5 +1,5 @@
 import { Logger } from "../logger/Logger";
-import { FpsLogger, FpsLoggerAverage, FpsLoggerNoop } from "./FpsLogger";
+import { FpsCounter } from "./FpsCounter";
 
 export type GameLoopCallbacks = {
   updateFn: (averageFps: number, deltaMillis: DOMHighResTimeStamp) => void;
@@ -20,7 +20,7 @@ export class GameLoop {
 
   readonly #requestAnimationFrameFn: AnimationFrameProvider["requestAnimationFrame"];
 
-  readonly #fpsLogger: FpsLogger;
+  readonly fpsCounter: FpsCounter;
 
   #previousTimeMillis?: DOMHighResTimeStamp;
   #expectedTimeStepMillis: number;
@@ -36,9 +36,7 @@ export class GameLoop {
     this.#adjustedFps = options.desiredFps;
     this.#requestAnimationFrameFn = options.requestAnimationFrameFn;
 
-    this.#fpsLogger = options.logActualFps
-      ? new FpsLoggerAverage()
-      : new FpsLoggerNoop();
+    this.fpsCounter = new FpsCounter({ bufferSize: 3 * this.#desiredFps });
 
     this.#expectedTimeStepMillis = 1000 / this.#adjustedFps;
     this.#safetyMaxTimeStep = 5 * this.#expectedTimeStepMillis;
@@ -96,7 +94,7 @@ export class GameLoop {
 
     if (this.#accumulatedTimeStepMillis >= this.#expectedTimeStepMillis) {
       const actualFps = 1000 / this.#accumulatedTimeStepMillis;
-      this.#fpsLogger.track(actualFps);
+      this.fpsCounter.track(actualFps);
 
       if (
         actualFps > this.#desiredFps * 1.1 &&
@@ -126,7 +124,7 @@ export class GameLoop {
         }`,
       );
       for (let updateIndex = 0; updateIndex < numberOfUpdates; updateIndex++) {
-        this.#callbacks.updateFn(this.#fpsLogger.mostRecentAverageFps, dt);
+        this.#callbacks.updateFn(this.fpsCounter.averageFps, dt);
         this.#accumulatedTimeStepMillis -= this.#expectedTimeStepMillis;
       }
       this.#accumulatedDeltaTimeMillis = 0;
