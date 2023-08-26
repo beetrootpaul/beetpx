@@ -30,8 +30,7 @@ BeetPx.init(
   BeetPx.setOnStarted(() => {
     BeetPx.stopAllSounds();
     BeetPx.playSoundLooped("music_base.wav");
-    melodyPlaybackId = BeetPx.playSoundLooped("music_melody.wav");
-    BeetPx.muteSound(melodyPlaybackId);
+    melodyPlaybackId = BeetPx.playSoundLooped("music_melody.wav", true);
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = Vector2d.zero;

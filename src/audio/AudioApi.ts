@@ -27,7 +27,7 @@ export class AudioApi {
     { sourceNodes: AudioBufferSourceNode[]; gainNodes: GainNode[] }
   > = new Map();
 
-  readonly #muteUnmuteTimeConstant = 0.1;
+  readonly #muteUnmuteTimeConstant = 0.001;
 
   get audioContext(): AudioContext {
     return this.#audioContext;
@@ -266,6 +266,8 @@ export class AudioApi {
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
       for (const gainNode of nodes?.gainNodes) {
+        // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
+        //   an instant volume change – it was resulting with some audio artifacts.
         gainNode.gain.setTargetAtTime(
           0,
           this.#audioContext.currentTime,
@@ -280,6 +282,8 @@ export class AudioApi {
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
       for (const gainNode of nodes?.gainNodes) {
+        // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
+        //   an instant volume change – it was resulting with some audio artifacts.
         gainNode.gain.setTargetAtTime(
           1,
           this.#audioContext.currentTime,
