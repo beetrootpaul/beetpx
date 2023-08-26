@@ -42,6 +42,7 @@ if (argv._.includes("dev")) {
 } else if (argv._.includes("zip")) {
   runZipCommand();
 } else {
+  // TODO: make yargs error on invalid command
   throw Error("This code should not be reached :-)");
 }
 

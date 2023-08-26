@@ -34,7 +34,7 @@ declare class MappingColor implements Color {
 }
 
 interface PrintDebug {
-    d(): string;
+    __printDebug(): string;
 }
 
 declare function v_(x: number, y: number): Vector2d;
@@ -79,7 +79,7 @@ declare class Vector2d implements PrintDebug {
     div(other: Vector2d): Vector2d;
     div(value: number): Vector2d;
     div(x: number, y: number): Vector2d;
-    d(): string;
+    __printDebug(): string;
 }
 
 type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => Sprite;
@@ -154,7 +154,7 @@ declare class Utils {
     static repeatN(n: number, callback: (i: number) => void): void;
     static booleanChangingEveryNthFrame(n: number): boolean;
     static get offset8Directions(): Vector2d[];
-    static measureTextSize(text: string): Vector2d;
+    static measureText(text: string): Vector2d;
     static printWithOutline(text: string, canvasXy1: Vector2d, textColor: SolidColor, outlineColor: SolidColor): void;
     static throwError(message: string): never;
 }
@@ -310,9 +310,7 @@ declare class StorageApi {
 
 type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128";
-    desiredFps: number;
     visibleTouchButtons: ButtonName[];
-    logActualFps?: boolean;
     debug?: {
         available: boolean;
         /**

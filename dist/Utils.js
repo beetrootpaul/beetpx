@@ -34,9 +34,8 @@ export class Utils {
             v_(-1, 0),
         ];
     }
-    // TODO: rename to `measureText`
     // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
-    static measureTextSize(text) {
+    static measureText(text) {
         var _a, _b;
         const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
         return charSprites.reduce((sizeSoFar, nextSprite) => Vector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), Vector2d.zero);

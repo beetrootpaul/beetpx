@@ -47,6 +47,7 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasBytes, options.canvasSize.round()), "f");
     }
     // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
+    // TODO: consider returning the previous offset
     setCameraOffset(offset) {
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset.round(), "f");
     }
@@ -60,6 +61,7 @@ export class DrawApi {
     setFillPattern(fillPattern) {
         __classPrivateFieldSet(this, _DrawApi_fillPattern, fillPattern, "f");
     }
+    // TODO: ability to remove all mappings
     // TODO: cover it with tests
     mapSpriteColors(mapping) {
         const previous = [];

@@ -4,6 +4,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _TouchGameInput_instances, _TouchGameInput_eventsAndButtons, _TouchGameInput_eventsSinceLastUpdate, _TouchGameInput_handleTouchEvent;
+import { HtmlTemplate } from "../HtmlTemplate";
 export class TouchGameInput {
     constructor(params) {
         _TouchGameInput_instances.add(this);
@@ -29,8 +30,7 @@ export class TouchGameInput {
     }
     startListening() {
         document
-            // TODO: externalize this selector as a framework params or some separate class which keeps all the CSS classes etc.
-            .querySelectorAll(".touch_controls")
+            .querySelectorAll(HtmlTemplate.selectors.touchControls)
             .forEach((touchArea) => {
             touchArea.addEventListener("touchstart", (touchEvent) => {
                 __classPrivateFieldGet(this, _TouchGameInput_instances, "m", _TouchGameInput_handleTouchEvent).call(this, touchEvent);
@@ -75,12 +75,39 @@ _TouchGameInput_eventsAndButtons = new WeakMap(), _TouchGameInput_eventsSinceLas
     }
 };
 TouchGameInput.mapping = [
-    // TODO: externalize these CSS selectors as framework params or some separate class which keeps all the CSS classes etc.
-    { event: "button_left", button: "left", selector: ".controls_left" },
-    { event: "button_right", button: "right", selector: ".controls_right" },
-    { event: "button_up", button: "up", selector: ".controls_up" },
-    { event: "button_down", button: "down", selector: ".controls_down" },
-    { event: "button_o", button: "o", selector: ".controls_o" },
-    { event: "button_x", button: "x", selector: ".controls_x" },
-    { event: "button_menu", button: "menu", selector: ".controls_menu" },
+    {
+        event: "button_left",
+        button: "left",
+        selector: HtmlTemplate.selectors.controlsLeft,
+    },
+    {
+        event: "button_right",
+        button: "right",
+        selector: HtmlTemplate.selectors.controlsRight,
+    },
+    {
+        event: "button_up",
+        button: "up",
+        selector: HtmlTemplate.selectors.controlsUp,
+    },
+    {
+        event: "button_down",
+        button: "down",
+        selector: HtmlTemplate.selectors.controlsDown,
+    },
+    {
+        event: "button_o",
+        button: "o",
+        selector: HtmlTemplate.selectors.controlsO,
+    },
+    {
+        event: "button_x",
+        button: "x",
+        selector: HtmlTemplate.selectors.controlsX,
+    },
+    {
+        event: "button_menu",
+        button: "menu",
+        selector: HtmlTemplate.selectors.controlsMenu,
+    },
 ];

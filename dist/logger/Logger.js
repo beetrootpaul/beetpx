@@ -11,26 +11,26 @@ export class Logger {
     }
     static debug(...args) {
         if (DebugMode.enabled) {
-            console.debug(...args);
+            console.debug(...args.map((value) => value.__printDebug ? value.__printDebug() : value));
         }
     }
     static infoBeetPx(...args) {
         Logger.info(__classPrivateFieldGet(Logger, _a, "f", _Logger_prefix), ...args);
     }
     static info(...args) {
-        console.info(...args);
+        console.info(...args.map((value) => value.__printDebug ? value.__printDebug() : value));
     }
     static warnBeetPx(...args) {
         Logger.warn(__classPrivateFieldGet(Logger, _a, "f", _Logger_prefix), ...args);
     }
     static warn(...args) {
-        console.warn(...args);
+        console.warn(...args.map((value) => value.__printDebug ? value.__printDebug() : value));
     }
     static errorBeetPx(...args) {
         Logger.error(__classPrivateFieldGet(Logger, _a, "f", _Logger_prefix), ...args);
     }
     static error(...args) {
-        console.error(...args);
+        console.error(...args.map((value) => value.__printDebug ? value.__printDebug() : value));
     }
 }
 _a = Logger;

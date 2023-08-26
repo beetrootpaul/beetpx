@@ -7,6 +7,7 @@ import { FullScreen } from "./FullScreen";
 import { ButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
+import { HtmlTemplate } from "./HtmlTemplate";
 import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
@@ -15,10 +16,7 @@ import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
-  desiredFps: number;
   visibleTouchButtons: ButtonName[];
-  // TODO: Does is still work?
-  logActualFps?: boolean;
   debug?: {
     available: boolean;
     /**
@@ -42,11 +40,6 @@ export class Framework {
   // TODO: Move debug responsibility to a separate class
   static readonly #storageDebugDisabledKey = "framework__debug_disabled";
   static readonly #storageDebugDisabledTrue = "yes";
-
-  readonly #htmlDisplaySelector = "#display";
-  readonly #htmlCanvasSelector = "#canvas";
-  readonly #htmlControlsFullscreenSelector = ".controls_fullscreen_toggle";
-  readonly #htmlControlsMuteSelector = ".controls_mute_toggle";
 
   readonly #debugOptions: FrameworkOptions["debug"];
   #frameByFrame: boolean;
@@ -105,7 +98,7 @@ export class Framework {
       : false;
     this.#frameByFrame = false;
 
-    this.#loading = new Loading(this.#htmlDisplaySelector);
+    this.#loading = new Loading(HtmlTemplate.selectors.display);
 
     this.#gameCanvasSize =
       options.gameCanvasSize === "64x64"
@@ -117,11 +110,11 @@ export class Framework {
           );
 
     const htmlCanvas = document.querySelector<HTMLCanvasElement>(
-      this.#htmlCanvasSelector,
+      HtmlTemplate.selectors.canvas,
     );
     if (!htmlCanvas) {
       throw Error(
-        `Was unable to find <canvas> by selector '${this.#htmlCanvasSelector}'`,
+        `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
       );
     }
 
@@ -151,9 +144,9 @@ export class Framework {
     this.gameInput = new GameInput({
       visibleTouchButtons: options.visibleTouchButtons,
       // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-      muteButtonsSelector: this.#htmlControlsMuteSelector,
+      muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
       // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-      fullScreenButtonsSelector: this.#htmlControlsFullscreenSelector,
+      fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
       // TODO: extract ";", ",", and "." to some file about debugging
       debugToggleKey: this.#debugOptions?.available
         ? this.#debugOptions?.toggleKey ?? ";"
@@ -167,8 +160,7 @@ export class Framework {
     });
 
     this.#gameLoop = new GameLoop({
-      desiredFps: options.desiredFps,
-      logActualFps: options.logActualFps ?? false,
+      desiredFps: 60,
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
     });
 
@@ -184,8 +176,8 @@ export class Framework {
     this.audioApi = new AudioApi(this.assets, audioContext);
 
     this.#fullScreen = FullScreen.newFor(
-      this.#htmlDisplaySelector,
-      this.#htmlControlsFullscreenSelector,
+      HtmlTemplate.selectors.display,
+      HtmlTemplate.selectors.controlsFullScreen,
     );
 
     this.#offscreenImageData = this.#offscreenContext.createImageData(

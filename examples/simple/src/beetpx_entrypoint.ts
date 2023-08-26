@@ -3,10 +3,7 @@ import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 BeetPx.init(
   {
     gameCanvasSize: "128x128",
-    // TODO: consider dropping an ability to set FPS other than 60, since we use `BeetPx.dt` now…
-    desiredFps: 60,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
-    logActualFps: true,
     debug: {
       available: !__BEETPX_IS_PROD__,
       toggleKey: ";",
@@ -19,15 +16,22 @@ BeetPx.init(
   {
     images: [{ url: "logo.png" }],
     fonts: [],
-    sounds: [],
+    sounds: [{ url: "music_base.wav" }, { url: "music_melody.wav" }],
   },
 ).then(({ startGame }) => {
+  let melodyPlaybackId: number = -1;
+
   const velocity = 64;
+
   const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
   let logoPositionBase = Vector2d.zero;
   let logoPositionOffset = Vector2d.zero;
 
   BeetPx.setOnStarted(() => {
+    BeetPx.stopAllSounds();
+    BeetPx.playSoundLooped("music_base.wav");
+    melodyPlaybackId = BeetPx.playSoundLooped("music_melody.wav", true);
+
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = Vector2d.zero;
   });
@@ -36,6 +40,13 @@ BeetPx.init(
     BeetPx.logDebug(`FPS: ${BeetPx.averageFps}`);
     BeetPx.logDebug(`  t: ${BeetPx.t.toFixed(3)}s`);
     BeetPx.logDebug(` dt: ${BeetPx.dt.toFixed(3)}s`);
+
+    if (BeetPx.wasJustPressed("x")) {
+      BeetPx.unmuteSound(melodyPlaybackId);
+    }
+    if (BeetPx.wasJustPressed("o")) {
+      BeetPx.muteSound(melodyPlaybackId);
+    }
 
     // TODO: consider exposing some XY (-1,1) representation of directions
     if (BeetPx.isPressed("right")) {
@@ -51,18 +62,14 @@ BeetPx.init(
       logoPositionBase = logoPositionBase.add(0, velocity * BeetPx.dt);
     }
 
-    if (
-      BeetPx.wasJustPressed("x") ||
-      BeetPx.wasJustPressed("o") ||
-      BeetPx.wasJustPressed("menu")
-    ) {
-      logoPositionBase = logoPositionBaseDefault;
-    }
-
     logoPositionOffset = v_(
       Math.cos(BeetPx.t * Math.PI),
       Math.sin(BeetPx.t * Math.PI),
     ).mul(10);
+
+    if (BeetPx.wasJustPressed("menu")) {
+      BeetPx.restart();
+    }
   });
 
   BeetPx.setOnDraw(() => {

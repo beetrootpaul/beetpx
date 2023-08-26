@@ -106,7 +106,7 @@ export class Vector2d {
             ? new Vector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
             : new Vector2d(this.x / otherOrValueOrX, this.y / (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
     }
-    d() {
+    __printDebug() {
         return `(${this.x},${this.y})`;
     }
 }

@@ -1,3 +1,4 @@
+import { HtmlTemplate } from "../HtmlTemplate";
 import { ButtonName } from "./Buttons";
 import { GameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
@@ -8,14 +9,41 @@ export class TouchGameInput implements SpecializedGameInput {
     button: ButtonName;
     selector: string;
   }> = [
-    // TODO: externalize these CSS selectors as framework params or some separate class which keeps all the CSS classes etc.
-    { event: "button_left", button: "left", selector: ".controls_left" },
-    { event: "button_right", button: "right", selector: ".controls_right" },
-    { event: "button_up", button: "up", selector: ".controls_up" },
-    { event: "button_down", button: "down", selector: ".controls_down" },
-    { event: "button_o", button: "o", selector: ".controls_o" },
-    { event: "button_x", button: "x", selector: ".controls_x" },
-    { event: "button_menu", button: "menu", selector: ".controls_menu" },
+    {
+      event: "button_left",
+      button: "left",
+      selector: HtmlTemplate.selectors.controlsLeft,
+    },
+    {
+      event: "button_right",
+      button: "right",
+      selector: HtmlTemplate.selectors.controlsRight,
+    },
+    {
+      event: "button_up",
+      button: "up",
+      selector: HtmlTemplate.selectors.controlsUp,
+    },
+    {
+      event: "button_down",
+      button: "down",
+      selector: HtmlTemplate.selectors.controlsDown,
+    },
+    {
+      event: "button_o",
+      button: "o",
+      selector: HtmlTemplate.selectors.controlsO,
+    },
+    {
+      event: "button_x",
+      button: "x",
+      selector: HtmlTemplate.selectors.controlsX,
+    },
+    {
+      event: "button_menu",
+      button: "menu",
+      selector: HtmlTemplate.selectors.controlsMenu,
+    },
   ];
 
   readonly #eventsAndButtons: Map<GameInputEvent, HTMLElement[]> = new Map([
@@ -46,8 +74,7 @@ export class TouchGameInput implements SpecializedGameInput {
 
   startListening(): void {
     document
-      // TODO: externalize this selector as a framework params or some separate class which keeps all the CSS classes etc.
-      .querySelectorAll<HTMLElement>(".touch_controls")
+      .querySelectorAll<HTMLElement>(HtmlTemplate.selectors.touchControls)
       .forEach((touchArea) => {
         touchArea.addEventListener("touchstart", (touchEvent) => {
           this.#handleTouchEvent(touchEvent);

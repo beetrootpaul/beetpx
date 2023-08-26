@@ -31,8 +31,7 @@ describe("GameLoop", () => {
 
   test("still a single update", () => {
     // given
-    const desiredFps = 10;
-    const gameLoop = new GameLoop({ desiredFps, requestAnimationFrameFn });
+    const gameLoop = new GameLoop({ desiredFps: 10, requestAnimationFrameFn });
 
     // when
     requestAnimationFrameFn.mockImplementationOnce(rafWithTime(0));
@@ -46,8 +45,7 @@ describe("GameLoop", () => {
 
   test("two updates", () => {
     // given
-    const desiredFps = 10;
-    const gameLoop = new GameLoop({ desiredFps, requestAnimationFrameFn });
+    const gameLoop = new GameLoop({ desiredFps: 10, requestAnimationFrameFn });
 
     // when
     requestAnimationFrameFn.mockImplementationOnce(rafWithTime(0));

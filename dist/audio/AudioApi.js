@@ -28,7 +28,7 @@ export class AudioApi {
         _AudioApi_muteUnmuteExponentialTimeConstant.set(this, 0.1);
         _AudioApi_isGloballyMuted.set(this, void 0);
         _AudioApi_sounds.set(this, new Map());
-        _AudioApi_muteUnmuteTimeConstant.set(this, 0.1);
+        _AudioApi_muteUnmuteTimeConstant.set(this, 0.001);
         __classPrivateFieldSet(this, _AudioApi_assets, assets, "f");
         __classPrivateFieldSet(this, _AudioApi_audioContext, audioContext, "f");
         __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_loadStoredGlobalMuteUnmuteState).call(this), "f");
@@ -137,6 +137,8 @@ export class AudioApi {
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
         if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
             for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+                // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
+                //   an instant volume change – it was resulting with some audio artifacts.
                 gainNode.gain.setTargetAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteTimeConstant, "f"));
             }
         }
@@ -146,6 +148,8 @@ export class AudioApi {
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
         if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
             for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+                // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
+                //   an instant volume change – it was resulting with some audio artifacts.
                 gainNode.gain.setTargetAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteTimeConstant, "f"));
             }
         }

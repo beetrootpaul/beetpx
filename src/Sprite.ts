@@ -15,8 +15,6 @@ export function spr_(imageUrl: ImageUrl): SpriteCreationHelper {
   };
 }
 
-// TODO: maybe add a sprite sheet ID or just an image ID? There is no need for it, but it
-//       would express the fact that sprite is related to a specific sprite sheet only
 export class Sprite {
   imageUrl: ImageUrl;
   xy1: Vector2d;
