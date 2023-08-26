@@ -153,6 +153,7 @@ declare class Utils {
     static clamp(a: number, b: number, c: number): number;
     static repeatN(n: number, callback: (i: number) => void): void;
     static booleanChangingEveryNSeconds(n: number): boolean;
+    static booleanChangingEveryNthFrame(n: number): boolean;
     static get offset8Directions(): Vector2d[];
     static measureText(text: string): Vector2d;
     static printWithOutline(text: string, canvasXy1: Vector2d, textColor: SolidColor, outlineColor: SolidColor): void;
