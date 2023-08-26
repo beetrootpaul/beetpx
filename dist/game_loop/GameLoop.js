@@ -59,22 +59,18 @@ export class GameLoop {
                     __classPrivateFieldSet(this, _GameLoop_adjustedFps, __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") - 1, "f");
                     __classPrivateFieldSet(this, _GameLoop_expectedTimeStepMillis, 1000 / __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f"), "f");
                     // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
-                    // if (DebugMode.enabled) {
-                    //   console.log(
-                    //     `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-                    //   );
-                    // }
+                    if (DebugMode.enabled) {
+                        console.log(`Decreasing the adjusted FPS by 1. New = ${__classPrivateFieldGet(this, _GameLoop_adjustedFps, "f")}`);
+                    }
                 }
                 else if (actualFps < __classPrivateFieldGet(this, _GameLoop_desiredFps, "f") / 1.1 &&
                     __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") < __classPrivateFieldGet(this, _GameLoop_desiredFps, "f") * 2) {
                     __classPrivateFieldSet(this, _GameLoop_adjustedFps, __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f") + 1, "f");
                     __classPrivateFieldSet(this, _GameLoop_expectedTimeStepMillis, 1000 / __classPrivateFieldGet(this, _GameLoop_adjustedFps, "f"), "f");
                     // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
-                    // if (DebugMode.enabled) {
-                    //   console.log(
-                    //     `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-                    //   );
-                    // }
+                    if (DebugMode.enabled) {
+                        console.log(`Increasing the adjusted FPS by 1. New = ${__classPrivateFieldGet(this, _GameLoop_adjustedFps, "f")}`);
+                    }
                 }
             }
             const numberOfUpdates = Math.floor(__classPrivateFieldGet(this, _GameLoop_accumulatedTimeStepMillis, "f") / __classPrivateFieldGet(this, _GameLoop_expectedTimeStepMillis, "f"));
@@ -82,7 +78,9 @@ export class GameLoop {
                 const dt = __classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f") / numberOfUpdates;
                 if (DebugMode.enabled) {
                     // TODO: add BeetPx prefix to logs
-                    console.log(`dt: ${dt.toFixed(0)}ms${numberOfUpdates > 1 ? ` (#updates:${numberOfUpdates})` : ""}`);
+                    console.log(`dt: ${__classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f").toFixed(0)}ms${numberOfUpdates > 1
+                        ? ` (to be split across ${numberOfUpdates} updates)`
+                        : ""}`);
                 }
                 for (let updateIndex = 0; updateIndex < numberOfUpdates; updateIndex++) {
                     __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(__classPrivateFieldGet(this, _GameLoop_fpsLogger, "f").mostRecentAverageFps, dt);

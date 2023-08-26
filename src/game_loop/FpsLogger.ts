@@ -15,6 +15,7 @@ export class FpsLoggerNoop implements FpsLogger {
   track(_fps: number): void {}
 }
 
+// TODO: does it even still work?
 export class FpsLoggerAverage implements FpsLogger {
   readonly #samples: number[] = Array.from({ length: 60 });
   #nextIndex: number = 0;

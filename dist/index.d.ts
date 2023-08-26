@@ -238,12 +238,12 @@ declare class DrawApi {
 
 declare class Button {
     #private;
-    static readonly repeatingFramesStart = 30;
-    static readonly repeatingFramesInterval = 8;
+    static readonly repeatingStartSeconds = 0.5;
+    static readonly repeatingIntervalSeconds = 0.1334;
     get isPressed(): boolean;
     wasJustPressed(repeating: boolean): boolean;
     wasJustReleased(repeating: boolean): boolean;
-    update(isPressed: boolean): void;
+    update(isPressed: boolean, secondsPassed: number): void;
 }
 
 type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
@@ -284,13 +284,14 @@ declare class Buttons {
 
 declare class Timer {
     #private;
-    constructor(params: {
-        frames: number;
-    });
-    get framesLeft(): number;
+    constructor(seconds: number);
+    /**
+     * How many seconds has left until the timer ends.
+     */
+    get left(): number;
     get progress(): number;
     get hasFinished(): boolean;
-    update(): void;
+    update(secondsPassed: number): void;
 }
 
 declare class DebugMode {

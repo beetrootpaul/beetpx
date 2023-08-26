@@ -19,6 +19,7 @@ export class FpsLoggerNoop {
     }
     track(_fps) { }
 }
+// TODO: does it even still work?
 export class FpsLoggerAverage {
     constructor() {
         _FpsLoggerAverage_samples.set(this, Array.from({ length: 60 }));

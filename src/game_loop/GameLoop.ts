@@ -111,11 +111,11 @@ export class GameLoop {
         this.#adjustedFps -= 1;
         this.#expectedTimeStepMillis = 1000 / this.#adjustedFps;
         // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
-        // if (DebugMode.enabled) {
-        //   console.log(
-        //     `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-        //   );
-        // }
+        if (DebugMode.enabled) {
+          console.log(
+            `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
+          );
+        }
       } else if (
         actualFps < this.#desiredFps / 1.1 &&
         this.#adjustedFps < this.#desiredFps * 2
@@ -123,11 +123,11 @@ export class GameLoop {
         this.#adjustedFps += 1;
         this.#expectedTimeStepMillis = 1000 / this.#adjustedFps;
         // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
-        // if (DebugMode.enabled) {
-        //   console.log(
-        //     `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-        //   );
-        // }
+        if (DebugMode.enabled) {
+          console.log(
+            `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
+          );
+        }
       }
     }
 
@@ -139,8 +139,10 @@ export class GameLoop {
       if (DebugMode.enabled) {
         // TODO: add BeetPx prefix to logs
         console.log(
-          `dt: ${dt.toFixed(0)}ms${
-            numberOfUpdates > 1 ? ` (#updates:${numberOfUpdates})` : ""
+          `dt: ${this.#accumulatedDeltaTimeMillis.toFixed(0)}ms${
+            numberOfUpdates > 1
+              ? ` (to be split across ${numberOfUpdates} updates)`
+              : ""
           }`,
         );
       }

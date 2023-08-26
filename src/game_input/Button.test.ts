@@ -1,9 +1,9 @@
 import { describe, expect, test } from "@jest/globals";
-import { Utils } from "../Utils";
 import { Button } from "./Button";
 
 describe("Button", () => {
   test("#wasJustReleased / #wasJustPressed – without repeating", () => {
+    const anyDt = 123;
     const button = new Button();
     const wasJustReleased = () => button.wasJustReleased(false);
     const wasJustPressed = () => button.wasJustPressed(false);
@@ -13,43 +13,39 @@ describe("Button", () => {
     expect(wasJustPressed()).toBe(false);
 
     // pressed
-    button.update(false);
+    button.update(false, anyDt);
     expect(wasJustReleased()).toBe(false);
     expect(wasJustPressed()).toBe(false);
-    button.update(true);
+    button.update(true, anyDt);
     expect(wasJustReleased()).toBe(false);
     expect(wasJustPressed()).toBe(true);
 
     // still pressed
-    Utils.repeatN(
-      Button.repeatingFramesStart + Button.repeatingFramesInterval + 1,
-      () => {
-        button.update(true);
-        expect(wasJustReleased()).toBe(false);
-        expect(wasJustPressed()).toBe(false);
-      },
+    button.update(
+      true,
+      Button.repeatingStartSeconds + Button.repeatingIntervalSeconds + anyDt,
     );
+    expect(wasJustReleased()).toBe(false);
+    expect(wasJustPressed()).toBe(false);
 
     // released
-    button.update(false);
+    button.update(false, anyDt);
     expect(wasJustReleased()).toBe(true);
     expect(wasJustPressed()).toBe(false);
 
     // still released
-    Utils.repeatN(
-      Button.repeatingFramesStart + Button.repeatingFramesInterval + 1,
-      () => {
-        button.update(false);
-        expect(wasJustReleased()).toBe(false);
-        expect(wasJustPressed()).toBe(false);
-      },
+    button.update(
+      false,
+      Button.repeatingStartSeconds + Button.repeatingIntervalSeconds + anyDt,
     );
+    expect(wasJustReleased()).toBe(false);
+    expect(wasJustPressed()).toBe(false);
 
     // pressed and released again
-    button.update(true);
+    button.update(true, anyDt);
     expect(wasJustReleased()).toBe(false);
     expect(wasJustPressed()).toBe(true);
-    button.update(false);
+    button.update(false, anyDt);
     expect(wasJustReleased()).toBe(true);
     expect(wasJustPressed()).toBe(false);
   });
@@ -64,77 +60,65 @@ describe("Button", () => {
     expect(wasJustPressedRepeating()).toBe(false);
 
     // first press
-    button.update(true);
+    button.update(true, 0.001);
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(true);
 
     // nearly complete sequence of press x start frames
-    Utils.repeatN(Button.repeatingFramesStart - 1, () => {
-      button.update(true);
-      expect(wasJustReleasedRepeating()).toBe(false);
-      expect(wasJustPressedRepeating()).toBe(false);
-    });
-    button.update(false);
+    button.update(true, Button.repeatingStartSeconds - 0.001);
+    expect(wasJustReleasedRepeating()).toBe(false);
+    expect(wasJustPressedRepeating()).toBe(false);
+    button.update(false, 0.001);
     expect(wasJustReleasedRepeating()).toBe(true);
     expect(wasJustPressedRepeating()).toBe(false);
 
     // back to first press
-    button.update(true);
+    button.update(true, 0.001);
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(true);
 
     // complete sequence of press x start frames
-    Utils.repeatN(Button.repeatingFramesStart - 1, () => {
-      button.update(true);
-      expect(wasJustReleasedRepeating()).toBe(false);
-      expect(wasJustPressedRepeating()).toBe(false);
-    });
-    button.update(true);
+    button.update(true, Button.repeatingStartSeconds - 0.001);
+    expect(wasJustReleasedRepeating()).toBe(false);
+    expect(wasJustPressedRepeating()).toBe(false);
+    button.update(true, 0.001);
     expect(wasJustReleasedRepeating()).toBe(true);
     expect(wasJustPressedRepeating()).toBe(true);
 
     // next, nearly complete sequence of press x interval frames
-    Utils.repeatN(Button.repeatingFramesInterval - 1, () => {
-      button.update(true);
-      expect(wasJustReleasedRepeating()).toBe(false);
-      expect(wasJustPressedRepeating()).toBe(false);
-    });
-    button.update(false);
+    button.update(true, Button.repeatingIntervalSeconds - 0.001);
+    expect(wasJustReleasedRepeating()).toBe(false);
+    expect(wasJustPressedRepeating()).toBe(false);
+    button.update(false, 0.001);
     expect(wasJustReleasedRepeating()).toBe(true);
     expect(wasJustPressedRepeating()).toBe(false);
 
     // back to first press
-    button.update(true);
+    button.update(true, 0.001);
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(true);
 
     //  complete sequence of press x start frames
-    Utils.repeatN(Button.repeatingFramesStart - 1, () => {
-      button.update(true);
-      expect(wasJustReleasedRepeating()).toBe(false);
-      expect(wasJustPressedRepeating()).toBe(false);
-    });
-    button.update(true);
+    button.update(true, Button.repeatingStartSeconds - 0.001);
+    expect(wasJustReleasedRepeating()).toBe(false);
+    expect(wasJustPressedRepeating()).toBe(false);
+    button.update(true, 0.001);
     expect(wasJustReleasedRepeating()).toBe(true);
     expect(wasJustPressedRepeating()).toBe(true);
 
     // next, complete sequence of press x interval frames
-    Utils.repeatN(Button.repeatingFramesInterval - 1, () => {
-      button.update(true);
-      expect(wasJustReleasedRepeating()).toBe(false);
-      expect(wasJustPressedRepeating()).toBe(false);
-    });
-    button.update(true);
+    button.update(true, Button.repeatingIntervalSeconds - 0.001);
+    expect(wasJustReleasedRepeating()).toBe(false);
+    expect(wasJustPressedRepeating()).toBe(false);
+    button.update(true, 0.001);
     expect(wasJustReleasedRepeating()).toBe(true);
     expect(wasJustPressedRepeating()).toBe(true);
 
     // next, consecutive complete sequence of press x interval frames
-    Utils.repeatN(Button.repeatingFramesInterval - 1, () => {
-      button.update(true);
-      expect(wasJustReleasedRepeating()).toBe(false);
-      expect(wasJustPressedRepeating()).toBe(false);
-    });
-    button.update(true);
+    button.update(true, Button.repeatingIntervalSeconds - 0.001);
+    expect(wasJustReleasedRepeating()).toBe(false);
+    expect(wasJustPressedRepeating()).toBe(false);
+    button.update(true, 0.001);
     expect(wasJustReleasedRepeating()).toBe(true);
     expect(wasJustPressedRepeating()).toBe(true);
   });

@@ -1,4 +1,6 @@
+// TODO: add some loading animation
 export class Loading {
+  // TODO: why do we even have this field here if it's unused in the end?
   readonly #displayElement: Element;
 
   constructor(htmlDisplaySelector: string) {

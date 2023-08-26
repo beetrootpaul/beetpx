@@ -10,6 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_o, _Buttons_x, _Buttons_menu, _Buttons_repeatingLeft, _Buttons_repeatingRight, _Buttons_repeatingUp, _Buttons_repeatingDown, _Buttons_repeatingO, _Buttons_repeatingX, _Buttons_repeatingMenu;
+import { BeetPx } from "../BeetPx";
 import { Button } from "./Button";
 export class Buttons {
     constructor() {
@@ -29,13 +30,13 @@ export class Buttons {
         _Buttons_repeatingMenu.set(this, false);
     }
     update(events) {
-        __classPrivateFieldGet(this, _Buttons_left, "f").update(events.has("button_left"));
-        __classPrivateFieldGet(this, _Buttons_right, "f").update(events.has("button_right"));
-        __classPrivateFieldGet(this, _Buttons_up, "f").update(events.has("button_up"));
-        __classPrivateFieldGet(this, _Buttons_down, "f").update(events.has("button_down"));
-        __classPrivateFieldGet(this, _Buttons_o, "f").update(events.has("button_o"));
-        __classPrivateFieldGet(this, _Buttons_x, "f").update(events.has("button_x"));
-        __classPrivateFieldGet(this, _Buttons_menu, "f").update(events.has("button_menu"));
+        __classPrivateFieldGet(this, _Buttons_left, "f").update(events.has("button_left"), BeetPx.dt);
+        __classPrivateFieldGet(this, _Buttons_right, "f").update(events.has("button_right"), BeetPx.dt);
+        __classPrivateFieldGet(this, _Buttons_up, "f").update(events.has("button_up"), BeetPx.dt);
+        __classPrivateFieldGet(this, _Buttons_down, "f").update(events.has("button_down"), BeetPx.dt);
+        __classPrivateFieldGet(this, _Buttons_o, "f").update(events.has("button_o"), BeetPx.dt);
+        __classPrivateFieldGet(this, _Buttons_x, "f").update(events.has("button_x"), BeetPx.dt);
+        __classPrivateFieldGet(this, _Buttons_menu, "f").update(events.has("button_menu"), BeetPx.dt);
     }
     isPressed(button) {
         switch (button) {
