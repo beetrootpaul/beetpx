@@ -34,6 +34,7 @@ export class Utils {
             v_(-1, 0),
         ];
     }
+    // TODO: rename to `measureText`
     // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
     static measureTextSize(text) {
         var _a, _b;

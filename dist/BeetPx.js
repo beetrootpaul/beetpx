@@ -11,6 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
+import { DebugMode } from "./debug/DebugMode";
 import { Framework } from "./Framework";
 export class BeetPx {
     //
@@ -23,8 +24,29 @@ export class BeetPx {
     //
     // field-like getters, the ones meant to be used
     //
+    static get debug() {
+        return DebugMode.enabled;
+    }
+    /**
+     * Number of frames processed since game started.
+     * It gets reset to 0 when `BeetPx.restart()` is called.
+     * It counts update calls, not draw calls.
+     */
     static get frameNumber() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frameNumber;
+    }
+    /**
+     * Time since game started, in seconds.
+     * It gets reset to 0 when `BeetPx.restart()` is called.
+     */
+    static get t() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).t;
+    }
+    /**
+     * Delta time since last update call, in seconds.
+     */
+    static get dt() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).dt;
     }
     static get averageFps() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).averageFps;
@@ -37,9 +59,6 @@ export class BeetPx {
     }
     static get globalGainNode() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).audioApi.globalGainNode;
-    }
-    static get debug() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).debug;
     }
 }
 _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {

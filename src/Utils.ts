@@ -42,6 +42,7 @@ export class Utils {
     ];
   }
 
+  // TODO: rename to `measureText`
   // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
   static measureTextSize(text: string): Vector2d {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];

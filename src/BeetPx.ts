@@ -3,6 +3,7 @@
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
+import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { CharSprite } from "./font/Font";
 import { Framework, type FrameworkOptions } from "./Framework";
@@ -29,8 +30,32 @@ export class BeetPx {
   // field-like getters, the ones meant to be used
   //
 
+  static get debug(): typeof DebugMode.enabled {
+    return DebugMode.enabled;
+  }
+
+  /**
+   * Number of frames processed since game started.
+   * It gets reset to 0 when `BeetPx.restart()` is called.
+   * It counts update calls, not draw calls.
+   */
   static get frameNumber(): Framework["frameNumber"] {
     return this.#tryGetFramework().frameNumber;
+  }
+
+  /**
+   * Time since game started, in seconds.
+   * It gets reset to 0 when `BeetPx.restart()` is called.
+   */
+  static get t(): Framework["t"] {
+    return this.#tryGetFramework().t;
+  }
+
+  /**
+   * Delta time since last update call, in seconds.
+   */
+  static get dt(): Framework["dt"] {
+    return this.#tryGetFramework().dt;
   }
 
   static get averageFps(): Framework["averageFps"] {
@@ -47,10 +72,6 @@ export class BeetPx {
 
   static get globalGainNode(): AudioApi["globalGainNode"] {
     return this.#tryGetFramework().audioApi.globalGainNode;
-  }
-
-  static get debug(): Framework["debug"] {
-    return this.#tryGetFramework().debug;
   }
 
   //

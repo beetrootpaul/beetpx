@@ -3,7 +3,8 @@ import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 BeetPx.init(
   {
     gameCanvasSize: "128x128",
-    desiredFps: 30,
+    // TODO: consider dropping an ability to set FPS other than 60, since we use `BeetPx.dt` now…
+    desiredFps: 60,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
     logActualFps: true,
     debug: {
@@ -23,20 +24,49 @@ BeetPx.init(
 ).then(({ startGame }) => {
   console.log("BeetPx initialized");
 
+  const velocity = 64;
+  const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
   let logoPositionBase = Vector2d.zero;
   let logoPositionOffset = Vector2d.zero;
 
   BeetPx.setOnStarted(() => {
-    logoPositionBase = v_((128 - 16) / 2, (128 - 16) / 2);
+    logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = Vector2d.zero;
   });
 
   BeetPx.setOnUpdate(() => {
-    console.log(`FPS: ${BeetPx.averageFps}`);
+    // TODO: expose a custom logger from BeetPx
+    if (BeetPx.debug) {
+      console.log(`FPS: ${BeetPx.averageFps}`);
+      console.log(`  t: ${BeetPx.t.toFixed(3)}s`);
+      console.log(` dt: ${BeetPx.dt.toFixed(3)}s`);
+    }
+
+    // TODO: consider exposing some XY (-1,1) representation of directions
+    if (BeetPx.isPressed("right")) {
+      logoPositionBase = logoPositionBase.add(velocity * BeetPx.dt, 0);
+    }
+    if (BeetPx.isPressed("left")) {
+      logoPositionBase = logoPositionBase.add(-velocity * BeetPx.dt, 0);
+    }
+    if (BeetPx.isPressed("up")) {
+      logoPositionBase = logoPositionBase.add(0, -velocity * BeetPx.dt);
+    }
+    if (BeetPx.isPressed("down")) {
+      logoPositionBase = logoPositionBase.add(0, velocity * BeetPx.dt);
+    }
+
+    if (
+      BeetPx.wasJustPressed("x") ||
+      BeetPx.wasJustPressed("o") ||
+      BeetPx.wasJustPressed("menu")
+    ) {
+      logoPositionBase = logoPositionBaseDefault;
+    }
 
     logoPositionOffset = v_(
-      Math.cos(BeetPx.frameNumber / 12),
-      Math.sin(BeetPx.frameNumber / 12),
+      Math.cos(BeetPx.t * Math.PI),
+      Math.sin(BeetPx.t * Math.PI),
     ).mul(8);
   });
 
@@ -57,3 +87,5 @@ BeetPx.init(
 
   startGame();
 });
+
+// TODO: this example, on itch, runs significantly faster when open on a mobile :thinking:
