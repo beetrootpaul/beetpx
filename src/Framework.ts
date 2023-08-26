@@ -8,6 +8,7 @@ import { ButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
+import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { Utils } from "./Utils";
 import { v_, Vector2d } from "./Vector2d";
@@ -199,9 +200,12 @@ export class Framework {
   }
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
-    return this.assets.loadAssets(assetsToLoad).then(() => ({
-      startGame: this.#startGame.bind(this),
-    }));
+    return this.assets.loadAssets(assetsToLoad).then(() => {
+      Logger.infoBeetPx("initialized");
+      return {
+        startGame: this.#startGame.bind(this),
+      };
+    });
   }
 
   setOnStarted(onStarted: () => void) {
@@ -264,8 +268,6 @@ export class Framework {
         }
         if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
           DebugMode.enabled = !DebugMode.enabled;
-          // TODO: move this flag to setter inside DebugMode
-          console.log(`Debug flag set to: ${DebugMode.enabled}`);
           if (DebugMode.enabled) {
             window.localStorage.removeItem(Framework.#storageDebugDisabledKey);
           } else {
@@ -278,7 +280,7 @@ export class Framework {
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
           this.#frameByFrame = !this.#frameByFrame;
-          console.log(`FrameByFrame mode set to: ${this.#frameByFrame}`);
+          Logger.infoBeetPx(`FrameByFrame mode set to: ${this.#frameByFrame}`);
         }
 
         if (this.gameInput.wasAnyButtonPressed()) {
@@ -295,7 +297,11 @@ export class Framework {
 
         if (shouldUpdate) {
           if (this.#frameByFrame) {
-            console.log(`Running onUpdate for frame: ${this.#frameNumber}`);
+            Logger.infoBeetPx(
+              `Running onUpdate for frame=${
+                this.#frameNumber
+              } with dt=${deltaMillis.toFixed(0)}ms`,
+            );
           }
 
           this.#onUpdate?.();

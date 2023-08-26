@@ -295,7 +295,9 @@ declare class Timer {
 }
 
 declare class DebugMode {
-    static enabled: boolean;
+    #private;
+    static get enabled(): boolean;
+    static set enabled(value: boolean);
 }
 
 type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
@@ -347,6 +349,18 @@ declare class Framework {
     restart(): void;
 }
 
+declare class Logger {
+    #private;
+    static debugBeetPx(...args: any[]): void;
+    static debug(...args: any[]): void;
+    static infoBeetPx(...args: any[]): void;
+    static info(...args: any[]): void;
+    static warnBeetPx(...args: any[]): void;
+    static warn(...args: any[]): void;
+    static errorBeetPx(...args: any[]): void;
+    static error(...args: any[]): void;
+}
+
 declare class BeetPx {
     #private;
     static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["loadAssets"]>;
@@ -373,6 +387,10 @@ declare class BeetPx {
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
     static restart: Framework["restart"];
+    static logDebug: typeof Logger.debug;
+    static logInfo: typeof Logger.info;
+    static logWarn: typeof Logger.warn;
+    static logError: typeof Logger.error;
     static isPressed: Buttons["isPressed"];
     static setRepeating: Buttons["setRepeating"];
     static wasJustPressed: Buttons["wasJustPressed"];

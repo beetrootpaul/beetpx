@@ -10,6 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _FullScreenSupported_instances, _FullScreenSupported_fullScreenSubject, _FullScreenSupported_nativeRequestFullscreen, _FullScreenSupported_nativeExitFullscreen, _FullScreenSupported_fullScreenOn, _FullScreenSupported_fullScreenOff;
+import { Logger } from "./logger/Logger";
 export class FullScreen {
     static newFor(fullScreenSubjectSelector, buttonsSelector) {
         return document.fullscreenEnabled || document.webkitFullscreenEnabled
@@ -58,14 +59,14 @@ _FullScreenSupported_fullScreenSubject = new WeakMap(), _FullScreenSupported_nat
     const result = __classPrivateFieldGet(this, _FullScreenSupported_nativeRequestFullscreen, "f").call(this);
     if (result instanceof Promise) {
         result.catch((err) => {
-            console.error(err);
+            Logger.errorBeetPx(err);
         });
     }
 }, _FullScreenSupported_fullScreenOff = function _FullScreenSupported_fullScreenOff() {
     const result = __classPrivateFieldGet(this, _FullScreenSupported_nativeExitFullscreen, "f").call(this);
     if (result instanceof Promise) {
         result.catch((err) => {
-            console.error(err);
+            Logger.errorBeetPx(err);
         });
     }
 };
