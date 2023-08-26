@@ -1,3 +1,5 @@
+import { Logger } from "./logger/Logger";
+
 declare global {
   // noinspection JSUnusedGlobalSymbols
   interface Document {
@@ -77,7 +79,7 @@ class FullScreenSupported implements FullScreen {
     const result = this.#nativeRequestFullscreen();
     if (result instanceof Promise) {
       result.catch((err) => {
-        console.error(err);
+        Logger.errorBeetPx(err);
       });
     }
   }
@@ -86,7 +88,7 @@ class FullScreenSupported implements FullScreen {
     const result = this.#nativeExitFullscreen();
     if (result instanceof Promise) {
       result.catch((err) => {
-        console.error(err);
+        Logger.errorBeetPx(err);
       });
     }
   }

@@ -1,4 +1,4 @@
-import { DebugMode } from "../debug/DebugMode";
+import { Logger } from "../logger/Logger";
 import { FpsLogger, FpsLoggerAverage, FpsLoggerNoop } from "./FpsLogger";
 
 export type GameLoopCallbacks = {
@@ -71,15 +71,13 @@ export class GameLoop {
     this.#accumulatedDeltaTimeMillis += deltaTimeMillis;
     // A safety net in case of a long time spent on another tab, letting delta accumulate a lot in this one:
     if (this.#accumulatedDeltaTimeMillis > this.#safetyMaxTimeStep) {
-      if (DebugMode.enabled) {
-        console.log(
-          `Accumulated delta time of ${this.#accumulatedDeltaTimeMillis.toFixed(
-            2,
-          )}ms was greater than safety max time step of ${this.#safetyMaxTimeStep.toFixed(
-            2,
-          )}ms.`,
-        );
-      }
+      Logger.warnBeetPx(
+        `Accumulated delta time of ${this.#accumulatedDeltaTimeMillis.toFixed(
+          2,
+        )}ms was greater than safety max time step of ${this.#safetyMaxTimeStep.toFixed(
+          2,
+        )}ms.`,
+      );
       this.#accumulatedDeltaTimeMillis = this.#safetyMaxTimeStep;
     }
 
@@ -87,15 +85,13 @@ export class GameLoop {
     this.#accumulatedTimeStepMillis += deltaTimeMillis;
     // A safety net in case of a long time spent on another tab, letting delta accumulate a lot in this one:
     if (this.#accumulatedTimeStepMillis > this.#safetyMaxTimeStep) {
-      if (DebugMode.enabled) {
-        console.log(
-          `Accumulated time step of ${this.#accumulatedTimeStepMillis.toFixed(
-            2,
-          )}ms was greater than safety max time step of ${this.#safetyMaxTimeStep.toFixed(
-            2,
-          )}ms.`,
-        );
-      }
+      Logger.warnBeetPx(
+        `Accumulated time step of ${this.#accumulatedTimeStepMillis.toFixed(
+          2,
+        )}ms was greater than safety max time step of ${this.#safetyMaxTimeStep.toFixed(
+          2,
+        )}ms.`,
+      );
       this.#accumulatedTimeStepMillis = this.#safetyMaxTimeStep;
     }
 
@@ -103,31 +99,18 @@ export class GameLoop {
       const actualFps = 1000 / this.#accumulatedTimeStepMillis;
       this.#fpsLogger.track(actualFps);
 
-      // TODO: make sure console.log are not spammed on prod build
       if (
         actualFps > this.#desiredFps * 1.1 &&
         this.#adjustedFps > this.#desiredFps / 2
       ) {
         this.#adjustedFps -= 1;
         this.#expectedTimeStepMillis = 1000 / this.#adjustedFps;
-        // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
-        // if (DebugMode.enabled) {
-        //   console.log(
-        //     `Decreasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-        //   );
-        // }
       } else if (
         actualFps < this.#desiredFps / 1.1 &&
         this.#adjustedFps < this.#desiredFps * 2
       ) {
         this.#adjustedFps += 1;
         this.#expectedTimeStepMillis = 1000 / this.#adjustedFps;
-        // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console
-        // if (DebugMode.enabled) {
-        //   console.log(
-        //     `Increasing the adjusted FPS by 1. New = ${this.#adjustedFps}`,
-        //   );
-        // }
       }
     }
 
@@ -136,14 +119,13 @@ export class GameLoop {
     );
     if (numberOfUpdates > 0) {
       const dt = this.#accumulatedDeltaTimeMillis / numberOfUpdates;
-      if (DebugMode.enabled) {
-        // TODO: add BeetPx prefix to logs
-        console.log(
-          `dt: ${dt.toFixed(0)}ms${
-            numberOfUpdates > 1 ? ` (#updates:${numberOfUpdates})` : ""
-          }`,
-        );
-      }
+      Logger.debugBeetPx(
+        `dt: ${this.#accumulatedDeltaTimeMillis.toFixed(0)}ms${
+          numberOfUpdates > 1
+            ? ` (to be split across ${numberOfUpdates} updates)`
+            : ""
+        }`,
+      );
       for (let updateIndex = 0; updateIndex < numberOfUpdates; updateIndex++) {
         this.#callbacks.updateFn(this.#fpsLogger.mostRecentAverageFps, dt);
         this.#accumulatedTimeStepMillis -= this.#expectedTimeStepMillis;

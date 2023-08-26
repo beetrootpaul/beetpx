@@ -19,6 +19,7 @@ export class FpsLoggerNoop {
     }
     track(_fps) { }
 }
+// TODO: does it even still work?
 export class FpsLoggerAverage {
     constructor() {
         _FpsLoggerAverage_samples.set(this, Array.from({ length: 60 }));
@@ -28,7 +29,6 @@ export class FpsLoggerAverage {
     get mostRecentAverageFps() {
         return __classPrivateFieldGet(this, _FpsLoggerAverage_averageFps, "f");
     }
-    // TODO: consider creation of a generic logger which could be used in a game in order to avoid spamming with `console.log`s every frame
     track(fps) {
         var _a, _b;
         __classPrivateFieldGet(this, _FpsLoggerAverage_samples, "f")[__classPrivateFieldSet(this, _FpsLoggerAverage_nextIndex, (_b = __classPrivateFieldGet(this, _FpsLoggerAverage_nextIndex, "f"), _a = _b++, _b), "f"), _a] = fps;
@@ -36,8 +36,6 @@ export class FpsLoggerAverage {
         if (__classPrivateFieldGet(this, _FpsLoggerAverage_nextIndex, "f") === 0) {
             const s = __classPrivateFieldGet(this, _FpsLoggerAverage_samples, "f").reduce((sum, nextFps) => sum + nextFps, 0);
             __classPrivateFieldSet(this, _FpsLoggerAverage_averageFps, Math.floor(s / __classPrivateFieldGet(this, _FpsLoggerAverage_samples, "f").length), "f");
-            // TODO: commenting this out for now, since it's pretty annoying to see constant logs in the console, especially since the game can log it by itself when needed
-            // console.info("FPS: ", this.#averageFps);
         }
     }
 }

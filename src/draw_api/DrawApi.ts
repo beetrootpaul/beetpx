@@ -8,6 +8,7 @@ import {
   TransparentColor,
 } from "../Color";
 import { CharSprite, Font, FontId } from "../font/Font";
+import { Logger } from "../logger/Logger";
 import { Sprite } from "../Sprite";
 import { v_, Vector2d } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
@@ -237,7 +238,7 @@ export class DrawApi {
         this.#clippingRegion,
       );
     } else {
-      console.info(
+      Logger.infoBeetPx(
         `print: (${canvasXy.x},${canvasXy.y}) [${
           typeof color === "function" ? "computed" : color.asRgbCssHex()
         }] ${text}`,

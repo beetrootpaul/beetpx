@@ -22,8 +22,6 @@ BeetPx.init(
     sounds: [],
   },
 ).then(({ startGame }) => {
-  console.log("BeetPx initialized");
-
   const velocity = 64;
   const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
   let logoPositionBase = Vector2d.zero;
@@ -35,12 +33,9 @@ BeetPx.init(
   });
 
   BeetPx.setOnUpdate(() => {
-    // TODO: expose a custom logger from BeetPx
-    if (BeetPx.debug) {
-      console.log(`FPS: ${BeetPx.averageFps}`);
-      console.log(`  t: ${BeetPx.t.toFixed(3)}s`);
-      console.log(` dt: ${BeetPx.dt.toFixed(3)}s`);
-    }
+    BeetPx.logDebug(`FPS: ${BeetPx.averageFps}`);
+    BeetPx.logDebug(`  t: ${BeetPx.t.toFixed(3)}s`);
+    BeetPx.logDebug(` dt: ${BeetPx.dt.toFixed(3)}s`);
 
     // TODO: consider exposing some XY (-1,1) representation of directions
     if (BeetPx.isPressed("right")) {
@@ -67,7 +62,7 @@ BeetPx.init(
     logoPositionOffset = v_(
       Math.cos(BeetPx.t * Math.PI),
       Math.sin(BeetPx.t * Math.PI),
-    ).mul(8);
+    ).mul(10);
   });
 
   BeetPx.setOnDraw(() => {

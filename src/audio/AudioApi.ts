@@ -1,4 +1,5 @@
 import { Assets, SoundAsset, SoundUrl } from "../Assets";
+import { Logger } from "../logger/Logger";
 import { Utils } from "../Utils";
 import { SoundSequence, SoundSequenceEntry } from "./SoundSequence";
 
@@ -53,7 +54,7 @@ export class AudioApi {
   resumeAudioContextIfNeeded(): void {
     if (this.#audioContext.state === "suspended") {
       this.#audioContext.resume().catch((err) => {
-        console.error(err);
+        Logger.errorBeetPx(err);
       });
       // TODO: are we sure we want to unmute here? What if it was intentionally muted?
       this.#unmute();

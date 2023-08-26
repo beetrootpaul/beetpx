@@ -8,6 +8,7 @@ import { DrawApi } from "./draw_api/DrawApi";
 import { CharSprite } from "./font/Font";
 import { Framework, type FrameworkOptions } from "./Framework";
 import { Buttons } from "./game_input/Buttons";
+import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { Vector2d } from "./Vector2d";
 
@@ -92,6 +93,26 @@ export class BeetPx {
 
   static restart: Framework["restart"] = (...args) => {
     return this.#tryGetFramework().restart(...args);
+  };
+
+  //
+  // Logger
+  //
+
+  static logDebug: typeof Logger.debug = (...args) => {
+    return Logger.debug(...args);
+  };
+
+  static logInfo: typeof Logger.info = (...args) => {
+    return Logger.info(...args);
+  };
+
+  static logWarn: typeof Logger.warn = (...args) => {
+    return Logger.warn(...args);
+  };
+
+  static logError: typeof Logger.error = (...args) => {
+    return Logger.error(...args);
   };
 
   //

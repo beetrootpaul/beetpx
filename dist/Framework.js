@@ -28,6 +28,7 @@ import { FullScreen } from "./FullScreen";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Loading } from "./Loading";
+import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { Utils } from "./Utils";
 import { v_, Vector2d } from "./Vector2d";
@@ -144,9 +145,12 @@ export class Framework {
     }
     loadAssets(assetsToLoad) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.assets.loadAssets(assetsToLoad).then(() => ({
-                startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
-            }));
+            return this.assets.loadAssets(assetsToLoad).then(() => {
+                Logger.infoBeetPx("initialized");
+                return {
+                    startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
+                };
+            });
         });
     }
     setOnStarted(onStarted) {
@@ -201,8 +205,6 @@ _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlC
             }
             if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
                 DebugMode.enabled = !DebugMode.enabled;
-                // TODO: move this flag to setter inside DebugMode
-                console.log(`Debug flag set to: ${DebugMode.enabled}`);
                 if (DebugMode.enabled) {
                     window.localStorage.removeItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey));
                 }
@@ -213,7 +215,7 @@ _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlC
             }
             if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
                 __classPrivateFieldSet(this, _Framework_frameByFrame, !__classPrivateFieldGet(this, _Framework_frameByFrame, "f"), "f");
-                console.log(`FrameByFrame mode set to: ${__classPrivateFieldGet(this, _Framework_frameByFrame, "f")}`);
+                Logger.infoBeetPx(`FrameByFrame mode set to: ${__classPrivateFieldGet(this, _Framework_frameByFrame, "f")}`);
             }
             if (this.gameInput.wasAnyButtonPressed()) {
                 this.audioApi.resumeAudioContextIfNeeded();
@@ -224,7 +226,7 @@ _a = Framework, _Framework_htmlDisplaySelector = new WeakMap(), _Framework_htmlC
             this.gameInput.update({ skipGameButtons: !shouldUpdate });
             if (shouldUpdate) {
                 if (__classPrivateFieldGet(this, _Framework_frameByFrame, "f")) {
-                    console.log(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_frameNumber, "f")}`);
+                    Logger.infoBeetPx(`Running onUpdate for frame=${__classPrivateFieldGet(this, _Framework_frameNumber, "f")} with dt=${deltaMillis.toFixed(0)}ms`);
                 }
                 (_b = __classPrivateFieldGet(this, _Framework_onUpdate, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
                 __classPrivateFieldSet(this, _Framework_frameNumber, __classPrivateFieldGet(this, _Framework_frameNumber, "f") >= Number.MAX_SAFE_INTEGER

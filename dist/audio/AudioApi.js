@@ -10,6 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
+import { Logger } from "../logger/Logger";
 import { Utils } from "../Utils";
 // TODO: refactor this big mess of a class, extract playbacks for example
 export class AudioApi {
@@ -41,7 +42,7 @@ export class AudioApi {
     resumeAudioContextIfNeeded() {
         if (__classPrivateFieldGet(this, _AudioApi_audioContext, "f").state === "suspended") {
             __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
-                console.error(err);
+                Logger.errorBeetPx(err);
             });
             // TODO: are we sure we want to unmute here? What if it was intentionally muted?
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unmute).call(this);

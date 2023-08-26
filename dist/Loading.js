@@ -5,8 +5,10 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Loading_displayElement;
+// TODO: add some loading animation
 export class Loading {
     constructor(htmlDisplaySelector) {
+        // TODO: why do we even have this field here if it's unused in the end?
         _Loading_displayElement.set(this, void 0);
         const displayElement = document.querySelector(htmlDisplaySelector);
         if (!displayElement) {

@@ -13,6 +13,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
 import { DebugMode } from "./debug/DebugMode";
 import { Framework } from "./Framework";
+import { Logger } from "./logger/Logger";
 export class BeetPx {
     //
     // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
@@ -82,6 +83,21 @@ BeetPx.setOnDraw = (...args) => {
 };
 BeetPx.restart = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).restart(...args);
+};
+//
+// Logger
+//
+BeetPx.logDebug = (...args) => {
+    return Logger.debug(...args);
+};
+BeetPx.logInfo = (...args) => {
+    return Logger.info(...args);
+};
+BeetPx.logWarn = (...args) => {
+    return Logger.warn(...args);
+};
+BeetPx.logError = (...args) => {
+    return Logger.error(...args);
 };
 //
 // Buttons

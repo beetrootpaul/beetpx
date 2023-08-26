@@ -1,9 +1,8 @@
 import { Timer } from "../misc/Timer";
 
 export class Button {
-  // TODO: these numbers work good for 60 FPS. Make them depending on FPS to have the same durations in seconds
-  static readonly repeatingFramesStart = 30;
-  static readonly repeatingFramesInterval = 8;
+  static readonly repeatingStartSeconds = 0.5; // equivalent of 30 frames in 60 FPS
+  static readonly repeatingIntervalSeconds = 0.1334; // equivalent of 8 frames in 60 FPS
 
   #isPressed = false;
   #wasJustToggled = false;
@@ -28,20 +27,18 @@ export class Button {
     );
   }
 
-  update(isPressed: boolean): void {
+  update(isPressed: boolean, secondsPassed: number): void {
     this.#wasJustToggled = this.#isPressed !== isPressed;
     this.#isPressed = isPressed;
 
     if (isPressed && this.#repeatingTimer?.hasFinished) {
-      this.#repeatingTimer = new Timer({
-        frames: Button.repeatingFramesInterval,
-      });
+      this.#repeatingTimer = new Timer(Button.repeatingIntervalSeconds);
     }
 
-    this.#repeatingTimer?.update();
+    this.#repeatingTimer?.update(secondsPassed);
 
     if (isPressed && this.#wasJustToggled) {
-      this.#repeatingTimer = new Timer({ frames: Button.repeatingFramesStart });
+      this.#repeatingTimer = new Timer(Button.repeatingStartSeconds);
     }
 
     if (!isPressed && this.#repeatingTimer) {

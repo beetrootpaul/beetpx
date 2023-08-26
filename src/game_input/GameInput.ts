@@ -1,3 +1,4 @@
+import { BeetPx } from "../BeetPx";
 import { Button } from "./Button";
 import { ButtonName, Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
@@ -85,11 +86,17 @@ export class GameInput {
       this.gameButtons.update(events);
     }
 
-    this.buttonFullScreen.update(events.has("full_screen"));
-    this.buttonMuteUnmute.update(events.has("mute_unmute_toggle"));
-    this.buttonDebugToggle.update(events.has("debug_toggle"));
-    this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
-    this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
+    this.buttonFullScreen.update(events.has("full_screen"), BeetPx.dt);
+    this.buttonMuteUnmute.update(events.has("mute_unmute_toggle"), BeetPx.dt);
+    this.buttonDebugToggle.update(events.has("debug_toggle"), BeetPx.dt);
+    this.buttonFrameByFrameToggle.update(
+      events.has("frame_by_frame_toggle"),
+      BeetPx.dt,
+    );
+    this.buttonFrameByFrameStep.update(
+      events.has("frame_by_frame_step"),
+      BeetPx.dt,
+    );
   }
 
   wasAnyButtonPressed(): boolean {
