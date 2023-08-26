@@ -14,6 +14,8 @@ type GameLoopOptions = {
 
 // TODO: consider aggregating a total time from the very beginning and then adjusting FPS to match it in order to sync with audio
 
+// TODO: consider using `requestIdleCallback` (not supported by Safari yet) as described in https://www.clicktorelease.com/blog/calculating-fps-with-requestIdleCallback/
+
 export class GameLoop {
   readonly #desiredFps: number;
   #adjustedFps: number;

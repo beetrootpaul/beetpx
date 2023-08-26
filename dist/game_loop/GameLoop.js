@@ -13,6 +13,7 @@ var _GameLoop_desiredFps, _GameLoop_adjustedFps, _GameLoop_requestAnimationFrame
 import { Logger } from "../logger/Logger";
 import { FpsCounter } from "./FpsCounter";
 // TODO: consider aggregating a total time from the very beginning and then adjusting FPS to match it in order to sync with audio
+// TODO: consider using `requestIdleCallback` (not supported by Safari yet) as described in https://www.clicktorelease.com/blog/calculating-fps-with-requestIdleCallback/
 export class GameLoop {
     constructor(options) {
         _GameLoop_desiredFps.set(this, void 0);

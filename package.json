@@ -4,6 +4,18 @@
   "author": "Beetroot Paul",
   "license": "MIT",
   "description": "A mini framework for low-res browser games, written in TypeScript.",
+  "keywords": [
+    "browser",
+    "browser-games",
+    "framework",
+    "game development",
+    "gamedev",
+    "low-resolution",
+    "lowres",
+    "pixel-art",
+    "pixelart",
+    "typescript"
+  ],
   "homepage": "https://github.com/beetrootpaul/beetpx#readme",
   "repository": {
     "type": "git",
