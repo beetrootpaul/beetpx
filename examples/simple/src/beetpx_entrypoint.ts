@@ -24,11 +24,13 @@ BeetPx.init(
 ).then(({ startGame }) => {
   console.log("BeetPx initialized");
 
+  const velocity = 64;
+  const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
   let logoPositionBase = Vector2d.zero;
   let logoPositionOffset = Vector2d.zero;
 
   BeetPx.setOnStarted(() => {
-    logoPositionBase = v_((128 - 16) / 2, (128 - 16) / 2);
+    logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = Vector2d.zero;
   });
 
@@ -40,9 +42,31 @@ BeetPx.init(
       console.log(` dt: ${BeetPx.dt.toFixed(3)}s`);
     }
 
+    // TODO: consider exposing some XY (-1,1) representation of directions
+    if (BeetPx.isPressed("right")) {
+      logoPositionBase = logoPositionBase.add(velocity * BeetPx.dt, 0);
+    }
+    if (BeetPx.isPressed("left")) {
+      logoPositionBase = logoPositionBase.add(-velocity * BeetPx.dt, 0);
+    }
+    if (BeetPx.isPressed("up")) {
+      logoPositionBase = logoPositionBase.add(0, -velocity * BeetPx.dt);
+    }
+    if (BeetPx.isPressed("down")) {
+      logoPositionBase = logoPositionBase.add(0, velocity * BeetPx.dt);
+    }
+
+    if (
+      BeetPx.wasJustPressed("x") ||
+      BeetPx.wasJustPressed("o") ||
+      BeetPx.wasJustPressed("menu")
+    ) {
+      logoPositionBase = logoPositionBaseDefault;
+    }
+
     logoPositionOffset = v_(
-      2 * Math.cos(BeetPx.t * Math.PI),
-      2 * Math.sin(BeetPx.t * Math.PI),
+      Math.cos(BeetPx.t * Math.PI),
+      Math.sin(BeetPx.t * Math.PI),
     ).mul(8);
   });
 
