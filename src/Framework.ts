@@ -356,6 +356,7 @@ export class Framework {
       .sub(this.#gameCanvasSize.mul(this.#scaleToFill))
       .div(2)
       .floor();
+    // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
 
     this.#redrawDebugMargin();
 

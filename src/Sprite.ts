@@ -22,8 +22,8 @@ export class Sprite {
 
   constructor(imageUrl: ImageUrl, xy1: Vector2d, xy2: Vector2d) {
     this.imageUrl = imageUrl;
-    this.xy1 = xy1;
-    this.xy2 = xy2;
+    this.xy1 = xy1.round();
+    this.xy2 = xy2.round();
   }
 
   size(): Vector2d {

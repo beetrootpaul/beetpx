@@ -19,7 +19,9 @@ export class DrawText {
         _DrawText_sprite.set(this, void 0);
         __classPrivateFieldSet(this, _DrawText_canvasBytes, canvasBytes, "f");
         __classPrivateFieldSet(this, _DrawText_canvasSize, canvasSize, "f");
-        __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite(__classPrivateFieldGet(this, _DrawText_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawText_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite(__classPrivateFieldGet(this, _DrawText_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawText_canvasSize, "f"), {
+            disableRounding: true,
+        }), "f");
     }
     // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
     // TODO: cover ClippingRegion with tests

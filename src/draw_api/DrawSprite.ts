@@ -9,12 +9,18 @@ import { DrawPixel } from "./DrawPixel";
 export class DrawSprite {
   readonly #canvasBytes: Uint8ClampedArray;
   readonly #canvasSize: Vector2d;
+  readonly #options: { disableRounding?: boolean };
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
+  constructor(
+    canvasBytes: Uint8ClampedArray,
+    canvasSize: Vector2d,
+    options: { disableRounding?: boolean } = {},
+  ) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
+    this.#options = options;
 
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
   }
@@ -27,7 +33,7 @@ export class DrawSprite {
     colorMapping: Map<ColorId, Color> = new Map(),
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    targetXy = targetXy.round();
+    targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
 
     const {
       width: imgW,

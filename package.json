@@ -49,6 +49,7 @@
     "start": "npm run typecheck:watch",
     "precompile": "rimraf ./.dist/* ./dist/*",
     "compile": "tsc --project tsconfig.compile.json",
+    "compile:watch": "tsc --project tsconfig.compile.json --watch",
     "postcompile": "rollup --config ./rollup.config.ts --configPlugin typescript",
     "docs:generate": "typedoc --entryPoints src/index.ts --out ./docs/ --includeVersion --plugin @zamiell/typedoc-plugin-not-exported",
     "docs": "npx open-cli ./docs/index.html"

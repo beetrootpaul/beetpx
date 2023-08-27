@@ -27,3 +27,5 @@ export { BeetPx } from "./BeetPx";
 //       - verbatim module syntax https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax
 // TODO: consider adding a desktop build, e.g. in Electron
 // TODO: remember which input methods was used recently and expose that info so the game can show the proper button image
+// TODO: reconsider what to show as text copy or glyphs on touch buttons
+// TODO: sometimes the canvas gets stretched after screen orientation change. Fix that

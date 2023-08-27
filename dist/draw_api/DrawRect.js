@@ -21,16 +21,16 @@ export class DrawRect {
         _DrawRect_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawRect_canvasBytes, canvasBytes, "f");
         __classPrivateFieldSet(this, _DrawRect_canvasSize, canvasSize, "f");
-        __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f"), {
+            disableRounding: true,
+        }), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
     // TODO: tests for MappingColor
     // TODO: tests for CompositeColor and fillPattern
     // TODO: cover ClippingRegion with tests
     draw(xy, wh, color, fill, fillPattern = FillPattern.primaryOnly, clippingRegion = null) {
-        xy = xy.round();
-        wh = wh.round();
-        Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
+        Vector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color, clippingRegion);
             }

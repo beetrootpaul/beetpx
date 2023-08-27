@@ -1,7 +1,6 @@
 import { CompositeColor, MappingColor, SolidColor } from "../Color";
 import { Vector2d, v_ } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
-import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
 
@@ -10,14 +9,14 @@ export class DrawEllipse {
   readonly #canvasSize: Vector2d;
 
   readonly #pixel: DrawPixel;
-  readonly #line: DrawLine;
 
   constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize;
+    this.#canvasSize = canvasSize.round();
 
-    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
-    this.#line = new DrawLine(this.#canvasBytes, this.#canvasSize);
+    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize, {
+      disableRounding: true,
+    });
   }
 
   // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
@@ -34,19 +33,15 @@ export class DrawEllipse {
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    xy = xy.round();
-    wh = wh.round();
+    const [xy1, xy2] = Vector2d.minMax(xy.round(), xy.add(wh).round());
 
-    // check if wh has 0 width or height
-    if (wh.x * wh.y === 0) {
+    if (xy2.x - xy1.x <= 0 || xy2.y - xy1.y <= 0) {
       return;
     }
 
     //
     // PREPARE
     //
-
-    const [xy1, xy2] = Vector2d.minMax(xy, xy.add(wh));
 
     let a = xy2.x - xy1.x - 1;
     let b = xy2.y - xy1.y - 1;
@@ -79,6 +74,7 @@ export class DrawEllipse {
         Vector2d.forEachIntXyWithinRectOf(
           v_(left + 1, bottom),
           v_(right - left - 1, 1),
+          false,
           true,
           (xy) => {
             this.#pixel.draw(xy, color, clippingRegion);
@@ -88,6 +84,7 @@ export class DrawEllipse {
         Vector2d.forEachIntXyWithinRectOf(
           v_(left + 1, top),
           v_(right - left - 1, 1),
+          false,
           true,
           (xy) => {
             this.#pixel.draw(xy, color, clippingRegion);

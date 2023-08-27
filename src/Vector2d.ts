@@ -25,12 +25,14 @@ export class Vector2d implements PrintDebug {
   static forEachIntXyWithinRectOf(
     xy: Vector2d,
     wh: Vector2d,
+    roundValues: boolean,
     fill: boolean,
     callback: (xy: Vector2d) => void,
   ): void {
-    xy = xy.round();
-    wh = wh.round();
-    const [xyMinInclusive, xyMaxExclusive] = Vector2d.minMax(xy, xy.add(wh));
+    const [xyMinInclusive, xyMaxExclusive] = Vector2d.minMax(
+      roundValues ? xy.round() : xy,
+      roundValues ? xy.add(wh).round() : xy.add(wh),
+    );
     for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
       for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
         if (

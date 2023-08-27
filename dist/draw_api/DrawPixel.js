@@ -9,23 +9,25 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_drawSolid;
+var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_options, _DrawPixel_drawSolid;
 import { CompositeColor, MappingColor, TransparentColor, } from "../Color";
 import { Vector2d } from "../Vector2d";
 export class DrawPixel {
-    constructor(canvasBytes, canvasSize) {
+    constructor(canvasBytes, canvasSize, options = {}) {
         _DrawPixel_instances.add(this);
         _DrawPixel_canvasBytes.set(this, void 0);
         _DrawPixel_canvasSize.set(this, void 0);
+        _DrawPixel_options.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixel_canvasBytes, canvasBytes, "f");
         __classPrivateFieldSet(this, _DrawPixel_canvasSize, canvasSize, "f");
+        __classPrivateFieldSet(this, _DrawPixel_options, options, "f");
     }
     // TODO: consolidate where composite color and fill patterns are handled (look for `instanceof`). Consider renaming fill pattern to e.g. pattern color as well
     // TODO: tests for MappingColor
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
     draw(xy, color, clippingRegion = null) {
-        xy = xy.round();
+        xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : xy.round();
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }
@@ -43,7 +45,7 @@ export class DrawPixel {
         }
     }
 }
-_DrawPixel_canvasBytes = new WeakMap(), _DrawPixel_canvasSize = new WeakMap(), _DrawPixel_instances = new WeakSet(), _DrawPixel_drawSolid = function _DrawPixel_drawSolid(canvasIndex, color) {
+_DrawPixel_canvasBytes = new WeakMap(), _DrawPixel_canvasSize = new WeakMap(), _DrawPixel_options = new WeakMap(), _DrawPixel_instances = new WeakSet(), _DrawPixel_drawSolid = function _DrawPixel_drawSolid(canvasIndex, color) {
     if (color instanceof TransparentColor) {
         return;
     }

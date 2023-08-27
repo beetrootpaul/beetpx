@@ -15,7 +15,7 @@ export class DrawClear {
         _DrawClear_canvasBytes.set(this, void 0);
         _DrawClear_canvasSize.set(this, void 0);
         __classPrivateFieldSet(this, _DrawClear_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawClear_canvasSize, canvasSize, "f");
+        __classPrivateFieldSet(this, _DrawClear_canvasSize, canvasSize.round(), "f");
     }
     // TODO: support ClippingRegion + cover with tests
     draw(color, clippingRegion = null) {

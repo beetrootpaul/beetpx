@@ -8,7 +8,7 @@ export class DrawClear {
 
   constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize;
+    this.#canvasSize = canvasSize.round();
   }
 
   // TODO: support ClippingRegion + cover with tests

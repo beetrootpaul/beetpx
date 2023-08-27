@@ -14,7 +14,9 @@ export class DrawRect {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
-    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
+    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize, {
+      disableRounding: true,
+    });
   }
 
   // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
@@ -29,10 +31,7 @@ export class DrawRect {
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    xy = xy.round();
-    wh = wh.round();
-
-    Vector2d.forEachIntXyWithinRectOf(xy, wh, fill, (xy) => {
+    Vector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
       if (fillPattern.hasPrimaryColorAt(xy)) {
         this.#pixel.draw(xy, color, clippingRegion);
       } else {

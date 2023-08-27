@@ -15,7 +15,9 @@ export class DrawText {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
-    this.#sprite = new DrawSprite(this.#canvasBytes, this.#canvasSize);
+    this.#sprite = new DrawSprite(this.#canvasBytes, this.#canvasSize, {
+      disableRounding: true,
+    });
   }
 
   // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly

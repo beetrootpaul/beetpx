@@ -20,6 +20,7 @@ export class FillPattern {
         _FillPattern_bits.set(this, void 0);
         __classPrivateFieldSet(this, _FillPattern_bits, bits, "f");
     }
+    // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
     hasPrimaryColorAt(xy) {
         const patternXy = xy.mod(4);
         const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;

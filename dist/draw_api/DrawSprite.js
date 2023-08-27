@@ -9,25 +9,27 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_pixel;
+var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawSprite_pixel;
 import { SolidColor, transparent_ } from "../Color";
 import { Sprite } from "../Sprite";
 import { Utils } from "../Utils";
 import { v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 export class DrawSprite {
-    constructor(canvasBytes, canvasSize) {
+    constructor(canvasBytes, canvasSize, options = {}) {
         _DrawSprite_canvasBytes.set(this, void 0);
         _DrawSprite_canvasSize.set(this, void 0);
+        _DrawSprite_options.set(this, void 0);
         _DrawSprite_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawSprite_canvasBytes, canvasBytes, "f");
         __classPrivateFieldSet(this, _DrawSprite_canvasSize, canvasSize, "f");
+        __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
         __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawSprite_canvasSize, "f")), "f");
     }
     // TODO: cover clippingRegion with tests
     draw(sourceImageAsset, sprite, targetXy, colorMapping = new Map(), clippingRegion = null) {
         var _a;
-        targetXy = targetXy.round();
+        targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
         sprite = new Sprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
@@ -55,4 +57,4 @@ export class DrawSprite {
         }
     }
 }
-_DrawSprite_canvasBytes = new WeakMap(), _DrawSprite_canvasSize = new WeakMap(), _DrawSprite_pixel = new WeakMap();
+_DrawSprite_canvasBytes = new WeakMap(), _DrawSprite_canvasSize = new WeakMap(), _DrawSprite_options = new WeakMap(), _DrawSprite_pixel = new WeakMap();

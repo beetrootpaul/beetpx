@@ -12,9 +12,11 @@ export class DrawLine {
 
   constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
     this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize;
+    this.#canvasSize = canvasSize.round();
 
-    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
+    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize, {
+      disableRounding: true,
+    });
   }
 
   // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
@@ -31,13 +33,18 @@ export class DrawLine {
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    xy = xy.round();
-    wh = wh.round();
-
-    // check if wh has 0 width or height
-    if (wh.x * wh.y === 0) {
+    // When drawing a line, the order of drawing does matter. This is why we
+    //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
+    //   shapes, but about xyStart and xyEnd.
+    const xyStart = xy.round();
+    const xyEnd = xy.add(wh).round();
+    if (xyEnd.x - xyStart.x === 0 || xyEnd.y - xyStart.y === 0) {
       return;
     }
+    // We cannot just round wh, because we don't want to lose the precision of xy+wh.
+    //   But what we can do (and we do here) is to round xyStart and xyEnd calculated
+    //   with xy+wh, and the obtain a new wh as xyEnd-xyStart, which makes it rounded.
+    wh = xyEnd.sub(xyStart);
 
     const whSub1 = wh.sub(wh.sign());
 
@@ -47,8 +54,8 @@ export class DrawLine {
 
     let dXy = whSub1.abs().mul(v_(1, -1));
 
-    let currentXy = xy;
-    const targetXy = xy.add(whSub1);
+    let currentXy = xyStart;
+    const targetXy = xyStart.add(whSub1);
 
     const step = whSub1.sign();
     let err = dXy.x + dXy.y;

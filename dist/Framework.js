@@ -261,6 +261,7 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
         .sub(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").mul(__classPrivateFieldGet(this, _Framework_scaleToFill, "f")))
         .div(2)
         .floor(), "f");
+    // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
     __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_redrawDebugMargin).call(this);
     __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height, __classPrivateFieldGet(this, _Framework_centeringOffset, "f").x, __classPrivateFieldGet(this, _Framework_centeringOffset, "f").y, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").x, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").y);
 }, _Framework_redrawDebugMargin = function _Framework_redrawDebugMargin() {

@@ -43,7 +43,7 @@ declare class Vector2d implements PrintDebug {
     static min(xy1: Vector2d, xy2: Vector2d): Vector2d;
     static max(xy1: Vector2d, xy2: Vector2d): Vector2d;
     static minMax(xy1: Vector2d, xy2: Vector2d): [Vector2d, Vector2d];
-    static forEachIntXyWithinRectOf(xy: Vector2d, wh: Vector2d, fill: boolean, callback: (xy: Vector2d) => void): void;
+    static forEachIntXyWithinRectOf(xy: Vector2d, wh: Vector2d, roundValues: boolean, fill: boolean, callback: (xy: Vector2d) => void): void;
     readonly x: number;
     readonly y: number;
     constructor(x: number, y: number);

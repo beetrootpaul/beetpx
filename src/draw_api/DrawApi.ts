@@ -35,6 +35,9 @@ type DrawApiOptions = {
 
 // TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
 
+// TODO: tests for float rounding: different shapes and sprites drawn for same coords should be aligned visually, not off by 1.
+//       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
+
 export class DrawApi {
   readonly #assets: Assets;
 
@@ -59,31 +62,19 @@ export class DrawApi {
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
 
-    this.#clear = new DrawClear(
-      options.canvasBytes,
-      options.canvasSize.round(),
-    );
-    this.#pixel = new DrawPixel(
-      options.canvasBytes,
-      options.canvasSize.round(),
-    );
-    this.#line = new DrawLine(options.canvasBytes, options.canvasSize.round());
-    this.#rect = new DrawRect(options.canvasBytes, options.canvasSize.round());
-    this.#ellipse = new DrawEllipse(
-      options.canvasBytes,
-      options.canvasSize.round(),
-    );
-    this.#sprite = new DrawSprite(
-      options.canvasBytes,
-      options.canvasSize.round(),
-    );
-    this.#text = new DrawText(options.canvasBytes, options.canvasSize.round());
+    this.#clear = new DrawClear(options.canvasBytes, options.canvasSize);
+    this.#pixel = new DrawPixel(options.canvasBytes, options.canvasSize);
+    this.#line = new DrawLine(options.canvasBytes, options.canvasSize);
+    this.#rect = new DrawRect(options.canvasBytes, options.canvasSize);
+    this.#ellipse = new DrawEllipse(options.canvasBytes, options.canvasSize);
+    this.#sprite = new DrawSprite(options.canvasBytes, options.canvasSize);
+    this.#text = new DrawText(options.canvasBytes, options.canvasSize);
   }
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
   // TODO: consider returning the previous offset
   setCameraOffset(offset: Vector2d): void {
-    this.#cameraOffset = offset.round();
+    this.#cameraOffset = offset;
   }
 
   setClippingRegion(xy: Vector2d, wh: Vector2d): void {
@@ -132,11 +123,7 @@ export class DrawApi {
   }
 
   pixel(xy: Vector2d, color: SolidColor): void {
-    this.#pixel.draw(
-      xy.sub(this.#cameraOffset).round(),
-      color,
-      this.#clippingRegion,
-    );
+    this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#clippingRegion);
   }
 
   line(
@@ -145,7 +132,7 @@ export class DrawApi {
     color: SolidColor | CompositeColor | MappingColor,
   ): void {
     this.#line.draw(
-      xy.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset),
       wh,
       color,
       this.#fillPattern,
@@ -159,7 +146,7 @@ export class DrawApi {
     color: SolidColor | CompositeColor | MappingColor,
   ): void {
     this.#rect.draw(
-      xy.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset),
       wh,
       color,
       false,
@@ -174,7 +161,7 @@ export class DrawApi {
     color: SolidColor | CompositeColor | MappingColor,
   ): void {
     this.#rect.draw(
-      xy.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset),
       wh,
       color,
       true,
@@ -189,7 +176,7 @@ export class DrawApi {
     color: SolidColor | CompositeColor | MappingColor,
   ): void {
     this.#ellipse.draw(
-      xy.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset),
       wh,
       color,
       false,
@@ -204,7 +191,7 @@ export class DrawApi {
     color: SolidColor | CompositeColor | MappingColor,
   ): void {
     this.#ellipse.draw(
-      xy.sub(this.#cameraOffset).round(),
+      xy.sub(this.#cameraOffset),
       wh,
       color,
       true,
@@ -219,7 +206,7 @@ export class DrawApi {
     this.#sprite.draw(
       sourceImageAsset,
       sprite,
-      canvasXy.sub(this.#cameraOffset).round(),
+      canvasXy.sub(this.#cameraOffset),
       this.#spriteColorMapping,
       this.#clippingRegion,
     );
@@ -234,7 +221,7 @@ export class DrawApi {
     if (this.#fontAsset) {
       this.#text.draw(
         text,
-        canvasXy.sub(this.#cameraOffset).round(),
+        canvasXy.sub(this.#cameraOffset),
         this.#fontAsset,
         color,
         this.#clippingRegion,

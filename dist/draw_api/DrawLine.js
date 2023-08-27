@@ -19,8 +19,10 @@ export class DrawLine {
         _DrawLine_canvasSize.set(this, void 0);
         _DrawLine_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawLine_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawLine_canvasSize, canvasSize, "f");
-        __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawLine_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawLine_canvasSize, canvasSize.round(), "f");
+        __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawLine_canvasSize, "f"), {
+            disableRounding: true,
+        }), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
     // TODO: tests for MappingColor
@@ -31,19 +33,25 @@ export class DrawLine {
     draw(xy, wh, color, 
     // TODO: implement fill pattern for the line (?)
     fillPattern = FillPattern.primaryOnly, clippingRegion = null) {
-        xy = xy.round();
-        wh = wh.round();
-        // check if wh has 0 width or height
-        if (wh.x * wh.y === 0) {
+        // When drawing a line, the order of drawing does matter. This is why we
+        //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
+        //   shapes, but about xyStart and xyEnd.
+        const xyStart = xy.round();
+        const xyEnd = xy.add(wh).round();
+        if (xyEnd.x - xyStart.x === 0 || xyEnd.y - xyStart.y === 0) {
             return;
         }
+        // We cannot just round wh, because we don't want to lose the precision of xy+wh.
+        //   But what we can do (and we do here) is to round xyStart and xyEnd calculated
+        //   with xy+wh, and the obtain a new wh as xyEnd-xyStart, which makes it rounded.
+        wh = xyEnd.sub(xyStart);
         const whSub1 = wh.sub(wh.sign());
         //
         // PREPARE
         //
         let dXy = whSub1.abs().mul(v_(1, -1));
-        let currentXy = xy;
-        const targetXy = xy.add(whSub1);
+        let currentXy = xyStart;
+        const targetXy = xyStart.add(whSub1);
         const step = whSub1.sign();
         let err = dXy.x + dXy.y;
         while (true) {

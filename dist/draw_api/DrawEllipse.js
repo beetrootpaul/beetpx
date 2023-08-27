@@ -9,9 +9,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawEllipse_canvasBytes, _DrawEllipse_canvasSize, _DrawEllipse_pixel, _DrawEllipse_line;
+var _DrawEllipse_canvasBytes, _DrawEllipse_canvasSize, _DrawEllipse_pixel;
 import { Vector2d, v_ } from "../Vector2d";
-import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
 import { FillPattern } from "./FillPattern";
 export class DrawEllipse {
@@ -19,11 +18,11 @@ export class DrawEllipse {
         _DrawEllipse_canvasBytes.set(this, void 0);
         _DrawEllipse_canvasSize.set(this, void 0);
         _DrawEllipse_pixel.set(this, void 0);
-        _DrawEllipse_line.set(this, void 0);
         __classPrivateFieldSet(this, _DrawEllipse_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawEllipse_canvasSize, canvasSize, "f");
-        __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f")), "f");
-        __classPrivateFieldSet(this, _DrawEllipse_line, new DrawLine(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawEllipse_canvasSize, canvasSize.round(), "f");
+        __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f"), {
+            disableRounding: true,
+        }), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
     // TODO: tests for MappingColor
@@ -33,16 +32,13 @@ export class DrawEllipse {
     draw(xy, wh, color, fill, 
     // TODO: implement fill pattern for the ellipse
     fillPattern = FillPattern.primaryOnly, clippingRegion = null) {
-        xy = xy.round();
-        wh = wh.round();
-        // check if wh has 0 width or height
-        if (wh.x * wh.y === 0) {
+        const [xy1, xy2] = Vector2d.minMax(xy.round(), xy.add(wh).round());
+        if (xy2.x - xy1.x <= 0 || xy2.y - xy1.y <= 0) {
             return;
         }
         //
         // PREPARE
         //
-        const [xy1, xy2] = Vector2d.minMax(xy, xy.add(wh));
         let a = xy2.x - xy1.x - 1;
         let b = xy2.y - xy1.y - 1;
         let b1 = b & 1;
@@ -66,11 +62,11 @@ export class DrawEllipse {
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(right, top), color, clippingRegion);
             if (fill) {
                 // TODO: update the implementation below to honor fill pattern
-                Vector2d.forEachIntXyWithinRectOf(v_(left + 1, bottom), v_(right - left - 1, 1), true, (xy) => {
+                Vector2d.forEachIntXyWithinRectOf(v_(left + 1, bottom), v_(right - left - 1, 1), false, true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion);
                 });
                 // TODO: update the implementation below to honor fill pattern
-                Vector2d.forEachIntXyWithinRectOf(v_(left + 1, top), v_(right - left - 1, 1), true, (xy) => {
+                Vector2d.forEachIntXyWithinRectOf(v_(left + 1, top), v_(right - left - 1, 1), false, true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion);
                 });
             }
@@ -106,4 +102,4 @@ export class DrawEllipse {
         }
     }
 }
-_DrawEllipse_canvasBytes = new WeakMap(), _DrawEllipse_canvasSize = new WeakMap(), _DrawEllipse_pixel = new WeakMap(), _DrawEllipse_line = new WeakMap();
+_DrawEllipse_canvasBytes = new WeakMap(), _DrawEllipse_canvasSize = new WeakMap(), _DrawEllipse_pixel = new WeakMap();

@@ -11,10 +11,16 @@ import { ClippingRegion } from "./ClippingRegion";
 export class DrawPixel {
   readonly #canvasBytes: Uint8ClampedArray;
   readonly #canvasSize: Vector2d;
+  readonly #options: { disableRounding?: boolean };
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
+  constructor(
+    canvasBytes: Uint8ClampedArray,
+    canvasSize: Vector2d,
+    options: { disableRounding?: boolean } = {},
+  ) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
+    this.#options = options;
   }
 
   // TODO: consolidate where composite color and fill patterns are handled (look for `instanceof`). Consider renaming fill pattern to e.g. pattern color as well
@@ -26,7 +32,7 @@ export class DrawPixel {
     color: Color,
     clippingRegion: ClippingRegion | null = null,
   ): void {
-    xy = xy.round();
+    xy = this.#options.disableRounding ? xy : xy.round();
 
     if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
       return;

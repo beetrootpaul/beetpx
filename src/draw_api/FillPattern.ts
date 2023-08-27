@@ -16,6 +16,7 @@ export class FillPattern {
     this.#bits = bits;
   }
 
+  // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
   hasPrimaryColorAt(xy: Vector2d): boolean {
     const patternXy = xy.mod(4);
     const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;
