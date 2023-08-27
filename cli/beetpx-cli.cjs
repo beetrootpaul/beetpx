@@ -46,6 +46,25 @@ if (argv._.includes("dev")) {
   throw Error("This code should not be reached :-)");
 }
 
+// Based on https://stackoverflow.com/a/69628635/1036577
+function WatchPublicDir() {
+  return {
+    name: "watch-public-dir",
+    enforce: "post",
+    handleHotUpdate({ file, server }) {
+      const prefixToMatch = path.resolve(gameCodebaseDir, "public") + "/";
+      if (file.startsWith(prefixToMatch)) {
+        const shortFileName = "public/" + file.substring(prefixToMatch.length);
+        console.log(`reloading due to change in file "${shortFileName}"...`);
+        server.ws.send({
+          type: "full-reload",
+          path: "*",
+        });
+      }
+    },
+  };
+}
+
 function runDevCommand() {
   fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
     recursive: true,
@@ -67,6 +86,7 @@ function runDevCommand() {
   //   - https://vitejs.dev/config/server-options.html
   require("vite")
     .createServer({
+      plugins: [WatchPublicDir()],
       configFile: false,
       root: gameCodebaseDir,
       publicDir: path.resolve(gameCodebaseDir, "public"),
