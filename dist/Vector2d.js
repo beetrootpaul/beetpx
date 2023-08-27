@@ -13,6 +13,7 @@ export class Vector2d {
     static minMax(xy1, xy2) {
         return [Vector2d.min(xy1, xy2), Vector2d.max(xy1, xy2)];
     }
+    // TODO: sounds like something to mover outside the basic set of fns in Vector2d
     static forEachIntXyWithinRectOf(xy, wh, roundValues, fill, callback) {
         const [xyMinInclusive, xyMaxExclusive] = Vector2d.minMax(roundValues ? xy.round() : xy, roundValues ? xy.add(wh).round() : xy.add(wh));
         for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
@@ -47,6 +48,9 @@ export class Vector2d {
     }
     floor() {
         return new Vector2d(Math.floor(this.x), Math.floor(this.y));
+    }
+    ceil() {
+        return new Vector2d(Math.ceil(this.x), Math.ceil(this.y));
     }
     round() {
         return new Vector2d(Math.round(this.x), Math.round(this.y));

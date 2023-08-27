@@ -52,6 +52,7 @@ declare class Vector2d implements PrintDebug {
     sign(): Vector2d;
     abs(): Vector2d;
     floor(): Vector2d;
+    ceil(): Vector2d;
     round(): Vector2d;
     eq(other: Vector2d): boolean;
     eq(value: number): boolean;
