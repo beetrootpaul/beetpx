@@ -29,3 +29,6 @@ export { BeetPx } from "./BeetPx";
 // TODO: remember which input methods was used recently and expose that info so the game can show the proper button image
 // TODO: reconsider what to show as text copy or glyphs on touch buttons
 // TODO: sometimes the canvas gets stretched after screen orientation change. Fix that
+// TODO: consider regenerating docs and compiled files only on released versions. Like: have a version
+//       bump script which asks whether it's major or minor or patch and checks if we are on `main`, then
+//       generates docs etc. before the commit
