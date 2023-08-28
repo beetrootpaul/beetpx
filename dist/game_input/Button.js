@@ -30,16 +30,18 @@ export class Button {
         return ((__classPrivateFieldGet(this, _Button_wasJustToggled, "f") && !__classPrivateFieldGet(this, _Button_isPressed, "f")) ||
             (repeating && !!((_a = __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) === null || _a === void 0 ? void 0 : _a.hasFinished)));
     }
-    update(isPressed, secondsPassed) {
+    update(isPressed) {
         var _a, _b;
         __classPrivateFieldSet(this, _Button_wasJustToggled, __classPrivateFieldGet(this, _Button_isPressed, "f") !== isPressed, "f");
         __classPrivateFieldSet(this, _Button_isPressed, isPressed, "f");
         if (isPressed && ((_a = __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) === null || _a === void 0 ? void 0 : _a.hasFinished)) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, new Timer(Button.repeatingIntervalSeconds), "f");
+            __classPrivateFieldSet(this, _Button_repeatingTimer, new Timer({
+                frames: Button.repeatingFramesInterval,
+            }), "f");
         }
-        (_b = __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) === null || _b === void 0 ? void 0 : _b.update(secondsPassed);
+        (_b = __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) === null || _b === void 0 ? void 0 : _b.update();
         if (isPressed && __classPrivateFieldGet(this, _Button_wasJustToggled, "f")) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, new Timer(Button.repeatingStartSeconds), "f");
+            __classPrivateFieldSet(this, _Button_repeatingTimer, new Timer({ frames: Button.repeatingFramesStart }), "f");
         }
         if (!isPressed && __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) {
             __classPrivateFieldSet(this, _Button_repeatingTimer, null, "f");
@@ -47,5 +49,6 @@ export class Button {
     }
 }
 _Button_isPressed = new WeakMap(), _Button_wasJustToggled = new WeakMap(), _Button_repeatingTimer = new WeakMap();
-Button.repeatingStartSeconds = 0.5; // equivalent of 30 frames in 60 FPS
-Button.repeatingIntervalSeconds = 0.1334; // equivalent of 8 frames in 60 FPS
+// TODO: these numbers work good for 60 FPS. Make them depending on FPS to have the same durations in seconds
+Button.repeatingFramesStart = 30;
+Button.repeatingFramesInterval = 8;

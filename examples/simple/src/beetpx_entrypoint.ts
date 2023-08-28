@@ -21,7 +21,7 @@ BeetPx.init(
 ).then(({ startGame }) => {
   let melodyPlaybackId: number = -1;
 
-  const velocity = 64;
+  const velocity = 2;
 
   const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
   let logoPositionBase = Vector2d.zero;
@@ -46,21 +46,21 @@ BeetPx.init(
 
     // TODO: consider exposing some XY (-1,1) representation of directions
     if (BeetPx.isPressed("right")) {
-      logoPositionBase = logoPositionBase.add(velocity * BeetPx.dt, 0);
+      logoPositionBase = logoPositionBase.add(velocity, 0);
     }
     if (BeetPx.isPressed("left")) {
-      logoPositionBase = logoPositionBase.add(-velocity * BeetPx.dt, 0);
+      logoPositionBase = logoPositionBase.add(-velocity, 0);
     }
     if (BeetPx.isPressed("up")) {
-      logoPositionBase = logoPositionBase.add(0, -velocity * BeetPx.dt);
+      logoPositionBase = logoPositionBase.add(0, -velocity);
     }
     if (BeetPx.isPressed("down")) {
-      logoPositionBase = logoPositionBase.add(0, velocity * BeetPx.dt);
+      logoPositionBase = logoPositionBase.add(0, velocity);
     }
 
     logoPositionOffset = v_(
-      Math.cos(BeetPx.t * Math.PI),
-      Math.sin(BeetPx.t * Math.PI),
+      Math.cos((BeetPx.frameNumber / 60) * Math.PI),
+      Math.sin((BeetPx.frameNumber / 60) * Math.PI),
     ).mul(10);
 
     if (BeetPx.wasJustPressed("menu")) {
@@ -69,7 +69,7 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
-    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#1754665"));
+    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
     BeetPx.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),

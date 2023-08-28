@@ -1,4 +1,3 @@
-import { BeetPx } from "../BeetPx";
 import { Button } from "./Button";
 import { GameInputEvent } from "./GameInput";
 
@@ -25,13 +24,13 @@ export class Buttons {
   #repeatingMenu: boolean = false;
 
   update(events: Set<GameInputEvent>): void {
-    this.#left.update(events.has("button_left"), BeetPx.dt);
-    this.#right.update(events.has("button_right"), BeetPx.dt);
-    this.#up.update(events.has("button_up"), BeetPx.dt);
-    this.#down.update(events.has("button_down"), BeetPx.dt);
-    this.#o.update(events.has("button_o"), BeetPx.dt);
-    this.#x.update(events.has("button_x"), BeetPx.dt);
-    this.#menu.update(events.has("button_menu"), BeetPx.dt);
+    this.#left.update(events.has("button_left"));
+    this.#right.update(events.has("button_right"));
+    this.#up.update(events.has("button_up"));
+    this.#down.update(events.has("button_down"));
+    this.#o.update(events.has("button_o"));
+    this.#x.update(events.has("button_x"));
+    this.#menu.update(events.has("button_menu"));
   }
 
   isPressed(button: ButtonName): boolean {

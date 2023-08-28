@@ -54,9 +54,7 @@ BeetPx.init(
 
     console.group("UPDATE");
     BeetPx.logDebug(`FPS: ${BeetPx.averageRenderFps}`);
-    BeetPx.logDebug(` #f: ${BeetPx.frameNumber}`);
-    BeetPx.logDebug(`  t: ${BeetPx.t.toFixed(3)}s`);
-    BeetPx.logDebug(` dt: ${BeetPx.dt.toFixed(3)}s`);
+    BeetPx.logDebug(`frame: ${BeetPx.frameNumber}`);
 
     if (BeetPx.wasJustPressed("x")) {
       numberOfEllipses = numberOfEllipses * 2;

@@ -24,10 +24,6 @@ export class Utils {
   }
 
   // TODO: tests for edge cases
-  static booleanChangingEveryNSeconds(n: number): boolean {
-    return BeetPx.t % (n * 2) < n;
-  }
-  // TODO: tests for edge cases
   static booleanChangingEveryNthFrame(n: number): boolean {
     return BeetPx.frameNumber % (n * 2) < n;
   }

@@ -72,20 +72,14 @@ export class Framework {
   #centeringOffset = Vector2d.zero;
 
   #frameNumber: number = 0;
-  #millisSinceStarted: number = 0;
-  #millisSinceLastUpdate: number = 0;
-  averageRenderFps: number = 1;
+  #averageRenderFps: number = 1;
 
   get frameNumber(): number {
     return this.#frameNumber;
   }
 
-  get t(): number {
-    return this.#millisSinceStarted / 1000;
-  }
-
-  get dt(): number {
-    return this.#millisSinceLastUpdate / 1000;
+  get averageRenderFps(): number {
+    return this.#averageRenderFps;
   }
 
   constructor(options: FrameworkOptions) {
@@ -216,8 +210,6 @@ export class Framework {
 
   restart() {
     this.#frameNumber = 0;
-    this.#millisSinceStarted = 0;
-    this.#millisSinceLastUpdate = 0;
 
     this.#onStarted?.();
   }
@@ -243,8 +235,6 @@ export class Framework {
     });
 
     this.#frameNumber = 0;
-    this.#millisSinceStarted = 0;
-    this.#millisSinceLastUpdate = 0;
 
     this.#onStarted?.();
 
@@ -254,9 +244,6 @@ export class Framework {
 
     this.#gameLoop.start({
       updateFn: (averageRenderFps) => {
-        // TODO: TO BE REMOVED
-        const deltaMillis = 1 / 60;
-
         if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
           this.#fullScreen.toggle();
         }
@@ -284,7 +271,7 @@ export class Framework {
           this.audioApi.resumeAudioContextIfNeeded();
         }
 
-        this.averageRenderFps = averageRenderFps;
+        this.#averageRenderFps = averageRenderFps;
 
         const shouldUpdate =
           !this.#frameByFrame ||
@@ -295,9 +282,7 @@ export class Framework {
         if (shouldUpdate) {
           if (this.#frameByFrame) {
             Logger.infoBeetPx(
-              `Running onUpdate for frame=${
-                this.#frameNumber
-              } with dt=${deltaMillis.toFixed(0)}ms`,
+              `Running onUpdate for frame: ${this.#frameNumber}`,
             );
           }
 
@@ -307,13 +292,6 @@ export class Framework {
             this.#frameNumber >= Number.MAX_SAFE_INTEGER
               ? 0
               : this.#frameNumber + 1;
-
-          this.#millisSinceStarted =
-            this.#millisSinceStarted === Number.MAX_SAFE_INTEGER
-              ? 0
-              : this.#millisSinceStarted + deltaMillis;
-
-          this.#millisSinceLastUpdate = deltaMillis;
         }
       },
       renderFn: () => {
