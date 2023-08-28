@@ -1,4 +1,26 @@
-import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
+import {
+  BeetPx,
+  FillPattern,
+  SolidColor,
+  spr_,
+  v_,
+  Vector2d,
+} from "../../../src";
+
+const updateCallsMonitoring = {
+  history: Array.from({ length: 32 }, () => 0),
+  historyIndex: 0,
+};
+
+const logoInnerColor = SolidColor.fromRgbCssHex("#125359");
+const logoOuterColor = SolidColor.fromRgbCssHex("#ff6e59");
+
+const velocity = 64;
+
+const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
+let logoPositionBase = Vector2d.zero;
+
+let numberOfEllipses = 4;
 
 BeetPx.init(
   {
@@ -19,27 +41,16 @@ BeetPx.init(
     sounds: [{ url: "music_base.wav" }, { url: "music_melody.wav" }],
   },
 ).then(({ startGame }) => {
-  let melodyPlaybackId: number = -1;
-
-  const velocity = 64;
-
-  const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
-  let logoPositionBase = Vector2d.zero;
-  let logoPositionOffset = Vector2d.zero;
-
-  let updateCallsSincePrevDraw = 0;
-
   BeetPx.setOnStarted(() => {
     BeetPx.stopAllSounds();
     BeetPx.playSoundLooped("music_base.wav");
-    melodyPlaybackId = BeetPx.playSoundLooped("music_melody.wav", true);
+    BeetPx.playSoundLooped("music_melody.wav");
 
     logoPositionBase = logoPositionBaseDefault;
-    logoPositionOffset = Vector2d.zero;
   });
 
   BeetPx.setOnUpdate(() => {
-    updateCallsSincePrevDraw++;
+    updateCallsMonitoring.history[updateCallsMonitoring.historyIndex] += 1;
 
     console.group("UPDATE");
     BeetPx.logDebug(`FPS: ${BeetPx.averageFps}`);
@@ -48,10 +59,10 @@ BeetPx.init(
     BeetPx.logDebug(` dt: ${BeetPx.dt.toFixed(3)}s`);
 
     if (BeetPx.wasJustPressed("x")) {
-      BeetPx.unmuteSound(melodyPlaybackId);
+      numberOfEllipses = numberOfEllipses * 2;
     }
     if (BeetPx.wasJustPressed("o")) {
-      BeetPx.muteSound(melodyPlaybackId);
+      numberOfEllipses = Math.max(1, numberOfEllipses / 2);
     }
 
     if (BeetPx.isPressed("right")) {
@@ -67,11 +78,6 @@ BeetPx.init(
       logoPositionBase = logoPositionBase.add(0, velocity * BeetPx.dt);
     }
 
-    logoPositionOffset = v_(
-      Math.cos(BeetPx.t * Math.PI),
-      Math.sin(BeetPx.t * Math.PI),
-    ).mul(10);
-
     if (BeetPx.wasJustPressed("menu")) {
       BeetPx.restart();
     }
@@ -80,14 +86,90 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
-    BeetPx.logInfo("#u:", updateCallsSincePrevDraw);
-    updateCallsSincePrevDraw = 0;
-    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
-    BeetPx.sprite(
-      spr_("logo.png")(0, 0, 16, 16),
-      logoPositionBase.add(logoPositionOffset),
+    BeetPx.logInfo(
+      "#u:",
+      updateCallsMonitoring.history[updateCallsMonitoring.historyIndex],
     );
+
+    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
+
+    drawThings();
+
+    drawUpdateCallsMonitoring();
+
+    updateCallsMonitoring.historyIndex =
+      (updateCallsMonitoring.historyIndex + 1) %
+      updateCallsMonitoring.history.length;
+    updateCallsMonitoring.history[updateCallsMonitoring.historyIndex] = 0;
   });
 
   startGame();
 });
+
+function drawUpdateCallsMonitoring(): void {
+  for (
+    let columnIndex = 0;
+    columnIndex < updateCallsMonitoring.history.length;
+    columnIndex++
+  ) {
+    for (
+      let barIndex = 0;
+      barIndex < updateCallsMonitoring.history[columnIndex]!;
+      barIndex++
+    ) {
+      BeetPx.line(
+        v_(columnIndex * 4 + 1, 1 + barIndex * 2),
+        v_(2, 1),
+        SolidColor.fromRgbCssHex("#ffffff"),
+      );
+    }
+  }
+}
+
+function drawThings(): void {
+  for (let ellipseIndex = 0; ellipseIndex < numberOfEllipses; ellipseIndex++) {
+    BeetPx.ellipseFilled(
+      v_((ellipseIndex * 128) / numberOfEllipses, 70),
+      v_(24, 24),
+      SolidColor.fromRgbCssHex(
+        `#ab84${((30 * ellipseIndex) % 256).toString(16).padStart(2, "0")}`,
+      ),
+    );
+  }
+
+  BeetPx.setFillPattern(FillPattern.of(0x5a5a));
+  BeetPx.rectFilled(
+    v_(16, 80),
+    v_(96, 32),
+    SolidColor.fromRgbCssHex("#012345"),
+  );
+  BeetPx.setFillPattern(FillPattern.primaryOnly);
+
+  BeetPx.sprite(
+    spr_("logo.png")(0, 0, 16, 16),
+    logoPositionBase.add(calculateLogoPositionOffset(1.5 * 60)),
+  );
+
+  const prevMapping = BeetPx.mapSpriteColors([
+    {
+      from: logoInnerColor,
+      to: logoOuterColor,
+    },
+    {
+      from: logoOuterColor,
+      to: logoInnerColor,
+    },
+  ]);
+  BeetPx.sprite(
+    spr_("logo.png")(0, 0, 16, 16),
+    logoPositionBase.sub(calculateLogoPositionOffset(BeetPx.frameNumber)),
+  );
+  BeetPx.mapSpriteColors(prevMapping);
+}
+
+function calculateLogoPositionOffset(frameNumber: number): Vector2d {
+  return v_(
+    Math.cos((frameNumber / 60) * Math.PI),
+    Math.sin((frameNumber / 60) * Math.PI),
+  ).mul(24);
+}

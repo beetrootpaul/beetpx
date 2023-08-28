@@ -26,3 +26,5 @@ npm run compile
 
 # Whatever was changed due to commands above, let's add it to the commit
 git add --all .
+
+# TODO: visit all examples here and format their code and typecheck as well
