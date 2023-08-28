@@ -5,7 +5,7 @@ BeetPx.init(
     gameCanvasSize: "128x128",
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
     debug: {
-      available: !__BEETPX_IS_PROD__,
+      available: true,
       toggleKey: ";",
       frameByFrame: {
         activateKey: ",",
@@ -27,6 +27,8 @@ BeetPx.init(
   let logoPositionBase = Vector2d.zero;
   let logoPositionOffset = Vector2d.zero;
 
+  let updateCallsSincePrevDraw = 0;
+
   BeetPx.setOnStarted(() => {
     BeetPx.stopAllSounds();
     BeetPx.playSoundLooped("music_base.wav");
@@ -37,6 +39,14 @@ BeetPx.init(
   });
 
   BeetPx.setOnUpdate(() => {
+    updateCallsSincePrevDraw++;
+
+    console.group("UPDATE");
+    BeetPx.logDebug(`FPS: ${BeetPx.averageFps}`);
+    BeetPx.logDebug(` #f: ${BeetPx.frameNumber}`);
+    BeetPx.logDebug(`  t: ${BeetPx.t.toFixed(3)}s`);
+    BeetPx.logDebug(` dt: ${BeetPx.dt.toFixed(3)}s`);
+
     if (BeetPx.wasJustPressed("x")) {
       BeetPx.unmuteSound(melodyPlaybackId);
     }
@@ -44,7 +54,6 @@ BeetPx.init(
       BeetPx.muteSound(melodyPlaybackId);
     }
 
-    // TODO: consider exposing some XY (-1,1) representation of directions
     if (BeetPx.isPressed("right")) {
       logoPositionBase = logoPositionBase.add(velocity * BeetPx.dt, 0);
     }
@@ -66,21 +75,18 @@ BeetPx.init(
     if (BeetPx.wasJustPressed("menu")) {
       BeetPx.restart();
     }
+
+    console.groupEnd();
   });
 
   BeetPx.setOnDraw(() => {
+    BeetPx.logInfo("#u:", updateCallsSincePrevDraw);
+    updateCallsSincePrevDraw = 0;
     BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
     BeetPx.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
     );
-    if (BeetPx.debug) {
-      BeetPx.line(
-        v_(0, 0),
-        logoPositionBase.add(logoPositionOffset),
-        SolidColor.fromRgbCssHex("#ff0000"),
-      );
-    }
   });
 
   startGame();

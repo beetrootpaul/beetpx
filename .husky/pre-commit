@@ -20,8 +20,9 @@ npm test
 #   ready to use there.
 npm run compile
 
+# TODO: uncomment docs generating once you get it set to run on new version release only
 # Generate up-to-date HTML documentation
-npm run docs:generate
+#npm run docs:generate
 
 # Whatever was changed due to commands above, let's add it to the commit
 git add --all .

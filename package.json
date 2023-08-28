@@ -42,7 +42,7 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "format": "prettier --ignore-path .gitignore --write cli/ html_templates/ src/",
+    "format": "prettier --ignore-path .gitignore --write cli/ html_templates/ src/ examples/simple/src examples/performance-testing/src",
     "typecheck": "tsc",
     "typecheck:watch": "tsc --watch",
     "test": "jest",
