@@ -41,7 +41,7 @@ export class GameLoop {
             while (__classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f") >= __classPrivateFieldGet(this, _GameLoop_expectedTimeStepMillis, "f")) {
                 __classPrivateFieldSet(this, _GameLoop_updateCallsCounter, __classPrivateFieldGet(this, _GameLoop_updateCallsCounter, "f") + 1, "f");
                 if (__classPrivateFieldGet(this, _GameLoop_updateCallsCounter, "f") <= __classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")) {
-                    __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn(this.fpsCounter.averageFps);
+                    __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn();
                     __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, __classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f") - __classPrivateFieldGet(this, _GameLoop_expectedTimeStepMillis, "f"), "f");
                 }
                 else {
@@ -49,7 +49,8 @@ export class GameLoop {
                     __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, 0, "f");
                 }
             }
-            __classPrivateFieldGet(this, _GameLoop_callbacks, "f").renderFn();
+            const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, 999));
+            __classPrivateFieldGet(this, _GameLoop_callbacks, "f").renderFn(renderFps);
             __classPrivateFieldGet(this, _GameLoop_requestAnimationFrameFn, "f").call(this, __classPrivateFieldGet(this, _GameLoop_tick, "f"));
         });
         __classPrivateFieldSet(this, _GameLoop_requestAnimationFrameFn, options.requestAnimationFrameFn, "f");

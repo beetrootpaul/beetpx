@@ -7,8 +7,13 @@ import {
   Vector2d,
 } from "../../../src";
 
-const updateCallsMonitoring = {
+const updateCallsVisualization = {
   history: Array.from({ length: 120 }, () => 0),
+  historyIndex: 0,
+};
+
+const renderFpsVisualization = {
+  history: Array.from({ length: 40 }, () => 0),
   historyIndex: 0,
 };
 
@@ -50,10 +55,12 @@ BeetPx.init(
   });
 
   BeetPx.setOnUpdate(() => {
-    updateCallsMonitoring.history[updateCallsMonitoring.historyIndex] += 1;
+    updateCallsVisualization.history[
+      updateCallsVisualization.historyIndex
+    ] += 1;
 
     console.group("UPDATE");
-    BeetPx.logDebug(`FPS: ${BeetPx.averageRenderFps}`);
+    BeetPx.logDebug(`FPS: ${BeetPx.renderFps}`);
     BeetPx.logDebug(`frame: ${BeetPx.frameNumber}`);
 
     if (BeetPx.wasJustPressed("x")) {
@@ -84,36 +91,66 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
+    renderFpsVisualization.history[renderFpsVisualization.historyIndex] =
+      BeetPx.renderFps;
+
     BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
 
     drawThings();
 
-    drawUpdateCallsMonitoring();
+    drawUpdateCallsVisualization();
 
-    updateCallsMonitoring.historyIndex =
-      (updateCallsMonitoring.historyIndex + 1) %
-      updateCallsMonitoring.history.length;
-    updateCallsMonitoring.history[updateCallsMonitoring.historyIndex] = 0;
+    drawRenderFpsVisualization();
+
+    updateCallsVisualization.historyIndex =
+      (updateCallsVisualization.historyIndex + 1) %
+      updateCallsVisualization.history.length;
+    updateCallsVisualization.history[updateCallsVisualization.historyIndex] = 0;
+
+    renderFpsVisualization.historyIndex =
+      (renderFpsVisualization.historyIndex + 1) %
+      renderFpsVisualization.history.length;
   });
 
   startGame();
 });
 
-function drawUpdateCallsMonitoring(): void {
+function drawUpdateCallsVisualization(): void {
   for (
     let columnIndex = 0;
-    columnIndex < updateCallsMonitoring.history.length;
+    columnIndex < updateCallsVisualization.history.length;
     columnIndex++
   ) {
     for (
       let barIndex = 0;
-      barIndex < updateCallsMonitoring.history[columnIndex]!;
+      barIndex < updateCallsVisualization.history[columnIndex]!;
       barIndex++
     ) {
       BeetPx.pixel(
         v_(columnIndex + 3, 1 + barIndex * 2),
-        columnIndex === updateCallsMonitoring.historyIndex
+        columnIndex === updateCallsVisualization.historyIndex
           ? SolidColor.fromRgbCssHex("#ffffff")
+          : SolidColor.fromRgbCssHex("#ff8888"),
+      );
+    }
+  }
+}
+
+function drawRenderFpsVisualization(): void {
+  for (
+    let columnIndex = 0;
+    columnIndex < renderFpsVisualization.history.length;
+    columnIndex++
+  ) {
+    const bars = Math.round(renderFpsVisualization.history[columnIndex]! / 10);
+    for (let barIndex = 0; barIndex < bars; barIndex++) {
+      BeetPx.rectFilled(
+        v_(columnIndex * 3 + 2, 125 - barIndex * 3),
+        v_(2, 2),
+        columnIndex === renderFpsVisualization.historyIndex
+          ? SolidColor.fromRgbCssHex("#ffffff")
+          : barIndex % 3 === 2
+          ? SolidColor.fromRgbCssHex("#ff4444")
           : SolidColor.fromRgbCssHex("#ff8888"),
       );
     }

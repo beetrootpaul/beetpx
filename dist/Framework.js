@@ -18,7 +18,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_debugOptions, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_averageRenderFps, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_debugOptions, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 import { Assets } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
@@ -37,8 +37,8 @@ export class Framework {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
     }
-    get averageRenderFps() {
-        return __classPrivateFieldGet(this, _Framework_averageRenderFps, "f");
+    get renderFps() {
+        return __classPrivateFieldGet(this, _Framework_renderFps, "f");
     }
     constructor(options) {
         var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
@@ -59,7 +59,7 @@ export class Framework {
         _Framework_scaleToFill.set(this, 1);
         _Framework_centeringOffset.set(this, Vector2d.zero);
         _Framework_frameNumber.set(this, 0);
-        _Framework_averageRenderFps.set(this, 1);
+        _Framework_renderFps.set(this, 1);
         __classPrivateFieldSet(this, _Framework_debugOptions, (_b = options.debug) !== null && _b !== void 0 ? _b : {
             available: false,
         }, "f");
@@ -161,7 +161,7 @@ export class Framework {
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-_a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_averageRenderFps = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+_a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
     if (__BEETPX_IS_PROD__) {
         // - returned message seems to be ignored by some browsers, therefore using `""`
@@ -184,7 +184,7 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
     __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
     this.gameInput.startListening();
     __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
-        updateFn: (averageRenderFps) => {
+        updateFn: () => {
             var _b;
             if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
                 __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
@@ -209,7 +209,6 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
             if (this.gameInput.wasAnyButtonPressed()) {
                 this.audioApi.resumeAudioContextIfNeeded();
             }
-            __classPrivateFieldSet(this, _Framework_averageRenderFps, averageRenderFps, "f");
             const shouldUpdate = !__classPrivateFieldGet(this, _Framework_frameByFrame, "f") ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
             this.gameInput.update({ skipGameButtons: !shouldUpdate });
@@ -223,8 +222,9 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
                     : __classPrivateFieldGet(this, _Framework_frameNumber, "f") + 1, "f");
             }
         },
-        renderFn: () => {
+        renderFn: (renderFps) => {
             var _b;
+            __classPrivateFieldSet(this, _Framework_renderFps, renderFps, "f");
             (_b = __classPrivateFieldGet(this, _Framework_onDraw, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
             __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_render).call(this);
         },

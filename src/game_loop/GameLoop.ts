@@ -2,8 +2,8 @@ import { Logger } from "../logger/Logger";
 import { FpsCounter } from "./FpsCounter";
 
 export type GameLoopCallbacks = {
-  updateFn: (averageRenderFps: number) => void;
-  renderFn: () => void;
+  updateFn: () => void;
+  renderFn: (renderFps: number) => void;
 };
 
 type GameLoopOptions = {
@@ -30,6 +30,7 @@ export class GameLoop {
   #updateCallsCounter: number = 0;
   readonly #updateCallsLimit: number = 5;
 
+  // TODO: REMOVE?
   readonly fpsCounter: FpsCounter;
 
   constructor(options: GameLoopOptions) {
@@ -73,7 +74,7 @@ export class GameLoop {
     while (this.#accumulatedDeltaTimeMillis >= this.#expectedTimeStepMillis) {
       this.#updateCallsCounter += 1;
       if (this.#updateCallsCounter <= this.#updateCallsLimit) {
-        this.#callbacks.updateFn(this.fpsCounter.averageFps);
+        this.#callbacks.updateFn();
         this.#accumulatedDeltaTimeMillis -= this.#expectedTimeStepMillis;
       } else {
         Logger.warnBeetPx(
@@ -83,7 +84,8 @@ export class GameLoop {
       }
     }
 
-    this.#callbacks.renderFn();
+    const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, 999));
+    this.#callbacks.renderFn(renderFps);
 
     this.#requestAnimationFrameFn(this.#tick);
   };

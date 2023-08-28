@@ -72,14 +72,14 @@ export class Framework {
   #centeringOffset = Vector2d.zero;
 
   #frameNumber: number = 0;
-  #averageRenderFps: number = 1;
+  #renderFps: number = 1;
 
   get frameNumber(): number {
     return this.#frameNumber;
   }
 
-  get averageRenderFps(): number {
-    return this.#averageRenderFps;
+  get renderFps(): number {
+    return this.#renderFps;
   }
 
   constructor(options: FrameworkOptions) {
@@ -243,7 +243,7 @@ export class Framework {
     this.gameInput.startListening();
 
     this.#gameLoop.start({
-      updateFn: (averageRenderFps) => {
+      updateFn: () => {
         if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
           this.#fullScreen.toggle();
         }
@@ -271,8 +271,6 @@ export class Framework {
           this.audioApi.resumeAudioContextIfNeeded();
         }
 
-        this.#averageRenderFps = averageRenderFps;
-
         const shouldUpdate =
           !this.#frameByFrame ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
@@ -294,8 +292,11 @@ export class Framework {
               : this.#frameNumber + 1;
         }
       },
-      renderFn: () => {
+      renderFn: (renderFps) => {
+        this.#renderFps = renderFps;
+
         this.#onDraw?.();
+
         this.#render();
       },
     });

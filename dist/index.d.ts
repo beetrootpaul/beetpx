@@ -336,7 +336,7 @@ declare class Framework {
     readonly assets: Assets;
     readonly drawApi: DrawApi;
     get frameNumber(): number;
-    get averageRenderFps(): number;
+    get renderFps(): number;
     constructor(options: FrameworkOptions);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
@@ -367,7 +367,7 @@ declare class BeetPx {
      * It counts update calls, not draw calls.
      */
     static get frameNumber(): Framework["frameNumber"];
-    static get averageRenderFps(): Framework["averageRenderFps"];
+    static get renderFps(): Framework["renderFps"];
     static get audioContext(): AudioApi["audioContext"];
     static get globalGainNode(): AudioApi["globalGainNode"];
     static setOnStarted: Framework["setOnStarted"];

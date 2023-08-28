@@ -44,8 +44,8 @@ export class BeetPx {
     return this.#tryGetFramework().frameNumber;
   }
 
-  static get averageRenderFps(): Framework["averageRenderFps"] {
-    return this.#tryGetFramework().averageRenderFps;
+  static get renderFps(): Framework["renderFps"] {
+    return this.#tryGetFramework().renderFps;
   }
 
   //
