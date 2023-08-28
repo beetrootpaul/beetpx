@@ -125,6 +125,7 @@ export class Framework {
             // TODO: make it configurable 30 or 60
             desiredUpdateFps: 60,
             requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
+            documentVisibilityStateProvider: document,
         }), "f");
         this.storageApi = new StorageApi();
         const audioContext = new AudioContext();

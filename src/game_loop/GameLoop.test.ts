@@ -22,6 +22,7 @@ describe("GameLoop", () => {
     const gameLoop = new GameLoop({
       desiredUpdateFps: 10,
       requestAnimationFrameFn,
+      documentVisibilityStateProvider: { visibilityState: "visible" },
     });
 
     // when
@@ -38,6 +39,7 @@ describe("GameLoop", () => {
     const gameLoop = new GameLoop({
       desiredUpdateFps: 10,
       requestAnimationFrameFn,
+      documentVisibilityStateProvider: { visibilityState: "visible" },
     });
 
     // when
@@ -55,6 +57,7 @@ describe("GameLoop", () => {
     const gameLoop = new GameLoop({
       desiredUpdateFps: 10,
       requestAnimationFrameFn,
+      documentVisibilityStateProvider: { visibilityState: "visible" },
     });
 
     // when
@@ -73,6 +76,7 @@ describe("GameLoop", () => {
     const gameLoop = new GameLoop({
       desiredUpdateFps: 10,
       requestAnimationFrameFn,
+      documentVisibilityStateProvider: { visibilityState: "visible" },
     });
 
     // when
@@ -90,6 +94,7 @@ describe("GameLoop", () => {
     const gameLoop = new GameLoop({
       desiredUpdateFps: 10,
       requestAnimationFrameFn,
+      documentVisibilityStateProvider: { visibilityState: "visible" },
     });
 
     // when

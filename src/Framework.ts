@@ -163,6 +163,7 @@ export class Framework {
       // TODO: make it configurable 30 or 60
       desiredUpdateFps: 60,
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
+      documentVisibilityStateProvider: document,
     });
 
     this.storageApi = new StorageApi();

@@ -9,10 +9,14 @@ export type GameLoopCallbacks = {
 type GameLoopOptions = {
   desiredUpdateFps: number;
   requestAnimationFrameFn: AnimationFrameProvider["requestAnimationFrame"];
+  documentVisibilityStateProvider: { visibilityState: DocumentVisibilityState };
 };
 
 export class GameLoop {
   readonly #requestAnimationFrameFn: AnimationFrameProvider["requestAnimationFrame"];
+  readonly #documentVisibilityStateProvider: {
+    visibilityState: DocumentVisibilityState;
+  };
 
   readonly #callbacks: GameLoopCallbacks = {
     updateFn: () => {},
@@ -30,6 +34,8 @@ export class GameLoop {
 
   constructor(options: GameLoopOptions) {
     this.#requestAnimationFrameFn = options.requestAnimationFrameFn;
+    this.#documentVisibilityStateProvider =
+      options.documentVisibilityStateProvider;
 
     this.#expectedTimeStepMillis = 1000 / options.desiredUpdateFps;
 
@@ -50,6 +56,12 @@ export class GameLoop {
 
   // Keep this function as an arrow one in order to avoid issues with `this`.
   #tick = (currentTimeMillis: DOMHighResTimeStamp): void => {
+    if (this.#documentVisibilityStateProvider.visibilityState === "hidden") {
+      this.#previousTimeMillis = currentTimeMillis;
+      this.#requestAnimationFrameFn(this.#tick);
+      return;
+    }
+
     const deltaTimeMillis =
       currentTimeMillis - (this.#previousTimeMillis ?? currentTimeMillis);
     this.#accumulatedDeltaTimeMillis += deltaTimeMillis;
