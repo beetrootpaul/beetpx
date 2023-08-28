@@ -11,7 +11,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _GameLoop_requestAnimationFrameFn, _GameLoop_documentVisibilityStateProvider, _GameLoop_callbacks, _GameLoop_expectedTimeStepMillis, _GameLoop_previousTimeMillis, _GameLoop_accumulatedDeltaTimeMillis, _GameLoop_updateCallsCounter, _GameLoop_updateCallsLimit, _GameLoop_tick;
 import { Logger } from "../logger/Logger";
-import { FpsCounter } from "./FpsCounter";
 export class GameLoop {
     constructor(options) {
         _GameLoop_requestAnimationFrameFn.set(this, void 0);
@@ -36,7 +35,6 @@ export class GameLoop {
             const deltaTimeMillis = currentTimeMillis - ((_a = __classPrivateFieldGet(this, _GameLoop_previousTimeMillis, "f")) !== null && _a !== void 0 ? _a : currentTimeMillis);
             __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, __classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f") + deltaTimeMillis, "f");
             __classPrivateFieldSet(this, _GameLoop_previousTimeMillis, currentTimeMillis, "f");
-            this.fpsCounter.track(deltaTimeMillis);
             __classPrivateFieldSet(this, _GameLoop_updateCallsCounter, 0, "f");
             while (__classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f") >= __classPrivateFieldGet(this, _GameLoop_expectedTimeStepMillis, "f")) {
                 __classPrivateFieldSet(this, _GameLoop_updateCallsCounter, __classPrivateFieldGet(this, _GameLoop_updateCallsCounter, "f") + 1, "f");
@@ -56,9 +54,6 @@ export class GameLoop {
         __classPrivateFieldSet(this, _GameLoop_requestAnimationFrameFn, options.requestAnimationFrameFn, "f");
         __classPrivateFieldSet(this, _GameLoop_documentVisibilityStateProvider, options.documentVisibilityStateProvider, "f");
         __classPrivateFieldSet(this, _GameLoop_expectedTimeStepMillis, 1000 / options.desiredUpdateFps, "f");
-        this.fpsCounter = new FpsCounter({
-            historySize: options.desiredUpdateFps,
-        });
     }
     start(callbacks) {
         __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn = callbacks.updateFn;
