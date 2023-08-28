@@ -49,8 +49,8 @@ export class BeetPx {
     static get dt() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).dt;
     }
-    static get averageFps() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).averageFps;
+    static get averageRenderFps() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).averageRenderFps;
     }
     //
     // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯

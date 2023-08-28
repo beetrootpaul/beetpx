@@ -74,7 +74,7 @@ export class Framework {
   #frameNumber: number = 0;
   #millisSinceStarted: number = 0;
   #millisSinceLastUpdate: number = 0;
-  averageFps: number = 1;
+  averageRenderFps: number = 1;
 
   get frameNumber(): number {
     return this.#frameNumber;
@@ -160,7 +160,8 @@ export class Framework {
     });
 
     this.#gameLoop = new GameLoop({
-      desiredFps: 60,
+      // TODO: make it configurable 30 or 60
+      desiredUpdateFps: 60,
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
     });
 
@@ -251,7 +252,10 @@ export class Framework {
     this.gameInput.startListening();
 
     this.#gameLoop.start({
-      updateFn: (averageFps, deltaMillis) => {
+      updateFn: (averageRenderFps) => {
+        // TODO: TO BE REMOVED
+        const deltaMillis = 1 / 60;
+
         if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
           this.#fullScreen.toggle();
         }
@@ -279,7 +283,7 @@ export class Framework {
           this.audioApi.resumeAudioContextIfNeeded();
         }
 
-        this.averageFps = averageFps;
+        this.averageRenderFps = averageRenderFps;
 
         const shouldUpdate =
           !this.#frameByFrame ||

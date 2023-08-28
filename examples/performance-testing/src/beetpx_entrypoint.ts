@@ -8,14 +8,14 @@ import {
 } from "../../../src";
 
 const updateCallsMonitoring = {
-  history: Array.from({ length: 32 }, () => 0),
+  history: Array.from({ length: 120 }, () => 0),
   historyIndex: 0,
 };
 
 const logoInnerColor = SolidColor.fromRgbCssHex("#125359");
 const logoOuterColor = SolidColor.fromRgbCssHex("#ff6e59");
 
-const velocity = 64;
+const velocity = 2;
 
 const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
 let logoPositionBase = Vector2d.zero;
@@ -53,7 +53,7 @@ BeetPx.init(
     updateCallsMonitoring.history[updateCallsMonitoring.historyIndex] += 1;
 
     console.group("UPDATE");
-    BeetPx.logDebug(`FPS: ${BeetPx.averageFps}`);
+    BeetPx.logDebug(`FPS: ${BeetPx.averageRenderFps}`);
     BeetPx.logDebug(` #f: ${BeetPx.frameNumber}`);
     BeetPx.logDebug(`  t: ${BeetPx.t.toFixed(3)}s`);
     BeetPx.logDebug(` dt: ${BeetPx.dt.toFixed(3)}s`);
@@ -66,16 +66,16 @@ BeetPx.init(
     }
 
     if (BeetPx.isPressed("right")) {
-      logoPositionBase = logoPositionBase.add(velocity * BeetPx.dt, 0);
+      logoPositionBase = logoPositionBase.add(velocity, 0);
     }
     if (BeetPx.isPressed("left")) {
-      logoPositionBase = logoPositionBase.add(-velocity * BeetPx.dt, 0);
+      logoPositionBase = logoPositionBase.add(-velocity, 0);
     }
     if (BeetPx.isPressed("up")) {
-      logoPositionBase = logoPositionBase.add(0, -velocity * BeetPx.dt);
+      logoPositionBase = logoPositionBase.add(0, -velocity);
     }
     if (BeetPx.isPressed("down")) {
-      logoPositionBase = logoPositionBase.add(0, velocity * BeetPx.dt);
+      logoPositionBase = logoPositionBase.add(0, velocity);
     }
 
     if (BeetPx.wasJustPressed("menu")) {
@@ -86,11 +86,6 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
-    BeetPx.logInfo(
-      "#u:",
-      updateCallsMonitoring.history[updateCallsMonitoring.historyIndex],
-    );
-
     BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
 
     drawThings();
@@ -117,10 +112,11 @@ function drawUpdateCallsMonitoring(): void {
       barIndex < updateCallsMonitoring.history[columnIndex]!;
       barIndex++
     ) {
-      BeetPx.line(
-        v_(columnIndex * 4 + 1, 1 + barIndex * 2),
-        v_(2, 1),
-        SolidColor.fromRgbCssHex("#ffffff"),
+      BeetPx.pixel(
+        v_(columnIndex + 3, 1 + barIndex * 2),
+        columnIndex === updateCallsMonitoring.historyIndex
+          ? SolidColor.fromRgbCssHex("#ffffff")
+          : SolidColor.fromRgbCssHex("#ff8888"),
       );
     }
   }

@@ -44,7 +44,7 @@ export class AudioApi {
             __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
                 Logger.errorBeetPx(err);
             });
-            // TODO: are we sure we want to unmute here? What if it was intentionally muted?
+            // TODO: are we sure we want to unmute here? What if it was intentionally muted?!
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unmute).call(this);
         }
     }

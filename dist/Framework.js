@@ -64,7 +64,7 @@ export class Framework {
         _Framework_frameNumber.set(this, 0);
         _Framework_millisSinceStarted.set(this, 0);
         _Framework_millisSinceLastUpdate.set(this, 0);
-        this.averageFps = 1;
+        this.averageRenderFps = 1;
         __classPrivateFieldSet(this, _Framework_debugOptions, (_b = options.debug) !== null && _b !== void 0 ? _b : {
             available: false,
         }, "f");
@@ -122,7 +122,8 @@ export class Framework {
                 : undefined,
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
-            desiredFps: 60,
+            // TODO: make it configurable 30 or 60
+            desiredUpdateFps: 60,
             requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
         }), "f");
         this.storageApi = new StorageApi();
@@ -191,8 +192,10 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
     __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
     this.gameInput.startListening();
     __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
-        updateFn: (averageFps, deltaMillis) => {
+        updateFn: (averageRenderFps) => {
             var _b;
+            // TODO: TO BE REMOVED
+            const deltaMillis = 1 / 60;
             if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
                 __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
             }
@@ -216,7 +219,7 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
             if (this.gameInput.wasAnyButtonPressed()) {
                 this.audioApi.resumeAudioContextIfNeeded();
             }
-            this.averageFps = averageFps;
+            this.averageRenderFps = averageRenderFps;
             const shouldUpdate = !__classPrivateFieldGet(this, _Framework_frameByFrame, "f") ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
             this.gameInput.update({ skipGameButtons: !shouldUpdate });

@@ -69,7 +69,7 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
-    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
+    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#1754665"));
     BeetPx.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),

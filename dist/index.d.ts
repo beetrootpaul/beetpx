@@ -337,7 +337,7 @@ declare class Framework {
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
-    averageFps: number;
+    averageRenderFps: number;
     get frameNumber(): number;
     get t(): number;
     get dt(): number;
@@ -380,7 +380,7 @@ declare class BeetPx {
      * Delta time since last update call, in seconds.
      */
     static get dt(): Framework["dt"];
-    static get averageFps(): Framework["averageFps"];
+    static get averageRenderFps(): Framework["averageRenderFps"];
     static get audioContext(): AudioApi["audioContext"];
     static get globalGainNode(): AudioApi["globalGainNode"];
     static setOnStarted: Framework["setOnStarted"];

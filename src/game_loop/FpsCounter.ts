@@ -1,30 +1,21 @@
+// TODO: cover this with tests
 export class FpsCounter {
-  static readonly #fallbackFps = 1;
-
   readonly #samples: number[];
-  #nextIndex: number;
-  #averageFps: number;
+  #nextSampleIndex: number = 0;
+  #millisTotal: number = 0;
 
-  constructor(params: { bufferSize: number }) {
-    this.#samples = Array.from(
-      { length: params.bufferSize },
-      () => FpsCounter.#fallbackFps,
-    );
-    this.#nextIndex = 0;
-    this.#averageFps = FpsCounter.#fallbackFps;
+  constructor(params: { historySize: number }) {
+    this.#samples = Array.from({ length: params.historySize }, () => 0);
   }
 
   get averageFps(): number {
-    return this.#averageFps;
+    return Math.floor(this.#samples.length * (1000 / (this.#millisTotal || 1)));
   }
 
-  track(fps: number): void {
-    this.#samples[this.#nextIndex++] = fps;
-    this.#nextIndex = this.#nextIndex % this.#samples.length;
-
-    this.#averageFps = Math.floor(
-      this.#samples.reduce((sum, nextSample) => sum + nextSample, 0) /
-        this.#samples.length,
-    );
+  track(deltaTime: number): void {
+    this.#millisTotal -= this.#samples[this.#nextSampleIndex]!;
+    this.#samples[this.#nextSampleIndex] = deltaTime;
+    this.#millisTotal += deltaTime;
+    this.#nextSampleIndex = (this.#nextSampleIndex + 1) % this.#samples.length;
   }
 }

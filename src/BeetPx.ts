@@ -59,8 +59,8 @@ export class BeetPx {
     return this.#tryGetFramework().dt;
   }
 
-  static get averageFps(): Framework["averageFps"] {
-    return this.#tryGetFramework().averageFps;
+  static get averageRenderFps(): Framework["averageRenderFps"] {
+    return this.#tryGetFramework().averageRenderFps;
   }
 
   //
