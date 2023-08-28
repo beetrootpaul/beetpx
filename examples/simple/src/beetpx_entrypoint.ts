@@ -3,6 +3,7 @@ import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 BeetPx.init(
   {
     gameCanvasSize: "128x128",
+    desiredUpdateFps: 30,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
     debug: {
       available: !__BEETPX_IS_PROD__,
@@ -59,8 +60,8 @@ BeetPx.init(
     }
 
     logoPositionOffset = v_(
-      Math.cos((BeetPx.frameNumber / 60) * Math.PI),
-      Math.sin((BeetPx.frameNumber / 60) * Math.PI),
+      Math.cos((BeetPx.frameNumber / 30) * Math.PI),
+      Math.sin((BeetPx.frameNumber / 30) * Math.PI),
     ).mul(10);
 
     if (BeetPx.wasJustPressed("menu")) {

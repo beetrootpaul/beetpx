@@ -16,6 +16,8 @@ import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
+  // TODO: validation it is really one of these two values
+  desiredUpdateFps: 30 | 60;
   visibleTouchButtons: ButtonName[];
   debug?: {
     available: boolean;
@@ -154,8 +156,7 @@ export class Framework {
     });
 
     this.#gameLoop = new GameLoop({
-      // TODO: make it configurable 30 or 60
-      desiredUpdateFps: 60,
+      desiredUpdateFps: options.desiredUpdateFps,
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
       documentVisibilityStateProvider: document,
     });

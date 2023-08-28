@@ -310,6 +310,7 @@ declare class StorageApi {
 
 type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128";
+    desiredUpdateFps: 30 | 60;
     visibleTouchButtons: ButtonName[];
     debug?: {
         available: boolean;

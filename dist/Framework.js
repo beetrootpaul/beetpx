@@ -117,8 +117,7 @@ export class Framework {
                 : undefined,
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
-            // TODO: make it configurable 30 or 60
-            desiredUpdateFps: 60,
+            desiredUpdateFps: options.desiredUpdateFps,
             requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
             documentVisibilityStateProvider: document,
         }), "f");

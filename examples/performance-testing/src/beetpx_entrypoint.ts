@@ -7,6 +7,8 @@ import {
   Vector2d,
 } from "../../../src";
 
+const fps = 60;
+
 const updateCallsVisualization = {
   history: Array.from({ length: 120 }, () => 0),
   historyIndex: 0,
@@ -30,6 +32,7 @@ let numberOfEllipses = 4;
 BeetPx.init(
   {
     gameCanvasSize: "128x128",
+    desiredUpdateFps: fps,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
     debug: {
       available: true,
@@ -102,13 +105,13 @@ BeetPx.init(
 
     drawRenderFpsVisualization();
 
-    updateCallsVisualization.historyIndex =
-      (updateCallsVisualization.historyIndex + 1) %
+    updateCallsVisualization.historyIndex++;
+    updateCallsVisualization.historyIndex %=
       updateCallsVisualization.history.length;
     updateCallsVisualization.history[updateCallsVisualization.historyIndex] = 0;
 
-    renderFpsVisualization.historyIndex =
-      (renderFpsVisualization.historyIndex + 1) %
+    renderFpsVisualization.historyIndex++;
+    renderFpsVisualization.historyIndex %=
       renderFpsVisualization.history.length;
   });
 
@@ -178,7 +181,7 @@ function drawThings(): void {
 
   BeetPx.sprite(
     spr_("logo.png")(0, 0, 16, 16),
-    logoPositionBase.add(calculateLogoPositionOffset(1.5 * 60)),
+    logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),
   );
 
   const prevMapping = BeetPx.mapSpriteColors([
@@ -200,7 +203,7 @@ function drawThings(): void {
 
 function calculateLogoPositionOffset(frameNumber: number): Vector2d {
   return v_(
-    Math.cos((frameNumber / 60) * Math.PI),
-    Math.sin((frameNumber / 60) * Math.PI),
+    Math.cos((frameNumber / fps) * Math.PI),
+    Math.sin((frameNumber / fps) * Math.PI),
   ).mul(24);
 }
