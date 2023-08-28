@@ -20,6 +20,16 @@ npm run typecheck
 # Make sure tests didn't break due to most recent changes
 npm test
 
+# Perform similar steps for example projects
+cd ./examples/performance-testing
+npm run format
+npm run typecheck
+cd ../../
+cd ./examples/simple
+npm run format
+npm run typecheck
+cd ../../
+
 # Generate up-to-date JS and .d.ts files out of the TypeScript source.
 #   Thanks to this command being run on every commit, users can refer to
 #   any commit of this repo in their `package.json` files and have BeetPx
