@@ -19,19 +19,7 @@ export type FrameworkOptions = {
   // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
   visibleTouchButtons: ButtonName[];
-  debug?: {
-    available: boolean;
-    /**
-     * A key to toggle debug mode on/off. Has to match a
-     * [KeyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
-     * of a desired key.
-     */
-    toggleKey?: string;
-    frameByFrame?: {
-      activateKey?: string;
-      stepKey?: string;
-    };
-  };
+  debugFeatures: boolean;
 };
 
 export type OnAssetsLoaded = {
@@ -43,7 +31,6 @@ export class Framework {
   static readonly #storageDebugDisabledKey = "framework__debug_disabled";
   static readonly #storageDebugDisabledTrue = "yes";
 
-  readonly #debugOptions: FrameworkOptions["debug"];
   #frameByFrame: boolean;
 
   readonly #gameCanvasSize: Vector2d;
@@ -85,10 +72,7 @@ export class Framework {
   }
 
   constructor(options: FrameworkOptions) {
-    this.#debugOptions = options.debug ?? {
-      available: false,
-    };
-    DebugMode.enabled = this.#debugOptions?.available
+    DebugMode.enabled = options.debugFeatures
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue
       : false;
@@ -143,16 +127,7 @@ export class Framework {
       muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
       // TODO: are those selectors for both touch and mouse? Even if so, make them separate
       fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
-      // TODO: extract ";", ",", and "." to some file about debugging
-      debugToggleKey: this.#debugOptions?.available
-        ? this.#debugOptions?.toggleKey ?? ";"
-        : undefined,
-      debugFrameByFrameActivateKey: this.#debugOptions?.available
-        ? this.#debugOptions.frameByFrame?.activateKey ?? ","
-        : undefined,
-      debugFrameByFrameStepKey: this.#debugOptions?.available
-        ? this.#debugOptions.frameByFrame?.stepKey ?? "."
-        : undefined,
+      enableDebugInputs: options.debugFeatures,
     });
 
     this.#gameLoop = new GameLoop({

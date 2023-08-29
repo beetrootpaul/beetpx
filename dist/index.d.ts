@@ -137,12 +137,11 @@ type FontAsset = {
 type SoundAsset = {
     audioBuffer: AudioBuffer;
 };
-type AssetsParams = {
-    decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
-};
 declare class Assets {
     #private;
-    constructor(params: AssetsParams);
+    constructor(params: {
+        decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
+    });
     loadAssets(assetsToLoad: AssetsToLoad): Promise<void>;
     getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset;
     getFontAsset(fontId: FontId): FontAsset;
@@ -248,14 +247,6 @@ declare class Button {
 }
 
 type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
-type GameInputParams = {
-    visibleTouchButtons: ButtonName[];
-    muteButtonsSelector: string;
-    fullScreenButtonsSelector: string;
-    debugToggleKey?: string;
-    debugFrameByFrameActivateKey?: string;
-    debugFrameByFrameStepKey?: string;
-};
 declare class GameInput {
     #private;
     readonly gameButtons: Buttons;
@@ -264,7 +255,12 @@ declare class GameInput {
     readonly buttonDebugToggle: Button;
     readonly buttonFrameByFrameToggle: Button;
     readonly buttonFrameByFrameStep: Button;
-    constructor(params: GameInputParams);
+    constructor(params: {
+        visibleTouchButtons: ButtonName[];
+        muteButtonsSelector: string;
+        fullScreenButtonsSelector: string;
+        enableDebugInputs: boolean;
+    });
     startListening(): void;
     update(params: {
         skipGameButtons: boolean;
@@ -312,19 +308,7 @@ type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128";
     desiredUpdateFps: 30 | 60;
     visibleTouchButtons: ButtonName[];
-    debug?: {
-        available: boolean;
-        /**
-         * A key to toggle debug mode on/off. Has to match a
-         * [KeyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
-         * of a desired key.
-         */
-        toggleKey?: string;
-        frameByFrame?: {
-            activateKey?: string;
-            stepKey?: string;
-        };
-    };
+    debugFeatures: boolean;
 };
 type OnAssetsLoaded = {
     startGame: () => void;

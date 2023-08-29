@@ -9,23 +9,25 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _MouseGameInput_params, _MouseGameInput_eventsSinceLastUpdate;
+var _MouseGameInput_muteButtonsSelector, _MouseGameInput_fullScreenButtonsSelector, _MouseGameInput_eventsSinceLastUpdate;
 export class MouseGameInput {
     constructor(params) {
-        _MouseGameInput_params.set(this, void 0);
+        _MouseGameInput_muteButtonsSelector.set(this, void 0);
+        _MouseGameInput_fullScreenButtonsSelector.set(this, void 0);
         _MouseGameInput_eventsSinceLastUpdate.set(this, new Set());
-        __classPrivateFieldSet(this, _MouseGameInput_params, params, "f");
+        __classPrivateFieldSet(this, _MouseGameInput_muteButtonsSelector, params.muteButtonsSelector, "f");
+        __classPrivateFieldSet(this, _MouseGameInput_fullScreenButtonsSelector, params.fullScreenButtonsSelector, "f");
     }
     startListening() {
         document
-            .querySelectorAll(__classPrivateFieldGet(this, _MouseGameInput_params, "f").muteButtonsSelector)
+            .querySelectorAll(__classPrivateFieldGet(this, _MouseGameInput_muteButtonsSelector, "f"))
             .forEach((button) => {
             button.addEventListener("click", () => {
                 __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").add("mute_unmute_toggle");
             });
         });
         document
-            .querySelectorAll(__classPrivateFieldGet(this, _MouseGameInput_params, "f").fullScreenButtonsSelector)
+            .querySelectorAll(__classPrivateFieldGet(this, _MouseGameInput_fullScreenButtonsSelector, "f"))
             .forEach((button) => {
             button.addEventListener("click", () => {
                 __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").add("full_screen");
@@ -39,4 +41,4 @@ export class MouseGameInput {
         __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").clear();
     }
 }
-_MouseGameInput_params = new WeakMap(), _MouseGameInput_eventsSinceLastUpdate = new WeakMap();
+_MouseGameInput_muteButtonsSelector = new WeakMap(), _MouseGameInput_fullScreenButtonsSelector = new WeakMap(), _MouseGameInput_eventsSinceLastUpdate = new WeakMap();

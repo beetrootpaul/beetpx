@@ -42,10 +42,6 @@ export type SoundAsset = {
   audioBuffer: AudioBuffer;
 };
 
-type AssetsParams = {
-  decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
-};
-
 export class Assets {
   readonly #decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
 
@@ -60,7 +56,9 @@ export class Assets {
   > = new Map();
   #sounds: Map<SoundUrl, SoundAsset> = new Map();
 
-  constructor(params: AssetsParams) {
+  constructor(params: {
+    decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
+  }) {
     this.#decodeAudioData = params.decodeAudioData;
   }
 

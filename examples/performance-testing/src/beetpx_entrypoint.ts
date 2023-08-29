@@ -34,14 +34,7 @@ BeetPx.init(
     gameCanvasSize: "128x128",
     desiredUpdateFps: fps,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
-    debug: {
-      available: true,
-      toggleKey: ";",
-      frameByFrame: {
-        activateKey: ",",
-        stepKey: ".",
-      },
-    },
+    debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
     images: [{ url: "logo.png" }],
@@ -66,6 +59,7 @@ BeetPx.init(
     BeetPx.logDebug(`FPS: ${BeetPx.renderFps}`);
     BeetPx.logDebug(`frame: ${BeetPx.frameNumber}`);
 
+    // TODO: rework these buttons for Xbox controller
     if (BeetPx.wasJustPressed("x")) {
       numberOfEllipses = numberOfEllipses * 2;
     }
@@ -86,6 +80,7 @@ BeetPx.init(
       logoPositionBase = logoPositionBase.add(0, velocity);
     }
 
+    // TODO: wrong button on Xbox controller :/
     if (BeetPx.wasJustPressed("menu")) {
       BeetPx.restart();
     }

@@ -23,15 +23,6 @@ export type GameInputEvent =
   | "frame_by_frame_toggle"
   | "frame_by_frame_step";
 
-type GameInputParams = {
-  visibleTouchButtons: ButtonName[];
-  muteButtonsSelector: string;
-  fullScreenButtonsSelector: string;
-  debugToggleKey?: string;
-  debugFrameByFrameActivateKey?: string;
-  debugFrameByFrameStepKey?: string;
-};
-
 export class GameInput {
   readonly #specializedGameInputs: SpecializedGameInput[];
 
@@ -43,16 +34,19 @@ export class GameInput {
   readonly buttonFrameByFrameToggle: Button;
   readonly buttonFrameByFrameStep: Button;
 
-  constructor(params: GameInputParams) {
+  constructor(params: {
+    visibleTouchButtons: ButtonName[];
+    muteButtonsSelector: string;
+    fullScreenButtonsSelector: string;
+    enableDebugInputs: boolean;
+  }) {
     this.#specializedGameInputs = [
       new MouseGameInput({
         muteButtonsSelector: params.muteButtonsSelector,
         fullScreenButtonsSelector: params.fullScreenButtonsSelector,
       }),
       new KeyboardGameInput({
-        debugToggleKey: params.debugToggleKey,
-        debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
-        debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
+        enableDebugInputs: params.enableDebugInputs,
       }),
       new TouchGameInput({
         visibleButtons: params.visibleTouchButtons,

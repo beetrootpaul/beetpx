@@ -5,14 +5,7 @@ BeetPx.init(
     gameCanvasSize: "128x128",
     desiredUpdateFps: 30,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
-    debug: {
-      available: !__BEETPX_IS_PROD__,
-      toggleKey: ";",
-      frameByFrame: {
-        activateKey: ",",
-        stepKey: ".",
-      },
-    },
+    debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
     images: [{ url: "logo.png" }],

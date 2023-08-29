@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "beetpx dev",
-    "build": "beetpx build && beetpx preview",
+    "prod": "beetpx build && beetpx preview",
     "itch": "beetpx build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/",
     "typecheck": "tsc"

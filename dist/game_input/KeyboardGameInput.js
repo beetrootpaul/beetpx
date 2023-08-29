@@ -34,14 +34,10 @@ export class KeyboardGameInput {
             ["F", "full_screen"],
         ]));
         _KeyboardGameInput_eventsSinceLastUpdate.set(this, new Set());
-        if (params.debugToggleKey) {
-            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(params.debugToggleKey, "debug_toggle");
-        }
-        if (params.debugFrameByFrameActivateKey) {
-            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(params.debugFrameByFrameActivateKey, "frame_by_frame_toggle");
-        }
-        if (params.debugFrameByFrameStepKey) {
-            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(params.debugFrameByFrameStepKey, "frame_by_frame_step");
+        if (params.enableDebugInputs) {
+            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(";", "debug_toggle");
+            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(",", "frame_by_frame_toggle");
+            __classPrivateFieldGet(this, _KeyboardGameInput_keyMapping, "f").set(".", "frame_by_frame_step");
         }
     }
     startListening() {

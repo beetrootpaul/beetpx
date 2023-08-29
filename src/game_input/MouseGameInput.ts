@@ -1,31 +1,31 @@
 import { GameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
-type GuiGameInputParams = {
-  muteButtonsSelector: string;
-  fullScreenButtonsSelector: string;
-};
-
 export class MouseGameInput implements SpecializedGameInput {
-  readonly #params: GuiGameInputParams;
+  readonly #muteButtonsSelector: string;
+  readonly #fullScreenButtonsSelector: string;
 
   readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
     new Set<GameInputEvent>();
 
-  constructor(params: GuiGameInputParams) {
-    this.#params = params;
+  constructor(params: {
+    muteButtonsSelector: string;
+    fullScreenButtonsSelector: string;
+  }) {
+    this.#muteButtonsSelector = params.muteButtonsSelector;
+    this.#fullScreenButtonsSelector = params.fullScreenButtonsSelector;
   }
 
   startListening(): void {
     document
-      .querySelectorAll<HTMLElement>(this.#params.muteButtonsSelector)
+      .querySelectorAll<HTMLElement>(this.#muteButtonsSelector)
       .forEach((button) => {
         button.addEventListener("click", () => {
           this.#eventsSinceLastUpdate.add("mute_unmute_toggle");
         });
       });
     document
-      .querySelectorAll<HTMLElement>(this.#params.fullScreenButtonsSelector)
+      .querySelectorAll<HTMLElement>(this.#fullScreenButtonsSelector)
       .forEach((button) => {
         button.addEventListener("click", () => {
           this.#eventsSinceLastUpdate.add("full_screen");

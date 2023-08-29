@@ -25,9 +25,7 @@ export class GameInput {
                 fullScreenButtonsSelector: params.fullScreenButtonsSelector,
             }),
             new KeyboardGameInput({
-                debugToggleKey: params.debugToggleKey,
-                debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
-                debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
+                enableDebugInputs: params.enableDebugInputs,
             }),
             new TouchGameInput({
                 visibleButtons: params.visibleTouchButtons,
