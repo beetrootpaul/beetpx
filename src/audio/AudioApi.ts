@@ -56,7 +56,7 @@ export class AudioApi {
       this.#audioContext.resume().catch((err) => {
         Logger.errorBeetPx(err);
       });
-      // TODO: are we sure we want to unmute here? What if it was intentionally muted?
+      // TODO: are we sure we want to unmute here? What if it was intentionally muted?!
       this.#unmute();
     }
   }

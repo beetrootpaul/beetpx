@@ -1,9 +1,15 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+git_branch="$(git rev-parse --abbrev-ref HEAD)"
 
-# If version go bumped in package.json: to update the version in package-lock.json as well
-npm install
+# Assumption for all `if [ "$branch" = "main" ]` blocks:
+#   we develop on branches other than `main` and we create new versions on `main`
+
+if [ "$branch" = "main" ]; then
+  # If version got bumped in package.json, update the version in package-lock.json as well
+  npm install
+fi
 
 # Make sure everything is formatted as desired
 npm run format
@@ -14,14 +20,31 @@ npm run typecheck
 # Make sure tests didn't break due to most recent changes
 npm test
 
+# Perform similar steps for example projects
+cd ./examples/performance-testing
+npm run format
+npm run typecheck
+cd ../../
+cd ./examples/simple
+npm run format
+npm run typecheck
+cd ../../
+
 # Generate up-to-date JS and .d.ts files out of the TypeScript source.
 #   Thanks to this command being run on every commit, users can refer to
 #   any commit of this repo in their `package.json` files and have BeetPx
 #   ready to use there.
+# We do this on all branches, because during framework development we might
+#   want to install a specific non-versioned commit of BeetPx in a game
+#   repository.
 npm run compile
 
-# Generate up-to-date HTML documentation
-npm run docs:generate
+if [ "$branch" = "main" ]; then
+  # Generate up-to-date HTML documentation
+  npm run docs:generate
+fi
 
 # Whatever was changed due to commands above, let's add it to the commit
 git add --all .
+
+# TODO: visit all examples here and format their code and typecheck as well

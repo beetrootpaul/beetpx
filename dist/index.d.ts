@@ -52,6 +52,7 @@ declare class Vector2d implements PrintDebug {
     sign(): Vector2d;
     abs(): Vector2d;
     floor(): Vector2d;
+    ceil(): Vector2d;
     round(): Vector2d;
     eq(other: Vector2d): boolean;
     eq(value: number): boolean;
@@ -152,7 +153,6 @@ declare class Utils {
     static noop(): void;
     static clamp(a: number, b: number, c: number): number;
     static repeatN(n: number, callback: (i: number) => void): void;
-    static booleanChangingEveryNSeconds(n: number): boolean;
     static booleanChangingEveryNthFrame(n: number): boolean;
     static get offset8Directions(): Vector2d[];
     static measureText(text: string): Vector2d;
@@ -239,12 +239,12 @@ declare class DrawApi {
 
 declare class Button {
     #private;
-    static readonly repeatingStartSeconds = 0.5;
-    static readonly repeatingIntervalSeconds = 0.1334;
+    static readonly repeatingFramesStart = 30;
+    static readonly repeatingFramesInterval = 8;
     get isPressed(): boolean;
     wasJustPressed(repeating: boolean): boolean;
     wasJustReleased(repeating: boolean): boolean;
-    update(isPressed: boolean, secondsPassed: number): void;
+    update(isPressed: boolean): void;
 }
 
 type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
@@ -285,14 +285,13 @@ declare class Buttons {
 
 declare class Timer {
     #private;
-    constructor(seconds: number);
-    /**
-     * How many seconds has left until the timer ends.
-     */
-    get left(): number;
+    constructor(params: {
+        frames: number;
+    });
+    get framesLeft(): number;
     get progress(): number;
     get hasFinished(): boolean;
-    update(secondsPassed: number): void;
+    update(): void;
 }
 
 declare class DebugMode {
@@ -311,6 +310,7 @@ declare class StorageApi {
 
 type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128";
+    desiredUpdateFps: 30 | 60;
     visibleTouchButtons: ButtonName[];
     debug?: {
         available: boolean;
@@ -336,10 +336,8 @@ declare class Framework {
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
-    averageFps: number;
     get frameNumber(): number;
-    get t(): number;
-    get dt(): number;
+    get renderFps(): number;
     constructor(options: FrameworkOptions);
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
@@ -370,16 +368,7 @@ declare class BeetPx {
      * It counts update calls, not draw calls.
      */
     static get frameNumber(): Framework["frameNumber"];
-    /**
-     * Time since game started, in seconds.
-     * It gets reset to 0 when `BeetPx.restart()` is called.
-     */
-    static get t(): Framework["t"];
-    /**
-     * Delta time since last update call, in seconds.
-     */
-    static get dt(): Framework["dt"];
-    static get averageFps(): Framework["averageFps"];
+    static get renderFps(): Framework["renderFps"];
     static get audioContext(): AudioApi["audioContext"];
     static get globalGainNode(): AudioApi["globalGainNode"];
     static setOnStarted: Framework["setOnStarted"];

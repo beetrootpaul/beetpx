@@ -44,23 +44,8 @@ export class BeetPx {
     return this.#tryGetFramework().frameNumber;
   }
 
-  /**
-   * Time since game started, in seconds.
-   * It gets reset to 0 when `BeetPx.restart()` is called.
-   */
-  static get t(): Framework["t"] {
-    return this.#tryGetFramework().t;
-  }
-
-  /**
-   * Delta time since last update call, in seconds.
-   */
-  static get dt(): Framework["dt"] {
-    return this.#tryGetFramework().dt;
-  }
-
-  static get averageFps(): Framework["averageFps"] {
-    return this.#tryGetFramework().averageFps;
+  static get renderFps(): Framework["renderFps"] {
+    return this.#tryGetFramework().renderFps;
   }
 
   //

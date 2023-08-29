@@ -3,6 +3,7 @@ import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
 BeetPx.init(
   {
     gameCanvasSize: "128x128",
+    desiredUpdateFps: 30,
     visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
     debug: {
       available: !__BEETPX_IS_PROD__,
@@ -21,7 +22,7 @@ BeetPx.init(
 ).then(({ startGame }) => {
   let melodyPlaybackId: number = -1;
 
-  const velocity = 64;
+  const velocity = 2;
 
   const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
   let logoPositionBase = Vector2d.zero;
@@ -37,10 +38,6 @@ BeetPx.init(
   });
 
   BeetPx.setOnUpdate(() => {
-    BeetPx.logDebug(`FPS: ${BeetPx.averageFps}`);
-    BeetPx.logDebug(`  t: ${BeetPx.t.toFixed(3)}s`);
-    BeetPx.logDebug(` dt: ${BeetPx.dt.toFixed(3)}s`);
-
     if (BeetPx.wasJustPressed("x")) {
       BeetPx.unmuteSound(melodyPlaybackId);
     }
@@ -50,21 +47,21 @@ BeetPx.init(
 
     // TODO: consider exposing some XY (-1,1) representation of directions
     if (BeetPx.isPressed("right")) {
-      logoPositionBase = logoPositionBase.add(velocity * BeetPx.dt, 0);
+      logoPositionBase = logoPositionBase.add(velocity, 0);
     }
     if (BeetPx.isPressed("left")) {
-      logoPositionBase = logoPositionBase.add(-velocity * BeetPx.dt, 0);
+      logoPositionBase = logoPositionBase.add(-velocity, 0);
     }
     if (BeetPx.isPressed("up")) {
-      logoPositionBase = logoPositionBase.add(0, -velocity * BeetPx.dt);
+      logoPositionBase = logoPositionBase.add(0, -velocity);
     }
     if (BeetPx.isPressed("down")) {
-      logoPositionBase = logoPositionBase.add(0, velocity * BeetPx.dt);
+      logoPositionBase = logoPositionBase.add(0, velocity);
     }
 
     logoPositionOffset = v_(
-      Math.cos(BeetPx.t * Math.PI),
-      Math.sin(BeetPx.t * Math.PI),
+      Math.cos((BeetPx.frameNumber / 30) * Math.PI),
+      Math.sin((BeetPx.frameNumber / 30) * Math.PI),
     ).mul(10);
 
     if (BeetPx.wasJustPressed("menu")) {
@@ -89,5 +86,3 @@ BeetPx.init(
 
   startGame();
 });
-
-// TODO: this example, on itch, runs significantly faster when open on a mobile :thinking:

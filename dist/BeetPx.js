@@ -36,21 +36,8 @@ export class BeetPx {
     static get frameNumber() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frameNumber;
     }
-    /**
-     * Time since game started, in seconds.
-     * It gets reset to 0 when `BeetPx.restart()` is called.
-     */
-    static get t() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).t;
-    }
-    /**
-     * Delta time since last update call, in seconds.
-     */
-    static get dt() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).dt;
-    }
-    static get averageFps() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).averageFps;
+    static get renderFps() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).renderFps;
     }
     //
     // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯

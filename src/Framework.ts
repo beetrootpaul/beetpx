@@ -16,6 +16,8 @@ import { v_, Vector2d } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
+  // TODO: validation it is really one of these two values
+  desiredUpdateFps: 30 | 60;
   visibleTouchButtons: ButtonName[];
   debug?: {
     available: boolean;
@@ -72,20 +74,14 @@ export class Framework {
   #centeringOffset = Vector2d.zero;
 
   #frameNumber: number = 0;
-  #millisSinceStarted: number = 0;
-  #millisSinceLastUpdate: number = 0;
-  averageFps: number = 1;
+  #renderFps: number = 1;
 
   get frameNumber(): number {
     return this.#frameNumber;
   }
 
-  get t(): number {
-    return this.#millisSinceStarted / 1000;
-  }
-
-  get dt(): number {
-    return this.#millisSinceLastUpdate / 1000;
+  get renderFps(): number {
+    return this.#renderFps;
   }
 
   constructor(options: FrameworkOptions) {
@@ -160,8 +156,9 @@ export class Framework {
     });
 
     this.#gameLoop = new GameLoop({
-      desiredFps: 60,
+      desiredUpdateFps: options.desiredUpdateFps,
       requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
+      documentVisibilityStateProvider: document,
     });
 
     this.storageApi = new StorageApi();
@@ -214,8 +211,6 @@ export class Framework {
 
   restart() {
     this.#frameNumber = 0;
-    this.#millisSinceStarted = 0;
-    this.#millisSinceLastUpdate = 0;
 
     this.#onStarted?.();
   }
@@ -241,8 +236,6 @@ export class Framework {
     });
 
     this.#frameNumber = 0;
-    this.#millisSinceStarted = 0;
-    this.#millisSinceLastUpdate = 0;
 
     this.#onStarted?.();
 
@@ -251,7 +244,7 @@ export class Framework {
     this.gameInput.startListening();
 
     this.#gameLoop.start({
-      updateFn: (averageFps, deltaMillis) => {
+      updateFn: () => {
         if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
           this.#fullScreen.toggle();
         }
@@ -279,8 +272,6 @@ export class Framework {
           this.audioApi.resumeAudioContextIfNeeded();
         }
 
-        this.averageFps = averageFps;
-
         const shouldUpdate =
           !this.#frameByFrame ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
@@ -290,9 +281,7 @@ export class Framework {
         if (shouldUpdate) {
           if (this.#frameByFrame) {
             Logger.infoBeetPx(
-              `Running onUpdate for frame=${
-                this.#frameNumber
-              } with dt=${deltaMillis.toFixed(0)}ms`,
+              `Running onUpdate for frame: ${this.#frameNumber}`,
             );
           }
 
@@ -302,17 +291,13 @@ export class Framework {
             this.#frameNumber >= Number.MAX_SAFE_INTEGER
               ? 0
               : this.#frameNumber + 1;
-
-          this.#millisSinceStarted =
-            this.#millisSinceStarted === Number.MAX_SAFE_INTEGER
-              ? 0
-              : this.#millisSinceStarted + deltaMillis;
-
-          this.#millisSinceLastUpdate = deltaMillis;
         }
       },
-      renderFn: () => {
+      renderFn: (renderFps) => {
+        this.#renderFps = renderFps;
+
         this.#onDraw?.();
+
         this.#render();
       },
     });

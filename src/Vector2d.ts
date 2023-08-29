@@ -22,6 +22,7 @@ export class Vector2d implements PrintDebug {
     return [Vector2d.min(xy1, xy2), Vector2d.max(xy1, xy2)];
   }
 
+  // TODO: sounds like something to mover outside the basic set of fns in Vector2d
   static forEachIntXyWithinRectOf(
     xy: Vector2d,
     wh: Vector2d,
@@ -77,7 +78,9 @@ export class Vector2d implements PrintDebug {
   floor(): Vector2d {
     return new Vector2d(Math.floor(this.x), Math.floor(this.y));
   }
-
+  ceil(): Vector2d {
+    return new Vector2d(Math.ceil(this.x), Math.ceil(this.y));
+  }
   round(): Vector2d {
     return new Vector2d(Math.round(this.x), Math.round(this.y));
   }

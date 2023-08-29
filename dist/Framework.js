@@ -18,7 +18,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_debugOptions, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_millisSinceStarted, _Framework_millisSinceLastUpdate, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_debugOptions, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 import { Assets } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { SolidColor } from "./Color";
@@ -37,11 +37,8 @@ export class Framework {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
     }
-    get t() {
-        return __classPrivateFieldGet(this, _Framework_millisSinceStarted, "f") / 1000;
-    }
-    get dt() {
-        return __classPrivateFieldGet(this, _Framework_millisSinceLastUpdate, "f") / 1000;
+    get renderFps() {
+        return __classPrivateFieldGet(this, _Framework_renderFps, "f");
     }
     constructor(options) {
         var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
@@ -62,9 +59,7 @@ export class Framework {
         _Framework_scaleToFill.set(this, 1);
         _Framework_centeringOffset.set(this, Vector2d.zero);
         _Framework_frameNumber.set(this, 0);
-        _Framework_millisSinceStarted.set(this, 0);
-        _Framework_millisSinceLastUpdate.set(this, 0);
-        this.averageFps = 1;
+        _Framework_renderFps.set(this, 1);
         __classPrivateFieldSet(this, _Framework_debugOptions, (_b = options.debug) !== null && _b !== void 0 ? _b : {
             available: false,
         }, "f");
@@ -122,8 +117,9 @@ export class Framework {
                 : undefined,
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
-            desiredFps: 60,
+            desiredUpdateFps: options.desiredUpdateFps,
             requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
+            documentVisibilityStateProvider: document,
         }), "f");
         this.storageApi = new StorageApi();
         const audioContext = new AudioContext();
@@ -161,12 +157,10 @@ export class Framework {
     restart() {
         var _b;
         __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
-        __classPrivateFieldSet(this, _Framework_millisSinceStarted, 0, "f");
-        __classPrivateFieldSet(this, _Framework_millisSinceLastUpdate, 0, "f");
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-_a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_millisSinceStarted = new WeakMap(), _Framework_millisSinceLastUpdate = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+_a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
     if (__BEETPX_IS_PROD__) {
         // - returned message seems to be ignored by some browsers, therefore using `""`
@@ -185,13 +179,11 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
         __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_setupHtmlCanvas).call(this);
     });
     __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
-    __classPrivateFieldSet(this, _Framework_millisSinceStarted, 0, "f");
-    __classPrivateFieldSet(this, _Framework_millisSinceLastUpdate, 0, "f");
     (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
     this.gameInput.startListening();
     __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
-        updateFn: (averageFps, deltaMillis) => {
+        updateFn: () => {
             var _b;
             if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
                 __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
@@ -216,26 +208,22 @@ _a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame
             if (this.gameInput.wasAnyButtonPressed()) {
                 this.audioApi.resumeAudioContextIfNeeded();
             }
-            this.averageFps = averageFps;
             const shouldUpdate = !__classPrivateFieldGet(this, _Framework_frameByFrame, "f") ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
             this.gameInput.update({ skipGameButtons: !shouldUpdate });
             if (shouldUpdate) {
                 if (__classPrivateFieldGet(this, _Framework_frameByFrame, "f")) {
-                    Logger.infoBeetPx(`Running onUpdate for frame=${__classPrivateFieldGet(this, _Framework_frameNumber, "f")} with dt=${deltaMillis.toFixed(0)}ms`);
+                    Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_frameNumber, "f")}`);
                 }
                 (_b = __classPrivateFieldGet(this, _Framework_onUpdate, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
                 __classPrivateFieldSet(this, _Framework_frameNumber, __classPrivateFieldGet(this, _Framework_frameNumber, "f") >= Number.MAX_SAFE_INTEGER
                     ? 0
                     : __classPrivateFieldGet(this, _Framework_frameNumber, "f") + 1, "f");
-                __classPrivateFieldSet(this, _Framework_millisSinceStarted, __classPrivateFieldGet(this, _Framework_millisSinceStarted, "f") === Number.MAX_SAFE_INTEGER
-                    ? 0
-                    : __classPrivateFieldGet(this, _Framework_millisSinceStarted, "f") + deltaMillis, "f");
-                __classPrivateFieldSet(this, _Framework_millisSinceLastUpdate, deltaMillis, "f");
             }
         },
-        renderFn: () => {
+        renderFn: (renderFps) => {
             var _b;
+            __classPrivateFieldSet(this, _Framework_renderFps, renderFps, "f");
             (_b = __classPrivateFieldGet(this, _Framework_onDraw, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
             __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_render).call(this);
         },

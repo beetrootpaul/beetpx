@@ -18,10 +18,6 @@ export class Utils {
         });
     }
     // TODO: tests for edge cases
-    static booleanChangingEveryNSeconds(n) {
-        return BeetPx.t % (n * 2) < n;
-    }
-    // TODO: tests for edge cases
     static booleanChangingEveryNthFrame(n) {
         return BeetPx.frameNumber % (n * 2) < n;
     }
