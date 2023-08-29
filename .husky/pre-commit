@@ -6,7 +6,7 @@ git_branch="$(git rev-parse --abbrev-ref HEAD)"
 # Assumption for all `if [ "$branch" = "main" ]` blocks:
 #   we develop on branches other than `main` and we create new versions on `main`
 
-if [ "$branch" = "main" ]; then
+if [ "$git_branch" = "main" ]; then
   # If version got bumped in package.json, update the version in package-lock.json as well
   npm install
 fi
@@ -39,7 +39,7 @@ cd ../../
 #   repository.
 npm run compile
 
-if [ "$branch" = "main" ]; then
+if [ "$git_branch" = "main" ]; then
   # Generate up-to-date HTML documentation
   npm run docs:generate
 fi

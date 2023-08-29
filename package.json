@@ -1,6 +1,6 @@
 {
   "name": "@beetpx/beetpx",
-  "version": "0.10.4",
+  "version": "0.11.0",
   "author": "Beetroot Paul",
   "license": "MIT",
   "description": "A mini framework for low-res browser games, written in TypeScript.",
