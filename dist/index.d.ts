@@ -288,6 +288,7 @@ declare class Timer {
     get progress(): number;
     get hasFinished(): boolean;
     update(): void;
+    restart(): void;
 }
 
 declare class DebugMode {

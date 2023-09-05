@@ -29,5 +29,9 @@ export class Timer {
     update() {
         __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_t, "f") - 1), "f");
     }
+    // TODO: cover with tests
+    restart() {
+        __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_frames, "f")), "f");
+    }
 }
 _Timer_frames = new WeakMap(), _Timer_t = new WeakMap();

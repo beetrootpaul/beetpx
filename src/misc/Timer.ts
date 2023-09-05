@@ -5,7 +5,6 @@ export class Timer {
 
   constructor(params: { frames: number }) {
     this.#frames = params.frames;
-
     this.#t = Math.max(0, this.#frames);
   }
 
@@ -23,5 +22,10 @@ export class Timer {
 
   update(): void {
     this.#t = Math.max(0, this.#t - 1);
+  }
+
+  // TODO: cover with tests
+  restart(): void {
+    this.#t = Math.max(0, this.#frames);
   }
 }
