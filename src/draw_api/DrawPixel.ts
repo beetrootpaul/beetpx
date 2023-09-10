@@ -7,6 +7,7 @@ import {
 } from "../Color";
 import { Vector2d } from "../Vector2d";
 import { ClippingRegion } from "./ClippingRegion";
+import { FillPattern } from "./FillPattern";
 
 export class DrawPixel {
   readonly #canvasBytes: Uint8ClampedArray;
@@ -31,6 +32,7 @@ export class DrawPixel {
     xy: Vector2d,
     color: Color,
     clippingRegion: ClippingRegion | null = null,
+    fillPattern: FillPattern = FillPattern.primaryOnly,
   ): void {
     xy = this.#options.disableRounding ? xy : xy.round();
 
@@ -41,20 +43,26 @@ export class DrawPixel {
     if (xy.gte(Vector2d.zero) && xy.lt(this.#canvasSize)) {
       const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
 
-      if (color instanceof CompositeColor) {
-        this.#drawSolid(i, color.primary);
-      } else if (color instanceof MappingColor) {
-        this.#drawSolid(
-          i,
-          color.getMappedColorFor(
-            this.#canvasBytes[i]!,
-            this.#canvasBytes[i + 1]!,
-            this.#canvasBytes[i + 2]!,
-            this.#canvasBytes[i + 3]!,
-          ),
-        );
+      if (fillPattern.hasPrimaryColorAt(xy)) {
+        if (color instanceof CompositeColor) {
+          this.#drawSolid(i, color.primary);
+        } else if (color instanceof MappingColor) {
+          this.#drawSolid(
+            i,
+            color.getMappedColorFor(
+              this.#canvasBytes[i]!,
+              this.#canvasBytes[i + 1]!,
+              this.#canvasBytes[i + 2]!,
+              this.#canvasBytes[i + 3]!,
+            ),
+          );
+        } else {
+          this.#drawSolid(i, color);
+        }
       } else {
-        this.#drawSolid(i, color);
+        if (color instanceof CompositeColor) {
+          this.#drawSolid(i, color.secondary);
+        }
       }
     }
   }

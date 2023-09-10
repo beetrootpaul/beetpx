@@ -32,13 +32,7 @@ export class DrawRect {
     clippingRegion: ClippingRegion | null = null,
   ): void {
     Vector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
-      if (fillPattern.hasPrimaryColorAt(xy)) {
-        this.#pixel.draw(xy, color, clippingRegion);
-      } else {
-        if (color instanceof CompositeColor) {
-          this.#pixel.draw(xy, color.secondary, clippingRegion);
-        }
-      }
+      this.#pixel.draw(xy, color, clippingRegion, fillPattern);
     });
   }
 }

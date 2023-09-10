@@ -85,6 +85,7 @@ export class DrawApi {
     this.#clippingRegion = null;
   }
 
+  // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
   // TODO: cover it with tests
   setFillPattern(fillPattern: FillPattern): void {
     this.#fillPattern = fillPattern;
@@ -200,7 +201,7 @@ export class DrawApi {
     );
   }
 
-  // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
+  // TODO: make sprite make use of fillPattern as well?
   sprite(sprite: Sprite, canvasXy: Vector2d): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(

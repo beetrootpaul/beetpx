@@ -12,6 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_options, _DrawPixel_drawSolid;
 import { CompositeColor, MappingColor, TransparentColor, } from "../Color";
 import { Vector2d } from "../Vector2d";
+import { FillPattern } from "./FillPattern";
 export class DrawPixel {
     constructor(canvasBytes, canvasSize, options = {}) {
         _DrawPixel_instances.add(this);
@@ -26,21 +27,28 @@ export class DrawPixel {
     // TODO: tests for MappingColor
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
-    draw(xy, color, clippingRegion = null) {
+    draw(xy, color, clippingRegion = null, fillPattern = FillPattern.primaryOnly) {
         xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : xy.round();
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }
         if (xy.gte(Vector2d.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
             const i = 4 * (xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f").x + xy.x);
-            if (color instanceof CompositeColor) {
-                __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.primary);
-            }
-            else if (color instanceof MappingColor) {
-                __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.getMappedColorFor(__classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 1], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 2], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 3]));
+            if (fillPattern.hasPrimaryColorAt(xy)) {
+                if (color instanceof CompositeColor) {
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.primary);
+                }
+                else if (color instanceof MappingColor) {
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.getMappedColorFor(__classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 1], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 2], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 3]));
+                }
+                else {
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color);
+                }
             }
             else {
-                __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color);
+                if (color instanceof CompositeColor) {
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.secondary);
+                }
             }
         }
     }

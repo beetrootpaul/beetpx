@@ -29,7 +29,6 @@ export class DrawLine {
     xy: Vector2d,
     wh: Vector2d,
     color: SolidColor | CompositeColor | MappingColor,
-    // TODO: implement fill pattern for the line (?)
     fillPattern: FillPattern = FillPattern.primaryOnly,
     clippingRegion: ClippingRegion | null = null,
   ): void {
@@ -64,7 +63,7 @@ export class DrawLine {
       //
       // DRAW THE CURRENT PIXEL
       //
-      this.#pixel.draw(currentXy, color, clippingRegion);
+      this.#pixel.draw(currentXy, color, clippingRegion, fillPattern);
 
       if (currentXy.eq(targetXy)) break;
 

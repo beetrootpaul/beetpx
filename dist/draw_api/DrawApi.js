@@ -59,6 +59,7 @@ export class DrawApi {
     removeClippingRegion() {
         __classPrivateFieldSet(this, _DrawApi_clippingRegion, null, "f");
     }
+    // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
     // TODO: cover it with tests
     setFillPattern(fillPattern) {
         __classPrivateFieldSet(this, _DrawApi_fillPattern, fillPattern, "f");
@@ -112,7 +113,7 @@ export class DrawApi {
     ellipseFilled(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
-    // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
+    // TODO: make sprite make use of fillPattern as well?
     sprite(sprite, canvasXy) {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
