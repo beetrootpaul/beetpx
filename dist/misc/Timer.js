@@ -14,7 +14,7 @@ export class Timer {
     constructor(params) {
         _Timer_frames.set(this, void 0);
         _Timer_t.set(this, void 0);
-        __classPrivateFieldSet(this, _Timer_frames, params.frames, "f");
+        __classPrivateFieldSet(this, _Timer_frames, Math.floor(params.frames), "f");
         __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_frames, "f")), "f");
     }
     get framesLeft() {

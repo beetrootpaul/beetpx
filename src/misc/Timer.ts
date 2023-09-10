@@ -4,7 +4,7 @@ export class Timer {
   #t: number;
 
   constructor(params: { frames: number }) {
-    this.#frames = params.frames;
+    this.#frames = Math.floor(params.frames);
     this.#t = Math.max(0, this.#frames);
   }
 
