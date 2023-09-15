@@ -30,8 +30,8 @@ export class DrawText {
         const colorFn = typeof color === "function" ? color : () => color;
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), new Map([
-                [fontAsset.imageTextColor.id(), colorFn(charSprite)],
-                [fontAsset.imageBgColor.id(), transparent_],
+                [fontAsset.imageTextColor.id, colorFn(charSprite)],
+                [fontAsset.imageBgColor.id, transparent_],
             ]), clippingRegion);
         }
     }

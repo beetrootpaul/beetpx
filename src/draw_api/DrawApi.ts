@@ -98,13 +98,13 @@ export class DrawApi {
     mapping.forEach(({ from, to }) => {
       previous.push({
         from,
-        to: this.#spriteColorMapping.get(from.id()) ?? from,
+        to: this.#spriteColorMapping.get(from.id) ?? from,
       });
       // TODO: consider writing a custom equality check function
-      if (from.id() === to.id()) {
-        this.#spriteColorMapping.delete(from.id());
+      if (from.id === to.id) {
+        this.#spriteColorMapping.delete(from.id);
       } else {
-        this.#spriteColorMapping.set(from.id(), to);
+        this.#spriteColorMapping.set(from.id, to);
       }
     });
     return previous;

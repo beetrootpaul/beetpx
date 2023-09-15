@@ -24,7 +24,7 @@ export class TestCanvas {
         expect(this.bytes.length).toEqual(this.size.x * this.size.y * 4);
         // then, let's proceed to the actual image check
         const { withMapping: asciiToColor, expectedImageAsAscii } = params;
-        const colorToAscii = new Map(Object.entries(asciiToColor).map(([ascii, color]) => [color.id(), ascii]));
+        const colorToAscii = new Map(Object.entries(asciiToColor).map(([ascii, color]) => [color.id, ascii]));
         const actualAscii = __classPrivateFieldGet(this, _TestCanvas_instances, "m", _TestCanvas_asAscii).call(this, colorToAscii);
         const expectedAscii = params.expectedImageAsAscii
             .trim()
@@ -51,7 +51,7 @@ _TestCanvas_instances = new WeakSet(), _TestCanvas_asAscii = function _TestCanva
             }
             else {
                 const color = new SolidColor(colorBytes[0], colorBytes[1], colorBytes[2]);
-                asciiImage += (_a = colorToAscii.get(color.id())) !== null && _a !== void 0 ? _a : "?";
+                asciiImage += (_a = colorToAscii.get(color.id)) !== null && _a !== void 0 ? _a : "?";
             }
         }
         asciiImage += "\n";

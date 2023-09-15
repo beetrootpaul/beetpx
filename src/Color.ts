@@ -3,21 +3,21 @@ export type ColorId = string;
 export interface Color {
   // TODO: `serialized()` might be a better name for it? As long as we provide `deserialize` as well…
   // meant to be used e.g. as textual key in `Map()`
-  id(): ColorId;
+  id: ColorId;
 }
 
 // TODO: split colors into separate files?
 
 export class TransparentColor implements Color {
-  id(): ColorId {
-    return "transparent";
-  }
+  readonly id: ColorId = "transparent";
 }
 
 export const transparent_ = new TransparentColor();
 
 // Red, green, and blue, each one as value between 0 and 255.
 export class SolidColor implements Color {
+  readonly id: ColorId;
+
   readonly r: number;
   readonly g: number;
   readonly b: number;
@@ -31,10 +31,7 @@ export class SolidColor implements Color {
     this.r = r;
     this.g = g;
     this.b = b;
-  }
-
-  id(): ColorId {
-    return "solid-" + this.asRgbCssHex();
+    this.id = "solid-" + this.asRgbCssHex();
   }
 
   asRgbCssHex(): string {
@@ -61,6 +58,8 @@ export class SolidColor implements Color {
 }
 
 export class CompositeColor implements Color {
+  readonly id: ColorId;
+
   readonly primary: SolidColor | TransparentColor;
   readonly secondary: SolidColor | TransparentColor;
 
@@ -70,10 +69,7 @@ export class CompositeColor implements Color {
   ) {
     this.primary = primary;
     this.secondary = secondary;
-  }
-
-  id(): ColorId {
-    return `composite:${this.primary.id()}:${this.secondary.id()}`;
+    this.id = `composite:${this.primary.id}:${this.secondary.id}`;
   }
 }
 
@@ -81,20 +77,16 @@ export class CompositeColor implements Color {
 export class MappingColor implements Color {
   static #nextId = 1;
 
-  readonly #mapping: (canvasRgba: {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-  }) => SolidColor | TransparentColor;
+  readonly id: ColorId = `mapping:${MappingColor.#nextId++}`;
+
+  readonly #mapping: (
+    canvasColor: SolidColor | TransparentColor,
+  ) => SolidColor | TransparentColor;
 
   constructor(
-    mapping: (canvasRgba: {
-      r: number;
-      g: number;
-      b: number;
-      a: number;
-    }) => SolidColor | TransparentColor,
+    mapping: (
+      canvasColor: SolidColor | TransparentColor,
+    ) => SolidColor | TransparentColor,
   ) {
     this.#mapping = mapping;
   }
@@ -105,10 +97,8 @@ export class MappingColor implements Color {
     b: number,
     a: number,
   ): SolidColor | TransparentColor {
-    return this.#mapping({ r, g, b, a });
-  }
-
-  id(): ColorId {
-    return `mapping:${MappingColor.#nextId++}`;
+    return this.#mapping(
+      a >= 0xff / 2 ? new SolidColor(r, g, b) : transparent_,
+    );
   }
 }

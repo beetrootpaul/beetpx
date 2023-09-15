@@ -469,9 +469,9 @@ describe("DrawSprite", () => {
       s(0, 0, 4, 4),
       v_(0, 0),
       new Map([
-        [c1.id(), c4],
-        [c2.id(), c5],
-        [c3.id(), ct],
+        [c1.id, c4],
+        [c2.id, c5],
+        [c3.id, ct],
       ]),
     );
 

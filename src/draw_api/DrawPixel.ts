@@ -47,15 +47,13 @@ export class DrawPixel {
         if (color instanceof CompositeColor) {
           this.#drawSolid(i, color.primary);
         } else if (color instanceof MappingColor) {
-          this.#drawSolid(
-            i,
-            color.getMappedColorFor(
-              this.#canvasBytes[i]!,
-              this.#canvasBytes[i + 1]!,
-              this.#canvasBytes[i + 2]!,
-              this.#canvasBytes[i + 3]!,
-            ),
+          const mappedColor = color.getMappedColorFor(
+            this.#canvasBytes[i]!,
+            this.#canvasBytes[i + 1]!,
+            this.#canvasBytes[i + 2]!,
+            this.#canvasBytes[i + 3]!,
           );
+          this.#drawSolid(i, mappedColor);
         } else {
           this.#drawSolid(i, color);
         }
@@ -68,12 +66,11 @@ export class DrawPixel {
   }
 
   #drawSolid(canvasIndex: number, color: SolidColor | TransparentColor) {
-    if (color instanceof TransparentColor) {
-      return;
+    if (color instanceof SolidColor) {
+      this.#canvasBytes[canvasIndex] = color.r;
+      this.#canvasBytes[canvasIndex + 1] = color.g;
+      this.#canvasBytes[canvasIndex + 2] = color.b;
+      this.#canvasBytes[canvasIndex + 3] = 0xff;
     }
-    this.#canvasBytes[canvasIndex] = color.r;
-    this.#canvasBytes[canvasIndex + 1] = color.g;
-    this.#canvasBytes[canvasIndex + 2] = color.b;
-    this.#canvasBytes[canvasIndex + 3] = 0xff;
   }
 }

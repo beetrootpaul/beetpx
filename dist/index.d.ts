@@ -1,36 +1,31 @@
 type ColorId = string;
 interface Color {
-    id(): ColorId;
+    id: ColorId;
 }
 declare class TransparentColor implements Color {
-    id(): ColorId;
+    readonly id: ColorId;
 }
 declare const transparent_: TransparentColor;
 declare class SolidColor implements Color {
+    readonly id: ColorId;
     readonly r: number;
     readonly g: number;
     readonly b: number;
     constructor(r: number, g: number, b: number);
-    id(): ColorId;
     asRgbCssHex(): string;
     static fromRgbCssHex(cssHex: string): SolidColor;
 }
 declare class CompositeColor implements Color {
+    readonly id: ColorId;
     readonly primary: SolidColor | TransparentColor;
     readonly secondary: SolidColor | TransparentColor;
     constructor(primary: SolidColor | TransparentColor, secondary: SolidColor | TransparentColor);
-    id(): ColorId;
 }
 declare class MappingColor implements Color {
     #private;
-    constructor(mapping: (canvasRgba: {
-        r: number;
-        g: number;
-        b: number;
-        a: number;
-    }) => SolidColor | TransparentColor);
+    readonly id: ColorId;
+    constructor(mapping: (canvasColor: SolidColor | TransparentColor) => SolidColor | TransparentColor);
     getMappedColorFor(r: number, g: number, b: number, a: number): SolidColor | TransparentColor;
-    id(): ColorId;
 }
 
 interface PrintDebug {

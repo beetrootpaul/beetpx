@@ -30,7 +30,7 @@ export class TestCanvas {
     const { withMapping: asciiToColor, expectedImageAsAscii } = params;
 
     const colorToAscii: Map<ColorId, string> = new Map(
-      Object.entries(asciiToColor).map(([ascii, color]) => [color.id(), ascii]),
+      Object.entries(asciiToColor).map(([ascii, color]) => [color.id, ascii]),
     );
 
     const actualAscii = this.#asAscii(colorToAscii);
@@ -67,7 +67,7 @@ export class TestCanvas {
             colorBytes[1]!,
             colorBytes[2]!,
           );
-          asciiImage += colorToAscii.get(color.id()) ?? "?";
+          asciiImage += colorToAscii.get(color.id) ?? "?";
         }
       }
       asciiImage += "\n";

@@ -45,10 +45,10 @@ export class DrawSprite {
                 if (imgBytes.length < imgBytesIndex + 4) {
                     throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
                 }
-                let color = imgBytes[imgBytesIndex + 3] > 0xff / 2
+                let color = imgBytes[imgBytesIndex + 3] >= 0xff / 2
                     ? new SolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
                     : transparent_;
-                color = (_a = colorMapping.get(color.id())) !== null && _a !== void 0 ? _a : color;
+                color = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
                 // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
                 //       - ff614f became ff6e59
                 //       - 00555a became 125359

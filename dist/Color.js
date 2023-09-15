@@ -12,8 +12,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _a, _MappingColor_nextId, _MappingColor_mapping;
 // TODO: split colors into separate files?
 export class TransparentColor {
-    id() {
-        return "transparent";
+    constructor() {
+        this.id = "transparent";
     }
 }
 export const transparent_ = new TransparentColor();
@@ -26,9 +26,7 @@ export class SolidColor {
         this.r = r;
         this.g = g;
         this.b = b;
-    }
-    id() {
-        return "solid-" + this.asRgbCssHex();
+        this.id = "solid-" + this.asRgbCssHex();
     }
     asRgbCssHex() {
         return ("#" +
@@ -47,23 +45,19 @@ export class CompositeColor {
     constructor(primary, secondary) {
         this.primary = primary;
         this.secondary = secondary;
-    }
-    id() {
-        return `composite:${this.primary.id()}:${this.secondary.id()}`;
+        this.id = `composite:${this.primary.id}:${this.secondary.id}`;
     }
 }
 // TODO: make it a function which allows to implement catch it all color
 export class MappingColor {
     constructor(mapping) {
+        var _b, _c, _d;
+        this.id = `mapping:${__classPrivateFieldSet(_b = MappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _MappingColor_nextId), _c = _d++, _d), "f", _MappingColor_nextId), _c}`;
         _MappingColor_mapping.set(this, void 0);
         __classPrivateFieldSet(this, _MappingColor_mapping, mapping, "f");
     }
     getMappedColorFor(r, g, b, a) {
-        return __classPrivateFieldGet(this, _MappingColor_mapping, "f").call(this, { r, g, b, a });
-    }
-    id() {
-        var _b, _c, _d;
-        return `mapping:${__classPrivateFieldSet(_b = MappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _MappingColor_nextId), _c = _d++, _d), "f", _MappingColor_nextId), _c}`;
+        return __classPrivateFieldGet(this, _MappingColor_mapping, "f").call(this, a >= 0xff / 2 ? new SolidColor(r, g, b) : transparent_);
     }
 }
 _a = MappingColor, _MappingColor_mapping = new WeakMap();

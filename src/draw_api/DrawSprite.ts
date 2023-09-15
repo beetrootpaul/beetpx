@@ -84,14 +84,14 @@ export class DrawSprite {
           );
         }
         let color =
-          imgBytes[imgBytesIndex + 3]! > 0xff / 2
+          imgBytes[imgBytesIndex + 3]! >= 0xff / 2
             ? new SolidColor(
                 imgBytes[imgBytesIndex]!,
                 imgBytes[imgBytesIndex + 1]!,
                 imgBytes[imgBytesIndex + 2]!,
               )
             : transparent_;
-        color = colorMapping.get(color.id()) ?? color;
+        color = colorMapping.get(color.id) ?? color;
 
         // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
         //       - ff614f became ff6e59

@@ -39,8 +39,8 @@ export class DrawText {
         charSprite.sprite,
         canvasXy.add(charSprite.positionInText),
         new Map([
-          [fontAsset.imageTextColor.id(), colorFn(charSprite)],
-          [fontAsset.imageBgColor.id(), transparent_],
+          [fontAsset.imageTextColor.id, colorFn(charSprite)],
+          [fontAsset.imageBgColor.id, transparent_],
         ]),
         clippingRegion,
       );

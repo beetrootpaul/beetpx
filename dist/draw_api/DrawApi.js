@@ -72,14 +72,14 @@ export class DrawApi {
             var _a;
             previous.push({
                 from,
-                to: (_a = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id())) !== null && _a !== void 0 ? _a : from,
+                to: (_a = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id)) !== null && _a !== void 0 ? _a : from,
             });
             // TODO: consider writing a custom equality check function
-            if (from.id() === to.id()) {
-                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id());
+            if (from.id === to.id) {
+                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id);
             }
             else {
-                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").set(from.id(), to);
+                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").set(from.id, to);
             }
         });
         return previous;

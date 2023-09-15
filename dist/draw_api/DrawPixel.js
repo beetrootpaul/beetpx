@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_options, _DrawPixel_drawSolid;
-import { CompositeColor, MappingColor, TransparentColor, } from "../Color";
+import { CompositeColor, MappingColor, SolidColor, } from "../Color";
 import { Vector2d } from "../Vector2d";
 import { FillPattern } from "./FillPattern";
 export class DrawPixel {
@@ -39,7 +39,8 @@ export class DrawPixel {
                     __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.primary);
                 }
                 else if (color instanceof MappingColor) {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.getMappedColorFor(__classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 1], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 2], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 3]));
+                    const mappedColor = color.getMappedColorFor(__classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 1], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 2], __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[i + 3]);
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, mappedColor);
                 }
                 else {
                     __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color);
@@ -54,11 +55,10 @@ export class DrawPixel {
     }
 }
 _DrawPixel_canvasBytes = new WeakMap(), _DrawPixel_canvasSize = new WeakMap(), _DrawPixel_options = new WeakMap(), _DrawPixel_instances = new WeakSet(), _DrawPixel_drawSolid = function _DrawPixel_drawSolid(canvasIndex, color) {
-    if (color instanceof TransparentColor) {
-        return;
+    if (color instanceof SolidColor) {
+        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex] = color.r;
+        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 1] = color.g;
+        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 2] = color.b;
+        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 3] = 0xff;
     }
-    __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex] = color.r;
-    __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 1] = color.g;
-    __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 2] = color.b;
-    __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 3] = 0xff;
 };
