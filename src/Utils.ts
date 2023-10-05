@@ -6,7 +6,10 @@ import { BpxVector2d, v_ } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
-  static noop(): void {}
+  // TODO: tests for edge cases
+  static booleanChangingEveryNthFrame(n: number): boolean {
+    return BeetPx.frameNumber % (n * 2) < n;
+  }
 
   // Returns the middle number. Example usage: `clamp(min, value, max)`
   //   in order to find a value which is:
@@ -17,19 +20,27 @@ export class BpxUtils {
     return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
   }
 
-  static repeatN(n: number, callback: (i: number) => void): void {
-    Array.from({ length: n }).forEach((_element, i) => {
-      callback(i);
-    });
+  static lerp(a: number, b: number, t: number): number {
+    return a + (b - a) * t;
   }
 
-  // TODO: tests for edge cases
-  static booleanChangingEveryNthFrame(n: number): boolean {
-    return BeetPx.frameNumber % (n * 2) < n;
+  // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
+  static measureText(text: string): BpxVector2d {
+    const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
+    return charSprites.reduce(
+      (sizeSoFar, nextSprite) =>
+        BpxVector2d.max(
+          sizeSoFar,
+          nextSprite.positionInText.add(nextSprite.sprite.size()),
+        ),
+      BpxVector2d.zero,
+    );
   }
+
+  static noop(): void {}
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
-  static get offset8Directions(): BpxVector2d[] {
+  static offset8Directions(): BpxVector2d[] {
     return [
       v_(-1, -1),
       v_(0, -1),
@@ -47,19 +58,6 @@ export class BpxUtils {
     return array[Math.floor(Math.random() * array.length)];
   }
 
-  // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
-  static measureText(text: string): BpxVector2d {
-    const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
-    return charSprites.reduce(
-      (sizeSoFar, nextSprite) =>
-        BpxVector2d.max(
-          sizeSoFar,
-          nextSprite.positionInText.add(nextSprite.sprite.size()),
-        ),
-      BpxVector2d.zero,
-    );
-  }
-
   // TODO: consider moving this to either DrawApi or the game itself
   static printWithOutline(
     text: string,
@@ -67,10 +65,16 @@ export class BpxUtils {
     textColor: BpxSolidColor,
     outlineColor: BpxSolidColor,
   ): void {
-    BpxUtils.offset8Directions.forEach((offset) => {
+    BpxUtils.offset8Directions().forEach((offset) => {
       BeetPx.print(text, canvasXy1.add(offset), outlineColor);
     });
     BeetPx.print(text, canvasXy1, textColor);
+  }
+
+  static repeatN(n: number, callback: (i: number) => void): void {
+    Array.from({ length: n }).forEach((_element, i) => {
+      callback(i);
+    });
   }
 
   // to be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`

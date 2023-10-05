@@ -13,6 +13,9 @@ export class BpxVector2d {
     static minMax(xy1, xy2) {
         return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
     }
+    static lerp(xy1, xy2, t) {
+        return new BpxVector2d(BpxUtils.lerp(xy1.x, xy2.x, t), BpxUtils.lerp(xy1.y, xy2.y, t));
+    }
     // TODO: sounds like something to mover outside the basic set of fns in Vector2d
     static forEachIntXyWithinRectOf(xy, wh, roundValues, fill, callback) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(roundValues ? xy.round() : xy, roundValues ? xy.add(wh).round() : xy.add(wh));

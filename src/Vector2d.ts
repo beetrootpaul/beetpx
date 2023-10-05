@@ -25,6 +25,13 @@ export class BpxVector2d implements PrintDebug {
     return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
   }
 
+  static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d {
+    return new BpxVector2d(
+      BpxUtils.lerp(xy1.x, xy2.x, t),
+      BpxUtils.lerp(xy1.y, xy2.y, t),
+    );
+  }
+
   // TODO: sounds like something to mover outside the basic set of fns in Vector2d
   static forEachIntXyWithinRectOf(
     xy: BpxVector2d,

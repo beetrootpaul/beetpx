@@ -24,6 +24,13 @@ describe("Utils", () => {
     });
   });
 
+  test("#lerp", () => {
+    expect(BpxUtils.lerp(100, 200, 0)).toBe(100);
+    expect(BpxUtils.lerp(100, 200, 0.1)).toBe(110);
+    expect(BpxUtils.lerp(100, 200, 1)).toBe(200);
+    expect(BpxUtils.lerp(100, 200, 1.1)).toBe(210);
+  });
+
   test(`#randomElementOf`, () => {
     expect(BpxUtils.randomElementOf([])).toBeUndefined();
 

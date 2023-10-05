@@ -38,6 +38,7 @@ declare class BpxVector2d implements PrintDebug {
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
+    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
     static forEachIntXyWithinRectOf(xy: BpxVector2d, wh: BpxVector2d, roundValues: boolean, fill: boolean, callback: (xy: BpxVector2d) => void): void;
     readonly x: number;
     readonly y: number;
@@ -153,14 +154,15 @@ declare class Assets {
 }
 
 declare class BpxUtils {
-    static noop(): void;
-    static clamp(a: number, b: number, c: number): number;
-    static repeatN(n: number, callback: (i: number) => void): void;
     static booleanChangingEveryNthFrame(n: number): boolean;
-    static get offset8Directions(): BpxVector2d[];
-    static randomElementOf<V>(array: V[]): V | undefined;
+    static clamp(a: number, b: number, c: number): number;
+    static lerp(a: number, b: number, t: number): number;
     static measureText(text: string): BpxVector2d;
+    static noop(): void;
+    static offset8Directions(): BpxVector2d[];
+    static randomElementOf<V>(array: V[]): V | undefined;
     static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor): void;
+    static repeatN(n: number, callback: (i: number) => void): void;
     static throwError(message: string): never;
 }
 declare const u_: typeof BpxUtils;
