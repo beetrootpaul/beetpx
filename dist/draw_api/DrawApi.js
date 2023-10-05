@@ -123,7 +123,7 @@ export class DrawApi {
     print(text, canvasXy, color, centerXy = [false, false]) {
         if (centerXy[0] || centerXy[1]) {
             const size = BpxUtils.measureText(text);
-            canvasXy = canvasXy.add(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
+            canvasXy = canvasXy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
         }
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {
             __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));

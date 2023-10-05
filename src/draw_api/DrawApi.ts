@@ -228,7 +228,7 @@ export class DrawApi {
   ): void {
     if (centerXy[0] || centerXy[1]) {
       const size = BpxUtils.measureText(text);
-      canvasXy = canvasXy.add(
+      canvasXy = canvasXy.sub(
         centerXy[0] ? size.x / 2 : 0,
         centerXy[1] ? size.y / 2 : 0,
       );
