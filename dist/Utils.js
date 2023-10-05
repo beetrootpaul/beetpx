@@ -44,11 +44,11 @@ export class BpxUtils {
         return array[Math.floor(Math.random() * array.length)];
     }
     // TODO: consider moving this to either DrawApi or the game itself
-    static printWithOutline(text, canvasXy1, textColor, outlineColor) {
+    static printWithOutline(text, canvasXy1, textColor, outlineColor, centerXy = [false, false]) {
         BpxUtils.offset8Directions().forEach((offset) => {
-            BeetPx.print(text, canvasXy1.add(offset), outlineColor);
+            BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
         });
-        BeetPx.print(text, canvasXy1, textColor);
+        BeetPx.print(text, canvasXy1, textColor, centerXy);
     }
     static repeatN(n, callback) {
         Array.from({ length: n }).forEach((_element, i) => {

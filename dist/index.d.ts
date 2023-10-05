@@ -179,7 +179,7 @@ declare class BpxUtils {
     static noop(): void;
     static offset8Directions(): BpxVector2d[];
     static randomElementOf<V>(array: V[]): V | undefined;
-    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor): void;
+    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor, centerXy?: [boolean, boolean]): void;
     static repeatN(n: number, callback: (i: number) => void): void;
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.

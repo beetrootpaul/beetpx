@@ -64,11 +64,12 @@ export class BpxUtils {
     canvasXy1: BpxVector2d,
     textColor: BpxSolidColor,
     outlineColor: BpxSolidColor,
+    centerXy: [boolean, boolean] = [false, false],
   ): void {
     BpxUtils.offset8Directions().forEach((offset) => {
-      BeetPx.print(text, canvasXy1.add(offset), outlineColor);
+      BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
     });
-    BeetPx.print(text, canvasXy1, textColor);
+    BeetPx.print(text, canvasXy1, textColor, centerXy);
   }
 
   static repeatN(n: number, callback: (i: number) => void): void {
