@@ -11,6 +11,7 @@ BeetPx.init(
     images: [{ url: "logo.png" }],
     fonts: [],
     sounds: [{ url: "music_base.wav" }, { url: "music_melody.wav" }],
+    jsons: [],
   },
 ).then(({ startGame }) => {
   let melodyPlaybackId: number = -1;

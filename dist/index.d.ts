@@ -104,9 +104,11 @@ type AssetsToLoad = {
     images: ImageAssetToLoad[];
     fonts: FontAssetToLoad[];
     sounds: SoundAssetToLoad[];
+    jsons: JsonAssetToLoad[];
 };
 type BpxImageUrl = string;
 type SoundUrl = string;
+type JsonUrl = string;
 type ImageAssetToLoad = {
     url: BpxImageUrl;
 };
@@ -117,6 +119,9 @@ type FontAssetToLoad = {
 };
 type SoundAssetToLoad = {
     url: SoundUrl;
+};
+type JsonAssetToLoad = {
+    url: JsonUrl;
 };
 type ImageAsset = {
     width: number;
@@ -132,6 +137,9 @@ type FontAsset = {
 type SoundAsset = {
     audioBuffer: AudioBuffer;
 };
+type JsonAsset = {
+    jsonData: string;
+};
 declare class Assets {
     #private;
     constructor(params: {
@@ -141,6 +149,7 @@ declare class Assets {
     getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset;
     getFontAsset(fontId: BpxFontId): FontAsset;
     getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
+    getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset;
 }
 
 declare class BpxUtils {
@@ -401,6 +410,7 @@ declare class BeetPx {
     static getImageAsset: Assets["getImageAsset"];
     static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];
+    static getJsonAsset: Assets["getJsonAsset"];
 }
 declare const b_: typeof BeetPx;
 

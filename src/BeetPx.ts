@@ -256,7 +256,7 @@ export class BeetPx {
   };
 
   //
-  // Assets (not really needed, unless it is needed for some reason ¯\_(ツ)_/¯ )
+  // Direct access to loaded assets
   //
 
   static getImageAsset: Assets["getImageAsset"] = (...args) => {
@@ -269,6 +269,10 @@ export class BeetPx {
 
   static getSoundAsset: Assets["getSoundAsset"] = (...args) => {
     return this.#tryGetFramework().assets.getSoundAsset(...args);
+  };
+
+  static getJsonAsset: Assets["getJsonAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getJsonAsset(...args);
   };
 
   //

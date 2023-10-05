@@ -6,10 +6,12 @@ export type AssetsToLoad = {
   images: ImageAssetToLoad[];
   fonts: FontAssetToLoad[];
   sounds: SoundAssetToLoad[];
+  jsons: JsonAssetToLoad[];
 };
 
 export type BpxImageUrl = string;
 export type SoundUrl = string;
+export type JsonUrl = string;
 
 type ImageAssetToLoad = {
   url: BpxImageUrl;
@@ -23,6 +25,10 @@ type FontAssetToLoad = {
 
 type SoundAssetToLoad = {
   url: SoundUrl;
+};
+
+type JsonAssetToLoad = {
+  url: JsonUrl;
 };
 
 export type ImageAsset = {
@@ -42,6 +48,10 @@ export type SoundAsset = {
   audioBuffer: AudioBuffer;
 };
 
+export type JsonAsset = {
+  jsonData: string;
+};
+
 export class Assets {
   readonly #decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
 
@@ -55,6 +65,7 @@ export class Assets {
     }
   > = new Map();
   #sounds: Map<SoundUrl, SoundAsset> = new Map();
+  #jsons: Map<JsonUrl, JsonAsset> = new Map();
 
   constructor(params: {
     decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
@@ -110,9 +121,15 @@ export class Assets {
         const httpResponse = await fetch(url);
         const arrayBuffer = await httpResponse.arrayBuffer();
         const audioBuffer = await this.#decodeAudioData(arrayBuffer);
-        this.#sounds.set(url, {
-          audioBuffer,
-        });
+        this.#sounds.set(url, { audioBuffer });
+      }),
+    );
+
+    await Promise.all(
+      assetsToLoad.jsons.map(async ({ url }) => {
+        const httpResponse = await fetch(url);
+        const jsonData = await httpResponse.json();
+        this.#jsons.set(url, { jsonData });
       }),
     );
   }
@@ -152,5 +169,16 @@ export class Assets {
       );
     }
     return soundAsset;
+  }
+
+  // call `loadAssets` before this one
+  getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset {
+    const jsonAsset = this.#jsons.get(urlOfAlreadyLoadedJson);
+    if (!jsonAsset) {
+      throw Error(
+        `Assets: There is no JSON loaded for: ${urlOfAlreadyLoadedJson}`,
+      );
+    }
+    return jsonAsset;
   }
 }
