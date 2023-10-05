@@ -11,6 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 import { Logger } from "../logger/Logger";
+import { BpxUtils } from "../Utils";
 import { v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
@@ -119,7 +120,11 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: cover with tests
-    print(text, canvasXy, color) {
+    print(text, canvasXy, color, centerXy = [false, false]) {
+        if (centerXy[0] || centerXy[1]) {
+            const size = BpxUtils.measureText(text);
+            canvasXy = canvasXy.add(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
+        }
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {
             __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
         }

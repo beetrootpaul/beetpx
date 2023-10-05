@@ -10,6 +10,7 @@ import {
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxSprite } from "../Sprite";
+import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
@@ -218,7 +219,15 @@ export class DrawApi {
     text: string,
     canvasXy: BpxVector2d,
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
+    centerXy: [boolean, boolean] = [false, false],
   ): void {
+    if (centerXy[0] || centerXy[1]) {
+      const size = BpxUtils.measureText(text);
+      canvasXy = canvasXy.add(
+        centerXy[0] ? size.x / 2 : 0,
+        centerXy[1] ? size.y / 2 : 0,
+      );
+    }
     if (this.#fontAsset) {
       this.#text.draw(
         text,
