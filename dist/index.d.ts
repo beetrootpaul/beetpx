@@ -39,6 +39,10 @@ declare class BpxVector2d implements PrintDebug {
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
     static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static unitFromAngle(turnAngle: number): BpxVector2d;
     static forEachIntXyWithinRectOf(xy: BpxVector2d, wh: BpxVector2d, roundValues: boolean, fill: boolean, callback: (xy: BpxVector2d) => void): void;
     readonly x: number;
     readonly y: number;
@@ -50,6 +54,10 @@ declare class BpxVector2d implements PrintDebug {
     floor(): BpxVector2d;
     ceil(): BpxVector2d;
     round(): BpxVector2d;
+    /**
+     * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    toAngle(): number;
     eq(other: BpxVector2d): boolean;
     eq(value: number): boolean;
     gt(other: BpxVector2d): boolean;

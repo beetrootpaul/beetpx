@@ -16,6 +16,12 @@ export class BpxVector2d {
     static lerp(xy1, xy2, t) {
         return new BpxVector2d(BpxUtils.lerp(xy1.x, xy2.x, t), BpxUtils.lerp(xy1.y, xy2.y, t));
     }
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static unitFromAngle(turnAngle) {
+        return new BpxVector2d(Math.cos(turnAngle * Math.PI * 2), Math.sin(turnAngle * Math.PI * 2));
+    }
     // TODO: sounds like something to mover outside the basic set of fns in Vector2d
     static forEachIntXyWithinRectOf(xy, wh, roundValues, fill, callback) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(roundValues ? xy.round() : xy, roundValues ? xy.add(wh).round() : xy.add(wh));
@@ -57,6 +63,12 @@ export class BpxVector2d {
     }
     round() {
         return new BpxVector2d(Math.round(this.x), Math.round(this.y));
+    }
+    /**
+     * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    toAngle() {
+        return Math.atan2(this.y, this.x) / Math.PI / 2;
     }
     eq(otherOrValue) {
         return typeof otherOrValue !== "number"
