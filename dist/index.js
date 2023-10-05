@@ -12,6 +12,7 @@ export { transparent_ } from "./Color";
 export { spr_ } from "./Sprite";
 export { u_ } from "./Utils";
 export { v_ } from "./Vector2d";
+export { timer_ } from "./misc/Timer";
 // TODO: remove comments from HTMLs from the generated game
 // TODO: improve bg color on itch around the game, but under the buttons
 // TODO: refactor HTML templates, rework canvas vs buttons layout vs screen orientation

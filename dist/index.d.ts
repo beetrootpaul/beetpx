@@ -305,6 +305,7 @@ declare class Buttons {
     wasJustReleased(button: BpxButtonName): boolean;
 }
 
+declare function timer_(frames: number): BpxTimer;
 declare class BpxTimer {
     #private;
     constructor(params: {
@@ -448,4 +449,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, transparent_, u_, v_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_ };
