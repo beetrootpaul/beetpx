@@ -49,7 +49,7 @@ export type SoundAsset = {
 };
 
 export type JsonAsset = {
-  jsonData: string;
+  json: any;
 };
 
 export class Assets {
@@ -128,8 +128,8 @@ export class Assets {
     await Promise.all(
       assetsToLoad.jsons.map(async ({ url }) => {
         const httpResponse = await fetch(url);
-        const jsonData = await httpResponse.json();
-        this.#jsons.set(url, { jsonData });
+        const json = await httpResponse.json();
+        this.#jsons.set(url, { json });
       }),
     );
   }

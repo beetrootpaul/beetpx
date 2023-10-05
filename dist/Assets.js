@@ -70,8 +70,8 @@ export class Assets {
             })));
             yield Promise.all(assetsToLoad.jsons.map(({ url }) => __awaiter(this, void 0, void 0, function* () {
                 const httpResponse = yield fetch(url);
-                const jsonData = yield httpResponse.json();
-                __classPrivateFieldGet(this, _Assets_jsons, "f").set(url, { jsonData });
+                const json = yield httpResponse.json();
+                __classPrivateFieldGet(this, _Assets_jsons, "f").set(url, { json });
             })));
         });
     }

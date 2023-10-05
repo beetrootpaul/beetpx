@@ -148,7 +148,7 @@ type SoundAsset = {
     audioBuffer: AudioBuffer;
 };
 type JsonAsset = {
-    jsonData: string;
+    json: any;
 };
 declare class Assets {
     #private;
