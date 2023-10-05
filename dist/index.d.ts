@@ -181,7 +181,22 @@ declare class BpxUtils {
     static randomElementOf<V>(array: V[]): V | undefined;
     static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor): void;
     static repeatN(n: number, callback: (i: number) => void): void;
+    /**
+     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+     */
     static throwError(message: string): never;
+    /**
+     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigAtan2(x: number, y: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigCos(turnAngle: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigSin(turnAngle: number): number;
 }
 declare const u_: typeof BpxUtils;
 

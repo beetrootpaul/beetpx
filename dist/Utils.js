@@ -55,9 +55,29 @@ export class BpxUtils {
             callback(i);
         });
     }
-    // to be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`
+    /**
+     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+     */
     static throwError(message) {
         throw Error(message);
+    }
+    /**
+     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigAtan2(x, y) {
+        return Math.atan2(y, x) / Math.PI / 2;
+    }
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigCos(turnAngle) {
+        return Math.cos(turnAngle * Math.PI * 2);
+    }
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigSin(turnAngle) {
+        return Math.sin(turnAngle * Math.PI * 2);
     }
 }
 export const u_ = BpxUtils;

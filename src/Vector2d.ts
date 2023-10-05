@@ -39,8 +39,8 @@ export class BpxVector2d implements PrintDebug {
    */
   static unitFromAngle(turnAngle: number): BpxVector2d {
     return new BpxVector2d(
-      Math.cos(turnAngle * Math.PI * 2),
-      Math.sin(turnAngle * Math.PI * 2),
+      BpxUtils.trigCos(turnAngle),
+      BpxUtils.trigSin(turnAngle),
     );
   }
 
@@ -111,7 +111,7 @@ export class BpxVector2d implements PrintDebug {
    * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   toAngle(): number {
-    return Math.atan2(this.y, this.x) / Math.PI / 2;
+    return BpxUtils.trigAtan2(this.x, this.y);
   }
 
   eq(other: BpxVector2d): boolean;
