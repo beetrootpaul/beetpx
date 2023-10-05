@@ -21,4 +21,39 @@ describe("Utils", () => {
       expect(Utils.clamp(params[0]!, params[1]!, params[2]!)).toEqual(result);
     });
   });
+
+  test(`#randomElementOf`, () => {
+    expect(Utils.randomElementOf([])).toBeUndefined();
+
+    expect(Utils.randomElementOf([123])).toEqual(123);
+
+    const expectedSamplesPerElement = 100;
+    const elements = [0, 1, 2];
+    const results = elements.map(() => 0);
+    Utils.repeatN(elements.length * expectedSamplesPerElement, () => {
+      const pickedElement =
+        Utils.randomElementOf(elements) ??
+        Utils.throwError("element should be defined");
+      results[pickedElement] += 1;
+    });
+    const acceptedDiff = 0.25 * expectedSamplesPerElement;
+    expect(results[0]).toBeGreaterThanOrEqual(
+      expectedSamplesPerElement - acceptedDiff,
+    );
+    expect(results[0]).toBeLessThanOrEqual(
+      expectedSamplesPerElement + acceptedDiff,
+    );
+    expect(results[1]).toBeGreaterThanOrEqual(
+      expectedSamplesPerElement - acceptedDiff,
+    );
+    expect(results[1]).toBeLessThanOrEqual(
+      expectedSamplesPerElement + acceptedDiff,
+    );
+    expect(results[2]).toBeGreaterThanOrEqual(
+      expectedSamplesPerElement - acceptedDiff,
+    );
+    expect(results[2]).toBeLessThanOrEqual(
+      expectedSamplesPerElement + acceptedDiff,
+    );
+  });
 });

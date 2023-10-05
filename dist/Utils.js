@@ -34,6 +34,11 @@ export class Utils {
             v_(-1, 0),
         ];
     }
+    static randomElementOf(array) {
+        if (array.length <= 0)
+            return undefined;
+        return array[Math.floor(Math.random() * array.length)];
+    }
     // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
     static measureText(text) {
         var _a, _b;

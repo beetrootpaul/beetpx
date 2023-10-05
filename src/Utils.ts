@@ -42,6 +42,11 @@ export class Utils {
     ];
   }
 
+  static randomElementOf<V>(array: V[]): V | undefined {
+    if (array.length <= 0) return undefined;
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
   // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
   static measureText(text: string): Vector2d {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];

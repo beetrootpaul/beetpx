@@ -149,6 +149,7 @@ declare class Utils {
     static repeatN(n: number, callback: (i: number) => void): void;
     static booleanChangingEveryNthFrame(n: number): boolean;
     static get offset8Directions(): Vector2d[];
+    static randomElementOf<V>(array: V[]): V | undefined;
     static measureText(text: string): Vector2d;
     static printWithOutline(text: string, canvasXy1: Vector2d, textColor: SolidColor, outlineColor: SolidColor): void;
     static throwError(message: string): never;
