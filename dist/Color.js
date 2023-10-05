@@ -9,16 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _MappingColor_nextId, _MappingColor_mapping;
+var _a, _BpxMappingColor_nextId, _BpxMappingColor_mapping;
 // TODO: split colors into separate files?
-export class TransparentColor {
+export class BpxTransparentColor {
     constructor() {
         this.id = "transparent";
     }
 }
-export const transparent_ = new TransparentColor();
+export const transparent_ = new BpxTransparentColor();
 // Red, green, and blue, each one as value between 0 and 255.
-export class SolidColor {
+export class BpxSolidColor {
     constructor(r, g, b) {
         if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
             throw Error(`One of color components is outside 0-255 range: r=${r}, g=${g}, b=${b}.`);
@@ -38,10 +38,10 @@ export class SolidColor {
         if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {
             throw Error("Hexadecimal representation of the color doesn't contain exactly 6 hexadecimal digits, preceded by a single '#'");
         }
-        return new SolidColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
+        return new BpxSolidColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
     }
 }
-export class CompositeColor {
+export class BpxCompositeColor {
     constructor(primary, secondary) {
         this.primary = primary;
         this.secondary = secondary;
@@ -49,16 +49,16 @@ export class CompositeColor {
     }
 }
 // TODO: make it a function which allows to implement catch it all color
-export class MappingColor {
+export class BpxMappingColor {
     constructor(mapping) {
         var _b, _c, _d;
-        this.id = `mapping:${__classPrivateFieldSet(_b = MappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _MappingColor_nextId), _c = _d++, _d), "f", _MappingColor_nextId), _c}`;
-        _MappingColor_mapping.set(this, void 0);
-        __classPrivateFieldSet(this, _MappingColor_mapping, mapping, "f");
+        this.id = `mapping:${__classPrivateFieldSet(_b = BpxMappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _BpxMappingColor_nextId), _c = _d++, _d), "f", _BpxMappingColor_nextId), _c}`;
+        _BpxMappingColor_mapping.set(this, void 0);
+        __classPrivateFieldSet(this, _BpxMappingColor_mapping, mapping, "f");
     }
     getMappedColorFor(r, g, b, a) {
-        return __classPrivateFieldGet(this, _MappingColor_mapping, "f").call(this, a >= 0xff / 2 ? new SolidColor(r, g, b) : transparent_);
+        return __classPrivateFieldGet(this, _BpxMappingColor_mapping, "f").call(this, a >= 0xff / 2 ? new BpxSolidColor(r, g, b) : transparent_);
     }
 }
-_a = MappingColor, _MappingColor_mapping = new WeakMap();
-_MappingColor_nextId = { value: 1 };
+_a = BpxMappingColor, _BpxMappingColor_mapping = new WeakMap();
+_BpxMappingColor_nextId = { value: 1 };

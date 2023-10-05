@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 import { Logger } from "../logger/Logger";
 import { v_ } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
@@ -20,7 +20,7 @@ import { DrawPixel } from "./DrawPixel";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 // TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
 // TODO: tests for float rounding: different shapes and sprites drawn for same coords should be aligned visually, not off by 1.
 //       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
@@ -36,7 +36,7 @@ export class DrawApi {
         _DrawApi_text.set(this, void 0);
         _DrawApi_cameraOffset.set(this, v_(0, 0));
         _DrawApi_clippingRegion.set(this, null);
-        _DrawApi_fillPattern.set(this, FillPattern.primaryOnly);
+        _DrawApi_fillPattern.set(this, BpxFillPattern.primaryOnly);
         _DrawApi_fontAsset.set(this, null);
         _DrawApi_spriteColorMapping.set(this, new Map());
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
@@ -54,7 +54,7 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset, "f");
     }
     setClippingRegion(xy, wh) {
-        __classPrivateFieldSet(this, _DrawApi_clippingRegion, new ClippingRegion(xy, wh), "f");
+        __classPrivateFieldSet(this, _DrawApi_clippingRegion, new BpxClippingRegion(xy, wh), "f");
     }
     removeClippingRegion() {
         __classPrivateFieldSet(this, _DrawApi_clippingRegion, null, "f");

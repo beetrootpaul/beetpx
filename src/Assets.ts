@@ -1,6 +1,6 @@
-import { SolidColor } from "./Color";
-import { Font, FontId } from "./font/Font";
-import { Utils } from "./Utils";
+import { BpxSolidColor } from "./Color";
+import { BpxFont, BpxFontId } from "./font/Font";
+import { BpxUtils } from "./Utils";
 
 export type AssetsToLoad = {
   images: ImageAssetToLoad[];
@@ -8,17 +8,17 @@ export type AssetsToLoad = {
   sounds: SoundAssetToLoad[];
 };
 
-export type ImageUrl = string;
+export type BpxImageUrl = string;
 export type SoundUrl = string;
 
 type ImageAssetToLoad = {
-  url: ImageUrl;
+  url: BpxImageUrl;
 };
 
 type FontAssetToLoad = {
-  font: Font;
-  imageTextColor: SolidColor;
-  imageBgColor: SolidColor;
+  font: BpxFont;
+  imageTextColor: BpxSolidColor;
+  imageBgColor: BpxSolidColor;
 };
 
 type SoundAssetToLoad = {
@@ -32,10 +32,10 @@ export type ImageAsset = {
 };
 
 export type FontAsset = {
-  font: Font;
+  font: BpxFont;
   image: ImageAsset;
-  imageTextColor: SolidColor;
-  imageBgColor: SolidColor;
+  imageTextColor: BpxSolidColor;
+  imageBgColor: BpxSolidColor;
 };
 
 export type SoundAsset = {
@@ -45,13 +45,13 @@ export type SoundAsset = {
 export class Assets {
   readonly #decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
 
-  #images: Map<ImageUrl, ImageAsset> = new Map();
+  #images: Map<BpxImageUrl, ImageAsset> = new Map();
   #fonts: Map<
-    FontId,
+    BpxFontId,
     {
-      font: Font;
-      imageTextColor: SolidColor;
-      imageBgColor: SolidColor;
+      font: BpxFont;
+      imageTextColor: BpxSolidColor;
+      imageBgColor: BpxSolidColor;
     }
   > = new Map();
   #sounds: Map<SoundUrl, SoundAsset> = new Map();
@@ -118,7 +118,7 @@ export class Assets {
   }
 
   // call `loadAssets` before this one
-  getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset {
+  getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset {
     const imageAsset = this.#images.get(urlOfAlreadyLoadedImage);
     if (!imageAsset) {
       throw Error(
@@ -129,10 +129,10 @@ export class Assets {
   }
 
   // call `loadAssets` before this one
-  getFontAsset(fontId: FontId): FontAsset {
+  getFontAsset(fontId: BpxFontId): FontAsset {
     const { font, imageTextColor, imageBgColor } =
       this.#fonts.get(fontId) ??
-      Utils.throwError(
+      BpxUtils.throwError(
         `Assets: font descriptor is missing for font ID "${fontId}"`,
       );
     return {

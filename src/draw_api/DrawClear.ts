@@ -1,18 +1,21 @@
-import { SolidColor } from "../Color";
-import { Vector2d } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxSolidColor } from "../Color";
+import { BpxVector2d } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
 
 export class DrawClear {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Vector2d;
+  readonly #canvasSize: BpxVector2d;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize.round();
   }
 
   // TODO: support ClippingRegion + cover with tests
-  draw(color: SolidColor, clippingRegion: ClippingRegion | null = null): void {
+  draw(
+    color: BpxSolidColor,
+    clippingRegion: BpxClippingRegion | null = null,
+  ): void {
     for (
       let pixel = 0;
       pixel < this.#canvasSize.x * this.#canvasSize.y;

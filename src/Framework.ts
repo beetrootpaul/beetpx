@@ -1,24 +1,24 @@
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { SolidColor } from "./Color";
+import { BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
-import { ButtonName } from "./game_input/Buttons";
+import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { Utils } from "./Utils";
-import { v_, Vector2d } from "./Vector2d";
+import { BpxUtils } from "./Utils";
+import { BpxVector2d, v_ } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
   // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
-  visibleTouchButtons: ButtonName[];
+  visibleTouchButtons: BpxButtonName[];
   debugFeatures: boolean;
 };
 
@@ -33,9 +33,9 @@ export class Framework {
 
   #frameByFrame: boolean;
 
-  readonly #gameCanvasSize: Vector2d;
-  readonly #htmlCanvasBackground: SolidColor =
-    SolidColor.fromRgbCssHex("#000000");
+  readonly #gameCanvasSize: BpxVector2d;
+  readonly #htmlCanvasBackground: BpxSolidColor =
+    BpxSolidColor.fromRgbCssHex("#000000");
 
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
   readonly #offscreenContext: OffscreenCanvasRenderingContext2D;
@@ -58,7 +58,7 @@ export class Framework {
   #onDraw?: () => void;
 
   #scaleToFill = 1;
-  #centeringOffset = Vector2d.zero;
+  #centeringOffset = BpxVector2d.zero;
 
   #frameNumber: number = 0;
   #renderFps: number = 1;
@@ -85,7 +85,7 @@ export class Framework {
         ? v_(64, 64)
         : options.gameCanvasSize === "128x128"
         ? v_(128, 128)
-        : Utils.throwError(
+        : BpxUtils.throwError(
             `Unsupported canvas size: "${options.gameCanvasSize}"`,
           );
 

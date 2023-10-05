@@ -1,17 +1,17 @@
 import { Assets, FontAsset } from "../Assets";
 import {
-  Color,
-  ColorId,
-  CompositeColor,
-  MappingColor,
-  SolidColor,
-  TransparentColor,
+  BpxColor,
+  BpxColorId,
+  BpxCompositeColor,
+  BpxMappingColor,
+  BpxSolidColor,
+  BpxTransparentColor,
 } from "../Color";
-import { CharSprite, Font, FontId } from "../font/Font";
+import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
-import { Sprite } from "../Sprite";
-import { v_, Vector2d } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxSprite } from "../Sprite";
+import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
@@ -19,17 +19,17 @@ import { DrawPixel } from "./DrawPixel";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 
-export type ColorMapping = Array<{
-  from: SolidColor;
-  to: SolidColor | TransparentColor;
+export type BpxColorMapping = Array<{
+  from: BpxSolidColor;
+  to: BpxSolidColor | BpxTransparentColor;
 }>;
 
 type DrawApiOptions = {
   // TODO: better name to indicate in-out nature of this param? Or some info in JSDoc?
   canvasBytes: Uint8ClampedArray;
-  canvasSize: Vector2d;
+  canvasSize: BpxVector2d;
   assets: Assets;
 };
 
@@ -49,15 +49,15 @@ export class DrawApi {
   readonly #sprite: DrawSprite;
   readonly #text: DrawText;
 
-  #cameraOffset: Vector2d = v_(0, 0);
+  #cameraOffset: BpxVector2d = v_(0, 0);
 
-  #clippingRegion: ClippingRegion | null = null;
+  #clippingRegion: BpxClippingRegion | null = null;
 
-  #fillPattern: FillPattern = FillPattern.primaryOnly;
+  #fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly;
 
   #fontAsset: FontAsset | null = null;
 
-  readonly #spriteColorMapping: Map<ColorId, Color> = new Map();
+  readonly #spriteColorMapping: Map<BpxColorId, BpxColor> = new Map();
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -73,12 +73,12 @@ export class DrawApi {
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
   // TODO: consider returning the previous offset
-  setCameraOffset(offset: Vector2d): void {
+  setCameraOffset(offset: BpxVector2d): void {
     this.#cameraOffset = offset;
   }
 
-  setClippingRegion(xy: Vector2d, wh: Vector2d): void {
-    this.#clippingRegion = new ClippingRegion(xy, wh);
+  setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
+    this.#clippingRegion = new BpxClippingRegion(xy, wh);
   }
 
   removeClippingRegion(): void {
@@ -87,14 +87,14 @@ export class DrawApi {
 
   // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
   // TODO: cover it with tests
-  setFillPattern(fillPattern: FillPattern): void {
+  setFillPattern(fillPattern: BpxFillPattern): void {
     this.#fillPattern = fillPattern;
   }
 
   // TODO: ability to remove all mappings
   // TODO: cover it with tests
-  mapSpriteColors(mapping: ColorMapping): ColorMapping {
-    const previous: ColorMapping = [];
+  mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping {
+    const previous: BpxColorMapping = [];
     mapping.forEach(({ from, to }) => {
       previous.push({
         from,
@@ -111,26 +111,26 @@ export class DrawApi {
   }
 
   // TODO: cover it with tests
-  setFont(fontId: FontId | null): void {
+  setFont(fontId: BpxFontId | null): void {
     this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
   }
 
-  getFont(): Font | null {
+  getFont(): BpxFont | null {
     return this.#fontAsset?.font ?? null;
   }
 
-  clearCanvas(color: SolidColor): void {
+  clearCanvas(color: BpxSolidColor): void {
     this.#clear.draw(color, this.#clippingRegion);
   }
 
-  pixel(xy: Vector2d, color: SolidColor): void {
+  pixel(xy: BpxVector2d, color: BpxSolidColor): void {
     this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#clippingRegion);
   }
 
   line(
-    xy: Vector2d,
-    wh: Vector2d,
-    color: SolidColor | CompositeColor | MappingColor,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#line.draw(
       xy.sub(this.#cameraOffset),
@@ -142,9 +142,9 @@ export class DrawApi {
   }
 
   rect(
-    xy: Vector2d,
-    wh: Vector2d,
-    color: SolidColor | CompositeColor | MappingColor,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset),
@@ -157,9 +157,9 @@ export class DrawApi {
   }
 
   rectFilled(
-    xy: Vector2d,
-    wh: Vector2d,
-    color: SolidColor | CompositeColor | MappingColor,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset),
@@ -172,9 +172,9 @@ export class DrawApi {
   }
 
   ellipse(
-    xy: Vector2d,
-    wh: Vector2d,
-    color: SolidColor | CompositeColor | MappingColor,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset),
@@ -187,9 +187,9 @@ export class DrawApi {
   }
 
   ellipseFilled(
-    xy: Vector2d,
-    wh: Vector2d,
-    color: SolidColor | CompositeColor | MappingColor,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset),
@@ -202,7 +202,7 @@ export class DrawApi {
   }
 
   // TODO: make sprite make use of fillPattern as well?
-  sprite(sprite: Sprite, canvasXy: Vector2d): void {
+  sprite(sprite: BpxSprite, canvasXy: BpxVector2d): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sourceImageAsset,
@@ -216,8 +216,8 @@ export class DrawApi {
   // TODO: cover with tests
   print(
     text: string,
-    canvasXy: Vector2d,
-    color: SolidColor | ((charSprite: CharSprite) => SolidColor),
+    canvasXy: BpxVector2d,
+    color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
   ): void {
     if (this.#fontAsset) {
       this.#text.draw(

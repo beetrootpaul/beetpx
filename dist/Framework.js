@@ -21,7 +21,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 import { Assets } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { SolidColor } from "./Color";
+import { BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
@@ -31,8 +31,8 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { Utils } from "./Utils";
-import { v_, Vector2d } from "./Vector2d";
+import { BpxUtils } from "./Utils";
+import { BpxVector2d, v_ } from "./Vector2d";
 export class Framework {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
@@ -44,7 +44,7 @@ export class Framework {
         _Framework_instances.add(this);
         _Framework_frameByFrame.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
-        _Framework_htmlCanvasBackground.set(this, SolidColor.fromRgbCssHex("#000000"));
+        _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#000000"));
         _Framework_htmlCanvasContext.set(this, void 0);
         _Framework_offscreenContext.set(this, void 0);
         _Framework_offscreenImageData.set(this, void 0);
@@ -55,7 +55,7 @@ export class Framework {
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
-        _Framework_centeringOffset.set(this, Vector2d.zero);
+        _Framework_centeringOffset.set(this, BpxVector2d.zero);
         _Framework_frameNumber.set(this, 0);
         _Framework_renderFps.set(this, 1);
         DebugMode.enabled = options.debugFeatures
@@ -68,7 +68,7 @@ export class Framework {
             ? v_(64, 64)
             : options.gameCanvasSize === "128x128"
                 ? v_(128, 128)
-                : Utils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
+                : BpxUtils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas);
         if (!htmlCanvas) {
             throw Error(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);

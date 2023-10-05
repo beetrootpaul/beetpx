@@ -1,9 +1,16 @@
 import { Button } from "./Button";
-import { GameInputEvent } from "./GameInput";
+import { BpxGameInputEvent } from "./GameInput";
 
 // TODO: consider a bit mask approach for buttons
 // TODO: consider moving towards Z/X instead of O/X. Or some other keys?
-export type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
+export type BpxButtonName =
+  | "left"
+  | "right"
+  | "up"
+  | "down"
+  | "o"
+  | "x"
+  | "menu";
 
 export class Buttons {
   readonly #left: Button = new Button();
@@ -23,7 +30,7 @@ export class Buttons {
 
   #repeatingMenu: boolean = false;
 
-  update(events: Set<GameInputEvent>): void {
+  update(events: Set<BpxGameInputEvent>): void {
     this.#left.update(events.has("button_left"));
     this.#right.update(events.has("button_right"));
     this.#up.update(events.has("button_up"));
@@ -33,7 +40,7 @@ export class Buttons {
     this.#menu.update(events.has("button_menu"));
   }
 
-  isPressed(button: ButtonName): boolean {
+  isPressed(button: BpxButtonName): boolean {
     switch (button) {
       case "left":
         return this.#left.isPressed;
@@ -52,7 +59,7 @@ export class Buttons {
     }
   }
 
-  setRepeating(button: ButtonName, repeating: boolean): void {
+  setRepeating(button: BpxButtonName, repeating: boolean): void {
     switch (button) {
       case "left":
         this.#repeatingLeft = repeating;
@@ -90,7 +97,7 @@ export class Buttons {
     );
   }
 
-  wasJustPressed(button: ButtonName): boolean {
+  wasJustPressed(button: BpxButtonName): boolean {
     switch (button) {
       case "left":
         return this.#left.wasJustPressed(this.#repeatingLeft);
@@ -109,7 +116,7 @@ export class Buttons {
     }
   }
 
-  wasJustReleased(button: ButtonName): boolean {
+  wasJustReleased(button: BpxButtonName): boolean {
     switch (button) {
       case "left":
         return this.#left.wasJustReleased(this.#repeatingLeft);

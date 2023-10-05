@@ -209,3 +209,4 @@ BeetPx.getFontAsset = (...args) => {
 BeetPx.getSoundAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getSoundAsset(...args);
 };
+export const b_ = BeetPx;

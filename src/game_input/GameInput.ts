@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { ButtonName, Buttons } from "./Buttons";
+import { BpxButtonName, Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { MouseGameInput } from "./MouseGameInput";
@@ -7,7 +7,7 @@ import { SpecializedGameInput } from "./SpecializedGameInput";
 import { TouchGameInput } from "./TouchGameInput";
 
 // TODO: separate events available to pass as param for the continuous ones and for the fire once ones
-export type GameInputEvent =
+export type BpxGameInputEvent =
   | null
   | "button_left"
   | "button_right"
@@ -35,7 +35,7 @@ export class GameInput {
   readonly buttonFrameByFrameStep: Button;
 
   constructor(params: {
-    visibleTouchButtons: ButtonName[];
+    visibleTouchButtons: BpxButtonName[];
     muteButtonsSelector: string;
     fullScreenButtonsSelector: string;
     enableDebugInputs: boolean;
@@ -70,7 +70,7 @@ export class GameInput {
   }
 
   update(params: { skipGameButtons: boolean }): void {
-    const events = new Set<GameInputEvent>();
+    const events = new Set<BpxGameInputEvent>();
     for (const sgi of this.#specializedGameInputs) {
       sgi.update(events);
     }

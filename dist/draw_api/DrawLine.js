@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawLine_canvasBytes, _DrawLine_canvasSize, _DrawLine_pixel;
 import { v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 export class DrawLine {
     constructor(canvasBytes, canvasSize) {
         _DrawLine_canvasBytes.set(this, void 0);
@@ -30,7 +30,7 @@ export class DrawLine {
     // TODO: cover ClippingRegion with tests
     // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
     // Based on http://members.chello.at/easyfilter/bresenham.html
-    draw(xy, wh, color, fillPattern = FillPattern.primaryOnly, clippingRegion = null) {
+    draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
         // When drawing a line, the order of drawing does matter. This is why we
         //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
         //   shapes, but about xyStart and xyEnd.

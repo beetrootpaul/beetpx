@@ -1,4 +1,4 @@
-import { Timer } from "../misc/Timer";
+import { BpxTimer } from "../misc/Timer";
 
 export class Button {
   // TODO: these numbers work good for 60 FPS. Make them depending on FPS to have the same durations in seconds
@@ -8,7 +8,7 @@ export class Button {
   #isPressed = false;
   #wasJustToggled = false;
 
-  #repeatingTimer: Timer | null = null;
+  #repeatingTimer: BpxTimer | null = null;
 
   get isPressed(): boolean {
     return this.#isPressed;
@@ -33,7 +33,7 @@ export class Button {
     this.#isPressed = isPressed;
 
     if (isPressed && this.#repeatingTimer?.hasFinished) {
-      this.#repeatingTimer = new Timer({
+      this.#repeatingTimer = new BpxTimer({
         frames: Button.repeatingFramesInterval,
       });
     }
@@ -41,7 +41,9 @@ export class Button {
     this.#repeatingTimer?.update();
 
     if (isPressed && this.#wasJustToggled) {
-      this.#repeatingTimer = new Timer({ frames: Button.repeatingFramesStart });
+      this.#repeatingTimer = new BpxTimer({
+        frames: Button.repeatingFramesStart,
+      });
     }
 
     if (!isPressed && this.#repeatingTimer) {

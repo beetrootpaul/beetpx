@@ -9,25 +9,25 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _FillPattern_bits;
-export class FillPattern {
+var _BpxFillPattern_bits;
+export class BpxFillPattern {
     // TODO: create a helper to generate FillPattern from ASCII
     static of(bits) {
-        return new FillPattern(bits);
+        return new BpxFillPattern(bits);
     }
     // TODO: tests that bits do not have for example an accidental extra digit in its binary representation. It happened to me in tests and debugging was a hell
     constructor(bits) {
-        _FillPattern_bits.set(this, void 0);
-        __classPrivateFieldSet(this, _FillPattern_bits, bits, "f");
+        _BpxFillPattern_bits.set(this, void 0);
+        __classPrivateFieldSet(this, _BpxFillPattern_bits, bits, "f");
     }
     // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
     hasPrimaryColorAt(xy) {
         const patternXy = xy.mod(4);
         const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;
-        const isSecondary = Boolean(__classPrivateFieldGet(this, _FillPattern_bits, "f") & (1 << bitPosition));
+        const isSecondary = Boolean(__classPrivateFieldGet(this, _BpxFillPattern_bits, "f") & (1 << bitPosition));
         return !isSecondary;
     }
 }
-_FillPattern_bits = new WeakMap();
-FillPattern.primaryOnly = new FillPattern(0);
-FillPattern.secondaryOnly = new FillPattern(65535);
+_BpxFillPattern_bits = new WeakMap();
+BpxFillPattern.primaryOnly = new BpxFillPattern(0);
+BpxFillPattern.secondaryOnly = new BpxFillPattern(65535);

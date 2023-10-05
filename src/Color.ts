@@ -1,22 +1,22 @@
-export type ColorId = string;
+export type BpxColorId = string;
 
-export interface Color {
+export interface BpxColor {
   // TODO: `serialized()` might be a better name for it? As long as we provide `deserialize` as well…
   // meant to be used e.g. as textual key in `Map()`
-  id: ColorId;
+  id: BpxColorId;
 }
 
 // TODO: split colors into separate files?
 
-export class TransparentColor implements Color {
-  readonly id: ColorId = "transparent";
+export class BpxTransparentColor implements BpxColor {
+  readonly id: BpxColorId = "transparent";
 }
 
-export const transparent_ = new TransparentColor();
+export const transparent_ = new BpxTransparentColor();
 
 // Red, green, and blue, each one as value between 0 and 255.
-export class SolidColor implements Color {
-  readonly id: ColorId;
+export class BpxSolidColor implements BpxColor {
+  readonly id: BpxColorId;
 
   readonly r: number;
   readonly g: number;
@@ -43,13 +43,13 @@ export class SolidColor implements Color {
     );
   }
 
-  static fromRgbCssHex(cssHex: string): SolidColor {
+  static fromRgbCssHex(cssHex: string): BpxSolidColor {
     if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {
       throw Error(
         "Hexadecimal representation of the color doesn't contain exactly 6 hexadecimal digits, preceded by a single '#'",
       );
     }
-    return new SolidColor(
+    return new BpxSolidColor(
       parseInt(cssHex.slice(1, 3), 16),
       parseInt(cssHex.slice(3, 5), 16),
       parseInt(cssHex.slice(5, 7), 16),
@@ -57,15 +57,15 @@ export class SolidColor implements Color {
   }
 }
 
-export class CompositeColor implements Color {
-  readonly id: ColorId;
+export class BpxCompositeColor implements BpxColor {
+  readonly id: BpxColorId;
 
-  readonly primary: SolidColor | TransparentColor;
-  readonly secondary: SolidColor | TransparentColor;
+  readonly primary: BpxSolidColor | BpxTransparentColor;
+  readonly secondary: BpxSolidColor | BpxTransparentColor;
 
   constructor(
-    primary: SolidColor | TransparentColor,
-    secondary: SolidColor | TransparentColor,
+    primary: BpxSolidColor | BpxTransparentColor,
+    secondary: BpxSolidColor | BpxTransparentColor,
   ) {
     this.primary = primary;
     this.secondary = secondary;
@@ -74,19 +74,19 @@ export class CompositeColor implements Color {
 }
 
 // TODO: make it a function which allows to implement catch it all color
-export class MappingColor implements Color {
+export class BpxMappingColor implements BpxColor {
   static #nextId = 1;
 
-  readonly id: ColorId = `mapping:${MappingColor.#nextId++}`;
+  readonly id: BpxColorId = `mapping:${BpxMappingColor.#nextId++}`;
 
   readonly #mapping: (
-    canvasColor: SolidColor | TransparentColor,
-  ) => SolidColor | TransparentColor;
+    canvasColor: BpxSolidColor | BpxTransparentColor,
+  ) => BpxSolidColor | BpxTransparentColor;
 
   constructor(
     mapping: (
-      canvasColor: SolidColor | TransparentColor,
-    ) => SolidColor | TransparentColor,
+      canvasColor: BpxSolidColor | BpxTransparentColor,
+    ) => BpxSolidColor | BpxTransparentColor,
   ) {
     this.#mapping = mapping;
   }
@@ -96,9 +96,9 @@ export class MappingColor implements Color {
     g: number,
     b: number,
     a: number,
-  ): SolidColor | TransparentColor {
+  ): BpxSolidColor | BpxTransparentColor {
     return this.#mapping(
-      a >= 0xff / 2 ? new SolidColor(r, g, b) : transparent_,
+      a >= 0xff / 2 ? new BpxSolidColor(r, g, b) : transparent_,
     );
   }
 }

@@ -10,9 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawEllipse_canvasBytes, _DrawEllipse_canvasSize, _DrawEllipse_pixel;
-import { Vector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 export class DrawEllipse {
     constructor(canvasBytes, canvasSize) {
         _DrawEllipse_canvasBytes.set(this, void 0);
@@ -29,8 +29,8 @@ export class DrawEllipse {
     // TODO: tests for CompositeColor and fillPattern
     // TODO: cover ClippingRegion with tests
     // Based on http://members.chello.at/easyfilter/bresenham.html
-    draw(xy, wh, color, fill, fillPattern = FillPattern.primaryOnly, clippingRegion = null) {
-        const [xy1, xy2] = Vector2d.minMax(xy.round(), xy.add(wh).round());
+    draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+        const [xy1, xy2] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         if (xy2.x - xy1.x <= 0 || xy2.y - xy1.y <= 0) {
             return;
         }
@@ -60,11 +60,11 @@ export class DrawEllipse {
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(right, top), color, clippingRegion, fillPattern);
             if (fill) {
                 // TODO: update the implementation below to honor fill pattern
-                Vector2d.forEachIntXyWithinRectOf(v_(left + 1, bottom), v_(right - left - 1, 1), false, true, (xy) => {
+                BpxVector2d.forEachIntXyWithinRectOf(v_(left + 1, bottom), v_(right - left - 1, 1), false, true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion, fillPattern);
                 });
                 // TODO: update the implementation below to honor fill pattern
-                Vector2d.forEachIntXyWithinRectOf(v_(left + 1, top), v_(right - left - 1, 1), false, true, (xy) => {
+                BpxVector2d.forEachIntXyWithinRectOf(v_(left + 1, top), v_(right - left - 1, 1), false, true, (xy) => {
                     __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion, fillPattern);
                 });
             }

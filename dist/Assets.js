@@ -19,7 +19,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _Assets_decodeAudioData, _Assets_images, _Assets_fonts, _Assets_sounds;
-import { Utils } from "./Utils";
+import { BpxUtils } from "./Utils";
 export class Assets {
     constructor(params) {
         _Assets_decodeAudioData.set(this, void 0);
@@ -82,7 +82,7 @@ export class Assets {
     // call `loadAssets` before this one
     getFontAsset(fontId) {
         var _a;
-        const { font, imageTextColor, imageBgColor } = (_a = __classPrivateFieldGet(this, _Assets_fonts, "f").get(fontId)) !== null && _a !== void 0 ? _a : Utils.throwError(`Assets: font descriptor is missing for font ID "${fontId}"`);
+        const { font, imageTextColor, imageBgColor } = (_a = __classPrivateFieldGet(this, _Assets_fonts, "f").get(fontId)) !== null && _a !== void 0 ? _a : BpxUtils.throwError(`Assets: font descriptor is missing for font ID "${fontId}"`);
         return {
             font,
             image: this.getImageAsset(font.imageUrl),

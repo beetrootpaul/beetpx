@@ -9,29 +9,29 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Timer_frames, _Timer_t;
-export class Timer {
+var _BpxTimer_frames, _BpxTimer_t;
+export class BpxTimer {
     constructor(params) {
-        _Timer_frames.set(this, void 0);
-        _Timer_t.set(this, void 0);
-        __classPrivateFieldSet(this, _Timer_frames, Math.floor(params.frames), "f");
-        __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_frames, "f")), "f");
+        _BpxTimer_frames.set(this, void 0);
+        _BpxTimer_t.set(this, void 0);
+        __classPrivateFieldSet(this, _BpxTimer_frames, Math.floor(params.frames), "f");
+        __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_frames, "f")), "f");
     }
     get framesLeft() {
-        return __classPrivateFieldGet(this, _Timer_t, "f");
+        return __classPrivateFieldGet(this, _BpxTimer_t, "f");
     }
     get progress() {
-        return __classPrivateFieldGet(this, _Timer_frames, "f") > 0 ? 1 - __classPrivateFieldGet(this, _Timer_t, "f") / __classPrivateFieldGet(this, _Timer_frames, "f") : 1;
+        return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0 ? 1 - __classPrivateFieldGet(this, _BpxTimer_t, "f") / __classPrivateFieldGet(this, _BpxTimer_frames, "f") : 1;
     }
     get hasFinished() {
-        return __classPrivateFieldGet(this, _Timer_t, "f") <= 0 || __classPrivateFieldGet(this, _Timer_frames, "f") <= 0;
+        return __classPrivateFieldGet(this, _BpxTimer_t, "f") <= 0 || __classPrivateFieldGet(this, _BpxTimer_frames, "f") <= 0;
     }
     update() {
-        __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_t, "f") - 1), "f");
+        __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_t, "f") - 1), "f");
     }
     // TODO: cover with tests
     restart() {
-        __classPrivateFieldSet(this, _Timer_t, Math.max(0, __classPrivateFieldGet(this, _Timer_frames, "f")), "f");
+        __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_frames, "f")), "f");
     }
 }
-_Timer_frames = new WeakMap(), _Timer_t = new WeakMap();
+_BpxTimer_frames = new WeakMap(), _BpxTimer_t = new WeakMap();

@@ -1,11 +1,11 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { BeetPx } from "./BeetPx";
-import { SolidColor } from "./Color";
-import { v_, Vector2d } from "./Vector2d";
+import { BpxSolidColor } from "./Color";
+import { BpxVector2d, v_ } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
-export class Utils {
+export class BpxUtils {
   static noop(): void {}
 
   // Returns the middle number. Example usage: `clamp(min, value, max)`
@@ -29,7 +29,7 @@ export class Utils {
   }
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
-  static get offset8Directions(): Vector2d[] {
+  static get offset8Directions(): BpxVector2d[] {
     return [
       v_(-1, -1),
       v_(0, -1),
@@ -48,26 +48,26 @@ export class Utils {
   }
 
   // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
-  static measureText(text: string): Vector2d {
+  static measureText(text: string): BpxVector2d {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
     return charSprites.reduce(
       (sizeSoFar, nextSprite) =>
-        Vector2d.max(
+        BpxVector2d.max(
           sizeSoFar,
           nextSprite.positionInText.add(nextSprite.sprite.size()),
         ),
-      Vector2d.zero,
+      BpxVector2d.zero,
     );
   }
 
   // TODO: consider moving this to either DrawApi or the game itself
   static printWithOutline(
     text: string,
-    canvasXy1: Vector2d,
-    textColor: SolidColor,
-    outlineColor: SolidColor,
+    canvasXy1: BpxVector2d,
+    textColor: BpxSolidColor,
+    outlineColor: BpxSolidColor,
   ): void {
-    Utils.offset8Directions.forEach((offset) => {
+    BpxUtils.offset8Directions.forEach((offset) => {
       BeetPx.print(text, canvasXy1.add(offset), outlineColor);
     });
     BeetPx.print(text, canvasXy1, textColor);
@@ -78,3 +78,5 @@ export class Utils {
     throw Error(message);
   }
 }
+
+export const u_ = BpxUtils;

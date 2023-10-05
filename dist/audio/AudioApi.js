@@ -11,7 +11,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
 import { Logger } from "../logger/Logger";
-import { Utils } from "../Utils";
+import { BpxUtils } from "../Utils";
 // TODO: refactor this big mess of a class, extract playbacks for example
 export class AudioApi {
     get audioContext() {
@@ -127,7 +127,7 @@ export class AudioApi {
             };
         }
         // one more fn just to make loops above simpler, since there is always something on index `i+1`
-        playbackFns.push(Utils.noop);
+        playbackFns.push(BpxUtils.noop);
         __classPrivateFieldGet(this, _AudioApi_sounds, "f").set(playbackId, { sourceNodes: [], gainNodes: [] });
         (_d = playbackFns[0]) === null || _d === void 0 ? void 0 : _d.call(playbackFns);
         return playbackId;

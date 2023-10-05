@@ -1,10 +1,10 @@
-import { GameInputEvent } from "./GameInput";
+import { BpxGameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class KeyboardGameInput implements SpecializedGameInput {
-  readonly #keyMapping: Map<string, GameInputEvent> = new Map<
+  readonly #keyMapping: Map<string, BpxGameInputEvent> = new Map<
     string,
-    GameInputEvent
+    BpxGameInputEvent
   >([
     ["ArrowLeft", "button_left"],
     ["ArrowRight", "button_right"],
@@ -39,8 +39,8 @@ export class KeyboardGameInput implements SpecializedGameInput {
     ["F", "full_screen"],
   ]);
 
-  readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
-    new Set<GameInputEvent>();
+  readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
+    new Set<BpxGameInputEvent>();
 
   constructor(params: { enableDebugInputs: boolean }) {
     if (params.enableDebugInputs) {
@@ -67,7 +67,7 @@ export class KeyboardGameInput implements SpecializedGameInput {
     });
   }
 
-  update(eventsCollector: Set<GameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): void {
     for (const event of this.#eventsSinceLastUpdate) {
       eventsCollector.add(event);
     }

@@ -1,4 +1,4 @@
-import { BeetPx, SolidColor, spr_, v_, Vector2d } from "../../../src";
+import { BeetPx, BpxSolidColor, BpxVector2d, spr_, v_ } from "../../../src";
 
 BeetPx.init(
   {
@@ -18,8 +18,8 @@ BeetPx.init(
   const velocity = 2;
 
   const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
-  let logoPositionBase = Vector2d.zero;
-  let logoPositionOffset = Vector2d.zero;
+  let logoPositionBase = BpxVector2d.zero;
+  let logoPositionOffset = BpxVector2d.zero;
 
   BeetPx.setOnStarted(() => {
     BeetPx.stopAllSounds();
@@ -27,7 +27,7 @@ BeetPx.init(
     melodyPlaybackId = BeetPx.playSoundLooped("music_melody.wav", true);
 
     logoPositionBase = logoPositionBaseDefault;
-    logoPositionOffset = Vector2d.zero;
+    logoPositionOffset = BpxVector2d.zero;
   });
 
   BeetPx.setOnUpdate(() => {
@@ -63,7 +63,7 @@ BeetPx.init(
   });
 
   BeetPx.setOnDraw(() => {
-    BeetPx.clearCanvas(SolidColor.fromRgbCssHex("#754665"));
+    BeetPx.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
     BeetPx.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
@@ -72,7 +72,7 @@ BeetPx.init(
       BeetPx.line(
         v_(0, 0),
         logoPositionBase.add(logoPositionOffset),
-        SolidColor.fromRgbCssHex("#ff0000"),
+        BpxSolidColor.fromRgbCssHex("#ff0000"),
       );
     }
   });

@@ -1,22 +1,22 @@
 import {
-  Color,
-  CompositeColor,
-  MappingColor,
-  SolidColor,
-  TransparentColor,
+  BpxColor,
+  BpxCompositeColor,
+  BpxMappingColor,
+  BpxSolidColor,
+  BpxTransparentColor,
 } from "../Color";
-import { Vector2d } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
-import { FillPattern } from "./FillPattern";
+import { BpxVector2d } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
+import { BpxFillPattern } from "./FillPattern";
 
 export class DrawPixel {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Vector2d;
+  readonly #canvasSize: BpxVector2d;
   readonly #options: { disableRounding?: boolean };
 
   constructor(
     canvasBytes: Uint8ClampedArray,
-    canvasSize: Vector2d,
+    canvasSize: BpxVector2d,
     options: { disableRounding?: boolean } = {},
   ) {
     this.#canvasBytes = canvasBytes;
@@ -29,10 +29,10 @@ export class DrawPixel {
   // TODO: consider moving fill pattern and composite color support inside here
   // TODO: cover ClippingRegion with tests
   draw(
-    xy: Vector2d,
-    color: Color,
-    clippingRegion: ClippingRegion | null = null,
-    fillPattern: FillPattern = FillPattern.primaryOnly,
+    xy: BpxVector2d,
+    color: BpxColor,
+    clippingRegion: BpxClippingRegion | null = null,
+    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
   ): void {
     xy = this.#options.disableRounding ? xy : xy.round();
 
@@ -40,13 +40,13 @@ export class DrawPixel {
       return;
     }
 
-    if (xy.gte(Vector2d.zero) && xy.lt(this.#canvasSize)) {
+    if (xy.gte(BpxVector2d.zero) && xy.lt(this.#canvasSize)) {
       const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
 
       if (fillPattern.hasPrimaryColorAt(xy)) {
-        if (color instanceof CompositeColor) {
+        if (color instanceof BpxCompositeColor) {
           this.#drawSolid(i, color.primary);
-        } else if (color instanceof MappingColor) {
+        } else if (color instanceof BpxMappingColor) {
           const mappedColor = color.getMappedColorFor(
             this.#canvasBytes[i]!,
             this.#canvasBytes[i + 1]!,
@@ -58,15 +58,15 @@ export class DrawPixel {
           this.#drawSolid(i, color);
         }
       } else {
-        if (color instanceof CompositeColor) {
+        if (color instanceof BpxCompositeColor) {
           this.#drawSolid(i, color.secondary);
         }
       }
     }
   }
 
-  #drawSolid(canvasIndex: number, color: SolidColor | TransparentColor) {
-    if (color instanceof SolidColor) {
+  #drawSolid(canvasIndex: number, color: BpxSolidColor | BpxTransparentColor) {
+    if (color instanceof BpxSolidColor) {
       this.#canvasBytes[canvasIndex] = color.r;
       this.#canvasBytes[canvasIndex + 1] = color.g;
       this.#canvasBytes[canvasIndex + 2] = color.b;

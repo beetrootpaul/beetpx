@@ -5,7 +5,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _TestCanvas_instances, _TestCanvas_asAscii;
 import { expect } from "@jest/globals";
-import { SolidColor } from "../Color";
+import { BpxSolidColor } from "../Color";
 import { v_ } from "../Vector2d";
 export class TestCanvas {
     constructor(width, height, color) {
@@ -50,7 +50,7 @@ _TestCanvas_instances = new WeakSet(), _TestCanvas_asAscii = function _TestCanva
                 asciiImage += "!";
             }
             else {
-                const color = new SolidColor(colorBytes[0], colorBytes[1], colorBytes[2]);
+                const color = new BpxSolidColor(colorBytes[0], colorBytes[1], colorBytes[2]);
                 asciiImage += (_a = colorToAscii.get(color.id)) !== null && _a !== void 0 ? _a : "?";
             }
         }

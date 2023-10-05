@@ -1,11 +1,11 @@
 import { describe, expect, test } from "@jest/globals";
 import { v_ } from "../Vector2d";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 
 describe("FillPattern", () => {
   test("#hasPrimaryColorAt", () => {
     // given
-    const fillPattern = FillPattern.of(0b0101_1100_0101_0011);
+    const fillPattern = BpxFillPattern.of(0b0101_1100_0101_0011);
 
     // then for the 1st row of 4 pixels
     expect(fillPattern.hasPrimaryColorAt(v_(0, 0))).toBe(true);

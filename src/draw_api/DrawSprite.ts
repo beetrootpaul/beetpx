@@ -1,21 +1,26 @@
 import { ImageAsset } from "../Assets";
-import { ColorId, SolidColor, transparent_, type Color } from "../Color";
-import { Sprite } from "../Sprite";
-import { Utils } from "../Utils";
-import { Vector2d, v_ } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import {
+  BpxColorId,
+  BpxSolidColor,
+  transparent_,
+  type BpxColor,
+} from "../Color";
+import { BpxSprite } from "../Sprite";
+import { BpxUtils } from "../Utils";
+import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 
 export class DrawSprite {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Vector2d;
+  readonly #canvasSize: BpxVector2d;
   readonly #options: { disableRounding?: boolean };
 
   readonly #pixel: DrawPixel;
 
   constructor(
     canvasBytes: Uint8ClampedArray,
-    canvasSize: Vector2d,
+    canvasSize: BpxVector2d,
     options: { disableRounding?: boolean } = {},
   ) {
     this.#canvasBytes = canvasBytes;
@@ -28,10 +33,10 @@ export class DrawSprite {
   // TODO: cover clippingRegion with tests
   draw(
     sourceImageAsset: ImageAsset,
-    sprite: Sprite,
-    targetXy: Vector2d,
-    colorMapping: Map<ColorId, Color> = new Map(),
-    clippingRegion: ClippingRegion | null = null,
+    sprite: BpxSprite,
+    targetXy: BpxVector2d,
+    colorMapping: Map<BpxColorId, BpxColor> = new Map(),
+    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
 
@@ -42,7 +47,7 @@ export class DrawSprite {
     } = sourceImageAsset;
 
     // make sure xy1 is top-left and xy2 is bottom right
-    sprite = new Sprite(
+    sprite = new BpxSprite(
       sprite.imageUrl,
       v_(
         Math.min(sprite.xy1.x, sprite.xy2.x),
@@ -55,15 +60,15 @@ export class DrawSprite {
     );
 
     // clip sprite by image edges
-    sprite = new Sprite(
+    sprite = new BpxSprite(
       sprite.imageUrl,
       v_(
-        Utils.clamp(0, sprite.xy1.x, imgW),
-        Utils.clamp(0, sprite.xy1.y, imgH),
+        BpxUtils.clamp(0, sprite.xy1.x, imgW),
+        BpxUtils.clamp(0, sprite.xy1.y, imgH),
       ),
       v_(
-        Utils.clamp(0, sprite.xy2.x, imgW),
-        Utils.clamp(0, sprite.xy2.y, imgH),
+        BpxUtils.clamp(0, sprite.xy2.x, imgW),
+        BpxUtils.clamp(0, sprite.xy2.y, imgH),
       ),
     );
 
@@ -85,7 +90,7 @@ export class DrawSprite {
         }
         let color =
           imgBytes[imgBytesIndex + 3]! >= 0xff / 2
-            ? new SolidColor(
+            ? new BpxSolidColor(
                 imgBytes[imgBytesIndex]!,
                 imgBytes[imgBytesIndex + 1]!,
                 imgBytes[imgBytesIndex + 2]!,

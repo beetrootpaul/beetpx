@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Button_isPressed, _Button_wasJustToggled, _Button_repeatingTimer;
-import { Timer } from "../misc/Timer";
+import { BpxTimer } from "../misc/Timer";
 export class Button {
     constructor() {
         _Button_isPressed.set(this, false);
@@ -35,13 +35,15 @@ export class Button {
         __classPrivateFieldSet(this, _Button_wasJustToggled, __classPrivateFieldGet(this, _Button_isPressed, "f") !== isPressed, "f");
         __classPrivateFieldSet(this, _Button_isPressed, isPressed, "f");
         if (isPressed && ((_a = __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) === null || _a === void 0 ? void 0 : _a.hasFinished)) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, new Timer({
+            __classPrivateFieldSet(this, _Button_repeatingTimer, new BpxTimer({
                 frames: Button.repeatingFramesInterval,
             }), "f");
         }
         (_b = __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) === null || _b === void 0 ? void 0 : _b.update();
         if (isPressed && __classPrivateFieldGet(this, _Button_wasJustToggled, "f")) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, new Timer({ frames: Button.repeatingFramesStart }), "f");
+            __classPrivateFieldSet(this, _Button_repeatingTimer, new BpxTimer({
+                frames: Button.repeatingFramesStart,
+            }), "f");
         }
         if (!isPressed && __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) {
             __classPrivateFieldSet(this, _Button_repeatingTimer, null, "f");

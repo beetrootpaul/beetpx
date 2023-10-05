@@ -14,33 +14,35 @@ declare global {
   const __BEETPX_IS_PROD__: boolean;
 }
 
-export { type ImageUrl } from "./Assets";
+export { type BpxImageUrl } from "./Assets";
 export {
-  CompositeColor,
-  MappingColor,
-  SolidColor,
-  TransparentColor,
-  type Color,
-  type ColorId,
+  BpxCompositeColor,
+  BpxMappingColor,
+  BpxSolidColor,
+  BpxTransparentColor,
+  type BpxColor,
+  type BpxColorId,
 } from "./Color";
-export { Sprite } from "./Sprite";
-export { Utils } from "./Utils";
-export { Vector2d } from "./Vector2d";
-export { type AudioPlaybackId } from "./audio/AudioApi";
-export { type SoundSequence } from "./audio/SoundSequence";
-export { ClippingRegion } from "./draw_api/ClippingRegion";
-export { type ColorMapping } from "./draw_api/DrawApi";
-export { FillPattern } from "./draw_api/FillPattern";
-export { type CharSprite, type Font, type FontId } from "./font/Font";
-export { type ButtonName } from "./game_input/Buttons";
-export { type GameInputEvent } from "./game_input/GameInput";
-export { Timer } from "./misc/Timer";
-
-export { transparent_ } from "./Color";
-export { spr_ } from "./Sprite";
-export { v_ } from "./Vector2d";
+export { BpxSprite } from "./Sprite";
+export { BpxUtils } from "./Utils";
+export { BpxVector2d } from "./Vector2d";
+export { type BpxAudioPlaybackId } from "./audio/AudioApi";
+export { type BpxSoundSequence } from "./audio/SoundSequence";
+export { BpxClippingRegion } from "./draw_api/ClippingRegion";
+export { type BpxColorMapping } from "./draw_api/DrawApi";
+export { BpxFillPattern } from "./draw_api/FillPattern";
+export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
+export { type BpxButtonName } from "./game_input/Buttons";
+export { type BpxGameInputEvent } from "./game_input/GameInput";
+export { BpxTimer } from "./misc/Timer";
 
 export { BeetPx } from "./BeetPx";
+
+export { b_ } from "./BeetPx";
+export { transparent_ } from "./Color";
+export { spr_ } from "./Sprite";
+export { u_ } from "./Utils";
+export { v_ } from "./Vector2d";
 
 // TODO: remove comments from HTMLs from the generated game
 

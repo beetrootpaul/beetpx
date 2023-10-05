@@ -1,36 +1,39 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { PrintDebug } from "./debug/PrintDebug";
-import { Utils } from "./Utils";
+import { BpxUtils } from "./Utils";
 
-export function v_(x: number, y: number): Vector2d {
-  return new Vector2d(x, y);
+export function v_(x: number, y: number): BpxVector2d {
+  return new BpxVector2d(x, y);
 }
 
-export class Vector2d implements PrintDebug {
-  static zero = new Vector2d(0, 0);
+export class BpxVector2d implements PrintDebug {
+  static zero = new BpxVector2d(0, 0);
 
-  static min(xy1: Vector2d, xy2: Vector2d): Vector2d {
-    return new Vector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
+  static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
+    return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
   }
 
-  static max(xy1: Vector2d, xy2: Vector2d): Vector2d {
-    return new Vector2d(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y));
+  static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
+    return new BpxVector2d(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y));
   }
 
-  static minMax(xy1: Vector2d, xy2: Vector2d): [Vector2d, Vector2d] {
-    return [Vector2d.min(xy1, xy2), Vector2d.max(xy1, xy2)];
+  static minMax(
+    xy1: BpxVector2d,
+    xy2: BpxVector2d,
+  ): [BpxVector2d, BpxVector2d] {
+    return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
   }
 
   // TODO: sounds like something to mover outside the basic set of fns in Vector2d
   static forEachIntXyWithinRectOf(
-    xy: Vector2d,
-    wh: Vector2d,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
     roundValues: boolean,
     fill: boolean,
-    callback: (xy: Vector2d) => void,
+    callback: (xy: BpxVector2d) => void,
   ): void {
-    const [xyMinInclusive, xyMaxExclusive] = Vector2d.minMax(
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       roundValues ? xy.round() : xy,
       roundValues ? xy.add(wh).round() : xy.add(wh),
     );
@@ -67,126 +70,126 @@ export class Vector2d implements PrintDebug {
   }
 
   // TODO: cover with tests
-  sign(): Vector2d {
-    return new Vector2d(Math.sign(this.x), Math.sign(this.y));
+  sign(): BpxVector2d {
+    return new BpxVector2d(Math.sign(this.x), Math.sign(this.y));
   }
 
-  abs(): Vector2d {
-    return new Vector2d(Math.abs(this.x), Math.abs(this.y));
+  abs(): BpxVector2d {
+    return new BpxVector2d(Math.abs(this.x), Math.abs(this.y));
   }
 
-  floor(): Vector2d {
-    return new Vector2d(Math.floor(this.x), Math.floor(this.y));
+  floor(): BpxVector2d {
+    return new BpxVector2d(Math.floor(this.x), Math.floor(this.y));
   }
-  ceil(): Vector2d {
-    return new Vector2d(Math.ceil(this.x), Math.ceil(this.y));
+  ceil(): BpxVector2d {
+    return new BpxVector2d(Math.ceil(this.x), Math.ceil(this.y));
   }
-  round(): Vector2d {
-    return new Vector2d(Math.round(this.x), Math.round(this.y));
+  round(): BpxVector2d {
+    return new BpxVector2d(Math.round(this.x), Math.round(this.y));
   }
 
-  eq(other: Vector2d): boolean;
+  eq(other: BpxVector2d): boolean;
   eq(value: number): boolean;
-  eq(otherOrValue: Vector2d | number): boolean {
+  eq(otherOrValue: BpxVector2d | number): boolean {
     return typeof otherOrValue !== "number"
       ? this.x === otherOrValue.x && this.y === otherOrValue.y
       : this.x === otherOrValue && this.y === otherOrValue;
   }
 
-  gt(other: Vector2d): boolean;
+  gt(other: BpxVector2d): boolean;
   gt(value: number): boolean;
-  gt(otherOrValue: Vector2d | number): boolean {
+  gt(otherOrValue: BpxVector2d | number): boolean {
     return typeof otherOrValue !== "number"
       ? this.x > otherOrValue.x && this.y > otherOrValue.y
       : this.x > otherOrValue && this.y > otherOrValue;
   }
 
-  gte(other: Vector2d): boolean;
+  gte(other: BpxVector2d): boolean;
   gte(value: number): boolean;
-  gte(otherOrValue: Vector2d | number): boolean {
+  gte(otherOrValue: BpxVector2d | number): boolean {
     return typeof otherOrValue !== "number"
       ? this.x >= otherOrValue.x && this.y >= otherOrValue.y
       : this.x >= otherOrValue && this.y >= otherOrValue;
   }
 
-  lt(other: Vector2d): boolean;
+  lt(other: BpxVector2d): boolean;
   lt(value: number): boolean;
-  lt(otherOrValue: Vector2d | number): boolean {
+  lt(otherOrValue: BpxVector2d | number): boolean {
     return typeof otherOrValue !== "number"
       ? this.x < otherOrValue.x && this.y < otherOrValue.y
       : this.x < otherOrValue && this.y < otherOrValue;
   }
 
-  lte(other: Vector2d): boolean;
+  lte(other: BpxVector2d): boolean;
   lte(value: number): boolean;
-  lte(otherOrValue: Vector2d | number): boolean {
+  lte(otherOrValue: BpxVector2d | number): boolean {
     return typeof otherOrValue !== "number"
       ? this.x <= otherOrValue.x && this.y <= otherOrValue.y
       : this.x <= otherOrValue && this.y <= otherOrValue;
   }
 
-  clamp(xy1: Vector2d, xy2: Vector2d): Vector2d {
-    return new Vector2d(
-      Utils.clamp(xy1.x, this.x, xy2.x),
-      Utils.clamp(xy1.y, this.y, xy2.y),
+  clamp(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
+    return new BpxVector2d(
+      BpxUtils.clamp(xy1.x, this.x, xy2.x),
+      BpxUtils.clamp(xy1.y, this.y, xy2.y),
     );
   }
 
-  mod(other: Vector2d): Vector2d;
-  mod(value: number): Vector2d;
-  mod(x: number, y: number): Vector2d;
-  mod(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+  mod(other: BpxVector2d): BpxVector2d;
+  mod(value: number): BpxVector2d;
+  mod(x: number, y: number): BpxVector2d;
+  mod(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
     return typeof otherOrValueOrX !== "number"
-      ? new Vector2d(this.x % otherOrValueOrX.x, this.y % otherOrValueOrX.y)
-      : new Vector2d(
+      ? new BpxVector2d(this.x % otherOrValueOrX.x, this.y % otherOrValueOrX.y)
+      : new BpxVector2d(
           this.x % otherOrValueOrX,
           this.y % (maybeY ?? otherOrValueOrX),
         );
   }
 
-  add(other: Vector2d): Vector2d;
-  add(value: number): Vector2d;
-  add(x: number, y: number): Vector2d;
-  add(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+  add(other: BpxVector2d): BpxVector2d;
+  add(value: number): BpxVector2d;
+  add(x: number, y: number): BpxVector2d;
+  add(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
     return typeof otherOrValueOrX !== "number"
-      ? new Vector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
-      : new Vector2d(
+      ? new BpxVector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
+      : new BpxVector2d(
           this.x + otherOrValueOrX,
           this.y + (maybeY ?? otherOrValueOrX),
         );
   }
 
-  sub(other: Vector2d): Vector2d;
-  sub(value: number): Vector2d;
-  sub(x: number, y: number): Vector2d;
-  sub(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+  sub(other: BpxVector2d): BpxVector2d;
+  sub(value: number): BpxVector2d;
+  sub(x: number, y: number): BpxVector2d;
+  sub(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
     return typeof otherOrValueOrX !== "number"
-      ? new Vector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
-      : new Vector2d(
+      ? new BpxVector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
+      : new BpxVector2d(
           this.x - otherOrValueOrX,
           this.y - (maybeY ?? otherOrValueOrX),
         );
   }
 
-  mul(other: Vector2d): Vector2d;
-  mul(value: number): Vector2d;
-  mul(x: number, y: number): Vector2d;
-  mul(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+  mul(other: BpxVector2d): BpxVector2d;
+  mul(value: number): BpxVector2d;
+  mul(x: number, y: number): BpxVector2d;
+  mul(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
     return typeof otherOrValueOrX !== "number"
-      ? new Vector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
-      : new Vector2d(
+      ? new BpxVector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
+      : new BpxVector2d(
           this.x * otherOrValueOrX,
           this.y * (maybeY ?? otherOrValueOrX),
         );
   }
 
-  div(other: Vector2d): Vector2d;
-  div(value: number): Vector2d;
-  div(x: number, y: number): Vector2d;
-  div(otherOrValueOrX: Vector2d | number, maybeY?: number): Vector2d {
+  div(other: BpxVector2d): BpxVector2d;
+  div(value: number): BpxVector2d;
+  div(x: number, y: number): BpxVector2d;
+  div(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
     return typeof otherOrValueOrX !== "number"
-      ? new Vector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
-      : new Vector2d(
+      ? new BpxVector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
+      : new BpxVector2d(
           this.x / otherOrValueOrX,
           this.y / (maybeY ?? otherOrValueOrX),
         );

@@ -2,15 +2,15 @@
 
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { SolidColor } from "./Color";
+import { BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { CharSprite } from "./font/Font";
+import { BpxCharSprite } from "./font/Font";
 import { Framework, type FrameworkOptions } from "./Framework";
 import { Buttons } from "./game_input/Buttons";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { Vector2d } from "./Vector2d";
+import { BpxVector2d } from "./Vector2d";
 
 export class BeetPx {
   static #framework: Framework;
@@ -201,8 +201,8 @@ export class BeetPx {
    */
   static print: DrawApi["print"] = (
     text: string,
-    canvasXy1: Vector2d,
-    color: SolidColor | ((charSprite: CharSprite) => SolidColor),
+    canvasXy1: BpxVector2d,
+    color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
   ) => {
     return this.#tryGetFramework().drawApi.print(text, canvasXy1, color);
   };
@@ -284,3 +284,5 @@ export class BeetPx {
     return this.#framework;
   }
 }
+
+export const b_ = BeetPx;

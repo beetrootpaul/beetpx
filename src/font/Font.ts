@@ -1,17 +1,17 @@
-import { ImageUrl } from "../Assets";
-import { Sprite } from "../Sprite";
-import { Vector2d } from "../Vector2d";
+import { BpxImageUrl } from "../Assets";
+import { BpxSprite } from "../Sprite";
+import { BpxVector2d } from "../Vector2d";
 
-export type CharSprite = {
-  positionInText: Vector2d;
-  sprite: Sprite;
+export type BpxCharSprite = {
+  positionInText: BpxVector2d;
+  sprite: BpxSprite;
   char: string;
 };
 
-export type FontId = string;
+export type BpxFontId = string;
 
-export interface Font {
-  readonly id: FontId;
-  readonly imageUrl: ImageUrl;
-  spritesFor(text: string): CharSprite[];
+export interface BpxFont {
+  readonly id: BpxFontId;
+  readonly imageUrl: BpxImageUrl;
+  spritesFor(text: string): BpxCharSprite[];
 }

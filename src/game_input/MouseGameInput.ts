@@ -1,12 +1,12 @@
-import { GameInputEvent } from "./GameInput";
+import { BpxGameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class MouseGameInput implements SpecializedGameInput {
   readonly #muteButtonsSelector: string;
   readonly #fullScreenButtonsSelector: string;
 
-  readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
-    new Set<GameInputEvent>();
+  readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
+    new Set<BpxGameInputEvent>();
 
   constructor(params: {
     muteButtonsSelector: string;
@@ -33,7 +33,7 @@ export class MouseGameInput implements SpecializedGameInput {
       });
   }
 
-  update(eventsCollector: Set<GameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): void {
     for (const event of this.#eventsSinceLastUpdate) {
       eventsCollector.add(event);
     }

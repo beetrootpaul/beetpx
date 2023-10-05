@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { SolidColor, transparent_ } from "../Color";
+import { BpxSolidColor, transparent_ } from "../Color";
 import { spr_ } from "../Sprite";
 import { v_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
@@ -10,12 +10,12 @@ import { TestImage } from "./TestImage";
 
 describe("DrawSprite", () => {
   const ct = transparent_;
-  const c0 = SolidColor.fromRgbCssHex("#010203");
-  const c1 = SolidColor.fromRgbCssHex("#111213");
-  const c2 = SolidColor.fromRgbCssHex("#212223");
-  const c3 = SolidColor.fromRgbCssHex("#313233");
-  const c4 = SolidColor.fromRgbCssHex("#414243");
-  const c5 = SolidColor.fromRgbCssHex("#515253");
+  const c0 = BpxSolidColor.fromRgbCssHex("#010203");
+  const c1 = BpxSolidColor.fromRgbCssHex("#111213");
+  const c2 = BpxSolidColor.fromRgbCssHex("#212223");
+  const c3 = BpxSolidColor.fromRgbCssHex("#313233");
+  const c4 = BpxSolidColor.fromRgbCssHex("#414243");
+  const c5 = BpxSolidColor.fromRgbCssHex("#515253");
 
   const s = spr_("any.image.url");
 

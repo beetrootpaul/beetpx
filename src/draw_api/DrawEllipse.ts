@@ -1,16 +1,16 @@
-import { CompositeColor, MappingColor, SolidColor } from "../Color";
-import { Vector2d, v_ } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
+import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 
 export class DrawEllipse {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Vector2d;
+  readonly #canvasSize: BpxVector2d;
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize.round();
 
@@ -25,14 +25,14 @@ export class DrawEllipse {
   // TODO: cover ClippingRegion with tests
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
-    xy: Vector2d,
-    wh: Vector2d,
-    color: SolidColor | CompositeColor | MappingColor,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
     fill: boolean,
-    fillPattern: FillPattern = FillPattern.primaryOnly,
-    clippingRegion: ClippingRegion | null = null,
+    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
+    clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    const [xy1, xy2] = Vector2d.minMax(xy.round(), xy.add(wh).round());
+    const [xy1, xy2] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
 
     if (xy2.x - xy1.x <= 0 || xy2.y - xy1.y <= 0) {
       return;
@@ -70,7 +70,7 @@ export class DrawEllipse {
       this.#pixel.draw(v_(right, top), color, clippingRegion, fillPattern);
       if (fill) {
         // TODO: update the implementation below to honor fill pattern
-        Vector2d.forEachIntXyWithinRectOf(
+        BpxVector2d.forEachIntXyWithinRectOf(
           v_(left + 1, bottom),
           v_(right - left - 1, 1),
           false,
@@ -80,7 +80,7 @@ export class DrawEllipse {
           },
         );
         // TODO: update the implementation below to honor fill pattern
-        Vector2d.forEachIntXyWithinRectOf(
+        BpxVector2d.forEachIntXyWithinRectOf(
           v_(left + 1, top),
           v_(right - left - 1, 1),
           false,

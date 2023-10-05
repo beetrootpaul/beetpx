@@ -10,9 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawRect_canvasBytes, _DrawRect_canvasSize, _DrawRect_pixel;
-import { Vector2d } from "../Vector2d";
+import { BpxVector2d } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 export class DrawRect {
     constructor(canvasBytes, canvasSize) {
         _DrawRect_canvasBytes.set(this, void 0);
@@ -28,8 +28,8 @@ export class DrawRect {
     // TODO: tests for MappingColor
     // TODO: tests for CompositeColor and fillPattern
     // TODO: cover ClippingRegion with tests
-    draw(xy, wh, color, fill, fillPattern = FillPattern.primaryOnly, clippingRegion = null) {
-        Vector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
+    draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+        BpxVector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
             __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color, clippingRegion, fillPattern);
         });
     }

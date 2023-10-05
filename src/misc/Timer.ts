@@ -1,4 +1,4 @@
-export class Timer {
+export class BpxTimer {
   readonly #frames: number;
 
   #t: number;

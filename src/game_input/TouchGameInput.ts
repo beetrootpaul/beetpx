@@ -1,12 +1,12 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { ButtonName } from "./Buttons";
-import { GameInputEvent } from "./GameInput";
+import { BpxButtonName } from "./Buttons";
+import { BpxGameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class TouchGameInput implements SpecializedGameInput {
   static mapping: Array<{
-    event: GameInputEvent;
-    button: ButtonName;
+    event: BpxGameInputEvent;
+    button: BpxButtonName;
     selector: string;
   }> = [
     {
@@ -46,7 +46,7 @@ export class TouchGameInput implements SpecializedGameInput {
     },
   ];
 
-  readonly #eventsAndButtons: Map<GameInputEvent, HTMLElement[]> = new Map([
+  readonly #eventsAndButtons: Map<BpxGameInputEvent, HTMLElement[]> = new Map([
     ["button_left", []],
     ["button_right", []],
     ["button_up", []],
@@ -56,10 +56,10 @@ export class TouchGameInput implements SpecializedGameInput {
     ["button_menu", []],
   ]);
 
-  readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
-    new Set<GameInputEvent>();
+  readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
+    new Set<BpxGameInputEvent>();
 
-  constructor(params: { visibleButtons: ButtonName[] }) {
+  constructor(params: { visibleButtons: BpxButtonName[] }) {
     TouchGameInput.mapping.forEach(({ event, button, selector }) => {
       const touchButtonElements =
         document.querySelectorAll<HTMLElement>(selector);
@@ -115,7 +115,7 @@ export class TouchGameInput implements SpecializedGameInput {
     }
   }
 
-  update(eventsCollector: Set<GameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): void {
     for (const event of this.#eventsSinceLastUpdate) {
       eventsCollector.add(event);
     }

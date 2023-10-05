@@ -1,16 +1,16 @@
-import { CompositeColor, MappingColor, SolidColor } from "../Color";
-import { Vector2d, v_ } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
+import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 
 export class DrawLine {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Vector2d;
+  readonly #canvasSize: BpxVector2d;
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize.round();
 
@@ -26,11 +26,11 @@ export class DrawLine {
   // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
-    xy: Vector2d,
-    wh: Vector2d,
-    color: SolidColor | CompositeColor | MappingColor,
-    fillPattern: FillPattern = FillPattern.primaryOnly,
-    clippingRegion: ClippingRegion | null = null,
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
+    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
+    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
     //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other

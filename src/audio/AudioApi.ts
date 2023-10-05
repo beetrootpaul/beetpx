@@ -1,9 +1,9 @@
 import { Assets, SoundAsset, SoundUrl } from "../Assets";
 import { Logger } from "../logger/Logger";
-import { Utils } from "../Utils";
-import { SoundSequence, SoundSequenceEntry } from "./SoundSequence";
+import { BpxUtils } from "../Utils";
+import { BpxSoundSequence, SoundSequenceEntry } from "./SoundSequence";
 
-export type AudioPlaybackId = number;
+export type BpxAudioPlaybackId = number;
 
 // TODO: refactor this big mess of a class, extract playbacks for example
 export class AudioApi {
@@ -23,7 +23,7 @@ export class AudioApi {
   #isGloballyMuted: boolean;
 
   readonly #sounds: Map<
-    AudioPlaybackId,
+    BpxAudioPlaybackId,
     { sourceNodes: AudioBufferSourceNode[]; gainNodes: GainNode[] }
   > = new Map();
 
@@ -125,7 +125,7 @@ export class AudioApi {
     }
   }
 
-  playSoundOnce(soundUrl: SoundUrl): AudioPlaybackId {
+  playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId {
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const soundAsset = this.#assets.getSoundAsset(soundUrl);
@@ -146,7 +146,7 @@ export class AudioApi {
   playSoundLooped(
     soundUrl: SoundUrl,
     muteOnStart: boolean = false,
-  ): AudioPlaybackId {
+  ): BpxAudioPlaybackId {
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const soundAsset = this.#assets.getSoundAsset(soundUrl);
@@ -165,7 +165,7 @@ export class AudioApi {
     return playbackId;
   }
 
-  playSoundSequence(soundSequence: SoundSequence): AudioPlaybackId {
+  playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId {
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const intro = soundSequence.sequence ?? [];
@@ -203,7 +203,7 @@ export class AudioApi {
     }
 
     // one more fn just to make loops above simpler, since there is always something on index `i+1`
-    playbackFns.push(Utils.noop);
+    playbackFns.push(BpxUtils.noop);
 
     this.#sounds.set(playbackId, { sourceNodes: [], gainNodes: [] });
     playbackFns[0]?.();
@@ -212,7 +212,7 @@ export class AudioApi {
   }
 
   #playSoundSequenceEntry(
-    playbackId: AudioPlaybackId,
+    playbackId: BpxAudioPlaybackId,
     entry: SoundSequenceEntry,
     onEntryEnded?: () => void,
   ): void {
@@ -262,7 +262,7 @@ export class AudioApi {
   }
 
   // TODO: better API to make clear that only looped sounds can be muted individually?
-  muteSound(playbackId: AudioPlaybackId): void {
+  muteSound(playbackId: BpxAudioPlaybackId): void {
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
       for (const gainNode of nodes?.gainNodes) {
@@ -278,7 +278,7 @@ export class AudioApi {
   }
 
   // TODO: better API to make clear that only looped sounds can be muted individually?
-  unmuteSound(playbackId: AudioPlaybackId): void {
+  unmuteSound(playbackId: BpxAudioPlaybackId): void {
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
       for (const gainNode of nodes?.gainNodes) {
@@ -294,7 +294,7 @@ export class AudioApi {
   }
 
   #register(
-    playbackId: AudioPlaybackId,
+    playbackId: BpxAudioPlaybackId,
     sourceNode: AudioBufferSourceNode,
     gainNode?: GainNode,
   ) {
@@ -312,7 +312,7 @@ export class AudioApi {
     }
   }
 
-  #unregister(playbackId: AudioPlaybackId) {
+  #unregister(playbackId: BpxAudioPlaybackId) {
     this.#sounds.delete(playbackId);
   }
 }

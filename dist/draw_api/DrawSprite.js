@@ -10,9 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawSprite_pixel;
-import { SolidColor, transparent_ } from "../Color";
-import { Sprite } from "../Sprite";
-import { Utils } from "../Utils";
+import { BpxSolidColor, transparent_, } from "../Color";
+import { BpxSprite } from "../Sprite";
+import { BpxUtils } from "../Utils";
 import { v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 export class DrawSprite {
@@ -32,9 +32,9 @@ export class DrawSprite {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
-        sprite = new Sprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
+        sprite = new BpxSprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
         // clip sprite by image edges
-        sprite = new Sprite(sprite.imageUrl, v_(Utils.clamp(0, sprite.xy1.x, imgW), Utils.clamp(0, sprite.xy1.y, imgH)), v_(Utils.clamp(0, sprite.xy2.x, imgW), Utils.clamp(0, sprite.xy2.y, imgH)));
+        sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
                 const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
@@ -46,7 +46,7 @@ export class DrawSprite {
                     throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
                 }
                 let color = imgBytes[imgBytesIndex + 3] >= 0xff / 2
-                    ? new SolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
+                    ? new BpxSolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
                     : transparent_;
                 color = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
                 // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
