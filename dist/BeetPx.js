@@ -154,6 +154,9 @@ BeetPx.sprite = (...args) => {
 BeetPx.print = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(...args);
 };
+BeetPx.takeCanvasSnapshot = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.takeCanvasSnapshot(...args);
+};
 //
 // Audio API
 //

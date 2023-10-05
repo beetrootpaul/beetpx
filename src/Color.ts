@@ -1,3 +1,5 @@
+import { BpxCanvasSnapshot } from "./draw_api/DrawApi";
+
 export type BpxColorId = string;
 
 export interface BpxColor {
@@ -79,19 +81,23 @@ export class BpxMappingColor implements BpxColor {
 
   readonly id: BpxColorId = `mapping:${BpxMappingColor.#nextId++}`;
 
+  readonly canvasSnapshot: BpxCanvasSnapshot;
+
   readonly #mapping: (
     canvasColor: BpxSolidColor | BpxTransparentColor,
   ) => BpxSolidColor | BpxTransparentColor;
 
   constructor(
+    canvasSnapshot: BpxCanvasSnapshot,
     mapping: (
       canvasColor: BpxSolidColor | BpxTransparentColor,
     ) => BpxSolidColor | BpxTransparentColor,
   ) {
+    this.canvasSnapshot = canvasSnapshot;
     this.#mapping = mapping;
   }
 
-  getMappedColorFor(
+  getMappedColorForCanvasIndex(
     r: number,
     g: number,
     b: number,

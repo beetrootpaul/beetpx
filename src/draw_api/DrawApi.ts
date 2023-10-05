@@ -27,6 +27,10 @@ export type BpxColorMapping = Array<{
   to: BpxSolidColor | BpxTransparentColor;
 }>;
 
+export type BpxCanvasSnapshot = {
+  canvasBytes: Uint8ClampedArray;
+};
+
 type DrawApiOptions = {
   // TODO: better name to indicate in-out nature of this param? Or some info in JSDoc?
   canvasBytes: Uint8ClampedArray;
@@ -60,6 +64,8 @@ export class DrawApi {
 
   readonly #spriteColorMapping: Map<BpxColorId, BpxColor> = new Map();
 
+  readonly takeCanvasSnapshot: () => BpxCanvasSnapshot;
+
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
 
@@ -70,6 +76,10 @@ export class DrawApi {
     this.#ellipse = new DrawEllipse(options.canvasBytes, options.canvasSize);
     this.#sprite = new DrawSprite(options.canvasBytes, options.canvasSize);
     this.#text = new DrawText(options.canvasBytes, options.canvasSize);
+
+    this.takeCanvasSnapshot = () => ({
+      canvasBytes: new Uint8ClampedArray(options.canvasBytes),
+    });
   }
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is

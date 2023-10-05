@@ -1,5 +1,5 @@
 import {
-  BeetPx,
+  b_,
   BpxFillPattern,
   BpxSolidColor,
   BpxVector2d,
@@ -29,7 +29,7 @@ let logoPositionBase = BpxVector2d.zero;
 
 let numberOfEllipses = 4;
 
-BeetPx.init(
+b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: fps,
@@ -43,57 +43,57 @@ BeetPx.init(
     jsons: [],
   },
 ).then(({ startGame }) => {
-  BeetPx.setOnStarted(() => {
-    BeetPx.stopAllSounds();
-    BeetPx.playSoundLooped("music_base.wav");
-    BeetPx.playSoundLooped("music_melody.wav");
+  b_.setOnStarted(() => {
+    b_.stopAllSounds();
+    b_.playSoundLooped("music_base.wav");
+    b_.playSoundLooped("music_melody.wav");
 
     logoPositionBase = logoPositionBaseDefault;
   });
 
-  BeetPx.setOnUpdate(() => {
+  b_.setOnUpdate(() => {
     updateCallsVisualization.history[
       updateCallsVisualization.historyIndex
     ] += 1;
 
     console.group("UPDATE");
-    BeetPx.logDebug(`FPS: ${BeetPx.renderFps}`);
-    BeetPx.logDebug(`frame: ${BeetPx.frameNumber}`);
+    b_.logDebug(`FPS: ${b_.renderFps}`);
+    b_.logDebug(`frame: ${b_.frameNumber}`);
 
     // TODO: rework these buttons for Xbox controller
-    if (BeetPx.wasJustPressed("x")) {
+    if (b_.wasJustPressed("x")) {
       numberOfEllipses = numberOfEllipses * 2;
     }
-    if (BeetPx.wasJustPressed("o")) {
+    if (b_.wasJustPressed("o")) {
       numberOfEllipses = Math.max(1, numberOfEllipses / 2);
     }
 
-    if (BeetPx.isPressed("right")) {
+    if (b_.isPressed("right")) {
       logoPositionBase = logoPositionBase.add(velocity, 0);
     }
-    if (BeetPx.isPressed("left")) {
+    if (b_.isPressed("left")) {
       logoPositionBase = logoPositionBase.add(-velocity, 0);
     }
-    if (BeetPx.isPressed("up")) {
+    if (b_.isPressed("up")) {
       logoPositionBase = logoPositionBase.add(0, -velocity);
     }
-    if (BeetPx.isPressed("down")) {
+    if (b_.isPressed("down")) {
       logoPositionBase = logoPositionBase.add(0, velocity);
     }
 
     // TODO: wrong button on Xbox controller :/
-    if (BeetPx.wasJustPressed("menu")) {
-      BeetPx.restart();
+    if (b_.wasJustPressed("menu")) {
+      b_.restart();
     }
 
     console.groupEnd();
   });
 
-  BeetPx.setOnDraw(() => {
+  b_.setOnDraw(() => {
     renderFpsVisualization.history[renderFpsVisualization.historyIndex] =
-      BeetPx.renderFps;
+      b_.renderFps;
 
-    BeetPx.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
+    b_.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
 
     drawThings();
 
@@ -125,7 +125,7 @@ function drawUpdateCallsVisualization(): void {
       barIndex < updateCallsVisualization.history[columnIndex]!;
       barIndex++
     ) {
-      BeetPx.pixel(
+      b_.pixel(
         v_(columnIndex + 3, 1 + barIndex * 2),
         columnIndex === updateCallsVisualization.historyIndex
           ? BpxSolidColor.fromRgbCssHex("#ffffff")
@@ -143,7 +143,7 @@ function drawRenderFpsVisualization(): void {
   ) {
     const bars = Math.round(renderFpsVisualization.history[columnIndex]! / 10);
     for (let barIndex = 0; barIndex < bars; barIndex++) {
-      BeetPx.rectFilled(
+      b_.rectFilled(
         v_(columnIndex * 3 + 2, 125 - barIndex * 3),
         v_(2, 2),
         columnIndex === renderFpsVisualization.historyIndex
@@ -158,7 +158,7 @@ function drawRenderFpsVisualization(): void {
 
 function drawThings(): void {
   for (let ellipseIndex = 0; ellipseIndex < numberOfEllipses; ellipseIndex++) {
-    BeetPx.ellipseFilled(
+    b_.ellipseFilled(
       v_((ellipseIndex * 128) / numberOfEllipses, 70),
       v_(24, 24),
       BpxSolidColor.fromRgbCssHex(
@@ -167,20 +167,16 @@ function drawThings(): void {
     );
   }
 
-  BeetPx.setFillPattern(BpxFillPattern.of(0x5a5a));
-  BeetPx.rectFilled(
-    v_(16, 80),
-    v_(96, 32),
-    BpxSolidColor.fromRgbCssHex("#012345"),
-  );
-  BeetPx.setFillPattern(BpxFillPattern.primaryOnly);
+  b_.setFillPattern(BpxFillPattern.of(0x5a5a));
+  b_.rectFilled(v_(16, 80), v_(96, 32), BpxSolidColor.fromRgbCssHex("#012345"));
+  b_.setFillPattern(BpxFillPattern.primaryOnly);
 
-  BeetPx.sprite(
+  b_.sprite(
     spr_("logo.png")(0, 0, 16, 16),
     logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),
   );
 
-  const prevMapping = BeetPx.mapSpriteColors([
+  const prevMapping = b_.mapSpriteColors([
     {
       from: logoInnerColor,
       to: logoOuterColor,
@@ -190,11 +186,11 @@ function drawThings(): void {
       to: logoInnerColor,
     },
   ]);
-  BeetPx.sprite(
+  b_.sprite(
     spr_("logo.png")(0, 0, 16, 16),
-    logoPositionBase.sub(calculateLogoPositionOffset(BeetPx.frameNumber)),
+    logoPositionBase.sub(calculateLogoPositionOffset(b_.frameNumber)),
   );
-  BeetPx.mapSpriteColors(prevMapping);
+  b_.mapSpriteColors(prevMapping);
 }
 
 function calculateLogoPositionOffset(frameNumber: number): BpxVector2d {

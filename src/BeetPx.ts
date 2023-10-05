@@ -193,6 +193,10 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.print(...args);
   };
 
+  static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"] = (...args) => {
+    return this.#tryGetFramework().drawApi.takeCanvasSnapshot(...args);
+  };
+
   //
   // Audio API
   //

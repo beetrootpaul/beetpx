@@ -30,7 +30,10 @@ export { BpxVector2d } from "./Vector2d";
 export { type BpxAudioPlaybackId } from "./audio/AudioApi";
 export { type BpxSoundSequence } from "./audio/SoundSequence";
 export { BpxClippingRegion } from "./draw_api/ClippingRegion";
-export { type BpxColorMapping } from "./draw_api/DrawApi";
+export {
+  type BpxCanvasSnapshot,
+  type BpxColorMapping,
+} from "./draw_api/DrawApi";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
 export { type BpxButtonName } from "./game_input/Buttons";

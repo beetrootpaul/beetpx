@@ -50,13 +50,14 @@ export class BpxCompositeColor {
 }
 // TODO: make it a function which allows to implement catch it all color
 export class BpxMappingColor {
-    constructor(mapping) {
+    constructor(canvasSnapshot, mapping) {
         var _b, _c, _d;
         this.id = `mapping:${__classPrivateFieldSet(_b = BpxMappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _BpxMappingColor_nextId), _c = _d++, _d), "f", _BpxMappingColor_nextId), _c}`;
         _BpxMappingColor_mapping.set(this, void 0);
+        this.canvasSnapshot = canvasSnapshot;
         __classPrivateFieldSet(this, _BpxMappingColor_mapping, mapping, "f");
     }
-    getMappedColorFor(r, g, b, a) {
+    getMappedColorForCanvasIndex(r, g, b, a) {
         return __classPrivateFieldGet(this, _BpxMappingColor_mapping, "f").call(this, a >= 0xff / 2 ? new BpxSolidColor(r, g, b) : transparent_);
     }
 }
