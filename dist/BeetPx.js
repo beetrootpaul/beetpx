@@ -151,15 +151,8 @@ BeetPx.sprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);
 };
 // TODO: Create a similar JSDocs API description for other API methods as well
-/**
- * Draws a text on the canvas
- *
- * @param text
- * @param canvasXy1 top-left text corner
- * @param color text color or a function which returns a text color for a given character
- */
-BeetPx.print = (text, canvasXy1, color) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(text, canvasXy1, color);
+BeetPx.print = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(...args);
 };
 //
 // Audio API

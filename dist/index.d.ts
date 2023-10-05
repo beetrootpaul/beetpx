@@ -425,13 +425,6 @@ declare class BeetPx {
     static ellipse: DrawApi["ellipse"];
     static ellipseFilled: DrawApi["ellipseFilled"];
     static sprite: DrawApi["sprite"];
-    /**
-     * Draws a text on the canvas
-     *
-     * @param text
-     * @param canvasXy1 top-left text corner
-     * @param color text color or a function which returns a text color for a given character
-     */
     static print: DrawApi["print"];
     static toggleMuteUnmute: AudioApi["toggleMuteUnmute"];
     static playSoundOnce: AudioApi["playSoundOnce"];

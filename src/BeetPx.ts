@@ -2,15 +2,12 @@
 
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { BpxCharSprite } from "./font/Font";
 import { Framework, type FrameworkOptions } from "./Framework";
 import { Buttons } from "./game_input/Buttons";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxVector2d } from "./Vector2d";
 
 export class BeetPx {
   static #framework: Framework;
@@ -192,19 +189,8 @@ export class BeetPx {
 
   // TODO: Create a similar JSDocs API description for other API methods as well
 
-  /**
-   * Draws a text on the canvas
-   *
-   * @param text
-   * @param canvasXy1 top-left text corner
-   * @param color text color or a function which returns a text color for a given character
-   */
-  static print: DrawApi["print"] = (
-    text: string,
-    canvasXy1: BpxVector2d,
-    color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
-  ) => {
-    return this.#tryGetFramework().drawApi.print(text, canvasXy1, color);
+  static print: DrawApi["print"] = (...args) => {
+    return this.#tryGetFramework().drawApi.print(...args);
   };
 
   //
