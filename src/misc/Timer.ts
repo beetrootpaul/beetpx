@@ -1,3 +1,7 @@
+export function timer_(frames: number): BpxTimer {
+  return new BpxTimer({ frames });
+}
+
 export class BpxTimer {
   readonly #frames: number;
 
