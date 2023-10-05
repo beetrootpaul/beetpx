@@ -25,7 +25,7 @@ export class KeyboardGameInput implements SpecializedGameInput {
 
     // TODO: what about different keyboard layouts where "z" is not on the left from "x"?
     ["z", "button_o"],
-    ["z", "button_o"],
+    ["Z", "button_o"],
 
     ["Escape", "button_menu"],
     ["Enter", "button_menu"],
