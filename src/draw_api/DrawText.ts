@@ -38,6 +38,7 @@ export class DrawText {
         fontAsset.image,
         charSprite.sprite,
         canvasXy.add(charSprite.positionInText),
+        BpxVector2d.one,
         new Map([
           [fontAsset.imageTextColor.id, colorFn(charSprite)],
           [fontAsset.imageBgColor.id, transparent_],

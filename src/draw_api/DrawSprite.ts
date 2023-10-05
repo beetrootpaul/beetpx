@@ -35,10 +35,15 @@ export class DrawSprite {
     sourceImageAsset: ImageAsset,
     sprite: BpxSprite,
     targetXy: BpxVector2d,
+    // TODO: test it
+    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
+    scaleXy: BpxVector2d = BpxVector2d.one,
     colorMapping: Map<BpxColorId, BpxColor> = new Map(),
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
+
+    scaleXy = scaleXy.floor();
 
     const {
       width: imgW,
@@ -74,34 +79,40 @@ export class DrawSprite {
 
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
       for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        const canvasXy = targetXy.add(
-          v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y),
-        );
-        if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
-          continue;
-        }
+        BpxUtils.repeatN(scaleXy.x, (xScaledStep) => {
+          BpxUtils.repeatN(scaleXy.y, (yScaledStep) => {
+            const canvasXy = targetXy.add(
+              v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
+                .mul(scaleXy)
+                .add(xScaledStep, yScaledStep),
+            );
+            if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
+              return;
+            }
 
-        const imgBytesIndex = (imgY * imgW + imgX) * 4;
+            const imgBytesIndex = (imgY * imgW + imgX) * 4;
 
-        if (imgBytes.length < imgBytesIndex + 4) {
-          throw Error(
-            `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`,
-          );
-        }
-        let color =
-          imgBytes[imgBytesIndex + 3]! >= 0xff / 2
-            ? new BpxSolidColor(
-                imgBytes[imgBytesIndex]!,
-                imgBytes[imgBytesIndex + 1]!,
-                imgBytes[imgBytesIndex + 2]!,
-              )
-            : transparent_;
-        color = colorMapping.get(color.id) ?? color;
+            if (imgBytes.length < imgBytesIndex + 4) {
+              throw Error(
+                `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`,
+              );
+            }
+            let color =
+              imgBytes[imgBytesIndex + 3]! >= 0xff / 2
+                ? new BpxSolidColor(
+                    imgBytes[imgBytesIndex]!,
+                    imgBytes[imgBytesIndex + 1]!,
+                    imgBytes[imgBytesIndex + 2]!,
+                  )
+                : transparent_;
+            color = colorMapping.get(color.id) ?? color;
 
-        // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
-        //       - ff614f became ff6e59
-        //       - 00555a became 125359
-        this.#pixel.draw(canvasXy, color);
+            // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+            //       - ff614f became ff6e59
+            //       - 00555a became 125359
+            this.#pixel.draw(canvasXy, color);
+          });
+        });
       }
     }
   }

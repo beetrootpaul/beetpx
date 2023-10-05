@@ -18,7 +18,12 @@ BeetPx.init(
 
   const velocity = 2;
 
-  const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
+  const logoScale = v_(2, 2);
+
+  const logoPositionBaseDefault = v_(
+    (128 - 16 * logoScale.x) / 2,
+    (128 - 16 * logoScale.y) / 2,
+  );
   let logoPositionBase = BpxVector2d.zero;
   let logoPositionOffset = BpxVector2d.zero;
 
@@ -68,6 +73,7 @@ BeetPx.init(
     BeetPx.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
+      logoScale,
     );
     if (BeetPx.debug) {
       BeetPx.line(

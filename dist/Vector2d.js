@@ -128,3 +128,4 @@ export class BpxVector2d {
     }
 }
 BpxVector2d.zero = new BpxVector2d(0, 0);
+BpxVector2d.one = new BpxVector2d(1, 1);

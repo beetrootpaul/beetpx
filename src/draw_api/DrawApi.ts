@@ -203,12 +203,17 @@ export class DrawApi {
   }
 
   // TODO: make sprite make use of fillPattern as well?
-  sprite(sprite: BpxSprite, canvasXy: BpxVector2d): void {
+  sprite(
+    sprite: BpxSprite,
+    canvasXy: BpxVector2d,
+    scaleXy: BpxVector2d = BpxVector2d.one,
+  ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sourceImageAsset,
       sprite,
       canvasXy.sub(this.#cameraOffset),
+      scaleXy,
       this.#spriteColorMapping,
       this.#clippingRegion,
     );
