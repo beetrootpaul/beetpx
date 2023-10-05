@@ -23,6 +23,7 @@ export {
   type BpxColor,
   type BpxColorId,
 } from "./Color";
+export { BpxEasing, type BpxEasingFn } from "./Easing";
 export { BpxSprite } from "./Sprite";
 export { BpxUtils } from "./Utils";
 export { BpxVector2d } from "./Vector2d";

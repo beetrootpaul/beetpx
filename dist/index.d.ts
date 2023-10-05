@@ -153,6 +153,15 @@ declare class Assets {
     getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset;
 }
 
+type BpxEasingFn = (t: number) => number;
+declare class BpxEasing {
+    static linear: BpxEasingFn;
+    static inQuadratic: BpxEasingFn;
+    static outQuadratic: BpxEasingFn;
+    static inQuartic: BpxEasingFn;
+    static outQuartic: BpxEasingFn;
+}
+
 declare class BpxUtils {
     static booleanChangingEveryNthFrame(n: number): boolean;
     static clamp(a: number, b: number, c: number): number;
@@ -430,4 +439,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, transparent_, u_, v_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, transparent_, u_, v_ };

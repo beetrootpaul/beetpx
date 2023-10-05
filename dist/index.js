@@ -1,4 +1,5 @@
 export { BpxCompositeColor, BpxMappingColor, BpxSolidColor, BpxTransparentColor, } from "./Color";
+export { BpxEasing } from "./Easing";
 export { BpxSprite } from "./Sprite";
 export { BpxUtils } from "./Utils";
 export { BpxVector2d } from "./Vector2d";
