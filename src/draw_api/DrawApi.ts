@@ -17,11 +17,13 @@ import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
+import { DrawPixels } from "./DrawPixels";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { BpxFillPattern } from "./FillPattern";
 
+// TODO: BpxColorMapping and BpxMappingColor are named way too similar, while doing different things!
 export type BpxColorMapping = Array<{
   from: BpxSolidColor;
   to: BpxSolidColor | BpxTransparentColor;
@@ -48,6 +50,7 @@ export class DrawApi {
 
   readonly #clear: DrawClear;
   readonly #pixel: DrawPixel;
+  readonly #pixels: DrawPixels;
   readonly #line: DrawLine;
   readonly #rect: DrawRect;
   readonly #ellipse: DrawEllipse;
@@ -71,6 +74,7 @@ export class DrawApi {
 
     this.#clear = new DrawClear(options.canvasBytes, options.canvasSize);
     this.#pixel = new DrawPixel(options.canvasBytes, options.canvasSize);
+    this.#pixels = new DrawPixels(options.canvasBytes, options.canvasSize);
     this.#line = new DrawLine(options.canvasBytes, options.canvasSize);
     this.#rect = new DrawRect(options.canvasBytes, options.canvasSize);
     this.#ellipse = new DrawEllipse(options.canvasBytes, options.canvasSize);
@@ -136,6 +140,18 @@ export class DrawApi {
 
   pixel(xy: BpxVector2d, color: BpxSolidColor): void {
     this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#clippingRegion);
+  }
+
+  // bits = an array representing rows from top to bottom, where each array element
+  //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
+  //        from left to right.
+  pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
+    this.#pixels.draw(
+      xy.sub(this.#cameraOffset),
+      bits,
+      color,
+      this.#clippingRegion,
+    );
   }
 
   line(

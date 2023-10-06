@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
+var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 import { Logger } from "../logger/Logger";
 import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_ } from "../Vector2d";
@@ -18,6 +18,7 @@ import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
+import { DrawPixels } from "./DrawPixels";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
@@ -30,6 +31,7 @@ export class DrawApi {
         _DrawApi_assets.set(this, void 0);
         _DrawApi_clear.set(this, void 0);
         _DrawApi_pixel.set(this, void 0);
+        _DrawApi_pixels.set(this, void 0);
         _DrawApi_line.set(this, void 0);
         _DrawApi_rect.set(this, void 0);
         _DrawApi_ellipse.set(this, void 0);
@@ -43,6 +45,7 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
         __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel(options.canvasBytes, options.canvasSize), "f");
+        __classPrivateFieldSet(this, _DrawApi_pixels, new DrawPixels(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_line, new DrawLine(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvasBytes, options.canvasSize), "f");
@@ -102,6 +105,12 @@ export class DrawApi {
     pixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
+    // bits = an array representing rows from top to bottom, where each array element
+    //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
+    //        from left to right.
+    pixels(xy, color, bits) {
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+    }
     line(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
@@ -136,4 +145,4 @@ export class DrawApi {
         }
     }
 }
-_DrawApi_assets = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_clippingRegion = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();
+_DrawApi_assets = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_pixels = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_clippingRegion = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();

@@ -161,6 +161,10 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.pixel(...args);
   };
 
+  static pixels: DrawApi["pixels"] = (...args) => {
+    return this.#tryGetFramework().drawApi.pixels(...args);
+  };
+
   static line: DrawApi["line"] = (...args) => {
     return this.#tryGetFramework().drawApi.line(...args);
   };

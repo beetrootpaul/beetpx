@@ -114,6 +114,7 @@ declare class DrawApi {
     getFont(): BpxFont | null;
     clearCanvas(color: BpxSolidColor): void;
     pixel(xy: BpxVector2d, color: BpxSolidColor): void;
+    pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void;
     line(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
     rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
     rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
@@ -424,6 +425,7 @@ declare class BeetPx {
     static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
+    static pixels: DrawApi["pixels"];
     static line: DrawApi["line"];
     static rect: DrawApi["rect"];
     static rectFilled: DrawApi["rectFilled"];
