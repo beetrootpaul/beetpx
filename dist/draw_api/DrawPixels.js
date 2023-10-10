@@ -9,25 +9,28 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _BpxFillPattern_bits;
-export class BpxFillPattern {
-    // TODO: create a helper to generate FillPattern from ASCII
-    static of(bits) {
-        return new BpxFillPattern(bits);
+var _DrawPixels_pixel;
+import { DrawPixel } from "./DrawPixel";
+export class DrawPixels {
+    constructor(canvasBytes, canvasSize) {
+        _DrawPixels_pixel.set(this, void 0);
+        __classPrivateFieldSet(this, _DrawPixels_pixel, new DrawPixel(canvasBytes, canvasSize), "f");
     }
-    // TODO: tests that bits do not have for example an accidental extra digit in its binary representation. It happened to me in tests and debugging was a hell
-    constructor(bits) {
-        _BpxFillPattern_bits.set(this, void 0);
-        __classPrivateFieldSet(this, _BpxFillPattern_bits, bits, "f");
-    }
-    // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
-    hasPrimaryColorAt(xy) {
-        const patternXy = xy.mod(4);
-        const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;
-        const isSecondary = Boolean(__classPrivateFieldGet(this, _BpxFillPattern_bits, "f") & (1 << bitPosition));
-        return !isSecondary;
+    // TODO: add tests
+    draw(xy, bits, color, clippingRegion = null) {
+        xy = xy.round();
+        for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {
+            for (let bitsX = 0; bitsX < bits[bitsY].length; bitsX += 1) {
+                if (bits[bitsY][bitsX] !== "#") {
+                    continue;
+                }
+                const canvasXy = xy.add(bitsX, bitsY);
+                if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
+                    return;
+                }
+                __classPrivateFieldGet(this, _DrawPixels_pixel, "f").draw(canvasXy, color);
+            }
+        }
     }
 }
-_BpxFillPattern_bits = new WeakMap();
-BpxFillPattern.primaryOnly = new BpxFillPattern(0);
-BpxFillPattern.secondaryOnly = new BpxFillPattern(65535);
+_DrawPixels_pixel = new WeakMap();

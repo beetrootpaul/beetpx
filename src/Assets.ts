@@ -1,28 +1,34 @@
-import { SolidColor } from "./Color";
-import { Font, FontId } from "./font/Font";
-import { Utils } from "./Utils";
+import { BpxSolidColor } from "./Color";
+import { BpxFont, BpxFontId } from "./font/Font";
+import { BpxUtils } from "./Utils";
 
 export type AssetsToLoad = {
   images: ImageAssetToLoad[];
   fonts: FontAssetToLoad[];
   sounds: SoundAssetToLoad[];
+  jsons: JsonAssetToLoad[];
 };
 
-export type ImageUrl = string;
+export type BpxImageUrl = string;
 export type SoundUrl = string;
+export type JsonUrl = string;
 
 type ImageAssetToLoad = {
-  url: ImageUrl;
+  url: BpxImageUrl;
 };
 
 type FontAssetToLoad = {
-  font: Font;
-  imageTextColor: SolidColor;
-  imageBgColor: SolidColor;
+  font: BpxFont;
+  imageTextColor: BpxSolidColor;
+  imageBgColor: BpxSolidColor;
 };
 
 type SoundAssetToLoad = {
   url: SoundUrl;
+};
+
+type JsonAssetToLoad = {
+  url: JsonUrl;
 };
 
 export type ImageAsset = {
@@ -32,35 +38,38 @@ export type ImageAsset = {
 };
 
 export type FontAsset = {
-  font: Font;
+  font: BpxFont;
   image: ImageAsset;
-  imageTextColor: SolidColor;
-  imageBgColor: SolidColor;
+  imageTextColor: BpxSolidColor;
+  imageBgColor: BpxSolidColor;
 };
 
 export type SoundAsset = {
   audioBuffer: AudioBuffer;
 };
 
-type AssetsParams = {
-  decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
+export type JsonAsset = {
+  json: any;
 };
 
 export class Assets {
   readonly #decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
 
-  #images: Map<ImageUrl, ImageAsset> = new Map();
+  #images: Map<BpxImageUrl, ImageAsset> = new Map();
   #fonts: Map<
-    FontId,
+    BpxFontId,
     {
-      font: Font;
-      imageTextColor: SolidColor;
-      imageBgColor: SolidColor;
+      font: BpxFont;
+      imageTextColor: BpxSolidColor;
+      imageBgColor: BpxSolidColor;
     }
   > = new Map();
   #sounds: Map<SoundUrl, SoundAsset> = new Map();
+  #jsons: Map<JsonUrl, JsonAsset> = new Map();
 
-  constructor(params: AssetsParams) {
+  constructor(params: {
+    decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
+  }) {
     this.#decodeAudioData = params.decodeAudioData;
   }
 
@@ -112,15 +121,21 @@ export class Assets {
         const httpResponse = await fetch(url);
         const arrayBuffer = await httpResponse.arrayBuffer();
         const audioBuffer = await this.#decodeAudioData(arrayBuffer);
-        this.#sounds.set(url, {
-          audioBuffer,
-        });
+        this.#sounds.set(url, { audioBuffer });
+      }),
+    );
+
+    await Promise.all(
+      assetsToLoad.jsons.map(async ({ url }) => {
+        const httpResponse = await fetch(url);
+        const json = await httpResponse.json();
+        this.#jsons.set(url, { json });
       }),
     );
   }
 
   // call `loadAssets` before this one
-  getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset {
+  getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset {
     const imageAsset = this.#images.get(urlOfAlreadyLoadedImage);
     if (!imageAsset) {
       throw Error(
@@ -131,10 +146,10 @@ export class Assets {
   }
 
   // call `loadAssets` before this one
-  getFontAsset(fontId: FontId): FontAsset {
+  getFontAsset(fontId: BpxFontId): FontAsset {
     const { font, imageTextColor, imageBgColor } =
       this.#fonts.get(fontId) ??
-      Utils.throwError(
+      BpxUtils.throwError(
         `Assets: font descriptor is missing for font ID "${fontId}"`,
       );
     return {
@@ -154,5 +169,16 @@ export class Assets {
       );
     }
     return soundAsset;
+  }
+
+  // call `loadAssets` before this one
+  getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset {
+    const jsonAsset = this.#jsons.get(urlOfAlreadyLoadedJson);
+    if (!jsonAsset) {
+      throw Error(
+        `Assets: There is no JSON loaded for: ${urlOfAlreadyLoadedJson}`,
+      );
+    }
+    return jsonAsset;
   }
 }

@@ -1,17 +1,17 @@
 import { FontAsset } from "../Assets";
-import { SolidColor, transparent_ } from "../Color";
-import { CharSprite } from "../font/Font";
-import { Vector2d } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxSolidColor, transparent_ } from "../Color";
+import { BpxCharSprite } from "../font/Font";
+import { BpxVector2d } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
 
 export class DrawText {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Vector2d;
+  readonly #canvasSize: BpxVector2d;
 
   readonly #sprite: DrawSprite;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: Vector2d) {
+  constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
     this.#canvasBytes = canvasBytes;
     this.#canvasSize = canvasSize;
 
@@ -24,10 +24,10 @@ export class DrawText {
   // TODO: cover ClippingRegion with tests
   draw(
     text: string,
-    canvasXy: Vector2d,
+    canvasXy: BpxVector2d,
     fontAsset: FontAsset,
-    color: SolidColor | ((charSprite: CharSprite) => SolidColor),
-    clippingRegion: ClippingRegion | null = null,
+    color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
+    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     canvasXy = canvasXy.round();
 
@@ -38,9 +38,10 @@ export class DrawText {
         fontAsset.image,
         charSprite.sprite,
         canvasXy.add(charSprite.positionInText),
+        BpxVector2d.one,
         new Map([
-          [fontAsset.imageTextColor.id(), colorFn(charSprite)],
-          [fontAsset.imageBgColor.id(), transparent_],
+          [fontAsset.imageTextColor.id, colorFn(charSprite)],
+          [fontAsset.imageBgColor.id, transparent_],
         ]),
         clippingRegion,
       );

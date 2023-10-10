@@ -1,10 +1,10 @@
-import { GameInputEvent } from "./GameInput";
+import { BpxGameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class GamepadGameInput implements SpecializedGameInput {
-  readonly buttonMapping: Map<number, GameInputEvent> = new Map<
+  readonly buttonMapping: Map<number, BpxGameInputEvent> = new Map<
     number,
-    GameInputEvent
+    BpxGameInputEvent
   >([
     [14, "button_left"],
     [15, "button_right"],
@@ -22,9 +22,9 @@ export class GamepadGameInput implements SpecializedGameInput {
 
   readonly axisThreshold: number = 0.6;
 
-  readonly #axisMapping: Map<number, GameInputEvent> = new Map<
+  readonly #axisMapping: Map<number, BpxGameInputEvent> = new Map<
     number,
-    GameInputEvent
+    BpxGameInputEvent
   >([
     // keys here are: 100 * axis index + sign(axis value)
     [-1, "button_left"],
@@ -41,7 +41,7 @@ export class GamepadGameInput implements SpecializedGameInput {
     // nothing to be done here
   }
 
-  update(eventsCollector: Set<GameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): void {
     navigator.getGamepads().forEach((gamepad) => {
       if (gamepad) {
         gamepad.buttons.forEach((button, buttonIndex) => {

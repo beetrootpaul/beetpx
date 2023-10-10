@@ -1,14 +1,18 @@
-export { CompositeColor, MappingColor, SolidColor, TransparentColor, } from "./Color";
-export { Sprite } from "./Sprite";
-export { Utils } from "./Utils";
-export { Vector2d } from "./Vector2d";
-export { ClippingRegion } from "./draw_api/ClippingRegion";
-export { FillPattern } from "./draw_api/FillPattern";
-export { Timer } from "./misc/Timer";
+export { BpxCompositeColor, BpxMappingColor, BpxSolidColor, BpxTransparentColor, } from "./Color";
+export { BpxEasing } from "./Easing";
+export { BpxSprite } from "./Sprite";
+export { BpxUtils } from "./Utils";
+export { BpxVector2d } from "./Vector2d";
+export { BpxClippingRegion } from "./draw_api/ClippingRegion";
+export { BpxFillPattern } from "./draw_api/FillPattern";
+export { BpxTimer } from "./misc/Timer";
+export { BeetPx } from "./BeetPx";
+export { b_ } from "./BeetPx";
 export { transparent_ } from "./Color";
 export { spr_ } from "./Sprite";
+export { u_ } from "./Utils";
 export { v_ } from "./Vector2d";
-export { BeetPx } from "./BeetPx";
+export { timer_ } from "./misc/Timer";
 // TODO: remove comments from HTMLs from the generated game
 // TODO: improve bg color on itch around the game, but under the buttons
 // TODO: refactor HTML templates, rework canvas vs buttons layout vs screen orientation

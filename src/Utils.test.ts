@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { Utils } from "./Utils";
+import { BpxUtils } from "./Utils";
 
 describe("Utils", () => {
   [
@@ -18,7 +18,51 @@ describe("Utils", () => {
     { params: [0.2, 0.3, 0.1], result: 0.2 },
   ].forEach(({ params, result }) => {
     test(`#clamp(${params[0]},${params[1]},${params[2]})`, () => {
-      expect(Utils.clamp(params[0]!, params[1]!, params[2]!)).toEqual(result);
+      expect(BpxUtils.clamp(params[0]!, params[1]!, params[2]!)).toEqual(
+        result,
+      );
     });
+  });
+
+  test("#lerp", () => {
+    expect(BpxUtils.lerp(100, 200, 0)).toBe(100);
+    expect(BpxUtils.lerp(100, 200, 0.1)).toBe(110);
+    expect(BpxUtils.lerp(100, 200, 1)).toBe(200);
+    expect(BpxUtils.lerp(100, 200, 1.1)).toBe(210);
+  });
+
+  test(`#randomElementOf`, () => {
+    expect(BpxUtils.randomElementOf([])).toBeUndefined();
+
+    expect(BpxUtils.randomElementOf([123])).toEqual(123);
+
+    const expectedSamplesPerElement = 100;
+    const elements = [0, 1, 2];
+    const results = elements.map(() => 0);
+    BpxUtils.repeatN(elements.length * expectedSamplesPerElement, () => {
+      const pickedElement =
+        BpxUtils.randomElementOf(elements) ??
+        BpxUtils.throwError("element should be defined");
+      results[pickedElement] += 1;
+    });
+    const acceptedDiff = 0.25 * expectedSamplesPerElement;
+    expect(results[0]).toBeGreaterThanOrEqual(
+      expectedSamplesPerElement - acceptedDiff,
+    );
+    expect(results[0]).toBeLessThanOrEqual(
+      expectedSamplesPerElement + acceptedDiff,
+    );
+    expect(results[1]).toBeGreaterThanOrEqual(
+      expectedSamplesPerElement - acceptedDiff,
+    );
+    expect(results[1]).toBeLessThanOrEqual(
+      expectedSamplesPerElement + acceptedDiff,
+    );
+    expect(results[2]).toBeGreaterThanOrEqual(
+      expectedSamplesPerElement - acceptedDiff,
+    );
+    expect(results[2]).toBeLessThanOrEqual(
+      expectedSamplesPerElement + acceptedDiff,
+    );
   });
 });

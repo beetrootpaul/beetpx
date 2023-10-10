@@ -18,14 +18,15 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Assets_decodeAudioData, _Assets_images, _Assets_fonts, _Assets_sounds;
-import { Utils } from "./Utils";
+var _Assets_decodeAudioData, _Assets_images, _Assets_fonts, _Assets_sounds, _Assets_jsons;
+import { BpxUtils } from "./Utils";
 export class Assets {
     constructor(params) {
         _Assets_decodeAudioData.set(this, void 0);
         _Assets_images.set(this, new Map());
         _Assets_fonts.set(this, new Map());
         _Assets_sounds.set(this, new Map());
+        _Assets_jsons.set(this, new Map());
         __classPrivateFieldSet(this, _Assets_decodeAudioData, params.decodeAudioData, "f");
     }
     // TODO: game loading screen during assets loading?
@@ -65,9 +66,12 @@ export class Assets {
                 const httpResponse = yield fetch(url);
                 const arrayBuffer = yield httpResponse.arrayBuffer();
                 const audioBuffer = yield __classPrivateFieldGet(this, _Assets_decodeAudioData, "f").call(this, arrayBuffer);
-                __classPrivateFieldGet(this, _Assets_sounds, "f").set(url, {
-                    audioBuffer,
-                });
+                __classPrivateFieldGet(this, _Assets_sounds, "f").set(url, { audioBuffer });
+            })));
+            yield Promise.all(assetsToLoad.jsons.map(({ url }) => __awaiter(this, void 0, void 0, function* () {
+                const httpResponse = yield fetch(url);
+                const json = yield httpResponse.json();
+                __classPrivateFieldGet(this, _Assets_jsons, "f").set(url, { json });
             })));
         });
     }
@@ -82,7 +86,7 @@ export class Assets {
     // call `loadAssets` before this one
     getFontAsset(fontId) {
         var _a;
-        const { font, imageTextColor, imageBgColor } = (_a = __classPrivateFieldGet(this, _Assets_fonts, "f").get(fontId)) !== null && _a !== void 0 ? _a : Utils.throwError(`Assets: font descriptor is missing for font ID "${fontId}"`);
+        const { font, imageTextColor, imageBgColor } = (_a = __classPrivateFieldGet(this, _Assets_fonts, "f").get(fontId)) !== null && _a !== void 0 ? _a : BpxUtils.throwError(`Assets: font descriptor is missing for font ID "${fontId}"`);
         return {
             font,
             image: this.getImageAsset(font.imageUrl),
@@ -98,5 +102,13 @@ export class Assets {
         }
         return soundAsset;
     }
+    // call `loadAssets` before this one
+    getJsonAsset(urlOfAlreadyLoadedJson) {
+        const jsonAsset = __classPrivateFieldGet(this, _Assets_jsons, "f").get(urlOfAlreadyLoadedJson);
+        if (!jsonAsset) {
+            throw Error(`Assets: There is no JSON loaded for: ${urlOfAlreadyLoadedJson}`);
+        }
+        return jsonAsset;
+    }
 }
-_Assets_decodeAudioData = new WeakMap(), _Assets_images = new WeakMap(), _Assets_fonts = new WeakMap(), _Assets_sounds = new WeakMap();
+_Assets_decodeAudioData = new WeakMap(), _Assets_images = new WeakMap(), _Assets_fonts = new WeakMap(), _Assets_sounds = new WeakMap(), _Assets_jsons = new WeakMap();

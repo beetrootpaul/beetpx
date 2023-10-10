@@ -1,12 +1,15 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { BeetPx } from "./BeetPx";
-import { SolidColor } from "./Color";
-import { v_, Vector2d } from "./Vector2d";
+import { BpxSolidColor } from "./Color";
+import { BpxVector2d, v_ } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
-export class Utils {
-  static noop(): void {}
+export class BpxUtils {
+  // TODO: tests for edge cases
+  static booleanChangingEveryNthFrame(n: number): boolean {
+    return BeetPx.frameNumber % (n * 2) < n;
+  }
 
   // Returns the middle number. Example usage: `clamp(min, value, max)`
   //   in order to find a value which is:
@@ -17,19 +20,27 @@ export class Utils {
     return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
   }
 
-  static repeatN(n: number, callback: (i: number) => void): void {
-    Array.from({ length: n }).forEach((_element, i) => {
-      callback(i);
-    });
+  static lerp(a: number, b: number, t: number): number {
+    return a + (b - a) * t;
   }
 
-  // TODO: tests for edge cases
-  static booleanChangingEveryNthFrame(n: number): boolean {
-    return BeetPx.frameNumber % (n * 2) < n;
+  // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
+  static measureText(text: string): BpxVector2d {
+    const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
+    return charSprites.reduce(
+      (sizeSoFar, nextSprite) =>
+        BpxVector2d.max(
+          sizeSoFar,
+          nextSprite.positionInText.add(nextSprite.sprite.size()),
+        ),
+      BpxVector2d.zero,
+    );
   }
+
+  static noop(): void {}
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
-  static get offset8Directions(): Vector2d[] {
+  static offset8Directions(): BpxVector2d[] {
     return [
       v_(-1, -1),
       v_(0, -1),
@@ -42,34 +53,58 @@ export class Utils {
     ];
   }
 
-  // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
-  static measureText(text: string): Vector2d {
-    const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
-    return charSprites.reduce(
-      (sizeSoFar, nextSprite) =>
-        Vector2d.max(
-          sizeSoFar,
-          nextSprite.positionInText.add(nextSprite.sprite.size()),
-        ),
-      Vector2d.zero,
-    );
+  static randomElementOf<V>(array: V[]): V | undefined {
+    if (array.length <= 0) return undefined;
+    return array[Math.floor(Math.random() * array.length)];
   }
 
   // TODO: consider moving this to either DrawApi or the game itself
   static printWithOutline(
     text: string,
-    canvasXy1: Vector2d,
-    textColor: SolidColor,
-    outlineColor: SolidColor,
+    canvasXy1: BpxVector2d,
+    textColor: BpxSolidColor,
+    outlineColor: BpxSolidColor,
+    centerXy: [boolean, boolean] = [false, false],
   ): void {
-    Utils.offset8Directions.forEach((offset) => {
-      BeetPx.print(text, canvasXy1.add(offset), outlineColor);
+    BpxUtils.offset8Directions().forEach((offset) => {
+      BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
     });
-    BeetPx.print(text, canvasXy1, textColor);
+    BeetPx.print(text, canvasXy1, textColor, centerXy);
   }
 
-  // to be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`
+  static repeatN(n: number, callback: (i: number) => void): void {
+    Array.from({ length: n }).forEach((_element, i) => {
+      callback(i);
+    });
+  }
+
+  /**
+   * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+   */
   static throwError(message: string): never {
     throw Error(message);
   }
+
+  /**
+   * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+   */
+  static trigAtan2(x: number, y: number): number {
+    return Math.atan2(y, x) / Math.PI / 2;
+  }
+
+  /**
+   * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+   */
+  static trigCos(turnAngle: number): number {
+    return Math.cos(turnAngle * Math.PI * 2);
+  }
+
+  /**
+   * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+   */
+  static trigSin(turnAngle: number): number {
+    return Math.sin(turnAngle * Math.PI * 2);
+  }
 }
+
+export const u_ = BpxUtils;

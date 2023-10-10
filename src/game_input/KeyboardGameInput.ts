@@ -1,16 +1,10 @@
-import { GameInputEvent } from "./GameInput";
+import { BpxGameInputEvent } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
-type KeyboardGameInputParams = {
-  debugToggleKey?: string;
-  debugFrameByFrameActivateKey?: string;
-  debugFrameByFrameStepKey?: string;
-};
-
 export class KeyboardGameInput implements SpecializedGameInput {
-  readonly #keyMapping: Map<string, GameInputEvent> = new Map<
+  readonly #keyMapping: Map<string, BpxGameInputEvent> = new Map<
     string,
-    GameInputEvent
+    BpxGameInputEvent
   >([
     ["ArrowLeft", "button_left"],
     ["ArrowRight", "button_right"],
@@ -31,7 +25,7 @@ export class KeyboardGameInput implements SpecializedGameInput {
 
     // TODO: what about different keyboard layouts where "z" is not on the left from "x"?
     ["z", "button_o"],
-    ["z", "button_o"],
+    ["Z", "button_o"],
 
     ["Escape", "button_menu"],
     ["Enter", "button_menu"],
@@ -45,24 +39,14 @@ export class KeyboardGameInput implements SpecializedGameInput {
     ["F", "full_screen"],
   ]);
 
-  readonly #eventsSinceLastUpdate: Set<GameInputEvent> =
-    new Set<GameInputEvent>();
+  readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
+    new Set<BpxGameInputEvent>();
 
-  constructor(params: KeyboardGameInputParams) {
-    if (params.debugToggleKey) {
-      this.#keyMapping.set(params.debugToggleKey, "debug_toggle");
-    }
-    if (params.debugFrameByFrameActivateKey) {
-      this.#keyMapping.set(
-        params.debugFrameByFrameActivateKey,
-        "frame_by_frame_toggle",
-      );
-    }
-    if (params.debugFrameByFrameStepKey) {
-      this.#keyMapping.set(
-        params.debugFrameByFrameStepKey,
-        "frame_by_frame_step",
-      );
+  constructor(params: { enableDebugInputs: boolean }) {
+    if (params.enableDebugInputs) {
+      this.#keyMapping.set(";", "debug_toggle");
+      this.#keyMapping.set(",", "frame_by_frame_toggle");
+      this.#keyMapping.set(".", "frame_by_frame_step");
     }
   }
 
@@ -83,7 +67,7 @@ export class KeyboardGameInput implements SpecializedGameInput {
     });
   }
 
-  update(eventsCollector: Set<GameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): void {
     for (const event of this.#eventsSinceLastUpdate) {
       eventsCollector.add(event);
     }

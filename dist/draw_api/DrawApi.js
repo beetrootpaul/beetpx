@@ -9,18 +9,20 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
+var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 import { Logger } from "../logger/Logger";
-import { v_ } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxUtils } from "../Utils";
+import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
+import { DrawPixels } from "./DrawPixels";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 // TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
 // TODO: tests for float rounding: different shapes and sprites drawn for same coords should be aligned visually, not off by 1.
 //       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
@@ -29,6 +31,7 @@ export class DrawApi {
         _DrawApi_assets.set(this, void 0);
         _DrawApi_clear.set(this, void 0);
         _DrawApi_pixel.set(this, void 0);
+        _DrawApi_pixels.set(this, void 0);
         _DrawApi_line.set(this, void 0);
         _DrawApi_rect.set(this, void 0);
         _DrawApi_ellipse.set(this, void 0);
@@ -36,17 +39,21 @@ export class DrawApi {
         _DrawApi_text.set(this, void 0);
         _DrawApi_cameraOffset.set(this, v_(0, 0));
         _DrawApi_clippingRegion.set(this, null);
-        _DrawApi_fillPattern.set(this, FillPattern.primaryOnly);
+        _DrawApi_fillPattern.set(this, BpxFillPattern.primaryOnly);
         _DrawApi_fontAsset.set(this, null);
         _DrawApi_spriteColorMapping.set(this, new Map());
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
         __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel(options.canvasBytes, options.canvasSize), "f");
+        __classPrivateFieldSet(this, _DrawApi_pixels, new DrawPixels(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_line, new DrawLine(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvasBytes, options.canvasSize), "f");
         __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasBytes, options.canvasSize), "f");
+        this.takeCanvasSnapshot = () => ({
+            canvasBytes: new Uint8ClampedArray(options.canvasBytes),
+        });
     }
     // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
     // TODO: consider returning the previous offset
@@ -54,11 +61,12 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset, "f");
     }
     setClippingRegion(xy, wh) {
-        __classPrivateFieldSet(this, _DrawApi_clippingRegion, new ClippingRegion(xy, wh), "f");
+        __classPrivateFieldSet(this, _DrawApi_clippingRegion, new BpxClippingRegion(xy, wh), "f");
     }
     removeClippingRegion() {
         __classPrivateFieldSet(this, _DrawApi_clippingRegion, null, "f");
     }
+    // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
     // TODO: cover it with tests
     setFillPattern(fillPattern) {
         __classPrivateFieldSet(this, _DrawApi_fillPattern, fillPattern, "f");
@@ -71,14 +79,14 @@ export class DrawApi {
             var _a;
             previous.push({
                 from,
-                to: (_a = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id())) !== null && _a !== void 0 ? _a : from,
+                to: (_a = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id)) !== null && _a !== void 0 ? _a : from,
             });
             // TODO: consider writing a custom equality check function
-            if (from.id() === to.id()) {
-                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id());
+            if (from.id === to.id) {
+                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id);
             }
             else {
-                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").set(from.id(), to);
+                __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").set(from.id, to);
             }
         });
         return previous;
@@ -97,6 +105,12 @@ export class DrawApi {
     pixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
+    // bits = an array representing rows from top to bottom, where each array element
+    //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
+    //        from left to right.
+    pixels(xy, color, bits) {
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+    }
     line(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
@@ -112,13 +126,17 @@ export class DrawApi {
     ellipseFilled(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
-    // TODO: make sprite make use of fillPattern as well, same as rect and ellipse etc.
-    sprite(sprite, canvasXy) {
+    // TODO: make sprite make use of fillPattern as well?
+    sprite(sprite, canvasXy, scaleXy = BpxVector2d.one) {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
-        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), scaleXy, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: cover with tests
-    print(text, canvasXy, color) {
+    print(text, canvasXy, color, centerXy = [false, false]) {
+        if (centerXy[0] || centerXy[1]) {
+            const size = BpxUtils.measureText(text);
+            canvasXy = canvasXy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
+        }
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {
             __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
         }
@@ -127,4 +145,4 @@ export class DrawApi {
         }
     }
 }
-_DrawApi_assets = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_clippingRegion = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();
+_DrawApi_assets = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_pixels = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_clippingRegion = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();

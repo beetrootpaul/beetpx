@@ -10,10 +10,10 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawSprite_pixel;
-import { SolidColor, transparent_ } from "../Color";
-import { Sprite } from "../Sprite";
-import { Utils } from "../Utils";
-import { v_ } from "../Vector2d";
+import { BpxSolidColor, transparent_, } from "../Color";
+import { BpxSprite } from "../Sprite";
+import { BpxUtils } from "../Utils";
+import { BpxVector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 export class DrawSprite {
     constructor(canvasBytes, canvasSize, options = {}) {
@@ -27,32 +27,42 @@ export class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawSprite_canvasSize, "f")), "f");
     }
     // TODO: cover clippingRegion with tests
-    draw(sourceImageAsset, sprite, targetXy, colorMapping = new Map(), clippingRegion = null) {
-        var _a;
+    draw(sourceImageAsset, sprite, targetXy, 
+    // TODO: test it
+    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
+    scaleXy = BpxVector2d.one, colorMapping = new Map(), clippingRegion = null) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
+        scaleXy = scaleXy.floor();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
-        sprite = new Sprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
+        sprite = new BpxSprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
         // clip sprite by image edges
-        sprite = new Sprite(sprite.imageUrl, v_(Utils.clamp(0, sprite.xy1.x, imgW), Utils.clamp(0, sprite.xy1.y, imgH)), v_(Utils.clamp(0, sprite.xy2.x, imgW), Utils.clamp(0, sprite.xy2.y, imgH)));
+        sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-                const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y));
-                if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
-                    continue;
-                }
-                const imgBytesIndex = (imgY * imgW + imgX) * 4;
-                if (imgBytes.length < imgBytesIndex + 4) {
-                    throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
-                }
-                let color = imgBytes[imgBytesIndex + 3] > 0xff / 2
-                    ? new SolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
-                    : transparent_;
-                color = (_a = colorMapping.get(color.id())) !== null && _a !== void 0 ? _a : color;
-                // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
-                //       - ff614f became ff6e59
-                //       - 00555a became 125359
-                __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
+                BpxUtils.repeatN(scaleXy.x, (xScaledStep) => {
+                    BpxUtils.repeatN(scaleXy.y, (yScaledStep) => {
+                        var _a;
+                        const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
+                            .mul(scaleXy)
+                            .add(xScaledStep, yScaledStep));
+                        if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
+                            return;
+                        }
+                        const imgBytesIndex = (imgY * imgW + imgX) * 4;
+                        if (imgBytes.length < imgBytesIndex + 4) {
+                            throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
+                        }
+                        let color = imgBytes[imgBytesIndex + 3] >= 0xff / 2
+                            ? new BpxSolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
+                            : transparent_;
+                        color = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
+                        // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+                        //       - ff614f became ff6e59
+                        //       - 00555a became 125359
+                        __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
+                    });
+                });
             }
         }
     }

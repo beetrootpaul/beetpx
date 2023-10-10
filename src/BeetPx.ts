@@ -2,15 +2,12 @@
 
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { SolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { CharSprite } from "./font/Font";
 import { Framework, type FrameworkOptions } from "./Framework";
 import { Buttons } from "./game_input/Buttons";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { Vector2d } from "./Vector2d";
 
 export class BeetPx {
   static #framework: Framework;
@@ -164,6 +161,10 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.pixel(...args);
   };
 
+  static pixels: DrawApi["pixels"] = (...args) => {
+    return this.#tryGetFramework().drawApi.pixels(...args);
+  };
+
   static line: DrawApi["line"] = (...args) => {
     return this.#tryGetFramework().drawApi.line(...args);
   };
@@ -192,19 +193,12 @@ export class BeetPx {
 
   // TODO: Create a similar JSDocs API description for other API methods as well
 
-  /**
-   * Draws a text on the canvas
-   *
-   * @param text
-   * @param canvasXy1 top-left text corner
-   * @param color text color or a function which returns a text color for a given character
-   */
-  static print: DrawApi["print"] = (
-    text: string,
-    canvasXy1: Vector2d,
-    color: SolidColor | ((charSprite: CharSprite) => SolidColor),
-  ) => {
-    return this.#tryGetFramework().drawApi.print(text, canvasXy1, color);
+  static print: DrawApi["print"] = (...args) => {
+    return this.#tryGetFramework().drawApi.print(...args);
+  };
+
+  static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"] = (...args) => {
+    return this.#tryGetFramework().drawApi.takeCanvasSnapshot(...args);
   };
 
   //
@@ -256,7 +250,7 @@ export class BeetPx {
   };
 
   //
-  // Assets (not really needed, unless it is needed for some reason ¯\_(ツ)_/¯ )
+  // Direct access to loaded assets
   //
 
   static getImageAsset: Assets["getImageAsset"] = (...args) => {
@@ -269,6 +263,10 @@ export class BeetPx {
 
   static getSoundAsset: Assets["getSoundAsset"] = (...args) => {
     return this.#tryGetFramework().assets.getSoundAsset(...args);
+  };
+
+  static getJsonAsset: Assets["getJsonAsset"] = (...args) => {
+    return this.#tryGetFramework().assets.getJsonAsset(...args);
   };
 
   //
@@ -284,3 +282,5 @@ export class BeetPx {
     return this.#framework;
   }
 }
+
+export const b_ = BeetPx;

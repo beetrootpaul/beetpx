@@ -1,5 +1,5 @@
 import { Button } from "./Button";
-import { ButtonName, Buttons } from "./Buttons";
+import { BpxButtonName, Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { MouseGameInput } from "./MouseGameInput";
@@ -7,7 +7,7 @@ import { SpecializedGameInput } from "./SpecializedGameInput";
 import { TouchGameInput } from "./TouchGameInput";
 
 // TODO: separate events available to pass as param for the continuous ones and for the fire once ones
-export type GameInputEvent =
+export type BpxGameInputEvent =
   | null
   | "button_left"
   | "button_right"
@@ -23,15 +23,6 @@ export type GameInputEvent =
   | "frame_by_frame_toggle"
   | "frame_by_frame_step";
 
-type GameInputParams = {
-  visibleTouchButtons: ButtonName[];
-  muteButtonsSelector: string;
-  fullScreenButtonsSelector: string;
-  debugToggleKey?: string;
-  debugFrameByFrameActivateKey?: string;
-  debugFrameByFrameStepKey?: string;
-};
-
 export class GameInput {
   readonly #specializedGameInputs: SpecializedGameInput[];
 
@@ -43,16 +34,19 @@ export class GameInput {
   readonly buttonFrameByFrameToggle: Button;
   readonly buttonFrameByFrameStep: Button;
 
-  constructor(params: GameInputParams) {
+  constructor(params: {
+    visibleTouchButtons: BpxButtonName[];
+    muteButtonsSelector: string;
+    fullScreenButtonsSelector: string;
+    enableDebugInputs: boolean;
+  }) {
     this.#specializedGameInputs = [
       new MouseGameInput({
         muteButtonsSelector: params.muteButtonsSelector,
         fullScreenButtonsSelector: params.fullScreenButtonsSelector,
       }),
       new KeyboardGameInput({
-        debugToggleKey: params.debugToggleKey,
-        debugFrameByFrameActivateKey: params.debugFrameByFrameActivateKey,
-        debugFrameByFrameStepKey: params.debugFrameByFrameStepKey,
+        enableDebugInputs: params.enableDebugInputs,
       }),
       new TouchGameInput({
         visibleButtons: params.visibleTouchButtons,
@@ -76,7 +70,7 @@ export class GameInput {
   }
 
   update(params: { skipGameButtons: boolean }): void {
-    const events = new Set<GameInputEvent>();
+    const events = new Set<BpxGameInputEvent>();
     for (const sgi of this.#specializedGameInputs) {
       sgi.update(events);
     }

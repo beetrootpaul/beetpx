@@ -1,21 +1,22 @@
 import {
-  Color,
-  CompositeColor,
-  MappingColor,
-  SolidColor,
-  TransparentColor,
+  BpxColor,
+  BpxCompositeColor,
+  BpxMappingColor,
+  BpxSolidColor,
+  BpxTransparentColor,
 } from "../Color";
-import { Vector2d } from "../Vector2d";
-import { ClippingRegion } from "./ClippingRegion";
+import { BpxVector2d } from "../Vector2d";
+import { BpxClippingRegion } from "./ClippingRegion";
+import { BpxFillPattern } from "./FillPattern";
 
 export class DrawPixel {
   readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: Vector2d;
+  readonly #canvasSize: BpxVector2d;
   readonly #options: { disableRounding?: boolean };
 
   constructor(
     canvasBytes: Uint8ClampedArray,
-    canvasSize: Vector2d,
+    canvasSize: BpxVector2d,
     options: { disableRounding?: boolean } = {},
   ) {
     this.#canvasBytes = canvasBytes;
@@ -28,9 +29,10 @@ export class DrawPixel {
   // TODO: consider moving fill pattern and composite color support inside here
   // TODO: cover ClippingRegion with tests
   draw(
-    xy: Vector2d,
-    color: Color,
-    clippingRegion: ClippingRegion | null = null,
+    xy: BpxVector2d,
+    color: BpxColor,
+    clippingRegion: BpxClippingRegion | null = null,
+    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
   ): void {
     xy = this.#options.disableRounding ? xy : xy.round();
 
@@ -38,34 +40,38 @@ export class DrawPixel {
       return;
     }
 
-    if (xy.gte(Vector2d.zero) && xy.lt(this.#canvasSize)) {
+    if (xy.gte(BpxVector2d.zero) && xy.lt(this.#canvasSize)) {
       const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
 
-      if (color instanceof CompositeColor) {
-        this.#drawSolid(i, color.primary);
-      } else if (color instanceof MappingColor) {
-        this.#drawSolid(
-          i,
-          color.getMappedColorFor(
-            this.#canvasBytes[i]!,
-            this.#canvasBytes[i + 1]!,
-            this.#canvasBytes[i + 2]!,
-            this.#canvasBytes[i + 3]!,
-          ),
-        );
+      if (fillPattern.hasPrimaryColorAt(xy)) {
+        if (color instanceof BpxCompositeColor) {
+          this.#drawSolid(i, color.primary);
+        } else if (color instanceof BpxMappingColor) {
+          // TODO: this doesn't seem right: to wire mapping with snapshot outside the mapped color, even though it contains both
+          const mappedColor = color.getMappedColorForCanvasIndex(
+            color.canvasSnapshot.canvasBytes[i]!,
+            color.canvasSnapshot.canvasBytes[i + 1]!,
+            color.canvasSnapshot.canvasBytes[i + 2]!,
+            color.canvasSnapshot.canvasBytes[i + 3]!,
+          );
+          this.#drawSolid(i, mappedColor);
+        } else {
+          this.#drawSolid(i, color);
+        }
       } else {
-        this.#drawSolid(i, color);
+        if (color instanceof BpxCompositeColor) {
+          this.#drawSolid(i, color.secondary);
+        }
       }
     }
   }
 
-  #drawSolid(canvasIndex: number, color: SolidColor | TransparentColor) {
-    if (color instanceof TransparentColor) {
-      return;
+  #drawSolid(canvasIndex: number, color: BpxSolidColor | BpxTransparentColor) {
+    if (color instanceof BpxSolidColor) {
+      this.#canvasBytes[canvasIndex] = color.r;
+      this.#canvasBytes[canvasIndex + 1] = color.g;
+      this.#canvasBytes[canvasIndex + 2] = color.b;
+      this.#canvasBytes[canvasIndex + 3] = 0xff;
     }
-    this.#canvasBytes[canvasIndex] = color.r;
-    this.#canvasBytes[canvasIndex + 1] = color.g;
-    this.#canvasBytes[canvasIndex + 2] = color.b;
-    this.#canvasBytes[canvasIndex + 3] = 0xff;
   }
 }

@@ -1,127 +1,182 @@
-type ColorId = string;
-interface Color {
-    id(): ColorId;
-}
-declare class TransparentColor implements Color {
-    id(): ColorId;
-}
-declare const transparent_: TransparentColor;
-declare class SolidColor implements Color {
-    readonly r: number;
-    readonly g: number;
-    readonly b: number;
-    constructor(r: number, g: number, b: number);
-    id(): ColorId;
-    asRgbCssHex(): string;
-    static fromRgbCssHex(cssHex: string): SolidColor;
-}
-declare class CompositeColor implements Color {
-    readonly primary: SolidColor | TransparentColor;
-    readonly secondary: SolidColor | TransparentColor;
-    constructor(primary: SolidColor | TransparentColor, secondary: SolidColor | TransparentColor);
-    id(): ColorId;
-}
-declare class MappingColor implements Color {
-    #private;
-    constructor(mapping: (canvasRgba: {
-        r: number;
-        g: number;
-        b: number;
-        a: number;
-    }) => SolidColor | TransparentColor);
-    getMappedColorFor(r: number, g: number, b: number, a: number): SolidColor | TransparentColor;
-    id(): ColorId;
-}
-
 interface PrintDebug {
     __printDebug(): string;
 }
 
-declare function v_(x: number, y: number): Vector2d;
-declare class Vector2d implements PrintDebug {
-    static zero: Vector2d;
-    static min(xy1: Vector2d, xy2: Vector2d): Vector2d;
-    static max(xy1: Vector2d, xy2: Vector2d): Vector2d;
-    static minMax(xy1: Vector2d, xy2: Vector2d): [Vector2d, Vector2d];
-    static forEachIntXyWithinRectOf(xy: Vector2d, wh: Vector2d, roundValues: boolean, fill: boolean, callback: (xy: Vector2d) => void): void;
+declare function v_(x: number, y: number): BpxVector2d;
+declare class BpxVector2d implements PrintDebug {
+    static zero: BpxVector2d;
+    static one: BpxVector2d;
+    static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
+    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static unitFromAngle(turnAngle: number): BpxVector2d;
+    static forEachIntXyWithinRectOf(xy: BpxVector2d, wh: BpxVector2d, roundValues: boolean, fill: boolean, callback: (xy: BpxVector2d) => void): void;
     readonly x: number;
     readonly y: number;
     constructor(x: number, y: number);
     asArray(): [number, number];
     magnitude(): number;
-    sign(): Vector2d;
-    abs(): Vector2d;
-    floor(): Vector2d;
-    ceil(): Vector2d;
-    round(): Vector2d;
-    eq(other: Vector2d): boolean;
+    sign(): BpxVector2d;
+    abs(): BpxVector2d;
+    floor(): BpxVector2d;
+    ceil(): BpxVector2d;
+    round(): BpxVector2d;
+    /**
+     * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    toAngle(): number;
+    eq(other: BpxVector2d): boolean;
     eq(value: number): boolean;
-    gt(other: Vector2d): boolean;
+    gt(other: BpxVector2d): boolean;
     gt(value: number): boolean;
-    gte(other: Vector2d): boolean;
+    gte(other: BpxVector2d): boolean;
     gte(value: number): boolean;
-    lt(other: Vector2d): boolean;
+    lt(other: BpxVector2d): boolean;
     lt(value: number): boolean;
-    lte(other: Vector2d): boolean;
+    lte(other: BpxVector2d): boolean;
     lte(value: number): boolean;
-    clamp(xy1: Vector2d, xy2: Vector2d): Vector2d;
-    mod(other: Vector2d): Vector2d;
-    mod(value: number): Vector2d;
-    mod(x: number, y: number): Vector2d;
-    add(other: Vector2d): Vector2d;
-    add(value: number): Vector2d;
-    add(x: number, y: number): Vector2d;
-    sub(other: Vector2d): Vector2d;
-    sub(value: number): Vector2d;
-    sub(x: number, y: number): Vector2d;
-    mul(other: Vector2d): Vector2d;
-    mul(value: number): Vector2d;
-    mul(x: number, y: number): Vector2d;
-    div(other: Vector2d): Vector2d;
-    div(value: number): Vector2d;
-    div(x: number, y: number): Vector2d;
+    clamp(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    mod(other: BpxVector2d): BpxVector2d;
+    mod(value: number): BpxVector2d;
+    mod(x: number, y: number): BpxVector2d;
+    add(other: BpxVector2d): BpxVector2d;
+    add(value: number): BpxVector2d;
+    add(x: number, y: number): BpxVector2d;
+    sub(other: BpxVector2d): BpxVector2d;
+    sub(value: number): BpxVector2d;
+    sub(x: number, y: number): BpxVector2d;
+    mul(other: BpxVector2d): BpxVector2d;
+    mul(value: number): BpxVector2d;
+    mul(x: number, y: number): BpxVector2d;
+    div(other: BpxVector2d): BpxVector2d;
+    div(value: number): BpxVector2d;
+    div(x: number, y: number): BpxVector2d;
     __printDebug(): string;
 }
 
-type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => Sprite;
-declare function spr_(imageUrl: ImageUrl): SpriteCreationHelper;
-declare class Sprite {
-    imageUrl: ImageUrl;
-    xy1: Vector2d;
-    xy2: Vector2d;
-    constructor(imageUrl: ImageUrl, xy1: Vector2d, xy2: Vector2d);
-    size(): Vector2d;
+type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
+declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
+declare class BpxSprite {
+    imageUrl: BpxImageUrl;
+    xy1: BpxVector2d;
+    xy2: BpxVector2d;
+    constructor(imageUrl: BpxImageUrl, xy1: BpxVector2d, xy2: BpxVector2d);
+    size(): BpxVector2d;
 }
 
-type CharSprite = {
-    positionInText: Vector2d;
-    sprite: Sprite;
+type BpxCharSprite = {
+    positionInText: BpxVector2d;
+    sprite: BpxSprite;
     char: string;
 };
-type FontId = string;
-interface Font {
-    readonly id: FontId;
-    readonly imageUrl: ImageUrl;
-    spritesFor(text: string): CharSprite[];
+type BpxFontId = string;
+interface BpxFont {
+    readonly id: BpxFontId;
+    readonly imageUrl: BpxImageUrl;
+    spritesFor(text: string): BpxCharSprite[];
+}
+
+declare class BpxFillPattern {
+    #private;
+    static of(bits: number): BpxFillPattern;
+    static primaryOnly: BpxFillPattern;
+    static secondaryOnly: BpxFillPattern;
+    private constructor();
+    hasPrimaryColorAt(xy: BpxVector2d): boolean;
+}
+
+type BpxColorMapping = Array<{
+    from: BpxSolidColor;
+    to: BpxSolidColor | BpxTransparentColor;
+}>;
+type BpxCanvasSnapshot = {
+    canvasBytes: Uint8ClampedArray;
+};
+type DrawApiOptions = {
+    canvasBytes: Uint8ClampedArray;
+    canvasSize: BpxVector2d;
+    assets: Assets;
+};
+declare class DrawApi {
+    #private;
+    readonly takeCanvasSnapshot: () => BpxCanvasSnapshot;
+    constructor(options: DrawApiOptions);
+    setCameraOffset(offset: BpxVector2d): void;
+    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
+    removeClippingRegion(): void;
+    setFillPattern(fillPattern: BpxFillPattern): void;
+    mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping;
+    setFont(fontId: BpxFontId | null): void;
+    getFont(): BpxFont | null;
+    clearCanvas(color: BpxSolidColor): void;
+    pixel(xy: BpxVector2d, color: BpxSolidColor): void;
+    pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void;
+    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
+    print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean]): void;
+}
+
+type BpxColorId = string;
+interface BpxColor {
+    id: BpxColorId;
+}
+declare class BpxTransparentColor implements BpxColor {
+    readonly id: BpxColorId;
+}
+declare const transparent_: BpxTransparentColor;
+declare class BpxSolidColor implements BpxColor {
+    readonly id: BpxColorId;
+    readonly r: number;
+    readonly g: number;
+    readonly b: number;
+    constructor(r: number, g: number, b: number);
+    asRgbCssHex(): string;
+    static fromRgbCssHex(cssHex: string): BpxSolidColor;
+}
+declare class BpxCompositeColor implements BpxColor {
+    readonly id: BpxColorId;
+    readonly primary: BpxSolidColor | BpxTransparentColor;
+    readonly secondary: BpxSolidColor | BpxTransparentColor;
+    constructor(primary: BpxSolidColor | BpxTransparentColor, secondary: BpxSolidColor | BpxTransparentColor);
+}
+declare class BpxMappingColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+    readonly canvasSnapshot: BpxCanvasSnapshot;
+    constructor(canvasSnapshot: BpxCanvasSnapshot, mapping: (canvasColor: BpxSolidColor | BpxTransparentColor) => BpxSolidColor | BpxTransparentColor);
+    getMappedColorForCanvasIndex(r: number, g: number, b: number, a: number): BpxSolidColor | BpxTransparentColor;
 }
 
 type AssetsToLoad = {
     images: ImageAssetToLoad[];
     fonts: FontAssetToLoad[];
     sounds: SoundAssetToLoad[];
+    jsons: JsonAssetToLoad[];
 };
-type ImageUrl = string;
+type BpxImageUrl = string;
 type SoundUrl = string;
+type JsonUrl = string;
 type ImageAssetToLoad = {
-    url: ImageUrl;
+    url: BpxImageUrl;
 };
 type FontAssetToLoad = {
-    font: Font;
-    imageTextColor: SolidColor;
-    imageBgColor: SolidColor;
+    font: BpxFont;
+    imageTextColor: BpxSolidColor;
+    imageBgColor: BpxSolidColor;
 };
 type SoundAssetToLoad = {
     url: SoundUrl;
+};
+type JsonAssetToLoad = {
+    url: JsonUrl;
 };
 type ImageAsset = {
     width: number;
@@ -129,38 +184,68 @@ type ImageAsset = {
     rgba8bitData: Uint8ClampedArray;
 };
 type FontAsset = {
-    font: Font;
+    font: BpxFont;
     image: ImageAsset;
-    imageTextColor: SolidColor;
-    imageBgColor: SolidColor;
+    imageTextColor: BpxSolidColor;
+    imageBgColor: BpxSolidColor;
 };
 type SoundAsset = {
     audioBuffer: AudioBuffer;
 };
-type AssetsParams = {
-    decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
+type JsonAsset = {
+    json: any;
 };
 declare class Assets {
     #private;
-    constructor(params: AssetsParams);
+    constructor(params: {
+        decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
+    });
     loadAssets(assetsToLoad: AssetsToLoad): Promise<void>;
-    getImageAsset(urlOfAlreadyLoadedImage: ImageUrl): ImageAsset;
-    getFontAsset(fontId: FontId): FontAsset;
+    getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset;
+    getFontAsset(fontId: BpxFontId): FontAsset;
     getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
+    getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset;
 }
 
-declare class Utils {
-    static noop(): void;
-    static clamp(a: number, b: number, c: number): number;
-    static repeatN(n: number, callback: (i: number) => void): void;
+type BpxEasingFn = (t: number) => number;
+declare class BpxEasing {
+    static linear: BpxEasingFn;
+    static inQuadratic: BpxEasingFn;
+    static outQuadratic: BpxEasingFn;
+    static inQuartic: BpxEasingFn;
+    static outQuartic: BpxEasingFn;
+}
+
+declare class BpxUtils {
     static booleanChangingEveryNthFrame(n: number): boolean;
-    static get offset8Directions(): Vector2d[];
-    static measureText(text: string): Vector2d;
-    static printWithOutline(text: string, canvasXy1: Vector2d, textColor: SolidColor, outlineColor: SolidColor): void;
+    static clamp(a: number, b: number, c: number): number;
+    static lerp(a: number, b: number, t: number): number;
+    static measureText(text: string): BpxVector2d;
+    static noop(): void;
+    static offset8Directions(): BpxVector2d[];
+    static randomElementOf<V>(array: V[]): V | undefined;
+    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor, centerXy?: [boolean, boolean]): void;
+    static repeatN(n: number, callback: (i: number) => void): void;
+    /**
+     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+     */
     static throwError(message: string): never;
+    /**
+     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigAtan2(x: number, y: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigCos(turnAngle: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigSin(turnAngle: number): number;
 }
+declare const u_: typeof BpxUtils;
 
-type SoundSequence = {
+type BpxSoundSequence = {
     sequence?: SoundSequenceEntry[];
     sequenceLooped?: SoundSequenceEntry[];
 };
@@ -176,7 +261,7 @@ type SoundSequenceEntrySoundAdditional = {
     url: SoundUrl;
 };
 
-type AudioPlaybackId = number;
+type BpxAudioPlaybackId = number;
 declare class AudioApi {
     #private;
     get audioContext(): AudioContext;
@@ -185,56 +270,17 @@ declare class AudioApi {
     resumeAudioContextIfNeeded(): void;
     toggleMuteUnmute(): void;
     stopAllSounds(): void;
-    playSoundOnce(soundUrl: SoundUrl): AudioPlaybackId;
-    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): AudioPlaybackId;
-    playSoundSequence(soundSequence: SoundSequence): AudioPlaybackId;
-    muteSound(playbackId: AudioPlaybackId): void;
-    unmuteSound(playbackId: AudioPlaybackId): void;
+    playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
+    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
+    playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId;
+    muteSound(playbackId: BpxAudioPlaybackId): void;
+    unmuteSound(playbackId: BpxAudioPlaybackId): void;
 }
 
-declare class ClippingRegion {
+declare class BpxClippingRegion {
     #private;
-    constructor(xy: Vector2d, wh: Vector2d);
-    allowsDrawingAt(xy: Vector2d): boolean;
-}
-
-declare class FillPattern {
-    #private;
-    static of(bits: number): FillPattern;
-    static primaryOnly: FillPattern;
-    static secondaryOnly: FillPattern;
-    private constructor();
-    hasPrimaryColorAt(xy: Vector2d): boolean;
-}
-
-type ColorMapping = Array<{
-    from: SolidColor;
-    to: SolidColor | TransparentColor;
-}>;
-type DrawApiOptions = {
-    canvasBytes: Uint8ClampedArray;
-    canvasSize: Vector2d;
-    assets: Assets;
-};
-declare class DrawApi {
-    #private;
-    constructor(options: DrawApiOptions);
-    setCameraOffset(offset: Vector2d): void;
-    setClippingRegion(xy: Vector2d, wh: Vector2d): void;
-    removeClippingRegion(): void;
-    setFillPattern(fillPattern: FillPattern): void;
-    mapSpriteColors(mapping: ColorMapping): ColorMapping;
-    setFont(fontId: FontId | null): void;
-    getFont(): Font | null;
-    clearCanvas(color: SolidColor): void;
-    pixel(xy: Vector2d, color: SolidColor): void;
-    line(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
-    rect(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
-    rectFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
-    ellipse(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
-    ellipseFilled(xy: Vector2d, wh: Vector2d, color: SolidColor | CompositeColor | MappingColor): void;
-    sprite(sprite: Sprite, canvasXy: Vector2d): void;
-    print(text: string, canvasXy: Vector2d, color: SolidColor | ((charSprite: CharSprite) => SolidColor)): void;
+    constructor(xy: BpxVector2d, wh: BpxVector2d);
+    allowsDrawingAt(xy: BpxVector2d): boolean;
 }
 
 declare class Button {
@@ -247,15 +293,7 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
-type GameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
-type GameInputParams = {
-    visibleTouchButtons: ButtonName[];
-    muteButtonsSelector: string;
-    fullScreenButtonsSelector: string;
-    debugToggleKey?: string;
-    debugFrameByFrameActivateKey?: string;
-    debugFrameByFrameStepKey?: string;
-};
+type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 declare class GameInput {
     #private;
     readonly gameButtons: Buttons;
@@ -264,7 +302,12 @@ declare class GameInput {
     readonly buttonDebugToggle: Button;
     readonly buttonFrameByFrameToggle: Button;
     readonly buttonFrameByFrameStep: Button;
-    constructor(params: GameInputParams);
+    constructor(params: {
+        visibleTouchButtons: BpxButtonName[];
+        muteButtonsSelector: string;
+        fullScreenButtonsSelector: string;
+        enableDebugInputs: boolean;
+    });
     startListening(): void;
     update(params: {
         skipGameButtons: boolean;
@@ -272,18 +315,19 @@ declare class GameInput {
     wasAnyButtonPressed(): boolean;
 }
 
-type ButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
+type BpxButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
 declare class Buttons {
     #private;
-    update(events: Set<GameInputEvent>): void;
-    isPressed(button: ButtonName): boolean;
-    setRepeating(button: ButtonName, repeating: boolean): void;
+    update(events: Set<BpxGameInputEvent>): void;
+    isPressed(button: BpxButtonName): boolean;
+    setRepeating(button: BpxButtonName, repeating: boolean): void;
     wasAnyJustPressed(): boolean;
-    wasJustPressed(button: ButtonName): boolean;
-    wasJustReleased(button: ButtonName): boolean;
+    wasJustPressed(button: BpxButtonName): boolean;
+    wasJustReleased(button: BpxButtonName): boolean;
 }
 
-declare class Timer {
+declare function timer_(frames: number): BpxTimer;
+declare class BpxTimer {
     #private;
     constructor(params: {
         frames: number;
@@ -292,6 +336,7 @@ declare class Timer {
     get progress(): number;
     get hasFinished(): boolean;
     update(): void;
+    restart(): void;
 }
 
 declare class DebugMode {
@@ -311,20 +356,8 @@ declare class StorageApi {
 type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128";
     desiredUpdateFps: 30 | 60;
-    visibleTouchButtons: ButtonName[];
-    debug?: {
-        available: boolean;
-        /**
-         * A key to toggle debug mode on/off. Has to match a
-         * [KeyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
-         * of a desired key.
-         */
-        toggleKey?: string;
-        frameByFrame?: {
-            activateKey?: string;
-            stepKey?: string;
-        };
-    };
+    visibleTouchButtons: BpxButtonName[];
+    debugFeatures: boolean;
 };
 type OnAssetsLoaded = {
     startGame: () => void;
@@ -392,20 +425,15 @@ declare class BeetPx {
     static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
+    static pixels: DrawApi["pixels"];
     static line: DrawApi["line"];
     static rect: DrawApi["rect"];
     static rectFilled: DrawApi["rectFilled"];
     static ellipse: DrawApi["ellipse"];
     static ellipseFilled: DrawApi["ellipseFilled"];
     static sprite: DrawApi["sprite"];
-    /**
-     * Draws a text on the canvas
-     *
-     * @param text
-     * @param canvasXy1 top-left text corner
-     * @param color text color or a function which returns a text color for a given character
-     */
     static print: DrawApi["print"];
+    static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"];
     static toggleMuteUnmute: AudioApi["toggleMuteUnmute"];
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
@@ -419,7 +447,9 @@ declare class BeetPx {
     static getImageAsset: Assets["getImageAsset"];
     static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];
+    static getJsonAsset: Assets["getJsonAsset"];
 }
+declare const b_: typeof BeetPx;
 
 declare global {
     /**
@@ -435,4 +465,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { AudioPlaybackId, BeetPx, ButtonName, CharSprite, ClippingRegion, Color, ColorId, ColorMapping, CompositeColor, FillPattern, Font, FontId, GameInputEvent, ImageUrl, MappingColor, SolidColor, SoundSequence, Sprite, Timer, TransparentColor, Utils, Vector2d, spr_, transparent_, v_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_ };

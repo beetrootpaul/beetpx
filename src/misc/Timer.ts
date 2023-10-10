@@ -1,11 +1,14 @@
-export class Timer {
+export function timer_(frames: number): BpxTimer {
+  return new BpxTimer({ frames });
+}
+
+export class BpxTimer {
   readonly #frames: number;
 
   #t: number;
 
   constructor(params: { frames: number }) {
-    this.#frames = params.frames;
-
+    this.#frames = Math.floor(params.frames);
     this.#t = Math.max(0, this.#frames);
   }
 
@@ -23,5 +26,10 @@ export class Timer {
 
   update(): void {
     this.#t = Math.max(0, this.#t - 1);
+  }
+
+  // TODO: cover with tests
+  restart(): void {
+    this.#t = Math.max(0, this.#frames);
   }
 }

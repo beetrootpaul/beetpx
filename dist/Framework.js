@@ -18,10 +18,10 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_debugOptions, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 import { Assets } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { SolidColor } from "./Color";
+import { BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
@@ -31,8 +31,8 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { Utils } from "./Utils";
-import { v_, Vector2d } from "./Vector2d";
+import { BpxUtils } from "./Utils";
+import { BpxVector2d, v_ } from "./Vector2d";
 export class Framework {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
@@ -41,12 +41,10 @@ export class Framework {
         return __classPrivateFieldGet(this, _Framework_renderFps, "f");
     }
     constructor(options) {
-        var _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
         _Framework_instances.add(this);
-        _Framework_debugOptions.set(this, void 0);
         _Framework_frameByFrame.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
-        _Framework_htmlCanvasBackground.set(this, SolidColor.fromRgbCssHex("#000000"));
+        _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#000000"));
         _Framework_htmlCanvasContext.set(this, void 0);
         _Framework_offscreenContext.set(this, void 0);
         _Framework_offscreenImageData.set(this, void 0);
@@ -57,13 +55,10 @@ export class Framework {
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
-        _Framework_centeringOffset.set(this, Vector2d.zero);
+        _Framework_centeringOffset.set(this, BpxVector2d.zero);
         _Framework_frameNumber.set(this, 0);
         _Framework_renderFps.set(this, 1);
-        __classPrivateFieldSet(this, _Framework_debugOptions, (_b = options.debug) !== null && _b !== void 0 ? _b : {
-            available: false,
-        }, "f");
-        DebugMode.enabled = ((_c = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _c === void 0 ? void 0 : _c.available)
+        DebugMode.enabled = options.debugFeatures
             ? window.localStorage.getItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey)) !==
                 __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue)
             : false;
@@ -73,7 +68,7 @@ export class Framework {
             ? v_(64, 64)
             : options.gameCanvasSize === "128x128"
                 ? v_(128, 128)
-                : Utils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
+                : BpxUtils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas);
         if (!htmlCanvas) {
             throw Error(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
@@ -105,16 +100,7 @@ export class Framework {
             muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
             // TODO: are those selectors for both touch and mouse? Even if so, make them separate
             fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
-            // TODO: extract ";", ",", and "." to some file about debugging
-            debugToggleKey: ((_d = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _d === void 0 ? void 0 : _d.available)
-                ? (_f = (_e = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _e === void 0 ? void 0 : _e.toggleKey) !== null && _f !== void 0 ? _f : ";"
-                : undefined,
-            debugFrameByFrameActivateKey: ((_g = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _g === void 0 ? void 0 : _g.available)
-                ? (_j = (_h = __classPrivateFieldGet(this, _Framework_debugOptions, "f").frameByFrame) === null || _h === void 0 ? void 0 : _h.activateKey) !== null && _j !== void 0 ? _j : ","
-                : undefined,
-            debugFrameByFrameStepKey: ((_k = __classPrivateFieldGet(this, _Framework_debugOptions, "f")) === null || _k === void 0 ? void 0 : _k.available)
-                ? (_m = (_l = __classPrivateFieldGet(this, _Framework_debugOptions, "f").frameByFrame) === null || _l === void 0 ? void 0 : _l.stepKey) !== null && _m !== void 0 ? _m : "."
-                : undefined,
+            enableDebugInputs: options.debugFeatures,
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
             desiredUpdateFps: options.desiredUpdateFps,
@@ -160,7 +146,7 @@ export class Framework {
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-_a = Framework, _Framework_debugOptions = new WeakMap(), _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
     if (__BEETPX_IS_PROD__) {
         // - returned message seems to be ignored by some browsers, therefore using `""`

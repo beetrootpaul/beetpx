@@ -1,37 +1,25 @@
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { SolidColor } from "./Color";
+import { BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
-import { ButtonName } from "./game_input/Buttons";
+import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { Utils } from "./Utils";
-import { v_, Vector2d } from "./Vector2d";
+import { BpxUtils } from "./Utils";
+import { BpxVector2d, v_ } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
   // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
-  visibleTouchButtons: ButtonName[];
-  debug?: {
-    available: boolean;
-    /**
-     * A key to toggle debug mode on/off. Has to match a
-     * [KeyboardEvent.key](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key)
-     * of a desired key.
-     */
-    toggleKey?: string;
-    frameByFrame?: {
-      activateKey?: string;
-      stepKey?: string;
-    };
-  };
+  visibleTouchButtons: BpxButtonName[];
+  debugFeatures: boolean;
 };
 
 export type OnAssetsLoaded = {
@@ -43,12 +31,11 @@ export class Framework {
   static readonly #storageDebugDisabledKey = "framework__debug_disabled";
   static readonly #storageDebugDisabledTrue = "yes";
 
-  readonly #debugOptions: FrameworkOptions["debug"];
   #frameByFrame: boolean;
 
-  readonly #gameCanvasSize: Vector2d;
-  readonly #htmlCanvasBackground: SolidColor =
-    SolidColor.fromRgbCssHex("#000000");
+  readonly #gameCanvasSize: BpxVector2d;
+  readonly #htmlCanvasBackground: BpxSolidColor =
+    BpxSolidColor.fromRgbCssHex("#000000");
 
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
   readonly #offscreenContext: OffscreenCanvasRenderingContext2D;
@@ -71,7 +58,7 @@ export class Framework {
   #onDraw?: () => void;
 
   #scaleToFill = 1;
-  #centeringOffset = Vector2d.zero;
+  #centeringOffset = BpxVector2d.zero;
 
   #frameNumber: number = 0;
   #renderFps: number = 1;
@@ -85,10 +72,7 @@ export class Framework {
   }
 
   constructor(options: FrameworkOptions) {
-    this.#debugOptions = options.debug ?? {
-      available: false,
-    };
-    DebugMode.enabled = this.#debugOptions?.available
+    DebugMode.enabled = options.debugFeatures
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue
       : false;
@@ -101,7 +85,7 @@ export class Framework {
         ? v_(64, 64)
         : options.gameCanvasSize === "128x128"
         ? v_(128, 128)
-        : Utils.throwError(
+        : BpxUtils.throwError(
             `Unsupported canvas size: "${options.gameCanvasSize}"`,
           );
 
@@ -143,16 +127,7 @@ export class Framework {
       muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
       // TODO: are those selectors for both touch and mouse? Even if so, make them separate
       fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
-      // TODO: extract ";", ",", and "." to some file about debugging
-      debugToggleKey: this.#debugOptions?.available
-        ? this.#debugOptions?.toggleKey ?? ";"
-        : undefined,
-      debugFrameByFrameActivateKey: this.#debugOptions?.available
-        ? this.#debugOptions.frameByFrame?.activateKey ?? ","
-        : undefined,
-      debugFrameByFrameStepKey: this.#debugOptions?.available
-        ? this.#debugOptions.frameByFrame?.stepKey ?? "."
-        : undefined,
+      enableDebugInputs: options.debugFeatures,
     });
 
     this.#gameLoop = new GameLoop({

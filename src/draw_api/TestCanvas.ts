@@ -1,12 +1,12 @@
 import { expect } from "@jest/globals";
-import { ColorId, SolidColor } from "../Color";
-import { Vector2d, v_ } from "../Vector2d";
+import { BpxColorId, BpxSolidColor } from "../Color";
+import { BpxVector2d, v_ } from "../Vector2d";
 
 export class TestCanvas {
-  readonly size: Vector2d;
+  readonly size: BpxVector2d;
   readonly bytes: Uint8ClampedArray;
 
-  constructor(width: number, height: number, color: SolidColor) {
+  constructor(width: number, height: number, color: BpxSolidColor) {
     this.size = v_(width, height);
     this.bytes = new Uint8ClampedArray(4 * width * height);
     for (let i = 0; i < width * height; i += 1) {
@@ -18,7 +18,7 @@ export class TestCanvas {
   }
 
   expectToEqual(params: {
-    withMapping: Record<string, SolidColor>;
+    withMapping: Record<string, BpxSolidColor>;
     expectedImageAsAscii: string;
   }) {
     // first, let's check if bytes didn't increase in their length
@@ -29,8 +29,8 @@ export class TestCanvas {
 
     const { withMapping: asciiToColor, expectedImageAsAscii } = params;
 
-    const colorToAscii: Map<ColorId, string> = new Map(
-      Object.entries(asciiToColor).map(([ascii, color]) => [color.id(), ascii]),
+    const colorToAscii: Map<BpxColorId, string> = new Map(
+      Object.entries(asciiToColor).map(([ascii, color]) => [color.id, ascii]),
     );
 
     const actualAscii = this.#asAscii(colorToAscii);
@@ -52,7 +52,7 @@ export class TestCanvas {
     expect(actualAscii).toEqual(expectedAscii);
   }
 
-  #asAscii(colorToAscii: Map<ColorId, string>): string {
+  #asAscii(colorToAscii: Map<BpxColorId, string>): string {
     let asciiImage = "";
 
     for (let y = 0; y < this.size.y; y += 1) {
@@ -62,12 +62,12 @@ export class TestCanvas {
         if (colorBytes[3] !== 0xff) {
           asciiImage += "!";
         } else {
-          const color = new SolidColor(
+          const color = new BpxSolidColor(
             colorBytes[0]!,
             colorBytes[1]!,
             colorBytes[2]!,
           );
-          asciiImage += colorToAscii.get(color.id()) ?? "?";
+          asciiImage += colorToAscii.get(color.id) ?? "?";
         }
       }
       asciiImage += "\n";

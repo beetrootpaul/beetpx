@@ -1,10 +1,13 @@
 import { ImageAsset } from "../Assets";
-import { SolidColor, type Color } from "../Color";
+import { BpxSolidColor, type BpxColor } from "../Color";
 
 export class TestImage {
   readonly asset: ImageAsset;
 
-  constructor(params: { image: string; withMapping: Record<string, Color> }) {
+  constructor(params: {
+    image: string;
+    withMapping: Record<string, BpxColor>;
+  }) {
     const asciiImage = params.image;
     const asciiToColor = params.withMapping;
 
@@ -33,7 +36,7 @@ export class TestImage {
         throw Error(
           `TestImage: Missing color mapping for "${normalizedAsciiImage[i]}"`,
         );
-      } else if (color instanceof SolidColor) {
+      } else if (color instanceof BpxSolidColor) {
         this.asset.rgba8bitData[4 * i] = color.r;
         this.asset.rgba8bitData[4 * i + 1] = color.g;
         this.asset.rgba8bitData[4 * i + 2] = color.b;

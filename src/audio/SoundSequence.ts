@@ -1,6 +1,6 @@
 import { SoundUrl } from "../Assets";
 
-export type SoundSequence = {
+export type BpxSoundSequence = {
   // will be played first
   sequence?: SoundSequenceEntry[];
   // will be player second, looped

@@ -131,6 +131,9 @@ BeetPx.clearCanvas = (...args) => {
 BeetPx.pixel = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixel(...args);
 };
+BeetPx.pixels = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixels(...args);
+};
 BeetPx.line = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.line(...args);
 };
@@ -151,15 +154,11 @@ BeetPx.sprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);
 };
 // TODO: Create a similar JSDocs API description for other API methods as well
-/**
- * Draws a text on the canvas
- *
- * @param text
- * @param canvasXy1 top-left text corner
- * @param color text color or a function which returns a text color for a given character
- */
-BeetPx.print = (text, canvasXy1, color) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(text, canvasXy1, color);
+BeetPx.print = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(...args);
+};
+BeetPx.takeCanvasSnapshot = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.takeCanvasSnapshot(...args);
 };
 //
 // Audio API
@@ -198,7 +197,7 @@ BeetPx.clearStorage = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearStorage(...args);
 };
 //
-// Assets (not really needed, unless it is needed for some reason ¯\_(ツ)_/¯ )
+// Direct access to loaded assets
 //
 BeetPx.getImageAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getImageAsset(...args);
@@ -209,3 +208,7 @@ BeetPx.getFontAsset = (...args) => {
 BeetPx.getSoundAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getSoundAsset(...args);
 };
+BeetPx.getJsonAsset = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getJsonAsset(...args);
+};
+export const b_ = BeetPx;

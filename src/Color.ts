@@ -1,23 +1,25 @@
-export type ColorId = string;
+import { BpxCanvasSnapshot } from "./draw_api/DrawApi";
 
-export interface Color {
+export type BpxColorId = string;
+
+export interface BpxColor {
   // TODO: `serialized()` might be a better name for it? As long as we provide `deserialize` as well…
   // meant to be used e.g. as textual key in `Map()`
-  id(): ColorId;
+  id: BpxColorId;
 }
 
 // TODO: split colors into separate files?
 
-export class TransparentColor implements Color {
-  id(): ColorId {
-    return "transparent";
-  }
+export class BpxTransparentColor implements BpxColor {
+  readonly id: BpxColorId = "transparent";
 }
 
-export const transparent_ = new TransparentColor();
+export const transparent_ = new BpxTransparentColor();
 
 // Red, green, and blue, each one as value between 0 and 255.
-export class SolidColor implements Color {
+export class BpxSolidColor implements BpxColor {
+  readonly id: BpxColorId;
+
   readonly r: number;
   readonly g: number;
   readonly b: number;
@@ -31,10 +33,7 @@ export class SolidColor implements Color {
     this.r = r;
     this.g = g;
     this.b = b;
-  }
-
-  id(): ColorId {
-    return "solid-" + this.asRgbCssHex();
+    this.id = "solid-" + this.asRgbCssHex();
   }
 
   asRgbCssHex(): string {
@@ -46,13 +45,13 @@ export class SolidColor implements Color {
     );
   }
 
-  static fromRgbCssHex(cssHex: string): SolidColor {
+  static fromRgbCssHex(cssHex: string): BpxSolidColor {
     if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {
       throw Error(
         "Hexadecimal representation of the color doesn't contain exactly 6 hexadecimal digits, preceded by a single '#'",
       );
     }
-    return new SolidColor(
+    return new BpxSolidColor(
       parseInt(cssHex.slice(1, 3), 16),
       parseInt(cssHex.slice(3, 5), 16),
       parseInt(cssHex.slice(5, 7), 16),
@@ -60,55 +59,52 @@ export class SolidColor implements Color {
   }
 }
 
-export class CompositeColor implements Color {
-  readonly primary: SolidColor | TransparentColor;
-  readonly secondary: SolidColor | TransparentColor;
+export class BpxCompositeColor implements BpxColor {
+  readonly id: BpxColorId;
+
+  readonly primary: BpxSolidColor | BpxTransparentColor;
+  readonly secondary: BpxSolidColor | BpxTransparentColor;
 
   constructor(
-    primary: SolidColor | TransparentColor,
-    secondary: SolidColor | TransparentColor,
+    primary: BpxSolidColor | BpxTransparentColor,
+    secondary: BpxSolidColor | BpxTransparentColor,
   ) {
     this.primary = primary;
     this.secondary = secondary;
-  }
-
-  id(): ColorId {
-    return `composite:${this.primary.id()}:${this.secondary.id()}`;
+    this.id = `composite:${this.primary.id}:${this.secondary.id}`;
   }
 }
 
 // TODO: make it a function which allows to implement catch it all color
-export class MappingColor implements Color {
+export class BpxMappingColor implements BpxColor {
   static #nextId = 1;
 
-  readonly #mapping: (canvasRgba: {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-  }) => SolidColor | TransparentColor;
+  readonly id: BpxColorId = `mapping:${BpxMappingColor.#nextId++}`;
+
+  readonly canvasSnapshot: BpxCanvasSnapshot;
+
+  readonly #mapping: (
+    canvasColor: BpxSolidColor | BpxTransparentColor,
+  ) => BpxSolidColor | BpxTransparentColor;
 
   constructor(
-    mapping: (canvasRgba: {
-      r: number;
-      g: number;
-      b: number;
-      a: number;
-    }) => SolidColor | TransparentColor,
+    canvasSnapshot: BpxCanvasSnapshot,
+    mapping: (
+      canvasColor: BpxSolidColor | BpxTransparentColor,
+    ) => BpxSolidColor | BpxTransparentColor,
   ) {
+    this.canvasSnapshot = canvasSnapshot;
     this.#mapping = mapping;
   }
 
-  getMappedColorFor(
+  getMappedColorForCanvasIndex(
     r: number,
     g: number,
     b: number,
     a: number,
-  ): SolidColor | TransparentColor {
-    return this.#mapping({ r, g, b, a });
-  }
-
-  id(): ColorId {
-    return `mapping:${MappingColor.#nextId++}`;
+  ): BpxSolidColor | BpxTransparentColor {
+    return this.#mapping(
+      a >= 0xff / 2 ? new BpxSolidColor(r, g, b) : transparent_,
+    );
   }
 }

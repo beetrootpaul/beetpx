@@ -1,18 +1,18 @@
 import { describe, test } from "@jest/globals";
-import { CompositeColor, SolidColor, transparent_ } from "../Color";
+import { BpxCompositeColor, BpxSolidColor, transparent_ } from "../Color";
 import { v_ } from "../Vector2d";
 import { DrawRect } from "./DrawRect";
-import { FillPattern } from "./FillPattern";
+import { BpxFillPattern } from "./FillPattern";
 import { TestCanvas } from "./TestCanvas";
 
 describe("DrawRect", () => {
   const ct = transparent_;
-  const c0 = SolidColor.fromRgbCssHex("#010203");
-  const c1 = SolidColor.fromRgbCssHex("#111213");
-  const c2 = SolidColor.fromRgbCssHex("#212223");
-  const c3 = SolidColor.fromRgbCssHex("#313233");
-  const c4 = SolidColor.fromRgbCssHex("#414243");
-  const c5 = SolidColor.fromRgbCssHex("#515253");
+  const c0 = BpxSolidColor.fromRgbCssHex("#010203");
+  const c1 = BpxSolidColor.fromRgbCssHex("#111213");
+  const c2 = BpxSolidColor.fromRgbCssHex("#212223");
+  const c3 = BpxSolidColor.fromRgbCssHex("#313233");
+  const c4 = BpxSolidColor.fromRgbCssHex("#414243");
+  const c5 = BpxSolidColor.fromRgbCssHex("#515253");
 
   describe("regular", () => {
     test("simple 1x1", () => {
@@ -232,7 +232,7 @@ describe("DrawRect", () => {
         v_(4, 4),
         c1,
         false,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -256,9 +256,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(4, 4),
-        new CompositeColor(c1, c2),
+        new BpxCompositeColor(c1, c2),
         false,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -282,9 +282,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new CompositeColor(c4, c1),
+        new BpxCompositeColor(c4, c1),
         false,
-        FillPattern.primaryOnly,
+        BpxFillPattern.primaryOnly,
       );
 
       // then
@@ -308,9 +308,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(2, 2),
         v_(6, 6),
-        new CompositeColor(c4, c2),
+        new BpxCompositeColor(c4, c2),
         false,
-        FillPattern.secondaryOnly,
+        BpxFillPattern.secondaryOnly,
       );
 
       // then
@@ -334,9 +334,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new CompositeColor(c3, ct),
+        new BpxCompositeColor(c3, ct),
         false,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -360,16 +360,16 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 5),
-        new CompositeColor(c5, ct),
+        new BpxCompositeColor(c5, ct),
         false,
-        FillPattern.of(0b0011_0011_0011_0011),
+        BpxFillPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
         v_(0, 5),
         v_(10, 5),
-        new CompositeColor(c5, c1),
+        new BpxCompositeColor(c5, c1),
         false,
-        FillPattern.of(0b1100_1100_1100_1100),
+        BpxFillPattern.of(0b1100_1100_1100_1100),
       );
 
       // then
@@ -399,9 +399,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(1, 1),
         v_(9, 9),
-        new CompositeColor(c1, ct),
+        new BpxCompositeColor(c1, ct),
         false,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -642,7 +642,7 @@ describe("DrawRect", () => {
         v_(4, 4),
         c1,
         true,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -666,9 +666,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(4, 4),
-        new CompositeColor(c1, c2),
+        new BpxCompositeColor(c1, c2),
         true,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -692,9 +692,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new CompositeColor(c4, c1),
+        new BpxCompositeColor(c4, c1),
         true,
-        FillPattern.primaryOnly,
+        BpxFillPattern.primaryOnly,
       );
 
       // then
@@ -718,9 +718,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(2, 2),
         v_(6, 6),
-        new CompositeColor(c4, c2),
+        new BpxCompositeColor(c4, c2),
         true,
-        FillPattern.secondaryOnly,
+        BpxFillPattern.secondaryOnly,
       );
 
       // then
@@ -744,9 +744,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new CompositeColor(c3, ct),
+        new BpxCompositeColor(c3, ct),
         true,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -770,16 +770,16 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 5),
-        new CompositeColor(c5, ct),
+        new BpxCompositeColor(c5, ct),
         true,
-        FillPattern.of(0b0011_0011_0011_0011),
+        BpxFillPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
         v_(0, 5),
         v_(10, 5),
-        new CompositeColor(c5, c1),
+        new BpxCompositeColor(c5, c1),
         true,
-        FillPattern.of(0b1100_1100_1100_1100),
+        BpxFillPattern.of(0b1100_1100_1100_1100),
       );
 
       // then
@@ -809,9 +809,9 @@ describe("DrawRect", () => {
       rect.draw(
         v_(1, 1),
         v_(9, 9),
-        new CompositeColor(c1, ct),
+        new BpxCompositeColor(c1, ct),
         true,
-        FillPattern.of(0b0000_0001_0011_0111),
+        BpxFillPattern.of(0b0000_0001_0011_0111),
       );
 
       // then

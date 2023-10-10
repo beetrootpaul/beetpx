@@ -2,10 +2,10 @@ import { v_ } from "./Vector2d";
 export function spr_(imageUrl) {
     return (x1, y1, w, h) => {
         const xy1 = v_(x1, y1);
-        return new Sprite(imageUrl, xy1, xy1.add(v_(w, h)));
+        return new BpxSprite(imageUrl, xy1, xy1.add(v_(w, h)));
     };
 }
-export class Sprite {
+export class BpxSprite {
     constructor(imageUrl, xy1, xy2) {
         this.imageUrl = imageUrl;
         this.xy1 = xy1.round();
