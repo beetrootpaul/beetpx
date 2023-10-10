@@ -15,6 +15,7 @@ import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
+import { BpxFillPattern } from "./FillPattern";
 export class DrawSprite {
     constructor(canvasBytes, canvasSize, options = {}) {
         _DrawSprite_canvasBytes.set(this, void 0);
@@ -30,7 +31,9 @@ export class DrawSprite {
     draw(sourceImageAsset, sprite, targetXy, 
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    scaleXy = BpxVector2d.one, colorMapping = new Map(), clippingRegion = null) {
+    scaleXy = BpxVector2d.one, colorMapping = new Map(), 
+    // TODO: test it
+    fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = scaleXy.floor();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
@@ -46,9 +49,6 @@ export class DrawSprite {
                         const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
                             .mul(scaleXy)
                             .add(xScaledStep, yScaledStep));
-                        if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
-                            return;
-                        }
                         const imgBytesIndex = (imgY * imgW + imgX) * 4;
                         if (imgBytes.length < imgBytesIndex + 4) {
                             throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
@@ -60,7 +60,7 @@ export class DrawSprite {
                         // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
                         //       - ff614f became ff6e59
                         //       - 00555a became 125359
-                        __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color);
+                        __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color, clippingRegion, fillPattern);
                     });
                 });
             }

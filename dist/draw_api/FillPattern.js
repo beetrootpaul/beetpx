@@ -10,6 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxFillPattern_bits;
+// TODO: rename fill to draw? Since we are using it for sprites as well…
+// TODO: … and use it, like, for every drawing API we have in this framework.
 export class BpxFillPattern {
     // TODO: create a helper to generate FillPattern from ASCII
     static of(bits) {

@@ -1,5 +1,7 @@
 import { BpxVector2d } from "../Vector2d";
 
+// TODO: rename fill to draw? Since we are using it for sprites as well…
+// TODO: … and use it, like, for every drawing API we have in this framework.
 export class BpxFillPattern {
   // TODO: create a helper to generate FillPattern from ASCII
   static of(bits: number): BpxFillPattern {

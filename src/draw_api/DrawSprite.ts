@@ -10,6 +10,7 @@ import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
+import { BpxFillPattern } from "./FillPattern";
 
 export class DrawSprite {
   readonly #canvasBytes: Uint8ClampedArray;
@@ -39,6 +40,8 @@ export class DrawSprite {
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy: BpxVector2d = BpxVector2d.one,
     colorMapping: Map<BpxColorId, BpxColor> = new Map(),
+    // TODO: test it
+    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
@@ -86,9 +89,6 @@ export class DrawSprite {
                 .mul(scaleXy)
                 .add(xScaledStep, yScaledStep),
             );
-            if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
-              return;
-            }
 
             const imgBytesIndex = (imgY * imgW + imgX) * 4;
 
@@ -110,7 +110,7 @@ export class DrawSprite {
             // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
             //       - ff614f became ff6e59
             //       - 00555a became 125359
-            this.#pixel.draw(canvasXy, color);
+            this.#pixel.draw(canvasXy, color, clippingRegion, fillPattern);
           });
         });
       }

@@ -4,6 +4,7 @@ import { BpxCharSprite } from "../font/Font";
 import { BpxVector2d } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
+import { BpxFillPattern } from "./FillPattern";
 
 export class DrawText {
   readonly #canvasBytes: Uint8ClampedArray;
@@ -43,6 +44,7 @@ export class DrawText {
           [fontAsset.imageTextColor.id, colorFn(charSprite)],
           [fontAsset.imageBgColor.id, transparent_],
         ]),
+        BpxFillPattern.primaryOnly,
         clippingRegion,
       );
     }
