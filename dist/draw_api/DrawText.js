@@ -13,6 +13,7 @@ var _DrawText_canvasBytes, _DrawText_canvasSize, _DrawText_sprite;
 import { transparent_ } from "../Color";
 import { BpxVector2d } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
+import { BpxFillPattern } from "./FillPattern";
 export class DrawText {
     constructor(canvasBytes, canvasSize) {
         _DrawText_canvasBytes.set(this, void 0);
@@ -33,7 +34,7 @@ export class DrawText {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), BpxVector2d.one, new Map([
                 [fontAsset.imageTextColor.id, colorFn(charSprite)],
                 [fontAsset.imageBgColor.id, transparent_],
-            ]), clippingRegion);
+            ]), BpxFillPattern.primaryOnly, clippingRegion);
         }
     }
 }

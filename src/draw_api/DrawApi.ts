@@ -60,7 +60,6 @@ export class DrawApi {
   #cameraOffset: BpxVector2d = v_(0, 0);
 
   #clippingRegion: BpxClippingRegion | null = null;
-
   #fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly;
 
   #fontAsset: FontAsset | null = null;
@@ -241,6 +240,7 @@ export class DrawApi {
       canvasXy.sub(this.#cameraOffset),
       scaleXy,
       this.#spriteColorMapping,
+      this.#fillPattern,
       this.#clippingRegion,
     );
   }
