@@ -11,7 +11,7 @@ import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v2d_, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
@@ -57,7 +57,7 @@ export class DrawApi {
   readonly #sprite: DrawSprite;
   readonly #text: DrawText;
 
-  #cameraOffset: BpxVector2d = v_(0, 0);
+  #cameraOffset: BpxVector2d = [0, 0];
 
   #clippingRegion: BpxClippingRegion | null = null;
   #fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly;
@@ -138,7 +138,11 @@ export class DrawApi {
   }
 
   pixel(xy: BpxVector2d, color: BpxSolidColor): void {
-    this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#clippingRegion);
+    this.#pixel.draw(
+      v_.sub(xy, this.#cameraOffset),
+      color,
+      this.#clippingRegion,
+    );
   }
 
   // bits = an array representing rows from top to bottom, where each array element
@@ -146,7 +150,7 @@ export class DrawApi {
   //        from left to right.
   pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
     this.#pixels.draw(
-      xy.sub(this.#cameraOffset),
+      v_.sub(xy, this.#cameraOffset),
       bits,
       color,
       this.#clippingRegion,
@@ -159,7 +163,7 @@ export class DrawApi {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#line.draw(
-      xy.sub(this.#cameraOffset),
+      v_.sub(xy, this.#cameraOffset),
       wh,
       color,
       this.#fillPattern,
@@ -173,7 +177,7 @@ export class DrawApi {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#rect.draw(
-      xy.sub(this.#cameraOffset),
+      v_.sub(xy, this.#cameraOffset),
       wh,
       color,
       false,
@@ -188,7 +192,7 @@ export class DrawApi {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#rect.draw(
-      xy.sub(this.#cameraOffset),
+      v_.sub(xy, this.#cameraOffset),
       wh,
       color,
       true,
@@ -203,7 +207,7 @@ export class DrawApi {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#ellipse.draw(
-      xy.sub(this.#cameraOffset),
+      v_.sub(xy, this.#cameraOffset),
       wh,
       color,
       false,
@@ -218,7 +222,7 @@ export class DrawApi {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
     this.#ellipse.draw(
-      xy.sub(this.#cameraOffset),
+      v_.sub(xy, this.#cameraOffset),
       wh,
       color,
       true,
@@ -231,13 +235,13 @@ export class DrawApi {
   sprite(
     sprite: BpxSprite,
     canvasXy: BpxVector2d,
-    scaleXy: BpxVector2d = BpxVector2d.one,
+    scaleXy: BpxVector2d = [1, 1],
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sourceImageAsset,
       sprite,
-      canvasXy.sub(this.#cameraOffset),
+      v_.sub(canvasXy, this.#cameraOffset),
       scaleXy,
       this.#spriteColorMapping,
       this.#fillPattern,
@@ -254,22 +258,22 @@ export class DrawApi {
   ): void {
     if (centerXy[0] || centerXy[1]) {
       const size = BpxUtils.measureText(text);
-      canvasXy = canvasXy.sub(
-        centerXy[0] ? size.x / 2 : 0,
-        centerXy[1] ? size.y / 2 : 0,
+      canvasXy = v_.sub(
+        canvasXy,
+        v2d_(centerXy[0] ? size[0] / 2 : 0, centerXy[1] ? size[1] / 2 : 0),
       );
     }
     if (this.#fontAsset) {
       this.#text.draw(
         text,
-        canvasXy.sub(this.#cameraOffset),
+        v_.sub(canvasXy, this.#cameraOffset),
         this.#fontAsset,
         color,
         this.#clippingRegion,
       );
     } else {
       Logger.infoBeetPx(
-        `print: (${canvasXy.x},${canvasXy.y}) [${
+        `print: (${canvasXy[0]},${canvasXy[1]}) [${
           typeof color === "function" ? "computed" : color.asRgbCssHex()
         }] ${text}`,
       );

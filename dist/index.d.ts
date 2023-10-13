@@ -1,62 +1,49 @@
-interface PrintDebug {
-    __printDebug(): string;
-}
-
-declare function v_(x: number, y: number): BpxVector2d;
-declare class BpxVector2d implements PrintDebug {
-    static zero: BpxVector2d;
-    static one: BpxVector2d;
+type BpxVector2d = readonly [number, number];
+declare class BpxVector2dFns {
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
-    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
     static unitFromAngle(turnAngle: number): BpxVector2d;
     static forEachIntXyWithinRectOf(xy: BpxVector2d, wh: BpxVector2d, roundValues: boolean, fill: boolean, callback: (xy: BpxVector2d) => void): void;
-    readonly x: number;
-    readonly y: number;
-    constructor(x: number, y: number);
-    asArray(): [number, number];
-    magnitude(): number;
-    sign(): BpxVector2d;
-    abs(): BpxVector2d;
-    floor(): BpxVector2d;
-    ceil(): BpxVector2d;
-    round(): BpxVector2d;
-    /**
-     * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    toAngle(): number;
-    eq(other: BpxVector2d): boolean;
-    eq(value: number): boolean;
-    gt(other: BpxVector2d): boolean;
-    gt(value: number): boolean;
-    gte(other: BpxVector2d): boolean;
-    gte(value: number): boolean;
-    lt(other: BpxVector2d): boolean;
-    lt(value: number): boolean;
-    lte(other: BpxVector2d): boolean;
-    lte(value: number): boolean;
-    clamp(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
-    mod(other: BpxVector2d): BpxVector2d;
-    mod(value: number): BpxVector2d;
-    mod(x: number, y: number): BpxVector2d;
-    add(other: BpxVector2d): BpxVector2d;
-    add(value: number): BpxVector2d;
-    add(x: number, y: number): BpxVector2d;
-    sub(other: BpxVector2d): BpxVector2d;
-    sub(value: number): BpxVector2d;
-    sub(x: number, y: number): BpxVector2d;
-    mul(other: BpxVector2d): BpxVector2d;
-    mul(value: number): BpxVector2d;
-    mul(x: number, y: number): BpxVector2d;
-    div(other: BpxVector2d): BpxVector2d;
-    div(value: number): BpxVector2d;
-    div(x: number, y: number): BpxVector2d;
-    __printDebug(): string;
+    static magnitude(xy: BpxVector2d): number;
+    static sign(xy: BpxVector2d): BpxVector2d;
+    static abs(xy: BpxVector2d): BpxVector2d;
+    static floor(xy: BpxVector2d): BpxVector2d;
+    static round(xy: BpxVector2d): BpxVector2d;
+    static angleOf(xy: BpxVector2d): number;
+    static eq(xy1: BpxVector2d, xy2: BpxVector2d): boolean;
+    static eq(value: number, xy2: BpxVector2d): boolean;
+    static eq(xy1: BpxVector2d, value: number): boolean;
+    static gt(xy1: BpxVector2d, xy2: BpxVector2d): boolean;
+    static gt(value: number, xy2: BpxVector2d): boolean;
+    static gt(xy1: BpxVector2d, value: number): boolean;
+    static gte(xy1: BpxVector2d, xy2: BpxVector2d): boolean;
+    static gte(value: number, xy2: BpxVector2d): boolean;
+    static gte(xy1: BpxVector2d, value: number): boolean;
+    static lt(xy1: BpxVector2d, xy2: BpxVector2d): boolean;
+    static lt(value: number, xy2: BpxVector2d): boolean;
+    static lt(xy1: BpxVector2d, value: number): boolean;
+    static lte(xy1: BpxVector2d, xy2: BpxVector2d): boolean;
+    static lte(value: number, xy2: BpxVector2d): boolean;
+    static lte(xy1: BpxVector2d, value: number): boolean;
+    static mod(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static mod(value: number, xy2: BpxVector2d): BpxVector2d;
+    static mod(xy1: BpxVector2d, value: number): BpxVector2d;
+    static add(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static add(value: number, xy2: BpxVector2d): BpxVector2d;
+    static add(xy1: BpxVector2d, value: number): BpxVector2d;
+    static sub(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static sub(value: number, xy2: BpxVector2d): BpxVector2d;
+    static sub(xy1: BpxVector2d, value: number): BpxVector2d;
+    static mul(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static mul(value: number, xy2: BpxVector2d): BpxVector2d;
+    static mul(xy1: BpxVector2d, value: number): BpxVector2d;
+    static div(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static div(value: number, xy2: BpxVector2d): BpxVector2d;
+    static div(xy1: BpxVector2d, value: number): BpxVector2d;
 }
+declare const v_: typeof BpxVector2dFns;
+declare function v2d_(x: number, y: number): BpxVector2d;
 
 type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
 declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
@@ -465,4 +452,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v2d_, v_ };

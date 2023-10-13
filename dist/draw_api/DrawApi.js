@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 import { Logger } from "../logger/Logger";
 import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { v2d_, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
@@ -37,7 +37,7 @@ export class DrawApi {
         _DrawApi_ellipse.set(this, void 0);
         _DrawApi_sprite.set(this, void 0);
         _DrawApi_text.set(this, void 0);
-        _DrawApi_cameraOffset.set(this, v_(0, 0));
+        _DrawApi_cameraOffset.set(this, [0, 0]);
         _DrawApi_clippingRegion.set(this, null);
         _DrawApi_fillPattern.set(this, BpxFillPattern.primaryOnly);
         _DrawApi_fontAsset.set(this, null);
@@ -103,45 +103,45 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     pixel(xy, color) {
-        __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(v_.sub(xy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // bits = an array representing rows from top to bottom, where each array element
     //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
     //        from left to right.
     pixels(xy, color, bits) {
-        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(v_.sub(xy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     line(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_line, "f").draw(v_.sub(xy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     rect(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, false, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(v_.sub(xy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, false, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     rectFilled(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(v_.sub(xy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     ellipse(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, false, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(v_.sub(xy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, false, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     ellipseFilled(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(v_.sub(xy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: make sprite make use of fillPattern as well?
-    sprite(sprite, canvasXy, scaleXy = BpxVector2d.one) {
+    sprite(sprite, canvasXy, scaleXy = [1, 1]) {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
-        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), scaleXy, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, v_.sub(canvasXy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), scaleXy, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"), __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
     }
     // TODO: cover with tests
     print(text, canvasXy, color, centerXy = [false, false]) {
         if (centerXy[0] || centerXy[1]) {
             const size = BpxUtils.measureText(text);
-            canvasXy = canvasXy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
+            canvasXy = v_.sub(canvasXy, v2d_(centerXy[0] ? size[0] / 2 : 0, centerXy[1] ? size[1] / 2 : 0));
         }
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {
-            __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
+            __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, v_.sub(canvasXy, __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"));
         }
         else {
-            Logger.infoBeetPx(`print: (${canvasXy.x},${canvasXy.y}) [${typeof color === "function" ? "computed" : color.asRgbCssHex()}] ${text}`);
+            Logger.infoBeetPx(`print: (${canvasXy[0]},${canvasXy[1]}) [${typeof color === "function" ? "computed" : color.asRgbCssHex()}] ${text}`);
         }
     }
 }

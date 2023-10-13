@@ -1,5 +1,5 @@
 import { BpxColor } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v2d_, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 
@@ -17,7 +17,7 @@ export class DrawPixels {
     color: BpxColor,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    xy = xy.round();
+    xy = v_.round(xy);
 
     for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {
       for (let bitsX = 0; bitsX < bits[bitsY]!.length; bitsX += 1) {
@@ -25,7 +25,7 @@ export class DrawPixels {
           continue;
         }
 
-        const canvasXy = xy.add(bitsX, bitsY);
+        const canvasXy = v_.add(xy, v2d_(bitsX, bitsY));
         if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
           return;
         }

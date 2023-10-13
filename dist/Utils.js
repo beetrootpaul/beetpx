@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 import { BeetPx } from "./BeetPx";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { v2d_, v_ } from "./Vector2d";
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
     // TODO: tests for edge cases
@@ -22,20 +22,20 @@ export class BpxUtils {
     static measureText(text) {
         var _a, _b;
         const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
-        return charSprites.reduce((sizeSoFar, nextSprite) => BpxVector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), BpxVector2d.zero);
+        return charSprites.reduce((sizeSoFar, nextSprite) => v_.max(sizeSoFar, v_.add(nextSprite.positionInText, nextSprite.sprite.size())), v2d_(0, 0));
     }
     static noop() { }
     // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
     static offset8Directions() {
         return [
-            v_(-1, -1),
-            v_(0, -1),
-            v_(1, -1),
-            v_(1, 0),
-            v_(1, 1),
-            v_(0, 1),
-            v_(-1, 1),
-            v_(-1, 0),
+            [-1, -1],
+            [0, -1],
+            [1, -1],
+            [1, 0],
+            [1, 1],
+            [0, 1],
+            [-1, 1],
+            [-1, 0],
         ];
     }
     static randomElementOf(array) {
@@ -46,7 +46,7 @@ export class BpxUtils {
     // TODO: consider moving this to either DrawApi or the game itself
     static printWithOutline(text, canvasXy1, textColor, outlineColor, centerXy = [false, false]) {
         BpxUtils.offset8Directions().forEach((offset) => {
-            BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
+            BeetPx.print(text, v_.add(canvasXy1, offset), outlineColor, centerXy);
         });
         BeetPx.print(text, canvasXy1, textColor, centerXy);
     }

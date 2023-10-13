@@ -1,5 +1,5 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v2d_, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
@@ -12,7 +12,7 @@ export class DrawLine {
 
   constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
     this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize.round();
+    this.#canvasSize = v_.round(canvasSize);
 
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize, {
       disableRounding: true,
@@ -35,29 +35,29 @@ export class DrawLine {
     // When drawing a line, the order of drawing does matter. This is why we
     //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
     //   shapes, but about xyStart and xyEnd.
-    const xyStart = xy.round();
-    const xyEnd = xy.add(wh).round();
-    if (xyEnd.x - xyStart.x === 0 || xyEnd.y - xyStart.y === 0) {
+    const xyStart = v_.round(xy);
+    const xyEnd = v_.round(v_.add(xy, wh));
+    if (xyEnd[0] - xyStart[0] === 0 || xyEnd[1] - xyStart[1] === 0) {
       return;
     }
     // We cannot just round wh, because we don't want to lose the precision of xy+wh.
     //   But what we can do (and we do here) is to round xyStart and xyEnd calculated
     //   with xy+wh, and the obtain a new wh as xyEnd-xyStart, which makes it rounded.
-    wh = xyEnd.sub(xyStart);
+    wh = v_.sub(xyEnd, xyStart);
 
-    const whSub1 = wh.sub(wh.sign());
+    const whSub1 = v_.sub(wh, v_.sign(wh));
 
     //
     // PREPARE
     //
 
-    let dXy = whSub1.abs().mul(v_(1, -1));
+    let dXy = v_.mul(v_.abs(whSub1), v2d_(1, -1));
 
     let currentXy = xyStart;
-    const targetXy = xyStart.add(whSub1);
+    const targetXy = v_.add(xyStart, whSub1);
 
-    const step = whSub1.sign();
-    let err = dXy.x + dXy.y;
+    const step = v_.sign(whSub1);
+    let err = dXy[0] + dXy[1];
 
     while (true) {
       //
@@ -65,19 +65,19 @@ export class DrawLine {
       //
       this.#pixel.draw(currentXy, color, clippingRegion, fillPattern);
 
-      if (currentXy.eq(targetXy)) break;
+      if (v_.eq(currentXy, targetXy)) break;
 
       //
       // STEP TO THE NEXT PIXEL
       //
       const errBeforeStep = err;
-      if (2 * errBeforeStep >= dXy.y) {
-        currentXy = currentXy.add(v_(step.x, 0));
-        err += dXy.y;
+      if (2 * errBeforeStep >= dXy[1]) {
+        currentXy = v_.add(currentXy, v2d_(step[0], 0));
+        err += dXy[1];
       }
-      if (2 * errBeforeStep <= dXy.x) {
-        currentXy = currentXy.add(v_(0, step.y));
-        err += dXy.x;
+      if (2 * errBeforeStep <= dXy[0]) {
+        currentXy = v_.add(currentXy, v2d_(0, step[1]));
+        err += dXy[0];
       }
     }
   }

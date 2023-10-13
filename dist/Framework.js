@@ -32,7 +32,7 @@ import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils } from "./Utils";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { v2d_, v_ } from "./Vector2d";
 export class Framework {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
@@ -55,7 +55,7 @@ export class Framework {
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
-        _Framework_centeringOffset.set(this, BpxVector2d.zero);
+        _Framework_centeringOffset.set(this, [0, 0]);
         _Framework_frameNumber.set(this, 0);
         _Framework_renderFps.set(this, 1);
         DebugMode.enabled = options.debugFeatures
@@ -65,9 +65,9 @@ export class Framework {
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_loading, new Loading(HtmlTemplate.selectors.display), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
-            ? v_(64, 64)
+            ? v2d_(64, 64)
             : options.gameCanvasSize === "128x128"
-                ? v_(128, 128)
+                ? v2d_(128, 128)
                 : BpxUtils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas);
         if (!htmlCanvas) {
@@ -84,8 +84,8 @@ export class Framework {
         const offscreenCanvas = document
             .createElement("canvas")
             .transferControlToOffscreen();
-        offscreenCanvas.width = __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").x;
-        offscreenCanvas.height = __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").y;
+        offscreenCanvas.width = __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")[0];
+        offscreenCanvas.height = __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")[1];
         const offscreenContext = offscreenCanvas.getContext("2d", {
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
             alpha: false,
@@ -228,22 +228,19 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSi
     __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillRect(0, 0, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
 }, _Framework_render = function _Framework_render() {
     __classPrivateFieldGet(this, _Framework_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _Framework_offscreenImageData, "f"), 0, 0);
-    const htmlCanvasSize = v_(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
+    const htmlCanvasSize = v2d_(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
     // TODO: encapsulate this calculation and related fields
-    __classPrivateFieldSet(this, _Framework_scaleToFill, Math.min(htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().x, htmlCanvasSize.div(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")).floor().y), "f");
-    __classPrivateFieldSet(this, _Framework_centeringOffset, htmlCanvasSize
-        .sub(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").mul(__classPrivateFieldGet(this, _Framework_scaleToFill, "f")))
-        .div(2)
-        .floor(), "f");
+    __classPrivateFieldSet(this, _Framework_scaleToFill, Math.min(v_.floor(v_.div(htmlCanvasSize, __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")))[0], v_.floor(v_.div(htmlCanvasSize, __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")))[1]), "f");
+    __classPrivateFieldSet(this, _Framework_centeringOffset, v_.floor(v_.div(v_.sub(htmlCanvasSize, v_.mul(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_scaleToFill, "f"))), 2)), "f");
     // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
     __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_redrawDebugMargin).call(this);
-    __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height, __classPrivateFieldGet(this, _Framework_centeringOffset, "f").x, __classPrivateFieldGet(this, _Framework_centeringOffset, "f").y, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").x, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").y);
+    __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height, __classPrivateFieldGet(this, _Framework_centeringOffset, "f")[0], __classPrivateFieldGet(this, _Framework_centeringOffset, "f")[1], __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")[0], __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")[1]);
 }, _Framework_redrawDebugMargin = function _Framework_redrawDebugMargin() {
     const debugBgMargin = 1;
     __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillStyle = DebugMode.enabled
         ? "#ff0000"
         : __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f").asRgbCssHex();
-    __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillRect(__classPrivateFieldGet(this, _Framework_centeringOffset, "f").x - debugBgMargin, __classPrivateFieldGet(this, _Framework_centeringOffset, "f").y - debugBgMargin, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").x + 2 * debugBgMargin, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f").y + 2 * debugBgMargin);
+    __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillRect(__classPrivateFieldGet(this, _Framework_centeringOffset, "f")[0] - debugBgMargin, __classPrivateFieldGet(this, _Framework_centeringOffset, "f")[1] - debugBgMargin, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")[0] + 2 * debugBgMargin, __classPrivateFieldGet(this, _Framework_scaleToFill, "f") * __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")[1] + 2 * debugBgMargin);
 };
 // TODO: Move debug responsibility to a separate class
 _Framework_storageDebugDisabledKey = { value: "framework__debug_disabled" };

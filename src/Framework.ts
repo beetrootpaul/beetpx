@@ -12,7 +12,7 @@ import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils } from "./Utils";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v2d_, v_ } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
@@ -58,7 +58,7 @@ export class Framework {
   #onDraw?: () => void;
 
   #scaleToFill = 1;
-  #centeringOffset = BpxVector2d.zero;
+  #centeringOffset: BpxVector2d = [0, 0];
 
   #frameNumber: number = 0;
   #renderFps: number = 1;
@@ -82,9 +82,9 @@ export class Framework {
 
     this.#gameCanvasSize =
       options.gameCanvasSize === "64x64"
-        ? v_(64, 64)
+        ? v2d_(64, 64)
         : options.gameCanvasSize === "128x128"
-        ? v_(128, 128)
+        ? v2d_(128, 128)
         : BpxUtils.throwError(
             `Unsupported canvas size: "${options.gameCanvasSize}"`,
           );
@@ -110,8 +110,8 @@ export class Framework {
     const offscreenCanvas = document
       .createElement("canvas")
       .transferControlToOffscreen();
-    offscreenCanvas.width = this.#gameCanvasSize.x;
-    offscreenCanvas.height = this.#gameCanvasSize.y;
+    offscreenCanvas.width = this.#gameCanvasSize[0];
+    offscreenCanvas.height = this.#gameCanvasSize[1];
     const offscreenContext = offscreenCanvas.getContext("2d", {
       // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
       alpha: false,
@@ -303,19 +303,21 @@ export class Framework {
   #render(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
-    const htmlCanvasSize = v_(
+    const htmlCanvasSize = v2d_(
       this.#htmlCanvasContext.canvas.width,
       this.#htmlCanvasContext.canvas.height,
     );
     // TODO: encapsulate this calculation and related fields
     this.#scaleToFill = Math.min(
-      htmlCanvasSize.div(this.#gameCanvasSize).floor().x,
-      htmlCanvasSize.div(this.#gameCanvasSize).floor().y,
+      v_.floor(v_.div(htmlCanvasSize, this.#gameCanvasSize))[0],
+      v_.floor(v_.div(htmlCanvasSize, this.#gameCanvasSize))[1],
     );
-    this.#centeringOffset = htmlCanvasSize
-      .sub(this.#gameCanvasSize.mul(this.#scaleToFill))
-      .div(2)
-      .floor();
+    this.#centeringOffset = v_.floor(
+      v_.div(
+        v_.sub(htmlCanvasSize, v_.mul(this.#gameCanvasSize, this.#scaleToFill)),
+        2,
+      ),
+    );
     // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
 
     this.#redrawDebugMargin();
@@ -326,10 +328,10 @@ export class Framework {
       0,
       this.#offscreenContext.canvas.width,
       this.#offscreenContext.canvas.height,
-      this.#centeringOffset.x,
-      this.#centeringOffset.y,
-      this.#scaleToFill * this.#gameCanvasSize.x,
-      this.#scaleToFill * this.#gameCanvasSize.y,
+      this.#centeringOffset[0],
+      this.#centeringOffset[1],
+      this.#scaleToFill * this.#gameCanvasSize[0],
+      this.#scaleToFill * this.#gameCanvasSize[1],
     );
   }
 
@@ -339,10 +341,10 @@ export class Framework {
       ? "#ff0000"
       : this.#htmlCanvasBackground.asRgbCssHex();
     this.#htmlCanvasContext.fillRect(
-      this.#centeringOffset.x - debugBgMargin,
-      this.#centeringOffset.y - debugBgMargin,
-      this.#scaleToFill * this.#gameCanvasSize.x + 2 * debugBgMargin,
-      this.#scaleToFill * this.#gameCanvasSize.y + 2 * debugBgMargin,
+      this.#centeringOffset[0] - debugBgMargin,
+      this.#centeringOffset[1] - debugBgMargin,
+      this.#scaleToFill * this.#gameCanvasSize[0] + 2 * debugBgMargin,
+      this.#scaleToFill * this.#gameCanvasSize[1] + 2 * debugBgMargin,
     );
   }
 }

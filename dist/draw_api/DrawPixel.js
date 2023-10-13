@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_options, _DrawPixel_drawSolid;
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { v_ } from "../Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawPixel {
     constructor(canvasBytes, canvasSize, options = {}) {
@@ -28,12 +28,12 @@ export class DrawPixel {
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
     draw(xy, color, clippingRegion = null, fillPattern = BpxFillPattern.primaryOnly) {
-        xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : xy.round();
+        xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : v_.round(xy);
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }
-        if (xy.gte(BpxVector2d.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
-            const i = 4 * (xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f").x + xy.x);
+        if (v_.gte(xy, [0, 0]) && v_.lt(xy, __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
+            const i = 4 * (xy[1] * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f")[0] + xy[0]);
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 if (color instanceof BpxCompositeColor) {
                     __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.primary);

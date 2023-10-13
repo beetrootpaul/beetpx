@@ -2,7 +2,6 @@ export { BpxCompositeColor, BpxMappingColor, BpxSolidColor, BpxTransparentColor,
 export { BpxEasing } from "./Easing";
 export { BpxSprite } from "./Sprite";
 export { BpxUtils } from "./Utils";
-export { BpxVector2d } from "./Vector2d";
 export { BpxClippingRegion } from "./draw_api/ClippingRegion";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { BpxTimer } from "./misc/Timer";
@@ -11,7 +10,7 @@ export { b_ } from "./BeetPx";
 export { transparent_ } from "./Color";
 export { spr_ } from "./Sprite";
 export { u_ } from "./Utils";
-export { v_ } from "./Vector2d";
+export { v2d_, v_ } from "./Vector2d";
 export { timer_ } from "./misc/Timer";
 // TODO: remove comments from HTMLs from the generated game
 // TODO: improve bg color on itch around the game, but under the buttons

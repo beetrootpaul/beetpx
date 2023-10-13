@@ -10,16 +10,17 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawClear_canvasBytes, _DrawClear_canvasSize;
+import { v_ } from "../Vector2d";
 export class DrawClear {
     constructor(canvasBytes, canvasSize) {
         _DrawClear_canvasBytes.set(this, void 0);
         _DrawClear_canvasSize.set(this, void 0);
         __classPrivateFieldSet(this, _DrawClear_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawClear_canvasSize, canvasSize.round(), "f");
+        __classPrivateFieldSet(this, _DrawClear_canvasSize, v_.round(canvasSize), "f");
     }
     // TODO: support ClippingRegion + cover with tests
     draw(color, clippingRegion = null) {
-        for (let pixel = 0; pixel < __classPrivateFieldGet(this, _DrawClear_canvasSize, "f").x * __classPrivateFieldGet(this, _DrawClear_canvasSize, "f").y; pixel += 1) {
+        for (let pixel = 0; pixel < __classPrivateFieldGet(this, _DrawClear_canvasSize, "f")[0] * __classPrivateFieldGet(this, _DrawClear_canvasSize, "f")[1]; pixel += 1) {
             const i = pixel * 4;
             __classPrivateFieldGet(this, _DrawClear_canvasBytes, "f")[i] = color.r;
             __classPrivateFieldGet(this, _DrawClear_canvasBytes, "f")[i + 1] = color.g;

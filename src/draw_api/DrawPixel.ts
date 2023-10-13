@@ -5,7 +5,7 @@ import {
   BpxSolidColor,
   BpxTransparentColor,
 } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 
@@ -34,14 +34,14 @@ export class DrawPixel {
     clippingRegion: BpxClippingRegion | null = null,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
   ): void {
-    xy = this.#options.disableRounding ? xy : xy.round();
+    xy = this.#options.disableRounding ? xy : v_.round(xy);
 
     if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
       return;
     }
 
-    if (xy.gte(BpxVector2d.zero) && xy.lt(this.#canvasSize)) {
-      const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
+    if (v_.gte(xy, [0, 0]) && v_.lt(xy, this.#canvasSize)) {
+      const i = 4 * (xy[1] * this.#canvasSize[0] + xy[0]);
 
       if (fillPattern.hasPrimaryColorAt(xy)) {
         if (color instanceof BpxCompositeColor) {

@@ -7,7 +7,7 @@ import {
 } from "../Color";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v2d_, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
@@ -38,15 +38,15 @@ export class DrawSprite {
     targetXy: BpxVector2d,
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    scaleXy: BpxVector2d = BpxVector2d.one,
+    scaleXy: BpxVector2d = [1, 1],
     colorMapping: Map<BpxColorId, BpxColor> = new Map(),
     // TODO: test it
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
+    targetXy = this.#options.disableRounding ? targetXy : v_.round(targetXy);
 
-    scaleXy = scaleXy.floor();
+    scaleXy = v_.floor(scaleXy);
 
     const {
       width: imgW,
@@ -57,37 +57,42 @@ export class DrawSprite {
     // make sure xy1 is top-left and xy2 is bottom right
     sprite = new BpxSprite(
       sprite.imageUrl,
-      v_(
-        Math.min(sprite.xy1.x, sprite.xy2.x),
-        Math.min(sprite.xy1.y, sprite.xy2.y),
+      v2d_(
+        Math.min(sprite.xy1[0], sprite.xy2[0]),
+        Math.min(sprite.xy1[1], sprite.xy2[1]),
       ),
-      v_(
-        Math.max(sprite.xy1.x, sprite.xy2.x),
-        Math.max(sprite.xy1.y, sprite.xy2.y),
+      v2d_(
+        Math.max(sprite.xy1[0], sprite.xy2[0]),
+        Math.max(sprite.xy1[1], sprite.xy2[1]),
       ),
     );
 
     // clip sprite by image edges
     sprite = new BpxSprite(
       sprite.imageUrl,
-      v_(
-        BpxUtils.clamp(0, sprite.xy1.x, imgW),
-        BpxUtils.clamp(0, sprite.xy1.y, imgH),
+      v2d_(
+        BpxUtils.clamp(0, sprite.xy1[0], imgW),
+        BpxUtils.clamp(0, sprite.xy1[1], imgH),
       ),
-      v_(
-        BpxUtils.clamp(0, sprite.xy2.x, imgW),
-        BpxUtils.clamp(0, sprite.xy2.y, imgH),
+      v2d_(
+        BpxUtils.clamp(0, sprite.xy2[0], imgW),
+        BpxUtils.clamp(0, sprite.xy2[1], imgH),
       ),
     );
 
-    for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
-      for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        BpxUtils.repeatN(scaleXy.x, (xScaledStep) => {
-          BpxUtils.repeatN(scaleXy.y, (yScaledStep) => {
-            const canvasXy = targetXy.add(
-              v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
-                .mul(scaleXy)
-                .add(xScaledStep, yScaledStep),
+    for (let imgY = sprite.xy1[1]; imgY < sprite.xy2[1]; imgY += 1) {
+      for (let imgX = sprite.xy1[0]; imgX < sprite.xy2[0]; imgX += 1) {
+        BpxUtils.repeatN(scaleXy[0], (xScaledStep) => {
+          BpxUtils.repeatN(scaleXy[1], (yScaledStep) => {
+            const canvasXy = v_.add(
+              targetXy,
+              v_.add(
+                v_.mul(
+                  v2d_(imgX - sprite.xy1[0], imgY - sprite.xy1[1]),
+                  scaleXy,
+                ),
+                v2d_(xScaledStep, yScaledStep),
+              ),
             );
 
             const imgBytesIndex = (imgY * imgW + imgX) * 4;

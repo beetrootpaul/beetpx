@@ -1,5 +1,5 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
@@ -31,7 +31,7 @@ export class DrawRect {
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    BpxVector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
+    v_.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
       this.#pixel.draw(xy, color, clippingRegion, fillPattern);
     });
   }

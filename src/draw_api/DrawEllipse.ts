@@ -1,5 +1,5 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v2d_, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
@@ -12,7 +12,7 @@ export class DrawEllipse {
 
   constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
     this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize.round();
+    this.#canvasSize = v_.round(canvasSize);
 
     this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize, {
       disableRounding: true,
@@ -32,9 +32,9 @@ export class DrawEllipse {
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    const [xy1, xy2] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+    const [xy1, xy2] = v_.minMax(v_.round(xy), v_.round(v_.add(xy, wh)));
 
-    if (xy2.x - xy1.x <= 0 || xy2.y - xy1.y <= 0) {
+    if (xy2[0] - xy1[0] <= 0 || xy2[1] - xy1[1] <= 0) {
       return;
     }
 
@@ -42,13 +42,13 @@ export class DrawEllipse {
     // PREPARE
     //
 
-    let a = xy2.x - xy1.x - 1;
-    let b = xy2.y - xy1.y - 1;
+    let a = xy2[0] - xy1[0] - 1;
+    let b = xy2[1] - xy1[1] - 1;
     let b1 = b & 1;
 
-    let left = xy1.x;
-    let right = xy2.x - 1;
-    let bottom = xy1.y + Math.floor((b + 1) / 2);
+    let left = xy1[0];
+    let right = xy2[0] - 1;
+    let bottom = xy1[1] + Math.floor((b + 1) / 2);
     let top = bottom - b1;
 
     let errIncrementX = 4 * (1 - a) * b * b;
@@ -64,15 +64,15 @@ export class DrawEllipse {
       //
 
       // TODO: update the implementation below to honor fill pattern
-      this.#pixel.draw(v_(right, bottom), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(left, bottom), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(left, top), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(right, top), color, clippingRegion, fillPattern);
+      this.#pixel.draw(v2d_(right, bottom), color, clippingRegion, fillPattern);
+      this.#pixel.draw(v2d_(left, bottom), color, clippingRegion, fillPattern);
+      this.#pixel.draw(v2d_(left, top), color, clippingRegion, fillPattern);
+      this.#pixel.draw(v2d_(right, top), color, clippingRegion, fillPattern);
       if (fill) {
         // TODO: update the implementation below to honor fill pattern
-        BpxVector2d.forEachIntXyWithinRectOf(
-          v_(left + 1, bottom),
-          v_(right - left - 1, 1),
+        v_.forEachIntXyWithinRectOf(
+          v2d_(left + 1, bottom),
+          v2d_(right - left - 1, 1),
           false,
           true,
           (xy) => {
@@ -80,9 +80,9 @@ export class DrawEllipse {
           },
         );
         // TODO: update the implementation below to honor fill pattern
-        BpxVector2d.forEachIntXyWithinRectOf(
-          v_(left + 1, top),
-          v_(right - left - 1, 1),
+        v_.forEachIntXyWithinRectOf(
+          v2d_(left + 1, top),
+          v2d_(right - left - 1, 1),
           false,
           true,
           (xy) => {
@@ -120,20 +120,25 @@ export class DrawEllipse {
     while (bottom - top <= b) {
       // TODO: update the implementation below to honor fill pattern
       this.#pixel.draw(
-        v_(left - 1, bottom),
+        v2d_(left - 1, bottom),
         color,
         clippingRegion,
         fillPattern,
       );
       this.#pixel.draw(
-        v_(right + 1, bottom),
+        v2d_(right + 1, bottom),
         color,
         clippingRegion,
         fillPattern,
       );
       bottom += 1;
-      this.#pixel.draw(v_(left - 1, top), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(right + 1, top), color, clippingRegion, fillPattern);
+      this.#pixel.draw(v2d_(left - 1, top), color, clippingRegion, fillPattern);
+      this.#pixel.draw(
+        v2d_(right + 1, top),
+        color,
+        clippingRegion,
+        fillPattern,
+      );
       top -= 1;
     }
   }

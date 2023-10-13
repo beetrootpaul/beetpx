@@ -13,7 +13,7 @@ var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawS
 import { BpxSolidColor, transparent_, } from "../Color";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { v2d_, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawSprite {
@@ -31,24 +31,22 @@ export class DrawSprite {
     draw(sourceImageAsset, sprite, targetXy, 
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    scaleXy = BpxVector2d.one, colorMapping = new Map(), 
+    scaleXy = [1, 1], colorMapping = new Map(), 
     // TODO: test it
     fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
-        targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
-        scaleXy = scaleXy.floor();
+        targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : v_.round(targetXy);
+        scaleXy = v_.floor(scaleXy);
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
-        sprite = new BpxSprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
+        sprite = new BpxSprite(sprite.imageUrl, v2d_(Math.min(sprite.xy1[0], sprite.xy2[0]), Math.min(sprite.xy1[1], sprite.xy2[1])), v2d_(Math.max(sprite.xy1[0], sprite.xy2[0]), Math.max(sprite.xy1[1], sprite.xy2[1])));
         // clip sprite by image edges
-        sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
-        for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
-            for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-                BpxUtils.repeatN(scaleXy.x, (xScaledStep) => {
-                    BpxUtils.repeatN(scaleXy.y, (yScaledStep) => {
+        sprite = new BpxSprite(sprite.imageUrl, v2d_(BpxUtils.clamp(0, sprite.xy1[0], imgW), BpxUtils.clamp(0, sprite.xy1[1], imgH)), v2d_(BpxUtils.clamp(0, sprite.xy2[0], imgW), BpxUtils.clamp(0, sprite.xy2[1], imgH)));
+        for (let imgY = sprite.xy1[1]; imgY < sprite.xy2[1]; imgY += 1) {
+            for (let imgX = sprite.xy1[0]; imgX < sprite.xy2[0]; imgX += 1) {
+                BpxUtils.repeatN(scaleXy[0], (xScaledStep) => {
+                    BpxUtils.repeatN(scaleXy[1], (yScaledStep) => {
                         var _a;
-                        const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
-                            .mul(scaleXy)
-                            .add(xScaledStep, yScaledStep));
+                        const canvasXy = v_.add(targetXy, v_.add(v_.mul(v2d_(imgX - sprite.xy1[0], imgY - sprite.xy1[1]), scaleXy), v2d_(xScaledStep, yScaledStep)));
                         const imgBytesIndex = (imgY * imgW + imgX) * 4;
                         if (imgBytes.length < imgBytesIndex + 4) {
                             throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);

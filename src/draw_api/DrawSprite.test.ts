@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals";
 import { BpxSolidColor, transparent_ } from "../Color";
 import { spr_ } from "../Sprite";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { v2d_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { TestCanvas } from "./TestCanvas";
 import { TestImage } from "./TestImage";
@@ -31,13 +31,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(
-      image.asset,
-      s(0, 0, 1, 1),
-      v_(1, 1),
-      BpxVector2d.one,
-      new Map(),
-    );
+    sprite.draw(image.asset, s(0, 0, 1, 1), v2d_(1, 1), [1, 1], new Map());
 
     // then
     canvas.expectToEqual({
@@ -64,7 +58,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(0, 0, 5, 3), v_(3, 2));
+    sprite.draw(image.asset, s(0, 0, 5, 3), v2d_(3, 2));
 
     // then
     canvas.expectToEqual({
@@ -95,7 +89,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(1, 1, 2, 2), v_(2, 1));
+    sprite.draw(image.asset, s(1, 1, 2, 2), v2d_(2, 1));
 
     // then
     canvas.expectToEqual({
@@ -124,7 +118,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(1, 1, 0, 0), v_(2, 1));
+    sprite.draw(image.asset, s(1, 1, 0, 0), v2d_(2, 1));
 
     // then
     canvas.expectToEqual({
@@ -153,7 +147,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(3, 3, -2, -2), v_(2, 1));
+    sprite.draw(image.asset, s(3, 3, -2, -2), v2d_(2, 1));
 
     // then
     canvas.expectToEqual({
@@ -182,7 +176,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(-2, 1, 4, 2), v_(3, 3));
+    sprite.draw(image.asset, s(-2, 1, 4, 2), v2d_(3, 3));
 
     // then
     canvas.expectToEqual({
@@ -215,7 +209,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(2, 1, 4, 2), v_(3, 3));
+    sprite.draw(image.asset, s(2, 1, 4, 2), v2d_(3, 3));
 
     // then
     canvas.expectToEqual({
@@ -248,7 +242,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(1, -2, 2, 4), v_(3, 3));
+    sprite.draw(image.asset, s(1, -2, 2, 4), v2d_(3, 3));
 
     // then
     canvas.expectToEqual({
@@ -281,7 +275,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(1, 2, 2, 4), v_(3, 3));
+    sprite.draw(image.asset, s(1, 2, 2, 4), v2d_(3, 3));
 
     // then
     canvas.expectToEqual({
@@ -314,7 +308,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(0, 0, 4, 4), v_(-2, 1));
+    sprite.draw(image.asset, s(0, 0, 4, 4), v2d_(-2, 1));
 
     // then
     canvas.expectToEqual({
@@ -345,7 +339,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(0, 0, 4, 4), v_(4, 1));
+    sprite.draw(image.asset, s(0, 0, 4, 4), v2d_(4, 1));
 
     // then
     canvas.expectToEqual({
@@ -376,7 +370,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(0, 0, 4, 4), v_(1, -2));
+    sprite.draw(image.asset, s(0, 0, 4, 4), v2d_(1, -2));
 
     // then
     canvas.expectToEqual({
@@ -407,7 +401,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(0, 0, 4, 4), v_(1, 4));
+    sprite.draw(image.asset, s(0, 0, 4, 4), v2d_(1, 4));
 
     // then
     canvas.expectToEqual({
@@ -438,10 +432,10 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(image.asset, s(0, 0, 4, 4), v_(0, 0));
-    sprite.draw(image.asset, s(4, 0, 4, 4), v_(0, 0));
-    sprite.draw(image.asset, s(8, 0, 4, 4), v_(0, 0));
-    sprite.draw(image.asset, s(12, 0, 4, 4), v_(0, 0));
+    sprite.draw(image.asset, s(0, 0, 4, 4), v2d_(0, 0));
+    sprite.draw(image.asset, s(4, 0, 4, 4), v2d_(0, 0));
+    sprite.draw(image.asset, s(8, 0, 4, 4), v2d_(0, 0));
+    sprite.draw(image.asset, s(12, 0, 4, 4), v2d_(0, 0));
 
     // then
     canvas.expectToEqual({
@@ -473,8 +467,8 @@ describe("DrawSprite", () => {
     sprite.draw(
       image.asset,
       s(0, 0, 4, 4),
-      v_(0, 0),
-      BpxVector2d.one,
+      v2d_(0, 0),
+      [1, 1],
       new Map([
         [c1.id, c4],
         [c2.id, c5],

@@ -4,6 +4,7 @@ import {
   BpxSolidColor,
   BpxVector2d,
   spr_,
+  v2d_,
   v_,
 } from "../../../src";
 
@@ -24,8 +25,8 @@ const logoOuterColor = BpxSolidColor.fromRgbCssHex("#ff6e59");
 
 const velocity = 2;
 
-const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
-let logoPositionBase = BpxVector2d.zero;
+const logoPositionBaseDefault = v2d_((128 - 16) / 2, (128 - 16) / 2);
+let logoPositionBase: BpxVector2d = [0, 0];
 
 let numberOfEllipses = 4;
 
@@ -69,16 +70,16 @@ b_.init(
     }
 
     if (b_.isPressed("right")) {
-      logoPositionBase = logoPositionBase.add(velocity, 0);
+      logoPositionBase = v_.add(logoPositionBase, v2d_(velocity, 0));
     }
     if (b_.isPressed("left")) {
-      logoPositionBase = logoPositionBase.add(-velocity, 0);
+      logoPositionBase = v_.add(logoPositionBase, v2d_(-velocity, 0));
     }
     if (b_.isPressed("up")) {
-      logoPositionBase = logoPositionBase.add(0, -velocity);
+      logoPositionBase = v_.add(logoPositionBase, v2d_(0, -velocity));
     }
     if (b_.isPressed("down")) {
-      logoPositionBase = logoPositionBase.add(0, velocity);
+      logoPositionBase = v_.add(logoPositionBase, v2d_(0, velocity));
     }
 
     // TODO: wrong button on Xbox controller :/
@@ -126,7 +127,7 @@ function drawUpdateCallsVisualization(): void {
       barIndex++
     ) {
       b_.pixel(
-        v_(columnIndex + 3, 1 + barIndex * 2),
+        v2d_(columnIndex + 3, 1 + barIndex * 2),
         columnIndex === updateCallsVisualization.historyIndex
           ? BpxSolidColor.fromRgbCssHex("#ffffff")
           : BpxSolidColor.fromRgbCssHex("#ff8888"),
@@ -144,8 +145,8 @@ function drawRenderFpsVisualization(): void {
     const bars = Math.round(renderFpsVisualization.history[columnIndex]! / 10);
     for (let barIndex = 0; barIndex < bars; barIndex++) {
       b_.rectFilled(
-        v_(columnIndex * 3 + 2, 125 - barIndex * 3),
-        v_(2, 2),
+        v2d_(columnIndex * 3 + 2, 125 - barIndex * 3),
+        v2d_(2, 2),
         columnIndex === renderFpsVisualization.historyIndex
           ? BpxSolidColor.fromRgbCssHex("#ffffff")
           : barIndex % 3 === 2
@@ -159,8 +160,8 @@ function drawRenderFpsVisualization(): void {
 function drawThings(): void {
   for (let ellipseIndex = 0; ellipseIndex < numberOfEllipses; ellipseIndex++) {
     b_.ellipseFilled(
-      v_((ellipseIndex * 128) / numberOfEllipses, 70),
-      v_(24, 24),
+      v2d_((ellipseIndex * 128) / numberOfEllipses, 70),
+      v2d_(24, 24),
       BpxSolidColor.fromRgbCssHex(
         `#ab84${((30 * ellipseIndex) % 256).toString(16).padStart(2, "0")}`,
       ),
@@ -168,12 +169,16 @@ function drawThings(): void {
   }
 
   b_.setFillPattern(BpxFillPattern.of(0x5a5a));
-  b_.rectFilled(v_(16, 80), v_(96, 32), BpxSolidColor.fromRgbCssHex("#012345"));
+  b_.rectFilled(
+    v2d_(16, 80),
+    v2d_(96, 32),
+    BpxSolidColor.fromRgbCssHex("#012345"),
+  );
   b_.setFillPattern(BpxFillPattern.primaryOnly);
 
   b_.sprite(
     spr_("logo.png")(0, 0, 16, 16),
-    logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),
+    v_.add(logoPositionBase, calculateLogoPositionOffset(1.5 * fps)),
   );
 
   const prevMapping = b_.mapSpriteColors([
@@ -188,14 +193,17 @@ function drawThings(): void {
   ]);
   b_.sprite(
     spr_("logo.png")(0, 0, 16, 16),
-    logoPositionBase.sub(calculateLogoPositionOffset(b_.frameNumber)),
+    v_.add(logoPositionBase, calculateLogoPositionOffset(b_.frameNumber)),
   );
   b_.mapSpriteColors(prevMapping);
 }
 
 function calculateLogoPositionOffset(frameNumber: number): BpxVector2d {
-  return v_(
-    Math.cos((frameNumber / fps) * Math.PI),
-    Math.sin((frameNumber / fps) * Math.PI),
-  ).mul(24);
+  return v_.mul(
+    v2d_(
+      Math.cos((frameNumber / fps) * Math.PI),
+      Math.sin((frameNumber / fps) * Math.PI),
+    ),
+    24,
+  );
 }

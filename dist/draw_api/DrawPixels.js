@@ -10,6 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawPixels_pixel;
+import { v2d_, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 export class DrawPixels {
     constructor(canvasBytes, canvasSize) {
@@ -18,13 +19,13 @@ export class DrawPixels {
     }
     // TODO: add tests
     draw(xy, bits, color, clippingRegion = null) {
-        xy = xy.round();
+        xy = v_.round(xy);
         for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {
             for (let bitsX = 0; bitsX < bits[bitsY].length; bitsX += 1) {
                 if (bits[bitsY][bitsX] !== "#") {
                     continue;
                 }
-                const canvasXy = xy.add(bitsX, bitsY);
+                const canvasXy = v_.add(xy, v2d_(bitsX, bitsY));
                 if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
                     return;
                 }

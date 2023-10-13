@@ -1,13 +1,13 @@
 import { expect } from "@jest/globals";
 import { BpxColorId, BpxSolidColor } from "../Color";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v2d_ } from "../Vector2d";
 
 export class TestCanvas {
   readonly size: BpxVector2d;
   readonly bytes: Uint8ClampedArray;
 
   constructor(width: number, height: number, color: BpxSolidColor) {
-    this.size = v_(width, height);
+    this.size = v2d_(width, height);
     this.bytes = new Uint8ClampedArray(4 * width * height);
     for (let i = 0; i < width * height; i += 1) {
       this.bytes[4 * i] = color.r;
@@ -23,7 +23,7 @@ export class TestCanvas {
   }) {
     // first, let's check if bytes didn't increase in their length
 
-    expect(this.bytes.length).toEqual(this.size.x * this.size.y * 4);
+    expect(this.bytes.length).toEqual(this.size[0] * this.size[1] * 4);
 
     // then, let's proceed to the actual image check
 
@@ -55,9 +55,9 @@ export class TestCanvas {
   #asAscii(colorToAscii: Map<BpxColorId, string>): string {
     let asciiImage = "";
 
-    for (let y = 0; y < this.size.y; y += 1) {
-      for (let x = 0; x < this.size.x; x += 1) {
-        const i = 4 * (y * this.size.x + x);
+    for (let y = 0; y < this.size[1]; y += 1) {
+      for (let x = 0; x < this.size[0]; x += 1) {
+        const i = 4 * (y * this.size[0] + x);
         const colorBytes = this.bytes.slice(i, i + 4);
         if (colorBytes[3] !== 0xff) {
           asciiImage += "!";

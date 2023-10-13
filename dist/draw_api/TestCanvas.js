@@ -6,11 +6,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _TestCanvas_instances, _TestCanvas_asAscii;
 import { expect } from "@jest/globals";
 import { BpxSolidColor } from "../Color";
-import { v_ } from "../Vector2d";
+import { v2d_ } from "../Vector2d";
 export class TestCanvas {
     constructor(width, height, color) {
         _TestCanvas_instances.add(this);
-        this.size = v_(width, height);
+        this.size = v2d_(width, height);
         this.bytes = new Uint8ClampedArray(4 * width * height);
         for (let i = 0; i < width * height; i += 1) {
             this.bytes[4 * i] = color.r;
@@ -21,7 +21,7 @@ export class TestCanvas {
     }
     expectToEqual(params) {
         // first, let's check if bytes didn't increase in their length
-        expect(this.bytes.length).toEqual(this.size.x * this.size.y * 4);
+        expect(this.bytes.length).toEqual(this.size[0] * this.size[1] * 4);
         // then, let's proceed to the actual image check
         const { withMapping: asciiToColor, expectedImageAsAscii } = params;
         const colorToAscii = new Map(Object.entries(asciiToColor).map(([ascii, color]) => [color.id, ascii]));
@@ -42,9 +42,9 @@ export class TestCanvas {
 _TestCanvas_instances = new WeakSet(), _TestCanvas_asAscii = function _TestCanvas_asAscii(colorToAscii) {
     var _a;
     let asciiImage = "";
-    for (let y = 0; y < this.size.y; y += 1) {
-        for (let x = 0; x < this.size.x; x += 1) {
-            const i = 4 * (y * this.size.x + x);
+    for (let y = 0; y < this.size[1]; y += 1) {
+        for (let x = 0; x < this.size[0]; x += 1) {
+            const i = 4 * (y * this.size[0] + x);
             const colorBytes = this.bytes.slice(i, i + 4);
             if (colorBytes[3] !== 0xff) {
                 asciiImage += "!";

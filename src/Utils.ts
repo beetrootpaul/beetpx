@@ -2,7 +2,7 @@
 
 import { BeetPx } from "./BeetPx";
 import { BpxSolidColor } from "./Color";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v2d_, v_ } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
@@ -29,11 +29,11 @@ export class BpxUtils {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
     return charSprites.reduce(
       (sizeSoFar, nextSprite) =>
-        BpxVector2d.max(
+        v_.max(
           sizeSoFar,
-          nextSprite.positionInText.add(nextSprite.sprite.size()),
+          v_.add(nextSprite.positionInText, nextSprite.sprite.size()),
         ),
-      BpxVector2d.zero,
+      v2d_(0, 0),
     );
   }
 
@@ -42,14 +42,14 @@ export class BpxUtils {
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
   static offset8Directions(): BpxVector2d[] {
     return [
-      v_(-1, -1),
-      v_(0, -1),
-      v_(1, -1),
-      v_(1, 0),
-      v_(1, 1),
-      v_(0, 1),
-      v_(-1, 1),
-      v_(-1, 0),
+      [-1, -1],
+      [0, -1],
+      [1, -1],
+      [1, 0],
+      [1, 1],
+      [0, 1],
+      [-1, 1],
+      [-1, 0],
     ];
   }
 
@@ -67,7 +67,7 @@ export class BpxUtils {
     centerXy: [boolean, boolean] = [false, false],
   ): void {
     BpxUtils.offset8Directions().forEach((offset) => {
-      BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
+      BeetPx.print(text, v_.add(canvasXy1, offset), outlineColor, centerXy);
     });
     BeetPx.print(text, canvasXy1, textColor, centerXy);
   }

@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawText_canvasBytes, _DrawText_canvasSize, _DrawText_sprite;
 import { transparent_ } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { v_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawText {
@@ -28,10 +28,10 @@ export class DrawText {
     // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
     // TODO: cover ClippingRegion with tests
     draw(text, canvasXy, fontAsset, color, clippingRegion = null) {
-        canvasXy = canvasXy.round();
+        canvasXy = v_.round(canvasXy);
         const colorFn = typeof color === "function" ? color : () => color;
         for (const charSprite of fontAsset.font.spritesFor(text)) {
-            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), BpxVector2d.one, new Map([
+            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, v_.add(canvasXy, charSprite.positionInText), [1, 1], new Map([
                 [fontAsset.imageTextColor.id, colorFn(charSprite)],
                 [fontAsset.imageBgColor.id, transparent_],
             ]), BpxFillPattern.primaryOnly, clippingRegion);

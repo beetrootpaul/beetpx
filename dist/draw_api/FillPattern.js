@@ -10,6 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxFillPattern_bits;
+import { v_ } from "../Vector2d";
 // TODO: rename fill to draw? Since we are using it for sprites as well…
 // TODO: … and use it, like, for every drawing API we have in this framework.
 export class BpxFillPattern {
@@ -24,8 +25,8 @@ export class BpxFillPattern {
     }
     // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
     hasPrimaryColorAt(xy) {
-        const patternXy = xy.mod(4);
-        const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;
+        const patternXy = v_.mod(xy, 4);
+        const bitPosition = 4 * 4 - (patternXy[1] * 4 + patternXy[0]) - 1;
         const isSecondary = Boolean(__classPrivateFieldGet(this, _BpxFillPattern_bits, "f") & (1 << bitPosition));
         return !isSecondary;
     }

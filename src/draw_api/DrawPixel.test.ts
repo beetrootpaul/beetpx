@@ -1,6 +1,6 @@
 import { describe, test } from "@jest/globals";
 import { BpxSolidColor } from "../Color";
-import { v_ } from "../Vector2d";
+import { v2d_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { TestCanvas } from "./TestCanvas";
 
@@ -17,8 +17,8 @@ describe("DrawPixel", () => {
     const pixel = new DrawPixel(canvas.bytes, canvas.size);
 
     // when
-    const xy1 = v_(1, 1);
-    pixel.draw(v_(1, 1), c1);
+    const xy1 = v2d_(1, 1);
+    pixel.draw(v2d_(1, 1), c1);
 
     // then
     canvas.expectToEqual({
@@ -37,10 +37,10 @@ describe("DrawPixel", () => {
     const pixel = new DrawPixel(canvas.bytes, canvas.size);
 
     // when
-    pixel.draw(v_(0, 0), c1);
-    pixel.draw(v_(2, 0), c2);
-    pixel.draw(v_(0, 2), c3);
-    pixel.draw(v_(2, 2), c4);
+    pixel.draw(v2d_(0, 0), c1);
+    pixel.draw(v2d_(2, 0), c2);
+    pixel.draw(v2d_(0, 2), c3);
+    pixel.draw(v2d_(2, 2), c4);
 
     // then
     canvas.expectToEqual({
@@ -59,10 +59,10 @@ describe("DrawPixel", () => {
     const pixel = new DrawPixel(canvas.bytes, canvas.size);
 
     // when
-    pixel.draw(v_(-1, 1), c1);
-    pixel.draw(v_(3, 1), c1);
-    pixel.draw(v_(1, -1), c1);
-    pixel.draw(v_(1, 3), c1);
+    pixel.draw(v2d_(-1, 1), c1);
+    pixel.draw(v2d_(3, 1), c1);
+    pixel.draw(v2d_(1, -1), c1);
+    pixel.draw(v2d_(1, 3), c1);
 
     // then
     canvas.expectToEqual({

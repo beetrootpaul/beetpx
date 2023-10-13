@@ -1,7 +1,7 @@
 import { FontAsset } from "../Assets";
 import { BpxSolidColor, transparent_ } from "../Color";
 import { BpxCharSprite } from "../font/Font";
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
@@ -30,7 +30,7 @@ export class DrawText {
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    canvasXy = canvasXy.round();
+    canvasXy = v_.round(canvasXy);
 
     const colorFn = typeof color === "function" ? color : () => color;
 
@@ -38,8 +38,8 @@ export class DrawText {
       this.#sprite.draw(
         fontAsset.image,
         charSprite.sprite,
-        canvasXy.add(charSprite.positionInText),
-        BpxVector2d.one,
+        v_.add(canvasXy, charSprite.positionInText),
+        [1, 1],
         new Map([
           [fontAsset.imageTextColor.id, colorFn(charSprite)],
           [fontAsset.imageBgColor.id, transparent_],
