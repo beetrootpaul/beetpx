@@ -15,6 +15,9 @@ export class BpxUtils {
     static clamp(a, b, c) {
         return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
     }
+    static identity(param) {
+        return param;
+    }
     static lerp(a, b, t) {
         return a + (b - a) * t;
     }

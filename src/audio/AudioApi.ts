@@ -1,6 +1,6 @@
 import { Assets, SoundAsset, SoundUrl } from "../Assets";
 import { Logger } from "../logger/Logger";
-import { BpxUtils } from "../Utils";
+import { BpxUtils, u_ } from "../Utils";
 import { BpxSoundSequence, SoundSequenceEntry } from "./SoundSequence";
 
 export type BpxAudioPlaybackId = number;
@@ -219,7 +219,7 @@ export class AudioApi {
     const [mainSound, ...additionalSounds] = entry;
 
     const mainSoundAsset = this.#assets.getSoundAsset(mainSound.url);
-    const durationMs = mainSound.durationMs(
+    const durationMs = (mainSound.durationMs ?? u_.identity)(
       mainSoundAsset.audioBuffer.duration * 1000,
     );
 

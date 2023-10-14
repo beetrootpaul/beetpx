@@ -219,6 +219,7 @@ declare class BpxEasing {
 declare class BpxUtils {
     static booleanChangingEveryNthFrame(n: number): boolean;
     static clamp(a: number, b: number, c: number): number;
+    static identity<Param>(param: Param): Param;
     static lerp(a: number, b: number, t: number): number;
     static measureText(text: string): BpxVector2d;
     static noop(): void;
@@ -255,7 +256,7 @@ type SoundSequenceEntry = [
 ];
 type SoundSequenceEntrySoundMain = {
     url: SoundUrl;
-    durationMs: (fullSoundDurationMs: number) => number;
+    durationMs?: (fullSoundDurationMs: number) => number;
 };
 type SoundSequenceEntrySoundAdditional = {
     url: SoundUrl;

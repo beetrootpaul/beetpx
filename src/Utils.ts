@@ -20,6 +20,10 @@ export class BpxUtils {
     return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
   }
 
+  static identity<Param>(param: Param): Param {
+    return param;
+  }
+
   static lerp(a: number, b: number, t: number): number {
     return a + (b - a) * t;
   }

@@ -11,7 +11,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
 import { Logger } from "../logger/Logger";
-import { BpxUtils } from "../Utils";
+import { BpxUtils, u_ } from "../Utils";
 // TODO: refactor this big mess of a class, extract playbacks for example
 export class AudioApi {
     get audioContext() {
@@ -174,9 +174,10 @@ _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new We
         window.localStorage.removeItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey));
     }
 }, _AudioApi_playSoundSequenceEntry = function _AudioApi_playSoundSequenceEntry(playbackId, entry, onEntryEnded) {
+    var _b;
     const [mainSound, ...additionalSounds] = entry;
     const mainSoundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(mainSound.url);
-    const durationMs = mainSound.durationMs(mainSoundAsset.audioBuffer.duration * 1000);
+    const durationMs = ((_b = mainSound.durationMs) !== null && _b !== void 0 ? _b : u_.identity)(mainSoundAsset.audioBuffer.duration * 1000);
     const sourceNodes = [];
     const mainSourceNode = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_newSourceNode).call(this, __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(mainSound.url));
     __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_register).call(this, playbackId, mainSourceNode);
