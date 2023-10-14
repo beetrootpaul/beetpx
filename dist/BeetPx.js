@@ -178,6 +178,9 @@ BeetPx.playSoundSequence = (...args) => {
 BeetPx.stopAllSounds = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllSounds(...args);
 };
+BeetPx.stopSound = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopSound(...args);
+};
 BeetPx.muteSound = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteSound(...args);
 };

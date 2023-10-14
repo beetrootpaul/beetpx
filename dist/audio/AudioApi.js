@@ -9,7 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
+var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_stopSounds, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
 import { Logger } from "../logger/Logger";
 import { BpxUtils, u_ } from "../Utils";
 // TODO: refactor this big mess of a class, extract playbacks for example
@@ -57,18 +57,10 @@ export class AudioApi {
         }
     }
     stopAllSounds() {
-        for (const [playbackId, { sourceNodes, gainNodes },] of __classPrivateFieldGet(this, _AudioApi_sounds, "f").entries()) {
-            __classPrivateFieldGet(this, _AudioApi_sounds, "f").delete(playbackId);
-            for (const gainNode of gainNodes) {
-                gainNode.disconnect();
-            }
-            for (const sourceNode of sourceNodes) {
-                sourceNode.addEventListener("ended", () => {
-                    sourceNode.disconnect();
-                });
-                sourceNode.stop();
-            }
-        }
+        __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => true);
+    }
+    stopSound(playbackId) {
+        __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => id === playbackId);
     }
     playSoundOnce(soundUrl) {
         var _b, _c, _d;
@@ -172,6 +164,21 @@ _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new We
     }
     else {
         window.localStorage.removeItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey));
+    }
+}, _AudioApi_stopSounds = function _AudioApi_stopSounds(predicate) {
+    for (const [playbackId, { sourceNodes, gainNodes },] of __classPrivateFieldGet(this, _AudioApi_sounds, "f").entries()) {
+        if (predicate(playbackId)) {
+            __classPrivateFieldGet(this, _AudioApi_sounds, "f").delete(playbackId);
+            for (const gainNode of gainNodes) {
+                gainNode.disconnect();
+            }
+            for (const sourceNode of sourceNodes) {
+                sourceNode.addEventListener("ended", () => {
+                    sourceNode.disconnect();
+                });
+                sourceNode.stop();
+            }
+        }
     }
 }, _AudioApi_playSoundSequenceEntry = function _AudioApi_playSoundSequenceEntry(playbackId, entry, onEntryEnded) {
     var _b;

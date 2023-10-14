@@ -108,19 +108,29 @@ export class AudioApi {
   }
 
   stopAllSounds(): void {
+    this.#stopSounds((id) => true);
+  }
+
+  stopSound(playbackId: BpxAudioPlaybackId): void {
+    this.#stopSounds((id) => id === playbackId);
+  }
+
+  #stopSounds(predicate: (playbackId: BpxAudioPlaybackId) => boolean): void {
     for (const [
       playbackId,
       { sourceNodes, gainNodes },
     ] of this.#sounds.entries()) {
-      this.#sounds.delete(playbackId);
-      for (const gainNode of gainNodes) {
-        gainNode.disconnect();
-      }
-      for (const sourceNode of sourceNodes) {
-        sourceNode.addEventListener("ended", () => {
-          sourceNode.disconnect();
-        });
-        sourceNode.stop();
+      if (predicate(playbackId)) {
+        this.#sounds.delete(playbackId);
+        for (const gainNode of gainNodes) {
+          gainNode.disconnect();
+        }
+        for (const sourceNode of sourceNodes) {
+          sourceNode.addEventListener("ended", () => {
+            sourceNode.disconnect();
+          });
+          sourceNode.stop();
+        }
       }
     }
   }

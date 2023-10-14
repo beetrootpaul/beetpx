@@ -271,6 +271,7 @@ declare class AudioApi {
     resumeAudioContextIfNeeded(): void;
     toggleMuteUnmute(): void;
     stopAllSounds(): void;
+    stopSound(playbackId: BpxAudioPlaybackId): void;
     playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
     playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId;
@@ -440,6 +441,7 @@ declare class BeetPx {
     static playSoundLooped: AudioApi["playSoundLooped"];
     static playSoundSequence: AudioApi["playSoundSequence"];
     static stopAllSounds: AudioApi["stopAllSounds"];
+    static stopSound: AudioApi["stopSound"];
     static muteSound: AudioApi["muteSound"];
     static unmuteSound: AudioApi["unmuteSound"];
     static store: StorageApi["store"];
