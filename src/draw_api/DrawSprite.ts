@@ -7,7 +7,7 @@ import {
 } from "../Color";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils, u_ } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
@@ -38,7 +38,7 @@ export class DrawSprite {
     targetXy: BpxVector2d,
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    scaleXy: BpxVector2d = BpxVector2d.one,
+    scaleXy: BpxVector2d = v_1_1_,
     colorMapping: Map<BpxColorId, BpxColor> = new Map(),
     // TODO: test it
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,

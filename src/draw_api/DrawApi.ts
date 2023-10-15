@@ -11,7 +11,7 @@ import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
@@ -231,7 +231,7 @@ export class DrawApi {
   sprite(
     sprite: BpxSprite,
     canvasXy: BpxVector2d,
-    scaleXy: BpxVector2d = BpxVector2d.one,
+    scaleXy: BpxVector2d = v_1_1_,
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(

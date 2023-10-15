@@ -11,7 +11,7 @@ export { b_ } from "./BeetPx";
 export { transparent_ } from "./Color";
 export { spr_ } from "./Sprite";
 export { u_ } from "./Utils";
-export { v_ } from "./Vector2d";
+export { v_, v_0_0_, v_1_1_ } from "./Vector2d";
 export { timer_ } from "./misc/Timer";
 // TODO: remove comments from HTMLs from the generated game
 // TODO: improve bg color on itch around the game, but under the buttons

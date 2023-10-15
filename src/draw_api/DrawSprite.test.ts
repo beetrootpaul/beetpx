@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals";
 import { BpxSolidColor, transparent_ } from "../Color";
 import { spr_ } from "../Sprite";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { v_, v_1_1_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { TestCanvas } from "./TestCanvas";
 import { TestImage } from "./TestImage";
@@ -31,13 +31,7 @@ describe("DrawSprite", () => {
     });
 
     // when
-    sprite.draw(
-      image.asset,
-      s(0, 0, 1, 1),
-      v_(1, 1),
-      BpxVector2d.one,
-      new Map(),
-    );
+    sprite.draw(image.asset, s(0, 0, 1, 1), v_(1, 1), v_1_1_, new Map());
 
     // then
     canvas.expectToEqual({
@@ -474,7 +468,7 @@ describe("DrawSprite", () => {
       image.asset,
       s(0, 0, 4, 4),
       v_(0, 0),
-      BpxVector2d.one,
+      v_1_1_,
       new Map([
         [c1.id, c4],
         [c2.id, c5],

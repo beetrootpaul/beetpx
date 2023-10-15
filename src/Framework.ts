@@ -12,7 +12,7 @@ import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils } from "./Utils";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
@@ -58,7 +58,7 @@ export class Framework {
   #onDraw?: () => void;
 
   #scaleToFill = 1;
-  #centeringOffset = BpxVector2d.zero;
+  #centeringOffset = v_0_0_;
 
   #frameNumber: number = 0;
   #renderFps: number = 1;

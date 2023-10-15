@@ -1,7 +1,7 @@
 import { FontAsset } from "../Assets";
 import { BpxSolidColor, transparent_ } from "../Color";
 import { BpxCharSprite } from "../font/Font";
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v_1_1_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
@@ -39,7 +39,7 @@ export class DrawText {
         fontAsset.image,
         charSprite.sprite,
         canvasXy.add(charSprite.positionInText),
-        BpxVector2d.one,
+        v_1_1_,
         new Map([
           [fontAsset.imageTextColor.id, colorFn(charSprite)],
           [fontAsset.imageBgColor.id, transparent_],

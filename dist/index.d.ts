@@ -4,8 +4,6 @@ interface PrintDebug {
 
 declare function v_(x: number, y: number): BpxVector2d;
 declare class BpxVector2d implements PrintDebug {
-    static zero: BpxVector2d;
-    static one: BpxVector2d;
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
@@ -57,6 +55,8 @@ declare class BpxVector2d implements PrintDebug {
     div(x: number, y: number): BpxVector2d;
     __printDebug(): string;
 }
+declare const v_0_0_: BpxVector2d;
+declare const v_1_1_: BpxVector2d;
 
 type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
 declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
@@ -472,4 +472,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_ };

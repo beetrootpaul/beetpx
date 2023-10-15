@@ -2,7 +2,7 @@
 
 import { BeetPx } from "./BeetPx";
 import { BpxSolidColor } from "./Color";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
@@ -37,7 +37,7 @@ export class BpxUtils {
           sizeSoFar,
           nextSprite.positionInText.add(nextSprite.sprite.size()),
         ),
-      BpxVector2d.zero,
+      v_0_0_,
     );
   }
 

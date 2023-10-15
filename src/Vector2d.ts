@@ -8,10 +8,6 @@ export function v_(x: number, y: number): BpxVector2d {
 }
 
 export class BpxVector2d implements PrintDebug {
-  static zero = new BpxVector2d(0, 0);
-
-  static one = new BpxVector2d(1, 1);
-
   static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
   }
@@ -225,3 +221,6 @@ export class BpxVector2d implements PrintDebug {
     return `(${this.x},${this.y})`;
   }
 }
+
+export const v_0_0_ = new BpxVector2d(0, 0);
+export const v_1_1_ = new BpxVector2d(1, 1);

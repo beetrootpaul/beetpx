@@ -32,7 +32,7 @@ import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils } from "./Utils";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { v_, v_0_0_ } from "./Vector2d";
 export class Framework {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
@@ -55,7 +55,7 @@ export class Framework {
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
         _Framework_scaleToFill.set(this, 1);
-        _Framework_centeringOffset.set(this, BpxVector2d.zero);
+        _Framework_centeringOffset.set(this, v_0_0_);
         _Framework_frameNumber.set(this, 0);
         _Framework_renderFps.set(this, 1);
         DebugMode.enabled = options.debugFeatures

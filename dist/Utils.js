@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 import { BeetPx } from "./BeetPx";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
     // TODO: tests for edge cases
@@ -25,7 +25,7 @@ export class BpxUtils {
     static measureText(text) {
         var _a, _b;
         const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
-        return charSprites.reduce((sizeSoFar, nextSprite) => BpxVector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), BpxVector2d.zero);
+        return charSprites.reduce((sizeSoFar, nextSprite) => BpxVector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), v_0_0_);
     }
     static noop() { }
     // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions

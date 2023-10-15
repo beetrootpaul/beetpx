@@ -5,7 +5,7 @@ import {
   BpxSolidColor,
   BpxTransparentColor,
 } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v_0_0_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 
@@ -40,7 +40,7 @@ export class DrawPixel {
       return;
     }
 
-    if (xy.gte(BpxVector2d.zero) && xy.lt(this.#canvasSize)) {
+    if (xy.gte(v_0_0_) && xy.lt(this.#canvasSize)) {
       const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
 
       if (fillPattern.hasPrimaryColorAt(xy)) {

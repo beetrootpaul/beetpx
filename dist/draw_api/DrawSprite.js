@@ -13,7 +13,7 @@ var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawS
 import { BpxSolidColor, transparent_, } from "../Color";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils, u_ } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { v_, v_1_1_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawSprite {
@@ -31,7 +31,7 @@ export class DrawSprite {
     draw(sourceImageAsset, sprite, targetXy, 
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    scaleXy = BpxVector2d.one, colorMapping = new Map(), 
+    scaleXy = v_1_1_, colorMapping = new Map(), 
     // TODO: test it
     fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();

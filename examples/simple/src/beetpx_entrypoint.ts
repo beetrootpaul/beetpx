@@ -1,4 +1,4 @@
-import { b_, BpxSolidColor, BpxVector2d, spr_, v_ } from "../../../src";
+import { b_, BpxSolidColor, spr_, v_, v_0_0_ } from "../../../src";
 
 b_.init(
   {
@@ -24,8 +24,8 @@ b_.init(
     (128 - 16 * logoScale.x) / 2,
     (128 - 16 * logoScale.y) / 2,
   );
-  let logoPositionBase = BpxVector2d.zero;
-  let logoPositionOffset = BpxVector2d.zero;
+  let logoPositionBase = v_0_0_;
+  let logoPositionOffset = v_0_0_;
 
   b_.setOnStarted(() => {
     b_.stopAllSounds();
@@ -33,7 +33,7 @@ b_.init(
     melodyPlaybackId = b_.playSoundLooped("music_melody.wav", true);
 
     logoPositionBase = logoPositionBaseDefault;
-    logoPositionOffset = BpxVector2d.zero;
+    logoPositionOffset = v_0_0_;
   });
 
   b_.setOnUpdate(() => {
