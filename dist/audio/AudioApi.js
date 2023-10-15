@@ -42,12 +42,7 @@ export class AudioApi {
     // resume the AudioContext and call it on every user interaction detected by this framework.
     resumeAudioContextIfNeeded() {
         if (!__classPrivateFieldGet(this, _AudioApi_isPaused, "f") && __classPrivateFieldGet(this, _AudioApi_audioContext, "f").state === "suspended") {
-            __classPrivateFieldGet(this, _AudioApi_audioContext, "f")
-                .resume()
-                .then(() => {
-                this.unmuteAllSounds();
-            })
-                .catch((err) => {
+            __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
                 Logger.errorBeetPx(err);
             });
         }

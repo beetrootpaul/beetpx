@@ -53,14 +53,9 @@ export class AudioApi {
   // resume the AudioContext and call it on every user interaction detected by this framework.
   resumeAudioContextIfNeeded(): void {
     if (!this.#isPaused && this.#audioContext.state === "suspended") {
-      this.#audioContext
-        .resume()
-        .then(() => {
-          this.unmuteAllSounds();
-        })
-        .catch((err) => {
-          Logger.errorBeetPx(err);
-        });
+      this.#audioContext.resume().catch((err) => {
+        Logger.errorBeetPx(err);
+      });
     }
   }
 
