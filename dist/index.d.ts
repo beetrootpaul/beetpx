@@ -272,6 +272,8 @@ declare class AudioApi {
     areAllSoundsMuted(): boolean;
     muteAllSounds(): void;
     unmuteAllSounds(): void;
+    pauseAllSounds(): void;
+    resumeAllSounds(): void;
     stopAllSounds(): void;
     stopSound(playbackId: BpxAudioPlaybackId): void;
     playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
@@ -313,10 +315,12 @@ declare class GameInput {
         enableDebugInputs: boolean;
     });
     startListening(): void;
+    /**
+     * @return If any interaction happened.
+     */
     update(params: {
         skipGameButtons: boolean;
-    }): void;
-    wasAnyButtonPressed(): boolean;
+    }): boolean;
 }
 
 type BpxButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
@@ -441,6 +445,8 @@ declare class BeetPx {
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
     static playSoundSequence: AudioApi["playSoundSequence"];
+    static pauseAllSounds: AudioApi["pauseAllSounds"];
+    static resumeAllSounds: AudioApi["resumeAllSounds"];
     static stopAllSounds: AudioApi["stopAllSounds"];
     static stopSound: AudioApi["stopSound"];
     static areAllSoundsMuted: AudioApi["areAllSoundsMuted"];

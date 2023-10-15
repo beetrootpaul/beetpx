@@ -172,6 +172,12 @@ BeetPx.playSoundLooped = (...args) => {
 BeetPx.playSoundSequence = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundSequence(...args);
 };
+BeetPx.pauseAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.pauseAllSounds(...args);
+};
+BeetPx.resumeAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.resumeAllSounds(...args);
+};
 BeetPx.stopAllSounds = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllSounds(...args);
 };

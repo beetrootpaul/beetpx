@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GameInput_specializedGameInputs;
+var _GameInput_specializedGameInputs, _GameInput_wasAnyEventObserved;
 import { Button } from "./Button";
 import { Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
@@ -19,6 +19,7 @@ import { TouchGameInput } from "./TouchGameInput";
 export class GameInput {
     constructor(params) {
         _GameInput_specializedGameInputs.set(this, void 0);
+        _GameInput_wasAnyEventObserved.set(this, false);
         __classPrivateFieldSet(this, _GameInput_specializedGameInputs, [
             new MouseGameInput({
                 muteButtonsSelector: params.muteButtonsSelector,
@@ -44,6 +45,9 @@ export class GameInput {
             sgi.startListening();
         }
     }
+    /**
+     * @return If any interaction happened.
+     */
     update(params) {
         const events = new Set();
         for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
@@ -57,14 +61,7 @@ export class GameInput {
         this.buttonDebugToggle.update(events.has("debug_toggle"));
         this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
         this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
-    }
-    wasAnyButtonPressed() {
-        return (this.gameButtons.wasAnyJustPressed() ||
-            this.buttonFullScreen.wasJustPressed(false) ||
-            this.buttonMuteUnmute.wasJustPressed(false) ||
-            this.buttonDebugToggle.wasJustPressed(false) ||
-            this.buttonFrameByFrameToggle.wasJustPressed(false) ||
-            this.buttonFrameByFrameStep.wasJustPressed(false));
+        return events.size > 0;
     }
 }
-_GameInput_specializedGameInputs = new WeakMap();
+_GameInput_specializedGameInputs = new WeakMap(), _GameInput_wasAnyEventObserved = new WeakMap();

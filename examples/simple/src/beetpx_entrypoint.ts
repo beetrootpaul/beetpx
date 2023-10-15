@@ -27,10 +27,13 @@ b_.init(
   let logoPositionBase = v_0_0_;
   let logoPositionOffset = v_0_0_;
 
+  let isMelodyMuted = true;
+  let isMusicPaused = false;
+
   b_.setOnStarted(() => {
     b_.stopAllSounds();
     b_.playSoundLooped("music_base.wav");
-    melodyPlaybackId = b_.playSoundLooped("music_melody.wav", true);
+    melodyPlaybackId = b_.playSoundLooped("music_melody.wav", isMelodyMuted);
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = v_0_0_;
@@ -38,10 +41,20 @@ b_.init(
 
   b_.setOnUpdate(() => {
     if (b_.wasJustPressed("x")) {
-      b_.unmuteSound(melodyPlaybackId);
+      if (isMelodyMuted) {
+        b_.unmuteSound(melodyPlaybackId);
+      } else {
+        b_.muteSound(melodyPlaybackId);
+      }
+      isMelodyMuted = !isMelodyMuted;
     }
     if (b_.wasJustPressed("o")) {
-      b_.muteSound(melodyPlaybackId);
+      if (isMusicPaused) {
+        b_.resumeAllSounds();
+      } else {
+        b_.pauseAllSounds();
+      }
+      isMusicPaused = !isMusicPaused;
     }
 
     // TODO: consider exposing some XY (-1,1) representation of directions

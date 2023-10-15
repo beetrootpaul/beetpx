@@ -217,6 +217,14 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.playSoundSequence(...args);
   };
 
+  static pauseAllSounds: AudioApi["pauseAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.pauseAllSounds(...args);
+  };
+
+  static resumeAllSounds: AudioApi["resumeAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.resumeAllSounds(...args);
+  };
+
   static stopAllSounds: AudioApi["stopAllSounds"] = (...args) => {
     return this.#tryGetFramework().audioApi.stopAllSounds(...args);
   };

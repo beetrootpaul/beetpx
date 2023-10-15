@@ -15,6 +15,9 @@ export class AudioApi {
 
   readonly #assets: Assets;
   readonly #audioContext: AudioContext;
+  // If we resumed AudioContext already, then we do not want to resume it again and again
+  //   when it was intentionally paused by a user, e.g. in a pause menu.
+  #hasAlreadyResumedAudioContext: boolean = false;
 
   readonly #globalGainNode: GainNode;
 
@@ -52,12 +55,19 @@ export class AudioApi {
   // Since we cannot assure it for every game setup, let' expose a function which tries to
   // resume the AudioContext and call it on every user interaction detected by this framework.
   resumeAudioContextIfNeeded(): void {
-    if (this.#audioContext.state === "suspended") {
-      this.#audioContext.resume().catch((err) => {
-        Logger.errorBeetPx(err);
-      });
-      // TODO: are we sure we want to unmute here? What if it was intentionally muted?!
-      this.unmuteAllSounds();
+    if (
+      !this.#hasAlreadyResumedAudioContext &&
+      this.#audioContext.state === "suspended"
+    ) {
+      this.#audioContext
+        .resume()
+        .then(() => {
+          this.#hasAlreadyResumedAudioContext = true;
+          this.unmuteAllSounds();
+        })
+        .catch((err) => {
+          Logger.errorBeetPx(err);
+        });
     }
   }
 
@@ -105,6 +115,18 @@ export class AudioApi {
     } else {
       window.localStorage.removeItem(AudioApi.#storageMuteUnmuteKey);
     }
+  }
+
+  pauseAllSounds(): void {
+    this.#audioContext.suspend().catch((err) => {
+      Logger.errorBeetPx(err);
+    });
+  }
+
+  resumeAllSounds(): void {
+    this.#audioContext.resume().catch((err) => {
+      Logger.errorBeetPx(err);
+    });
   }
 
   stopAllSounds(): void {

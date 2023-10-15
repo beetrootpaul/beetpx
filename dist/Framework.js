@@ -196,12 +196,14 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSi
                 __classPrivateFieldSet(this, _Framework_frameByFrame, !__classPrivateFieldGet(this, _Framework_frameByFrame, "f"), "f");
                 Logger.infoBeetPx(`FrameByFrame mode set to: ${__classPrivateFieldGet(this, _Framework_frameByFrame, "f")}`);
             }
-            if (this.gameInput.wasAnyButtonPressed()) {
-                this.audioApi.resumeAudioContextIfNeeded();
-            }
             const shouldUpdate = !__classPrivateFieldGet(this, _Framework_frameByFrame, "f") ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
-            this.gameInput.update({ skipGameButtons: !shouldUpdate });
+            const hasAnyInteractionHappened = this.gameInput.update({
+                skipGameButtons: !shouldUpdate,
+            });
+            if (hasAnyInteractionHappened) {
+                this.audioApi.resumeAudioContextIfNeeded();
+            }
             if (shouldUpdate) {
                 if (__classPrivateFieldGet(this, _Framework_frameByFrame, "f")) {
                     Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_frameNumber, "f")}`);

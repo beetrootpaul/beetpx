@@ -247,15 +247,16 @@ export class Framework {
           Logger.infoBeetPx(`FrameByFrame mode set to: ${this.#frameByFrame}`);
         }
 
-        if (this.gameInput.wasAnyButtonPressed()) {
-          this.audioApi.resumeAudioContextIfNeeded();
-        }
-
         const shouldUpdate =
           !this.#frameByFrame ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
 
-        this.gameInput.update({ skipGameButtons: !shouldUpdate });
+        const hasAnyInteractionHappened = this.gameInput.update({
+          skipGameButtons: !shouldUpdate,
+        });
+        if (hasAnyInteractionHappened) {
+          this.audioApi.resumeAudioContextIfNeeded();
+        }
 
         if (shouldUpdate) {
           if (this.#frameByFrame) {
