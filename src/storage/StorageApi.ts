@@ -1,4 +1,4 @@
-type StorageApiValueConstraint = Record<
+type PersistedStateValueContraints = Record<
   string,
   string | number | boolean | null
 >;
@@ -6,8 +6,8 @@ type StorageApiValueConstraint = Record<
 export class StorageApi {
   static readonly #key: string = "game_stored_state";
 
-  store<StorageApiValue extends StorageApiValueConstraint>(
-    value: StorageApiValue,
+  savePersistedState<PersistedStateValue extends PersistedStateValueContraints>(
+    value: PersistedStateValue,
   ): void {
     window.localStorage.setItem(
       StorageApi.#key,
@@ -16,16 +16,16 @@ export class StorageApi {
   }
 
   // TODO: use zod or some other popular lib and validate value's shape here
-  load<
-    StorageApiValue extends StorageApiValueConstraint,
-  >(): StorageApiValue | null {
+  loadPersistedState<
+    PersistedStateValue extends PersistedStateValueContraints,
+  >(): PersistedStateValue | null {
     const maybeValue: string | null = window.localStorage.getItem(
       StorageApi.#key,
     );
     return maybeValue ? JSON.parse(maybeValue) : null;
   }
 
-  clearStorage(): void {
+  clearPersistedState(): void {
     window.localStorage.removeItem(StorageApi.#key);
   }
 }

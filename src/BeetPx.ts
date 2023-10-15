@@ -249,16 +249,16 @@ export class BeetPx {
   // Storage API
   //
 
-  static store: StorageApi["store"] = (...args) => {
-    return this.#tryGetFramework().storageApi.store(...args);
+  static savePersistedState: StorageApi["savePersistedState"] = (...args) => {
+    return this.#tryGetFramework().storageApi.savePersistedState(...args);
   };
 
-  static load: StorageApi["load"] = (...args) => {
-    return this.#tryGetFramework().storageApi.load(...args);
+  static loadPersistedState: StorageApi["loadPersistedState"] = (...args) => {
+    return this.#tryGetFramework().storageApi.loadPersistedState(...args);
   };
 
-  static clearStorage: StorageApi["clearStorage"] = (...args) => {
-    return this.#tryGetFramework().storageApi.clearStorage(...args);
+  static clearPersistedState: StorageApi["clearPersistedState"] = (...args) => {
+    return this.#tryGetFramework().storageApi.clearPersistedState(...args);
   };
 
   //

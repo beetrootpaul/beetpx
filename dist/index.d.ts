@@ -349,12 +349,12 @@ declare class DebugMode {
     static set enabled(value: boolean);
 }
 
-type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
+type PersistedStateValueContraints = Record<string, string | number | boolean | null>;
 declare class StorageApi {
     #private;
-    store<StorageApiValue extends StorageApiValueConstraint>(value: StorageApiValue): void;
-    load<StorageApiValue extends StorageApiValueConstraint>(): StorageApiValue | null;
-    clearStorage(): void;
+    savePersistedState<PersistedStateValue extends PersistedStateValueContraints>(value: PersistedStateValue): void;
+    loadPersistedState<PersistedStateValue extends PersistedStateValueContraints>(): PersistedStateValue | null;
+    clearPersistedState(): void;
 }
 
 type FrameworkOptions = {
@@ -448,9 +448,9 @@ declare class BeetPx {
     static unmuteAllSounds: AudioApi["unmuteAllSounds"];
     static muteSound: AudioApi["muteSound"];
     static unmuteSound: AudioApi["unmuteSound"];
-    static store: StorageApi["store"];
-    static load: StorageApi["load"];
-    static clearStorage: StorageApi["clearStorage"];
+    static savePersistedState: StorageApi["savePersistedState"];
+    static loadPersistedState: StorageApi["loadPersistedState"];
+    static clearPersistedState: StorageApi["clearPersistedState"];
     static getImageAsset: Assets["getImageAsset"];
     static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];

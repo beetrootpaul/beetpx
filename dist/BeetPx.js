@@ -196,14 +196,14 @@ BeetPx.unmuteSound = (...args) => {
 //
 // Storage API
 //
-BeetPx.store = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.store(...args);
+BeetPx.savePersistedState = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.savePersistedState(...args);
 };
-BeetPx.load = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.load(...args);
+BeetPx.loadPersistedState = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.loadPersistedState(...args);
 };
-BeetPx.clearStorage = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearStorage(...args);
+BeetPx.clearPersistedState = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearPersistedState(...args);
 };
 //
 // Direct access to loaded assets
