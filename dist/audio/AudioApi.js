@@ -70,7 +70,12 @@ export class AudioApi {
             return;
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, true);
         __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, true, "f");
-        __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([this.globalGainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+        if (__classPrivateFieldGet(this, _AudioApi_isPaused, "f")) {
+            __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime);
+        }
+        else {
+            __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([this.globalGainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+        }
     }
     unmuteAllSounds() {
         if (!__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f"))
@@ -78,6 +83,33 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, false);
         __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, false, "f");
         __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([0, 1], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+    }
+    // TODO: better API to make clear that only looped sounds can be muted individually?
+    muteSound(playbackId) {
+        const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
+        if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+            for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+                if (__classPrivateFieldGet(this, _AudioApi_isPaused, "f")) {
+                    gainNode.gain.setValueAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime);
+                }
+                else {
+                    // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
+                    //   an instant volume change – it was resulting with some audio artifacts.
+                    gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+                }
+            }
+        }
+    }
+    // TODO: better API to make clear that only looped sounds can be muted individually?
+    unmuteSound(playbackId) {
+        const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
+        if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+            for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
+                // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
+                //   an instant volume change – it was resulting with some audio artifacts.
+                gainNode.gain.setValueCurveAtTime([0, 1], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+            }
+        }
     }
     pauseAllSounds() {
         __classPrivateFieldSet(this, _AudioApi_isPaused, true, "f");
@@ -158,28 +190,6 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_sounds, "f").set(playbackId, { sourceNodes: [], gainNodes: [] });
         (_d = playbackFns[0]) === null || _d === void 0 ? void 0 : _d.call(playbackFns);
         return playbackId;
-    }
-    // TODO: better API to make clear that only looped sounds can be muted individually?
-    muteSound(playbackId) {
-        const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
-        if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
-            for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
-                // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
-                //   an instant volume change – it was resulting with some audio artifacts.
-                gainNode.gain.setTargetAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteTimeConstant, "f"));
-            }
-        }
-    }
-    // TODO: better API to make clear that only looped sounds can be muted individually?
-    unmuteSound(playbackId) {
-        const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
-        if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
-            for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
-                // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
-                //   an instant volume change – it was resulting with some audio artifacts.
-                gainNode.gain.setTargetAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteTimeConstant, "f"));
-            }
-        }
     }
 }
 _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_isPaused = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_isFadingOut = new WeakMap(), _AudioApi_sounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {

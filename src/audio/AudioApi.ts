@@ -90,11 +90,19 @@ export class AudioApi {
 
     this.#storeGlobalMuteUnmuteState(true);
     this.#isGloballyMuted = true;
-    this.#globalGainNode.gain.setValueCurveAtTime(
-      [this.globalGainNode.gain.value, 0],
-      this.#audioContext.currentTime,
-      0.1,
-    );
+
+    if (this.#isPaused) {
+      this.#globalGainNode.gain.setValueAtTime(
+        0,
+        this.#audioContext.currentTime,
+      );
+    } else {
+      this.#globalGainNode.gain.setValueCurveAtTime(
+        [this.globalGainNode.gain.value, 0],
+        this.#audioContext.currentTime,
+        0.1,
+      );
+    }
   }
 
   unmuteAllSounds(): void {
@@ -107,6 +115,42 @@ export class AudioApi {
       this.#audioContext.currentTime,
       0.1,
     );
+  }
+
+  // TODO: better API to make clear that only looped sounds can be muted individually?
+  muteSound(playbackId: BpxAudioPlaybackId): void {
+    const nodes = this.#sounds.get(playbackId);
+    if (nodes?.gainNodes) {
+      for (const gainNode of nodes?.gainNodes) {
+        if (this.#isPaused) {
+          gainNode.gain.setValueAtTime(0, this.#audioContext.currentTime);
+        } else {
+          // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
+          //   an instant volume change – it was resulting with some audio artifacts.
+          gainNode.gain.setValueCurveAtTime(
+            [gainNode.gain.value, 0],
+            this.#audioContext.currentTime,
+            0.1,
+          );
+        }
+      }
+    }
+  }
+
+  // TODO: better API to make clear that only looped sounds can be muted individually?
+  unmuteSound(playbackId: BpxAudioPlaybackId): void {
+    const nodes = this.#sounds.get(playbackId);
+    if (nodes?.gainNodes) {
+      for (const gainNode of nodes?.gainNodes) {
+        // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
+        //   an instant volume change – it was resulting with some audio artifacts.
+        gainNode.gain.setValueCurveAtTime(
+          [0, 1],
+          this.#audioContext.currentTime,
+          0.1,
+        );
+      }
+    }
   }
 
   #loadStoredGlobalMuteUnmuteState(): boolean {
@@ -303,38 +347,6 @@ export class AudioApi {
     const sourceNode = this.#audioContext.createBufferSource();
     sourceNode.buffer = soundAsset.audioBuffer;
     return sourceNode;
-  }
-
-  // TODO: better API to make clear that only looped sounds can be muted individually?
-  muteSound(playbackId: BpxAudioPlaybackId): void {
-    const nodes = this.#sounds.get(playbackId);
-    if (nodes?.gainNodes) {
-      for (const gainNode of nodes?.gainNodes) {
-        // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
-        //   an instant volume change – it was resulting with some audio artifacts.
-        gainNode.gain.setTargetAtTime(
-          0,
-          this.#audioContext.currentTime,
-          this.#muteUnmuteTimeConstant,
-        );
-      }
-    }
-  }
-
-  // TODO: better API to make clear that only looped sounds can be muted individually?
-  unmuteSound(playbackId: BpxAudioPlaybackId): void {
-    const nodes = this.#sounds.get(playbackId);
-    if (nodes?.gainNodes) {
-      for (const gainNode of nodes?.gainNodes) {
-        // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
-        //   an instant volume change – it was resulting with some audio artifacts.
-        gainNode.gain.setTargetAtTime(
-          1,
-          this.#audioContext.currentTime,
-          this.#muteUnmuteTimeConstant,
-        );
-      }
-    }
   }
 
   #register(

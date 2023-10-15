@@ -273,6 +273,8 @@ declare class AudioApi {
     areAllSoundsMuted(): boolean;
     muteAllSounds(): void;
     unmuteAllSounds(): void;
+    muteSound(playbackId: BpxAudioPlaybackId): void;
+    unmuteSound(playbackId: BpxAudioPlaybackId): void;
     pauseAllSounds(): void;
     resumeAllSounds(): void;
     stopAllSounds(): void;
@@ -280,8 +282,6 @@ declare class AudioApi {
     playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
     playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId;
-    muteSound(playbackId: BpxAudioPlaybackId): void;
-    unmuteSound(playbackId: BpxAudioPlaybackId): void;
 }
 
 declare class BpxClippingRegion {
