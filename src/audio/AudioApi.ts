@@ -57,19 +57,17 @@ export class AudioApi {
         Logger.errorBeetPx(err);
       });
       // TODO: are we sure we want to unmute here? What if it was intentionally muted?!
-      this.#unmute();
+      this.unmuteAllSounds();
     }
   }
 
-  toggleMuteUnmute(): void {
-    if (this.#isGloballyMuted) {
-      this.#unmute();
-    } else {
-      this.#mute();
-    }
+  areAllSoundsMuted(): boolean {
+    return this.#isGloballyMuted;
   }
 
-  #mute(): void {
+  muteAllSounds(): void {
+    if (this.#isGloballyMuted) return;
+
     this.#storeGlobalMuteUnmuteState(true);
     this.#isGloballyMuted = true;
     this.#globalGainNode.gain.setTargetAtTime(
@@ -79,7 +77,9 @@ export class AudioApi {
     );
   }
 
-  #unmute(): void {
+  unmuteAllSounds(): void {
+    if (!this.#isGloballyMuted) return;
+
     this.#storeGlobalMuteUnmuteState(false);
     this.#isGloballyMuted = false;
     this.#globalGainNode.gain.setTargetAtTime(

@@ -9,7 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_mute, _AudioApi_unmute, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_stopSounds, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
+var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_muteUnmuteExponentialTimeConstant, _AudioApi_isGloballyMuted, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_stopSounds, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
 import { Logger } from "../logger/Logger";
 import { BpxUtils, u_ } from "../Utils";
 // TODO: refactor this big mess of a class, extract playbacks for example
@@ -45,16 +45,25 @@ export class AudioApi {
                 Logger.errorBeetPx(err);
             });
             // TODO: are we sure we want to unmute here? What if it was intentionally muted?!
-            __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unmute).call(this);
+            this.unmuteAllSounds();
         }
     }
-    toggleMuteUnmute() {
-        if (__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f")) {
-            __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unmute).call(this);
-        }
-        else {
-            __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_mute).call(this);
-        }
+    areAllSoundsMuted() {
+        return __classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f");
+    }
+    muteAllSounds() {
+        if (__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f"))
+            return;
+        __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, true);
+        __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, true, "f");
+        __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setTargetAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteExponentialTimeConstant, "f"));
+    }
+    unmuteAllSounds() {
+        if (!__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f"))
+            return;
+        __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, false);
+        __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, false, "f");
+        __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setTargetAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteExponentialTimeConstant, "f"));
     }
     stopAllSounds() {
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => true);
@@ -147,15 +156,7 @@ export class AudioApi {
         }
     }
 }
-_a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_muteUnmuteExponentialTimeConstant = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_sounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_mute = function _AudioApi_mute() {
-    __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, true);
-    __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, true, "f");
-    __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setTargetAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteExponentialTimeConstant, "f"));
-}, _AudioApi_unmute = function _AudioApi_unmute() {
-    __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, false);
-    __classPrivateFieldSet(this, _AudioApi_isGloballyMuted, false, "f");
-    __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setTargetAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_muteUnmuteExponentialTimeConstant, "f"));
-}, _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
+_a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_muteUnmuteExponentialTimeConstant = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_sounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
     return (window.localStorage.getItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey)) ===
         __classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteTrue));
 }, _AudioApi_storeGlobalMuteUnmuteState = function _AudioApi_storeGlobalMuteUnmuteState(muted) {

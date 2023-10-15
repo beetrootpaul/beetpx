@@ -163,9 +163,6 @@ BeetPx.takeCanvasSnapshot = (...args) => {
 //
 // Audio API
 //
-BeetPx.toggleMuteUnmute = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.toggleMuteUnmute(...args);
-};
 BeetPx.playSoundOnce = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundOnce(...args);
 };
@@ -180,6 +177,15 @@ BeetPx.stopAllSounds = (...args) => {
 };
 BeetPx.stopSound = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopSound(...args);
+};
+BeetPx.areAllSoundsMuted = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.areAllSoundsMuted(...args);
+};
+BeetPx.muteAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteAllSounds(...args);
+};
+BeetPx.unmuteAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmuteAllSounds(...args);
 };
 BeetPx.muteSound = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteSound(...args);

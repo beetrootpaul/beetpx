@@ -205,10 +205,6 @@ export class BeetPx {
   // Audio API
   //
 
-  static toggleMuteUnmute: AudioApi["toggleMuteUnmute"] = (...args) => {
-    return this.#tryGetFramework().audioApi.toggleMuteUnmute(...args);
-  };
-
   static playSoundOnce: AudioApi["playSoundOnce"] = (...args) => {
     return this.#tryGetFramework().audioApi.playSoundOnce(...args);
   };
@@ -227,6 +223,18 @@ export class BeetPx {
 
   static stopSound: AudioApi["stopSound"] = (...args) => {
     return this.#tryGetFramework().audioApi.stopSound(...args);
+  };
+
+  static areAllSoundsMuted: AudioApi["areAllSoundsMuted"] = (...args) => {
+    return this.#tryGetFramework().audioApi.areAllSoundsMuted(...args);
+  };
+
+  static muteAllSounds: AudioApi["muteAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.muteAllSounds(...args);
+  };
+
+  static unmuteAllSounds: AudioApi["unmuteAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.unmuteAllSounds(...args);
   };
 
   static muteSound: AudioApi["muteSound"] = (...args) => {

@@ -269,7 +269,9 @@ declare class AudioApi {
     get globalGainNode(): GainNode;
     constructor(assets: Assets, audioContext: AudioContext);
     resumeAudioContextIfNeeded(): void;
-    toggleMuteUnmute(): void;
+    areAllSoundsMuted(): boolean;
+    muteAllSounds(): void;
+    unmuteAllSounds(): void;
     stopAllSounds(): void;
     stopSound(playbackId: BpxAudioPlaybackId): void;
     playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
@@ -436,12 +438,14 @@ declare class BeetPx {
     static sprite: DrawApi["sprite"];
     static print: DrawApi["print"];
     static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"];
-    static toggleMuteUnmute: AudioApi["toggleMuteUnmute"];
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
     static playSoundSequence: AudioApi["playSoundSequence"];
     static stopAllSounds: AudioApi["stopAllSounds"];
     static stopSound: AudioApi["stopSound"];
+    static areAllSoundsMuted: AudioApi["areAllSoundsMuted"];
+    static muteAllSounds: AudioApi["muteAllSounds"];
+    static unmuteAllSounds: AudioApi["unmuteAllSounds"];
     static muteSound: AudioApi["muteSound"];
     static unmuteSound: AudioApi["unmuteSound"];
     static store: StorageApi["store"];

@@ -175,7 +175,7 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSi
                 __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
             }
             if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
-                this.audioApi.toggleMuteUnmute();
+                this.audioApi.muteAllSounds();
             }
             if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
                 DebugMode.enabled = !DebugMode.enabled;
