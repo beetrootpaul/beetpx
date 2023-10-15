@@ -9,7 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_hasAlreadyResumedAudioContext, _AudioApi_globalGainNode, _AudioApi_isGloballyMuted, _AudioApi_isFadingOut, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_stopSounds, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
+var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_nextPlaybackId, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_isPaused, _AudioApi_globalGainNode, _AudioApi_isGloballyMuted, _AudioApi_isFadingOut, _AudioApi_sounds, _AudioApi_muteUnmuteTimeConstant, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState, _AudioApi_stopSounds, _AudioApi_playSoundSequenceEntry, _AudioApi_newSourceNode, _AudioApi_register, _AudioApi_unregister;
 import { Logger } from "../logger/Logger";
 import { BpxUtils, u_ } from "../Utils";
 // TODO: refactor this big mess of a class, extract playbacks for example
@@ -24,9 +24,7 @@ export class AudioApi {
         _AudioApi_instances.add(this);
         _AudioApi_assets.set(this, void 0);
         _AudioApi_audioContext.set(this, void 0);
-        // If we resumed AudioContext already, then we do not want to resume it again and again
-        //   when it was intentionally paused by a user, e.g. in a pause menu.
-        _AudioApi_hasAlreadyResumedAudioContext.set(this, false);
+        _AudioApi_isPaused.set(this, false);
         _AudioApi_globalGainNode.set(this, void 0);
         _AudioApi_isGloballyMuted.set(this, void 0);
         _AudioApi_isFadingOut.set(this, false);
@@ -43,12 +41,10 @@ export class AudioApi {
     // Since we cannot assure it for every game setup, let' expose a function which tries to
     // resume the AudioContext and call it on every user interaction detected by this framework.
     resumeAudioContextIfNeeded() {
-        if (!__classPrivateFieldGet(this, _AudioApi_hasAlreadyResumedAudioContext, "f") &&
-            __classPrivateFieldGet(this, _AudioApi_audioContext, "f").state === "suspended") {
+        if (!__classPrivateFieldGet(this, _AudioApi_isPaused, "f") && __classPrivateFieldGet(this, _AudioApi_audioContext, "f").state === "suspended") {
             __classPrivateFieldGet(this, _AudioApi_audioContext, "f")
                 .resume()
                 .then(() => {
-                __classPrivateFieldSet(this, _AudioApi_hasAlreadyResumedAudioContext, true, "f");
                 this.unmuteAllSounds();
             })
                 .catch((err) => {
@@ -84,11 +80,13 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([0, 1], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
     }
     pauseAllSounds() {
+        __classPrivateFieldSet(this, _AudioApi_isPaused, true, "f");
         __classPrivateFieldGet(this, _AudioApi_audioContext, "f").suspend().catch((err) => {
             Logger.errorBeetPx(err);
         });
     }
     resumeAllSounds() {
+        __classPrivateFieldSet(this, _AudioApi_isPaused, false, "f");
         __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
             Logger.errorBeetPx(err);
         });
@@ -184,7 +182,7 @@ export class AudioApi {
         }
     }
 }
-_a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_hasAlreadyResumedAudioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_isFadingOut = new WeakMap(), _AudioApi_sounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
+_a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_isPaused = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_isGloballyMuted = new WeakMap(), _AudioApi_isFadingOut = new WeakMap(), _AudioApi_sounds = new WeakMap(), _AudioApi_muteUnmuteTimeConstant = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
     return (window.localStorage.getItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey)) ===
         __classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteTrue));
 }, _AudioApi_storeGlobalMuteUnmuteState = function _AudioApi_storeGlobalMuteUnmuteState(muted) {
