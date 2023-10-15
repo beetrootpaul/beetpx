@@ -224,7 +224,11 @@ export class Framework {
           this.#fullScreen.toggle();
         }
         if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
-          this.audioApi.muteAllSounds();
+          if (this.audioApi.areAllSoundsMuted()) {
+            this.audioApi.unmuteAllSounds();
+          } else {
+            this.audioApi.muteAllSounds();
+          }
         }
         if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
           DebugMode.enabled = !DebugMode.enabled;
