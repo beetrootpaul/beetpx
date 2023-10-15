@@ -224,9 +224,9 @@ declare class BpxUtils {
     static measureText(text: string): BpxVector2d;
     static noop(): void;
     static offset8Directions(): BpxVector2d[];
-    static randomElementOf<V>(array: V[]): V | undefined;
     static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor, centerXy?: [boolean, boolean]): void;
-    static repeatN(n: number, callback: (i: number) => void): void;
+    static randomElementOf<V>(array: V[]): V | undefined;
+    static range(n: number): number[];
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
      */

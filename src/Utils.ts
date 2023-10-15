@@ -57,11 +57,6 @@ export class BpxUtils {
     ];
   }
 
-  static randomElementOf<V>(array: V[]): V | undefined {
-    if (array.length <= 0) return undefined;
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
   // TODO: consider moving this to either DrawApi or the game itself
   static printWithOutline(
     text: string,
@@ -76,10 +71,13 @@ export class BpxUtils {
     BeetPx.print(text, canvasXy1, textColor, centerXy);
   }
 
-  static repeatN(n: number, callback: (i: number) => void): void {
-    Array.from({ length: n }).forEach((_element, i) => {
-      callback(i);
-    });
+  static randomElementOf<V>(array: V[]): V | undefined {
+    if (array.length <= 0) return undefined;
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  static range(n: number): number[] {
+    return Array.from({ length: n }, (_element, index) => index);
   }
 
   /**

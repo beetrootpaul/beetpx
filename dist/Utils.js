@@ -41,11 +41,6 @@ export class BpxUtils {
             v_(-1, 0),
         ];
     }
-    static randomElementOf(array) {
-        if (array.length <= 0)
-            return undefined;
-        return array[Math.floor(Math.random() * array.length)];
-    }
     // TODO: consider moving this to either DrawApi or the game itself
     static printWithOutline(text, canvasXy1, textColor, outlineColor, centerXy = [false, false]) {
         BpxUtils.offset8Directions().forEach((offset) => {
@@ -53,10 +48,13 @@ export class BpxUtils {
         });
         BeetPx.print(text, canvasXy1, textColor, centerXy);
     }
-    static repeatN(n, callback) {
-        Array.from({ length: n }).forEach((_element, i) => {
-            callback(i);
-        });
+    static randomElementOf(array) {
+        if (array.length <= 0)
+            return undefined;
+        return array[Math.floor(Math.random() * array.length)];
+    }
+    static range(n) {
+        return Array.from({ length: n }, (_element, index) => index);
     }
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
