@@ -21,9 +21,8 @@ export class AudioApi {
 
   readonly #globalGainNode: GainNode;
 
-  readonly #muteUnmuteExponentialTimeConstant = 0.1;
-
   #isGloballyMuted: boolean;
+  #isFadingOut: boolean = false;
 
   readonly #sounds: Map<
     BpxAudioPlaybackId,
@@ -71,6 +70,23 @@ export class AudioApi {
     }
   }
 
+  fadeOutAllSounds(fadeOutMillis: number): void {
+    if (this.#isGloballyMuted || this.#isFadingOut) return;
+
+    this.#isFadingOut = true;
+
+    this.#globalGainNode.gain.setValueCurveAtTime(
+      [this.globalGainNode.gain.value, 0],
+      this.#audioContext.currentTime,
+      fadeOutMillis / 1000,
+    );
+
+    setTimeout(() => {
+      this.#isFadingOut = false;
+      this.#isGloballyMuted = true;
+    }, fadeOutMillis);
+  }
+
   areAllSoundsMuted(): boolean {
     return this.#isGloballyMuted;
   }
@@ -80,10 +96,10 @@ export class AudioApi {
 
     this.#storeGlobalMuteUnmuteState(true);
     this.#isGloballyMuted = true;
-    this.#globalGainNode.gain.setTargetAtTime(
-      0,
+    this.#globalGainNode.gain.setValueCurveAtTime(
+      [this.globalGainNode.gain.value, 0],
       this.#audioContext.currentTime,
-      this.#muteUnmuteExponentialTimeConstant,
+      0.1,
     );
   }
 
@@ -92,10 +108,10 @@ export class AudioApi {
 
     this.#storeGlobalMuteUnmuteState(false);
     this.#isGloballyMuted = false;
-    this.#globalGainNode.gain.setTargetAtTime(
-      1,
+    this.#globalGainNode.gain.setValueCurveAtTime(
+      [0, 1],
       this.#audioContext.currentTime,
-      this.#muteUnmuteExponentialTimeConstant,
+      0.1,
     );
   }
 

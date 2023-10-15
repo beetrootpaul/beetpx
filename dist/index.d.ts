@@ -269,6 +269,7 @@ declare class AudioApi {
     get globalGainNode(): GainNode;
     constructor(assets: Assets, audioContext: AudioContext);
     resumeAudioContextIfNeeded(): void;
+    fadeOutAllSounds(fadeOutMillis: number): void;
     areAllSoundsMuted(): boolean;
     muteAllSounds(): void;
     unmuteAllSounds(): void;
@@ -449,6 +450,7 @@ declare class BeetPx {
     static resumeAllSounds: AudioApi["resumeAllSounds"];
     static stopAllSounds: AudioApi["stopAllSounds"];
     static stopSound: AudioApi["stopSound"];
+    static fadeOutAllSounds: AudioApi["fadeOutAllSounds"];
     static areAllSoundsMuted: AudioApi["areAllSoundsMuted"];
     static muteAllSounds: AudioApi["muteAllSounds"];
     static unmuteAllSounds: AudioApi["unmuteAllSounds"];
