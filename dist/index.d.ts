@@ -269,7 +269,6 @@ declare class AudioApi {
     get globalGainNode(): GainNode;
     constructor(assets: Assets, audioContext: AudioContext);
     resumeAudioContextIfNeeded(): void;
-    fadeOutAllSounds(fadeOutMillis: number): void;
     areAllSoundsMuted(): boolean;
     muteAllSounds(): void;
     unmuteAllSounds(): void;
@@ -277,8 +276,12 @@ declare class AudioApi {
     unmuteSound(playbackId: BpxAudioPlaybackId): void;
     pauseAllSounds(): void;
     resumeAllSounds(): void;
-    stopAllSounds(): void;
-    stopSound(playbackId: BpxAudioPlaybackId): void;
+    stopAllSounds(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    stopSound(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
     playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
     playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId;
@@ -450,7 +453,6 @@ declare class BeetPx {
     static resumeAllSounds: AudioApi["resumeAllSounds"];
     static stopAllSounds: AudioApi["stopAllSounds"];
     static stopSound: AudioApi["stopSound"];
-    static fadeOutAllSounds: AudioApi["fadeOutAllSounds"];
     static areAllSoundsMuted: AudioApi["areAllSoundsMuted"];
     static muteAllSounds: AudioApi["muteAllSounds"];
     static unmuteAllSounds: AudioApi["unmuteAllSounds"];

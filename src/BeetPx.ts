@@ -233,10 +233,6 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.stopSound(...args);
   };
 
-  static fadeOutAllSounds: AudioApi["fadeOutAllSounds"] = (...args) => {
-    return this.#tryGetFramework().audioApi.fadeOutAllSounds(...args);
-  };
-
   static areAllSoundsMuted: AudioApi["areAllSoundsMuted"] = (...args) => {
     return this.#tryGetFramework().audioApi.areAllSoundsMuted(...args);
   };

@@ -20,14 +20,11 @@ export class AudioApi {
   readonly #globalGainNode: GainNode;
 
   #isGloballyMuted: boolean;
-  #isFadingOut: boolean = false;
 
   readonly #sounds: Map<
     BpxAudioPlaybackId,
     { sourceNodes: AudioBufferSourceNode[]; gainNodes: GainNode[] }
   > = new Map();
-
-  readonly #muteUnmuteTimeConstant = 0.001;
 
   get audioContext(): AudioContext {
     return this.#audioContext;
@@ -59,23 +56,6 @@ export class AudioApi {
     }
   }
 
-  fadeOutAllSounds(fadeOutMillis: number): void {
-    if (this.#isGloballyMuted || this.#isFadingOut) return;
-
-    this.#isFadingOut = true;
-
-    this.#globalGainNode.gain.setValueCurveAtTime(
-      [this.globalGainNode.gain.value, 0],
-      this.#audioContext.currentTime,
-      fadeOutMillis / 1000,
-    );
-
-    setTimeout(() => {
-      this.#isFadingOut = false;
-      this.#isGloballyMuted = true;
-    }, fadeOutMillis);
-  }
-
   areAllSoundsMuted(): boolean {
     return this.#isGloballyMuted;
   }
@@ -105,11 +85,19 @@ export class AudioApi {
 
     this.#storeGlobalMuteUnmuteState(false);
     this.#isGloballyMuted = false;
-    this.#globalGainNode.gain.setValueCurveAtTime(
-      [0, 1],
-      this.#audioContext.currentTime,
-      0.1,
-    );
+
+    if (this.#isPaused) {
+      this.#globalGainNode.gain.setValueAtTime(
+        1,
+        this.#audioContext.currentTime,
+      );
+    } else {
+      this.#globalGainNode.gain.setValueCurveAtTime(
+        [0, 1],
+        this.#audioContext.currentTime,
+        0.1,
+      );
+    }
   }
 
   // TODO: better API to make clear that only looped sounds can be muted individually?
@@ -137,13 +125,17 @@ export class AudioApi {
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
       for (const gainNode of nodes?.gainNodes) {
-        // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
-        //   an instant volume change – it was resulting with some audio artifacts.
-        gainNode.gain.setValueCurveAtTime(
-          [0, 1],
-          this.#audioContext.currentTime,
-          0.1,
-        );
+        if (this.#isPaused) {
+          gainNode.gain.setValueAtTime(1, this.#audioContext.currentTime);
+        } else {
+          // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
+          //   an instant volume change – it was resulting with some audio artifacts.
+          gainNode.gain.setValueCurveAtTime(
+            [0, 1],
+            this.#audioContext.currentTime,
+            0.1,
+          );
+        }
       }
     }
   }
@@ -180,12 +172,49 @@ export class AudioApi {
     });
   }
 
-  stopAllSounds(): void {
-    this.#stopSounds((id) => true);
+  stopAllSounds(opts: { fadeOutMillis?: number } = {}): void {
+    if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
+      this.#fadeOutSounds(opts.fadeOutMillis, (id) => true);
+      setTimeout(() => {
+        this.#stopSounds((id) => true);
+      }, opts.fadeOutMillis);
+    } else {
+      this.#stopSounds((id) => true);
+    }
   }
 
-  stopSound(playbackId: BpxAudioPlaybackId): void {
-    this.#stopSounds((id) => id === playbackId);
+  stopSound(
+    playbackId: BpxAudioPlaybackId,
+    opts: { fadeOutMillis?: number } = {},
+  ): void {
+    if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
+      this.#fadeOutSounds(opts.fadeOutMillis, (id) => id === playbackId);
+      setTimeout(() => {
+        this.#stopSounds((id) => id === playbackId);
+      }, opts.fadeOutMillis);
+    } else {
+      this.#stopSounds((id) => id === playbackId);
+    }
+  }
+
+  #fadeOutSounds(
+    fadeOutMillis: number,
+    predicate: (playbackId: BpxAudioPlaybackId) => boolean,
+  ): void {
+    for (const [
+      playbackId,
+      { sourceNodes, gainNodes },
+    ] of this.#sounds.entries()) {
+      if (predicate(playbackId)) {
+        for (const gainNode of gainNodes) {
+          gainNode.gain.setValueCurveAtTime(
+            [gainNode.gain.value, 0],
+            this.#audioContext.currentTime,
+            fadeOutMillis / 1000,
+          );
+        }
+      }
+    }
   }
 
   #stopSounds(predicate: (playbackId: BpxAudioPlaybackId) => boolean): void {
