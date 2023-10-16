@@ -282,7 +282,7 @@ declare class AudioApi {
     stopSound(playbackId: BpxAudioPlaybackId, opts?: {
         fadeOutMillis?: number;
     }): void;
-    playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
+    playSoundOnce(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId;
 }

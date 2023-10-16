@@ -206,7 +206,9 @@ export class AudioApi {
   }
 
   stopAllSounds(opts: { fadeOutMillis?: number } = {}): void {
-    Logger.debugBeetPx("AudioApi.stopAllSounds");
+    Logger.debugBeetPx(
+      `AudioApi.stopAllSounds (fadeOutMillis: ${opts.fadeOutMillis})`,
+    );
 
     if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
       const fadeOutSounds = this.#fadeOutSounds(
@@ -286,18 +288,26 @@ export class AudioApi {
     }
   }
 
-  playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId {
+  playSoundOnce(
+    soundUrl: SoundUrl,
+    muteOnStart: boolean = false,
+  ): BpxAudioPlaybackId {
     Logger.debugBeetPx("AudioApi.playSoundOnce");
 
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const soundAsset = this.#assets.getSoundAsset(soundUrl);
 
-    const sourceNode = this.#newSourceNode(soundAsset);
-    this.#register(playbackId, sourceNode);
+    const gainNode = this.#audioContext.createGain();
+    gainNode.gain.value = muteOnStart ? 0 : 1;
+    gainNode.connect(this.#globalGainNode);
 
-    sourceNode.connect(this.#globalGainNode);
+    const sourceNode = this.#newSourceNode(soundAsset);
+    this.#register(playbackId, sourceNode, gainNode);
+
+    sourceNode.connect(gainNode);
     sourceNode.start();
+
     sourceNode.addEventListener("ended", () => {
       this.#unregister(playbackId);
       sourceNode.disconnect();
@@ -324,12 +334,14 @@ export class AudioApi {
     this.#register(playbackId, sourceNode, gainNode);
 
     sourceNode.loop = true;
+
     sourceNode.connect(gainNode);
     sourceNode.start();
 
     return playbackId;
   }
 
+  // TODO: move out to a class which can make use of some shared state instead of passing everything through function params
   playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId {
     Logger.debugBeetPx("AudioApi.playSoundSequence");
 
@@ -337,6 +349,9 @@ export class AudioApi {
 
     const intro = soundSequence.sequence ?? [];
     const loop = soundSequence.sequenceLooped ?? [];
+
+    const sequenceGainNode = this.#audioContext.createGain();
+    sequenceGainNode.connect(this.#globalGainNode);
 
     const playbackFns: Array<() => void> = Array.from({
       length: intro.length + loop.length,
@@ -347,8 +362,16 @@ export class AudioApi {
         if (!this.#sounds.get(playbackId)) {
           return;
         }
-        this.#playSoundSequenceEntry(playbackId, intro[i]!, () =>
-          playbackFns[i + 1]!(),
+        this.#playSoundSequenceEntry(
+          playbackId,
+          intro[i]!,
+          sequenceGainNode,
+          (sourceNodes) => {
+            playbackFns[i + 1]!();
+            sourceNodes.forEach((sn) => {
+              sn.disconnect();
+            });
+          },
         );
       };
     }
@@ -362,9 +385,20 @@ export class AudioApi {
         this.#playSoundSequenceEntry(
           playbackId,
           loop[i]!,
+          sequenceGainNode,
           i < loop.length - 1
-            ? () => playbackFns[firstLoopedIndex + i + 1]!()
-            : () => playbackFns[firstLoopedIndex]!(),
+            ? (sourceNodes) => {
+                playbackFns[firstLoopedIndex + i + 1]!();
+                sourceNodes.forEach((sn) => {
+                  sn.disconnect();
+                });
+              }
+            : (sourceNodes) => {
+                playbackFns[firstLoopedIndex]!();
+                sourceNodes.forEach((sn) => {
+                  sn.disconnect();
+                });
+              },
         );
       };
     }
@@ -372,7 +406,10 @@ export class AudioApi {
     // one more fn just to make loops above simpler, since there is always something on index `i+1`
     playbackFns.push(BpxUtils.noop);
 
-    this.#sounds.set(playbackId, { sourceNodes: [], gainNodes: [] });
+    this.#sounds.set(playbackId, {
+      sourceNodes: [],
+      gainNodes: [sequenceGainNode],
+    });
     playbackFns[0]?.();
 
     return playbackId;
@@ -381,7 +418,8 @@ export class AudioApi {
   #playSoundSequenceEntry(
     playbackId: BpxAudioPlaybackId,
     entry: SoundSequenceEntry,
-    onEntryEnded?: () => void,
+    sequenceGainNode: GainNode,
+    onEntryEnded?: (sourceNodes: AudioBufferSourceNode[]) => void,
   ): void {
     const [mainSound, ...additionalSounds] = entry;
 
@@ -396,15 +434,7 @@ export class AudioApi {
       this.#assets.getSoundAsset(mainSound.url),
     );
     this.#register(playbackId, mainSourceNode);
-
-    mainSourceNode.connect(this.#globalGainNode);
-    if (onEntryEnded) {
-      // TODO: this approach doesn't seem as the precise one… so far the audio output sounds OK and on time
-      //       When needed, consider reworking it based on:
-      //       - https://web.dev/audio-scheduling/
-      //       - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques
-      mainSourceNode.addEventListener("ended", onEntryEnded);
-    }
+    mainSourceNode.connect(sequenceGainNode);
     sourceNodes.push(mainSourceNode);
 
     additionalSounds.forEach((sound) => {
@@ -413,13 +443,21 @@ export class AudioApi {
       );
       this.#register(playbackId, sourceNode);
 
-      sourceNode.connect(this.#globalGainNode);
+      sourceNode.connect(sequenceGainNode);
       sourceNodes.push(sourceNode);
     });
 
     sourceNodes.forEach((sn) => {
       sn.start(0, 0, durationMs / 1000);
     });
+
+    if (onEntryEnded) {
+      // TODO: this approach sometimes result with audio gaps between individual node playbacks :-(
+      //       When needed, consider reworking it based on:
+      //       - https://web.dev/audio-scheduling/
+      //       - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques
+      mainSourceNode.addEventListener("ended", () => onEntryEnded(sourceNodes));
+    }
   }
 
   #newSourceNode(soundAsset: SoundAsset): AudioBufferSourceNode {

@@ -148,7 +148,7 @@ export class AudioApi {
         });
     }
     stopAllSounds(opts = {}) {
-        Logger.debugBeetPx("AudioApi.stopAllSounds");
+        Logger.debugBeetPx(`AudioApi.stopAllSounds (fadeOutMillis: ${opts.fadeOutMillis})`);
         if (opts.fadeOutMillis != null && !__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f")) {
             const fadeOutSounds = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_fadeOutSounds).call(this, opts.fadeOutMillis, (id) => true);
             setTimeout(() => {
@@ -171,14 +171,17 @@ export class AudioApi {
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => id === playbackId);
         }
     }
-    playSoundOnce(soundUrl) {
+    playSoundOnce(soundUrl, muteOnStart = false) {
         var _b, _c, _d;
         Logger.debugBeetPx("AudioApi.playSoundOnce");
         const playbackId = (__classPrivateFieldSet(_b = AudioApi, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _AudioApi_nextPlaybackId), _c = _d++, _d), "f", _AudioApi_nextPlaybackId), _c);
         const soundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(soundUrl);
+        const gainNode = __classPrivateFieldGet(this, _AudioApi_audioContext, "f").createGain();
+        gainNode.gain.value = muteOnStart ? 0 : 1;
+        gainNode.connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
         const sourceNode = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_newSourceNode).call(this, soundAsset);
-        __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_register).call(this, playbackId, sourceNode);
-        sourceNode.connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
+        __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_register).call(this, playbackId, sourceNode, gainNode);
+        sourceNode.connect(gainNode);
         sourceNode.start();
         sourceNode.addEventListener("ended", () => {
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_unregister).call(this, playbackId);
@@ -201,6 +204,7 @@ export class AudioApi {
         sourceNode.start();
         return playbackId;
     }
+    // TODO: move out to a class which can make use of some shared state instead of passing everything through function params
     playSoundSequence(soundSequence) {
         var _b, _c, _d;
         var _e, _f, _g;
@@ -208,6 +212,8 @@ export class AudioApi {
         const playbackId = (__classPrivateFieldSet(_e = AudioApi, _a, (_g = __classPrivateFieldGet(_e, _a, "f", _AudioApi_nextPlaybackId), _f = _g++, _g), "f", _AudioApi_nextPlaybackId), _f);
         const intro = (_b = soundSequence.sequence) !== null && _b !== void 0 ? _b : [];
         const loop = (_c = soundSequence.sequenceLooped) !== null && _c !== void 0 ? _c : [];
+        const sequenceGainNode = __classPrivateFieldGet(this, _AudioApi_audioContext, "f").createGain();
+        sequenceGainNode.connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
         const playbackFns = Array.from({
             length: intro.length + loop.length,
         });
@@ -216,7 +222,12 @@ export class AudioApi {
                 if (!__classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId)) {
                     return;
                 }
-                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_playSoundSequenceEntry).call(this, playbackId, intro[i], () => playbackFns[i + 1]());
+                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_playSoundSequenceEntry).call(this, playbackId, intro[i], sequenceGainNode, (sourceNodes) => {
+                    playbackFns[i + 1]();
+                    sourceNodes.forEach((sn) => {
+                        sn.disconnect();
+                    });
+                });
             };
         }
         const firstLoopedIndex = intro.length;
@@ -225,14 +236,27 @@ export class AudioApi {
                 if (!__classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId)) {
                     return;
                 }
-                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_playSoundSequenceEntry).call(this, playbackId, loop[i], i < loop.length - 1
-                    ? () => playbackFns[firstLoopedIndex + i + 1]()
-                    : () => playbackFns[firstLoopedIndex]());
+                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_playSoundSequenceEntry).call(this, playbackId, loop[i], sequenceGainNode, i < loop.length - 1
+                    ? (sourceNodes) => {
+                        playbackFns[firstLoopedIndex + i + 1]();
+                        sourceNodes.forEach((sn) => {
+                            sn.disconnect();
+                        });
+                    }
+                    : (sourceNodes) => {
+                        playbackFns[firstLoopedIndex]();
+                        sourceNodes.forEach((sn) => {
+                            sn.disconnect();
+                        });
+                    });
             };
         }
         // one more fn just to make loops above simpler, since there is always something on index `i+1`
         playbackFns.push(BpxUtils.noop);
-        __classPrivateFieldGet(this, _AudioApi_sounds, "f").set(playbackId, { sourceNodes: [], gainNodes: [] });
+        __classPrivateFieldGet(this, _AudioApi_sounds, "f").set(playbackId, {
+            sourceNodes: [],
+            gainNodes: [sequenceGainNode],
+        });
         (_d = playbackFns[0]) === null || _d === void 0 ? void 0 : _d.call(playbackFns);
         return playbackId;
     }
@@ -273,7 +297,7 @@ _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new We
             }
         }
     }
-}, _AudioApi_playSoundSequenceEntry = function _AudioApi_playSoundSequenceEntry(playbackId, entry, onEntryEnded) {
+}, _AudioApi_playSoundSequenceEntry = function _AudioApi_playSoundSequenceEntry(playbackId, entry, sequenceGainNode, onEntryEnded) {
     var _b;
     const [mainSound, ...additionalSounds] = entry;
     const mainSoundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(mainSound.url);
@@ -281,24 +305,24 @@ _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new We
     const sourceNodes = [];
     const mainSourceNode = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_newSourceNode).call(this, __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(mainSound.url));
     __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_register).call(this, playbackId, mainSourceNode);
-    mainSourceNode.connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
-    if (onEntryEnded) {
-        // TODO: this approach doesn't seem as the precise one… so far the audio output sounds OK and on time
-        //       When needed, consider reworking it based on:
-        //       - https://web.dev/audio-scheduling/
-        //       - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques
-        mainSourceNode.addEventListener("ended", onEntryEnded);
-    }
+    mainSourceNode.connect(sequenceGainNode);
     sourceNodes.push(mainSourceNode);
     additionalSounds.forEach((sound) => {
         const sourceNode = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_newSourceNode).call(this, __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(sound.url));
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_register).call(this, playbackId, sourceNode);
-        sourceNode.connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
+        sourceNode.connect(sequenceGainNode);
         sourceNodes.push(sourceNode);
     });
     sourceNodes.forEach((sn) => {
         sn.start(0, 0, durationMs / 1000);
     });
+    if (onEntryEnded) {
+        // TODO: this approach sometimes result with audio gaps between individual node playbacks :-(
+        //       When needed, consider reworking it based on:
+        //       - https://web.dev/audio-scheduling/
+        //       - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques
+        mainSourceNode.addEventListener("ended", () => onEntryEnded(sourceNodes));
+    }
 }, _AudioApi_newSourceNode = function _AudioApi_newSourceNode(soundAsset) {
     const sourceNode = __classPrivateFieldGet(this, _AudioApi_audioContext, "f").createBufferSource();
     sourceNode.buffer = soundAsset.audioBuffer;
