@@ -209,9 +209,12 @@ export class AudioApi {
     Logger.debugBeetPx("AudioApi.stopAllSounds");
 
     if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
-      this.#fadeOutSounds(opts.fadeOutMillis, (id) => true);
+      const fadeOutSounds = this.#fadeOutSounds(
+        opts.fadeOutMillis,
+        (id) => true,
+      );
       setTimeout(() => {
-        this.#stopSounds((id) => true);
+        this.#stopSounds((id) => fadeOutSounds.includes(id));
       }, opts.fadeOutMillis);
     } else {
       this.#stopSounds((id) => true);
@@ -225,9 +228,12 @@ export class AudioApi {
     Logger.debugBeetPx("AudioApi.stopSound");
 
     if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
-      this.#fadeOutSounds(opts.fadeOutMillis, (id) => id === playbackId);
+      const fadeOutSounds = this.#fadeOutSounds(
+        opts.fadeOutMillis,
+        (id) => id === playbackId,
+      );
       setTimeout(() => {
-        this.#stopSounds((id) => id === playbackId);
+        this.#stopSounds((id) => fadeOutSounds.includes(id));
       }, opts.fadeOutMillis);
     } else {
       this.#stopSounds((id) => id === playbackId);
@@ -237,12 +243,16 @@ export class AudioApi {
   #fadeOutSounds(
     fadeOutMillis: number,
     predicate: (playbackId: BpxAudioPlaybackId) => boolean,
-  ): void {
+  ): BpxAudioPlaybackId[] {
+    const idsOfFadedOutSounds: BpxAudioPlaybackId[] = [];
+
     for (const [
       playbackId,
       { sourceNodes, gainNodes },
     ] of this.#sounds.entries()) {
       if (predicate(playbackId)) {
+        idsOfFadedOutSounds.push(playbackId);
+
         for (const gainNode of gainNodes) {
           gainNode.gain.setValueCurveAtTime(
             [gainNode.gain.value, 0],
@@ -252,6 +262,8 @@ export class AudioApi {
         }
       }
     }
+
+    return idsOfFadedOutSounds;
   }
 
   #stopSounds(predicate: (playbackId: BpxAudioPlaybackId) => boolean): void {

@@ -150,9 +150,9 @@ export class AudioApi {
     stopAllSounds(opts = {}) {
         Logger.debugBeetPx("AudioApi.stopAllSounds");
         if (opts.fadeOutMillis != null && !__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f")) {
-            __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_fadeOutSounds).call(this, opts.fadeOutMillis, (id) => true);
+            const fadeOutSounds = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_fadeOutSounds).call(this, opts.fadeOutMillis, (id) => true);
             setTimeout(() => {
-                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => true);
+                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => fadeOutSounds.includes(id));
             }, opts.fadeOutMillis);
         }
         else {
@@ -162,9 +162,9 @@ export class AudioApi {
     stopSound(playbackId, opts = {}) {
         Logger.debugBeetPx("AudioApi.stopSound");
         if (opts.fadeOutMillis != null && !__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f")) {
-            __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_fadeOutSounds).call(this, opts.fadeOutMillis, (id) => id === playbackId);
+            const fadeOutSounds = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_fadeOutSounds).call(this, opts.fadeOutMillis, (id) => id === playbackId);
             setTimeout(() => {
-                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => id === playbackId);
+                __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopSounds).call(this, (id) => fadeOutSounds.includes(id));
             }, opts.fadeOutMillis);
         }
         else {
@@ -248,13 +248,16 @@ _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new We
         window.localStorage.removeItem(__classPrivateFieldGet(AudioApi, _a, "f", _AudioApi_storageMuteUnmuteKey));
     }
 }, _AudioApi_fadeOutSounds = function _AudioApi_fadeOutSounds(fadeOutMillis, predicate) {
+    const idsOfFadedOutSounds = [];
     for (const [playbackId, { sourceNodes, gainNodes },] of __classPrivateFieldGet(this, _AudioApi_sounds, "f").entries()) {
         if (predicate(playbackId)) {
+            idsOfFadedOutSounds.push(playbackId);
             for (const gainNode of gainNodes) {
                 gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, fadeOutMillis / 1000);
             }
         }
     }
+    return idsOfFadedOutSounds;
 }, _AudioApi_stopSounds = function _AudioApi_stopSounds(predicate) {
     for (const [playbackId, { sourceNodes, gainNodes },] of __classPrivateFieldGet(this, _AudioApi_sounds, "f").entries()) {
         if (predicate(playbackId)) {
