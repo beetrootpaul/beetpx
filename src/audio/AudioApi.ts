@@ -48,19 +48,33 @@ export class AudioApi {
   // In some browsers audio should start in result of user interaction (e.g. button click).
   // Since we cannot assure it for every game setup, let' expose a function which tries to
   // resume the AudioContext and call it on every user interaction detected by this framework.
-  resumeAudioContextIfNeeded(): void {
-    Logger.debugBeetPx("AudioApi.resumeAudioContextIfNeeded");
+  async tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean> {
+    Logger.debugBeetPx(
+      "AudioApi.tryToResumeAudioContextSuspendedByBrowserForSecurityReasons",
+    );
 
-    if (!this.#isPaused && this.#audioContext.state === "suspended") {
-      this.#audioContext
-        .resume()
-        .then(() => {
-          Logger.infoBeetPx("Audio Context got resumed 🔉");
-        })
-        .catch((err) => {
-          Logger.errorBeetPx(err);
-        });
+    if (this.#audioContext.state === "running") {
+      Logger.debugBeetPx("Audio Context is already running");
+      return Promise.resolve(true);
     }
+
+    if (this.#isPaused) {
+      Logger.debugBeetPx(
+        "Cannot detect if Audio Context requires resuming, because it is intentionally paused (suspended) right now",
+      );
+      return Promise.resolve(false);
+    }
+
+    return this.#audioContext
+      .resume()
+      .then(() => {
+        Logger.debugBeetPx("Audio Context got resumed");
+        return true;
+      })
+      .catch((err) => {
+        Logger.errorBeetPx(err);
+        return false;
+      });
   }
 
   areAllSoundsMuted(): boolean {

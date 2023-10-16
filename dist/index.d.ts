@@ -268,7 +268,7 @@ declare class AudioApi {
     get audioContext(): AudioContext;
     get globalGainNode(): GainNode;
     constructor(assets: Assets, audioContext: AudioContext);
-    resumeAudioContextIfNeeded(): void;
+    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
     areAllSoundsMuted(): boolean;
     muteAllSounds(): void;
     unmuteAllSounds(): void;

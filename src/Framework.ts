@@ -63,6 +63,9 @@ export class Framework {
   #frameNumber: number = 0;
   #renderFps: number = 1;
 
+  // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
+  #alreadyResumedAudioContext: boolean = false;
+
   get frameNumber(): number {
     return this.#frameNumber;
   }
@@ -254,8 +257,14 @@ export class Framework {
         const hasAnyInteractionHappened = this.gameInput.update({
           skipGameButtons: !shouldUpdate,
         });
-        if (hasAnyInteractionHappened) {
-          this.audioApi.resumeAudioContextIfNeeded();
+        if (hasAnyInteractionHappened && !this.#alreadyResumedAudioContext) {
+          this.audioApi
+            .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+            .then((resumed) => {
+              if (resumed) {
+                this.#alreadyResumedAudioContext = true;
+              }
+            });
         }
 
         if (shouldUpdate) {

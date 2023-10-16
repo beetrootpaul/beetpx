@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -38,18 +47,28 @@ export class AudioApi {
     // In some browsers audio should start in result of user interaction (e.g. button click).
     // Since we cannot assure it for every game setup, let' expose a function which tries to
     // resume the AudioContext and call it on every user interaction detected by this framework.
-    resumeAudioContextIfNeeded() {
-        Logger.debugBeetPx("AudioApi.resumeAudioContextIfNeeded");
-        if (!__classPrivateFieldGet(this, _AudioApi_isPaused, "f") && __classPrivateFieldGet(this, _AudioApi_audioContext, "f").state === "suspended") {
-            __classPrivateFieldGet(this, _AudioApi_audioContext, "f")
+    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons() {
+        return __awaiter(this, void 0, void 0, function* () {
+            Logger.debugBeetPx("AudioApi.tryToResumeAudioContextSuspendedByBrowserForSecurityReasons");
+            if (__classPrivateFieldGet(this, _AudioApi_audioContext, "f").state === "running") {
+                Logger.debugBeetPx("Audio Context is already running");
+                return Promise.resolve(true);
+            }
+            if (__classPrivateFieldGet(this, _AudioApi_isPaused, "f")) {
+                Logger.debugBeetPx("Cannot detect if Audio Context requires resuming, because it is intentionally paused (suspended) right now");
+                return Promise.resolve(false);
+            }
+            return __classPrivateFieldGet(this, _AudioApi_audioContext, "f")
                 .resume()
                 .then(() => {
-                Logger.infoBeetPx("Audio Context got resumed 🔉");
+                Logger.debugBeetPx("Audio Context got resumed");
+                return true;
             })
                 .catch((err) => {
                 Logger.errorBeetPx(err);
+                return false;
             });
-        }
+        });
     }
     areAllSoundsMuted() {
         return __classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f");
