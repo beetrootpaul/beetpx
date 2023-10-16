@@ -39,8 +39,14 @@ export class AudioApi {
     // Since we cannot assure it for every game setup, let' expose a function which tries to
     // resume the AudioContext and call it on every user interaction detected by this framework.
     resumeAudioContextIfNeeded() {
+        Logger.debugBeetPx("AudioApi.resumeAudioContextIfNeeded");
         if (!__classPrivateFieldGet(this, _AudioApi_isPaused, "f") && __classPrivateFieldGet(this, _AudioApi_audioContext, "f").state === "suspended") {
-            __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
+            __classPrivateFieldGet(this, _AudioApi_audioContext, "f")
+                .resume()
+                .then(() => {
+                Logger.infoBeetPx("Audio Context got resumed 🔉");
+            })
+                .catch((err) => {
                 Logger.errorBeetPx(err);
             });
         }
@@ -49,6 +55,7 @@ export class AudioApi {
         return __classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f");
     }
     muteAllSounds() {
+        Logger.debugBeetPx("AudioApi.muteAllSounds");
         if (__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f"))
             return;
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, true);
@@ -61,6 +68,7 @@ export class AudioApi {
         }
     }
     unmuteAllSounds() {
+        Logger.debugBeetPx("AudioApi.unmuteAllSounds");
         if (!__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f"))
             return;
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, false);
@@ -74,6 +82,7 @@ export class AudioApi {
     }
     // TODO: better API to make clear that only looped sounds can be muted individually?
     muteSound(playbackId) {
+        Logger.debugBeetPx("AudioApi.muteSound");
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
         if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
             for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
@@ -90,6 +99,7 @@ export class AudioApi {
     }
     // TODO: better API to make clear that only looped sounds can be muted individually?
     unmuteSound(playbackId) {
+        Logger.debugBeetPx("AudioApi.unmuteSound");
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
         if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
             for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
@@ -105,18 +115,21 @@ export class AudioApi {
         }
     }
     pauseAllSounds() {
+        Logger.debugBeetPx("AudioApi.pauseAllSounds");
         __classPrivateFieldSet(this, _AudioApi_isPaused, true, "f");
         __classPrivateFieldGet(this, _AudioApi_audioContext, "f").suspend().catch((err) => {
             Logger.errorBeetPx(err);
         });
     }
     resumeAllSounds() {
+        Logger.debugBeetPx("AudioApi.resumeAllSounds");
         __classPrivateFieldSet(this, _AudioApi_isPaused, false, "f");
         __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
             Logger.errorBeetPx(err);
         });
     }
     stopAllSounds(opts = {}) {
+        Logger.debugBeetPx("AudioApi.stopAllSounds");
         if (opts.fadeOutMillis != null && !__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f")) {
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_fadeOutSounds).call(this, opts.fadeOutMillis, (id) => true);
             setTimeout(() => {
@@ -128,6 +141,7 @@ export class AudioApi {
         }
     }
     stopSound(playbackId, opts = {}) {
+        Logger.debugBeetPx("AudioApi.stopSound");
         if (opts.fadeOutMillis != null && !__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f")) {
             __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_fadeOutSounds).call(this, opts.fadeOutMillis, (id) => id === playbackId);
             setTimeout(() => {
@@ -140,6 +154,7 @@ export class AudioApi {
     }
     playSoundOnce(soundUrl) {
         var _b, _c, _d;
+        Logger.debugBeetPx("AudioApi.playSoundOnce");
         const playbackId = (__classPrivateFieldSet(_b = AudioApi, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _AudioApi_nextPlaybackId), _c = _d++, _d), "f", _AudioApi_nextPlaybackId), _c);
         const soundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(soundUrl);
         const sourceNode = __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_newSourceNode).call(this, soundAsset);
@@ -154,6 +169,7 @@ export class AudioApi {
     }
     playSoundLooped(soundUrl, muteOnStart = false) {
         var _b, _c, _d;
+        Logger.debugBeetPx("AudioApi.playSoundLooped");
         const playbackId = (__classPrivateFieldSet(_b = AudioApi, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _AudioApi_nextPlaybackId), _c = _d++, _d), "f", _AudioApi_nextPlaybackId), _c);
         const soundAsset = __classPrivateFieldGet(this, _AudioApi_assets, "f").getSoundAsset(soundUrl);
         const gainNode = __classPrivateFieldGet(this, _AudioApi_audioContext, "f").createGain();
@@ -169,6 +185,7 @@ export class AudioApi {
     playSoundSequence(soundSequence) {
         var _b, _c, _d;
         var _e, _f, _g;
+        Logger.debugBeetPx("AudioApi.playSoundSequence");
         const playbackId = (__classPrivateFieldSet(_e = AudioApi, _a, (_g = __classPrivateFieldGet(_e, _a, "f", _AudioApi_nextPlaybackId), _f = _g++, _g), "f", _AudioApi_nextPlaybackId), _f);
         const intro = (_b = soundSequence.sequence) !== null && _b !== void 0 ? _b : [];
         const loop = (_c = soundSequence.sequenceLooped) !== null && _c !== void 0 ? _c : [];

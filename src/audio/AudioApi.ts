@@ -49,10 +49,17 @@ export class AudioApi {
   // Since we cannot assure it for every game setup, let' expose a function which tries to
   // resume the AudioContext and call it on every user interaction detected by this framework.
   resumeAudioContextIfNeeded(): void {
+    Logger.debugBeetPx("AudioApi.resumeAudioContextIfNeeded");
+
     if (!this.#isPaused && this.#audioContext.state === "suspended") {
-      this.#audioContext.resume().catch((err) => {
-        Logger.errorBeetPx(err);
-      });
+      this.#audioContext
+        .resume()
+        .then(() => {
+          Logger.infoBeetPx("Audio Context got resumed 🔉");
+        })
+        .catch((err) => {
+          Logger.errorBeetPx(err);
+        });
     }
   }
 
@@ -61,6 +68,8 @@ export class AudioApi {
   }
 
   muteAllSounds(): void {
+    Logger.debugBeetPx("AudioApi.muteAllSounds");
+
     if (this.#isGloballyMuted) return;
 
     this.#storeGlobalMuteUnmuteState(true);
@@ -81,6 +90,8 @@ export class AudioApi {
   }
 
   unmuteAllSounds(): void {
+    Logger.debugBeetPx("AudioApi.unmuteAllSounds");
+
     if (!this.#isGloballyMuted) return;
 
     this.#storeGlobalMuteUnmuteState(false);
@@ -102,6 +113,8 @@ export class AudioApi {
 
   // TODO: better API to make clear that only looped sounds can be muted individually?
   muteSound(playbackId: BpxAudioPlaybackId): void {
+    Logger.debugBeetPx("AudioApi.muteSound");
+
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
       for (const gainNode of nodes?.gainNodes) {
@@ -122,6 +135,8 @@ export class AudioApi {
 
   // TODO: better API to make clear that only looped sounds can be muted individually?
   unmuteSound(playbackId: BpxAudioPlaybackId): void {
+    Logger.debugBeetPx("AudioApi.unmuteSound");
+
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
       for (const gainNode of nodes?.gainNodes) {
@@ -159,6 +174,8 @@ export class AudioApi {
   }
 
   pauseAllSounds(): void {
+    Logger.debugBeetPx("AudioApi.pauseAllSounds");
+
     this.#isPaused = true;
     this.#audioContext.suspend().catch((err) => {
       Logger.errorBeetPx(err);
@@ -166,6 +183,8 @@ export class AudioApi {
   }
 
   resumeAllSounds(): void {
+    Logger.debugBeetPx("AudioApi.resumeAllSounds");
+
     this.#isPaused = false;
     this.#audioContext.resume().catch((err) => {
       Logger.errorBeetPx(err);
@@ -173,6 +192,8 @@ export class AudioApi {
   }
 
   stopAllSounds(opts: { fadeOutMillis?: number } = {}): void {
+    Logger.debugBeetPx("AudioApi.stopAllSounds");
+
     if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
       this.#fadeOutSounds(opts.fadeOutMillis, (id) => true);
       setTimeout(() => {
@@ -187,6 +208,8 @@ export class AudioApi {
     playbackId: BpxAudioPlaybackId,
     opts: { fadeOutMillis?: number } = {},
   ): void {
+    Logger.debugBeetPx("AudioApi.stopSound");
+
     if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
       this.#fadeOutSounds(opts.fadeOutMillis, (id) => id === playbackId);
       setTimeout(() => {
@@ -238,6 +261,8 @@ export class AudioApi {
   }
 
   playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId {
+    Logger.debugBeetPx("AudioApi.playSoundOnce");
+
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const soundAsset = this.#assets.getSoundAsset(soundUrl);
@@ -259,6 +284,8 @@ export class AudioApi {
     soundUrl: SoundUrl,
     muteOnStart: boolean = false,
   ): BpxAudioPlaybackId {
+    Logger.debugBeetPx("AudioApi.playSoundLooped");
+
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const soundAsset = this.#assets.getSoundAsset(soundUrl);
@@ -278,6 +305,8 @@ export class AudioApi {
   }
 
   playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId {
+    Logger.debugBeetPx("AudioApi.playSoundSequence");
+
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const intro = soundSequence.sequence ?? [];
