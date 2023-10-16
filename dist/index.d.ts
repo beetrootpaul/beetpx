@@ -4,8 +4,6 @@ interface PrintDebug {
 
 declare function v_(x: number, y: number): BpxVector2d;
 declare class BpxVector2d implements PrintDebug {
-    static zero: BpxVector2d;
-    static one: BpxVector2d;
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
@@ -57,6 +55,8 @@ declare class BpxVector2d implements PrintDebug {
     div(x: number, y: number): BpxVector2d;
     __printDebug(): string;
 }
+declare const v_0_0_: BpxVector2d;
+declare const v_1_1_: BpxVector2d;
 
 type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
 declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
@@ -219,13 +219,14 @@ declare class BpxEasing {
 declare class BpxUtils {
     static booleanChangingEveryNthFrame(n: number): boolean;
     static clamp(a: number, b: number, c: number): number;
+    static identity<Param>(param: Param): Param;
     static lerp(a: number, b: number, t: number): number;
     static measureText(text: string): BpxVector2d;
     static noop(): void;
     static offset8Directions(): BpxVector2d[];
-    static randomElementOf<V>(array: V[]): V | undefined;
     static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor, centerXy?: [boolean, boolean]): void;
-    static repeatN(n: number, callback: (i: number) => void): void;
+    static randomElementOf<V>(array: V[]): V | undefined;
+    static range(n: number): number[];
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
      */
@@ -255,7 +256,7 @@ type SoundSequenceEntry = [
 ];
 type SoundSequenceEntrySoundMain = {
     url: SoundUrl;
-    durationMs: (fullSoundDurationMs: number) => number;
+    durationMs?: (fullSoundDurationMs: number) => number;
 };
 type SoundSequenceEntrySoundAdditional = {
     url: SoundUrl;
@@ -267,14 +268,31 @@ declare class AudioApi {
     get audioContext(): AudioContext;
     get globalGainNode(): GainNode;
     constructor(assets: Assets, audioContext: AudioContext);
-    resumeAudioContextIfNeeded(): void;
-    toggleMuteUnmute(): void;
-    stopAllSounds(): void;
-    playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId;
+    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
+    areAllSoundsMuted(): boolean;
+    muteAllSounds(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteAllSounds(opts?: {
+        fadeInMillis?: number;
+    }): void;
+    muteSound(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteSound(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeInMillis?: number;
+    }): void;
+    pauseAllSounds(): void;
+    resumeAllSounds(): void;
+    stopAllSounds(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    stopSound(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    playSoundOnce(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId;
-    muteSound(playbackId: BpxAudioPlaybackId): void;
-    unmuteSound(playbackId: BpxAudioPlaybackId): void;
 }
 
 declare class BpxClippingRegion {
@@ -309,10 +327,12 @@ declare class GameInput {
         enableDebugInputs: boolean;
     });
     startListening(): void;
+    /**
+     * @return If any interaction happened.
+     */
     update(params: {
         skipGameButtons: boolean;
-    }): void;
-    wasAnyButtonPressed(): boolean;
+    }): boolean;
 }
 
 type BpxButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
@@ -345,12 +365,12 @@ declare class DebugMode {
     static set enabled(value: boolean);
 }
 
-type StorageApiValueConstraint = Record<string, string | number | boolean | null>;
+type PersistedStateValueContraints = Record<string, string | number | boolean | null>;
 declare class StorageApi {
     #private;
-    store<StorageApiValue extends StorageApiValueConstraint>(value: StorageApiValue): void;
-    load<StorageApiValue extends StorageApiValueConstraint>(): StorageApiValue | null;
-    clearStorage(): void;
+    savePersistedState<PersistedStateValue extends PersistedStateValueContraints>(value: PersistedStateValue): void;
+    loadPersistedState<PersistedStateValue extends PersistedStateValueContraints>(): PersistedStateValue | null;
+    clearPersistedState(): void;
 }
 
 type FrameworkOptions = {
@@ -434,16 +454,21 @@ declare class BeetPx {
     static sprite: DrawApi["sprite"];
     static print: DrawApi["print"];
     static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"];
-    static toggleMuteUnmute: AudioApi["toggleMuteUnmute"];
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
     static playSoundSequence: AudioApi["playSoundSequence"];
+    static pauseAllSounds: AudioApi["pauseAllSounds"];
+    static resumeAllSounds: AudioApi["resumeAllSounds"];
     static stopAllSounds: AudioApi["stopAllSounds"];
+    static stopSound: AudioApi["stopSound"];
+    static areAllSoundsMuted: AudioApi["areAllSoundsMuted"];
+    static muteAllSounds: AudioApi["muteAllSounds"];
+    static unmuteAllSounds: AudioApi["unmuteAllSounds"];
     static muteSound: AudioApi["muteSound"];
     static unmuteSound: AudioApi["unmuteSound"];
-    static store: StorageApi["store"];
-    static load: StorageApi["load"];
-    static clearStorage: StorageApi["clearStorage"];
+    static savePersistedState: StorageApi["savePersistedState"];
+    static loadPersistedState: StorageApi["loadPersistedState"];
+    static clearPersistedState: StorageApi["clearPersistedState"];
     static getImageAsset: Assets["getImageAsset"];
     static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];
@@ -465,4 +490,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_ };

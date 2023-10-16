@@ -12,7 +12,7 @@ import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils } from "./Utils";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
@@ -58,10 +58,13 @@ export class Framework {
   #onDraw?: () => void;
 
   #scaleToFill = 1;
-  #centeringOffset = BpxVector2d.zero;
+  #centeringOffset = v_0_0_;
 
   #frameNumber: number = 0;
   #renderFps: number = 1;
+
+  // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
+  #alreadyResumedAudioContext: boolean = false;
 
   get frameNumber(): number {
     return this.#frameNumber;
@@ -224,7 +227,11 @@ export class Framework {
           this.#fullScreen.toggle();
         }
         if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
-          this.audioApi.toggleMuteUnmute();
+          if (this.audioApi.areAllSoundsMuted()) {
+            this.audioApi.unmuteAllSounds();
+          } else {
+            this.audioApi.muteAllSounds();
+          }
         }
         if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
           DebugMode.enabled = !DebugMode.enabled;
@@ -243,15 +250,22 @@ export class Framework {
           Logger.infoBeetPx(`FrameByFrame mode set to: ${this.#frameByFrame}`);
         }
 
-        if (this.gameInput.wasAnyButtonPressed()) {
-          this.audioApi.resumeAudioContextIfNeeded();
-        }
-
         const shouldUpdate =
           !this.#frameByFrame ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
 
-        this.gameInput.update({ skipGameButtons: !shouldUpdate });
+        const hasAnyInteractionHappened = this.gameInput.update({
+          skipGameButtons: !shouldUpdate,
+        });
+        if (hasAnyInteractionHappened && !this.#alreadyResumedAudioContext) {
+          this.audioApi
+            .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+            .then((resumed) => {
+              if (resumed) {
+                this.#alreadyResumedAudioContext = true;
+              }
+            });
+        }
 
         if (shouldUpdate) {
           if (this.#frameByFrame) {

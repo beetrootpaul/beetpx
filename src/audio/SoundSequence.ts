@@ -14,7 +14,7 @@ export type SoundSequenceEntry = [
 
 type SoundSequenceEntrySoundMain = {
   url: SoundUrl;
-  durationMs: (fullSoundDurationMs: number) => number;
+  durationMs?: (fullSoundDurationMs: number) => number;
 };
 
 type SoundSequenceEntrySoundAdditional = {

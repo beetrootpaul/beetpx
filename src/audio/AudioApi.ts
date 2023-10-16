@@ -1,6 +1,6 @@
 import { Assets, SoundAsset, SoundUrl } from "../Assets";
 import { Logger } from "../logger/Logger";
-import { BpxUtils } from "../Utils";
+import { BpxUtils, u_ } from "../Utils";
 import { BpxSoundSequence, SoundSequenceEntry } from "./SoundSequence";
 
 export type BpxAudioPlaybackId = number;
@@ -15,10 +15,9 @@ export class AudioApi {
 
   readonly #assets: Assets;
   readonly #audioContext: AudioContext;
+  #isPaused: boolean = false;
 
   readonly #globalGainNode: GainNode;
-
-  readonly #muteUnmuteExponentialTimeConstant = 0.1;
 
   #isGloballyMuted: boolean;
 
@@ -26,8 +25,6 @@ export class AudioApi {
     BpxAudioPlaybackId,
     { sourceNodes: AudioBufferSourceNode[]; gainNodes: GainNode[] }
   > = new Map();
-
-  readonly #muteUnmuteTimeConstant = 0.001;
 
   get audioContext(): AudioContext {
     return this.#audioContext;
@@ -51,42 +48,139 @@ export class AudioApi {
   // In some browsers audio should start in result of user interaction (e.g. button click).
   // Since we cannot assure it for every game setup, let' expose a function which tries to
   // resume the AudioContext and call it on every user interaction detected by this framework.
-  resumeAudioContextIfNeeded(): void {
-    if (this.#audioContext.state === "suspended") {
-      this.#audioContext.resume().catch((err) => {
+  async tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean> {
+    Logger.debugBeetPx(
+      "AudioApi.tryToResumeAudioContextSuspendedByBrowserForSecurityReasons",
+    );
+
+    if (this.#audioContext.state === "running") {
+      Logger.debugBeetPx("Audio Context is already running");
+      return Promise.resolve(true);
+    }
+
+    if (this.#isPaused) {
+      Logger.debugBeetPx(
+        "Cannot detect if Audio Context requires resuming, because it is intentionally paused (suspended) right now",
+      );
+      return Promise.resolve(false);
+    }
+
+    return this.#audioContext
+      .resume()
+      .then(() => {
+        Logger.debugBeetPx("Audio Context got resumed");
+        return true;
+      })
+      .catch((err) => {
         Logger.errorBeetPx(err);
+        return false;
       });
-      // TODO: are we sure we want to unmute here? What if it was intentionally muted?!
-      this.#unmute();
-    }
   }
 
-  toggleMuteUnmute(): void {
-    if (this.#isGloballyMuted) {
-      this.#unmute();
-    } else {
-      this.#mute();
-    }
+  areAllSoundsMuted(): boolean {
+    return this.#isGloballyMuted;
   }
 
-  #mute(): void {
+  muteAllSounds(opts: { fadeOutMillis?: number } = {}): void {
+    Logger.debugBeetPx(
+      `AudioApi.muteAllSounds (fadeOutMillis: ${opts.fadeOutMillis})`,
+    );
+
+    if (this.#isGloballyMuted) return;
+
     this.#storeGlobalMuteUnmuteState(true);
     this.#isGloballyMuted = true;
-    this.#globalGainNode.gain.setTargetAtTime(
-      0,
-      this.#audioContext.currentTime,
-      this.#muteUnmuteExponentialTimeConstant,
-    );
+
+    if (this.#isPaused) {
+      this.#globalGainNode.gain.setValueAtTime(
+        0,
+        this.#audioContext.currentTime,
+      );
+    } else {
+      this.#globalGainNode.gain.setValueCurveAtTime(
+        [this.globalGainNode.gain.value, 0],
+        this.#audioContext.currentTime,
+        opts.fadeOutMillis != null ? opts.fadeOutMillis / 1000 : 0.1,
+      );
+    }
   }
 
-  #unmute(): void {
+  unmuteAllSounds(opts: { fadeInMillis?: number } = {}): void {
+    Logger.debugBeetPx(
+      `AudioApi.unmuteAllSounds (fadeInMillis: ${opts.fadeInMillis})`,
+    );
+
+    if (!this.#isGloballyMuted) return;
+
     this.#storeGlobalMuteUnmuteState(false);
     this.#isGloballyMuted = false;
-    this.#globalGainNode.gain.setTargetAtTime(
-      1,
-      this.#audioContext.currentTime,
-      this.#muteUnmuteExponentialTimeConstant,
+
+    if (this.#isPaused) {
+      this.#globalGainNode.gain.setValueAtTime(
+        1,
+        this.#audioContext.currentTime,
+      );
+    } else {
+      this.#globalGainNode.gain.setValueCurveAtTime(
+        [this.globalGainNode.gain.value, 1],
+        this.#audioContext.currentTime,
+        opts.fadeInMillis != null ? opts.fadeInMillis / 1000 : 0.1,
+      );
+    }
+  }
+
+  // TODO: better API to make clear that only looped sounds can be muted individually?
+  muteSound(
+    playbackId: BpxAudioPlaybackId,
+    opts: { fadeOutMillis?: number } = {},
+  ): void {
+    Logger.debugBeetPx(
+      `AudioApi.muteSound (fadeOutMillis: ${opts.fadeOutMillis})`,
     );
+
+    const nodes = this.#sounds.get(playbackId);
+    if (nodes?.gainNodes) {
+      for (const gainNode of nodes?.gainNodes) {
+        if (this.#isPaused) {
+          gainNode.gain.setValueAtTime(0, this.#audioContext.currentTime);
+        } else {
+          // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
+          //   an instant volume change – it was resulting with some audio artifacts.
+          gainNode.gain.setValueCurveAtTime(
+            [gainNode.gain.value, 0],
+            this.#audioContext.currentTime,
+            opts.fadeOutMillis != null ? opts.fadeOutMillis / 1000 : 0.1,
+          );
+        }
+      }
+    }
+  }
+
+  // TODO: better API to make clear that only looped sounds can be muted individually?
+  unmuteSound(
+    playbackId: BpxAudioPlaybackId,
+    opts: { fadeInMillis?: number } = {},
+  ): void {
+    Logger.debugBeetPx(
+      `AudioApi.unmuteSound (fadeInMillis: ${opts.fadeInMillis})`,
+    );
+
+    const nodes = this.#sounds.get(playbackId);
+    if (nodes?.gainNodes) {
+      for (const gainNode of nodes?.gainNodes) {
+        if (this.#isPaused) {
+          gainNode.gain.setValueAtTime(1, this.#audioContext.currentTime);
+        } else {
+          // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
+          //   an instant volume change – it was resulting with some audio artifacts.
+          gainNode.gain.setValueCurveAtTime(
+            [gainNode.gain.value, 1],
+            this.#audioContext.currentTime,
+            opts.fadeInMillis != null ? opts.fadeInMillis / 1000 : 0.1,
+          );
+        }
+      }
+    }
   }
 
   #loadStoredGlobalMuteUnmuteState(): boolean {
@@ -107,34 +201,127 @@ export class AudioApi {
     }
   }
 
-  stopAllSounds(): void {
+  pauseAllSounds(): void {
+    Logger.debugBeetPx("AudioApi.pauseAllSounds");
+
+    this.#isPaused = true;
+    this.#audioContext.suspend().catch((err) => {
+      Logger.errorBeetPx(err);
+    });
+  }
+
+  resumeAllSounds(): void {
+    Logger.debugBeetPx("AudioApi.resumeAllSounds");
+
+    this.#isPaused = false;
+    this.#audioContext.resume().catch((err) => {
+      Logger.errorBeetPx(err);
+    });
+  }
+
+  stopAllSounds(opts: { fadeOutMillis?: number } = {}): void {
+    Logger.debugBeetPx(
+      `AudioApi.stopAllSounds (fadeOutMillis: ${opts.fadeOutMillis})`,
+    );
+
+    if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
+      const fadeOutSounds = this.#fadeOutSounds(
+        opts.fadeOutMillis,
+        (id) => true,
+      );
+      setTimeout(() => {
+        this.#stopSounds((id) => fadeOutSounds.includes(id));
+      }, opts.fadeOutMillis);
+    } else {
+      this.#stopSounds((id) => true);
+    }
+  }
+
+  stopSound(
+    playbackId: BpxAudioPlaybackId,
+    opts: { fadeOutMillis?: number } = {},
+  ): void {
+    Logger.debugBeetPx("AudioApi.stopSound");
+
+    if (opts.fadeOutMillis != null && !this.#isGloballyMuted) {
+      const fadeOutSounds = this.#fadeOutSounds(
+        opts.fadeOutMillis,
+        (id) => id === playbackId,
+      );
+      setTimeout(() => {
+        this.#stopSounds((id) => fadeOutSounds.includes(id));
+      }, opts.fadeOutMillis);
+    } else {
+      this.#stopSounds((id) => id === playbackId);
+    }
+  }
+
+  #fadeOutSounds(
+    fadeOutMillis: number,
+    predicate: (playbackId: BpxAudioPlaybackId) => boolean,
+  ): BpxAudioPlaybackId[] {
+    const idsOfFadedOutSounds: BpxAudioPlaybackId[] = [];
+
     for (const [
       playbackId,
       { sourceNodes, gainNodes },
     ] of this.#sounds.entries()) {
-      this.#sounds.delete(playbackId);
-      for (const gainNode of gainNodes) {
-        gainNode.disconnect();
+      if (predicate(playbackId)) {
+        idsOfFadedOutSounds.push(playbackId);
+
+        for (const gainNode of gainNodes) {
+          gainNode.gain.setValueCurveAtTime(
+            [gainNode.gain.value, 0],
+            this.#audioContext.currentTime,
+            fadeOutMillis / 1000,
+          );
+        }
       }
-      for (const sourceNode of sourceNodes) {
-        sourceNode.addEventListener("ended", () => {
-          sourceNode.disconnect();
-        });
-        sourceNode.stop();
+    }
+
+    return idsOfFadedOutSounds;
+  }
+
+  #stopSounds(predicate: (playbackId: BpxAudioPlaybackId) => boolean): void {
+    for (const [
+      playbackId,
+      { sourceNodes, gainNodes },
+    ] of this.#sounds.entries()) {
+      if (predicate(playbackId)) {
+        this.#sounds.delete(playbackId);
+        for (const gainNode of gainNodes) {
+          gainNode.disconnect();
+        }
+        for (const sourceNode of sourceNodes) {
+          sourceNode.addEventListener("ended", () => {
+            sourceNode.disconnect();
+          });
+          sourceNode.stop();
+        }
       }
     }
   }
 
-  playSoundOnce(soundUrl: SoundUrl): BpxAudioPlaybackId {
+  playSoundOnce(
+    soundUrl: SoundUrl,
+    muteOnStart: boolean = false,
+  ): BpxAudioPlaybackId {
+    Logger.debugBeetPx("AudioApi.playSoundOnce");
+
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const soundAsset = this.#assets.getSoundAsset(soundUrl);
 
-    const sourceNode = this.#newSourceNode(soundAsset);
-    this.#register(playbackId, sourceNode);
+    const gainNode = this.#audioContext.createGain();
+    gainNode.gain.value = muteOnStart ? 0 : 1;
+    gainNode.connect(this.#globalGainNode);
 
-    sourceNode.connect(this.#globalGainNode);
+    const sourceNode = this.#newSourceNode(soundAsset);
+    this.#register(playbackId, sourceNode, gainNode);
+
+    sourceNode.connect(gainNode);
     sourceNode.start();
+
     sourceNode.addEventListener("ended", () => {
       this.#unregister(playbackId);
       sourceNode.disconnect();
@@ -147,6 +334,8 @@ export class AudioApi {
     soundUrl: SoundUrl,
     muteOnStart: boolean = false,
   ): BpxAudioPlaybackId {
+    Logger.debugBeetPx("AudioApi.playSoundLooped");
+
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const soundAsset = this.#assets.getSoundAsset(soundUrl);
@@ -159,17 +348,24 @@ export class AudioApi {
     this.#register(playbackId, sourceNode, gainNode);
 
     sourceNode.loop = true;
+
     sourceNode.connect(gainNode);
     sourceNode.start();
 
     return playbackId;
   }
 
+  // TODO: move out to a class which can make use of some shared state instead of passing everything through function params
   playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId {
+    Logger.debugBeetPx("AudioApi.playSoundSequence");
+
     const playbackId = AudioApi.#nextPlaybackId++;
 
     const intro = soundSequence.sequence ?? [];
     const loop = soundSequence.sequenceLooped ?? [];
+
+    const sequenceGainNode = this.#audioContext.createGain();
+    sequenceGainNode.connect(this.#globalGainNode);
 
     const playbackFns: Array<() => void> = Array.from({
       length: intro.length + loop.length,
@@ -180,8 +376,16 @@ export class AudioApi {
         if (!this.#sounds.get(playbackId)) {
           return;
         }
-        this.#playSoundSequenceEntry(playbackId, intro[i]!, () =>
-          playbackFns[i + 1]!(),
+        this.#playSoundSequenceEntry(
+          playbackId,
+          intro[i]!,
+          sequenceGainNode,
+          (sourceNodes) => {
+            playbackFns[i + 1]!();
+            sourceNodes.forEach((sn) => {
+              sn.disconnect();
+            });
+          },
         );
       };
     }
@@ -195,9 +399,20 @@ export class AudioApi {
         this.#playSoundSequenceEntry(
           playbackId,
           loop[i]!,
+          sequenceGainNode,
           i < loop.length - 1
-            ? () => playbackFns[firstLoopedIndex + i + 1]!()
-            : () => playbackFns[firstLoopedIndex]!(),
+            ? (sourceNodes) => {
+                playbackFns[firstLoopedIndex + i + 1]!();
+                sourceNodes.forEach((sn) => {
+                  sn.disconnect();
+                });
+              }
+            : (sourceNodes) => {
+                playbackFns[firstLoopedIndex]!();
+                sourceNodes.forEach((sn) => {
+                  sn.disconnect();
+                });
+              },
         );
       };
     }
@@ -205,7 +420,10 @@ export class AudioApi {
     // one more fn just to make loops above simpler, since there is always something on index `i+1`
     playbackFns.push(BpxUtils.noop);
 
-    this.#sounds.set(playbackId, { sourceNodes: [], gainNodes: [] });
+    this.#sounds.set(playbackId, {
+      sourceNodes: [],
+      gainNodes: [sequenceGainNode],
+    });
     playbackFns[0]?.();
 
     return playbackId;
@@ -214,12 +432,13 @@ export class AudioApi {
   #playSoundSequenceEntry(
     playbackId: BpxAudioPlaybackId,
     entry: SoundSequenceEntry,
-    onEntryEnded?: () => void,
+    sequenceGainNode: GainNode,
+    onEntryEnded?: (sourceNodes: AudioBufferSourceNode[]) => void,
   ): void {
     const [mainSound, ...additionalSounds] = entry;
 
     const mainSoundAsset = this.#assets.getSoundAsset(mainSound.url);
-    const durationMs = mainSound.durationMs(
+    const durationMs = (mainSound.durationMs ?? u_.identity)(
       mainSoundAsset.audioBuffer.duration * 1000,
     );
 
@@ -229,15 +448,7 @@ export class AudioApi {
       this.#assets.getSoundAsset(mainSound.url),
     );
     this.#register(playbackId, mainSourceNode);
-
-    mainSourceNode.connect(this.#globalGainNode);
-    if (onEntryEnded) {
-      // TODO: this approach doesn't seem as the precise one… so far the audio output sounds OK and on time
-      //       When needed, consider reworking it based on:
-      //       - https://web.dev/audio-scheduling/
-      //       - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques
-      mainSourceNode.addEventListener("ended", onEntryEnded);
-    }
+    mainSourceNode.connect(sequenceGainNode);
     sourceNodes.push(mainSourceNode);
 
     additionalSounds.forEach((sound) => {
@@ -246,51 +457,27 @@ export class AudioApi {
       );
       this.#register(playbackId, sourceNode);
 
-      sourceNode.connect(this.#globalGainNode);
+      sourceNode.connect(sequenceGainNode);
       sourceNodes.push(sourceNode);
     });
 
     sourceNodes.forEach((sn) => {
       sn.start(0, 0, durationMs / 1000);
     });
+
+    if (onEntryEnded) {
+      // TODO: this approach sometimes result with audio gaps between individual node playbacks :-(
+      //       When needed, consider reworking it based on:
+      //       - https://web.dev/audio-scheduling/
+      //       - https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API/Advanced_techniques
+      mainSourceNode.addEventListener("ended", () => onEntryEnded(sourceNodes));
+    }
   }
 
   #newSourceNode(soundAsset: SoundAsset): AudioBufferSourceNode {
     const sourceNode = this.#audioContext.createBufferSource();
     sourceNode.buffer = soundAsset.audioBuffer;
     return sourceNode;
-  }
-
-  // TODO: better API to make clear that only looped sounds can be muted individually?
-  muteSound(playbackId: BpxAudioPlaybackId): void {
-    const nodes = this.#sounds.get(playbackId);
-    if (nodes?.gainNodes) {
-      for (const gainNode of nodes?.gainNodes) {
-        // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
-        //   an instant volume change – it was resulting with some audio artifacts.
-        gainNode.gain.setTargetAtTime(
-          0,
-          this.#audioContext.currentTime,
-          this.#muteUnmuteTimeConstant,
-        );
-      }
-    }
-  }
-
-  // TODO: better API to make clear that only looped sounds can be muted individually?
-  unmuteSound(playbackId: BpxAudioPlaybackId): void {
-    const nodes = this.#sounds.get(playbackId);
-    if (nodes?.gainNodes) {
-      for (const gainNode of nodes?.gainNodes) {
-        // We use `setTargetAtTime` instead of `setValueAtTime`, because we want to avoid
-        //   an instant volume change – it was resulting with some audio artifacts.
-        gainNode.gain.setTargetAtTime(
-          1,
-          this.#audioContext.currentTime,
-          this.#muteUnmuteTimeConstant,
-        );
-      }
-    }
   }
 
   #register(

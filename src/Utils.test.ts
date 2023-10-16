@@ -39,7 +39,7 @@ describe("Utils", () => {
     const expectedSamplesPerElement = 100;
     const elements = [0, 1, 2];
     const results = elements.map(() => 0);
-    BpxUtils.repeatN(elements.length * expectedSamplesPerElement, () => {
+    BpxUtils.range(elements.length * expectedSamplesPerElement).forEach(() => {
       const pickedElement =
         BpxUtils.randomElementOf(elements) ??
         BpxUtils.throwError("element should be defined");
@@ -64,5 +64,12 @@ describe("Utils", () => {
     expect(results[2]).toBeLessThanOrEqual(
       expectedSamplesPerElement + acceptedDiff,
     );
+  });
+
+  test("#range", () => {
+    expect(BpxUtils.range(0)).toEqual([]);
+    expect(BpxUtils.range(1)).toEqual([0]);
+    expect(BpxUtils.range(2)).toEqual([0, 1]);
+    expect(BpxUtils.range(10)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
 });

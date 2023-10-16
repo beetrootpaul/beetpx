@@ -6,8 +6,8 @@ import {
   type BpxColor,
 } from "../Color";
 import { BpxSprite } from "../Sprite";
-import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxUtils, u_ } from "../Utils";
+import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
@@ -38,7 +38,7 @@ export class DrawSprite {
     targetXy: BpxVector2d,
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    scaleXy: BpxVector2d = BpxVector2d.one,
+    scaleXy: BpxVector2d = v_1_1_,
     colorMapping: Map<BpxColorId, BpxColor> = new Map(),
     // TODO: test it
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
@@ -82,8 +82,8 @@ export class DrawSprite {
 
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
       for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        BpxUtils.repeatN(scaleXy.x, (xScaledStep) => {
-          BpxUtils.repeatN(scaleXy.y, (yScaledStep) => {
+        u_.range(scaleXy.x).forEach((xScaledStep) => {
+          u_.range(scaleXy.y).forEach((yScaledStep) => {
             const canvasXy = targetXy.add(
               v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
                 .mul(scaleXy)

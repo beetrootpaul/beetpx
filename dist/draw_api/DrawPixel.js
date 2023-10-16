@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_options, _DrawPixel_drawSolid;
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { v_0_0_ } from "../Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawPixel {
     constructor(canvasBytes, canvasSize, options = {}) {
@@ -32,7 +32,7 @@ export class DrawPixel {
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }
-        if (xy.gte(BpxVector2d.zero) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
+        if (xy.gte(v_0_0_) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
             const i = 4 * (xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f").x + xy.x);
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 if (color instanceof BpxCompositeColor) {

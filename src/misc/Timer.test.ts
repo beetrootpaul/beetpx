@@ -34,7 +34,7 @@ describe("Timer", () => {
       expect(timer.framesLeft).toBe(99);
       timer.update();
       expect(timer.framesLeft).toBe(98);
-      BpxUtils.repeatN(96, () => {
+      BpxUtils.range(96).forEach(() => {
         timer.update();
       });
       expect(timer.framesLeft).toBe(2);
@@ -81,7 +81,7 @@ describe("Timer", () => {
       expect(timer.progress).toBeCloseTo(0.01, 2);
       timer.update();
       expect(timer.progress).toBeCloseTo(0.02, 2);
-      BpxUtils.repeatN(96, () => {
+      BpxUtils.range(96).forEach(() => {
         timer.update();
       });
       expect(timer.progress).toBeCloseTo(0.98, 2);
@@ -128,7 +128,7 @@ describe("Timer", () => {
       expect(timer.hasFinished).toBe(false);
       timer.update();
       expect(timer.hasFinished).toBe(false);
-      BpxUtils.repeatN(96, () => {
+      BpxUtils.range(96).forEach(() => {
         timer.update();
       });
       expect(timer.hasFinished).toBe(false);

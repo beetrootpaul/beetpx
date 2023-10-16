@@ -205,10 +205,6 @@ export class BeetPx {
   // Audio API
   //
 
-  static toggleMuteUnmute: AudioApi["toggleMuteUnmute"] = (...args) => {
-    return this.#tryGetFramework().audioApi.toggleMuteUnmute(...args);
-  };
-
   static playSoundOnce: AudioApi["playSoundOnce"] = (...args) => {
     return this.#tryGetFramework().audioApi.playSoundOnce(...args);
   };
@@ -221,8 +217,32 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.playSoundSequence(...args);
   };
 
+  static pauseAllSounds: AudioApi["pauseAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.pauseAllSounds(...args);
+  };
+
+  static resumeAllSounds: AudioApi["resumeAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.resumeAllSounds(...args);
+  };
+
   static stopAllSounds: AudioApi["stopAllSounds"] = (...args) => {
     return this.#tryGetFramework().audioApi.stopAllSounds(...args);
+  };
+
+  static stopSound: AudioApi["stopSound"] = (...args) => {
+    return this.#tryGetFramework().audioApi.stopSound(...args);
+  };
+
+  static areAllSoundsMuted: AudioApi["areAllSoundsMuted"] = (...args) => {
+    return this.#tryGetFramework().audioApi.areAllSoundsMuted(...args);
+  };
+
+  static muteAllSounds: AudioApi["muteAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.muteAllSounds(...args);
+  };
+
+  static unmuteAllSounds: AudioApi["unmuteAllSounds"] = (...args) => {
+    return this.#tryGetFramework().audioApi.unmuteAllSounds(...args);
   };
 
   static muteSound: AudioApi["muteSound"] = (...args) => {
@@ -237,16 +257,16 @@ export class BeetPx {
   // Storage API
   //
 
-  static store: StorageApi["store"] = (...args) => {
-    return this.#tryGetFramework().storageApi.store(...args);
+  static savePersistedState: StorageApi["savePersistedState"] = (...args) => {
+    return this.#tryGetFramework().storageApi.savePersistedState(...args);
   };
 
-  static load: StorageApi["load"] = (...args) => {
-    return this.#tryGetFramework().storageApi.load(...args);
+  static loadPersistedState: StorageApi["loadPersistedState"] = (...args) => {
+    return this.#tryGetFramework().storageApi.loadPersistedState(...args);
   };
 
-  static clearStorage: StorageApi["clearStorage"] = (...args) => {
-    return this.#tryGetFramework().storageApi.clearStorage(...args);
+  static clearPersistedState: StorageApi["clearPersistedState"] = (...args) => {
+    return this.#tryGetFramework().storageApi.clearPersistedState(...args);
   };
 
   //

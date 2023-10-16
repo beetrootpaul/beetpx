@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { BpxUtils } from "../Utils";
+import { u_ } from "../Utils";
 import { Button } from "./Button";
 
 describe("Button", () => {
@@ -21,14 +21,13 @@ describe("Button", () => {
     expect(wasJustPressed()).toBe(true);
 
     // still pressed
-    BpxUtils.repeatN(
+    u_.range(
       Button.repeatingFramesStart + Button.repeatingFramesInterval + 1,
-      () => {
-        button.update(true);
-        expect(wasJustReleased()).toBe(false);
-        expect(wasJustPressed()).toBe(false);
-      },
-    );
+    ).forEach(() => {
+      button.update(true);
+      expect(wasJustReleased()).toBe(false);
+      expect(wasJustPressed()).toBe(false);
+    });
 
     // released
     button.update(false);
@@ -36,14 +35,13 @@ describe("Button", () => {
     expect(wasJustPressed()).toBe(false);
 
     // still released
-    BpxUtils.repeatN(
+    u_.range(
       Button.repeatingFramesStart + Button.repeatingFramesInterval + 1,
-      () => {
-        button.update(false);
-        expect(wasJustReleased()).toBe(false);
-        expect(wasJustPressed()).toBe(false);
-      },
-    );
+    ).forEach(() => {
+      button.update(false);
+      expect(wasJustReleased()).toBe(false);
+      expect(wasJustPressed()).toBe(false);
+    });
 
     // pressed and released again
     button.update(true);
@@ -69,7 +67,7 @@ describe("Button", () => {
     expect(wasJustPressedRepeating()).toBe(true);
 
     // nearly complete sequence of press x start frames
-    BpxUtils.repeatN(Button.repeatingFramesStart - 1, () => {
+    u_.range(Button.repeatingFramesStart - 1).forEach(() => {
       button.update(true);
       expect(wasJustReleasedRepeating()).toBe(false);
       expect(wasJustPressedRepeating()).toBe(false);
@@ -84,7 +82,7 @@ describe("Button", () => {
     expect(wasJustPressedRepeating()).toBe(true);
 
     // complete sequence of press x start frames
-    BpxUtils.repeatN(Button.repeatingFramesStart - 1, () => {
+    u_.range(Button.repeatingFramesStart - 1).forEach(() => {
       button.update(true);
       expect(wasJustReleasedRepeating()).toBe(false);
       expect(wasJustPressedRepeating()).toBe(false);
@@ -94,7 +92,7 @@ describe("Button", () => {
     expect(wasJustPressedRepeating()).toBe(true);
 
     // next, nearly complete sequence of press x interval frames
-    BpxUtils.repeatN(Button.repeatingFramesInterval - 1, () => {
+    u_.range(Button.repeatingFramesInterval - 1).forEach(() => {
       button.update(true);
       expect(wasJustReleasedRepeating()).toBe(false);
       expect(wasJustPressedRepeating()).toBe(false);
@@ -109,7 +107,7 @@ describe("Button", () => {
     expect(wasJustPressedRepeating()).toBe(true);
 
     //  complete sequence of press x start frames
-    BpxUtils.repeatN(Button.repeatingFramesStart - 1, () => {
+    u_.range(Button.repeatingFramesStart - 1).forEach(() => {
       button.update(true);
       expect(wasJustReleasedRepeating()).toBe(false);
       expect(wasJustPressedRepeating()).toBe(false);
@@ -119,7 +117,7 @@ describe("Button", () => {
     expect(wasJustPressedRepeating()).toBe(true);
 
     // next, complete sequence of press x interval frames
-    BpxUtils.repeatN(Button.repeatingFramesInterval - 1, () => {
+    u_.range(Button.repeatingFramesInterval - 1).forEach(() => {
       button.update(true);
       expect(wasJustReleasedRepeating()).toBe(false);
       expect(wasJustPressedRepeating()).toBe(false);
@@ -129,7 +127,7 @@ describe("Button", () => {
     expect(wasJustPressedRepeating()).toBe(true);
 
     // next, consecutive complete sequence of press x interval frames
-    BpxUtils.repeatN(Button.repeatingFramesInterval - 1, () => {
+    u_.range(Button.repeatingFramesInterval - 1).forEach(() => {
       button.update(true);
       expect(wasJustReleasedRepeating()).toBe(false);
       expect(wasJustPressedRepeating()).toBe(false);

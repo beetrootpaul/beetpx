@@ -5,6 +5,7 @@ import {
   BpxVector2d,
   spr_,
   v_,
+  v_0_0_,
 } from "../../../src";
 
 const fps = 60;
@@ -25,7 +26,7 @@ const logoOuterColor = BpxSolidColor.fromRgbCssHex("#ff6e59");
 const velocity = 2;
 
 const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
-let logoPositionBase = BpxVector2d.zero;
+let logoPositionBase = v_0_0_;
 
 let numberOfEllipses = 4;
 

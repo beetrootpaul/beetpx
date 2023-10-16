@@ -163,9 +163,6 @@ BeetPx.takeCanvasSnapshot = (...args) => {
 //
 // Audio API
 //
-BeetPx.toggleMuteUnmute = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.toggleMuteUnmute(...args);
-};
 BeetPx.playSoundOnce = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundOnce(...args);
 };
@@ -175,8 +172,26 @@ BeetPx.playSoundLooped = (...args) => {
 BeetPx.playSoundSequence = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundSequence(...args);
 };
+BeetPx.pauseAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.pauseAllSounds(...args);
+};
+BeetPx.resumeAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.resumeAllSounds(...args);
+};
 BeetPx.stopAllSounds = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllSounds(...args);
+};
+BeetPx.stopSound = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopSound(...args);
+};
+BeetPx.areAllSoundsMuted = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.areAllSoundsMuted(...args);
+};
+BeetPx.muteAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteAllSounds(...args);
+};
+BeetPx.unmuteAllSounds = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmuteAllSounds(...args);
 };
 BeetPx.muteSound = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteSound(...args);
@@ -187,14 +202,14 @@ BeetPx.unmuteSound = (...args) => {
 //
 // Storage API
 //
-BeetPx.store = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.store(...args);
+BeetPx.savePersistedState = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.savePersistedState(...args);
 };
-BeetPx.load = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.load(...args);
+BeetPx.loadPersistedState = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.loadPersistedState(...args);
 };
-BeetPx.clearStorage = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearStorage(...args);
+BeetPx.clearPersistedState = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearPersistedState(...args);
 };
 //
 // Direct access to loaded assets

@@ -2,7 +2,7 @@
 
 import { BeetPx } from "./BeetPx";
 import { BpxSolidColor } from "./Color";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
@@ -20,6 +20,10 @@ export class BpxUtils {
     return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
   }
 
+  static identity<Param>(param: Param): Param {
+    return param;
+  }
+
   static lerp(a: number, b: number, t: number): number {
     return a + (b - a) * t;
   }
@@ -33,7 +37,7 @@ export class BpxUtils {
           sizeSoFar,
           nextSprite.positionInText.add(nextSprite.sprite.size()),
         ),
-      BpxVector2d.zero,
+      v_0_0_,
     );
   }
 
@@ -53,11 +57,6 @@ export class BpxUtils {
     ];
   }
 
-  static randomElementOf<V>(array: V[]): V | undefined {
-    if (array.length <= 0) return undefined;
-    return array[Math.floor(Math.random() * array.length)];
-  }
-
   // TODO: consider moving this to either DrawApi or the game itself
   static printWithOutline(
     text: string,
@@ -72,10 +71,13 @@ export class BpxUtils {
     BeetPx.print(text, canvasXy1, textColor, centerXy);
   }
 
-  static repeatN(n: number, callback: (i: number) => void): void {
-    Array.from({ length: n }).forEach((_element, i) => {
-      callback(i);
-    });
+  static randomElementOf<V>(array: V[]): V | undefined {
+    if (array.length <= 0) return undefined;
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  static range(n: number): number[] {
+    return Array.from({ length: n }, (_element, index) => index);
   }
 
   /**

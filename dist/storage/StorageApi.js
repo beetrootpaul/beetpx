@@ -5,15 +5,15 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _a, _StorageApi_key;
 export class StorageApi {
-    store(value) {
+    savePersistedState(value) {
         window.localStorage.setItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key), JSON.stringify(value, null, 2));
     }
     // TODO: use zod or some other popular lib and validate value's shape here
-    load() {
+    loadPersistedState() {
         const maybeValue = window.localStorage.getItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key));
         return maybeValue ? JSON.parse(maybeValue) : null;
     }
-    clearStorage() {
+    clearPersistedState() {
         window.localStorage.removeItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key));
     }
 }

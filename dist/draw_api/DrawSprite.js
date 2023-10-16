@@ -12,8 +12,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawSprite_pixel;
 import { BpxSolidColor, transparent_, } from "../Color";
 import { BpxSprite } from "../Sprite";
-import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxUtils, u_ } from "../Utils";
+import { v_, v_1_1_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawSprite {
@@ -31,7 +31,7 @@ export class DrawSprite {
     draw(sourceImageAsset, sprite, targetXy, 
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    scaleXy = BpxVector2d.one, colorMapping = new Map(), 
+    scaleXy = v_1_1_, colorMapping = new Map(), 
     // TODO: test it
     fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
@@ -43,8 +43,8 @@ export class DrawSprite {
         sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-                BpxUtils.repeatN(scaleXy.x, (xScaledStep) => {
-                    BpxUtils.repeatN(scaleXy.y, (yScaledStep) => {
+                u_.range(scaleXy.x).forEach((xScaledStep) => {
+                    u_.range(scaleXy.y).forEach((yScaledStep) => {
                         var _a;
                         const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
                             .mul(scaleXy)

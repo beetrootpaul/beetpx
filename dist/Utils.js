@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 import { BeetPx } from "./BeetPx";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
     // TODO: tests for edge cases
@@ -15,6 +15,9 @@ export class BpxUtils {
     static clamp(a, b, c) {
         return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
     }
+    static identity(param) {
+        return param;
+    }
     static lerp(a, b, t) {
         return a + (b - a) * t;
     }
@@ -22,7 +25,7 @@ export class BpxUtils {
     static measureText(text) {
         var _a, _b;
         const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
-        return charSprites.reduce((sizeSoFar, nextSprite) => BpxVector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), BpxVector2d.zero);
+        return charSprites.reduce((sizeSoFar, nextSprite) => BpxVector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), v_0_0_);
     }
     static noop() { }
     // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
@@ -38,11 +41,6 @@ export class BpxUtils {
             v_(-1, 0),
         ];
     }
-    static randomElementOf(array) {
-        if (array.length <= 0)
-            return undefined;
-        return array[Math.floor(Math.random() * array.length)];
-    }
     // TODO: consider moving this to either DrawApi or the game itself
     static printWithOutline(text, canvasXy1, textColor, outlineColor, centerXy = [false, false]) {
         BpxUtils.offset8Directions().forEach((offset) => {
@@ -50,10 +48,13 @@ export class BpxUtils {
         });
         BeetPx.print(text, canvasXy1, textColor, centerXy);
     }
-    static repeatN(n, callback) {
-        Array.from({ length: n }).forEach((_element, i) => {
-            callback(i);
-        });
+    static randomElementOf(array) {
+        if (array.length <= 0)
+            return undefined;
+        return array[Math.floor(Math.random() * array.length)];
+    }
+    static range(n) {
+        return Array.from({ length: n }, (_element, index) => index);
     }
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.

@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawText_canvasBytes, _DrawText_canvasSize, _DrawText_sprite;
 import { transparent_ } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { v_1_1_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawText {
@@ -31,7 +31,7 @@ export class DrawText {
         canvasXy = canvasXy.round();
         const colorFn = typeof color === "function" ? color : () => color;
         for (const charSprite of fontAsset.font.spritesFor(text)) {
-            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), BpxVector2d.one, new Map([
+            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), v_1_1_, new Map([
                 [fontAsset.imageTextColor.id, colorFn(charSprite)],
                 [fontAsset.imageBgColor.id, transparent_],
             ]), BpxFillPattern.primaryOnly, clippingRegion);

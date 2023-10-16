@@ -34,6 +34,8 @@ export class GameInput {
   readonly buttonFrameByFrameToggle: Button;
   readonly buttonFrameByFrameStep: Button;
 
+  #wasAnyEventObserved: boolean = false;
+
   constructor(params: {
     visibleTouchButtons: BpxButtonName[];
     muteButtonsSelector: string;
@@ -69,7 +71,10 @@ export class GameInput {
     }
   }
 
-  update(params: { skipGameButtons: boolean }): void {
+  /**
+   * @return If any interaction happened.
+   */
+  update(params: { skipGameButtons: boolean }): boolean {
     const events = new Set<BpxGameInputEvent>();
     for (const sgi of this.#specializedGameInputs) {
       sgi.update(events);
@@ -84,16 +89,7 @@ export class GameInput {
     this.buttonDebugToggle.update(events.has("debug_toggle"));
     this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
     this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
-  }
 
-  wasAnyButtonPressed(): boolean {
-    return (
-      this.gameButtons.wasAnyJustPressed() ||
-      this.buttonFullScreen.wasJustPressed(false) ||
-      this.buttonMuteUnmute.wasJustPressed(false) ||
-      this.buttonDebugToggle.wasJustPressed(false) ||
-      this.buttonFrameByFrameToggle.wasJustPressed(false) ||
-      this.buttonFrameByFrameStep.wasJustPressed(false)
-    );
+    return events.size > 0;
   }
 }
