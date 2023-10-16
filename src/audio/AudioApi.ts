@@ -81,8 +81,10 @@ export class AudioApi {
     return this.#isGloballyMuted;
   }
 
-  muteAllSounds(): void {
-    Logger.debugBeetPx("AudioApi.muteAllSounds");
+  muteAllSounds(opts: { fadeOutMillis?: number } = {}): void {
+    Logger.debugBeetPx(
+      `AudioApi.muteAllSounds (fadeOutMillis: ${opts.fadeOutMillis})`,
+    );
 
     if (this.#isGloballyMuted) return;
 
@@ -98,13 +100,15 @@ export class AudioApi {
       this.#globalGainNode.gain.setValueCurveAtTime(
         [this.globalGainNode.gain.value, 0],
         this.#audioContext.currentTime,
-        0.1,
+        opts.fadeOutMillis != null ? opts.fadeOutMillis / 1000 : 0.1,
       );
     }
   }
 
-  unmuteAllSounds(): void {
-    Logger.debugBeetPx("AudioApi.unmuteAllSounds");
+  unmuteAllSounds(opts: { fadeInMillis?: number } = {}): void {
+    Logger.debugBeetPx(
+      `AudioApi.unmuteAllSounds (fadeInMillis: ${opts.fadeInMillis})`,
+    );
 
     if (!this.#isGloballyMuted) return;
 
@@ -118,16 +122,21 @@ export class AudioApi {
       );
     } else {
       this.#globalGainNode.gain.setValueCurveAtTime(
-        [0, 1],
+        [this.globalGainNode.gain.value, 1],
         this.#audioContext.currentTime,
-        0.1,
+        opts.fadeInMillis != null ? opts.fadeInMillis / 1000 : 0.1,
       );
     }
   }
 
   // TODO: better API to make clear that only looped sounds can be muted individually?
-  muteSound(playbackId: BpxAudioPlaybackId): void {
-    Logger.debugBeetPx("AudioApi.muteSound");
+  muteSound(
+    playbackId: BpxAudioPlaybackId,
+    opts: { fadeOutMillis?: number } = {},
+  ): void {
+    Logger.debugBeetPx(
+      `AudioApi.muteSound (fadeOutMillis: ${opts.fadeOutMillis})`,
+    );
 
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
@@ -140,7 +149,7 @@ export class AudioApi {
           gainNode.gain.setValueCurveAtTime(
             [gainNode.gain.value, 0],
             this.#audioContext.currentTime,
-            0.1,
+            opts.fadeOutMillis != null ? opts.fadeOutMillis / 1000 : 0.1,
           );
         }
       }
@@ -148,8 +157,13 @@ export class AudioApi {
   }
 
   // TODO: better API to make clear that only looped sounds can be muted individually?
-  unmuteSound(playbackId: BpxAudioPlaybackId): void {
-    Logger.debugBeetPx("AudioApi.unmuteSound");
+  unmuteSound(
+    playbackId: BpxAudioPlaybackId,
+    opts: { fadeInMillis?: number } = {},
+  ): void {
+    Logger.debugBeetPx(
+      `AudioApi.unmuteSound (fadeInMillis: ${opts.fadeInMillis})`,
+    );
 
     const nodes = this.#sounds.get(playbackId);
     if (nodes?.gainNodes) {
@@ -160,9 +174,9 @@ export class AudioApi {
           // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
           //   an instant volume change – it was resulting with some audio artifacts.
           gainNode.gain.setValueCurveAtTime(
-            [0, 1],
+            [gainNode.gain.value, 1],
             this.#audioContext.currentTime,
-            0.1,
+            opts.fadeInMillis != null ? opts.fadeInMillis / 1000 : 0.1,
           );
         }
       }

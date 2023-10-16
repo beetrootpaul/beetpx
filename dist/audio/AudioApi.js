@@ -73,8 +73,8 @@ export class AudioApi {
     areAllSoundsMuted() {
         return __classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f");
     }
-    muteAllSounds() {
-        Logger.debugBeetPx("AudioApi.muteAllSounds");
+    muteAllSounds(opts = {}) {
+        Logger.debugBeetPx(`AudioApi.muteAllSounds (fadeOutMillis: ${opts.fadeOutMillis})`);
         if (__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f"))
             return;
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, true);
@@ -83,11 +83,11 @@ export class AudioApi {
             __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueAtTime(0, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime);
         }
         else {
-            __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([this.globalGainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+            __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([this.globalGainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, opts.fadeOutMillis != null ? opts.fadeOutMillis / 1000 : 0.1);
         }
     }
-    unmuteAllSounds() {
-        Logger.debugBeetPx("AudioApi.unmuteAllSounds");
+    unmuteAllSounds(opts = {}) {
+        Logger.debugBeetPx(`AudioApi.unmuteAllSounds (fadeInMillis: ${opts.fadeInMillis})`);
         if (!__classPrivateFieldGet(this, _AudioApi_isGloballyMuted, "f"))
             return;
         __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_storeGlobalMuteUnmuteState).call(this, false);
@@ -96,12 +96,12 @@ export class AudioApi {
             __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueAtTime(1, __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime);
         }
         else {
-            __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([0, 1], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+            __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f").gain.setValueCurveAtTime([this.globalGainNode.gain.value, 1], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, opts.fadeInMillis != null ? opts.fadeInMillis / 1000 : 0.1);
         }
     }
     // TODO: better API to make clear that only looped sounds can be muted individually?
-    muteSound(playbackId) {
-        Logger.debugBeetPx("AudioApi.muteSound");
+    muteSound(playbackId, opts = {}) {
+        Logger.debugBeetPx(`AudioApi.muteSound (fadeOutMillis: ${opts.fadeOutMillis})`);
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
         if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
             for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
@@ -111,14 +111,14 @@ export class AudioApi {
                 else {
                     // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
                     //   an instant volume change – it was resulting with some audio artifacts.
-                    gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+                    gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 0], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, opts.fadeOutMillis != null ? opts.fadeOutMillis / 1000 : 0.1);
                 }
             }
         }
     }
     // TODO: better API to make clear that only looped sounds can be muted individually?
-    unmuteSound(playbackId) {
-        Logger.debugBeetPx("AudioApi.unmuteSound");
+    unmuteSound(playbackId, opts = {}) {
+        Logger.debugBeetPx(`AudioApi.unmuteSound (fadeInMillis: ${opts.fadeInMillis})`);
         const nodes = __classPrivateFieldGet(this, _AudioApi_sounds, "f").get(playbackId);
         if (nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
             for (const gainNode of nodes === null || nodes === void 0 ? void 0 : nodes.gainNodes) {
@@ -128,7 +128,7 @@ export class AudioApi {
                 else {
                     // We use `setValueCurveAtTime` instead of `setValueAtTime`, because we want to avoid
                     //   an instant volume change – it was resulting with some audio artifacts.
-                    gainNode.gain.setValueCurveAtTime([0, 1], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0.1);
+                    gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 1], __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, opts.fadeInMillis != null ? opts.fadeInMillis / 1000 : 0.1);
                 }
             }
         }

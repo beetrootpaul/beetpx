@@ -42,9 +42,9 @@ b_.init(
   b_.setOnUpdate(() => {
     if (b_.wasJustPressed("x")) {
       if (isMelodyMuted) {
-        b_.unmuteSound(melodyPlaybackId);
+        b_.unmuteSound(melodyPlaybackId, { fadeInMillis: 500 });
       } else {
-        b_.muteSound(melodyPlaybackId);
+        b_.muteSound(melodyPlaybackId, { fadeOutMillis: 500 });
       }
       isMelodyMuted = !isMelodyMuted;
     }

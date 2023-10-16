@@ -270,10 +270,18 @@ declare class AudioApi {
     constructor(assets: Assets, audioContext: AudioContext);
     tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
     areAllSoundsMuted(): boolean;
-    muteAllSounds(): void;
-    unmuteAllSounds(): void;
-    muteSound(playbackId: BpxAudioPlaybackId): void;
-    unmuteSound(playbackId: BpxAudioPlaybackId): void;
+    muteAllSounds(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteAllSounds(opts?: {
+        fadeInMillis?: number;
+    }): void;
+    muteSound(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteSound(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeInMillis?: number;
+    }): void;
     pauseAllSounds(): void;
     resumeAllSounds(): void;
     stopAllSounds(opts?: {
