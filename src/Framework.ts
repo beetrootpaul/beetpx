@@ -1,6 +1,7 @@
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { BpxSolidColor } from "./Color";
+import { BeetPx } from "./BeetPx";
+import { black_, BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
@@ -191,6 +192,8 @@ export class Framework {
     this.#frameNumber = 0;
 
     this.audioApi.restart();
+
+    BeetPx.clearCanvas(black_);
 
     this.#onStarted?.();
   }

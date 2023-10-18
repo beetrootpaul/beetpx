@@ -21,7 +21,8 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 import { Assets } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { BpxSolidColor } from "./Color";
+import { BeetPx } from "./BeetPx";
+import { black_, BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
@@ -146,6 +147,7 @@ export class Framework {
         var _b;
         __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
         this.audioApi.restart();
+        BeetPx.clearCanvas(black_);
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
