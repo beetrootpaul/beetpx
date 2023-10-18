@@ -145,6 +145,7 @@ export class Framework {
     restart() {
         var _b;
         __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
+        this.audioApi.restart();
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }

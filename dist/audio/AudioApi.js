@@ -44,6 +44,16 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f").gain.value = 1;
         __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f").connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
     }
+    restart() {
+        this.stopAllPlaybacks();
+        __classPrivateFieldGet(this, _AudioApi_playbacks, "f").clear();
+        // in case audio was paused
+        __classPrivateFieldSet(this, _AudioApi_isPaused, false, "f");
+        AudioHelpers.unmuteGain(__classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f"), __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, 0);
+        __classPrivateFieldGet(this, _AudioApi_audioContext, "f").resume().catch((err) => {
+            Logger.errorBeetPx(err);
+        });
+    }
     // In some browsers audio should start in result of user interaction (e.g. button click).
     // Since we cannot assure it for every game setup, let' expose a function which tries to
     // resume the AudioContext and call it on every user interaction detected by this framework.

@@ -190,6 +190,8 @@ export class Framework {
   restart() {
     this.#frameNumber = 0;
 
+    this.audioApi.restart();
+
     this.#onStarted?.();
   }
 

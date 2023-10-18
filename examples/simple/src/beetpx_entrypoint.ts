@@ -27,44 +27,15 @@ b_.init(
   let logoPositionBase = v_0_0_;
   let logoPositionOffset = v_0_0_;
 
-  let isMelodyMuted = false;
+  let isMelodyMuted = true;
   let isMusicPaused = false;
 
   b_.setOnStarted(() => {
-    b_.stopAllPlaybacks();
+    isMelodyMuted = true;
+    isMusicPaused = false;
 
-    // b_.playSoundLooped("music_base.wav");
-    // melodyPlaybackId = b_.playSoundLooped("music_melody.wav", isMelodyMuted);
-
-    melodyPlaybackId = b_.playSoundSequence(
-      {
-        intro: [
-          [
-            {
-              url: "music_melody.wav",
-              durationMs: (fullSoundDurationMs) => fullSoundDurationMs / 16,
-            },
-          ],
-          [
-            {
-              url: "music_melody.wav",
-              durationMs: (fullSoundDurationMs) => fullSoundDurationMs / 4,
-            },
-          ],
-        ],
-        loop: [
-          ["music_base.wav", "music_melody.wav"],
-          [
-            {
-              url: "music_melody.wav",
-              durationMs: (fullSoundDurationMs) => fullSoundDurationMs / 16,
-            },
-            "music_base.wav",
-          ],
-        ],
-      },
-      isMelodyMuted,
-    );
+    b_.playSoundLooped("music_base.wav");
+    melodyPlaybackId = b_.playSoundLooped("music_melody.wav", isMelodyMuted);
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = v_0_0_;

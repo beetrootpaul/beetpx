@@ -41,6 +41,22 @@ export class AudioApi {
     this.#pauseFadeNode.connect(this.#globalGainNode);
   }
 
+  restart(): void {
+    this.stopAllPlaybacks();
+    this.#playbacks.clear();
+
+    // in case audio was paused
+    this.#isPaused = false;
+    AudioHelpers.unmuteGain(
+      this.#pauseFadeNode,
+      this.#audioContext.currentTime,
+      0,
+    );
+    this.#audioContext.resume().catch((err) => {
+      Logger.errorBeetPx(err);
+    });
+  }
+
   // In some browsers audio should start in result of user interaction (e.g. button click).
   // Since we cannot assure it for every game setup, let' expose a function which tries to
   // resume the AudioContext and call it on every user interaction detected by this framework.

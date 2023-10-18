@@ -331,6 +331,7 @@ declare class BpxTimer {
 declare class AudioApi {
     #private;
     constructor(assets: Assets, audioContext: AudioContext);
+    restart(): void;
     tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
     playSoundOnce(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
