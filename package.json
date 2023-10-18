@@ -55,6 +55,7 @@
     "docs": "npx open-cli ./docs/index.html"
   },
   "dependencies": {
+    "audio-buffer-utils": "5.1.2",
     "cross-zip": "4.0.0",
     "jquery": "3.7.0",
     "vite": "4.4.6",

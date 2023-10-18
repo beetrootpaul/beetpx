@@ -39,15 +39,6 @@ export class BeetPx {
     static get renderFps() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).renderFps;
     }
-    //
-    // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
-    //
-    static get audioContext() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).audioApi.audioContext;
-    }
-    static get globalGainNode() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).audioApi.globalGainNode;
-    }
 }
 _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {
     if (!__classPrivateFieldGet(this, _a, "f", _BeetPx_framework)) {
@@ -172,32 +163,38 @@ BeetPx.playSoundLooped = (...args) => {
 BeetPx.playSoundSequence = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundSequence(...args);
 };
-BeetPx.pauseAllSounds = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.pauseAllSounds(...args);
+BeetPx.isAudioMuted = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.isAudioMuted(...args);
 };
-BeetPx.resumeAllSounds = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.resumeAllSounds(...args);
+BeetPx.muteAudio = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteAudio(...args);
 };
-BeetPx.stopAllSounds = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllSounds(...args);
+BeetPx.unmuteAudio = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmuteAudio(...args);
 };
-BeetPx.stopSound = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopSound(...args);
+BeetPx.mutePlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.mutePlayback(...args);
 };
-BeetPx.areAllSoundsMuted = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.areAllSoundsMuted(...args);
+BeetPx.unmutePlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmutePlayback(...args);
 };
-BeetPx.muteAllSounds = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteAllSounds(...args);
+BeetPx.pauseAudio = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.pauseAudio(...args);
 };
-BeetPx.unmuteAllSounds = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmuteAllSounds(...args);
+BeetPx.resumeAudio = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.resumeAudio(...args);
 };
-BeetPx.muteSound = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.muteSound(...args);
+BeetPx.stopAllPlaybacks = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllPlaybacks(...args);
 };
-BeetPx.unmuteSound = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmuteSound(...args);
+BeetPx.stopPlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopPlayback(...args);
+};
+BeetPx.__internal__audioContext = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.__internal__audioContext(...args);
+};
+BeetPx.__internal__globalGainNode = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.__internal__globalGainNode(...args);
 };
 //
 // Storage API

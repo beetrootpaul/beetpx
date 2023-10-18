@@ -1,22 +1,24 @@
 import { SoundUrl } from "../Assets";
 
 export type BpxSoundSequence = {
-  // will be played first
-  sequence?: SoundSequenceEntry[];
-  // will be player second, looped
-  sequenceLooped?: SoundSequenceEntry[];
+  intro?: BpxSoundSequenceEntry[];
+  loop?: BpxSoundSequenceEntry[];
 };
 
-export type SoundSequenceEntry = [
+export type BpxSoundSequenceEntry = [
   SoundSequenceEntrySoundMain,
   ...SoundSequenceEntrySoundAdditional[],
 ];
 
-type SoundSequenceEntrySoundMain = {
-  url: SoundUrl;
-  durationMs?: (fullSoundDurationMs: number) => number;
-};
+type SoundSequenceEntrySoundMain =
+  | SoundUrl
+  | {
+      url: SoundUrl;
+      durationMs?: (fullSoundDurationMs: number) => number;
+    };
 
-type SoundSequenceEntrySoundAdditional = {
-  url: SoundUrl;
-};
+type SoundSequenceEntrySoundAdditional =
+  | SoundUrl
+  | {
+      url: SoundUrl;
+    };

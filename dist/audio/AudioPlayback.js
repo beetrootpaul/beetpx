@@ -1,0 +1,46 @@
+var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+};
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _AudioPlayback_audioContext, _AudioPlayback_gainNode;
+import { AudioHelpers } from "./AudioHelpers";
+export class AudioPlayback {
+    constructor(audioContext, target, muteOnStart) {
+        _AudioPlayback_audioContext.set(this, void 0);
+        _AudioPlayback_gainNode.set(this, void 0);
+        __classPrivateFieldSet(this, _AudioPlayback_audioContext, audioContext, "f");
+        __classPrivateFieldSet(this, _AudioPlayback_gainNode, __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").createGain(), "f");
+        __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").gain.value = muteOnStart ? 0 : 1;
+        __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").connect(target);
+    }
+    mute(fadeOutMillis) {
+        AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis);
+    }
+    unmute(fadeInMillis) {
+        AudioHelpers.unmuteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeInMillis);
+    }
+    stop(fadeOutMillis) {
+        AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis, () => {
+            this.stopAllNodes();
+        });
+    }
+    createSourceNode() {
+        return __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").createBufferSource();
+    }
+    connectToMainGainNode(audioNode) {
+        audioNode.connect(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"));
+    }
+    disconnectFromOutput() {
+        __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").disconnect();
+    }
+}
+_AudioPlayback_audioContext = new WeakMap(), _AudioPlayback_gainNode = new WeakMap();
+// start from 1 to avoid a case when someone checks for ID being truthy and gets `false`, because of value `0`
+AudioPlayback.nextPlaybackId = 1;

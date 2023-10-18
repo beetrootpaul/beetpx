@@ -27,13 +27,44 @@ b_.init(
   let logoPositionBase = v_0_0_;
   let logoPositionOffset = v_0_0_;
 
-  let isMelodyMuted = true;
+  let isMelodyMuted = false;
   let isMusicPaused = false;
 
   b_.setOnStarted(() => {
-    b_.stopAllSounds();
-    b_.playSoundLooped("music_base.wav");
-    melodyPlaybackId = b_.playSoundLooped("music_melody.wav", isMelodyMuted);
+    b_.stopAllPlaybacks();
+
+    // b_.playSoundLooped("music_base.wav");
+    // melodyPlaybackId = b_.playSoundLooped("music_melody.wav", isMelodyMuted);
+
+    melodyPlaybackId = b_.playSoundSequence(
+      {
+        intro: [
+          [
+            {
+              url: "music_melody.wav",
+              durationMs: (fullSoundDurationMs) => fullSoundDurationMs / 16,
+            },
+          ],
+          [
+            {
+              url: "music_melody.wav",
+              durationMs: (fullSoundDurationMs) => fullSoundDurationMs / 4,
+            },
+          ],
+        ],
+        loop: [
+          ["music_base.wav", "music_melody.wav"],
+          [
+            {
+              url: "music_melody.wav",
+              durationMs: (fullSoundDurationMs) => fullSoundDurationMs / 16,
+            },
+            "music_base.wav",
+          ],
+        ],
+      },
+      isMelodyMuted,
+    );
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = v_0_0_;
@@ -42,17 +73,17 @@ b_.init(
   b_.setOnUpdate(() => {
     if (b_.wasJustPressed("x")) {
       if (isMelodyMuted) {
-        b_.unmuteSound(melodyPlaybackId, { fadeInMillis: 500 });
+        b_.unmutePlayback(melodyPlaybackId, { fadeInMillis: 500 });
       } else {
-        b_.muteSound(melodyPlaybackId, { fadeOutMillis: 500 });
+        b_.mutePlayback(melodyPlaybackId, { fadeOutMillis: 500 });
       }
       isMelodyMuted = !isMelodyMuted;
     }
     if (b_.wasJustPressed("o")) {
       if (isMusicPaused) {
-        b_.resumeAllSounds();
+        b_.resumeAudio();
       } else {
-        b_.pauseAllSounds();
+        b_.pauseAudio();
       }
       isMusicPaused = !isMusicPaused;
     }

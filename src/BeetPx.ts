@@ -46,18 +46,6 @@ export class BeetPx {
   }
 
   //
-  // field-like getters, the ones that shouldn't be needed in theory, but in practice they are ¯\_(ツ)_/¯
-  //
-
-  static get audioContext(): AudioApi["audioContext"] {
-    return this.#tryGetFramework().audioApi.audioContext;
-  }
-
-  static get globalGainNode(): AudioApi["globalGainNode"] {
-    return this.#tryGetFramework().audioApi.globalGainNode;
-  }
-
-  //
   // lifecycle methods
   //
 
@@ -217,40 +205,52 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.playSoundSequence(...args);
   };
 
-  static pauseAllSounds: AudioApi["pauseAllSounds"] = (...args) => {
-    return this.#tryGetFramework().audioApi.pauseAllSounds(...args);
+  static isAudioMuted: AudioApi["isAudioMuted"] = (...args) => {
+    return this.#tryGetFramework().audioApi.isAudioMuted(...args);
   };
 
-  static resumeAllSounds: AudioApi["resumeAllSounds"] = (...args) => {
-    return this.#tryGetFramework().audioApi.resumeAllSounds(...args);
+  static muteAudio: AudioApi["muteAudio"] = (...args) => {
+    return this.#tryGetFramework().audioApi.muteAudio(...args);
   };
 
-  static stopAllSounds: AudioApi["stopAllSounds"] = (...args) => {
-    return this.#tryGetFramework().audioApi.stopAllSounds(...args);
+  static unmuteAudio: AudioApi["unmuteAudio"] = (...args) => {
+    return this.#tryGetFramework().audioApi.unmuteAudio(...args);
   };
 
-  static stopSound: AudioApi["stopSound"] = (...args) => {
-    return this.#tryGetFramework().audioApi.stopSound(...args);
+  static mutePlayback: AudioApi["mutePlayback"] = (...args) => {
+    return this.#tryGetFramework().audioApi.mutePlayback(...args);
   };
 
-  static areAllSoundsMuted: AudioApi["areAllSoundsMuted"] = (...args) => {
-    return this.#tryGetFramework().audioApi.areAllSoundsMuted(...args);
+  static unmutePlayback: AudioApi["unmutePlayback"] = (...args) => {
+    return this.#tryGetFramework().audioApi.unmutePlayback(...args);
   };
 
-  static muteAllSounds: AudioApi["muteAllSounds"] = (...args) => {
-    return this.#tryGetFramework().audioApi.muteAllSounds(...args);
+  static pauseAudio: AudioApi["pauseAudio"] = (...args) => {
+    return this.#tryGetFramework().audioApi.pauseAudio(...args);
   };
 
-  static unmuteAllSounds: AudioApi["unmuteAllSounds"] = (...args) => {
-    return this.#tryGetFramework().audioApi.unmuteAllSounds(...args);
+  static resumeAudio: AudioApi["resumeAudio"] = (...args) => {
+    return this.#tryGetFramework().audioApi.resumeAudio(...args);
   };
 
-  static muteSound: AudioApi["muteSound"] = (...args) => {
-    return this.#tryGetFramework().audioApi.muteSound(...args);
+  static stopAllPlaybacks: AudioApi["stopAllPlaybacks"] = (...args) => {
+    return this.#tryGetFramework().audioApi.stopAllPlaybacks(...args);
   };
 
-  static unmuteSound: AudioApi["unmuteSound"] = (...args) => {
-    return this.#tryGetFramework().audioApi.unmuteSound(...args);
+  static stopPlayback: AudioApi["stopPlayback"] = (...args) => {
+    return this.#tryGetFramework().audioApi.stopPlayback(...args);
+  };
+
+  static __internal__audioContext: AudioApi["__internal__audioContext"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().audioApi.__internal__audioContext(...args);
+  };
+
+  static __internal__globalGainNode: AudioApi["__internal__globalGainNode"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().audioApi.__internal__globalGainNode(...args);
   };
 
   //
