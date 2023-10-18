@@ -141,6 +141,11 @@ declare class BpxSolidColor implements BpxColor {
     asRgbCssHex(): string;
     static fromRgbCssHex(cssHex: string): BpxSolidColor;
 }
+declare const black_: BpxSolidColor;
+declare const white_: BpxSolidColor;
+declare const red_: BpxSolidColor;
+declare const green_: BpxSolidColor;
+declare const blue_: BpxSolidColor;
 declare class BpxCompositeColor implements BpxColor {
     readonly id: BpxColorId;
     readonly primary: BpxSolidColor | BpxTransparentColor;
@@ -492,4 +497,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
