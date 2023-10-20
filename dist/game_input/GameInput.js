@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GameInput_specializedGameInputs, _GameInput_wasAnyEventObserved;
+var _GameInput_specializedGameInputs, _GameInput_eventsCapturesInLastUpdate;
 import { Button } from "./Button";
 import { Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
@@ -19,7 +19,7 @@ import { TouchGameInput } from "./TouchGameInput";
 export class GameInput {
     constructor(params) {
         _GameInput_specializedGameInputs.set(this, void 0);
-        _GameInput_wasAnyEventObserved.set(this, false);
+        _GameInput_eventsCapturesInLastUpdate.set(this, new Set());
         __classPrivateFieldSet(this, _GameInput_specializedGameInputs, [
             new MouseGameInput({
                 muteButtonsSelector: params.muteButtonsSelector,
@@ -53,6 +53,7 @@ export class GameInput {
         for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
             sgi.update(events);
         }
+        __classPrivateFieldSet(this, _GameInput_eventsCapturesInLastUpdate, events, "f");
         if (!params.skipGameButtons) {
             this.gameButtons.update(events);
         }
@@ -63,5 +64,8 @@ export class GameInput {
         this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
         return events.size > 0;
     }
+    __internal__capturedEvents() {
+        return __classPrivateFieldGet(this, _GameInput_eventsCapturesInLastUpdate, "f");
+    }
 }
-_GameInput_specializedGameInputs = new WeakMap(), _GameInput_wasAnyEventObserved = new WeakMap();
+_GameInput_specializedGameInputs = new WeakMap(), _GameInput_eventsCapturesInLastUpdate = new WeakMap();

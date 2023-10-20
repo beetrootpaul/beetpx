@@ -1,4 +1,4 @@
-# BeetPx / examples / performance-testing
+# BeetPx / examples / input-tester
 
 ```
 npm install

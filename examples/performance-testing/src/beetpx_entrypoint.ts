@@ -45,6 +45,7 @@ b_.init(
   },
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
+    // TODO: this call is probably no longer needed, since handled by BeetPx internally
     b_.stopAllPlaybacks();
     b_.playSoundLooped("music_base.wav");
     b_.playSoundLooped("music_melody.wav");

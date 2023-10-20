@@ -92,6 +92,9 @@ BeetPx.wasJustPressed = (...args) => {
 BeetPx.wasJustReleased = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustReleased(...args);
 };
+BeetPx.__internal__capturedEvents = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.__internal__capturedEvents(...args);
+};
 //
 // Draw API
 //

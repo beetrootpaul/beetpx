@@ -33,7 +33,7 @@ export class GameInput {
   readonly buttonFrameByFrameToggle: Button;
   readonly buttonFrameByFrameStep: Button;
 
-  #wasAnyEventObserved: boolean = false;
+  #eventsCapturesInLastUpdate: Set<BpxGameInputEvent> = new Set();
 
   constructor(params: {
     visibleTouchButtons: BpxButtonName[];
@@ -79,6 +79,8 @@ export class GameInput {
       sgi.update(events);
     }
 
+    this.#eventsCapturesInLastUpdate = events;
+
     if (!params.skipGameButtons) {
       this.gameButtons.update(events);
     }
@@ -90,5 +92,9 @@ export class GameInput {
     this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
 
     return events.size > 0;
+  }
+
+  __internal__capturedEvents(): Set<BpxGameInputEvent> {
+    return this.#eventsCapturesInLastUpdate;
   }
 }

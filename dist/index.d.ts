@@ -307,6 +307,7 @@ declare class GameInput {
     update(params: {
         skipGameButtons: boolean;
     }): boolean;
+    __internal__capturedEvents(): Set<BpxGameInputEvent>;
 }
 
 type BpxButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
@@ -441,6 +442,7 @@ declare class BeetPx {
     static setRepeating: Buttons["setRepeating"];
     static wasJustPressed: Buttons["wasJustPressed"];
     static wasJustReleased: Buttons["wasJustReleased"];
+    static __internal__capturedEvents: GameInput["__internal__capturedEvents"];
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setClippingRegion: DrawApi["setClippingRegion"];
     static removeClippingRegion: DrawApi["removeClippingRegion"];

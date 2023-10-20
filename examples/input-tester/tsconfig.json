@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node16",
+    "target": "ES2020",
+    "noEmit": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true
+  },
+  "include": [
+    "./src",
+    "../../src/audio-buffer-utils.d.ts"
+  ]
+}
