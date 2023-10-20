@@ -285,7 +285,7 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
-type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_x" | "button_o" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
+type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 declare class GameInput {
     #private;
     readonly gameButtons: Buttons;
@@ -309,7 +309,7 @@ declare class GameInput {
     }): boolean;
 }
 
-type BpxButtonName = "left" | "right" | "up" | "down" | "o" | "x" | "menu";
+type BpxButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
 declare class Buttons {
     #private;
     update(events: Set<BpxGameInputEvent>): void;

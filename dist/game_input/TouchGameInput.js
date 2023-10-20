@@ -13,8 +13,8 @@ export class TouchGameInput {
             ["button_right", []],
             ["button_up", []],
             ["button_down", []],
-            ["button_o", []],
-            ["button_x", []],
+            ["button_a", []],
+            ["button_b", []],
             ["button_menu", []],
         ]));
         _TouchGameInput_eventsSinceLastUpdate.set(this, new Set());
@@ -96,14 +96,14 @@ TouchGameInput.mapping = [
         selector: HtmlTemplate.selectors.controlsDown,
     },
     {
-        event: "button_o",
-        button: "o",
-        selector: HtmlTemplate.selectors.controlsO,
+        event: "button_a",
+        button: "a",
+        selector: HtmlTemplate.selectors.controlsA,
     },
     {
-        event: "button_x",
-        button: "x",
-        selector: HtmlTemplate.selectors.controlsX,
+        event: "button_b",
+        button: "b",
+        selector: HtmlTemplate.selectors.controlsB,
     },
     {
         event: "button_menu",

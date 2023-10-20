@@ -6,16 +6,15 @@ import { MouseGameInput } from "./MouseGameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 import { TouchGameInput } from "./TouchGameInput";
 
-// TODO: separate events available to pass as param for the continuous ones and for the fire once ones
+// TODO: inform game whether keyboard or gamepad was touched last (add some "origin" prop to events maybe?)
 export type BpxGameInputEvent =
   | null
   | "button_left"
   | "button_right"
   | "button_up"
   | "button_down"
-  // TODO: consider moving towards Z/X instead of O/X
-  | "button_x"
-  | "button_o"
+  | "button_a"
+  | "button_b"
   | "button_menu"
   | "mute_unmute_toggle"
   | "full_screen"

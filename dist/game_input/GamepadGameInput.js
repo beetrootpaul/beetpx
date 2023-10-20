@@ -12,10 +12,10 @@ export class GamepadGameInput {
             [12, "button_up"],
             [13, "button_down"],
             //
-            [1, "button_o"],
-            [5, "button_o"],
-            [2, "button_x"],
-            [3, "button_x"],
+            [2, "button_a"],
+            [3, "button_a"],
+            [1, "button_b"],
+            [5, "button_b"],
             //
             [8, "button_menu"],
             [16, "button_menu"],

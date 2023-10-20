@@ -11,21 +11,24 @@ export class KeyboardGameInput implements SpecializedGameInput {
     ["ArrowUp", "button_up"],
     ["ArrowDown", "button_down"],
 
-    ["a", "button_left"],
-    ["A", "button_left"],
-    ["d", "button_right"],
-    ["D", "button_right"],
     ["w", "button_up"],
     ["W", "button_up"],
     ["s", "button_down"],
     ["S", "button_down"],
+    ["a", "button_left"],
+    ["A", "button_left"],
+    ["d", "button_right"],
+    ["D", "button_right"],
 
-    ["x", "button_x"],
-    ["X", "button_x"],
+    ["j", "button_a"],
+    ["J", "button_a"],
+    ["k", "button_b"],
+    ["K", "button_b"],
 
-    // TODO: what about different keyboard layouts where "z" is not on the left from "x"?
-    ["z", "button_o"],
-    ["Z", "button_o"],
+    ["c", "button_a"],
+    ["C", "button_a"],
+    ["x", "button_b"],
+    ["x", "button_b"],
 
     ["Escape", "button_menu"],
     ["p", "button_menu"],

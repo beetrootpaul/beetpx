@@ -4,7 +4,7 @@ b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: 30,
-    visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
+    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
@@ -42,7 +42,7 @@ b_.init(
   });
 
   b_.setOnUpdate(() => {
-    if (b_.wasJustPressed("x")) {
+    if (b_.wasJustPressed("a")) {
       if (isMelodyMuted) {
         b_.unmutePlayback(melodyPlaybackId, { fadeInMillis: 500 });
       } else {
@@ -50,7 +50,7 @@ b_.init(
       }
       isMelodyMuted = !isMelodyMuted;
     }
-    if (b_.wasJustPressed("o")) {
+    if (b_.wasJustPressed("b")) {
       if (isMusicPaused) {
         b_.resumeAudio();
       } else {
