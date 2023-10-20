@@ -45,7 +45,7 @@ b_.init(
   },
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
-    b_.stopAllSounds();
+    b_.stopAllPlaybacks();
     b_.playSoundLooped("music_base.wav");
     b_.playSoundLooped("music_melody.wav");
 

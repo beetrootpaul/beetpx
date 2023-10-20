@@ -27,8 +27,11 @@ export { BpxEasing, type BpxEasingFn } from "./Easing";
 export { BpxSprite } from "./Sprite";
 export { BpxUtils } from "./Utils";
 export { BpxVector2d } from "./Vector2d";
-export { type BpxAudioPlaybackId } from "./audio/AudioApi";
-export { type BpxSoundSequence } from "./audio/SoundSequence";
+export { type BpxAudioPlaybackId } from "./audio/AudioPlayback";
+export {
+  type BpxSoundSequence,
+  type BpxSoundSequenceEntry,
+} from "./audio/SoundSequence";
 export { BpxClippingRegion } from "./draw_api/ClippingRegion";
 export {
   type BpxCanvasSnapshot,
@@ -43,7 +46,7 @@ export { BpxTimer } from "./misc/Timer";
 export { BeetPx } from "./BeetPx";
 
 export { b_ } from "./BeetPx";
-export { transparent_ } from "./Color";
+export { black_, blue_, green_, red_, transparent_, white_ } from "./Color";
 export { spr_ } from "./Sprite";
 export { u_ } from "./Utils";
 export { v_, v_0_0_, v_1_1_ } from "./Vector2d";

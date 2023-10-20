@@ -41,6 +41,11 @@ export class BpxSolidColor {
         return new BpxSolidColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
     }
 }
+export const black_ = BpxSolidColor.fromRgbCssHex("#000000");
+export const white_ = BpxSolidColor.fromRgbCssHex("#ffffff");
+export const red_ = BpxSolidColor.fromRgbCssHex("#ff0000");
+export const green_ = BpxSolidColor.fromRgbCssHex("#00ff00");
+export const blue_ = BpxSolidColor.fromRgbCssHex("#0000ff");
 export class BpxCompositeColor {
     constructor(primary, secondary) {
         this.primary = primary;

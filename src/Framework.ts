@@ -1,6 +1,7 @@
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { BpxSolidColor } from "./Color";
+import { BeetPx } from "./BeetPx";
+import { black_, BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { FullScreen } from "./FullScreen";
@@ -190,6 +191,10 @@ export class Framework {
   restart() {
     this.#frameNumber = 0;
 
+    this.audioApi.restart();
+
+    BeetPx.clearCanvas(black_);
+
     this.#onStarted?.();
   }
 
@@ -227,10 +232,10 @@ export class Framework {
           this.#fullScreen.toggle();
         }
         if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
-          if (this.audioApi.areAllSoundsMuted()) {
-            this.audioApi.unmuteAllSounds();
+          if (this.audioApi.isAudioMuted()) {
+            this.audioApi.unmuteAudio();
           } else {
-            this.audioApi.muteAllSounds();
+            this.audioApi.muteAudio();
           }
         }
         if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {

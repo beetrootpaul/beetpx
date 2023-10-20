@@ -31,7 +31,9 @@ b_.init(
   let isMusicPaused = false;
 
   b_.setOnStarted(() => {
-    b_.stopAllSounds();
+    isMelodyMuted = true;
+    isMusicPaused = false;
+
     b_.playSoundLooped("music_base.wav");
     melodyPlaybackId = b_.playSoundLooped("music_melody.wav", isMelodyMuted);
 
@@ -42,17 +44,17 @@ b_.init(
   b_.setOnUpdate(() => {
     if (b_.wasJustPressed("x")) {
       if (isMelodyMuted) {
-        b_.unmuteSound(melodyPlaybackId, { fadeInMillis: 500 });
+        b_.unmutePlayback(melodyPlaybackId, { fadeInMillis: 500 });
       } else {
-        b_.muteSound(melodyPlaybackId, { fadeOutMillis: 500 });
+        b_.mutePlayback(melodyPlaybackId, { fadeOutMillis: 500 });
       }
       isMelodyMuted = !isMelodyMuted;
     }
     if (b_.wasJustPressed("o")) {
       if (isMusicPaused) {
-        b_.resumeAllSounds();
+        b_.resumeAudio();
       } else {
-        b_.pauseAllSounds();
+        b_.pauseAudio();
       }
       isMusicPaused = !isMusicPaused;
     }

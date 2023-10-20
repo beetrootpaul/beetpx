@@ -59,6 +59,12 @@ export class BpxSolidColor implements BpxColor {
   }
 }
 
+export const black_ = BpxSolidColor.fromRgbCssHex("#000000");
+export const white_ = BpxSolidColor.fromRgbCssHex("#ffffff");
+export const red_ = BpxSolidColor.fromRgbCssHex("#ff0000");
+export const green_ = BpxSolidColor.fromRgbCssHex("#00ff00");
+export const blue_ = BpxSolidColor.fromRgbCssHex("#0000ff");
+
 export class BpxCompositeColor implements BpxColor {
   readonly id: BpxColorId;
 

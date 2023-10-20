@@ -25,7 +25,6 @@ export class KeyboardGameInput {
             ["z", "button_o"],
             ["Z", "button_o"],
             ["Escape", "button_menu"],
-            ["Enter", "button_menu"],
             ["p", "button_menu"],
             ["P", "button_menu"],
             ["m", "mute_unmute_toggle"],

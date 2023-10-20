@@ -141,6 +141,11 @@ declare class BpxSolidColor implements BpxColor {
     asRgbCssHex(): string;
     static fromRgbCssHex(cssHex: string): BpxSolidColor;
 }
+declare const black_: BpxSolidColor;
+declare const white_: BpxSolidColor;
+declare const red_: BpxSolidColor;
+declare const green_: BpxSolidColor;
+declare const blue_: BpxSolidColor;
 declare class BpxCompositeColor implements BpxColor {
     readonly id: BpxColorId;
     readonly primary: BpxSolidColor | BpxTransparentColor;
@@ -246,54 +251,23 @@ declare class BpxUtils {
 }
 declare const u_: typeof BpxUtils;
 
+type BpxAudioPlaybackId = number;
+
 type BpxSoundSequence = {
-    sequence?: SoundSequenceEntry[];
-    sequenceLooped?: SoundSequenceEntry[];
+    intro?: BpxSoundSequenceEntry[];
+    loop?: BpxSoundSequenceEntry[];
 };
-type SoundSequenceEntry = [
+type BpxSoundSequenceEntry = [
     SoundSequenceEntrySoundMain,
     ...SoundSequenceEntrySoundAdditional[]
 ];
-type SoundSequenceEntrySoundMain = {
+type SoundSequenceEntrySoundMain = SoundUrl | {
     url: SoundUrl;
     durationMs?: (fullSoundDurationMs: number) => number;
 };
-type SoundSequenceEntrySoundAdditional = {
+type SoundSequenceEntrySoundAdditional = SoundUrl | {
     url: SoundUrl;
 };
-
-type BpxAudioPlaybackId = number;
-declare class AudioApi {
-    #private;
-    get audioContext(): AudioContext;
-    get globalGainNode(): GainNode;
-    constructor(assets: Assets, audioContext: AudioContext);
-    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
-    areAllSoundsMuted(): boolean;
-    muteAllSounds(opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmuteAllSounds(opts?: {
-        fadeInMillis?: number;
-    }): void;
-    muteSound(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmuteSound(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeInMillis?: number;
-    }): void;
-    pauseAllSounds(): void;
-    resumeAllSounds(): void;
-    stopAllSounds(opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    stopSound(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    playSoundOnce(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
-    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
-    playSoundSequence(soundSequence: BpxSoundSequence): BpxAudioPlaybackId;
-}
 
 declare class BpxClippingRegion {
     #private;
@@ -359,6 +333,39 @@ declare class BpxTimer {
     restart(): void;
 }
 
+declare class AudioApi {
+    #private;
+    constructor(assets: Assets, audioContext: AudioContext);
+    restart(): void;
+    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
+    playSoundOnce(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
+    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
+    playSoundSequence(soundSequence: BpxSoundSequence, muteOnStart?: boolean): BpxAudioPlaybackId;
+    isAudioMuted(): boolean;
+    muteAudio(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteAudio(opts?: {
+        fadeInMillis?: number;
+    }): void;
+    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeInMillis?: number;
+    }): void;
+    pauseAudio(): void;
+    resumeAudio(): void;
+    stopAllPlaybacks(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    __internal__audioContext(): AudioContext;
+    __internal__globalGainNode(): GainNode;
+}
+
 declare class DebugMode {
     #private;
     static get enabled(): boolean;
@@ -422,8 +429,6 @@ declare class BeetPx {
      */
     static get frameNumber(): Framework["frameNumber"];
     static get renderFps(): Framework["renderFps"];
-    static get audioContext(): AudioApi["audioContext"];
-    static get globalGainNode(): AudioApi["globalGainNode"];
     static setOnStarted: Framework["setOnStarted"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
@@ -457,15 +462,17 @@ declare class BeetPx {
     static playSoundOnce: AudioApi["playSoundOnce"];
     static playSoundLooped: AudioApi["playSoundLooped"];
     static playSoundSequence: AudioApi["playSoundSequence"];
-    static pauseAllSounds: AudioApi["pauseAllSounds"];
-    static resumeAllSounds: AudioApi["resumeAllSounds"];
-    static stopAllSounds: AudioApi["stopAllSounds"];
-    static stopSound: AudioApi["stopSound"];
-    static areAllSoundsMuted: AudioApi["areAllSoundsMuted"];
-    static muteAllSounds: AudioApi["muteAllSounds"];
-    static unmuteAllSounds: AudioApi["unmuteAllSounds"];
-    static muteSound: AudioApi["muteSound"];
-    static unmuteSound: AudioApi["unmuteSound"];
+    static isAudioMuted: AudioApi["isAudioMuted"];
+    static muteAudio: AudioApi["muteAudio"];
+    static unmuteAudio: AudioApi["unmuteAudio"];
+    static mutePlayback: AudioApi["mutePlayback"];
+    static unmutePlayback: AudioApi["unmutePlayback"];
+    static pauseAudio: AudioApi["pauseAudio"];
+    static resumeAudio: AudioApi["resumeAudio"];
+    static stopAllPlaybacks: AudioApi["stopAllPlaybacks"];
+    static stopPlayback: AudioApi["stopPlayback"];
+    static __internal__audioContext: AudioApi["__internal__audioContext"];
+    static __internal__globalGainNode: AudioApi["__internal__globalGainNode"];
     static savePersistedState: StorageApi["savePersistedState"];
     static loadPersistedState: StorageApi["loadPersistedState"];
     static clearPersistedState: StorageApi["clearPersistedState"];
@@ -490,4 +497,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
