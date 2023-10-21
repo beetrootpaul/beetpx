@@ -33,12 +33,12 @@ export class StandardView {
     k_right: spr(152, 8, 5, 6),
     //
     k_c: spr(128, 16, 5, 6),
-    k_j: spr(136, 16, 5, 6),
+    k_k: spr(136, 16, 5, 6),
     g_a: spr(144, 16, 5, 6),
     g_y: spr(152, 16, 5, 6),
     //
     k_x: spr(128, 24, 5, 6),
-    k_k: spr(136, 24, 5, 6),
+    k_l: spr(136, 24, 5, 6),
     g_b: spr(144, 24, 5, 6),
     g_x: spr(152, 24, 5, 6),
     //
@@ -201,26 +201,26 @@ export class StandardView {
       b_.sprite(ps.g_stick_down_right, v_(97, 16));
     }
     if (ip.a) {
-      b_.sprite(ps.k_c, v_(41, 41));
-      b_.sprite(ps.k_j, v_(50, 41));
-      b_.sprite(ps.g_a, v_(72, 41));
-      b_.sprite(ps.g_y, v_(80, 41));
-      b_.sprite(ps.g_ps_x, v_(93, 41));
-      b_.sprite(ps.g_ps_square, v_(101, 41));
+      b_.sprite(ps.k_c, v_(37, 40));
+      b_.sprite(ps.k_k, v_(49, 40));
+      b_.sprite(ps.g_a, v_(73, 40));
+      b_.sprite(ps.g_y, v_(84, 40));
+      b_.sprite(ps.g_ps_x, v_(100, 40));
+      b_.sprite(ps.g_ps_square, v_(111, 40));
     }
     if (ip.b) {
-      b_.sprite(ps.k_x, v_(41, 52));
-      b_.sprite(ps.k_k, v_(50, 52));
-      b_.sprite(ps.g_b, v_(72, 52));
-      b_.sprite(ps.g_x, v_(80, 52));
-      b_.sprite(ps.g_ps_circle, v_(93, 52));
-      b_.sprite(ps.g_ps_triangle, v_(101, 52));
+      b_.sprite(ps.k_x, v_(37, 51));
+      b_.sprite(ps.k_l, v_(49, 51));
+      b_.sprite(ps.g_b, v_(73, 51));
+      b_.sprite(ps.g_x, v_(84, 51));
+      b_.sprite(ps.g_ps_circle, v_(100, 51));
+      b_.sprite(ps.g_ps_triangle, v_(111, 51));
     }
     if (ip.menu) {
-      b_.sprite(ps.k_esc, v_(24, 65));
-      b_.sprite(ps.k_p, v_(41, 65));
-      b_.sprite(ps.g_menu, v_(80, 65));
-      b_.sprite(ps.g_ps_menu, v_(93, 65));
+      b_.sprite(ps.k_esc, v_(17, 65));
+      b_.sprite(ps.k_p, v_(37, 65));
+      b_.sprite(ps.g_menu, v_(84, 65));
+      b_.sprite(ps.g_ps_menu, v_(100, 65));
     }
     if (ip.muteUnmute) {
       b_.sprite(ps.k_m, v_(5, 85));
