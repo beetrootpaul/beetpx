@@ -87,7 +87,7 @@ export class BeetPx {
   };
 
   //
-  // Buttons
+  // Game Input & Buttons
   //
 
   static isPressed: Buttons["isPressed"] = (...args) => {
@@ -108,6 +108,12 @@ export class BeetPx {
     return this.#tryGetFramework().gameInput.gameButtons.wasJustReleased(
       ...args,
     );
+  };
+
+  static mostRecentInputMethods: GameInput["mostRecentInputMethods"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().gameInput.mostRecentInputMethods(...args);
   };
 
   static __internal__capturedEvents: GameInput["__internal__capturedEvents"] = (

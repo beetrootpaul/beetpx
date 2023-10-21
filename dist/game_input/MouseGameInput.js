@@ -12,6 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _MouseGameInput_muteButtonsSelector, _MouseGameInput_fullScreenButtonsSelector, _MouseGameInput_eventsSinceLastUpdate;
 export class MouseGameInput {
     constructor(params) {
+        this.inputMethod = "mouse";
         _MouseGameInput_muteButtonsSelector.set(this, void 0);
         _MouseGameInput_fullScreenButtonsSelector.set(this, void 0);
         _MouseGameInput_eventsSinceLastUpdate.set(this, new Set());
@@ -35,10 +36,13 @@ export class MouseGameInput {
         });
     }
     update(eventsCollector) {
+        let anythingAdded = false;
         for (const event of __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f")) {
             eventsCollector.add(event);
+            anythingAdded = true;
         }
         __classPrivateFieldGet(this, _MouseGameInput_eventsSinceLastUpdate, "f").clear();
+        return anythingAdded;
     }
 }
 _MouseGameInput_muteButtonsSelector = new WeakMap(), _MouseGameInput_fullScreenButtonsSelector = new WeakMap(), _MouseGameInput_eventsSinceLastUpdate = new WeakMap();

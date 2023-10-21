@@ -1,4 +1,4 @@
-import { BpxGameInputEvent } from "./GameInput";
+import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 /*
@@ -76,6 +76,8 @@ const ds = {
 };
 
 export class GamepadGameInput implements SpecializedGameInput {
+  inputMethod: GameInputMethod = "gamepad";
+
   readonly buttonMapping: Map<number, BpxGameInputEvent> = new Map<
     number,
     BpxGameInputEvent
@@ -124,7 +126,9 @@ export class GamepadGameInput implements SpecializedGameInput {
     // nothing to be done here
   }
 
-  update(eventsCollector: Set<BpxGameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): boolean {
+    let anythingAdded = false;
+
     navigator.getGamepads().forEach((gamepad) => {
       if (gamepad) {
         gamepad.buttons.forEach((button, buttonIndex) => {
@@ -132,10 +136,11 @@ export class GamepadGameInput implements SpecializedGameInput {
             const gameInputEvent = this.buttonMapping.get(buttonIndex);
             if (gameInputEvent) {
               eventsCollector.add(gameInputEvent);
+              anythingAdded = true;
             }
           }
         });
-        gamepad.axes.forEach((axis, axisIndex, x) => {
+        gamepad.axes.forEach((axis, axisIndex) => {
           if (axisIndex === ds.dpadAxisIndex) {
             this.#dualSenseDpadValueRanges.forEach(
               ([min, max, gameInputEvent]) => {
@@ -144,6 +149,7 @@ export class GamepadGameInput implements SpecializedGameInput {
                   axis < max + ds.dpadRangeThreshold
                 ) {
                   eventsCollector.add(gameInputEvent);
+                  anythingAdded = true;
                 }
               },
             );
@@ -154,11 +160,14 @@ export class GamepadGameInput implements SpecializedGameInput {
               );
               if (gameInputEvent) {
                 eventsCollector.add(gameInputEvent);
+                anythingAdded = true;
               }
             }
           }
         });
       }
     });
+
+    return anythingAdded;
   }
 }

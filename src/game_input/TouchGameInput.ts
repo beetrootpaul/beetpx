@@ -1,9 +1,11 @@
 import { HtmlTemplate } from "../HtmlTemplate";
 import { BpxButtonName } from "./Buttons";
-import { BpxGameInputEvent } from "./GameInput";
+import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class TouchGameInput implements SpecializedGameInput {
+  inputMethod: GameInputMethod = "touch";
+
   static mapping: Array<{
     event: BpxGameInputEvent;
     button: BpxButtonName;
@@ -115,9 +117,14 @@ export class TouchGameInput implements SpecializedGameInput {
     }
   }
 
-  update(eventsCollector: Set<BpxGameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): boolean {
+    let anythingAdded = false;
+
     for (const event of this.#eventsSinceLastUpdate) {
       eventsCollector.add(event);
+      anythingAdded = true;
     }
+
+    return anythingAdded;
   }
 }

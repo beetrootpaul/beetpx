@@ -78,6 +78,7 @@ const ds = {
 };
 export class GamepadGameInput {
     constructor() {
+        this.inputMethod = "gamepad";
         this.buttonMapping = new Map([
             [0, "button_a"],
             [1, "button_a"],
@@ -117,6 +118,7 @@ export class GamepadGameInput {
         // nothing to be done here
     }
     update(eventsCollector) {
+        let anythingAdded = false;
         navigator.getGamepads().forEach((gamepad) => {
             if (gamepad) {
                 gamepad.buttons.forEach((button, buttonIndex) => {
@@ -124,15 +126,17 @@ export class GamepadGameInput {
                         const gameInputEvent = this.buttonMapping.get(buttonIndex);
                         if (gameInputEvent) {
                             eventsCollector.add(gameInputEvent);
+                            anythingAdded = true;
                         }
                     }
                 });
-                gamepad.axes.forEach((axis, axisIndex, x) => {
+                gamepad.axes.forEach((axis, axisIndex) => {
                     if (axisIndex === ds.dpadAxisIndex) {
                         __classPrivateFieldGet(this, _GamepadGameInput_dualSenseDpadValueRanges, "f").forEach(([min, max, gameInputEvent]) => {
                             if (axis > min - ds.dpadRangeThreshold &&
                                 axis < max + ds.dpadRangeThreshold) {
                                 eventsCollector.add(gameInputEvent);
+                                anythingAdded = true;
                             }
                         });
                     }
@@ -141,12 +145,14 @@ export class GamepadGameInput {
                             const gameInputEvent = __classPrivateFieldGet(this, _GamepadGameInput_axisMapping, "f").get(100 * axisIndex + Math.sign(axis));
                             if (gameInputEvent) {
                                 eventsCollector.add(gameInputEvent);
+                                anythingAdded = true;
                             }
                         }
                     }
                 });
             }
         });
+        return anythingAdded;
     }
 }
 _GamepadGameInput_axisMapping = new WeakMap(), _GamepadGameInput_dualSenseDpadValueRanges = new WeakMap();

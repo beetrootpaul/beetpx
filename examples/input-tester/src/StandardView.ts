@@ -10,6 +10,12 @@ import {
 const spr = spr_("spritesheet.png");
 
 const lime = BpxSolidColor.fromRgbCssHex("#a8e72e");
+const pink = BpxSolidColor.fromRgbCssHex("#ff77a8");
+const yellow = BpxSolidColor.fromRgbCssHex("#f3ef7d");
+const darkGreen = BpxSolidColor.fromRgbCssHex("#125359");
+const darkBlue = BpxSolidColor.fromRgbCssHex("#1d2b53");
+const lightGrey = BpxSolidColor.fromRgbCssHex("#c2c3c7");
+const darkGrey = BpxSolidColor.fromRgbCssHex("#83769c");
 
 export class StandardView {
   // ps = pressed sprite
@@ -90,6 +96,8 @@ export class StandardView {
     frameByFrameStep: false,
   };
 
+  private highlightKeyboard: boolean = true;
+
   update(): void {
     const { ip } = this;
 
@@ -109,16 +117,49 @@ export class StandardView {
     ip.frameByFrameStep = b_
       .__internal__capturedEvents()
       .has("frame_by_frame_step");
+
+    if (b_.mostRecentInputMethods().has("keyboard")) {
+      this.highlightKeyboard = true;
+    } else if (b_.mostRecentInputMethods().has("gamepad")) {
+      this.highlightKeyboard = false;
+    }
   }
 
   draw() {
     const { ip, ps } = this;
 
-    // background
+    // background: base
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
 
+    // background: keyboard vs gamepad
+    let prevMapping = b_.mapSpriteColors([
+      {
+        from: this.highlightKeyboard ? pink : yellow,
+        to: this.highlightKeyboard ? darkGreen : darkBlue,
+      },
+    ]);
+    b_.setClippingRegion(v_(0, 0), v_(128, 3));
+    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.setClippingRegion(v_(126, 0), v_(126, 128));
+    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.setClippingRegion(v_(0, 126), v_(128, 128));
+    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.setClippingRegion(v_(0, 0), v_(2, 128));
+    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.setClippingRegion(v_(64, 77), v_(64, 6));
+    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.mapSpriteColors(prevMapping);
+    prevMapping = b_.mapSpriteColors([{ from: lightGrey, to: darkGrey }]);
+    b_.setClippingRegion(
+      this.highlightKeyboard ? v_(110, 3) : v_(3, 3),
+      v_(15, 11),
+    );
+    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.removeClippingRegion();
+    b_.mapSpriteColors(prevMapping);
+
     // pressed buttons
-    const prevMapping = b_.mapSpriteColors([{ from: lime, to: transparent_ }]);
+    prevMapping = b_.mapSpriteColors([{ from: lime, to: transparent_ }]);
     if (ip.up) {
       b_.sprite(ps.k_w, v_(21, 17));
       b_.sprite(ps.k_up, v_(47, 17));

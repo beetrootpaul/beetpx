@@ -8,6 +8,7 @@ import { HtmlTemplate } from "../HtmlTemplate";
 export class TouchGameInput {
     constructor(params) {
         _TouchGameInput_instances.add(this);
+        this.inputMethod = "touch";
         _TouchGameInput_eventsAndButtons.set(this, new Map([
             ["button_left", []],
             ["button_right", []],
@@ -47,9 +48,12 @@ export class TouchGameInput {
         });
     }
     update(eventsCollector) {
+        let anythingAdded = false;
         for (const event of __classPrivateFieldGet(this, _TouchGameInput_eventsSinceLastUpdate, "f")) {
             eventsCollector.add(event);
+            anythingAdded = true;
         }
+        return anythingAdded;
     }
 }
 _TouchGameInput_eventsAndButtons = new WeakMap(), _TouchGameInput_eventsSinceLastUpdate = new WeakMap(), _TouchGameInput_instances = new WeakSet(), _TouchGameInput_handleTouchEvent = function _TouchGameInput_handleTouchEvent(touchEvent) {

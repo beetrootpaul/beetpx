@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GameInput_specializedGameInputs, _GameInput_eventsCapturesInLastUpdate;
+var _GameInput_specializedGameInputs, _GameInput_eventsCapturesInLastUpdate, _GameInput_mostRecentInputMethods;
 import { Button } from "./Button";
 import { Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
@@ -20,6 +20,7 @@ export class GameInput {
     constructor(params) {
         _GameInput_specializedGameInputs.set(this, void 0);
         _GameInput_eventsCapturesInLastUpdate.set(this, new Set());
+        _GameInput_mostRecentInputMethods.set(this, new Set());
         __classPrivateFieldSet(this, _GameInput_specializedGameInputs, [
             new MouseGameInput({
                 muteButtonsSelector: params.muteButtonsSelector,
@@ -49,9 +50,14 @@ export class GameInput {
      * @return If any interaction happened.
      */
     update(params) {
+        __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").clear();
         const events = new Set();
         for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
-            sgi.update(events);
+            if (sgi.update(events)) {
+                // We do not care here if there were many input methods active at once,
+                //   since usually it will be just one method.
+                __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").add(sgi.inputMethod);
+            }
         }
         __classPrivateFieldSet(this, _GameInput_eventsCapturesInLastUpdate, events, "f");
         if (!params.skipGameButtons) {
@@ -64,8 +70,11 @@ export class GameInput {
         this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
         return events.size > 0;
     }
+    mostRecentInputMethods() {
+        return __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f");
+    }
     __internal__capturedEvents() {
         return __classPrivateFieldGet(this, _GameInput_eventsCapturesInLastUpdate, "f");
     }
 }
-_GameInput_specializedGameInputs = new WeakMap(), _GameInput_eventsCapturesInLastUpdate = new WeakMap();
+_GameInput_specializedGameInputs = new WeakMap(), _GameInput_eventsCapturesInLastUpdate = new WeakMap(), _GameInput_mostRecentInputMethods = new WeakMap();

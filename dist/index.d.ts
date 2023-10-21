@@ -285,6 +285,7 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
+type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 declare class GameInput {
     #private;
@@ -307,6 +308,7 @@ declare class GameInput {
     update(params: {
         skipGameButtons: boolean;
     }): boolean;
+    mostRecentInputMethods(): Set<GameInputMethod>;
     __internal__capturedEvents(): Set<BpxGameInputEvent>;
 }
 
@@ -442,6 +444,7 @@ declare class BeetPx {
     static setRepeating: Buttons["setRepeating"];
     static wasJustPressed: Buttons["wasJustPressed"];
     static wasJustReleased: Buttons["wasJustReleased"];
+    static mostRecentInputMethods: GameInput["mostRecentInputMethods"];
     static __internal__capturedEvents: GameInput["__internal__capturedEvents"];
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setClippingRegion: DrawApi["setClippingRegion"];

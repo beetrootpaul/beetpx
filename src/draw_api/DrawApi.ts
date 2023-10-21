@@ -106,6 +106,8 @@ export class DrawApi {
   }
 
   // TODO: rename to `setSpriteColorMapping`?
+  // TODO: make it more clear this fn is additive and `mapSpriteColor([])` does NOT reset the current mapping
+  // TODO: super confusing: 1) prevMapping = mapSpriteColors(…) 2) mapSpriteColors(other) 3) mapSpriteColors(prevMapping) DOES NOT reset 2nd call
   // TODO: ability to remove all mappings
   // TODO: cover it with tests
   mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping {

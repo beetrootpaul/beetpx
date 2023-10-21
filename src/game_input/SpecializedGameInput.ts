@@ -1,6 +1,12 @@
-import { BpxGameInputEvent } from "./GameInput";
+import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 
 export interface SpecializedGameInput {
+  inputMethod: GameInputMethod;
+
   startListening(): void;
-  update(eventsCollector: Set<BpxGameInputEvent>): void;
+
+  /**
+   * @return Whether any events were added to eventsCollector
+   */
+  update(eventsCollector: Set<BpxGameInputEvent>): boolean;
 }

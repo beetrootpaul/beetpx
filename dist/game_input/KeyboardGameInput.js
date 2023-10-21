@@ -6,6 +6,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _KeyboardGameInput_keyMapping, _KeyboardGameInput_eventsSinceLastUpdate;
 export class KeyboardGameInput {
     constructor(params) {
+        this.inputMethod = "keyboard";
         _KeyboardGameInput_keyMapping.set(this, new Map([
             ["ArrowLeft", "button_left"],
             ["ArrowRight", "button_right"],
@@ -59,9 +60,12 @@ export class KeyboardGameInput {
         });
     }
     update(eventsCollector) {
+        let anythingAdded = false;
         for (const event of __classPrivateFieldGet(this, _KeyboardGameInput_eventsSinceLastUpdate, "f")) {
             eventsCollector.add(event);
+            anythingAdded = true;
         }
+        return anythingAdded;
     }
 }
 _KeyboardGameInput_keyMapping = new WeakMap(), _KeyboardGameInput_eventsSinceLastUpdate = new WeakMap();
