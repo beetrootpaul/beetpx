@@ -10,7 +10,7 @@ HtmlTemplate.selectors = {
     controlsRight: ".controls_right",
     controlsUp: ".controls_up",
     controlsDown: ".controls_down",
-    controlsB: ".controls_o",
-    controlsA: ".controls_x",
+    controlsA: ".controls_a",
+    controlsB: ".controls_b",
     controlsMenu: ".controls_menu",
 };
