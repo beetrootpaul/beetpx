@@ -3,7 +3,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GamepadGameInput_axisMapping;
+var _GamepadGameInput_axisMapping, _GamepadGameInput_dualSenseDpadValueRanges;
 /*
 controller:
   macOS, Firefox, Xbox (id: ???)
@@ -32,7 +32,7 @@ buttons:
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
 
 controller:
-  macOS, Firefox, PS 5 (id: "54c-ce6-DualSense Wireless Controller")
+  macOS, Firefox, PS5 DualSense (id: "54c-ce6-DualSense Wireless Controller")
 buttons:
   - x        -> 1
   - circle   -> 2
@@ -58,9 +58,24 @@ buttons:
   - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
-  -        dpad, horizontal -> 4 ( left 0.71 : -0.43 right : 1.29 idle after left/right)
-  -        dpad, vertical   -> 4 (  up -1.00 :  0.14 down  : 1.29 idle after   up/down )
+  - dpad -> 4 (from -1.00 +2/7 for each 1/8 turn clockwise:
+                 up         -1.00
+                 up-right   -0.71
+                 right      -0.43
+                 down-right -0.14
+                 down        0.14
+                 down-left   0.43
+                 left        0.71
+                 up-left     1.00
+                 idle        1.29
+              )
  */
+// Constants for DualSense calculations. Not inside the class for sake of access brevity.
+const ds = {
+    dpadAxisIndex: 4,
+    dpadStep: 2 / 7,
+    dpadRangeThreshold: 0.25 * (2 / 7),
+};
 export class GamepadGameInput {
     constructor() {
         this.buttonMapping = new Map([
@@ -89,6 +104,14 @@ export class GamepadGameInput {
             [300 - 1, "button_up"],
             [300 + 1, "button_down"],
         ]));
+        // [min, max, event]
+        _GamepadGameInput_dualSenseDpadValueRanges.set(this, [
+            [-1, -1 + 2 / 7, "button_up"],
+            [-1 + 2 / 7, -1 + 3 * (2 / 7), "button_right"],
+            [-1 + 3 * (2 / 7), -1 + 5 * (2 / 7), "button_down"],
+            [-1 + 5 * (2 / 7), -1 + 7 * (2 / 7), "button_left"],
+            [-1 + 7 * (2 / 7), -1 + 7 * (2 / 7), "button_up"],
+        ]);
     }
     startListening() {
         // nothing to be done here
@@ -105,10 +128,20 @@ export class GamepadGameInput {
                     }
                 });
                 gamepad.axes.forEach((axis, axisIndex, x) => {
-                    if (Math.abs(axis) > this.axisThreshold) {
-                        const gameInputEvent = __classPrivateFieldGet(this, _GamepadGameInput_axisMapping, "f").get(100 * axisIndex + Math.sign(axis));
-                        if (gameInputEvent) {
-                            eventsCollector.add(gameInputEvent);
+                    if (axisIndex === ds.dpadAxisIndex) {
+                        __classPrivateFieldGet(this, _GamepadGameInput_dualSenseDpadValueRanges, "f").forEach(([min, max, gameInputEvent]) => {
+                            if (axis > min - ds.dpadRangeThreshold &&
+                                axis < max + ds.dpadRangeThreshold) {
+                                eventsCollector.add(gameInputEvent);
+                            }
+                        });
+                    }
+                    else {
+                        if (Math.abs(axis) > this.axisThreshold) {
+                            const gameInputEvent = __classPrivateFieldGet(this, _GamepadGameInput_axisMapping, "f").get(100 * axisIndex + Math.sign(axis));
+                            if (gameInputEvent) {
+                                eventsCollector.add(gameInputEvent);
+                            }
                         }
                     }
                 });
@@ -116,4 +149,4 @@ export class GamepadGameInput {
         });
     }
 }
-_GamepadGameInput_axisMapping = new WeakMap();
+_GamepadGameInput_axisMapping = new WeakMap(), _GamepadGameInput_dualSenseDpadValueRanges = new WeakMap();

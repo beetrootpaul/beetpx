@@ -29,7 +29,7 @@ buttons:
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
 
 controller:
-  macOS, Firefox, PS 5 (id: "54c-ce6-DualSense Wireless Controller")
+  macOS, Firefox, PS5 DualSense (id: "54c-ce6-DualSense Wireless Controller")
 buttons:
   - x        -> 1
   - circle   -> 2
@@ -55,9 +55,26 @@ buttons:
   - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
-  -        dpad, horizontal -> 4 ( left 0.71 : -0.43 right : 1.29 idle after left/right)
-  -        dpad, vertical   -> 4 (  up -1.00 :  0.14 down  : 1.29 idle after   up/down )
+  - dpad -> 4 (from -1.00 +2/7 for each 1/8 turn clockwise:
+                 up         -1.00
+                 up-right   -0.71
+                 right      -0.43
+                 down-right -0.14
+                 down        0.14
+                 down-left   0.43
+                 left        0.71
+                 up-left     1.00
+                 idle        1.29
+              )
  */
+
+// Constants for DualSense calculations. Not inside the class for sake of access brevity.
+const ds = {
+  dpadAxisIndex: 4,
+  dpadStep: 2 / 7,
+  dpadRangeThreshold: 0.25 * (2 / 7),
+};
+
 export class GamepadGameInput implements SpecializedGameInput {
   readonly buttonMapping: Map<number, BpxGameInputEvent> = new Map<
     number,
@@ -94,6 +111,15 @@ export class GamepadGameInput implements SpecializedGameInput {
     [300 + 1, "button_down"],
   ]);
 
+  // [min, max, event]
+  readonly #dualSenseDpadValueRanges: [number, number, BpxGameInputEvent][] = [
+    [-1, -1 + 2 / 7, "button_up"],
+    [-1 + 2 / 7, -1 + 3 * (2 / 7), "button_right"],
+    [-1 + 3 * (2 / 7), -1 + 5 * (2 / 7), "button_down"],
+    [-1 + 5 * (2 / 7), -1 + 7 * (2 / 7), "button_left"],
+    [-1 + 7 * (2 / 7), -1 + 7 * (2 / 7), "button_up"],
+  ];
+
   startListening(): void {
     // nothing to be done here
   }
@@ -110,12 +136,25 @@ export class GamepadGameInput implements SpecializedGameInput {
           }
         });
         gamepad.axes.forEach((axis, axisIndex, x) => {
-          if (Math.abs(axis) > this.axisThreshold) {
-            const gameInputEvent = this.#axisMapping.get(
-              100 * axisIndex + Math.sign(axis),
+          if (axisIndex === ds.dpadAxisIndex) {
+            this.#dualSenseDpadValueRanges.forEach(
+              ([min, max, gameInputEvent]) => {
+                if (
+                  axis > min - ds.dpadRangeThreshold &&
+                  axis < max + ds.dpadRangeThreshold
+                ) {
+                  eventsCollector.add(gameInputEvent);
+                }
+              },
             );
-            if (gameInputEvent) {
-              eventsCollector.add(gameInputEvent);
+          } else {
+            if (Math.abs(axis) > this.axisThreshold) {
+              const gameInputEvent = this.#axisMapping.get(
+                100 * axisIndex + Math.sign(axis),
+              );
+              if (gameInputEvent) {
+                eventsCollector.add(gameInputEvent);
+              }
             }
           }
         });
