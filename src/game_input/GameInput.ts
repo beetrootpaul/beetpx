@@ -6,16 +6,16 @@ import { MouseGameInput } from "./MouseGameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 import { TouchGameInput } from "./TouchGameInput";
 
-// TODO: separate events available to pass as param for the continuous ones and for the fire once ones
+export type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
+
 export type BpxGameInputEvent =
   | null
   | "button_left"
   | "button_right"
   | "button_up"
   | "button_down"
-  // TODO: consider moving towards Z/X instead of O/X
-  | "button_x"
-  | "button_o"
+  | "button_a"
+  | "button_b"
   | "button_menu"
   | "mute_unmute_toggle"
   | "full_screen"
@@ -34,7 +34,9 @@ export class GameInput {
   readonly buttonFrameByFrameToggle: Button;
   readonly buttonFrameByFrameStep: Button;
 
-  #wasAnyEventObserved: boolean = false;
+  #eventsCapturesInLastUpdate: Set<BpxGameInputEvent> = new Set();
+
+  #mostRecentInputMethods: Set<GameInputMethod> = new Set();
 
   constructor(params: {
     visibleTouchButtons: BpxButtonName[];
@@ -75,10 +77,18 @@ export class GameInput {
    * @return If any interaction happened.
    */
   update(params: { skipGameButtons: boolean }): boolean {
+    this.#mostRecentInputMethods.clear();
+
     const events = new Set<BpxGameInputEvent>();
     for (const sgi of this.#specializedGameInputs) {
-      sgi.update(events);
+      if (sgi.update(events)) {
+        // We do not care here if there were many input methods active at once,
+        //   since usually it will be just one method.
+        this.#mostRecentInputMethods.add(sgi.inputMethod);
+      }
     }
+
+    this.#eventsCapturesInLastUpdate = events;
 
     if (!params.skipGameButtons) {
       this.gameButtons.update(events);
@@ -91,5 +101,13 @@ export class GameInput {
     this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
 
     return events.size > 0;
+  }
+
+  mostRecentInputMethods(): Set<GameInputMethod> {
+    return this.#mostRecentInputMethods;
+  }
+
+  __internal__capturedEvents(): Set<BpxGameInputEvent> {
+    return this.#eventsCapturesInLastUpdate;
   }
 }

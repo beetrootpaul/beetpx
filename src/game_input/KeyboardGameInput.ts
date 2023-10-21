@@ -1,7 +1,9 @@
-import { BpxGameInputEvent } from "./GameInput";
+import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class KeyboardGameInput implements SpecializedGameInput {
+  inputMethod: GameInputMethod = "keyboard";
+
   readonly #keyMapping: Map<string, BpxGameInputEvent> = new Map<
     string,
     BpxGameInputEvent
@@ -11,21 +13,24 @@ export class KeyboardGameInput implements SpecializedGameInput {
     ["ArrowUp", "button_up"],
     ["ArrowDown", "button_down"],
 
-    ["a", "button_left"],
-    ["A", "button_left"],
-    ["d", "button_right"],
-    ["D", "button_right"],
     ["w", "button_up"],
     ["W", "button_up"],
     ["s", "button_down"],
     ["S", "button_down"],
+    ["a", "button_left"],
+    ["A", "button_left"],
+    ["d", "button_right"],
+    ["D", "button_right"],
 
-    ["x", "button_x"],
-    ["X", "button_x"],
+    ["j", "button_a"],
+    ["J", "button_a"],
+    ["k", "button_b"],
+    ["K", "button_b"],
 
-    // TODO: what about different keyboard layouts where "z" is not on the left from "x"?
-    ["z", "button_o"],
-    ["Z", "button_o"],
+    ["c", "button_a"],
+    ["C", "button_a"],
+    ["x", "button_b"],
+    ["x", "button_b"],
 
     ["Escape", "button_menu"],
     ["p", "button_menu"],
@@ -66,9 +71,14 @@ export class KeyboardGameInput implements SpecializedGameInput {
     });
   }
 
-  update(eventsCollector: Set<BpxGameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): boolean {
+    let anythingAdded = false;
+
     for (const event of this.#eventsSinceLastUpdate) {
       eventsCollector.add(event);
+      anythingAdded = true;
     }
+
+    return anythingAdded;
   }
 }

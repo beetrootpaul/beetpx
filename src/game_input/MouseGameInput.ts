@@ -1,7 +1,9 @@
-import { BpxGameInputEvent } from "./GameInput";
+import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
 export class MouseGameInput implements SpecializedGameInput {
+  inputMethod: GameInputMethod = "mouse";
+
   readonly #muteButtonsSelector: string;
   readonly #fullScreenButtonsSelector: string;
 
@@ -33,10 +35,15 @@ export class MouseGameInput implements SpecializedGameInput {
       });
   }
 
-  update(eventsCollector: Set<BpxGameInputEvent>): void {
+  update(eventsCollector: Set<BpxGameInputEvent>): boolean {
+    let anythingAdded = false;
+
     for (const event of this.#eventsSinceLastUpdate) {
       eventsCollector.add(event);
+      anythingAdded = true;
     }
     this.#eventsSinceLastUpdate.clear();
+
+    return anythingAdded;
   }
 }

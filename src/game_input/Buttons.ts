@@ -8,8 +8,8 @@ export type BpxButtonName =
   | "right"
   | "up"
   | "down"
-  | "o"
-  | "x"
+  | "a"
+  | "b"
   | "menu";
 
 export class Buttons {
@@ -17,16 +17,16 @@ export class Buttons {
   readonly #right: Button = new Button();
   readonly #up: Button = new Button();
   readonly #down: Button = new Button();
-  readonly #o: Button = new Button();
-  readonly #x: Button = new Button();
+  readonly #a: Button = new Button();
+  readonly #b: Button = new Button();
   readonly #menu: Button = new Button();
 
   #repeatingLeft: boolean = true;
   #repeatingRight: boolean = true;
   #repeatingUp: boolean = true;
   #repeatingDown: boolean = true;
-  #repeatingO: boolean = true;
-  #repeatingX: boolean = true;
+  #repeatingA: boolean = true;
+  #repeatingB: boolean = true;
 
   #repeatingMenu: boolean = false;
 
@@ -35,8 +35,8 @@ export class Buttons {
     this.#right.update(events.has("button_right"));
     this.#up.update(events.has("button_up"));
     this.#down.update(events.has("button_down"));
-    this.#o.update(events.has("button_o"));
-    this.#x.update(events.has("button_x"));
+    this.#a.update(events.has("button_a"));
+    this.#b.update(events.has("button_b"));
     this.#menu.update(events.has("button_menu"));
   }
 
@@ -50,10 +50,10 @@ export class Buttons {
         return this.#up.isPressed;
       case "down":
         return this.#down.isPressed;
-      case "o":
-        return this.#o.isPressed;
-      case "x":
-        return this.#x.isPressed;
+      case "a":
+        return this.#a.isPressed;
+      case "b":
+        return this.#b.isPressed;
       case "menu":
         return this.#menu.isPressed;
     }
@@ -73,11 +73,11 @@ export class Buttons {
       case "down":
         this.#repeatingDown = repeating;
         return;
-      case "o":
-        this.#repeatingO = repeating;
+      case "a":
+        this.#repeatingA = repeating;
         return;
-      case "x":
-        this.#repeatingX = repeating;
+      case "b":
+        this.#repeatingB = repeating;
         return;
       case "menu":
         this.#repeatingMenu = repeating;
@@ -91,8 +91,8 @@ export class Buttons {
       this.#right.wasJustPressed(this.#repeatingRight) ||
       this.#up.wasJustPressed(this.#repeatingUp) ||
       this.#down.wasJustPressed(this.#repeatingDown) ||
-      this.#o.wasJustPressed(this.#repeatingO) ||
-      this.#x.wasJustPressed(this.#repeatingX) ||
+      this.#a.wasJustPressed(this.#repeatingA) ||
+      this.#b.wasJustPressed(this.#repeatingB) ||
       this.#menu.wasJustPressed(this.#repeatingMenu)
     );
   }
@@ -107,10 +107,10 @@ export class Buttons {
         return this.#up.wasJustPressed(this.#repeatingUp);
       case "down":
         return this.#down.wasJustPressed(this.#repeatingDown);
-      case "o":
-        return this.#o.wasJustPressed(this.#repeatingO);
-      case "x":
-        return this.#x.wasJustPressed(this.#repeatingX);
+      case "a":
+        return this.#a.wasJustPressed(this.#repeatingA);
+      case "b":
+        return this.#b.wasJustPressed(this.#repeatingB);
       case "menu":
         return this.#menu.wasJustPressed(this.#repeatingMenu);
     }
@@ -126,10 +126,10 @@ export class Buttons {
         return this.#up.wasJustReleased(this.#repeatingUp);
       case "down":
         return this.#down.wasJustReleased(this.#repeatingDown);
-      case "o":
-        return this.#o.wasJustReleased(this.#repeatingO);
-      case "x":
-        return this.#x.wasJustReleased(this.#repeatingX);
+      case "a":
+        return this.#a.wasJustReleased(this.#repeatingA);
+      case "b":
+        return this.#b.wasJustReleased(this.#repeatingB);
       case "menu":
         return this.#menu.wasJustReleased(this.#repeatingMenu);
     }

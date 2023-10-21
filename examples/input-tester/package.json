@@ -1,0 +1,20 @@
+{
+  "name": "beetpx-example-input-tester",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "scripts": {
+    "start": "beetpx dev",
+    "prod": "beetpx build && beetpx preview",
+    "itch": "beetpx build && beetpx zip",
+    "format": "prettier --ignore-path .gitignore --write src/",
+    "typecheck": "tsc"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "file:../../",
+    "prettier": "3.0.0",
+    "prettier-plugin-organize-imports": "3.2.3",
+    "typescript": "5.1.6"
+  }
+}

@@ -78,7 +78,7 @@ BeetPx.logError = (...args) => {
     return Logger.error(...args);
 };
 //
-// Buttons
+// Game Input & Buttons
 //
 BeetPx.isPressed = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.isPressed(...args);
@@ -91,6 +91,12 @@ BeetPx.wasJustPressed = (...args) => {
 };
 BeetPx.wasJustReleased = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustReleased(...args);
+};
+BeetPx.mostRecentInputMethods = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.mostRecentInputMethods(...args);
+};
+BeetPx.__internal__capturedEvents = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.__internal__capturedEvents(...args);
 };
 //
 // Draw API

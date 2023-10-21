@@ -34,7 +34,7 @@ b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: fps,
-    visibleTouchButtons: ["left", "right", "up", "down", "x", "o", "menu"],
+    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
@@ -45,6 +45,7 @@ b_.init(
   },
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
+    // TODO: this call is probably no longer needed, since handled by BeetPx internally
     b_.stopAllPlaybacks();
     b_.playSoundLooped("music_base.wav");
     b_.playSoundLooped("music_melody.wav");
@@ -62,10 +63,10 @@ b_.init(
     b_.logDebug(`frame: ${b_.frameNumber}`);
 
     // TODO: rework these buttons for Xbox controller
-    if (b_.wasJustPressed("x")) {
+    if (b_.wasJustPressed("a")) {
       numberOfEllipses = numberOfEllipses * 2;
     }
-    if (b_.wasJustPressed("o")) {
+    if (b_.wasJustPressed("b")) {
       numberOfEllipses = Math.max(1, numberOfEllipses / 2);
     }
 

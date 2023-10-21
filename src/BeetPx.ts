@@ -6,6 +6,7 @@ import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Framework, type FrameworkOptions } from "./Framework";
 import { Buttons } from "./game_input/Buttons";
+import { GameInput } from "./game_input/GameInput";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 
@@ -86,7 +87,7 @@ export class BeetPx {
   };
 
   //
-  // Buttons
+  // Game Input & Buttons
   //
 
   static isPressed: Buttons["isPressed"] = (...args) => {
@@ -105,6 +106,20 @@ export class BeetPx {
 
   static wasJustReleased: Buttons["wasJustReleased"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.wasJustReleased(
+      ...args,
+    );
+  };
+
+  static mostRecentInputMethods: GameInput["mostRecentInputMethods"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().gameInput.mostRecentInputMethods(...args);
+  };
+
+  static __internal__capturedEvents: GameInput["__internal__capturedEvents"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().gameInput.__internal__capturedEvents(
       ...args,
     );
   };
