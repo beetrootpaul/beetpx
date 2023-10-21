@@ -5,7 +5,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _GamepadGameInput_axisMapping;
 /*
-controller: macOS, Firefox, Xbox
+controller:
+  macOS, Firefox, Xbox (id: ???)
 buttons:
   - A -> 1
   - B -> 2
@@ -30,7 +31,8 @@ buttons:
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
 
-controller: macOS, Firefox, PS 5
+controller:
+  macOS, Firefox, PS 5 (id: "54c-ce6-DualSense Wireless Controller")
 buttons:
   - x        -> 1
   - circle   -> 2
@@ -103,10 +105,6 @@ export class GamepadGameInput {
                     }
                 });
                 gamepad.axes.forEach((axis, axisIndex, x) => {
-                    // TODO: REMOVE
-                    if (axisIndex === 4) {
-                        console.log(axisIndex, axis.toFixed(2), x, Date.now());
-                    }
                     if (Math.abs(axis) > this.axisThreshold) {
                         const gameInputEvent = __classPrivateFieldGet(this, _GamepadGameInput_axisMapping, "f").get(100 * axisIndex + Math.sign(axis));
                         if (gameInputEvent) {

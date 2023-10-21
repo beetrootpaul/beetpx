@@ -105,6 +105,7 @@ export class DrawApi {
     this.#fillPattern = fillPattern;
   }
 
+  // TODO: rename to `setSpriteColorMapping`?
   // TODO: ability to remove all mappings
   // TODO: cover it with tests
   mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping {
