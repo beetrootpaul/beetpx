@@ -6,7 +6,7 @@ const red = BpxSolidColor.fromRgbCssHex("#ff004d");
 
 export class DebugView {
   private readonly buttonsN = 20;
-  private readonly axesN = 6;
+  private readonly axesN = 7;
   private readonly buttons: (null | "touched" | "pressed")[] = u_
     .range(this.buttonsN)
     .map(() => null);
@@ -103,13 +103,13 @@ export class DebugView {
     this.buttons.forEach((button, i) => {
       if (button === "pressed") {
         b_.rectFilled(
-          v_(17 + (i % 10) * 10, 24 + Math.floor(i / 10) * 16),
+          v_(17 + (i % 10) * 10, 20 + Math.floor(i / 10) * 16),
           v_(3, 3),
           red,
         );
       } else if (button === "touched") {
         b_.ellipseFilled(
-          v_(17 + (i % 10) * 10, 24 + Math.floor(i / 10) * 16),
+          v_(17 + (i % 10) * 10, 20 + Math.floor(i / 10) * 16),
           v_(3, 3),
           red,
         );
@@ -120,7 +120,7 @@ export class DebugView {
     this.axes.forEach((axe, i) => {
       if (axe != null) {
         const offset = 20 * axe;
-        b_.rectFilled(v_(62 + offset, 63 + i * 10), v_(3, 3), red);
+        b_.rectFilled(v_(62 + offset, 57 + i * 10), v_(3, 3), red);
       }
     });
   }

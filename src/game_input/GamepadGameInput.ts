@@ -3,7 +3,7 @@ import { SpecializedGameInput } from "./SpecializedGameInput";
 
 /*
 controller:
-  macOS, Firefox, Xbox (id: ???)
+  macOS, Firefox, Xbox (id: "45e-2fd-Xbox Wireless Controller")
 buttons:
   - A -> 1
   - B -> 2
