@@ -1,6 +1,8 @@
 import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
+import { GamepadTypeDetector } from "./GamepadTypeDetector";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
+// TODO: move those docs to specialized files per gamepad x browser x OS ?
 /*
 controller:
   macOS, Firefox, Xbox (id: "45e-2fd-Xbox Wireless Controller")
@@ -75,6 +77,8 @@ const ds = {
   dpadRangeThreshold: 0.25 * (2 / 7),
 };
 
+export type GamepadType = "xbox" | "dualsense" | "other";
+
 export class GamepadGameInput implements SpecializedGameInput {
   inputMethod: GameInputMethod = "gamepad";
 
@@ -96,7 +100,7 @@ export class GamepadGameInput implements SpecializedGameInput {
     [16, "button_menu"],
   ]);
 
-  readonly axisThreshold: number = 0.6;
+  readonly #axisThreshold: number = 0.6;
 
   readonly #axisMapping: Map<number, BpxGameInputEvent> = new Map<
     number,
@@ -160,7 +164,7 @@ export class GamepadGameInput implements SpecializedGameInput {
             },
           );
         } else {
-          if (Math.abs(axis) > this.axisThreshold) {
+          if (Math.abs(axis) > this.#axisThreshold) {
             const gameInputEvent = this.#axisMapping.get(
               100 * axisIndex + Math.sign(axis),
             );
@@ -174,5 +178,13 @@ export class GamepadGameInput implements SpecializedGameInput {
     }
 
     return anythingAdded;
+  }
+
+  connectedGamepadTypes(): Set<GamepadType> {
+    const types: Set<GamepadType> = new Set();
+    for (const gamepad of this.#gamepads.values()) {
+      types.add(GamepadTypeDetector.detect(gamepad));
+    }
+    return types;
   }
 }

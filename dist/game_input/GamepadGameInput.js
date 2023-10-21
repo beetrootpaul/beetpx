@@ -3,7 +3,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GamepadGameInput_axisMapping, _GamepadGameInput_dualSenseDpadValueRanges, _GamepadGameInput_gamepads;
+var _GamepadGameInput_axisThreshold, _GamepadGameInput_axisMapping, _GamepadGameInput_dualSenseDpadValueRanges, _GamepadGameInput_gamepads;
+import { GamepadTypeDetector } from "./GamepadTypeDetector";
+// TODO: move those docs to specialized files per gamepad x browser x OS ?
 /*
 controller:
   macOS, Firefox, Xbox (id: "45e-2fd-Xbox Wireless Controller")
@@ -93,7 +95,7 @@ export class GamepadGameInput {
             [15, "button_right"],
             [16, "button_menu"],
         ]);
-        this.axisThreshold = 0.6;
+        _GamepadGameInput_axisThreshold.set(this, 0.6);
         _GamepadGameInput_axisMapping.set(this, new Map([
             // keys here are: 100 * axis index + sign(axis value)
             [0 - 1, "button_left"],
@@ -146,7 +148,7 @@ export class GamepadGameInput {
                     });
                 }
                 else {
-                    if (Math.abs(axis) > this.axisThreshold) {
+                    if (Math.abs(axis) > __classPrivateFieldGet(this, _GamepadGameInput_axisThreshold, "f")) {
                         const gameInputEvent = __classPrivateFieldGet(this, _GamepadGameInput_axisMapping, "f").get(100 * axisIndex + Math.sign(axis));
                         if (gameInputEvent) {
                             eventsCollector.add(gameInputEvent);
@@ -158,5 +160,12 @@ export class GamepadGameInput {
         }
         return anythingAdded;
     }
+    connectedGamepadTypes() {
+        const types = new Set();
+        for (const gamepad of __classPrivateFieldGet(this, _GamepadGameInput_gamepads, "f").values()) {
+            types.add(GamepadTypeDetector.detect(gamepad));
+        }
+        return types;
+    }
 }
-_GamepadGameInput_axisMapping = new WeakMap(), _GamepadGameInput_dualSenseDpadValueRanges = new WeakMap(), _GamepadGameInput_gamepads = new WeakMap();
+_GamepadGameInput_axisThreshold = new WeakMap(), _GamepadGameInput_axisMapping = new WeakMap(), _GamepadGameInput_dualSenseDpadValueRanges = new WeakMap(), _GamepadGameInput_gamepads = new WeakMap();

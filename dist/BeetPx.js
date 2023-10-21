@@ -95,6 +95,9 @@ BeetPx.wasJustReleased = (...args) => {
 BeetPx.mostRecentInputMethods = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.mostRecentInputMethods(...args);
 };
+BeetPx.connectedGamepadTypes = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.connectedGamepadTypes(...args);
+};
 BeetPx.__internal__capturedEvents = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.__internal__capturedEvents(...args);
 };

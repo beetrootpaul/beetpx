@@ -1,20 +1,31 @@
 import { b_, BpxSolidColor, spr_, u_, v_, v_0_0_ } from "../../../src";
+import { GamepadType } from "../../../src/game_input/GamepadGameInput";
+import { GamepadTypeDetector } from "../../../src/game_input/GamepadTypeDetector";
 
 const spr = spr_("spritesheet.png");
 
-const red = BpxSolidColor.fromRgbCssHex("#ff004d");
+const orange = BpxSolidColor.fromRgbCssHex("#ffa300");
+const blue = BpxSolidColor.fromRgbCssHex("#29adff");
+const lime = BpxSolidColor.fromRgbCssHex("#00e436");
 
 export class DebugView {
   private readonly gamepads: Map<number, Gamepad> = new Map();
 
+  private readonly gamepadsN = 3;
+
+  private readonly gamepadTypes: (null | GamepadType)[] = u_
+    .range(this.gamepadsN)
+    .map(() => null);
+
   private readonly buttonsN = 20;
-  private readonly axesN = 7;
-  private readonly buttons: (null | "touched" | "pressed")[] = u_
+  private readonly buttons: (null | "touched" | "pressed")[][] = u_
     .range(this.buttonsN)
-    .map(() => null);
-  private readonly axes: (null | number)[] = u_
+    .map(() => u_.range(this.gamepadsN).map(() => null));
+
+  private readonly axesN = 7;
+  private readonly axes: (null | number)[][] = u_
     .range(this.axesN)
-    .map(() => null);
+    .map(() => u_.range(this.gamepadsN).map(() => null));
 
   constructor() {
     document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) => {
@@ -48,6 +59,10 @@ export class DebugView {
 
     window.addEventListener("gamepadconnected", (gamepadEvent) => {
       this.gamepads.set(gamepadEvent.gamepad.index, gamepadEvent.gamepad);
+      if (gamepadEvent.gamepad.index < this.gamepadsN) {
+        this.gamepadTypes[gamepadEvent.gamepad.index] =
+          GamepadTypeDetector.detect(gamepadEvent.gamepad);
+      }
       console.table({
         table: "GAMEPAD EVENT",
         type: "gamepadconnected",
@@ -61,6 +76,9 @@ export class DebugView {
     });
     window.addEventListener("gamepaddisconnected", (gamepadEvent) => {
       this.gamepads.delete(gamepadEvent.gamepad.index);
+      if (gamepadEvent.gamepad.index < this.gamepadsN) {
+        this.gamepadTypes[gamepadEvent.gamepad.index] = null;
+      }
       console.table({
         table: "GAMEPAD EVENT",
         type: "gamepaddisconnected",
@@ -76,16 +94,18 @@ export class DebugView {
 
   update(): void {
     for (const gamepad of this.gamepads.values()) {
-      u_.range(this.buttonsN).forEach((i) => {
-        this.buttons[i] = gamepad.buttons[i]?.pressed
-          ? "pressed"
-          : gamepad.buttons[i]?.touched
-          ? "touched"
-          : null;
-      });
-      u_.range(this.axesN).forEach((i) => {
-        this.axes[i] = gamepad.axes[i] ?? null;
-      });
+      if (gamepad.index < this.gamepadsN) {
+        u_.range(this.buttonsN).forEach((i) => {
+          this.buttons[i]![gamepad.index] = gamepad.buttons[i]?.pressed
+            ? "pressed"
+            : gamepad.buttons[i]?.touched
+            ? "touched"
+            : null;
+        });
+        u_.range(this.axesN).forEach((i) => {
+          this.axes[i]![gamepad.index] = gamepad.axes[i] ?? null;
+        });
+      }
     }
   }
 
@@ -94,27 +114,61 @@ export class DebugView {
     b_.sprite(spr(160, 0, 128, 128), v_0_0_);
 
     // buttons
-    this.buttons.forEach((button, i) => {
-      if (button === "pressed") {
-        b_.rectFilled(
-          v_(17 + (i % 10) * 10, 20 + Math.floor(i / 10) * 16),
-          v_(3, 3),
-          red,
-        );
-      } else if (button === "touched") {
-        b_.ellipseFilled(
-          v_(17 + (i % 10) * 10, 20 + Math.floor(i / 10) * 16),
-          v_(3, 3),
-          red,
-        );
-      }
+    this.buttons.forEach((buttonXGamepads, buttonIndex) => {
+      buttonXGamepads.forEach((button, gamepadIndex) => {
+        if (button === "pressed") {
+          b_.rectFilled(
+            v_(
+              17 + (buttonIndex % 10) * 10,
+              12 + Math.floor(buttonIndex / 10) * 20 + gamepadIndex * 3,
+            ),
+            v_(3, 3),
+            gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
+          );
+        } else if (button === "touched") {
+          b_.ellipseFilled(
+            v_(
+              17 + (buttonIndex % 10) * 10,
+              20 + Math.floor(buttonIndex / 10) * 16 + gamepadIndex * 3,
+            ),
+            v_(3, 3),
+            gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
+          );
+        }
+      });
     });
 
     // axes
-    this.axes.forEach((axe, i) => {
-      if (axe != null) {
-        const offset = 20 * axe;
-        b_.rectFilled(v_(62 + offset, 57 + i * 10), v_(3, 3), red);
+    this.axes.forEach((axisXGamepad, axisIndex) => {
+      axisXGamepad.forEach((axis, gamepadIndex) => {
+        if (axis != null) {
+          const offset = 20 * axis;
+          b_.rectFilled(
+            v_(48 + offset, 51 + axisIndex * 11 + gamepadIndex * 3),
+            v_(3, 3),
+            gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
+          );
+        }
+      });
+    });
+
+    // gamepad types
+    u_.range(this.gamepadsN).forEach((gamepadIndex) => {
+      const gamepadType = this.gamepadTypes[gamepadIndex];
+      if (gamepadType) {
+        b_.rectFilled(
+          v_(
+            97 +
+              (gamepadType === "xbox"
+                ? 0
+                : gamepadType === "dualsense"
+                ? 10
+                : 20),
+            61 + gamepadIndex * 3,
+          ),
+          v_(3, 3),
+          gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
+        );
       }
     });
   }
