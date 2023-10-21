@@ -3,7 +3,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GamepadGameInput_axisMapping, _GamepadGameInput_dualSenseDpadValueRanges;
+var _GamepadGameInput_axisMapping, _GamepadGameInput_dualSenseDpadValueRanges, _GamepadGameInput_gamepads;
 /*
 controller:
   macOS, Firefox, Xbox (id: "45e-2fd-Xbox Wireless Controller")
@@ -113,46 +113,50 @@ export class GamepadGameInput {
             [-1 + 5 * (2 / 7), -1 + 7 * (2 / 7), "button_left"],
             [-1 + 7 * (2 / 7), -1 + 7 * (2 / 7), "button_up"],
         ]);
+        _GamepadGameInput_gamepads.set(this, new Map());
     }
     startListening() {
-        // nothing to be done here
+        window.addEventListener("gamepadconnected", (gamepadEvent) => {
+            __classPrivateFieldGet(this, _GamepadGameInput_gamepads, "f").set(gamepadEvent.gamepad.index, gamepadEvent.gamepad);
+        });
+        window.addEventListener("gamepaddisconnected", (gamepadEvent) => {
+            __classPrivateFieldGet(this, _GamepadGameInput_gamepads, "f").delete(gamepadEvent.gamepad.index);
+        });
     }
     update(eventsCollector) {
         let anythingAdded = false;
-        navigator.getGamepads().forEach((gamepad) => {
-            if (gamepad) {
-                gamepad.buttons.forEach((button, buttonIndex) => {
-                    if (button.pressed || button.touched) {
-                        const gameInputEvent = this.buttonMapping.get(buttonIndex);
+        for (const gamepad of __classPrivateFieldGet(this, _GamepadGameInput_gamepads, "f").values()) {
+            gamepad.buttons.forEach((button, buttonIndex) => {
+                if (button.pressed || button.touched) {
+                    const gameInputEvent = this.buttonMapping.get(buttonIndex);
+                    if (gameInputEvent) {
+                        eventsCollector.add(gameInputEvent);
+                        anythingAdded = true;
+                    }
+                }
+            });
+            gamepad.axes.forEach((axis, axisIndex) => {
+                if (axisIndex === ds.dpadAxisIndex) {
+                    __classPrivateFieldGet(this, _GamepadGameInput_dualSenseDpadValueRanges, "f").forEach(([min, max, gameInputEvent]) => {
+                        if (axis > min - ds.dpadRangeThreshold &&
+                            axis < max + ds.dpadRangeThreshold) {
+                            eventsCollector.add(gameInputEvent);
+                            anythingAdded = true;
+                        }
+                    });
+                }
+                else {
+                    if (Math.abs(axis) > this.axisThreshold) {
+                        const gameInputEvent = __classPrivateFieldGet(this, _GamepadGameInput_axisMapping, "f").get(100 * axisIndex + Math.sign(axis));
                         if (gameInputEvent) {
                             eventsCollector.add(gameInputEvent);
                             anythingAdded = true;
                         }
                     }
-                });
-                gamepad.axes.forEach((axis, axisIndex) => {
-                    if (axisIndex === ds.dpadAxisIndex) {
-                        __classPrivateFieldGet(this, _GamepadGameInput_dualSenseDpadValueRanges, "f").forEach(([min, max, gameInputEvent]) => {
-                            if (axis > min - ds.dpadRangeThreshold &&
-                                axis < max + ds.dpadRangeThreshold) {
-                                eventsCollector.add(gameInputEvent);
-                                anythingAdded = true;
-                            }
-                        });
-                    }
-                    else {
-                        if (Math.abs(axis) > this.axisThreshold) {
-                            const gameInputEvent = __classPrivateFieldGet(this, _GamepadGameInput_axisMapping, "f").get(100 * axisIndex + Math.sign(axis));
-                            if (gameInputEvent) {
-                                eventsCollector.add(gameInputEvent);
-                                anythingAdded = true;
-                            }
-                        }
-                    }
-                });
-            }
-        });
+                }
+            });
+        }
         return anythingAdded;
     }
 }
-_GamepadGameInput_axisMapping = new WeakMap(), _GamepadGameInput_dualSenseDpadValueRanges = new WeakMap();
+_GamepadGameInput_axisMapping = new WeakMap(), _GamepadGameInput_dualSenseDpadValueRanges = new WeakMap(), _GamepadGameInput_gamepads = new WeakMap();

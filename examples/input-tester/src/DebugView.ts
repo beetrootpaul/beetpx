@@ -5,6 +5,8 @@ const spr = spr_("spritesheet.png");
 const red = BpxSolidColor.fromRgbCssHex("#ff004d");
 
 export class DebugView {
+  private readonly gamepads: Map<number, Gamepad> = new Map();
+
   private readonly buttonsN = 20;
   private readonly axesN = 7;
   private readonly buttons: (null | "touched" | "pressed")[] = u_
@@ -14,85 +16,77 @@ export class DebugView {
     .range(this.axesN)
     .map(() => null);
 
-  constructor(showDebug: () => boolean) {
+  constructor() {
     document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) => {
-      if (showDebug()) {
-        console.table({
-          table: "KEYBOARD EVENT",
-          type: "keydown",
-          code: keyboardEvent.code,
-          ctrlKey: keyboardEvent.ctrlKey,
-          isComposing: keyboardEvent.isComposing,
-          key: keyboardEvent.key,
-          location: keyboardEvent.location,
-          metaKey: keyboardEvent.metaKey,
-          repeat: keyboardEvent.repeat,
-          shiftKey: keyboardEvent.shiftKey,
-        });
-      }
+      console.table({
+        table: "KEYBOARD EVENT",
+        type: "keydown",
+        code: keyboardEvent.code,
+        ctrlKey: keyboardEvent.ctrlKey,
+        isComposing: keyboardEvent.isComposing,
+        key: keyboardEvent.key,
+        location: keyboardEvent.location,
+        metaKey: keyboardEvent.metaKey,
+        repeat: keyboardEvent.repeat,
+        shiftKey: keyboardEvent.shiftKey,
+      });
     });
     document.addEventListener("keyup", (keyboardEvent: KeyboardEvent) => {
-      if (showDebug()) {
-        console.table({
-          table: "KEYBOARD EVENT",
-          type: "keyup",
-          code: keyboardEvent.code,
-          ctrlKey: keyboardEvent.ctrlKey,
-          isComposing: keyboardEvent.isComposing,
-          key: keyboardEvent.key,
-          location: keyboardEvent.location,
-          metaKey: keyboardEvent.metaKey,
-          repeat: keyboardEvent.repeat,
-          shiftKey: keyboardEvent.shiftKey,
-        });
-      }
+      console.table({
+        table: "KEYBOARD EVENT",
+        type: "keyup",
+        code: keyboardEvent.code,
+        ctrlKey: keyboardEvent.ctrlKey,
+        isComposing: keyboardEvent.isComposing,
+        key: keyboardEvent.key,
+        location: keyboardEvent.location,
+        metaKey: keyboardEvent.metaKey,
+        repeat: keyboardEvent.repeat,
+        shiftKey: keyboardEvent.shiftKey,
+      });
+    });
+
+    window.addEventListener("gamepadconnected", (gamepadEvent) => {
+      this.gamepads.set(gamepadEvent.gamepad.index, gamepadEvent.gamepad);
+      console.table({
+        table: "GAMEPAD EVENT",
+        type: "gamepadconnected",
+        id: gamepadEvent.gamepad.id,
+        index: gamepadEvent.gamepad.index,
+        connected: gamepadEvent.gamepad.connected,
+        "#axes": gamepadEvent.gamepad.axes.length,
+        "#buttons": gamepadEvent.gamepad.buttons.length,
+        timestamp: gamepadEvent.gamepad.timestamp,
+      });
+    });
+    window.addEventListener("gamepaddisconnected", (gamepadEvent) => {
+      this.gamepads.delete(gamepadEvent.gamepad.index);
+      console.table({
+        table: "GAMEPAD EVENT",
+        type: "gamepaddisconnected",
+        id: gamepadEvent.gamepad.id,
+        index: gamepadEvent.gamepad.index,
+        connected: gamepadEvent.gamepad.connected,
+        "#axes": gamepadEvent.gamepad.axes.length,
+        "#buttons": gamepadEvent.gamepad.buttons.length,
+        timestamp: gamepadEvent.gamepad.timestamp,
+      });
     });
   }
 
   update(): void {
-    console.group("UPDATE", Date.now());
-
-    navigator.getGamepads().forEach((gamepad) => {
-      if (gamepad) {
-        console.table({
-          table: "GAMEPAD STATUS",
-          id: gamepad.id,
-          connected: gamepad.connected,
-          index: gamepad.index,
-          "#axes": gamepad.axes.length,
-          "#buttons": gamepad.buttons.length,
-          ...gamepad.axes.reduce(
-            (acc, a, i) => ({
-              ...acc,
-              [`axis ${i}`]: a,
-            }),
-            {},
-          ),
-          ...gamepad.buttons.reduce(
-            (acc, b, i) => ({
-              ...acc,
-              [`button ${i}`]: `pressed=${b.pressed} | touched=${b.touched} | value=${b.value}`,
-            }),
-            {},
-          ),
-          timestamp: gamepad.timestamp,
-        });
-
-        u_.range(this.buttonsN).forEach((i) => {
-          this.buttons[i] = gamepad.buttons[i]?.pressed
-            ? "pressed"
-            : gamepad.buttons[i]?.touched
-            ? "touched"
-            : null;
-        });
-
-        u_.range(this.axesN).forEach((i) => {
-          this.axes[i] = gamepad.axes[i] ?? null;
-        });
-      }
-    });
-
-    console.groupEnd();
+    for (const gamepad of this.gamepads.values()) {
+      u_.range(this.buttonsN).forEach((i) => {
+        this.buttons[i] = gamepad.buttons[i]?.pressed
+          ? "pressed"
+          : gamepad.buttons[i]?.touched
+          ? "touched"
+          : null;
+      });
+      u_.range(this.axesN).forEach((i) => {
+        this.axes[i] = gamepad.axes[i] ?? null;
+      });
+    }
   }
 
   draw() {

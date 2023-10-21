@@ -25,7 +25,7 @@ b_.init(
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
     standardView = new StandardView();
-    debugView = new DebugView(() => showDebug);
+    debugView = new DebugView();
     showDebug = false;
 
     prevDebugToggleState = false;

@@ -122,51 +122,56 @@ export class GamepadGameInput implements SpecializedGameInput {
     [-1 + 7 * (2 / 7), -1 + 7 * (2 / 7), "button_up"],
   ];
 
+  readonly #gamepads: Map<number, Gamepad> = new Map();
+
   startListening(): void {
-    // nothing to be done here
+    window.addEventListener("gamepadconnected", (gamepadEvent) => {
+      this.#gamepads.set(gamepadEvent.gamepad.index, gamepadEvent.gamepad);
+    });
+    window.addEventListener("gamepaddisconnected", (gamepadEvent) => {
+      this.#gamepads.delete(gamepadEvent.gamepad.index);
+    });
   }
 
   update(eventsCollector: Set<BpxGameInputEvent>): boolean {
     let anythingAdded = false;
 
-    navigator.getGamepads().forEach((gamepad) => {
-      if (gamepad) {
-        gamepad.buttons.forEach((button, buttonIndex) => {
-          if (button.pressed || button.touched) {
-            const gameInputEvent = this.buttonMapping.get(buttonIndex);
+    for (const gamepad of this.#gamepads.values()) {
+      gamepad.buttons.forEach((button, buttonIndex) => {
+        if (button.pressed || button.touched) {
+          const gameInputEvent = this.buttonMapping.get(buttonIndex);
+          if (gameInputEvent) {
+            eventsCollector.add(gameInputEvent);
+            anythingAdded = true;
+          }
+        }
+      });
+      gamepad.axes.forEach((axis, axisIndex) => {
+        if (axisIndex === ds.dpadAxisIndex) {
+          this.#dualSenseDpadValueRanges.forEach(
+            ([min, max, gameInputEvent]) => {
+              if (
+                axis > min - ds.dpadRangeThreshold &&
+                axis < max + ds.dpadRangeThreshold
+              ) {
+                eventsCollector.add(gameInputEvent);
+                anythingAdded = true;
+              }
+            },
+          );
+        } else {
+          if (Math.abs(axis) > this.axisThreshold) {
+            const gameInputEvent = this.#axisMapping.get(
+              100 * axisIndex + Math.sign(axis),
+            );
             if (gameInputEvent) {
               eventsCollector.add(gameInputEvent);
               anythingAdded = true;
             }
           }
-        });
-        gamepad.axes.forEach((axis, axisIndex) => {
-          if (axisIndex === ds.dpadAxisIndex) {
-            this.#dualSenseDpadValueRanges.forEach(
-              ([min, max, gameInputEvent]) => {
-                if (
-                  axis > min - ds.dpadRangeThreshold &&
-                  axis < max + ds.dpadRangeThreshold
-                ) {
-                  eventsCollector.add(gameInputEvent);
-                  anythingAdded = true;
-                }
-              },
-            );
-          } else {
-            if (Math.abs(axis) > this.axisThreshold) {
-              const gameInputEvent = this.#axisMapping.get(
-                100 * axisIndex + Math.sign(axis),
-              );
-              if (gameInputEvent) {
-                eventsCollector.add(gameInputEvent);
-                anythingAdded = true;
-              }
-            }
-          }
-        });
-      }
-    });
+        }
+      });
+    }
 
     return anythingAdded;
   }
