@@ -14,9 +14,9 @@ export class DebugView {
     .range(this.axesN)
     .map(() => null);
 
-  constructor() {
+  constructor(showDebug: () => boolean) {
     document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) => {
-      if (b_.debug) {
+      if (showDebug()) {
         console.table({
           table: "KEYBOARD EVENT",
           type: "keydown",
@@ -32,7 +32,7 @@ export class DebugView {
       }
     });
     document.addEventListener("keyup", (keyboardEvent: KeyboardEvent) => {
-      if (b_.debug) {
+      if (showDebug()) {
         console.table({
           table: "KEYBOARD EVENT",
           type: "keyup",

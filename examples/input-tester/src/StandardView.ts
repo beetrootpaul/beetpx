@@ -58,11 +58,20 @@ export class StandardView {
     g_dpad_up: spr(128, 80, 15, 16),
     g_dpad_down: spr(144, 80, 15, 16),
     //
-    g_stick_left: spr(128, 96, 13, 14),
-    g_stick_right: spr(144, 96, 13, 14),
-    g_stick_up: spr(128, 112, 13, 14),
-    g_stick_down: spr(144, 112, 13, 14),
+    g_dpad_up_left: spr(128, 96, 15, 16),
+    g_dpad_up_right: spr(144, 96, 15, 16),
+    g_dpad_down_left: spr(128, 112, 15, 16),
+    g_dpad_down_right: spr(144, 112, 15, 16),
     //
+    g_stick_left: spr(288, 0, 13, 14),
+    g_stick_right: spr(304, 0, 13, 14),
+    g_stick_up: spr(288, 16, 13, 14),
+    g_stick_down: spr(304, 16, 13, 14),
+    //
+    g_stick_up_left: spr(288, 32, 13, 14),
+    g_stick_up_right: spr(304, 32, 13, 14),
+    g_stick_down_left: spr(288, 48, 13, 14),
+    g_stick_down_right: spr(304, 48, 13, 14),
   };
 
   // ip = is pressed
@@ -134,6 +143,22 @@ export class StandardView {
       b_.sprite(ps.g_dpad_right, v_(74, 16));
       b_.sprite(ps.g_stick_right, v_(97, 16));
     }
+    if (ip.up && ip.left) {
+      b_.sprite(ps.g_dpad_up_left, v_(74, 16));
+      b_.sprite(ps.g_stick_up_left, v_(97, 16));
+    }
+    if (ip.up && ip.right) {
+      b_.sprite(ps.g_dpad_up_right, v_(74, 16));
+      b_.sprite(ps.g_stick_up_right, v_(97, 16));
+    }
+    if (ip.down && ip.left) {
+      b_.sprite(ps.g_dpad_down_left, v_(74, 16));
+      b_.sprite(ps.g_stick_down_left, v_(97, 16));
+    }
+    if (ip.down && ip.right) {
+      b_.sprite(ps.g_dpad_down_right, v_(74, 16));
+      b_.sprite(ps.g_stick_down_right, v_(97, 16));
+    }
     if (ip.a) {
       b_.sprite(ps.k_c, v_(41, 41));
       b_.sprite(ps.k_j, v_(50, 41));
@@ -141,9 +166,6 @@ export class StandardView {
       b_.sprite(ps.g_y, v_(80, 41));
       b_.sprite(ps.g_ps_x, v_(93, 41));
       b_.sprite(ps.g_ps_square, v_(101, 41));
-      // b_.sprite(ps.g_ps_x, v_(93, 41));
-      // b_.sprite(ps.g_ps_circle, v_(93, 52));
-      // b_.sprite(ps.g_ps_circle, v_(101, 41));
     }
     if (ip.b) {
       b_.sprite(ps.k_x, v_(41, 52));
@@ -152,8 +174,6 @@ export class StandardView {
       b_.sprite(ps.g_x, v_(80, 52));
       b_.sprite(ps.g_ps_circle, v_(93, 52));
       b_.sprite(ps.g_ps_triangle, v_(101, 52));
-      // b_.sprite(ps.g_ps_square, v_(101, 52));
-      // b_.sprite(ps.g_ps_triangle, v_(93, 52));
     }
     if (ip.menu) {
       b_.sprite(ps.k_esc, v_(24, 65));
