@@ -95,6 +95,49 @@ buttons:
   - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
+
+env:
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
+gamepad:
+  "xinput"
+buttons:
+  unresponsive
+ axes and their ranges:
+  unresponsive
+
+
+env:
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Brave 1.59.120 Chromium: 118.0.5993.88 (Official Build) (64-bit)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Chrome 118.0.5993.89 (Official Build) (64-bit)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Edge 118.0.2088.57 (Official build) (arm64)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Opera One (version: 103.0.4928.34)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Vivaldi 6.2.3105.58 (Stable channel) (64-bit)
+gamepad:
+  "HID-compliant game controller (STANDARD GAMEPAD Vendor: 045e Product: 02fd)"
+  "Xbox 360 Controller (XInput STANDARD GAMEPAD)" <-- Vivaldi, and maye others as well in unclear circumstances
+buttons:
+  - A -> 0
+  - B -> 1
+  - X -> 2
+  - Y -> 3
+  - LB -> 4
+  - RB -> 5
+  - LT -> 6 ("touched: true" if half-pressed)
+  - RT -> 7 ("touched: true" if half-pressed)
+  - dpad up    -> 12
+  - dpad down  -> 13
+  - dpad left  -> 14
+  - dpad right -> 15
+  - Xbox logo                    -> - (also: it brings front some OS-wide overlay!)
+  - "two windows" (center left ) -> 8
+  - menu          (center right) -> 9
+  - left  stick pressed -> 10
+  - right stick pressed -> 11
+ axes and their ranges:
+  - left  stick, horizontal -> 0 (left -1.00 : 1.00 right)
+  - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
+  - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
+  - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
 */
 
 /* DualSense
@@ -186,6 +229,79 @@ env:
   macOS Ventura 13.5.2 (Apple M1 Max), Vivaldi 6.2.3105.58 (Stable channel) (arm64)
 gamepad:
   "DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)"
+buttons:
+  - x        -> 0
+  - circle   -> 1
+  - square   -> 2
+  - triangle -> 3
+  - L1 -> 4
+  - R1 -> 5
+  - L2 -> 6 ("touched: true" if half-pressed)
+  - R2 -> 7 ("touched: true" if half-pressed)
+  - dpad up    -> 12
+  - dpad down  -> 13
+  - dpad left  -> 14
+  - dpad right -> 15
+  - touch panel press -> 17
+  - PS logo                      -> 16
+  - microphone                   ->  -
+  - "three lines" (center left ) ->  8
+  - menu          (center right) ->  9
+  - left  stick pressed -> 10
+  - right stick pressed -> 11
+ axes and their ranges:
+  - left  stick, horizontal -> 0 (left -1.00 : 1.00 right)
+  - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
+  - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
+  - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
+  - L2                      -> -
+  - R2                      -> -
+  - dpad -> -
+  - dpad -> -
+
+
+env:
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
+gamepad:
+  "054c-0ce6-Wireless Controller"
+buttons:
+  - x        -> 1
+  - circle   -> 2
+  - square   -> 0
+  - triangle -> 3
+  - L1 -> 4
+  - R1 -> 5
+  - L2 -> 6
+  - R2 -> 7
+  - dpad up    -> -
+  - dpad down  -> -
+  - dpad left  -> -
+  - dpad right -> -
+  - touch panel press -> 13
+  - PS logo                      -> 12
+  - microphone                   ->  -
+  - "three lines" (center left ) ->  8
+  - menu          (center right) ->  9
+  - left  stick pressed -> 10
+  - right stick pressed -> 11
+ axes and their ranges:
+  - left  stick, horizontal -> 0 (left -1.00 : 1.00 right)
+  - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
+  - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
+  - right stick, vertical   -> 5 (  up -1.00 : 1.00 down )
+  - L2                      -> 3 (idle -1.00 : 1.00 pushed)
+  - R2                      -> 4 (idle -1.00 : 1.00 pushed)
+  - dpad -> -
+
+
+env:
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Brave 1.59.120 Chromium: 118.0.5993.88 (Official Build) (64-bit)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Chrome 118.0.5993.89 (Official Build) (64-bit)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Edge 118.0.2088.57 (Official build) (64-bit)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Opera One (version: 103.0.4928.34)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Vivaldi 6.2.3105.58 (Stable channel) (64-bit)
+gamepad:
+  "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)"
 buttons:
   - x        -> 0
   - circle   -> 1
