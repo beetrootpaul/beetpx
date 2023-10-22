@@ -1,14 +1,16 @@
 export class GamepadTypeDetector {
-    // TODO: unit tests
-    // "45e-2fd-Xbox Wireless Controller"
-    // "54c-ce6-DualSense Wireless Controller"
     static detect(gamepad) {
-        if (gamepad.id.toLowerCase().includes("dualsense")) {
+        const id = gamepad.id.toLowerCase();
+        if (id.includes("dualsense"))
             return "dualsense";
-        }
-        if (gamepad.id.toLowerCase().includes("xbox")) {
+        if (id.includes("054c"))
+            return "dualsense";
+        if (id.includes("xbox"))
             return "xbox";
-        }
+        if (id.includes("045e"))
+            return "xbox";
+        if (id.includes("xinput"))
+            return "xbox";
         return "other";
     }
 }

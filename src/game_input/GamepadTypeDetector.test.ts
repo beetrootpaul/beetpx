@@ -14,6 +14,15 @@ describe("GamepadTypeDetector", () => {
     "45e-2fd-Xbox Wireless Controller",
     // macOS Ventura 13.5.2 (Apple M1 Max), Safari 16.6 (18615.3.12.11.2)
     "Xbox Wireless Controller Extended Gamepad",
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Brave 1.59.120 Chromium: 118.0.5993.88 (Official Build) (64-bit)
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Chrome 118.0.5993.89 (Official Build) (64-bit)
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Edge 118.0.2088.57 (Official build) (arm64)
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Opera One (version: 103.0.4928.34)
+    "HID-compliant game controller (STANDARD GAMEPAD Vendor: 045e Product: 02fd)",
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Vivaldi 6.2.3105.58 (Stable channel) (64-bit)
+    "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
+    "xinput",
   ].forEach((id) => {
     test(`Xbox (id ="${id}")`, () => {
       expect(GamepadTypeDetector.detect(gamepad(id))).toEqual("xbox");
@@ -32,6 +41,14 @@ describe("GamepadTypeDetector", () => {
     "54c-ce6-DualSense Wireless Controller",
     // macOS Ventura 13.5.2 (Apple M1 Max), Safari 16.6 (18615.3.12.11.2)
     "DualSense Wireless Controller Extended Gamepad",
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Brave 1.59.120 Chromium: 118.0.5993.88 (Official Build) (64-bit)
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Chrome 118.0.5993.89 (Official Build) (64-bit)
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Edge 118.0.2088.57 (Official build) (64-bit)
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Opera One (version: 103.0.4928.34)
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Vivaldi 6.2.3105.58 (Stable channel) (64-bit)
+    "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)",
+    // Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
+    "054c-0ce6-Wireless Controller",
   ].forEach((id) => {
     test(`DualSense (id ="${id}")`, () => {
       expect(GamepadTypeDetector.detect(gamepad(id))).toEqual("dualsense");
