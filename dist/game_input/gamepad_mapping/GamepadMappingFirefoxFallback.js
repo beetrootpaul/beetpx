@@ -3,7 +3,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _GamepadMappingFirefoxXbox_stickAxisThreshold;
+var _a, _GamepadMappingFirefoxFallback_stickAxisThreshold;
 /*
 
 env:
@@ -50,26 +50,35 @@ buttons:
   unresponsive
 
  */
-export class GamepadMappingFirefoxXbox {
+export class GamepadMappingFirefoxFallback {
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
-            case 1: // A
-            case 5: // Y
+            case 1: // Xbox One controller: A
+            case 5: // Xbox One controller: Y
+            case 4:
+            case 7:
                 return "button_a";
-            case 2: // B
-            case 3: // X
+            case 2: // Xbox One controller: B
+            case 3: // Xbox One controller: X
+            case 0:
+            case 6:
                 return "button_b";
-            case 12: // d-pad up
+            case 12: // Xbox One controller: d-pad up
                 return "button_up";
-            case 13: // d-pad down
+            case 13: // Xbox One controller: d-pad down
                 return "button_down";
-            case 14: // d-pad left
+            case 14: // Xbox One controller: d-pad left
                 return "button_left";
-            case 15: // d-pad right
+            case 15: // Xbox One controller: d-pad right
                 return "button_right";
-            case 16: // menu (tiny in the center-right)
+            case 16: // Xbox One controller: menu (tiny in the center-right)
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 17:
                 return "button_menu";
         }
         return null;
@@ -78,16 +87,16 @@ export class GamepadMappingFirefoxXbox {
         switch (axisIndex) {
             case 0: // left stick, horizontal
             case 2: // right stick, horizontal
-                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                     ? ["button_right"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                         ? ["button_left"]
                         : [];
             case 1: // left stick, vertical
             case 3: // right stick, vertical
-                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                     ? ["button_down"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                         ? ["button_up"]
                         : [];
             default:
@@ -95,5 +104,5 @@ export class GamepadMappingFirefoxXbox {
         }
     }
 }
-_a = GamepadMappingFirefoxXbox;
-_GamepadMappingFirefoxXbox_stickAxisThreshold = { value: 0.6 };
+_a = GamepadMappingFirefoxFallback;
+_GamepadMappingFirefoxFallback_stickAxisThreshold = { value: 0.6 };

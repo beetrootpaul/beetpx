@@ -48,7 +48,7 @@ buttons:
 
  */
 
-export class GamepadMappingFirefoxXbox implements GamepadMapping {
+export class GamepadMappingFirefoxFallback implements GamepadMapping {
   static readonly #stickAxisThreshold: number = 0.6;
 
   eventForButton(
@@ -58,21 +58,30 @@ export class GamepadMappingFirefoxXbox implements GamepadMapping {
     if (!button.pressed) return null;
 
     switch (buttonIndex) {
-      case 1: // A
-      case 5: // Y
+      case 1: // Xbox One controller: A
+      case 5: // Xbox One controller: Y
+      case 4:
+      case 7:
         return "button_a";
-      case 2: // B
-      case 3: // X
+      case 2: // Xbox One controller: B
+      case 3: // Xbox One controller: X
+      case 0:
+      case 6:
         return "button_b";
-      case 12: // d-pad up
+      case 12: // Xbox One controller: d-pad up
         return "button_up";
-      case 13: // d-pad down
+      case 13: // Xbox One controller: d-pad down
         return "button_down";
-      case 14: // d-pad left
+      case 14: // Xbox One controller: d-pad left
         return "button_left";
-      case 15: // d-pad right
+      case 15: // Xbox One controller: d-pad right
         return "button_right";
-      case 16: // menu (tiny in the center-right)
+      case 16: // Xbox One controller: menu (tiny in the center-right)
+      case 8:
+      case 9:
+      case 10:
+      case 11:
+      case 17:
         return "button_menu";
     }
 
@@ -86,16 +95,16 @@ export class GamepadMappingFirefoxXbox implements GamepadMapping {
     switch (axisIndex) {
       case 0: // left stick, horizontal
       case 2: // right stick, horizontal
-        return axisValue > GamepadMappingFirefoxXbox.#stickAxisThreshold
+        return axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold
           ? ["button_right"]
-          : axisValue < -GamepadMappingFirefoxXbox.#stickAxisThreshold
+          : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold
           ? ["button_left"]
           : [];
       case 1: // left stick, vertical
       case 3: // right stick, vertical
-        return axisValue > GamepadMappingFirefoxXbox.#stickAxisThreshold
+        return axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold
           ? ["button_down"]
-          : axisValue < -GamepadMappingFirefoxXbox.#stickAxisThreshold
+          : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold
           ? ["button_up"]
           : [];
       default:

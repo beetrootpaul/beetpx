@@ -13,7 +13,7 @@ var _GamepadGameInput_instances, _GamepadGameInput_browserType, _GamepadGameInpu
 import { u_ } from "../Utils";
 import { GamepadMappingFallback } from "./gamepad_mapping/GamepadMappingFallback";
 import { GamepadMappingFirefoxDualSense } from "./gamepad_mapping/GamepadMappingFirefoxDualSense";
-import { GamepadMappingFirefoxXbox } from "./gamepad_mapping/GamepadMappingFirefoxXbox";
+import { GamepadMappingFirefoxFallback } from "./gamepad_mapping/GamepadMappingFirefoxFallback";
 import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
 import { GamepadTypeDetector } from "./GamepadTypeDetector";
 export const supportedGamepadTypes = ["xbox", "dualsense", "other"];
@@ -25,7 +25,7 @@ export class GamepadGameInput {
         _GamepadGameInput_mappings.set(this, {
             standard: new GamepadMappingStandard(),
             firefoxDualSense: new GamepadMappingFirefoxDualSense(),
-            firefoxOther: new GamepadMappingFirefoxXbox(),
+            firefoxOther: new GamepadMappingFirefoxFallback(),
             other: new GamepadMappingFallback(),
         });
         __classPrivateFieldSet(this, _GamepadGameInput_browserType, params.browserType, "f");
@@ -63,19 +63,24 @@ export class GamepadGameInput {
     }
 }
 _GamepadGameInput_browserType = new WeakMap(), _GamepadGameInput_mappings = new WeakMap(), _GamepadGameInput_instances = new WeakSet(), _GamepadGameInput_mappingFor = function _GamepadGameInput_mappingFor(gamepad) {
-    if (gamepad.mapping === "standard") {
-        return new GamepadMappingStandard();
-    }
     if (__classPrivateFieldGet(this, _GamepadGameInput_browserType, "f") === "firefox") {
         if (GamepadTypeDetector.detect(gamepad) === "dualsense") {
-            return new GamepadMappingFirefoxDualSense();
+            return __classPrivateFieldGet(this, _GamepadGameInput_mappings, "f").firefoxDualSense;
         }
         else {
             // Let's use Xbox as a default one for all other gamepad types in Firefox,
             //   since my gut feeling is the way `GamepadTypeDetector` detects
             //   DualSense would work for DualShock as well.
-            return new GamepadMappingFirefoxXbox();
+            return __classPrivateFieldGet(this, _GamepadGameInput_mappings, "f").firefoxOther;
         }
     }
-    return new GamepadMappingFallback();
+    // We cannot check `mapping` before checking if it is Firefox, because
+    //   Firefox claims the `mapping` of Xbox One controller is `"standard"`,
+    //   while it is not…
+    if (gamepad.mapping === "standard") {
+        return __classPrivateFieldGet(this, _GamepadGameInput_mappings, "f").standard;
+    }
+    else {
+        return __classPrivateFieldGet(this, _GamepadGameInput_mappings, "f").other;
+    }
 };
