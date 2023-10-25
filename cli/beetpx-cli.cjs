@@ -197,19 +197,19 @@ function runZipCommand() {
     recursive: true,
   });
 
-  require("cross-zip").zipSync(
-    path.resolve(
-      gameCodebaseDir,
-      tmpBeetPxDir,
-      buildOutDirAsExpectedByVitePreview,
-    ),
-    path.resolve(gameCodebaseDir, distZipDir, distZipFile),
+  const inputDir = path.resolve(
+    gameCodebaseDir,
+    tmpBeetPxDir,
+    buildOutDirAsExpectedByVitePreview,
   );
+  const outputZip = path.resolve(gameCodebaseDir, distZipDir, distZipFile);
 
-  console.log(
-    `Zip got created in: ${path.relative(
-      process.cwd(),
-      path.resolve(gameCodebaseDir, distZipDir, distZipFile),
-    )}`,
-  );
+  // Remove the ZIP file first, otherwise its old content will get merged with the new one
+  if (fs.existsSync(outputZip)) {
+    fs.unlinkSync(outputZip);
+  }
+
+  require("cross-zip").zipSync(inputDir, outputZip);
+
+  console.log(`Zip got created in: ${path.relative(process.cwd(), outputZip)}`);
 }
