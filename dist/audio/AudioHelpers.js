@@ -25,7 +25,7 @@ export class AudioHelpers {
             else {
                 gainNode.gain.setValueAtTime(0, audioContextStartTime);
             }
-        }).catch((err) => { });
+        }).catch(() => { });
         setTimeout(() => {
             onMuted();
         }, fadeOutMillis);
@@ -55,6 +55,7 @@ _a = AudioHelpers, _AudioHelpers_tryNTimes = function _AudioHelpers_tryNTimes(n,
             action();
         }
         catch (err) {
+            Logger.debugBeetPx(`AudioHelpers.#tryNTimes: err:`, err);
             return new Promise((resolve, reject) => {
                 Logger.debugBeetPx(`AudioHelpers.#tryNTimes: Failed to perform the action, trying ${n} more times…`);
                 setTimeout(() => {

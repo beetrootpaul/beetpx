@@ -93,7 +93,7 @@ export class AudioApi {
     soundUrl: SoundUrl,
     muteOnStart: boolean = false,
   ): BpxAudioPlaybackId {
-    Logger.debugBeetPx("AudioApi.playSoundOnce");
+    Logger.debugBeetPx(`AudioApi.playSoundOnce (muteOnStart: ${muteOnStart})`);
 
     const playback = new AudioPlaybackOnce(soundUrl, {
       assets: this.#assets,
@@ -113,7 +113,9 @@ export class AudioApi {
     soundUrl: SoundUrl,
     muteOnStart: boolean = false,
   ): BpxAudioPlaybackId {
-    Logger.debugBeetPx("AudioApi.playSoundLooped");
+    Logger.debugBeetPx(
+      `AudioApi.playSoundLooped (muteOnStart: ${muteOnStart})`,
+    );
 
     const playback = new AudioPlaybackLooped(soundUrl, {
       assets: this.#assets,
@@ -133,7 +135,9 @@ export class AudioApi {
     soundSequence: BpxSoundSequence,
     muteOnStart: boolean = false,
   ): BpxAudioPlaybackId {
-    Logger.debugBeetPx("AudioApi.playSoundSequence");
+    Logger.debugBeetPx(
+      `AudioApi.playSoundSequence (muteOnStart: ${muteOnStart})`,
+    );
 
     const playback = new AudioPlaybackSequence(soundSequence, {
       assets: this.#assets,
@@ -285,7 +289,9 @@ export class AudioApi {
     playbackId: BpxAudioPlaybackId,
     opts: { fadeOutMillis?: number } = {},
   ): void {
-    Logger.debugBeetPx("AudioApi.stopPlayback");
+    Logger.debugBeetPx(
+      `AudioApi.stopPlayback (fadeOutMillis: ${opts.fadeOutMillis})`,
+    );
 
     this.#playbacks
       .get(playbackId)

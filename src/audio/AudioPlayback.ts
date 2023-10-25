@@ -1,3 +1,4 @@
+import { Logger } from "../logger/Logger";
 import { AudioHelpers } from "./AudioHelpers";
 
 export type BpxAudioPlaybackId = number;
@@ -5,6 +6,9 @@ export type BpxAudioPlaybackId = number;
 export abstract class AudioPlayback {
   // start from 1 to avoid a case when someone checks for ID being truthy and gets `false`, because of value `0`
   protected static nextPlaybackId = 1;
+
+  abstract readonly id: BpxAudioPlaybackId;
+  abstract readonly type: string;
 
   readonly #audioContext: AudioContext;
   readonly #gainNode: GainNode;
@@ -22,6 +26,9 @@ export abstract class AudioPlayback {
   }
 
   mute(fadeOutMillis: number): void {
+    Logger.debugBeetPx(
+      `AudioPlayback.mute (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`,
+    );
     AudioHelpers.muteGain(
       this.#gainNode,
       this.#audioContext.currentTime,
@@ -30,6 +37,9 @@ export abstract class AudioPlayback {
   }
 
   unmute(fadeInMillis: number): void {
+    Logger.debugBeetPx(
+      `AudioPlayback.unmute (id: ${this.id}, type: ${this.type}, fadeInMillis: ${fadeInMillis})`,
+    );
     AudioHelpers.unmuteGain(
       this.#gainNode,
       this.#audioContext.currentTime,
@@ -38,6 +48,9 @@ export abstract class AudioPlayback {
   }
 
   stop(fadeOutMillis: number): void {
+    Logger.debugBeetPx(
+      `AudioPlayback.stop (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`,
+    );
     AudioHelpers.muteGain(
       this.#gainNode,
       this.#audioContext.currentTime,
