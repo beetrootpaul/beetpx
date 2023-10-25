@@ -3,6 +3,7 @@ import { AudioPlayback, BpxAudioPlaybackId } from "./AudioPlayback";
 
 export class AudioPlaybackOnce extends AudioPlayback {
   readonly id: BpxAudioPlaybackId = AudioPlayback.nextPlaybackId++;
+  readonly type: string = "once";
 
   readonly #sourceNode: AudioBufferSourceNode;
 

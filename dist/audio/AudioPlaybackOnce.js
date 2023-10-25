@@ -15,6 +15,7 @@ export class AudioPlaybackOnce extends AudioPlayback {
     constructor(soundUrl, params) {
         super(params.audioContext, params.target, params.muteOnStart);
         this.id = AudioPlayback.nextPlaybackId++;
+        this.type = "once";
         _AudioPlaybackOnce_sourceNode.set(this, void 0);
         __classPrivateFieldSet(this, _AudioPlaybackOnce_sourceNode, this.createSourceNode(), "f");
         __classPrivateFieldGet(this, _AudioPlaybackOnce_sourceNode, "f").buffer = params.assets.getSoundAsset(soundUrl).audioBuffer;

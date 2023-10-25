@@ -40,3 +40,7 @@ This projects is developed on [Node.js 14.18](https://nodejs.org/docs/latest-v14
 You might find it helpful to use
 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) in order to make sure you use the same Node.js version as
 which is specified in [.nvmrc](.nvmrc).
+
+## Random Notes
+
+- gamepad input seems to be laggy (at least on Firefox), unsuitable for fast paced games

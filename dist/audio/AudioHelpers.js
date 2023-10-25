@@ -16,28 +16,30 @@ var _a, _AudioHelpers_tryNTimes;
 import { Logger } from "../logger/Logger";
 import { u_ } from "../Utils";
 export class AudioHelpers {
-    static muteGain(gainNode, audioContextStartTime, fadeOutMillis, onMuted = u_.noop) {
+    static muteGain(gainNode, audioContextCurrentTime, fadeOutMillis, onMuted = u_.noop) {
         fadeOutMillis = Math.max(0, fadeOutMillis);
+        Logger.debugBeetPx(`AudioHelpers.muteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeOutMillis: ${fadeOutMillis})`);
         __classPrivateFieldGet(AudioHelpers, _a, "m", _AudioHelpers_tryNTimes).call(AudioHelpers, 15, 100, () => {
             if (fadeOutMillis > 0) {
-                gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 0], audioContextStartTime / 1000, fadeOutMillis / 1000);
+                gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 0], audioContextCurrentTime, fadeOutMillis / 1000);
             }
             else {
-                gainNode.gain.setValueAtTime(0, audioContextStartTime);
+                gainNode.gain.setValueAtTime(0, audioContextCurrentTime);
             }
-        }).catch((err) => { });
+        }).catch(() => { });
         setTimeout(() => {
             onMuted();
         }, fadeOutMillis);
     }
-    static unmuteGain(gainNode, audioContextStartTime, fadeInMillis, onUnmuted = u_.noop) {
+    static unmuteGain(gainNode, audioContextCurrentTime, fadeInMillis, onUnmuted = u_.noop) {
         fadeInMillis = Math.max(0, fadeInMillis);
+        Logger.debugBeetPx(`AudioHelpers.muteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeInMillis: ${fadeInMillis})`);
         __classPrivateFieldGet(AudioHelpers, _a, "m", _AudioHelpers_tryNTimes).call(AudioHelpers, 15, 100, () => {
             if (fadeInMillis > 0) {
-                gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 1], audioContextStartTime / 1000, fadeInMillis / 1000);
+                gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 1], audioContextCurrentTime, fadeInMillis / 1000);
             }
             else {
-                gainNode.gain.setValueAtTime(1, audioContextStartTime);
+                gainNode.gain.setValueAtTime(1, audioContextCurrentTime);
             }
         }).catch((err) => { });
         setTimeout(() => {
@@ -55,6 +57,7 @@ _a = AudioHelpers, _AudioHelpers_tryNTimes = function _AudioHelpers_tryNTimes(n,
             action();
         }
         catch (err) {
+            Logger.debugBeetPx(`AudioHelpers.#tryNTimes: err:`, err);
             return new Promise((resolve, reject) => {
                 Logger.debugBeetPx(`AudioHelpers.#tryNTimes: Failed to perform the action, trying ${n} more times…`);
                 setTimeout(() => {

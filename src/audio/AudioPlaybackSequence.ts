@@ -12,6 +12,7 @@ type EntryBuffers = {
 
 export class AudioPlaybackSequence extends AudioPlayback {
   readonly id: BpxAudioPlaybackId = AudioPlayback.nextPlaybackId++;
+  readonly type: string = "sequence";
 
   readonly #sourceNode: AudioBufferSourceNode;
 

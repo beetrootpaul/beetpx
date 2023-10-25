@@ -15,6 +15,7 @@ export class AudioPlaybackLooped extends AudioPlayback {
     constructor(soundUrl, params) {
         super(params.audioContext, params.target, params.muteOnStart);
         this.id = AudioPlayback.nextPlaybackId++;
+        this.type = "looped";
         _AudioPlaybackLooped_sourceNode.set(this, void 0);
         __classPrivateFieldSet(this, _AudioPlaybackLooped_sourceNode, this.createSourceNode(), "f");
         __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").buffer = params.assets.getSoundAsset(soundUrl).audioBuffer;
