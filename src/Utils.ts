@@ -24,6 +24,10 @@ export class BpxUtils {
     return param;
   }
 
+  static isDefined<Value>(value: Value | null | undefined): value is Value {
+    return value != null;
+  }
+
   static lerp(a: number, b: number, t: number): number {
     return a + (b - a) * t;
   }

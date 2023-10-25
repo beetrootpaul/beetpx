@@ -1,6 +1,10 @@
 import { Assets, AssetsToLoad } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { BeetPx } from "./BeetPx";
+import {
+  BpxBrowserType,
+  BrowserTypeDetector,
+} from "./browser/BrowserTypeDetector";
 import { black_, BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
@@ -33,6 +37,8 @@ export class Framework {
   static readonly #storageDebugDisabledTrue = "yes";
 
   #frameByFrame: boolean;
+
+  readonly #browserType: BpxBrowserType;
 
   readonly #gameCanvasSize: BpxVector2d;
   readonly #htmlCanvasBackground: BpxSolidColor =
@@ -81,6 +87,8 @@ export class Framework {
         Framework.#storageDebugDisabledTrue
       : false;
     this.#frameByFrame = false;
+
+    this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
     this.#loading = new Loading(HtmlTemplate.selectors.display);
 
@@ -132,6 +140,7 @@ export class Framework {
       // TODO: are those selectors for both touch and mouse? Even if so, make them separate
       fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
       enableDebugInputs: options.debugFeatures,
+      browserType: this.#browserType,
     });
 
     this.#gameLoop = new GameLoop({
@@ -165,6 +174,10 @@ export class Framework {
       canvasSize: this.#gameCanvasSize,
       assets: this.assets,
     });
+  }
+
+  detectedBrowserType(): BpxBrowserType {
+    return this.#browserType;
   }
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {

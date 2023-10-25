@@ -14,7 +14,7 @@ b_.init(
     gameCanvasSize: "128x128",
     desiredUpdateFps: 60,
     visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
-    debugFeatures: !__BEETPX_IS_PROD__,
+    debugFeatures: true,
   },
   {
     images: [{ url: "spritesheet.png" }],
@@ -25,7 +25,7 @@ b_.init(
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
     standardView = new StandardView();
-    debugView = new DebugView(() => showDebug);
+    debugView = new DebugView();
     showDebug = false;
 
     prevDebugToggleState = false;

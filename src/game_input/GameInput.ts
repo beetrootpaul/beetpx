@@ -1,6 +1,7 @@
+import { BpxBrowserType } from "../browser/BrowserTypeDetector";
 import { Button } from "./Button";
 import { BpxButtonName, Buttons } from "./Buttons";
-import { GamepadGameInput } from "./GamepadGameInput";
+import { BpxGamepadType, GamepadGameInput } from "./GamepadGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { MouseGameInput } from "./MouseGameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
@@ -25,6 +26,7 @@ export type BpxGameInputEvent =
 
 export class GameInput {
   readonly #specializedGameInputs: SpecializedGameInput[];
+  readonly #gamepadGameInput: GamepadGameInput;
 
   readonly gameButtons: Buttons;
 
@@ -43,7 +45,11 @@ export class GameInput {
     muteButtonsSelector: string;
     fullScreenButtonsSelector: string;
     enableDebugInputs: boolean;
+    browserType: BpxBrowserType;
   }) {
+    this.#gamepadGameInput = new GamepadGameInput({
+      browserType: params.browserType,
+    });
     this.#specializedGameInputs = [
       new MouseGameInput({
         muteButtonsSelector: params.muteButtonsSelector,
@@ -55,7 +61,7 @@ export class GameInput {
       new TouchGameInput({
         visibleButtons: params.visibleTouchButtons,
       }),
-      new GamepadGameInput(),
+      this.#gamepadGameInput,
     ];
 
     this.gameButtons = new Buttons();
@@ -105,6 +111,10 @@ export class GameInput {
 
   mostRecentInputMethods(): Set<GameInputMethod> {
     return this.#mostRecentInputMethods;
+  }
+
+  connectedGamepadTypes(): Set<BpxGamepadType> {
+    return this.#gamepadGameInput.connectedGamepadTypes();
   }
 
   __internal__capturedEvents(): Set<BpxGameInputEvent> {

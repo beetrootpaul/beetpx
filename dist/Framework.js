@@ -18,10 +18,11 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_htmlCanvasContext, _Framework_offscreenContext, _Framework_offscreenImageData, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_scaleToFill, _Framework_centeringOffset, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame, _Framework_setupHtmlCanvas, _Framework_render, _Framework_redrawDebugMargin;
 import { Assets } from "./Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { BeetPx } from "./BeetPx";
+import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { black_, BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
@@ -44,6 +45,7 @@ export class Framework {
     constructor(options) {
         _Framework_instances.add(this);
         _Framework_frameByFrame.set(this, void 0);
+        _Framework_browserType.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
         _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#000000"));
         _Framework_htmlCanvasContext.set(this, void 0);
@@ -66,6 +68,7 @@ export class Framework {
                 __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue)
             : false;
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
+        __classPrivateFieldSet(this, _Framework_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         __classPrivateFieldSet(this, _Framework_loading, new Loading(HtmlTemplate.selectors.display), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
             ? v_(64, 64)
@@ -104,6 +107,7 @@ export class Framework {
             // TODO: are those selectors for both touch and mouse? Even if so, make them separate
             fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
             enableDebugInputs: options.debugFeatures,
+            browserType: __classPrivateFieldGet(this, _Framework_browserType, "f"),
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
             desiredUpdateFps: options.desiredUpdateFps,
@@ -123,6 +127,9 @@ export class Framework {
             canvasSize: __classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"),
             assets: this.assets,
         });
+    }
+    detectedBrowserType() {
+        return __classPrivateFieldGet(this, _Framework_browserType, "f");
     }
     loadAssets(assetsToLoad) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -151,7 +158,7 @@ export class Framework {
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_htmlCanvasContext = new WeakMap(), _Framework_offscreenContext = new WeakMap(), _Framework_offscreenImageData = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_scaleToFill = new WeakMap(), _Framework_centeringOffset = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
     if (__BEETPX_IS_PROD__) {
         // - returned message seems to be ignored by some browsers, therefore using `""`

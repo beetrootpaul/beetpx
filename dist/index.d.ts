@@ -225,6 +225,7 @@ declare class BpxUtils {
     static booleanChangingEveryNthFrame(n: number): boolean;
     static clamp(a: number, b: number, c: number): number;
     static identity<Param>(param: Param): Param;
+    static isDefined<Value>(value: Value | null | undefined): value is Value;
     static lerp(a: number, b: number, t: number): number;
     static measureText(text: string): BpxVector2d;
     static noop(): void;
@@ -269,6 +270,8 @@ type SoundSequenceEntrySoundAdditional = SoundUrl | {
     url: SoundUrl;
 };
 
+type BpxBrowserType = "chromium" | "firefox" | "safari" | "other";
+
 declare class BpxClippingRegion {
     #private;
     constructor(xy: BpxVector2d, wh: BpxVector2d);
@@ -285,6 +288,9 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
+declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "other"];
+type BpxGamepadType = (typeof supportedGamepadTypes)[number];
+
 type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 declare class GameInput {
@@ -300,6 +306,7 @@ declare class GameInput {
         muteButtonsSelector: string;
         fullScreenButtonsSelector: string;
         enableDebugInputs: boolean;
+        browserType: BpxBrowserType;
     });
     startListening(): void;
     /**
@@ -309,6 +316,7 @@ declare class GameInput {
         skipGameButtons: boolean;
     }): boolean;
     mostRecentInputMethods(): Set<GameInputMethod>;
+    connectedGamepadTypes(): Set<BpxGamepadType>;
     __internal__capturedEvents(): Set<BpxGameInputEvent>;
 }
 
@@ -402,6 +410,7 @@ declare class Framework {
     get frameNumber(): number;
     get renderFps(): number;
     constructor(options: FrameworkOptions);
+    detectedBrowserType(): BpxBrowserType;
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
@@ -445,6 +454,7 @@ declare class BeetPx {
     static wasJustPressed: Buttons["wasJustPressed"];
     static wasJustReleased: Buttons["wasJustReleased"];
     static mostRecentInputMethods: GameInput["mostRecentInputMethods"];
+    static connectedGamepadTypes: GameInput["connectedGamepadTypes"];
     static __internal__capturedEvents: GameInput["__internal__capturedEvents"];
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setClippingRegion: DrawApi["setClippingRegion"];
@@ -485,6 +495,7 @@ declare class BeetPx {
     static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];
     static getJsonAsset: Assets["getJsonAsset"];
+    static detectedBrowserType: Framework["detectedBrowserType"];
 }
 declare const b_: typeof BeetPx;
 
@@ -502,4 +513,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

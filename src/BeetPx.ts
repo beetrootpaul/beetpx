@@ -116,6 +116,12 @@ export class BeetPx {
     return this.#tryGetFramework().gameInput.mostRecentInputMethods(...args);
   };
 
+  static connectedGamepadTypes: GameInput["connectedGamepadTypes"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().gameInput.connectedGamepadTypes(...args);
+  };
+
   static __internal__capturedEvents: GameInput["__internal__capturedEvents"] = (
     ...args
   ) => {
@@ -302,6 +308,14 @@ export class BeetPx {
 
   static getJsonAsset: Assets["getJsonAsset"] = (...args) => {
     return this.#tryGetFramework().assets.getJsonAsset(...args);
+  };
+
+  //
+  // other
+  //
+
+  static detectedBrowserType: Framework["detectedBrowserType"] = (...args) => {
+    return this.#tryGetFramework().detectedBrowserType(...args);
   };
 
   //
