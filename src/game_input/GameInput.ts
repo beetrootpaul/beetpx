@@ -1,6 +1,6 @@
 import { Button } from "./Button";
 import { BpxButtonName, Buttons } from "./Buttons";
-import { GamepadGameInput, GamepadType } from "./GamepadGameInput";
+import { BpxGamepadType, GamepadGameInput } from "./GamepadGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { MouseGameInput } from "./MouseGameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
@@ -109,7 +109,7 @@ export class GameInput {
     return this.#mostRecentInputMethods;
   }
 
-  connectedGamepadTypes(): Set<GamepadType> {
+  connectedGamepadTypes(): Set<BpxGamepadType> {
     return this.#gamepadGameInput.connectedGamepadTypes();
   }
 

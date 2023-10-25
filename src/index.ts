@@ -32,6 +32,7 @@ export {
   type BpxSoundSequence,
   type BpxSoundSequenceEntry,
 } from "./audio/SoundSequence";
+export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
 export { BpxClippingRegion } from "./draw_api/ClippingRegion";
 export {
   type BpxCanvasSnapshot,
@@ -41,6 +42,7 @@ export { BpxFillPattern } from "./draw_api/FillPattern";
 export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
 export { type BpxButtonName } from "./game_input/Buttons";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
+export { type BpxGamepadType } from "./game_input/GamepadGameInput";
 export { BpxTimer } from "./misc/Timer";
 
 export { BeetPx } from "./BeetPx";

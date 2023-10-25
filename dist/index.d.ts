@@ -269,6 +269,8 @@ type SoundSequenceEntrySoundAdditional = SoundUrl | {
     url: SoundUrl;
 };
 
+type BpxBrowserType = "chromium" | "firefox" | "safari" | "other";
+
 declare class BpxClippingRegion {
     #private;
     constructor(xy: BpxVector2d, wh: BpxVector2d);
@@ -285,7 +287,7 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
-type GamepadType = "xbox" | "dualsense" | "other";
+type BpxGamepadType = "xbox" | "dualsense" | "other";
 
 type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
@@ -311,7 +313,7 @@ declare class GameInput {
         skipGameButtons: boolean;
     }): boolean;
     mostRecentInputMethods(): Set<GameInputMethod>;
-    connectedGamepadTypes(): Set<GamepadType>;
+    connectedGamepadTypes(): Set<BpxGamepadType>;
     __internal__capturedEvents(): Set<BpxGameInputEvent>;
 }
 
@@ -405,6 +407,7 @@ declare class Framework {
     get frameNumber(): number;
     get renderFps(): number;
     constructor(options: FrameworkOptions);
+    detectedBrowserType(): BpxBrowserType;
     loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
@@ -489,6 +492,7 @@ declare class BeetPx {
     static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];
     static getJsonAsset: Assets["getJsonAsset"];
+    static detectedBrowserType: Framework["detectedBrowserType"];
 }
 declare const b_: typeof BeetPx;
 
@@ -506,4 +510,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

@@ -1,5 +1,5 @@
 import { b_, BpxSolidColor, spr_, u_, v_, v_0_0_ } from "../../../src";
-import { GamepadType } from "../../../src/game_input/GamepadGameInput";
+import { BpxGamepadType } from "../../../src/game_input/GamepadGameInput";
 import { GamepadTypeDetector } from "../../../src/game_input/GamepadTypeDetector";
 
 const spr = spr_("spritesheet.png");
@@ -11,7 +11,7 @@ const lime = BpxSolidColor.fromRgbCssHex("#00e436");
 export class DebugView {
   private readonly gamepadsN = 3;
 
-  private readonly gamepadTypes: (null | GamepadType)[] = u_
+  private readonly gamepadTypes: (null | BpxGamepadType)[] = u_
     .range(this.gamepadsN)
     .map(() => null);
 

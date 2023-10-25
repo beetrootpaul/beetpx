@@ -79,8 +79,8 @@ buttons:
   - Y -> 3
   - LB -> 4
   - RB -> 5
-  - LT -> 6 ("touched: true" if half-pressed)
-  - RT -> 7 ("touched: true" if half-pressed)
+  - LT -> 6  ("touched: true" if half-pressed, "value": from 0 to 1)
+  - RT -> 7  ("touched: true" if half-pressed, "value": from 0 to 1)
   - dpad up    -> 12
   - dpad down  -> 13
   - dpad left  -> 14
@@ -98,6 +98,7 @@ buttons:
 
 env:
   Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 119.0 (64-bit)
 gamepad:
   "xinput"
 buttons:
@@ -122,8 +123,8 @@ buttons:
   - Y -> 3
   - LB -> 4
   - RB -> 5
-  - LT -> 6 ("touched: true" if half-pressed)
-  - RT -> 7 ("touched: true" if half-pressed)
+  - LT -> 6  ("touched: true" if half-pressed, "value": from 0 to 1)
+  - RT -> 7  ("touched: true" if half-pressed, "value": from 0 to 1)
   - dpad up    -> 12
   - dpad down  -> 13
   - dpad left  -> 14
@@ -236,8 +237,8 @@ buttons:
   - triangle -> 3
   - L1 -> 4
   - R1 -> 5
-  - L2 -> 6 ("touched: true" if half-pressed)
-  - R2 -> 7 ("touched: true" if half-pressed)
+  - L2 -> 6  ("touched: true" if half-pressed, "value": from 0 to 1)
+  - R2 -> 7  ("touched: true" if half-pressed, "value": from 0 to 1)
   - dpad up    -> 12
   - dpad down  -> 13
   - dpad left  -> 14
@@ -262,6 +263,7 @@ buttons:
 
 env:
   Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 119.0 (64-bit)
 gamepad:
   "054c-0ce6-Wireless Controller"
 buttons:
@@ -291,7 +293,17 @@ buttons:
   - right stick, vertical   -> 5 (  up -1.00 : 1.00 down )
   - L2                      -> 3 (idle -1.00 : 1.00 pushed)
   - R2                      -> 4 (idle -1.00 : 1.00 pushed)
-  - dpad -> -
+  - dpad -> 4 (from -1.00 +2/7 for each 1/8 turn clockwise:
+                 up         -1.00
+                 up-right   -0.71
+                 right      -0.43
+                 down-right -0.14
+                 down        0.14
+                 down-left   0.43
+                 left        0.71
+                 up-left     1.00
+                 idle        1.29
+              )
 
 
 env:
@@ -309,8 +321,8 @@ buttons:
   - triangle -> 3
   - L1 -> 4
   - R1 -> 5
-  - L2 -> 6 ("touched: true" if half-pressed)
-  - R2 -> 7 ("touched: true" if half-pressed)
+  - L2 -> 6 ("touched: true" if half-pressed, "value": from 0 to 1)
+  - R2 -> 7 ("touched: true" if half-pressed, "value": from 0 to 1)
   - dpad up    -> 12
   - dpad down  -> 13
   - dpad left  -> 14
@@ -339,7 +351,7 @@ const ds = {
   dpadRangeThreshold: 0.25 * (2 / 7),
 };
 
-export type GamepadType = "xbox" | "dualsense" | "other";
+export type BpxGamepadType = "xbox" | "dualsense" | "other";
 
 export class GamepadGameInput implements SpecializedGameInput {
   inputMethod: GameInputMethod = "gamepad";
@@ -444,8 +456,8 @@ export class GamepadGameInput implements SpecializedGameInput {
     return wasAnyEventDetected;
   }
 
-  connectedGamepadTypes(): Set<GamepadType> {
-    const types: Set<GamepadType> = new Set();
+  connectedGamepadTypes(): Set<BpxGamepadType> {
+    const types: Set<BpxGamepadType> = new Set();
     for (const gamepad of this.#gamepads.values()) {
       types.add(GamepadTypeDetector.detect(gamepad));
     }

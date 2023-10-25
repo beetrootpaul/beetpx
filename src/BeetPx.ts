@@ -311,6 +311,14 @@ export class BeetPx {
   };
 
   //
+  // other
+  //
+
+  static detectedBrowserType: Framework["detectedBrowserType"] = (...args) => {
+    return this.#tryGetFramework().detectedBrowserType(...args);
+  };
+
+  //
   // private helpers
   //
 

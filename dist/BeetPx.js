@@ -232,4 +232,10 @@ BeetPx.getSoundAsset = (...args) => {
 BeetPx.getJsonAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getJsonAsset(...args);
 };
+//
+// other
+//
+BeetPx.detectedBrowserType = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).detectedBrowserType(...args);
+};
 export const b_ = BeetPx;
