@@ -38,7 +38,6 @@ export class GamepadGameInput implements SpecializedGameInput {
 
       const mapping = this.#mappings.get(GamepadTypeDetector.detect(gamepad));
       if (!mapping) continue;
-      console.group(GamepadTypeDetector.detect(gamepad));
 
       gamepad.buttons.forEach((button, buttonIndex) => {
         const event = mapping.eventForButton(buttonIndex, button);
@@ -51,12 +50,9 @@ export class GamepadGameInput implements SpecializedGameInput {
       gamepad.axes.forEach((axisValue, axisIndex) => {
         mapping.eventsForAxisValue(axisIndex, axisValue).forEach((event) => {
           eventsCollector.add(event);
-          console.log(event);
           wasAnyEventDetected = true;
         });
       });
-
-      console.groupEnd();
     }
 
     return wasAnyEventDetected;

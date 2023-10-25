@@ -27,7 +27,6 @@ export class GamepadGameInput {
             const mapping = __classPrivateFieldGet(this, _GamepadGameInput_mappings, "f").get(GamepadTypeDetector.detect(gamepad));
             if (!mapping)
                 continue;
-            console.group(GamepadTypeDetector.detect(gamepad));
             gamepad.buttons.forEach((button, buttonIndex) => {
                 const event = mapping.eventForButton(buttonIndex, button);
                 if (event) {
@@ -38,11 +37,9 @@ export class GamepadGameInput {
             gamepad.axes.forEach((axisValue, axisIndex) => {
                 mapping.eventsForAxisValue(axisIndex, axisValue).forEach((event) => {
                     eventsCollector.add(event);
-                    console.log(event);
                     wasAnyEventDetected = true;
                 });
             });
-            console.groupEnd();
         }
         return wasAnyEventDetected;
     }
