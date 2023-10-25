@@ -93,7 +93,7 @@ export class Assets {
         canvas.height = htmlImage.naturalHeight;
         const ctx = canvas.getContext("2d");
         if (!ctx) {
-          throw Error(`Failed to process the image: ${htmlImage.src}`);
+          throw Error(`Assets: Failed to process the image: ${htmlImage.src}`);
         }
         ctx.drawImage(htmlImage, 0, 0);
         const imageData: ImageData = ctx.getImageData(
@@ -113,12 +113,18 @@ export class Assets {
     // TODO: make sounds loaded in parallel with images above
     await Promise.all(
       assetsToLoad.sounds.map(async ({ url }) => {
-        if (!url.toLowerCase().endsWith(".wav")) {
+        if (
+          !url.toLowerCase().endsWith(".wav") &&
+          !url.toLowerCase().endsWith(".flac")
+        ) {
           throw Error(
-            `Assets: only wav sound files are supported due to Safari compatibility. The file which doesn't seem to be wav: "${url}"`,
+            `Assets: only wav and flac sound files are supported due to Safari compatibility. The file which doesn't seem to be neither wav nor flac: "${url}"`,
           );
         }
         const httpResponse = await fetch(url);
+        if (!this.#is2xx(httpResponse.status)) {
+          throw Error(`Assets: could not fetch sound file: "${url}"`);
+        }
         const arrayBuffer = await httpResponse.arrayBuffer();
         const audioBuffer = await this.#decodeAudioData(arrayBuffer);
         this.#sounds.set(url, { audioBuffer });
@@ -128,6 +134,9 @@ export class Assets {
     await Promise.all(
       assetsToLoad.jsons.map(async ({ url }) => {
         const httpResponse = await fetch(url);
+        if (!this.#is2xx(httpResponse.status)) {
+          throw Error(`Assets: could not fetch JSON file: "${url}"`);
+        }
         const json = await httpResponse.json();
         this.#jsons.set(url, { json });
       }),
@@ -180,5 +189,9 @@ export class Assets {
       );
     }
     return jsonAsset;
+  }
+
+  #is2xx(httpStatus: number): boolean {
+    return httpStatus >= 200 && httpStatus < 300;
   }
 }
