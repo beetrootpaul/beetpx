@@ -3,7 +3,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _GamepadMappingDefault_stickAxisThreshold;
+var _a, _GamepadMappingStandard_stickAxisThreshold;
 /*
 
 env:
@@ -223,21 +223,21 @@ buttons:
   - R2                      -> -
   - dpad -> -
  */
-export class GamepadMappingDefault {
+/**
+ * Used for the Standard mapping, as described on https://w3c.github.io/gamepad/#remapping
+ *   and indicated by `Gamepad.mapping === "standard"`.
+ */
+export class GamepadMappingStandard {
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
             case 0: // Xbox: A / DualSense: cross
-                return "button_a";
-            case 1: // Xbox: B / DualSense: circle
-                return "button_b";
-            case 2: // Xbox: X / DualSense: square
-                return "button_b";
             case 3: // Xbox: Y / DualSense: triangle
                 return "button_a";
-            case 9: // menu (tiny in the center-right)
-                return "button_menu";
+            case 1: // Xbox: B / DualSense: circle
+            case 2: // Xbox: X / DualSense: square
+                return "button_b";
             case 12: // d-pad up
                 return "button_up";
             case 13: // d-pad down
@@ -246,6 +246,8 @@ export class GamepadMappingDefault {
                 return "button_left";
             case 15: // d-pad right
                 return "button_right";
+            case 9: // menu (tiny in the center-right)
+                return "button_menu";
         }
         return null;
     }
@@ -253,16 +255,16 @@ export class GamepadMappingDefault {
         switch (axisIndex) {
             case 0: // left stick, horizontal
             case 2: // right stick, horizontal
-                return axisValue > __classPrivateFieldGet(GamepadMappingDefault, _a, "f", _GamepadMappingDefault_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(GamepadMappingStandard, _a, "f", _GamepadMappingStandard_stickAxisThreshold)
                     ? ["button_right"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingDefault, _a, "f", _GamepadMappingDefault_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingStandard, _a, "f", _GamepadMappingStandard_stickAxisThreshold)
                         ? ["button_left"]
                         : [];
             case 1: // left stick, vertical
             case 3: // right stick, vertical
-                return axisValue > __classPrivateFieldGet(GamepadMappingDefault, _a, "f", _GamepadMappingDefault_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(GamepadMappingStandard, _a, "f", _GamepadMappingStandard_stickAxisThreshold)
                     ? ["button_down"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingDefault, _a, "f", _GamepadMappingDefault_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingStandard, _a, "f", _GamepadMappingStandard_stickAxisThreshold)
                         ? ["button_up"]
                         : [];
             default:
@@ -270,5 +272,5 @@ export class GamepadMappingDefault {
         }
     }
 }
-_a = GamepadMappingDefault;
-_GamepadMappingDefault_stickAxisThreshold = { value: 0.6 };
+_a = GamepadMappingStandard;
+_GamepadMappingStandard_stickAxisThreshold = { value: 0.6 };

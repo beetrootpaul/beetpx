@@ -221,7 +221,11 @@ buttons:
   - dpad -> -
  */
 
-export class GamepadMappingDefault implements GamepadMapping {
+/**
+ * Used for the Standard mapping, as described on https://w3c.github.io/gamepad/#remapping
+ *   and indicated by `Gamepad.mapping === "standard"`.
+ */
+export class GamepadMappingStandard implements GamepadMapping {
   static readonly #stickAxisThreshold: number = 0.6;
 
   eventForButton(
@@ -232,15 +236,11 @@ export class GamepadMappingDefault implements GamepadMapping {
 
     switch (buttonIndex) {
       case 0: // Xbox: A / DualSense: cross
-        return "button_a";
-      case 1: // Xbox: B / DualSense: circle
-        return "button_b";
-      case 2: // Xbox: X / DualSense: square
-        return "button_b";
       case 3: // Xbox: Y / DualSense: triangle
         return "button_a";
-      case 9: // menu (tiny in the center-right)
-        return "button_menu";
+      case 1: // Xbox: B / DualSense: circle
+      case 2: // Xbox: X / DualSense: square
+        return "button_b";
       case 12: // d-pad up
         return "button_up";
       case 13: // d-pad down
@@ -249,6 +249,8 @@ export class GamepadMappingDefault implements GamepadMapping {
         return "button_left";
       case 15: // d-pad right
         return "button_right";
+      case 9: // menu (tiny in the center-right)
+        return "button_menu";
     }
 
     return null;
@@ -261,16 +263,16 @@ export class GamepadMappingDefault implements GamepadMapping {
     switch (axisIndex) {
       case 0: // left stick, horizontal
       case 2: // right stick, horizontal
-        return axisValue > GamepadMappingDefault.#stickAxisThreshold
+        return axisValue > GamepadMappingStandard.#stickAxisThreshold
           ? ["button_right"]
-          : axisValue < -GamepadMappingDefault.#stickAxisThreshold
+          : axisValue < -GamepadMappingStandard.#stickAxisThreshold
           ? ["button_left"]
           : [];
       case 1: // left stick, vertical
       case 3: // right stick, vertical
-        return axisValue > GamepadMappingDefault.#stickAxisThreshold
+        return axisValue > GamepadMappingStandard.#stickAxisThreshold
           ? ["button_down"]
-          : axisValue < -GamepadMappingDefault.#stickAxisThreshold
+          : axisValue < -GamepadMappingStandard.#stickAxisThreshold
           ? ["button_up"]
           : [];
       default:
