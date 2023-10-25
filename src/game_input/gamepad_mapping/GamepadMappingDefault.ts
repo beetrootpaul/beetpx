@@ -222,6 +222,8 @@ buttons:
  */
 
 export class GamepadMappingDefault implements GamepadMapping {
+  static readonly #stickAxisThreshold: number = 0.6;
+
   eventForButton(
     buttonIndex: number,
     button: GamepadButton,
@@ -252,10 +254,27 @@ export class GamepadMappingDefault implements GamepadMapping {
     return null;
   }
 
-  eventForAxisValue(
+  eventsForAxisValue(
     axisIndex: number,
     axisValue: number,
-  ): BpxGameInputEvent | null {
-    return null;
+  ): BpxGameInputEvent[] {
+    switch (axisIndex) {
+      case 0: // left stick, horizontal
+      case 2: // right stick, horizontal
+        return axisValue > GamepadMappingDefault.#stickAxisThreshold
+          ? ["button_right"]
+          : axisValue < -GamepadMappingDefault.#stickAxisThreshold
+          ? ["button_left"]
+          : [];
+      case 1: // left stick, vertical
+      case 3: // right stick, vertical
+        return axisValue > GamepadMappingDefault.#stickAxisThreshold
+          ? ["button_down"]
+          : axisValue < -GamepadMappingDefault.#stickAxisThreshold
+          ? ["button_up"]
+          : [];
+      default:
+        return [];
+    }
   }
 }

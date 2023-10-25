@@ -1,3 +1,9 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _a, _GamepadMappingFirefoxDualSense_stickAxisThreshold;
 /*
 
 env:
@@ -38,11 +44,12 @@ buttons:
                  up-right   -0.71
                  right      -0.43
                  down-right -0.14
+                 IDLE        0.00 (before pressing any d-pad button)
                  down        0.14
                  down-left   0.43
                  left        0.71
                  up-left     1.00
-                 idle        1.29
+                 IDLE        1.29 (after pressing any d-pad button)
               )
 
 
@@ -85,11 +92,12 @@ buttons:
                  up-right   -0.71
                  right      -0.43
                  down-right -0.14
+                 IDLE        0.00 (before pressing any d-pad button)
                  down        0.14
                  down-left   0.43
                  left        0.71
                  up-left     1.00
-                 idle        1.29
+                 IDLE        1.29 (after pressing any d-pad button)
               )
 
  */
@@ -111,7 +119,69 @@ export class GamepadMappingFirefoxDualSense {
         }
         return null;
     }
-    eventForAxisValue(axisIndex, axisValue) {
-        return null;
+    eventsForAxisValue(axisIndex, axisValue) {
+        // Let's handle d-pad first:
+        if (axisIndex === 4) {
+            // Transform
+            //      up | up-right | right | down-right | IDLE | down | down-left | left | up-left | IDLE
+            // from
+            //   -1.00 |    -0.71 | -0.43 |      -0.14 | 0.00 | 0.14 |      0.43 | 0.71 |    1.00 | 1.29
+            // to
+            //       1 |        3 |     5 |          7 |    8 |    9 |        11 |   13 |      15 |   17
+            // where 0.5 means a half of 1/8 turn, which we can use as a simple threshold
+            // to detect values close to a given 1/8 turn direction.
+            const normalizedValue = axisValue * (14 / 2) + 8;
+            // Now, 0.5 is a maximum allowed offset to prevent overlap between
+            //   down-right (7 -> 6.5-7.5),
+            //   IDLE (8 -> 7.5-8.5),
+            //   and down-left (9 -> 8.5-9.5).
+            // Let's use it to detect values we do not care about.
+            if (normalizedValue < 0.5 ||
+                normalizedValue > 15.5 ||
+                (normalizedValue > 7.5 && normalizedValue < 8.5)) {
+                return [];
+            }
+            const whichOneEight = Math.round(normalizedValue);
+            switch (whichOneEight) {
+                case 1:
+                    return ["button_up"];
+                case 3:
+                    return ["button_up", "button_right"];
+                case 5:
+                    return ["button_right"];
+                case 7:
+                    return ["button_down", "button_right"];
+                case 9:
+                    return ["button_down"];
+                case 11:
+                    return ["button_down", "button_left"];
+                case 13:
+                    return ["button_left"];
+                case 15:
+                    return ["button_up", "button_left"];
+                default:
+                    return [];
+            }
+        }
+        switch (axisIndex) {
+            case 0: // left stick, horizontal
+            case 2: // right stick, horizontal
+                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxDualSense, _a, "f", _GamepadMappingFirefoxDualSense_stickAxisThreshold)
+                    ? ["button_right"]
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxDualSense, _a, "f", _GamepadMappingFirefoxDualSense_stickAxisThreshold)
+                        ? ["button_left"]
+                        : [];
+            case 1: // left stick, vertical
+            case 3: // right stick, vertical
+                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxDualSense, _a, "f", _GamepadMappingFirefoxDualSense_stickAxisThreshold)
+                    ? ["button_down"]
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxDualSense, _a, "f", _GamepadMappingFirefoxDualSense_stickAxisThreshold)
+                        ? ["button_up"]
+                        : [];
+            default:
+                return [];
+        }
     }
 }
+_a = GamepadMappingFirefoxDualSense;
+_GamepadMappingFirefoxDualSense_stickAxisThreshold = { value: 0.6 };

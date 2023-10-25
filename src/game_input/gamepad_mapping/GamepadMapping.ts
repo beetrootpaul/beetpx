@@ -27,8 +27,5 @@ export interface GamepadMapping {
     button: GamepadButton,
   ): BpxGameInputEvent | null;
 
-  eventForAxisValue(
-    axisIndex: number,
-    axisValue: number,
-  ): BpxGameInputEvent | null;
+  eventsForAxisValue(axisIndex: number, axisValue: number): BpxGameInputEvent[];
 }

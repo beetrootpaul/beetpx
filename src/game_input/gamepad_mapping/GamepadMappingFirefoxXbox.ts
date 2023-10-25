@@ -49,6 +49,8 @@ buttons:
  */
 
 export class GamepadMappingFirefoxXbox implements GamepadMapping {
+  static readonly #stickAxisThreshold: number = 0.6;
+
   eventForButton(
     buttonIndex: number,
     button: GamepadButton,
@@ -57,13 +59,11 @@ export class GamepadMappingFirefoxXbox implements GamepadMapping {
 
     switch (buttonIndex) {
       case 1: // A
-        return "button_a";
-      case 2: // B
-        return "button_b";
-      case 3: // X
-        return "button_b";
       case 5: // Y
         return "button_a";
+      case 2: // B
+      case 3: // X
+        return "button_b";
       case 12: // d-pad up
         return "button_up";
       case 13: // d-pad down
@@ -79,10 +79,27 @@ export class GamepadMappingFirefoxXbox implements GamepadMapping {
     return null;
   }
 
-  eventForAxisValue(
+  eventsForAxisValue(
     axisIndex: number,
     axisValue: number,
-  ): BpxGameInputEvent | null {
-    return null;
+  ): BpxGameInputEvent[] {
+    switch (axisIndex) {
+      case 0: // left stick, horizontal
+      case 2: // right stick, horizontal
+        return axisValue > GamepadMappingFirefoxXbox.#stickAxisThreshold
+          ? ["button_right"]
+          : axisValue < -GamepadMappingFirefoxXbox.#stickAxisThreshold
+          ? ["button_left"]
+          : [];
+      case 1: // left stick, vertical
+      case 3: // right stick, vertical
+        return axisValue > GamepadMappingFirefoxXbox.#stickAxisThreshold
+          ? ["button_down"]
+          : axisValue < -GamepadMappingFirefoxXbox.#stickAxisThreshold
+          ? ["button_up"]
+          : [];
+      default:
+        return [];
+    }
   }
 }

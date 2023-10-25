@@ -1,3 +1,9 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _a, _GamepadMappingFirefoxXbox_stickAxisThreshold;
 /*
 
 env:
@@ -50,13 +56,11 @@ export class GamepadMappingFirefoxXbox {
             return null;
         switch (buttonIndex) {
             case 1: // A
-                return "button_a";
-            case 2: // B
-                return "button_b";
-            case 3: // X
-                return "button_b";
             case 5: // Y
                 return "button_a";
+            case 2: // B
+            case 3: // X
+                return "button_b";
             case 12: // d-pad up
                 return "button_up";
             case 13: // d-pad down
@@ -70,7 +74,26 @@ export class GamepadMappingFirefoxXbox {
         }
         return null;
     }
-    eventForAxisValue(axisIndex, axisValue) {
-        return null;
+    eventsForAxisValue(axisIndex, axisValue) {
+        switch (axisIndex) {
+            case 0: // left stick, horizontal
+            case 2: // right stick, horizontal
+                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                    ? ["button_right"]
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                        ? ["button_left"]
+                        : [];
+            case 1: // left stick, vertical
+            case 3: // right stick, vertical
+                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                    ? ["button_down"]
+                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxXbox, _a, "f", _GamepadMappingFirefoxXbox_stickAxisThreshold)
+                        ? ["button_up"]
+                        : [];
+            default:
+                return [];
+        }
     }
 }
+_a = GamepadMappingFirefoxXbox;
+_GamepadMappingFirefoxXbox_stickAxisThreshold = { value: 0.6 };
