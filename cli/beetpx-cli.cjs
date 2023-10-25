@@ -100,6 +100,10 @@ function runDevCommand() {
       server: {
         open: itchIoSimulationHtml,
         hmr: true,
+        watch: {
+          interval: 500,
+          binaryInterval: 1000,
+        },
       },
       define: {
         __BEETPX_IS_PROD__: false,
