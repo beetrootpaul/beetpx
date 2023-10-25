@@ -173,15 +173,17 @@ export class DebugView {
     const browserType = b_.detectedBrowserType();
     b_.rectFilled(
       v_(
-        107,
-        86 +
+        117,
+        78 +
           (browserType === "chromium"
             ? 0
             : browserType === "safari"
             ? 10
-            : browserType === "firefox"
+            : browserType === "firefox_windows"
             ? 20
-            : 30),
+            : browserType === "firefox_other"
+            ? 30
+            : 40),
       ),
       v_(3, 3),
       pink,

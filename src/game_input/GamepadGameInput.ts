@@ -3,7 +3,8 @@ import { u_ } from "../Utils";
 import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { GamepadMapping } from "./gamepad_mapping/GamepadMapping";
 import { GamepadMappingFallback } from "./gamepad_mapping/GamepadMappingFallback";
-import { GamepadMappingFirefoxDualSense } from "./gamepad_mapping/GamepadMappingFirefoxDualSense";
+import { GamepadMappingFirefoxDualSenseOther } from "./gamepad_mapping/GamepadMappingFirefoxDualSenseOther";
+import { GamepadMappingFirefoxDualSenseWindows } from "./gamepad_mapping/GamepadMappingFirefoxDualSenseWindows";
 import { GamepadMappingFirefoxFallback } from "./gamepad_mapping/GamepadMappingFirefoxFallback";
 import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
 import { GamepadTypeDetector } from "./GamepadTypeDetector";
@@ -20,7 +21,8 @@ export class GamepadGameInput implements SpecializedGameInput {
 
   readonly #mappings = {
     standard: new GamepadMappingStandard(),
-    firefoxDualSense: new GamepadMappingFirefoxDualSense(),
+    firefoxDualSenseWindows: new GamepadMappingFirefoxDualSenseWindows(),
+    firefoxDualSenseOther: new GamepadMappingFirefoxDualSenseOther(),
     firefoxOther: new GamepadMappingFirefoxFallback(),
     other: new GamepadMappingFallback(),
   };
@@ -70,13 +72,15 @@ export class GamepadGameInput implements SpecializedGameInput {
   }
 
   #mappingFor(gamepad: Gamepad): GamepadMapping {
-    if (this.#browserType === "firefox") {
+    if (
+      this.#browserType === "firefox_windows" ||
+      this.#browserType === "firefox_other"
+    ) {
       if (GamepadTypeDetector.detect(gamepad) === "dualsense") {
-        return this.#mappings.firefoxDualSense;
+        return this.#browserType === "firefox_windows"
+          ? this.#mappings.firefoxDualSenseWindows
+          : this.#mappings.firefoxDualSenseOther;
       } else {
-        // Let's use Xbox as a default one for all other gamepad types in Firefox,
-        //   since my gut feeling is the way `GamepadTypeDetector` detects
-        //   DualSense would work for DualShock as well.
         return this.#mappings.firefoxOther;
       }
     }

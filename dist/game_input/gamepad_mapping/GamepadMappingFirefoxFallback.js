@@ -50,6 +50,12 @@ buttons:
   unresponsive
 
  */
+/**
+ * Here we use Xbox as a default one for all other gamepad types in Firefox,
+ *   since my gut feeling is the way `GamepadTypeDetector` detects
+ *   DualSense would work for DualShock as well, therefore better assume
+ *   there will be more cases of Xbox controller not detected as such.
+ */
 export class GamepadMappingFirefoxFallback {
     eventForButton(buttonIndex, button) {
         if (!button.pressed)

@@ -270,7 +270,7 @@ type SoundSequenceEntrySoundAdditional = SoundUrl | {
     url: SoundUrl;
 };
 
-type BpxBrowserType = "chromium" | "firefox" | "safari" | "other";
+type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
 declare class BpxClippingRegion {
     #private;

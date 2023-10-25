@@ -36,7 +36,7 @@ describe("BrowserTypeDetector", () => {
       ],
       // macOS Ventura 13.5.2 (Apple M1 Max), Firefox 118.0.2 (64-bit)
       [
-        "firefox",
+        "firefox_other",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/118.0",
       ],
       // macOS Ventura 13.5.2 (Apple M1 Max), Safari 16.6 (18615.3.12.11.2)
@@ -71,12 +71,12 @@ describe("BrowserTypeDetector", () => {
       ],
       // Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
       [
-        "firefox",
+        "firefox_windows",
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0",
       ],
       // Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
       [
-        "firefox",
+        "firefox_windows",
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/119.0",
       ],
     ] as [BpxBrowserType, string][]
