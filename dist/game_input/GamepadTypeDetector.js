@@ -10,7 +10,7 @@ export class GamepadTypeDetector {
         if (id.includes("045e"))
             return "xbox";
         if (id.includes("xinput"))
-            return "xbox";
+            return "other";
         return "other";
     }
 }

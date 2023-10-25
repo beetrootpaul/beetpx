@@ -107,6 +107,7 @@ export class Framework {
             // TODO: are those selectors for both touch and mouse? Even if so, make them separate
             fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
             enableDebugInputs: options.debugFeatures,
+            browserType: __classPrivateFieldGet(this, _Framework_browserType, "f"),
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
             desiredUpdateFps: options.desiredUpdateFps,

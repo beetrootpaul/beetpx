@@ -7,7 +7,7 @@ export class GamepadTypeDetector {
     if (id.includes("054c")) return "dualsense";
     if (id.includes("xbox")) return "xbox";
     if (id.includes("045e")) return "xbox";
-    if (id.includes("xinput")) return "xbox";
+    if (id.includes("xinput")) return "other";
     return "other";
   }
 }

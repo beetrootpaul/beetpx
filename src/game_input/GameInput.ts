@@ -1,3 +1,4 @@
+import { BpxBrowserType } from "../browser/BrowserTypeDetector";
 import { Button } from "./Button";
 import { BpxButtonName, Buttons } from "./Buttons";
 import { BpxGamepadType, GamepadGameInput } from "./GamepadGameInput";
@@ -44,8 +45,11 @@ export class GameInput {
     muteButtonsSelector: string;
     fullScreenButtonsSelector: string;
     enableDebugInputs: boolean;
+    browserType: BpxBrowserType;
   }) {
-    this.#gamepadGameInput = new GamepadGameInput();
+    this.#gamepadGameInput = new GamepadGameInput({
+      browserType: params.browserType,
+    });
     this.#specializedGameInputs = [
       new MouseGameInput({
         muteButtonsSelector: params.muteButtonsSelector,

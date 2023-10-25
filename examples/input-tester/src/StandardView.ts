@@ -49,13 +49,13 @@ export class StandardView {
     k_f: spr(136, 40, 5, 6),
     k_semicolon: spr(152, 40, 5, 6),
     //
-    g_ps_x: spr(128, 48, 5, 6),
-    g_ps_triangle: spr(136, 48, 5, 6),
-    g_menu: spr(144, 48, 5, 6),
+    g_dualsense_cross: spr(128, 48, 5, 6),
+    g_dualsense_triangle: spr(136, 48, 5, 6),
+    g_xbox_menu: spr(144, 48, 5, 6),
     k_coma: spr(152, 48, 5, 6),
     //
-    g_ps_circle: spr(128, 56, 5, 6),
-    g_ps_square: spr(136, 56, 5, 6),
+    g_dualsense_circle: spr(128, 56, 5, 6),
+    g_dualsense_square: spr(136, 56, 5, 6),
     g_ps_menu: spr(144, 56, 5, 6),
     k_period: spr(152, 56, 5, 6),
     //
@@ -205,21 +205,21 @@ export class StandardView {
       b_.sprite(ps.k_k, v_(49, 40));
       b_.sprite(ps.g_a, v_(73, 40));
       b_.sprite(ps.g_y, v_(84, 40));
-      b_.sprite(ps.g_ps_x, v_(100, 40));
-      b_.sprite(ps.g_ps_square, v_(111, 40));
+      b_.sprite(ps.g_dualsense_cross, v_(100, 40));
+      b_.sprite(ps.g_dualsense_triangle, v_(111, 40));
     }
     if (ip.b) {
       b_.sprite(ps.k_x, v_(37, 51));
       b_.sprite(ps.k_l, v_(49, 51));
       b_.sprite(ps.g_b, v_(73, 51));
       b_.sprite(ps.g_x, v_(84, 51));
-      b_.sprite(ps.g_ps_circle, v_(100, 51));
-      b_.sprite(ps.g_ps_triangle, v_(111, 51));
+      b_.sprite(ps.g_dualsense_circle, v_(100, 51));
+      b_.sprite(ps.g_dualsense_square, v_(111, 51));
     }
     if (ip.menu) {
       b_.sprite(ps.k_esc, v_(17, 65));
       b_.sprite(ps.k_p, v_(37, 65));
-      b_.sprite(ps.g_menu, v_(84, 65));
+      b_.sprite(ps.g_xbox_menu, v_(84, 65));
       b_.sprite(ps.g_ps_menu, v_(100, 65));
     }
     if (ip.muteUnmute) {

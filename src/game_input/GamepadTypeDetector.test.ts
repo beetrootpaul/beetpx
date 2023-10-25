@@ -21,8 +21,6 @@ describe("GamepadTypeDetector", () => {
     "HID-compliant game controller (STANDARD GAMEPAD Vendor: 045e Product: 02fd)",
     // Xbox One controller, Windows 10 Home 22H2 (Intel Core i7-3517U), Vivaldi 6.2.3105.58 (Stable channel) (64-bit)
     "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
-    // Xbox One controller, Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
-    "xinput",
   ].forEach((id) => {
     test(`Xbox (id = "${id}")`, () => {
       expect(GamepadTypeDetector.detect(gamepad(id))).toEqual("xbox");

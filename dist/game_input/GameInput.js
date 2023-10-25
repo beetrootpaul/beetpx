@@ -22,7 +22,9 @@ export class GameInput {
         _GameInput_gamepadGameInput.set(this, void 0);
         _GameInput_eventsCapturesInLastUpdate.set(this, new Set());
         _GameInput_mostRecentInputMethods.set(this, new Set());
-        __classPrivateFieldSet(this, _GameInput_gamepadGameInput, new GamepadGameInput(), "f");
+        __classPrivateFieldSet(this, _GameInput_gamepadGameInput, new GamepadGameInput({
+            browserType: params.browserType,
+        }), "f");
         __classPrivateFieldSet(this, _GameInput_specializedGameInputs, [
             new MouseGameInput({
                 muteButtonsSelector: params.muteButtonsSelector,

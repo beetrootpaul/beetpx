@@ -225,6 +225,7 @@ declare class BpxUtils {
     static booleanChangingEveryNthFrame(n: number): boolean;
     static clamp(a: number, b: number, c: number): number;
     static identity<Param>(param: Param): Param;
+    static isDefined<Value>(value: Value | null | undefined): value is Value;
     static lerp(a: number, b: number, t: number): number;
     static measureText(text: string): BpxVector2d;
     static noop(): void;
@@ -287,7 +288,8 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
-type BpxGamepadType = "xbox" | "dualsense" | "other";
+declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "other"];
+type BpxGamepadType = (typeof supportedGamepadTypes)[number];
 
 type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
@@ -304,6 +306,7 @@ declare class GameInput {
         muteButtonsSelector: string;
         fullScreenButtonsSelector: string;
         enableDebugInputs: boolean;
+        browserType: BpxBrowserType;
     });
     startListening(): void;
     /**

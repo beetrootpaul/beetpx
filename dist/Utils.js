@@ -18,6 +18,9 @@ export class BpxUtils {
     static identity(param) {
         return param;
     }
+    static isDefined(value) {
+        return value != null;
+    }
     static lerp(a, b, t) {
         return a + (b - a) * t;
     }
