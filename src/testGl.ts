@@ -13,7 +13,7 @@ export function testGl(): void {
   canvas.height = 16;
   canvas.style.backgroundColor = "grey";
 
-  const gl = canvas.getContext("webgl2");
+  const gl = canvas.getContext("webgl");
   if (!gl) throw "lol2";
 
   const compileProgram = ({
@@ -68,18 +68,14 @@ export function testGl(): void {
     `,
   });
 
-  const pixels = [
-    [0, 0, "#ff0000"],
-    [1, 1, "#ffaa00"],
-    [2, 2, "#ffff00"],
-    [3, 3, "#00ff00"],
-    [4, 4, "#00ffaa"],
-    [5, 5, "#00ffff"],
-    [6, 6, "#0000ff"],
-    [7, 7, "#ff00aa"],
-    [8, 8, "#ff00ff"],
-    [15, 15, "#400f8b"],
-  ] as [number, number, string][];
+  const w = canvas.width;
+  const h = canvas.height;
+
+  const pixels = Array.from({ length: w * h }).map((_, i) => [
+    i % h,
+    Math.floor(i / h),
+    "#baab00",
+  ]) as [number, number, string][];
 
   const hex2rgb = (hex: string): [number, number, number] => {
     return [
@@ -89,8 +85,6 @@ export function testGl(): void {
     ];
   };
 
-  const w = canvas.width;
-  const h = canvas.height;
   const normalize = (x1: number, y1: number): [number, number, number] => {
     // const mid = 8 / 2;
     // const x = (cx - mid) / mid + 1 / 8;
@@ -153,6 +147,7 @@ export function testGl(): void {
   gl.drawArrays(gl.POINTS, 0, pixels.length);
 
   let lol = 7;
+  let prevChanged = 0;
 
   let delta: DOMHighResTimeStamp = 1;
   let prevT: DOMHighResTimeStamp = 1;
@@ -165,18 +160,29 @@ export function testGl(): void {
 
     lol = (lol + 0.01 * delta) % w;
 
-    const pixels = [
-      [0, 0, "#ff0000"],
-      [1, 1, "#ffaa00"],
-      [2, 2, "#ffff00"],
-      [3, 3, "#00ff00"],
-      [4, 4, "#00ffaa"],
-      [5, 5, "#00ffff"],
-      [6, 6, "#0000ff"],
-      [lol, 7, "#ff00aa"],
-      [8, 8, "#ff00ff"],
-      [15, 15, "#400f8b"],
-    ] as [number, number, string][];
+    (
+      [
+        [0, 0, "#ff0000"],
+        [1, 1, "#ffaa00"],
+        [2, 2, "#ffff00"],
+        [3, 3, "#00ff00"],
+        [4, 4, "#00ffaa"],
+        [5, 5, "#00ffff"],
+        [6, 6, "#0000ff"],
+        [lol, 7, "#ff00aa"],
+        [8, 8, "#ff00ff"],
+        [15, 15, "#400f8b"],
+      ] as [number, number, string][]
+    ).forEach(([x, y, c]) => {
+      if (y === 7) {
+        pixels[prevChanged]![2] = "#baab00";
+        prevChanged = Math.floor(y) * w + Math.floor(x);
+        pixels[prevChanged]![2] = c;
+      } else {
+        pixels[Math.floor(y) * w + Math.floor(x)]![2] = c;
+      }
+    });
+
     const pointsColors = toPointColors(pixels);
 
     gl.useProgram(pixelsProgram);
