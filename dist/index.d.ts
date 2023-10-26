@@ -79,16 +79,6 @@ interface BpxFont {
     spritesFor(text: string): BpxCharSprite[];
 }
 
-declare class CanvasPixels {
-    #private;
-    readonly canvasSize: BpxVector2d;
-    constructor(canvasSize: BpxVector2d, rgbValues?: number[]);
-    set(index: number, color: BpxSolidColor): void;
-    get(index: number): BpxSolidColor;
-    clone(): CanvasPixels;
-    renderTo(htmlCanvasData: Uint8ClampedArray): void;
-}
-
 declare class BpxFillPattern {
     #private;
     static of(bits: number): BpxFillPattern;
@@ -98,12 +88,25 @@ declare class BpxFillPattern {
     hasPrimaryColorAt(xy: BpxVector2d): boolean;
 }
 
+interface CanvasPixelsSnapshot {
+    get(index: number): BpxSolidColor;
+}
+
+declare abstract class CanvasPixels {
+    readonly canvasSize: BpxVector2d;
+    protected constructor(canvasSize: BpxVector2d);
+    abstract takeSnapshot(): CanvasPixelsSnapshot;
+    abstract set(index: number, color: BpxSolidColor): void;
+    abstract get(index: number): BpxSolidColor;
+    abstract render(): void;
+}
+
 type BpxColorMapping = Array<{
     from: BpxSolidColor;
     to: BpxSolidColor | BpxTransparentColor;
 }>;
 type BpxCanvasSnapshot = {
-    canvasPixels: CanvasPixels;
+    snapshot: CanvasPixelsSnapshot;
 };
 type DrawApiOptions = {
     canvasPixels: CanvasPixels;
@@ -402,6 +405,7 @@ type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128";
     desiredUpdateFps: 30 | 60;
     visibleTouchButtons: BpxButtonName[];
+    canvasContextType: "2d" | "webgl2";
     debugFeatures: boolean;
 };
 type OnAssetsLoaded = {

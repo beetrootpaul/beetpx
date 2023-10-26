@@ -32,11 +32,17 @@ let logoPositionBase = v_0_0_;
 let numberOfEllipses = 4;
 let numberOfBigSprites = 1;
 
+// TODO: REMOVE
+const prev = localStorage.getItem("prev");
+const cct = prev === "2d" ? "webgl2" : "2d";
+localStorage.setItem("prev", cct);
+
 b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: fps,
     visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
+    canvasContextType: cct,
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
@@ -60,11 +66,10 @@ b_.init(
       updateCallsVisualization.historyIndex
     ] += 1;
 
-    console.group("UPDATE");
+    console.group("UPDATE", cct);
     b_.logDebug(`frame: ${b_.frameNumber}`);
     b_.logDebug(`FPS: ${b_.renderFps}`);
 
-    // TODO: rework these buttons for Xbox controller
     if (b_.wasJustPressed("a")) {
       numberOfEllipses = numberOfEllipses * 2;
     }
@@ -86,9 +91,10 @@ b_.init(
       logoPositionBase = logoPositionBase.add(-velocity, 0);
     }
 
-    // TODO: wrong button on Xbox controller :/
     if (b_.wasJustPressed("menu")) {
-      b_.restart();
+      // TODO: REVERT
+      // b_.restart();
+      location.reload();
     }
 
     b_.logDebug("numberOfBigSprites =", numberOfBigSprites);

@@ -1,11 +1,11 @@
 import { describe, expect, test } from "@jest/globals";
-import { BpxSolidColor } from "../Color";
-import { v_ } from "../Vector2d";
-import { CanvasPixels } from "./CanvasPixels";
+import { BpxSolidColor } from "../../Color";
+import { v_ } from "../../Vector2d";
+import { CanvasPixels2d } from "./CanvasPixels2d";
 
-describe("CanvasPixels", () => {
+describe("CanvasPixels2d", () => {
   test("#set/#get", () => {
-    const canvasPixels = new CanvasPixels(v_(2, 3));
+    const canvasPixels = new CanvasPixels2d(v_(2, 3), new Uint8ClampedArray(0));
 
     canvasPixels.set(0, BpxSolidColor.fromRgbCssHex("#102030"));
     canvasPixels.set(1, BpxSolidColor.fromRgbCssHex("#112131"));

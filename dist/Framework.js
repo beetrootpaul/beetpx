@@ -30,8 +30,9 @@ import { v_, v_0_0_ } from "./Vector2d";
 import { AudioApi } from "./audio/AudioApi";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { DebugMode } from "./debug/DebugMode";
-import { CanvasPixels } from "./draw_api/CanvasPixels";
 import { DrawApi } from "./draw_api/DrawApi";
+import { CanvasPixels2d } from "./draw_api/canvas_pixels/CanvasPixels2d";
+import { CanvasPixelsWebGl2 } from "./draw_api/canvas_pixels/CanvasPixelsWebGl2";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
@@ -69,6 +70,7 @@ export class Framework {
             ? window.localStorage.getItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey)) !==
                 __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue)
             : false;
+        Logger.debug("Framework options:", options);
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         __classPrivateFieldSet(this, _Framework_loading, new Loading(HtmlTemplate.selectors.display), "f");
@@ -125,7 +127,9 @@ export class Framework {
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.newFor(HtmlTemplate.selectors.display, HtmlTemplate.selectors.controlsFullScreen), "f");
         __classPrivateFieldSet(this, _Framework_offscreenImageData, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_offscreenContext, "f").canvas.height), "f");
         __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_initializeAsNonTransparent).call(this, __classPrivateFieldGet(this, _Framework_offscreenImageData, "f"));
-        __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixels(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _Framework_canvasPixels, options.canvasContextType === "webgl2"
+            ? new CanvasPixelsWebGl2(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"))
+            : new CanvasPixels2d(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_offscreenImageData, "f").data), "f");
         this.drawApi = new DrawApi({
             canvasPixels: __classPrivateFieldGet(this, _Framework_canvasPixels, "f"),
             assets: this.assets,
@@ -261,7 +265,7 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
         __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f").asRgbCssHex();
     __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").fillRect(0, 0, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
 }, _Framework_render = function _Framework_render() {
-    __classPrivateFieldGet(this, _Framework_canvasPixels, "f").renderTo(__classPrivateFieldGet(this, _Framework_offscreenImageData, "f").data);
+    __classPrivateFieldGet(this, _Framework_canvasPixels, "f").render();
     __classPrivateFieldGet(this, _Framework_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _Framework_offscreenImageData, "f"), 0, 0);
     const htmlCanvasSize = v_(__classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _Framework_htmlCanvasContext, "f").canvas.height);
     // TODO: encapsulate this calculation and related fields

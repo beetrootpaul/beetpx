@@ -12,8 +12,10 @@ import {
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
 import { DebugMode } from "./debug/DebugMode";
-import { CanvasPixels } from "./draw_api/CanvasPixels";
 import { DrawApi } from "./draw_api/DrawApi";
+import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
+import { CanvasPixels2d } from "./draw_api/canvas_pixels/CanvasPixels2d";
+import { CanvasPixelsWebGl2 } from "./draw_api/canvas_pixels/CanvasPixelsWebGl2";
 import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -25,6 +27,7 @@ export type FrameworkOptions = {
   // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
   visibleTouchButtons: BpxButtonName[];
+  canvasContextType: "2d" | "webgl2";
   debugFeatures: boolean;
 };
 
@@ -88,6 +91,9 @@ export class Framework {
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue
       : false;
+
+    Logger.debug("Framework options:", options);
+
     this.#frameByFrame = false;
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
@@ -174,7 +180,13 @@ export class Framework {
 
     this.#initializeAsNonTransparent(this.#offscreenImageData);
 
-    this.#canvasPixels = new CanvasPixels(this.#gameCanvasSize);
+    this.#canvasPixels =
+      options.canvasContextType === "webgl2"
+        ? new CanvasPixelsWebGl2(this.#gameCanvasSize)
+        : new CanvasPixels2d(
+            this.#gameCanvasSize,
+            this.#offscreenImageData.data,
+          );
     this.drawApi = new DrawApi({
       canvasPixels: this.#canvasPixels,
       assets: this.assets,
@@ -346,7 +358,7 @@ export class Framework {
   }
 
   #render(): void {
-    this.#canvasPixels.renderTo(this.#offscreenImageData.data);
+    this.#canvasPixels.render();
 
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 

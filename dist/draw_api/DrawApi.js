@@ -52,7 +52,7 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvasPixels), "f");
         __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasPixels), "f");
         this.takeCanvasSnapshot = () => ({
-            canvasPixels: options.canvasPixels.clone(),
+            snapshot: options.canvasPixels.takeSnapshot(),
         });
     }
     // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is

@@ -6,7 +6,7 @@ import {
   BpxTransparentColor,
 } from "../Color";
 import { BpxVector2d, v_0_0_ } from "../Vector2d";
-import { CanvasPixels } from "./CanvasPixels";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 

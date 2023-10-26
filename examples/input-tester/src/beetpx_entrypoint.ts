@@ -14,6 +14,7 @@ b_.init(
     gameCanvasSize: "128x128",
     desiredUpdateFps: 60,
     visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
+    canvasContextType: "webgl2",
     debugFeatures: true,
   },
   {

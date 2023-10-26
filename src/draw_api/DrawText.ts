@@ -2,10 +2,10 @@ import { FontAsset } from "../Assets";
 import { BpxSolidColor, transparent_ } from "../Color";
 import { BpxVector2d, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite } from "../font/Font";
-import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 
 export class DrawText {
   readonly #canvasPixels: CanvasPixels;

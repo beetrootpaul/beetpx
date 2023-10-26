@@ -5,6 +5,7 @@ b_.init(
     gameCanvasSize: "128x128",
     desiredUpdateFps: 30,
     visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
+    canvasContextType: "2d",
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {

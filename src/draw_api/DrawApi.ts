@@ -12,7 +12,6 @@ import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
-import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
@@ -23,6 +22,8 @@ import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { BpxFillPattern } from "./FillPattern";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { CanvasPixelsSnapshot } from "./canvas_pixels/CanvasPixelsSnapshot";
 
 // TODO: BpxColorMapping and BpxMappingColor are named way too similar, while doing different things!
 export type BpxColorMapping = Array<{
@@ -31,7 +32,7 @@ export type BpxColorMapping = Array<{
 }>;
 
 export type BpxCanvasSnapshot = {
-  canvasPixels: CanvasPixels;
+  snapshot: CanvasPixelsSnapshot;
 };
 
 type DrawApiOptions = {
@@ -80,7 +81,7 @@ export class DrawApi {
     this.#text = new DrawText(options.canvasPixels);
 
     this.takeCanvasSnapshot = () => ({
-      canvasPixels: options.canvasPixels.clone(),
+      snapshot: options.canvasPixels.takeSnapshot(),
     });
   }
 

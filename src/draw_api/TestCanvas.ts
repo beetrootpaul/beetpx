@@ -1,13 +1,17 @@
 import { expect } from "@jest/globals";
 import { BpxColorId, BpxSolidColor } from "../Color";
 import { v_ } from "../Vector2d";
-import { CanvasPixels } from "./CanvasPixels";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { CanvasPixels2d } from "./canvas_pixels/CanvasPixels2d";
 
 export class TestCanvas {
   readonly pixels: CanvasPixels;
 
   constructor(width: number, height: number, color: BpxSolidColor) {
-    this.pixels = new CanvasPixels(v_(width, height));
+    this.pixels = new CanvasPixels2d(
+      v_(width, height),
+      new Uint8ClampedArray(0),
+    );
     for (let i = 0; i < width * height; i += 1) {
       this.pixels.set(i, color);
     }
@@ -26,7 +30,7 @@ export class TestCanvas {
     const actualAscii = this.#asAscii(colorToAscii);
 
     const expectedAscii =
-      params.expectedImageAsAscii
+      expectedImageAsAscii
         .trim()
         .split("\n")
         .map((line) =>
