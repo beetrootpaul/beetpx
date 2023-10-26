@@ -1,6 +1,6 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
 import { BpxVector2d, v_ } from "../Vector2d";
-import { CanvasPixels } from "./CanvasPixels";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";

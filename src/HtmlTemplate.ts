@@ -16,4 +16,8 @@ export class HtmlTemplate {
     controlsB: ".controls_b",
     controlsMenu: ".controls_menu",
   };
+
+  static readonly classes = {
+    canvasDebugBorder: "debug",
+  };
 }

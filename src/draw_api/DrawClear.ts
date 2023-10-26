@@ -1,5 +1,5 @@
 import { BpxSolidColor } from "../Color";
-import { CanvasPixels } from "./CanvasPixels";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 
 export class DrawClear {

@@ -98,6 +98,6 @@ export class BpxMappingColor implements BpxColor {
     ) => BpxSolidColor | BpxTransparentColor,
   ) {
     this.getMappedColorFromCanvasSnapshot = (index: number) =>
-      mapping(canvasSnapshot.canvasPixels.get(index));
+      mapping(canvasSnapshot.snapshot.get(index));
   }
 }
