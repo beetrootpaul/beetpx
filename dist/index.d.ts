@@ -98,6 +98,7 @@ declare abstract class CanvasPixels {
     abstract takeSnapshot(): CanvasPixelsSnapshot;
     abstract set(index: number, color: BpxSolidColor): void;
     abstract get(index: number): BpxSolidColor;
+    abstract onWindowResize(): void;
     abstract render(): void;
 }
 

@@ -15,5 +15,7 @@ export abstract class CanvasPixels {
 
   abstract get(index: number): BpxSolidColor;
 
+  abstract onWindowResize(): void;
+
   abstract render(): void;
 }

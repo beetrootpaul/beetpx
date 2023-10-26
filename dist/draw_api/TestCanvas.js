@@ -6,11 +6,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _TestCanvas_instances, _TestCanvas_asAscii;
 import { expect } from "@jest/globals";
 import { v_ } from "../Vector2d";
-import { CanvasPixels2d } from "./canvas_pixels/CanvasPixels2d";
+import { CanvasPixelsNoRender } from "./canvas_pixels/CanvasPixelsNoRender";
 export class TestCanvas {
     constructor(width, height, color) {
         _TestCanvas_instances.add(this);
-        this.pixels = new CanvasPixels2d(v_(width, height), new Uint8ClampedArray(0));
+        this.pixels = new CanvasPixelsNoRender(v_(width, height));
         for (let i = 0; i < width * height; i += 1) {
             this.pixels.set(i, color);
         }

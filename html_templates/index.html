@@ -98,6 +98,13 @@
         width: 80vw;
         height: 100vh;
         image-rendering: pixelated;
+        /*  for debug border, to not affect canvas' size */
+        box-sizing: content-box;
+      }
+
+      #canvas.debug {
+        border: 1px solid red;
+        margin: -1px;
       }
 
       /*
