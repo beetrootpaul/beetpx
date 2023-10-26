@@ -13,7 +13,7 @@ export function testGl(): void {
   canvas.height = 16;
   canvas.style.backgroundColor = "grey";
 
-  const gl = canvas.getContext("webgl");
+  const gl = canvas.getContext("webgl2");
   if (!gl) throw "lol2";
 
   const compileProgram = ({
