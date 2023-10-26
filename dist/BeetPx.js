@@ -1,10 +1,4 @@
 // noinspection JSUnusedGlobalSymbols
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -12,15 +6,20 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
 import { DebugMode } from "./debug/DebugMode";
-import { Framework } from "./Framework";
 import { Logger } from "./logger/Logger";
+import { testGl } from "./testGl";
 export class BeetPx {
     //
     // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
     //
     static init(frameworkOptions, assetsToLoad) {
-        __classPrivateFieldSet(this, _a, new Framework(frameworkOptions), "f", _BeetPx_framework);
-        return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).loadAssets(assetsToLoad);
+        // this.#framework = new Framework(frameworkOptions);
+        // return this.#framework.loadAssets(assetsToLoad);
+        return Promise.resolve({
+            startGame: () => {
+                testGl();
+            },
+        });
     }
     //
     // field-like getters, the ones meant to be used

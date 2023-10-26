@@ -9,6 +9,7 @@ import { Buttons } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
+import { testGl } from "./testGl";
 
 export class BeetPx {
   static #framework: Framework;
@@ -21,8 +22,13 @@ export class BeetPx {
     frameworkOptions: FrameworkOptions,
     assetsToLoad: AssetsToLoad,
   ): ReturnType<Framework["loadAssets"]> {
-    this.#framework = new Framework(frameworkOptions);
-    return this.#framework.loadAssets(assetsToLoad);
+    // this.#framework = new Framework(frameworkOptions);
+    // return this.#framework.loadAssets(assetsToLoad);
+    return Promise.resolve({
+      startGame: () => {
+        testGl();
+      },
+    });
   }
 
   //

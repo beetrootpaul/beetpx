@@ -245,7 +245,7 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
             var _b;
             __classPrivateFieldSet(this, _Framework_renderFps, renderFps, "f");
             (_b = __classPrivateFieldGet(this, _Framework_onDraw, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
-            __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_render).call(this);
+            // this.#render();
         },
     });
 }, _Framework_setupHtmlCanvas = function _Framework_setupHtmlCanvas() {

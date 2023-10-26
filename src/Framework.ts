@@ -318,7 +318,7 @@ export class Framework {
 
         this.#onDraw?.();
 
-        this.#render();
+        // this.#render();
       },
     });
   }

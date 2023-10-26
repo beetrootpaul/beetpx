@@ -46,6 +46,7 @@ b_.init(
     jsons: [],
   },
 ).then(({ startGame }) => {
+  /*
   b_.setOnStarted(() => {
     // TODO: this call is probably no longer needed, since handled by BeetPx internally
     b_.stopAllPlaybacks();
@@ -119,7 +120,7 @@ b_.init(
     renderFpsVisualization.historyIndex %=
       renderFpsVisualization.history.length;
   });
-
+*/
   startGame();
 });
 
