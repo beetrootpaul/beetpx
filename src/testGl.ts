@@ -97,17 +97,10 @@ export function testGl(): void {
     ]);
   }
 
-  const pointsColors = toPointColors(pixels);
-
   gl.useProgram(pixelsProgram);
-  const FSIZE = pointsColors.BYTES_PER_ELEMENT;
+  const FSIZE = toPointColors(pixels).BYTES_PER_ELEMENT;
 
-  // Create a buffer object
-  const buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-
-  // TODO: use gl.DYNAMIC_DRAW instead?
-  gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.DYNAMIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 
   // Bind the attribute position to the 1st, 2nd and 3rd floats in every chunk of 6 floats in the buffer
   const position = gl.getAttribLocation(pixelsProgram, "position");
@@ -135,8 +128,6 @@ export function testGl(): void {
 
   const size = gl.getUniformLocation(pixelsProgram, "size");
   gl.uniform1f(size, 1);
-
-  gl.drawArrays(gl.POINTS, 0, pixels.length);
 
   let lol = 7;
   let prevChanged = 0;
@@ -175,16 +166,9 @@ export function testGl(): void {
       }
     });
 
-    const pointsColors = toPointColors(pixels);
-
     gl.useProgram(pixelsProgram);
-    const FSIZE = pointsColors.BYTES_PER_ELEMENT;
 
-    // TODO: use gl.DYNAMIC_DRAW instead?
-    gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.DYNAMIC_DRAW);
-
-    // const size = gl.getUniformLocation(pixelsProgram, "size");
-    // gl.uniform1f(size, 1);
+    gl.bufferData(gl.ARRAY_BUFFER, toPointColors(pixels), gl.DYNAMIC_DRAW);
 
     gl.drawArrays(gl.POINTS, 0, pixels.length);
 
