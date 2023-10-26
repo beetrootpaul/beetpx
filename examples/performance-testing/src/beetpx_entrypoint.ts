@@ -20,15 +20,17 @@ const renderFpsVisualization = {
   historyIndex: 0,
 };
 
+const logoSprite = spr_("logo.png")(0, 0, 16, 16);
 const logoInnerColor = BpxSolidColor.fromRgbCssHex("#125359");
 const logoOuterColor = BpxSolidColor.fromRgbCssHex("#ff6e59");
 
 const velocity = 2;
 
-const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2);
+const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2).sub(0, 16);
 let logoPositionBase = v_0_0_;
 
 let numberOfEllipses = 4;
+let numberOfBigSprites = 1;
 
 b_.init(
   {
@@ -59,8 +61,8 @@ b_.init(
     ] += 1;
 
     console.group("UPDATE");
-    b_.logDebug(`FPS: ${b_.renderFps}`);
     b_.logDebug(`frame: ${b_.frameNumber}`);
+    b_.logDebug(`FPS: ${b_.renderFps}`);
 
     // TODO: rework these buttons for Xbox controller
     if (b_.wasJustPressed("a")) {
@@ -70,17 +72,18 @@ b_.init(
       numberOfEllipses = Math.max(1, numberOfEllipses / 2);
     }
 
+    if (b_.wasJustPressed("up")) {
+      numberOfBigSprites = numberOfBigSprites * 2;
+    }
+    if (b_.wasJustReleased("down")) {
+      numberOfBigSprites = Math.max(1, numberOfBigSprites / 2);
+    }
+
     if (b_.isPressed("right")) {
       logoPositionBase = logoPositionBase.add(velocity, 0);
     }
     if (b_.isPressed("left")) {
       logoPositionBase = logoPositionBase.add(-velocity, 0);
-    }
-    if (b_.isPressed("up")) {
-      logoPositionBase = logoPositionBase.add(0, -velocity);
-    }
-    if (b_.isPressed("down")) {
-      logoPositionBase = logoPositionBase.add(0, velocity);
     }
 
     // TODO: wrong button on Xbox controller :/
@@ -88,6 +91,8 @@ b_.init(
       b_.restart();
     }
 
+    b_.logDebug("numberOfBigSprites =", numberOfBigSprites);
+    b_.logDebug("numberOfEllipses =", numberOfEllipses);
     console.groupEnd();
   });
 
@@ -97,7 +102,9 @@ b_.init(
 
     b_.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
 
-    drawThings();
+    drawEllipses();
+
+    drawSprites();
 
     drawUpdateCallsVisualization();
 
@@ -158,23 +165,27 @@ function drawRenderFpsVisualization(): void {
   }
 }
 
-function drawThings(): void {
+function drawEllipses(): void {
+  b_.setFillPattern(BpxFillPattern.of(0x5b59));
   for (let ellipseIndex = 0; ellipseIndex < numberOfEllipses; ellipseIndex++) {
+    const rComponent = ((30 * ellipseIndex) % 256)
+      .toString(16)
+      .padStart(2, "0");
+    const bComponent = ((30 * ellipseIndex) % 256)
+      .toString(16)
+      .padStart(2, "0");
     b_.ellipseFilled(
-      v_((ellipseIndex * 128) / numberOfEllipses, 70),
+      v_((ellipseIndex * 128) / numberOfEllipses, 60),
       v_(24, 24),
-      BpxSolidColor.fromRgbCssHex(
-        `#ab84${((30 * ellipseIndex) % 256).toString(16).padStart(2, "0")}`,
-      ),
+      BpxSolidColor.fromRgbCssHex(`#${rComponent}84${bComponent}`),
     );
   }
-
-  b_.setFillPattern(BpxFillPattern.of(0x5a5a));
-  b_.rectFilled(v_(16, 80), v_(96, 32), BpxSolidColor.fromRgbCssHex("#012345"));
   b_.setFillPattern(BpxFillPattern.primaryOnly);
+}
 
+function drawSprites(): void {
   b_.sprite(
-    spr_("logo.png")(0, 0, 16, 16),
+    logoSprite,
     logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),
   );
 
@@ -188,10 +199,13 @@ function drawThings(): void {
       to: logoInnerColor,
     },
   ]);
-  b_.sprite(
-    spr_("logo.png")(0, 0, 16, 16),
-    logoPositionBase.sub(calculateLogoPositionOffset(b_.frameNumber)),
-  );
+  for (let i = 0; i < numberOfBigSprites; i++) {
+    b_.sprite(
+      logoSprite,
+      logoPositionBase.sub(calculateLogoPositionOffset(b_.frameNumber + i)),
+      v_(2, 2),
+    );
+  }
   b_.mapSpriteColors(prevMapping);
 }
 

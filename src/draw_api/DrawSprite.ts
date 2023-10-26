@@ -6,29 +6,27 @@ import {
   type BpxColor,
 } from "../Color";
 import { BpxSprite } from "../Sprite";
-import { BpxUtils, u_ } from "../Utils";
+import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
+import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawSprite {
-  readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: BpxVector2d;
+  readonly #canvasPixels: CanvasPixels;
   readonly #options: { disableRounding?: boolean };
 
   readonly #pixel: DrawPixel;
 
   constructor(
-    canvasBytes: Uint8ClampedArray,
-    canvasSize: BpxVector2d,
+    canvasPixels: CanvasPixels,
     options: { disableRounding?: boolean } = {},
   ) {
-    this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize;
+    this.#canvasPixels = canvasPixels;
     this.#options = options;
 
-    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
+    this.#pixel = new DrawPixel(this.#canvasPixels);
   }
 
   // TODO: cover clippingRegion with tests
@@ -82,8 +80,8 @@ export class DrawSprite {
 
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
       for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        u_.range(scaleXy.x).forEach((xScaledStep) => {
-          u_.range(scaleXy.y).forEach((yScaledStep) => {
+        for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
+          for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
             const canvasXy = targetXy.add(
               v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
                 .mul(scaleXy)
@@ -111,8 +109,8 @@ export class DrawSprite {
             //       - ff614f became ff6e59
             //       - 00555a became 125359
             this.#pixel.draw(canvasXy, color, clippingRegion, fillPattern);
-          });
-        });
+          }
+        }
       }
     }
   }

@@ -43,20 +43,29 @@ export class GamepadGameInput implements SpecializedGameInput {
 
       const mapping = this.#mappingFor(gamepad);
 
-      gamepad.buttons.forEach((button, buttonIndex) => {
-        const event = mapping.eventForButton(buttonIndex, button);
+      for (
+        let buttonIndex = 0;
+        buttonIndex < gamepad.buttons.length;
+        buttonIndex++
+      ) {
+        const event = mapping.eventForButton(
+          buttonIndex,
+          gamepad.buttons[buttonIndex]!,
+        );
         if (event) {
           eventsCollector.add(event);
           wasAnyEventDetected = true;
         }
-      });
+      }
 
-      gamepad.axes.forEach((axisValue, axisIndex) => {
-        mapping.eventsForAxisValue(axisIndex, axisValue).forEach((event) => {
-          eventsCollector.add(event);
-          wasAnyEventDetected = true;
-        });
-      });
+      for (let axisIndex = 0; axisIndex < gamepad.axes.length; axisIndex++) {
+        mapping
+          .eventsForAxisValue(axisIndex, gamepad.axes[axisIndex]!)
+          .forEach((event) => {
+            eventsCollector.add(event);
+            wasAnyEventDetected = true;
+          });
+      }
     }
 
     return wasAnyEventDetected;

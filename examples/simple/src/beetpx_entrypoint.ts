@@ -10,7 +10,7 @@ b_.init(
   {
     images: [{ url: "logo.png" }],
     fonts: [],
-    sounds: [{ url: "music_base.wav" }, { url: "music_melody.wav" }],
+    sounds: [{ url: "music_base.flac" }, { url: "music_melody.flac" }],
     jsons: [],
   },
 ).then(({ startGame }) => {
@@ -34,8 +34,8 @@ b_.init(
     isMelodyMuted = true;
     isMusicPaused = false;
 
-    b_.playSoundLooped("music_base.wav");
-    melodyPlaybackId = b_.playSoundLooped("music_melody.wav", isMelodyMuted);
+    b_.playSoundLooped("music_base.flac");
+    melodyPlaybackId = b_.playSoundLooped("music_melody.flac", isMelodyMuted);
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = v_0_0_;

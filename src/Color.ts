@@ -89,28 +89,17 @@ export class BpxMappingColor implements BpxColor {
 
   readonly canvasSnapshot: BpxCanvasSnapshot;
 
-  readonly #mapping: (
-    canvasColor: BpxSolidColor | BpxTransparentColor,
+  readonly getMappedColorFor: (
+    canvasColor: BpxSolidColor,
   ) => BpxSolidColor | BpxTransparentColor;
 
   constructor(
     canvasSnapshot: BpxCanvasSnapshot,
     mapping: (
-      canvasColor: BpxSolidColor | BpxTransparentColor,
+      canvasColor: BpxSolidColor,
     ) => BpxSolidColor | BpxTransparentColor,
   ) {
     this.canvasSnapshot = canvasSnapshot;
-    this.#mapping = mapping;
-  }
-
-  getMappedColorForCanvasIndex(
-    r: number,
-    g: number,
-    b: number,
-    a: number,
-  ): BpxSolidColor | BpxTransparentColor {
-    return this.#mapping(
-      a >= 0xff / 2 ? new BpxSolidColor(r, g, b) : transparent_,
-    );
+    this.getMappedColorFor = mapping;
   }
 }

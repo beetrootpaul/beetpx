@@ -18,10 +18,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _Assets_decodeAudioData, _Assets_images, _Assets_fonts, _Assets_sounds, _Assets_jsons;
+var _Assets_instances, _Assets_decodeAudioData, _Assets_images, _Assets_fonts, _Assets_sounds, _Assets_jsons, _Assets_is2xx;
 import { BpxUtils } from "./Utils";
 export class Assets {
     constructor(params) {
+        _Assets_instances.add(this);
         _Assets_decodeAudioData.set(this, void 0);
         _Assets_images.set(this, new Map());
         _Assets_fonts.set(this, new Map());
@@ -46,9 +47,12 @@ export class Assets {
                 const canvas = document.createElement("canvas");
                 canvas.width = htmlImage.naturalWidth;
                 canvas.height = htmlImage.naturalHeight;
-                const ctx = canvas.getContext("2d");
+                const ctx = canvas.getContext("2d", {
+                    // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
+                    alpha: false,
+                });
                 if (!ctx) {
-                    throw Error(`Failed to process the image: ${htmlImage.src}`);
+                    throw Error(`Assets: Failed to process the image: ${htmlImage.src}`);
                 }
                 ctx.drawImage(htmlImage, 0, 0);
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -60,16 +64,23 @@ export class Assets {
             })));
             // TODO: make sounds loaded in parallel with images above
             yield Promise.all(assetsToLoad.sounds.map(({ url }) => __awaiter(this, void 0, void 0, function* () {
-                if (!url.toLowerCase().endsWith(".wav")) {
-                    throw Error(`Assets: only wav sound files are supported due to Safari compatibility. The file which doesn't seem to be wav: "${url}"`);
+                if (!url.toLowerCase().endsWith(".wav") &&
+                    !url.toLowerCase().endsWith(".flac")) {
+                    throw Error(`Assets: only wav and flac sound files are supported due to Safari compatibility. The file which doesn't seem to be neither wav nor flac: "${url}"`);
                 }
                 const httpResponse = yield fetch(url);
+                if (!__classPrivateFieldGet(this, _Assets_instances, "m", _Assets_is2xx).call(this, httpResponse.status)) {
+                    throw Error(`Assets: could not fetch sound file: "${url}"`);
+                }
                 const arrayBuffer = yield httpResponse.arrayBuffer();
                 const audioBuffer = yield __classPrivateFieldGet(this, _Assets_decodeAudioData, "f").call(this, arrayBuffer);
                 __classPrivateFieldGet(this, _Assets_sounds, "f").set(url, { audioBuffer });
             })));
             yield Promise.all(assetsToLoad.jsons.map(({ url }) => __awaiter(this, void 0, void 0, function* () {
                 const httpResponse = yield fetch(url);
+                if (!__classPrivateFieldGet(this, _Assets_instances, "m", _Assets_is2xx).call(this, httpResponse.status)) {
+                    throw Error(`Assets: could not fetch JSON file: "${url}"`);
+                }
                 const json = yield httpResponse.json();
                 __classPrivateFieldGet(this, _Assets_jsons, "f").set(url, { json });
             })));
@@ -111,4 +122,6 @@ export class Assets {
         return jsonAsset;
     }
 }
-_Assets_decodeAudioData = new WeakMap(), _Assets_images = new WeakMap(), _Assets_fonts = new WeakMap(), _Assets_sounds = new WeakMap(), _Assets_jsons = new WeakMap();
+_Assets_decodeAudioData = new WeakMap(), _Assets_images = new WeakMap(), _Assets_fonts = new WeakMap(), _Assets_sounds = new WeakMap(), _Assets_jsons = new WeakMap(), _Assets_instances = new WeakSet(), _Assets_is2xx = function _Assets_is2xx(httpStatus) {
+    return httpStatus >= 200 && httpStatus < 300;
+};

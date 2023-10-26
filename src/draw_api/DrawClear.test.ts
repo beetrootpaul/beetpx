@@ -10,7 +10,7 @@ describe("DrawClear", () => {
   test("clear the whole canvas with a given color", () => {
     // given
     const canvas = new TestCanvas(4, 3, c0);
-    const clear = new DrawClear(canvas.bytes, canvas.size);
+    const clear = new DrawClear(canvas.pixels);
 
     // when
     clear.draw(c1);

@@ -1,20 +1,19 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
 import { BpxVector2d, v_ } from "../Vector2d";
+import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawEllipse {
-  readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: BpxVector2d;
+  readonly #canvasPixels: CanvasPixels;
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
-    this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize.round();
+  constructor(canvasPixels: CanvasPixels) {
+    this.#canvasPixels = canvasPixels;
 
-    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize, {
+    this.#pixel = new DrawPixel(this.#canvasPixels, {
       disableRounding: true,
     });
   }
@@ -63,32 +62,15 @@ export class DrawEllipse {
       // DRAW THE CURRENT PIXEL IN EACH QUADRANT
       //
 
-      // TODO: update the implementation below to honor fill pattern
       this.#pixel.draw(v_(right, bottom), color, clippingRegion, fillPattern);
       this.#pixel.draw(v_(left, bottom), color, clippingRegion, fillPattern);
       this.#pixel.draw(v_(left, top), color, clippingRegion, fillPattern);
       this.#pixel.draw(v_(right, top), color, clippingRegion, fillPattern);
       if (fill) {
-        // TODO: update the implementation below to honor fill pattern
-        BpxVector2d.forEachIntXyWithinRectOf(
-          v_(left + 1, bottom),
-          v_(right - left - 1, 1),
-          false,
-          true,
-          (xy) => {
-            this.#pixel.draw(xy, color, clippingRegion, fillPattern);
-          },
-        );
-        // TODO: update the implementation below to honor fill pattern
-        BpxVector2d.forEachIntXyWithinRectOf(
-          v_(left + 1, top),
-          v_(right - left - 1, 1),
-          false,
-          true,
-          (xy) => {
-            this.#pixel.draw(xy, color, clippingRegion, fillPattern);
-          },
-        );
+        for (let x = left + 1; x < right; x++) {
+          this.#pixel.draw(v_(x, top), color, clippingRegion, fillPattern);
+          this.#pixel.draw(v_(x, bottom), color, clippingRegion, fillPattern);
+        }
       }
 
       //

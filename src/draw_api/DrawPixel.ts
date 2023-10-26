@@ -6,21 +6,19 @@ import {
   BpxTransparentColor,
 } from "../Color";
 import { BpxVector2d, v_0_0_ } from "../Vector2d";
+import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawPixel {
-  readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: BpxVector2d;
+  readonly #canvasPixels: CanvasPixels;
   readonly #options: { disableRounding?: boolean };
 
   constructor(
-    canvasBytes: Uint8ClampedArray,
-    canvasSize: BpxVector2d,
+    canvasPixels: CanvasPixels,
     options: { disableRounding?: boolean } = {},
   ) {
-    this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize;
+    this.#canvasPixels = canvasPixels;
     this.#options = options;
   }
 
@@ -40,27 +38,24 @@ export class DrawPixel {
       return;
     }
 
-    if (xy.gte(v_0_0_) && xy.lt(this.#canvasSize)) {
-      const i = 4 * (xy.y * this.#canvasSize.x + xy.x);
+    if (xy.gte(v_0_0_) && xy.lt(this.#canvasPixels.canvasSize)) {
+      const index = xy.y * this.#canvasPixels.canvasSize.x + xy.x;
 
       if (fillPattern.hasPrimaryColorAt(xy)) {
         if (color instanceof BpxCompositeColor) {
-          this.#drawSolid(i, color.primary);
+          this.#drawSolid(index, color.primary);
         } else if (color instanceof BpxMappingColor) {
           // TODO: this doesn't seem right: to wire mapping with snapshot outside the mapped color, even though it contains both
-          const mappedColor = color.getMappedColorForCanvasIndex(
-            color.canvasSnapshot.canvasBytes[i]!,
-            color.canvasSnapshot.canvasBytes[i + 1]!,
-            color.canvasSnapshot.canvasBytes[i + 2]!,
-            color.canvasSnapshot.canvasBytes[i + 3]!,
+          const mappedColor = color.getMappedColorFor(
+            this.#canvasPixels.get(index),
           );
-          this.#drawSolid(i, mappedColor);
+          this.#drawSolid(index, mappedColor);
         } else {
-          this.#drawSolid(i, color);
+          this.#drawSolid(index, color);
         }
       } else {
         if (color instanceof BpxCompositeColor) {
-          this.#drawSolid(i, color.secondary);
+          this.#drawSolid(index, color.secondary);
         }
       }
     }
@@ -68,10 +63,7 @@ export class DrawPixel {
 
   #drawSolid(canvasIndex: number, color: BpxSolidColor | BpxTransparentColor) {
     if (color instanceof BpxSolidColor) {
-      this.#canvasBytes[canvasIndex] = color.r;
-      this.#canvasBytes[canvasIndex + 1] = color.g;
-      this.#canvasBytes[canvasIndex + 2] = color.b;
-      this.#canvasBytes[canvasIndex + 3] = 0xff;
+      this.#canvasPixels.set(canvasIndex, color);
     }
   }
 }

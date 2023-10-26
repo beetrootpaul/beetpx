@@ -1,20 +1,19 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
 import { BpxVector2d, v_ } from "../Vector2d";
+import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawLine {
-  readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: BpxVector2d;
+  readonly #canvasPixels: CanvasPixels;
 
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
-    this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize.round();
+  constructor(canvasPixels: CanvasPixels) {
+    this.#canvasPixels = canvasPixels;
 
-    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize, {
+    this.#pixel = new DrawPixel(this.#canvasPixels, {
       disableRounding: true,
     });
   }

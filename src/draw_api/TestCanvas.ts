@@ -1,19 +1,15 @@
 import { expect } from "@jest/globals";
 import { BpxColorId, BpxSolidColor } from "../Color";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { v_ } from "../Vector2d";
+import { CanvasPixels } from "./CanvasPixels";
 
 export class TestCanvas {
-  readonly size: BpxVector2d;
-  readonly bytes: Uint8ClampedArray;
+  readonly pixels: CanvasPixels;
 
   constructor(width: number, height: number, color: BpxSolidColor) {
-    this.size = v_(width, height);
-    this.bytes = new Uint8ClampedArray(4 * width * height);
+    this.pixels = new CanvasPixels(v_(width, height));
     for (let i = 0; i < width * height; i += 1) {
-      this.bytes[4 * i] = color.r;
-      this.bytes[4 * i + 1] = color.g;
-      this.bytes[4 * i + 2] = color.b;
-      this.bytes[4 * i + 3] = 0xff;
+      this.pixels.set(i, color);
     }
   }
 
@@ -21,12 +17,6 @@ export class TestCanvas {
     withMapping: Record<string, BpxSolidColor>;
     expectedImageAsAscii: string;
   }) {
-    // first, let's check if bytes didn't increase in their length
-
-    expect(this.bytes.length).toEqual(this.size.x * this.size.y * 4);
-
-    // then, let's proceed to the actual image check
-
     const { withMapping: asciiToColor, expectedImageAsAscii } = params;
 
     const colorToAscii: Map<BpxColorId, string> = new Map(
@@ -55,20 +45,11 @@ export class TestCanvas {
   #asAscii(colorToAscii: Map<BpxColorId, string>): string {
     let asciiImage = "";
 
-    for (let y = 0; y < this.size.y; y += 1) {
-      for (let x = 0; x < this.size.x; x += 1) {
-        const i = 4 * (y * this.size.x + x);
-        const colorBytes = this.bytes.slice(i, i + 4);
-        if (colorBytes[3] !== 0xff) {
-          asciiImage += "!";
-        } else {
-          const color = new BpxSolidColor(
-            colorBytes[0]!,
-            colorBytes[1]!,
-            colorBytes[2]!,
-          );
-          asciiImage += colorToAscii.get(color.id) ?? "?";
-        }
+    for (let y = 0; y < this.pixels.canvasSize.y; y += 1) {
+      for (let x = 0; x < this.pixels.canvasSize.x; x += 1) {
+        const index = y * this.pixels.canvasSize.x + x;
+        const color = this.pixels.get(index);
+        asciiImage += colorToAscii.get(color.id) ?? "?";
       }
       asciiImage += "\n";
     }

@@ -9,23 +9,21 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawSprite_pixel;
+var _DrawSprite_canvasPixels, _DrawSprite_options, _DrawSprite_pixel;
 import { BpxSolidColor, transparent_, } from "../Color";
 import { BpxSprite } from "../Sprite";
-import { BpxUtils, u_ } from "../Utils";
+import { BpxUtils } from "../Utils";
 import { v_, v_1_1_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawSprite {
-    constructor(canvasBytes, canvasSize, options = {}) {
-        _DrawSprite_canvasBytes.set(this, void 0);
-        _DrawSprite_canvasSize.set(this, void 0);
+    constructor(canvasPixels, options = {}) {
+        _DrawSprite_canvasPixels.set(this, void 0);
         _DrawSprite_options.set(this, void 0);
         _DrawSprite_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawSprite_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawSprite_canvasSize, canvasSize, "f");
+        __classPrivateFieldSet(this, _DrawSprite_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
-        __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawSprite_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f")), "f");
     }
     // TODO: cover clippingRegion with tests
     draw(sourceImageAsset, sprite, targetXy, 
@@ -34,6 +32,7 @@ export class DrawSprite {
     scaleXy = v_1_1_, colorMapping = new Map(), 
     // TODO: test it
     fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+        var _a;
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = scaleXy.floor();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
@@ -43,9 +42,8 @@ export class DrawSprite {
         sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-                u_.range(scaleXy.x).forEach((xScaledStep) => {
-                    u_.range(scaleXy.y).forEach((yScaledStep) => {
-                        var _a;
+                for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
+                    for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
                         const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
                             .mul(scaleXy)
                             .add(xScaledStep, yScaledStep));
@@ -61,10 +59,10 @@ export class DrawSprite {
                         //       - ff614f became ff6e59
                         //       - 00555a became 125359
                         __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color, clippingRegion, fillPattern);
-                    });
-                });
+                    }
+                }
             }
         }
     }
 }
-_DrawSprite_canvasBytes = new WeakMap(), _DrawSprite_canvasSize = new WeakMap(), _DrawSprite_options = new WeakMap(), _DrawSprite_pixel = new WeakMap();
+_DrawSprite_canvasPixels = new WeakMap(), _DrawSprite_options = new WeakMap(), _DrawSprite_pixel = new WeakMap();
