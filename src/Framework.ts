@@ -45,8 +45,10 @@ export class Framework {
   readonly #browserType: BpxBrowserType;
 
   readonly #gameCanvasSize: BpxVector2d;
+  // TODO: REVERT
   readonly #htmlCanvasBackground: BpxSolidColor =
-    BpxSolidColor.fromRgbCssHex("#000000");
+    BpxSolidColor.fromRgbCssHex("#ffff00");
+  // BpxSolidColor.fromRgbCssHex("#000000");
 
   readonly #loading: Loading;
   readonly gameInput: GameInput;
@@ -145,7 +147,11 @@ export class Framework {
 
     this.#canvasPixels =
       options.canvasContextType === "webgl2"
-        ? new CanvasPixelsWebGl2(this.#gameCanvasSize)
+        ? new CanvasPixelsWebGl2(
+            this.#gameCanvasSize,
+            this.#htmlCanvas,
+            this.#htmlCanvasBackground,
+          )
         : new CanvasPixels2d(
             this.#gameCanvasSize,
             this.#htmlCanvas,

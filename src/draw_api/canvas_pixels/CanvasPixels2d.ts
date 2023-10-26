@@ -9,7 +9,6 @@ export class CanvasPixels2d extends CanvasPixels {
   readonly #length: number;
   readonly #rgbValues: number[];
 
-  readonly #htmlCanvasBackground: BpxSolidColor;
   readonly #htmlCanvas: HTMLCanvasElement;
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
   readonly #offscreenContext: OffscreenCanvasRenderingContext2D;
@@ -25,14 +24,13 @@ export class CanvasPixels2d extends CanvasPixels {
     this.#length = canvasSize.x * canvasSize.y;
     this.#rgbValues = u_.range(this.#length).map(() => 0);
 
-    this.#htmlCanvasBackground = htmlCanvasBackground;
-
     this.#htmlCanvas = htmlCanvas;
+    this.#htmlCanvas.style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
 
     this.#htmlCanvasContext =
       this.#htmlCanvas.getContext("2d", {
-        // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
-        alpha: false,
+        // we allow transparency in order ot make background color visible around the game itself
+        alpha: true,
       }) ??
       u_.throwError(
         "CanvasPixels2d: Was unable to obtain '2d' context from <canvas>",
@@ -73,23 +71,6 @@ export class CanvasPixels2d extends CanvasPixels {
     this.#rgbValues[index] = (color.r << 16) + (color.g << 8) + color.b;
   }
 
-  get(index: number): BpxSolidColor {
-    if (index >= this.#length) {
-      throw Error(
-        `CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${
-          this.#length - 1
-        }`,
-      );
-    }
-
-    const value = this.#rgbValues[index]!;
-    return new BpxSolidColor(
-      (value & 0xff0000) >> 16,
-      (value & 0x00ff00) >> 8,
-      value & 0x0000ff,
-    );
-  }
-
   takeSnapshot(): CanvasPixelsSnapshot {
     return new CanvasPixels2dSnapshot([...this.#rgbValues]);
   }
@@ -101,16 +82,8 @@ export class CanvasPixels2d extends CanvasPixels {
     this.#htmlCanvas.height =
       this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
 
+    // seems like we have to set it every time the canvas size is changed
     this.#htmlCanvasContext.imageSmoothingEnabled = false;
-
-    this.#htmlCanvasContext.fillStyle =
-      this.#htmlCanvasBackground.asRgbCssHex();
-    this.#htmlCanvasContext.fillRect(
-      0,
-      0,
-      this.#htmlCanvasContext.canvas.width,
-      this.#htmlCanvasContext.canvas.height,
-    );
   }
 
   render(): void {

@@ -50,7 +50,9 @@ export class Framework {
         _Framework_frameByFrame.set(this, void 0);
         _Framework_browserType.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
-        _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#000000"));
+        // TODO: REVERT
+        _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#ffff00"));
+        // BpxSolidColor.fromRgbCssHex("#000000");
         _Framework_loading.set(this, void 0);
         _Framework_gameLoop.set(this, void 0);
         _Framework_fullScreen.set(this, void 0);
@@ -99,7 +101,7 @@ export class Framework {
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.newFor(HtmlTemplate.selectors.display, HtmlTemplate.selectors.controlsFullScreen), "f");
         __classPrivateFieldSet(this, _Framework_htmlCanvas, (_b = document.querySelector(HtmlTemplate.selectors.canvas)) !== null && _b !== void 0 ? _b : u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`), "f");
         __classPrivateFieldSet(this, _Framework_canvasPixels, options.canvasContextType === "webgl2"
-            ? new CanvasPixelsWebGl2(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"))
+            ? new CanvasPixelsWebGl2(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvas, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f"))
             : new CanvasPixels2d(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvas, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
             canvasPixels: __classPrivateFieldGet(this, _Framework_canvasPixels, "f"),

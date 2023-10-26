@@ -9,8 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _CanvasPixels2d_instances, _CanvasPixels2d_length, _CanvasPixels2d_rgbValues, _CanvasPixels2d_htmlCanvasBackground, _CanvasPixels2d_htmlCanvas, _CanvasPixels2d_htmlCanvasContext, _CanvasPixels2d_offscreenContext, _CanvasPixels2d_offscreenImageData, _CanvasPixels2d_initializeAsNonTransparent;
-import { BpxSolidColor } from "../../Color";
+var _CanvasPixels2d_instances, _CanvasPixels2d_length, _CanvasPixels2d_rgbValues, _CanvasPixels2d_htmlCanvas, _CanvasPixels2d_htmlCanvasContext, _CanvasPixels2d_offscreenContext, _CanvasPixels2d_offscreenImageData, _CanvasPixels2d_initializeAsNonTransparent;
 import { u_ } from "../../Utils";
 import { v_ } from "../../Vector2d";
 import { CanvasPixels } from "./CanvasPixels";
@@ -22,18 +21,17 @@ export class CanvasPixels2d extends CanvasPixels {
         _CanvasPixels2d_instances.add(this);
         _CanvasPixels2d_length.set(this, void 0);
         _CanvasPixels2d_rgbValues.set(this, void 0);
-        _CanvasPixels2d_htmlCanvasBackground.set(this, void 0);
         _CanvasPixels2d_htmlCanvas.set(this, void 0);
         _CanvasPixels2d_htmlCanvasContext.set(this, void 0);
         _CanvasPixels2d_offscreenContext.set(this, void 0);
         _CanvasPixels2d_offscreenImageData.set(this, void 0);
         __classPrivateFieldSet(this, _CanvasPixels2d_length, canvasSize.x * canvasSize.y, "f");
         __classPrivateFieldSet(this, _CanvasPixels2d_rgbValues, u_.range(__classPrivateFieldGet(this, _CanvasPixels2d_length, "f")).map(() => 0), "f");
-        __classPrivateFieldSet(this, _CanvasPixels2d_htmlCanvasBackground, htmlCanvasBackground, "f");
         __classPrivateFieldSet(this, _CanvasPixels2d_htmlCanvas, htmlCanvas, "f");
+        __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvas, "f").style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
         __classPrivateFieldSet(this, _CanvasPixels2d_htmlCanvasContext, (_a = __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvas, "f").getContext("2d", {
-            // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
-            alpha: false,
+            // we allow transparency in order ot make background color visible around the game itself
+            alpha: true,
         })) !== null && _a !== void 0 ? _a : u_.throwError("CanvasPixels2d: Was unable to obtain '2d' context from <canvas>"), "f");
         const offscreenCanvas = document
             .createElement("canvas")
@@ -53,13 +51,6 @@ export class CanvasPixels2d extends CanvasPixels {
         }
         __classPrivateFieldGet(this, _CanvasPixels2d_rgbValues, "f")[index] = (color.r << 16) + (color.g << 8) + color.b;
     }
-    get(index) {
-        if (index >= __classPrivateFieldGet(this, _CanvasPixels2d_length, "f")) {
-            throw Error(`CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixels2d_length, "f") - 1}`);
-        }
-        const value = __classPrivateFieldGet(this, _CanvasPixels2d_rgbValues, "f")[index];
-        return new BpxSolidColor((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
-    }
     takeSnapshot() {
         return new CanvasPixels2dSnapshot([...__classPrivateFieldGet(this, _CanvasPixels2d_rgbValues, "f")]);
     }
@@ -69,10 +60,8 @@ export class CanvasPixels2d extends CanvasPixels {
             __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvas, "f").getBoundingClientRect().width * window.devicePixelRatio;
         __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvas, "f").height =
             __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvas, "f").getBoundingClientRect().height * window.devicePixelRatio;
+        // seems like we have to set it every time the canvas size is changed
         __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvasContext, "f").imageSmoothingEnabled = false;
-        __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvasContext, "f").fillStyle =
-            __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvasBackground, "f").asRgbCssHex();
-        __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvasContext, "f").fillRect(0, 0, __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvasContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvasContext, "f").canvas.height);
     }
     render() {
         for (let index = 0; index < __classPrivateFieldGet(this, _CanvasPixels2d_length, "f"); index++) {
@@ -93,7 +82,7 @@ export class CanvasPixels2d extends CanvasPixels {
         __classPrivateFieldGet(this, _CanvasPixels2d_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasPixels2d_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasPixels2d_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixels2d_offscreenContext, "f").canvas.height, centeringOffset.x, centeringOffset.y, scaleToFill * this.canvasSize.x, scaleToFill * this.canvasSize.y);
     }
 }
-_CanvasPixels2d_length = new WeakMap(), _CanvasPixels2d_rgbValues = new WeakMap(), _CanvasPixels2d_htmlCanvasBackground = new WeakMap(), _CanvasPixels2d_htmlCanvas = new WeakMap(), _CanvasPixels2d_htmlCanvasContext = new WeakMap(), _CanvasPixels2d_offscreenContext = new WeakMap(), _CanvasPixels2d_offscreenImageData = new WeakMap(), _CanvasPixels2d_instances = new WeakSet(), _CanvasPixels2d_initializeAsNonTransparent = function _CanvasPixels2d_initializeAsNonTransparent() {
+_CanvasPixels2d_length = new WeakMap(), _CanvasPixels2d_rgbValues = new WeakMap(), _CanvasPixels2d_htmlCanvas = new WeakMap(), _CanvasPixels2d_htmlCanvasContext = new WeakMap(), _CanvasPixels2d_offscreenContext = new WeakMap(), _CanvasPixels2d_offscreenImageData = new WeakMap(), _CanvasPixels2d_instances = new WeakSet(), _CanvasPixels2d_initializeAsNonTransparent = function _CanvasPixels2d_initializeAsNonTransparent() {
     for (let i = 3; i < __classPrivateFieldGet(this, _CanvasPixels2d_offscreenImageData, "f").data.length; i += 4) {
         __classPrivateFieldGet(this, _CanvasPixels2d_offscreenImageData, "f").data[i] = 0xff;
     }

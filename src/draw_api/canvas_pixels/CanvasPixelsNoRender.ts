@@ -28,23 +28,6 @@ export class CanvasPixelsNoRender extends CanvasPixels {
     this.#rgbValues[index] = (color.r << 16) + (color.g << 8) + color.b;
   }
 
-  get(index: number): BpxSolidColor {
-    if (index >= this.#length) {
-      throw Error(
-        `CanvasPixelsNoRender: index out of bounds: index = ${index}, maxAllowedIndex = ${
-          this.#length - 1
-        }`,
-      );
-    }
-
-    const value = this.#rgbValues[index]!;
-    return new BpxSolidColor(
-      (value & 0xff0000) >> 16,
-      (value & 0x00ff00) >> 8,
-      value & 0x0000ff,
-    );
-  }
-
   takeSnapshot(): CanvasPixelsSnapshot {
     return new CanvasPixels2dSnapshot([...this.#rgbValues]);
   }

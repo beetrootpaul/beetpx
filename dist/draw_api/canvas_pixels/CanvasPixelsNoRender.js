@@ -10,7 +10,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasPixelsNoRender_length, _CanvasPixelsNoRender_rgbValues;
-import { BpxSolidColor } from "../../Color";
 import { u_ } from "../../Utils";
 import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixels2dSnapshot } from "./CanvasPixels2dSnapshot";
@@ -27,13 +26,6 @@ export class CanvasPixelsNoRender extends CanvasPixels {
             throw Error(`CanvasPixelsNoRender: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsNoRender_length, "f") - 1}`);
         }
         __classPrivateFieldGet(this, _CanvasPixelsNoRender_rgbValues, "f")[index] = (color.r << 16) + (color.g << 8) + color.b;
-    }
-    get(index) {
-        if (index >= __classPrivateFieldGet(this, _CanvasPixelsNoRender_length, "f")) {
-            throw Error(`CanvasPixelsNoRender: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsNoRender_length, "f") - 1}`);
-        }
-        const value = __classPrivateFieldGet(this, _CanvasPixelsNoRender_rgbValues, "f")[index];
-        return new BpxSolidColor((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
     }
     takeSnapshot() {
         return new CanvasPixels2dSnapshot([...__classPrivateFieldGet(this, _CanvasPixelsNoRender_rgbValues, "f")]);

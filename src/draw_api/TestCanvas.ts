@@ -46,10 +46,11 @@ export class TestCanvas {
   #asAscii(colorToAscii: Map<BpxColorId, string>): string {
     let asciiImage = "";
 
+    const snapshot = this.pixels.takeSnapshot();
     for (let y = 0; y < this.pixels.canvasSize.y; y += 1) {
       for (let x = 0; x < this.pixels.canvasSize.x; x += 1) {
         const index = y * this.pixels.canvasSize.x + x;
-        const color = this.pixels.get(index);
+        const color = snapshot.get(index);
         asciiImage += colorToAscii.get(color.id) ?? "?";
       }
       asciiImage += "\n";
