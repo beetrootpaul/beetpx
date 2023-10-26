@@ -14,7 +14,7 @@ describe("DrawPixel", () => {
   test("a single pixel", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const pixel = new DrawPixel(canvas.bytes, canvas.size);
+    const pixel = new DrawPixel(canvas.pixels);
 
     // when
     const xy1 = v_(1, 1);
@@ -34,7 +34,7 @@ describe("DrawPixel", () => {
   test("canvas' corners", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const pixel = new DrawPixel(canvas.bytes, canvas.size);
+    const pixel = new DrawPixel(canvas.pixels);
 
     // when
     pixel.draw(v_(0, 0), c1);
@@ -56,7 +56,7 @@ describe("DrawPixel", () => {
   test("outside canvas", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const pixel = new DrawPixel(canvas.bytes, canvas.size);
+    const pixel = new DrawPixel(canvas.pixels);
 
     // when
     pixel.draw(v_(-1, 1), c1);

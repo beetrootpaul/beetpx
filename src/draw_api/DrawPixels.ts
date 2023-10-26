@@ -1,13 +1,14 @@
 import { BpxColor } from "../Color";
 import { BpxVector2d } from "../Vector2d";
+import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 
 export class DrawPixels {
   readonly #pixel: DrawPixel;
 
-  constructor(canvasBytes: Uint8ClampedArray, canvasSize: BpxVector2d) {
-    this.#pixel = new DrawPixel(canvasBytes, canvasSize);
+  constructor(canvasPixels: CanvasPixels) {
+    this.#pixel = new DrawPixel(canvasPixels);
   }
 
   // TODO: add tests

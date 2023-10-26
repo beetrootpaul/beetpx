@@ -7,11 +7,12 @@ import {
   BpxSolidColor,
   BpxTransparentColor,
 } from "../Color";
-import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
-import { Logger } from "../logger/Logger";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
+import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
+import { Logger } from "../logger/Logger";
+import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
@@ -30,13 +31,11 @@ export type BpxColorMapping = Array<{
 }>;
 
 export type BpxCanvasSnapshot = {
-  canvasBytes: Uint8ClampedArray;
+  canvasPixels: CanvasPixels;
 };
 
 type DrawApiOptions = {
-  // TODO: better name to indicate in-out nature of this param? Or some info in JSDoc?
-  canvasBytes: Uint8ClampedArray;
-  canvasSize: BpxVector2d;
+  canvasPixels: CanvasPixels;
   assets: Assets;
 };
 
@@ -71,17 +70,17 @@ export class DrawApi {
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
 
-    this.#clear = new DrawClear(options.canvasBytes, options.canvasSize);
-    this.#pixel = new DrawPixel(options.canvasBytes, options.canvasSize);
-    this.#pixels = new DrawPixels(options.canvasBytes, options.canvasSize);
-    this.#line = new DrawLine(options.canvasBytes, options.canvasSize);
-    this.#rect = new DrawRect(options.canvasBytes, options.canvasSize);
-    this.#ellipse = new DrawEllipse(options.canvasBytes, options.canvasSize);
-    this.#sprite = new DrawSprite(options.canvasBytes, options.canvasSize);
-    this.#text = new DrawText(options.canvasBytes, options.canvasSize);
+    this.#clear = new DrawClear(options.canvasPixels);
+    this.#pixel = new DrawPixel(options.canvasPixels);
+    this.#pixels = new DrawPixels(options.canvasPixels);
+    this.#line = new DrawLine(options.canvasPixels);
+    this.#rect = new DrawRect(options.canvasPixels);
+    this.#ellipse = new DrawEllipse(options.canvasPixels);
+    this.#sprite = new DrawSprite(options.canvasPixels);
+    this.#text = new DrawText(options.canvasPixels);
 
     this.takeCanvasSnapshot = () => ({
-      canvasBytes: new Uint8ClampedArray(options.canvasBytes),
+      canvasPixels: options.canvasPixels.clone(),
     });
   }
 

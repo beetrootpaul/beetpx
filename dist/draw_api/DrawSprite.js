@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawSprite_canvasBytes, _DrawSprite_canvasSize, _DrawSprite_options, _DrawSprite_pixel;
+var _DrawSprite_canvasPixels, _DrawSprite_options, _DrawSprite_pixel;
 import { BpxSolidColor, transparent_, } from "../Color";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
@@ -17,15 +17,13 @@ import { v_, v_1_1_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawSprite {
-    constructor(canvasBytes, canvasSize, options = {}) {
-        _DrawSprite_canvasBytes.set(this, void 0);
-        _DrawSprite_canvasSize.set(this, void 0);
+    constructor(canvasPixels, options = {}) {
+        _DrawSprite_canvasPixels.set(this, void 0);
         _DrawSprite_options.set(this, void 0);
         _DrawSprite_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawSprite_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawSprite_canvasSize, canvasSize, "f");
+        __classPrivateFieldSet(this, _DrawSprite_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
-        __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawSprite_canvasSize, "f")), "f");
+        __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f")), "f");
     }
     // TODO: cover clippingRegion with tests
     draw(sourceImageAsset, sprite, targetXy, 
@@ -67,4 +65,4 @@ export class DrawSprite {
         }
     }
 }
-_DrawSprite_canvasBytes = new WeakMap(), _DrawSprite_canvasSize = new WeakMap(), _DrawSprite_options = new WeakMap(), _DrawSprite_pixel = new WeakMap();
+_DrawSprite_canvasPixels = new WeakMap(), _DrawSprite_options = new WeakMap(), _DrawSprite_pixel = new WeakMap();

@@ -10,9 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawApi_assets, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_clippingRegion, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
-import { Logger } from "../logger/Logger";
 import { BpxUtils } from "../Utils";
 import { v_, v_1_1_ } from "../Vector2d";
+import { Logger } from "../logger/Logger";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
@@ -43,16 +43,16 @@ export class DrawApi {
         _DrawApi_fontAsset.set(this, null);
         _DrawApi_spriteColorMapping.set(this, new Map());
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
-        __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvasBytes, options.canvasSize), "f");
-        __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel(options.canvasBytes, options.canvasSize), "f");
-        __classPrivateFieldSet(this, _DrawApi_pixels, new DrawPixels(options.canvasBytes, options.canvasSize), "f");
-        __classPrivateFieldSet(this, _DrawApi_line, new DrawLine(options.canvasBytes, options.canvasSize), "f");
-        __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect(options.canvasBytes, options.canvasSize), "f");
-        __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvasBytes, options.canvasSize), "f");
-        __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvasBytes, options.canvasSize), "f");
-        __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasBytes, options.canvasSize), "f");
+        __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_pixels, new DrawPixels(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_line, new DrawLine(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasPixels), "f");
         this.takeCanvasSnapshot = () => ({
-            canvasBytes: new Uint8ClampedArray(options.canvasBytes),
+            canvasPixels: options.canvasPixels.clone(),
         });
     }
     // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is

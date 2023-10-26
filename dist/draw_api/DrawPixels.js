@@ -12,9 +12,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawPixels_pixel;
 import { DrawPixel } from "./DrawPixel";
 export class DrawPixels {
-    constructor(canvasBytes, canvasSize) {
+    constructor(canvasPixels) {
         _DrawPixels_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawPixels_pixel, new DrawPixel(canvasBytes, canvasSize), "f");
+        __classPrivateFieldSet(this, _DrawPixels_pixel, new DrawPixel(canvasPixels), "f");
     }
     // TODO: add tests
     draw(xy, bits, color, clippingRegion = null) {

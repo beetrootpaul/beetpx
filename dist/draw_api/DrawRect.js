@@ -9,18 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawRect_canvasBytes, _DrawRect_canvasSize, _DrawRect_pixel;
+var _DrawRect_canvasPixels, _DrawRect_pixel;
 import { BpxVector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawRect {
-    constructor(canvasBytes, canvasSize) {
-        _DrawRect_canvasBytes.set(this, void 0);
-        _DrawRect_canvasSize.set(this, void 0);
+    constructor(canvasPixels) {
+        _DrawRect_canvasPixels.set(this, void 0);
         _DrawRect_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawRect_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawRect_canvasSize, canvasSize, "f");
-        __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawRect_canvasSize, "f"), {
+        __classPrivateFieldSet(this, _DrawRect_canvasPixels, canvasPixels, "f");
+        __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f"), {
             disableRounding: true,
         }), "f");
     }
@@ -43,4 +41,4 @@ export class DrawRect {
         }
     }
 }
-_DrawRect_canvasBytes = new WeakMap(), _DrawRect_canvasSize = new WeakMap(), _DrawRect_pixel = new WeakMap();
+_DrawRect_canvasPixels = new WeakMap(), _DrawRect_pixel = new WeakMap();

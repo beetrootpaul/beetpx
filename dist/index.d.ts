@@ -79,6 +79,16 @@ interface BpxFont {
     spritesFor(text: string): BpxCharSprite[];
 }
 
+declare class CanvasPixels {
+    #private;
+    readonly canvasSize: BpxVector2d;
+    constructor(canvasSize: BpxVector2d, rgbValues?: number[]);
+    set(index: number, color: BpxSolidColor): void;
+    get(index: number): BpxSolidColor;
+    clone(): CanvasPixels;
+    renderTo(htmlCanvasData: Uint8ClampedArray): void;
+}
+
 declare class BpxFillPattern {
     #private;
     static of(bits: number): BpxFillPattern;
@@ -93,11 +103,10 @@ type BpxColorMapping = Array<{
     to: BpxSolidColor | BpxTransparentColor;
 }>;
 type BpxCanvasSnapshot = {
-    canvasBytes: Uint8ClampedArray;
+    canvasPixels: CanvasPixels;
 };
 type DrawApiOptions = {
-    canvasBytes: Uint8ClampedArray;
-    canvasSize: BpxVector2d;
+    canvasPixels: CanvasPixels;
     assets: Assets;
 };
 declare class DrawApi {
@@ -155,8 +164,8 @@ declare class BpxMappingColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
     readonly canvasSnapshot: BpxCanvasSnapshot;
-    constructor(canvasSnapshot: BpxCanvasSnapshot, mapping: (canvasColor: BpxSolidColor | BpxTransparentColor) => BpxSolidColor | BpxTransparentColor);
-    getMappedColorForCanvasIndex(r: number, g: number, b: number, a: number): BpxSolidColor | BpxTransparentColor;
+    readonly getMappedColorFor: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor;
+    constructor(canvasSnapshot: BpxCanvasSnapshot, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
 }
 
 type AssetsToLoad = {

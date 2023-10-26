@@ -1,23 +1,24 @@
 import { Assets, AssetsToLoad } from "./Assets";
-import { AudioApi } from "./audio/AudioApi";
 import { BeetPx } from "./BeetPx";
+import { BpxSolidColor, black_ } from "./Color";
+import { FullScreen } from "./FullScreen";
+import { HtmlTemplate } from "./HtmlTemplate";
+import { Loading } from "./Loading";
+import { BpxUtils } from "./Utils";
+import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
+import { AudioApi } from "./audio/AudioApi";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
-import { black_, BpxSolidColor } from "./Color";
 import { DebugMode } from "./debug/DebugMode";
+import { CanvasPixels } from "./draw_api/CanvasPixels";
 import { DrawApi } from "./draw_api/DrawApi";
-import { FullScreen } from "./FullScreen";
 import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
-import { HtmlTemplate } from "./HtmlTemplate";
-import { Loading } from "./Loading";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxUtils } from "./Utils";
-import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128";
@@ -58,6 +59,7 @@ export class Framework {
 
   readonly assets: Assets;
 
+  readonly #canvasPixels: CanvasPixels;
   readonly drawApi: DrawApi;
 
   #onStarted?: () => void;
@@ -169,9 +171,12 @@ export class Framework {
       this.#offscreenContext.canvas.width,
       this.#offscreenContext.canvas.height,
     );
+
+    this.#initializeAsNonTransparent(this.#offscreenImageData);
+
+    this.#canvasPixels = new CanvasPixels(this.#gameCanvasSize);
     this.drawApi = new DrawApi({
-      canvasBytes: this.#offscreenImageData.data,
-      canvasSize: this.#gameCanvasSize,
+      canvasPixels: this.#canvasPixels,
       assets: this.assets,
     });
   }
@@ -211,9 +216,17 @@ export class Framework {
     this.#onStarted?.();
   }
 
+  #initializeAsNonTransparent(imageData: ImageData) {
+    for (let i = 3; i < imageData.data.length; i += 4) {
+      imageData.data[i] = 0xff;
+    }
+  }
+
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
   #startGame(): void {
     if (__BEETPX_IS_PROD__) {
+      // A popup which prevents user from accidentally closing the browser tab during gameplay.
+      // Implementation notes:
       // - returned message seems to be ignored by some browsers, therefore using `""`
       // - this event is *not* always run when for example there was no mouse click inside
       //   iframe with the game in Firefox
@@ -333,6 +346,8 @@ export class Framework {
   }
 
   #render(): void {
+    this.#canvasPixels.renderTo(this.#offscreenImageData.data);
+
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
     const htmlCanvasSize = v_(

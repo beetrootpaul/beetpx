@@ -8,27 +8,25 @@ import {
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
+import { CanvasPixels } from "./CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawSprite {
-  readonly #canvasBytes: Uint8ClampedArray;
-  readonly #canvasSize: BpxVector2d;
+  readonly #canvasPixels: CanvasPixels;
   readonly #options: { disableRounding?: boolean };
 
   readonly #pixel: DrawPixel;
 
   constructor(
-    canvasBytes: Uint8ClampedArray,
-    canvasSize: BpxVector2d,
+    canvasPixels: CanvasPixels,
     options: { disableRounding?: boolean } = {},
   ) {
-    this.#canvasBytes = canvasBytes;
-    this.#canvasSize = canvasSize;
+    this.#canvasPixels = canvasPixels;
     this.#options = options;
 
-    this.#pixel = new DrawPixel(this.#canvasBytes, this.#canvasSize);
+    this.#pixel = new DrawPixel(this.#canvasPixels);
   }
 
   // TODO: cover clippingRegion with tests

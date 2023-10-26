@@ -9,18 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawEllipse_canvasBytes, _DrawEllipse_canvasSize, _DrawEllipse_pixel;
+var _DrawEllipse_canvasPixels, _DrawEllipse_pixel;
 import { BpxVector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawEllipse {
-    constructor(canvasBytes, canvasSize) {
-        _DrawEllipse_canvasBytes.set(this, void 0);
-        _DrawEllipse_canvasSize.set(this, void 0);
+    constructor(canvasPixels) {
+        _DrawEllipse_canvasPixels.set(this, void 0);
         _DrawEllipse_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawEllipse_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawEllipse_canvasSize, canvasSize.round(), "f");
-        __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawEllipse_canvasSize, "f"), {
+        __classPrivateFieldSet(this, _DrawEllipse_canvasPixels, canvasPixels, "f");
+        __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f"), {
             disableRounding: true,
         }), "f");
     }
@@ -95,4 +93,4 @@ export class DrawEllipse {
         }
     }
 }
-_DrawEllipse_canvasBytes = new WeakMap(), _DrawEllipse_canvasSize = new WeakMap(), _DrawEllipse_pixel = new WeakMap();
+_DrawEllipse_canvasPixels = new WeakMap(), _DrawEllipse_pixel = new WeakMap();

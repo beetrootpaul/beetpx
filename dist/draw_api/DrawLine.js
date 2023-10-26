@@ -9,18 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawLine_canvasBytes, _DrawLine_canvasSize, _DrawLine_pixel;
+var _DrawLine_canvasPixels, _DrawLine_pixel;
 import { v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawLine {
-    constructor(canvasBytes, canvasSize) {
-        _DrawLine_canvasBytes.set(this, void 0);
-        _DrawLine_canvasSize.set(this, void 0);
+    constructor(canvasPixels) {
+        _DrawLine_canvasPixels.set(this, void 0);
         _DrawLine_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawLine_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawLine_canvasSize, canvasSize.round(), "f");
-        __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasBytes, "f"), __classPrivateFieldGet(this, _DrawLine_canvasSize, "f"), {
+        __classPrivateFieldSet(this, _DrawLine_canvasPixels, canvasPixels, "f");
+        __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasPixels, "f"), {
             disableRounding: true,
         }), "f");
     }
@@ -74,4 +72,4 @@ export class DrawLine {
         }
     }
 }
-_DrawLine_canvasBytes = new WeakMap(), _DrawLine_canvasSize = new WeakMap(), _DrawLine_pixel = new WeakMap();
+_DrawLine_canvasPixels = new WeakMap(), _DrawLine_pixel = new WeakMap();

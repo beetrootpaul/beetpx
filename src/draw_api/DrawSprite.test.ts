@@ -22,7 +22,7 @@ describe("DrawSprite", () => {
   test("1x1 image", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1 },
       image: `
@@ -47,7 +47,7 @@ describe("DrawSprite", () => {
   test("image with multiple colors", () => {
     // given
     const canvas = new TestCanvas(9, 6, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -77,7 +77,7 @@ describe("DrawSprite", () => {
   test("a sprite from a bigger image", () => {
     // given
     const canvas = new TestCanvas(5, 4, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -106,7 +106,7 @@ describe("DrawSprite", () => {
   test("a 0-size sprite", () => {
     // given
     const canvas = new TestCanvas(5, 4, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -135,7 +135,7 @@ describe("DrawSprite", () => {
   test("a negative size sprite", () => {
     // given
     const canvas = new TestCanvas(5, 4, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -164,7 +164,7 @@ describe("DrawSprite", () => {
   test("sprite vs source image clipping: left edge", () => {
     // given
     const canvas = new TestCanvas(8, 8, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -197,7 +197,7 @@ describe("DrawSprite", () => {
   test("sprite vs source image clipping: right edge", () => {
     // given
     const canvas = new TestCanvas(8, 8, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -230,7 +230,7 @@ describe("DrawSprite", () => {
   test("sprite vs source image clipping: top edge", () => {
     // given
     const canvas = new TestCanvas(8, 8, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -263,7 +263,7 @@ describe("DrawSprite", () => {
   test("sprite vs source image clipping: bottom edge", () => {
     // given
     const canvas = new TestCanvas(8, 8, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -296,7 +296,7 @@ describe("DrawSprite", () => {
   test("sprite vs canvas clipping: left edge", () => {
     // given
     const canvas = new TestCanvas(6, 6, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -327,7 +327,7 @@ describe("DrawSprite", () => {
   test("sprite vs canvas clipping: right edge", () => {
     // given
     const canvas = new TestCanvas(6, 6, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -358,7 +358,7 @@ describe("DrawSprite", () => {
   test("sprite vs canvas clipping: top edge", () => {
     // given
     const canvas = new TestCanvas(6, 6, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -389,7 +389,7 @@ describe("DrawSprite", () => {
   test("sprite vs canvas clipping: bottom edge", () => {
     // given
     const canvas = new TestCanvas(6, 6, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       image: `
@@ -420,7 +420,7 @@ describe("DrawSprite", () => {
   test("transparency", () => {
     // given
     const canvas = new TestCanvas(4, 4, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": ct },
       image: `
@@ -452,7 +452,7 @@ describe("DrawSprite", () => {
   test("color mapping", () => {
     // given
     const canvas = new TestCanvas(4, 4, c0);
-    const sprite = new DrawSprite(canvas.bytes, canvas.size);
+    const sprite = new DrawSprite(canvas.pixels);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, ".": ct },
       image: `

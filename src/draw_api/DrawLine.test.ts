@@ -15,7 +15,7 @@ describe("DrawLine", () => {
   test("1x1", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(1, 1), c1);
@@ -34,7 +34,7 @@ describe("DrawLine", () => {
   test("2x2", () => {
     // given
     const canvas = new TestCanvas(4, 4, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(2, 2), c1);
@@ -54,7 +54,7 @@ describe("DrawLine", () => {
   test("4x3", () => {
     // given
     const canvas = new TestCanvas(6, 5, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(4, 3), c1);
@@ -75,7 +75,7 @@ describe("DrawLine", () => {
   test("13x6", () => {
     // given
     const canvas = new TestCanvas(15, 8, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(13, 6), c1);
@@ -99,7 +99,7 @@ describe("DrawLine", () => {
   test("11x2", () => {
     // given
     const canvas = new TestCanvas(13, 4, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(11, 2), c1);
@@ -120,7 +120,7 @@ describe("DrawLine", () => {
     test("9x7", () => {
       // given
       const canvas = new TestCanvas(11, 9, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(1, 1), v_(9, 7), c1);
@@ -145,7 +145,7 @@ describe("DrawLine", () => {
     test("9x-7", () => {
       // given
       const canvas = new TestCanvas(11, 9, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(1, 7), v_(9, -7), c1);
@@ -170,7 +170,7 @@ describe("DrawLine", () => {
     test("-9x7", () => {
       // given
       const canvas = new TestCanvas(11, 9, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(9, 1), v_(-9, 7), c1);
@@ -195,7 +195,7 @@ describe("DrawLine", () => {
     test("-9x-7", () => {
       // given
       const canvas = new TestCanvas(11, 9, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(9, 7), v_(-9, -7), c1);
@@ -220,7 +220,7 @@ describe("DrawLine", () => {
     test("7x9", () => {
       // given
       const canvas = new TestCanvas(9, 11, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(1, 1), v_(7, 9), c1);
@@ -247,7 +247,7 @@ describe("DrawLine", () => {
     test("7x-9", () => {
       // given
       const canvas = new TestCanvas(9, 11, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(1, 9), v_(7, -9), c1);
@@ -274,7 +274,7 @@ describe("DrawLine", () => {
     test("-7x9", () => {
       // given
       const canvas = new TestCanvas(9, 11, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(7, 1), v_(-7, 9), c1);
@@ -301,7 +301,7 @@ describe("DrawLine", () => {
     test("-7x-9", () => {
       // given
       const canvas = new TestCanvas(9, 11, c0);
-      const rect = new DrawLine(canvas.bytes, canvas.size);
+      const rect = new DrawLine(canvas.pixels);
 
       // when
       rect.draw(v_(7, 9), v_(-7, -9), c1);
@@ -329,7 +329,7 @@ describe("DrawLine", () => {
   test("drawing on very edges of a canvas", () => {
     // given
     const canvas = new TestCanvas(5, 5, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 0), v_(3, 1), c1);
@@ -353,7 +353,7 @@ describe("DrawLine", () => {
   test("0-size", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(0, 0), c1);
@@ -398,7 +398,7 @@ describe("DrawLine", () => {
   test("clipping: over the left edge", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(-2, 1), v_(4, 1), c1);
@@ -417,7 +417,7 @@ describe("DrawLine", () => {
   test("clipping: over the right edge", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(4, 1), c1);
@@ -436,7 +436,7 @@ describe("DrawLine", () => {
   test("clipping: over the top edge", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, -2), v_(1, 4), c1);
@@ -455,7 +455,7 @@ describe("DrawLine", () => {
   test("clipping: over the bottom edge", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const rect = new DrawLine(canvas.bytes, canvas.size);
+    const rect = new DrawLine(canvas.pixels);
 
     // when
     rect.draw(v_(1, 1), v_(1, 4), c1);

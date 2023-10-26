@@ -9,18 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawPixel_instances, _DrawPixel_canvasBytes, _DrawPixel_canvasSize, _DrawPixel_options, _DrawPixel_drawSolid;
+var _DrawPixel_instances, _DrawPixel_canvasPixels, _DrawPixel_options, _DrawPixel_drawSolid;
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../Color";
 import { v_0_0_ } from "../Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawPixel {
-    constructor(canvasBytes, canvasSize, options = {}) {
+    constructor(canvasPixels, options = {}) {
         _DrawPixel_instances.add(this);
-        _DrawPixel_canvasBytes.set(this, void 0);
-        _DrawPixel_canvasSize.set(this, void 0);
+        _DrawPixel_canvasPixels.set(this, void 0);
         _DrawPixel_options.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawPixel_canvasBytes, canvasBytes, "f");
-        __classPrivateFieldSet(this, _DrawPixel_canvasSize, canvasSize, "f");
+        __classPrivateFieldSet(this, _DrawPixel_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawPixel_options, options, "f");
     }
     // TODO: consolidate where composite color and fill patterns are handled (look for `instanceof`). Consider renaming fill pattern to e.g. pattern color as well
@@ -32,34 +30,31 @@ export class DrawPixel {
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }
-        if (xy.gte(v_0_0_) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasSize, "f"))) {
-            const i = 4 * (xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasSize, "f").x + xy.x);
+        if (xy.gte(v_0_0_) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize)) {
+            const index = xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.x + xy.x;
             if (fillPattern.hasPrimaryColorAt(xy)) {
                 if (color instanceof BpxCompositeColor) {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.primary);
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.primary);
                 }
                 else if (color instanceof BpxMappingColor) {
                     // TODO: this doesn't seem right: to wire mapping with snapshot outside the mapped color, even though it contains both
-                    const mappedColor = color.getMappedColorForCanvasIndex(color.canvasSnapshot.canvasBytes[i], color.canvasSnapshot.canvasBytes[i + 1], color.canvasSnapshot.canvasBytes[i + 2], color.canvasSnapshot.canvasBytes[i + 3]);
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, mappedColor);
+                    const mappedColor = color.getMappedColorFor(__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").get(index));
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, mappedColor);
                 }
                 else {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color);
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color);
                 }
             }
             else {
                 if (color instanceof BpxCompositeColor) {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, i, color.secondary);
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.secondary);
                 }
             }
         }
     }
 }
-_DrawPixel_canvasBytes = new WeakMap(), _DrawPixel_canvasSize = new WeakMap(), _DrawPixel_options = new WeakMap(), _DrawPixel_instances = new WeakSet(), _DrawPixel_drawSolid = function _DrawPixel_drawSolid(canvasIndex, color) {
+_DrawPixel_canvasPixels = new WeakMap(), _DrawPixel_options = new WeakMap(), _DrawPixel_instances = new WeakSet(), _DrawPixel_drawSolid = function _DrawPixel_drawSolid(canvasIndex, color) {
     if (color instanceof BpxSolidColor) {
-        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex] = color.r;
-        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 1] = color.g;
-        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 2] = color.b;
-        __classPrivateFieldGet(this, _DrawPixel_canvasBytes, "f")[canvasIndex + 3] = 0xff;
+        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(canvasIndex, color);
     }
 };

@@ -1,15 +1,15 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _a, _BpxMappingColor_nextId, _BpxMappingColor_mapping;
+var _a, _BpxMappingColor_nextId;
 // TODO: split colors into separate files?
 export class BpxTransparentColor {
     constructor() {
@@ -58,13 +58,9 @@ export class BpxMappingColor {
     constructor(canvasSnapshot, mapping) {
         var _b, _c, _d;
         this.id = `mapping:${__classPrivateFieldSet(_b = BpxMappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _BpxMappingColor_nextId), _c = _d++, _d), "f", _BpxMappingColor_nextId), _c}`;
-        _BpxMappingColor_mapping.set(this, void 0);
         this.canvasSnapshot = canvasSnapshot;
-        __classPrivateFieldSet(this, _BpxMappingColor_mapping, mapping, "f");
-    }
-    getMappedColorForCanvasIndex(r, g, b, a) {
-        return __classPrivateFieldGet(this, _BpxMappingColor_mapping, "f").call(this, a >= 0xff / 2 ? new BpxSolidColor(r, g, b) : transparent_);
+        this.getMappedColorFor = mapping;
     }
 }
-_a = BpxMappingColor, _BpxMappingColor_mapping = new WeakMap();
+_a = BpxMappingColor;
 _BpxMappingColor_nextId = { value: 1 };
