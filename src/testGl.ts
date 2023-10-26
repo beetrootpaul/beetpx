@@ -175,10 +175,16 @@ void main() {
 
   let lol = 7;
 
-  function tick() {
+  let delta: DOMHighResTimeStamp = 1;
+  let prevT: DOMHighResTimeStamp = 1;
+
+  function tick(currentTimeMillis: DOMHighResTimeStamp) {
+    delta = currentTimeMillis - prevT;
+    prevT = currentTimeMillis;
+
     if (!gl) throw Error("lolgl");
 
-    lol = (lol + 0.1) % w;
+    lol = (lol + 0.01 * delta) % w;
 
     const pixels = [
       [0, 0, "#ff0000"],
