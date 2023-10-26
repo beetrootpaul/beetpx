@@ -163,8 +163,7 @@ declare class BpxCompositeColor implements BpxColor {
 declare class BpxMappingColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
-    readonly canvasSnapshot: BpxCanvasSnapshot;
-    readonly getMappedColorFor: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor;
+    readonly getMappedColorFromCanvasSnapshot: (index: number) => BpxSolidColor | BpxTransparentColor;
     constructor(canvasSnapshot: BpxCanvasSnapshot, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
 }
 

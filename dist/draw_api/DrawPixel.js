@@ -37,9 +37,7 @@ export class DrawPixel {
                     __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.primary);
                 }
                 else if (color instanceof BpxMappingColor) {
-                    // TODO: this doesn't seem right: to wire mapping with snapshot outside the mapped color, even though it contains both
-                    const mappedColor = color.getMappedColorFor(__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").get(index));
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, mappedColor);
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.getMappedColorFromCanvasSnapshot(index));
                 }
                 else {
                     __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color);

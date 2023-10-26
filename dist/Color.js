@@ -58,8 +58,7 @@ export class BpxMappingColor {
     constructor(canvasSnapshot, mapping) {
         var _b, _c, _d;
         this.id = `mapping:${__classPrivateFieldSet(_b = BpxMappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _BpxMappingColor_nextId), _c = _d++, _d), "f", _BpxMappingColor_nextId), _c}`;
-        this.canvasSnapshot = canvasSnapshot;
-        this.getMappedColorFor = mapping;
+        this.getMappedColorFromCanvasSnapshot = (index) => mapping(canvasSnapshot.canvasPixels.get(index));
     }
 }
 _a = BpxMappingColor;

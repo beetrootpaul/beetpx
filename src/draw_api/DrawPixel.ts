@@ -45,11 +45,7 @@ export class DrawPixel {
         if (color instanceof BpxCompositeColor) {
           this.#drawSolid(index, color.primary);
         } else if (color instanceof BpxMappingColor) {
-          // TODO: this doesn't seem right: to wire mapping with snapshot outside the mapped color, even though it contains both
-          const mappedColor = color.getMappedColorFor(
-            this.#canvasPixels.get(index),
-          );
-          this.#drawSolid(index, mappedColor);
+          this.#drawSolid(index, color.getMappedColorFromCanvasSnapshot(index));
         } else {
           this.#drawSolid(index, color);
         }
