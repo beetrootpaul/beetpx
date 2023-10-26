@@ -12,7 +12,6 @@ declare class BpxVector2d implements PrintDebug {
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static unitFromAngle(turnAngle: number): BpxVector2d;
-    static forEachIntXyWithinRectOf(xy: BpxVector2d, wh: BpxVector2d, roundValues: boolean, fill: boolean, callback: (xy: BpxVector2d) => void): void;
     readonly x: number;
     readonly y: number;
     constructor(x: number, y: number);

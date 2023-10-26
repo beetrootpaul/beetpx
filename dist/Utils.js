@@ -28,7 +28,11 @@ export class BpxUtils {
     static measureText(text) {
         var _a, _b;
         const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
-        return charSprites.reduce((sizeSoFar, nextSprite) => BpxVector2d.max(sizeSoFar, nextSprite.positionInText.add(nextSprite.sprite.size())), v_0_0_);
+        let size = v_0_0_;
+        for (const charSprite of charSprites) {
+            size = BpxVector2d.max(size, charSprite.positionInText.add(charSprite.sprite.size()));
+        }
+        return size;
     }
     static noop() { }
     // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
@@ -46,9 +50,9 @@ export class BpxUtils {
     }
     // TODO: consider moving this to either DrawApi or the game itself
     static printWithOutline(text, canvasXy1, textColor, outlineColor, centerXy = [false, false]) {
-        BpxUtils.offset8Directions().forEach((offset) => {
+        for (const offset of BpxUtils.offset8Directions()) {
             BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
-        });
+        }
         BeetPx.print(text, canvasXy1, textColor, centerXy);
     }
     static randomElementOf(array) {

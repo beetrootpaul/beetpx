@@ -53,20 +53,15 @@ export class DrawEllipse {
             //
             // DRAW THE CURRENT PIXEL IN EACH QUADRANT
             //
-            // TODO: update the implementation below to honor fill pattern
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(right, bottom), color, clippingRegion, fillPattern);
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(left, bottom), color, clippingRegion, fillPattern);
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(left, top), color, clippingRegion, fillPattern);
             __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(right, top), color, clippingRegion, fillPattern);
             if (fill) {
-                // TODO: update the implementation below to honor fill pattern
-                BpxVector2d.forEachIntXyWithinRectOf(v_(left + 1, bottom), v_(right - left - 1, 1), false, true, (xy) => {
-                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion, fillPattern);
-                });
-                // TODO: update the implementation below to honor fill pattern
-                BpxVector2d.forEachIntXyWithinRectOf(v_(left + 1, top), v_(right - left - 1, 1), false, true, (xy) => {
-                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(xy, color, clippingRegion, fillPattern);
-                });
+                for (let x = left + 1; x < right; x++) {
+                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(x, top), color, clippingRegion, fillPattern);
+                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(v_(x, bottom), color, clippingRegion, fillPattern);
+                }
             }
             //
             // STEP TO THE NEXT PIXEL

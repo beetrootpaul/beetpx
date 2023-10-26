@@ -47,7 +47,10 @@ export class Assets {
                 const canvas = document.createElement("canvas");
                 canvas.width = htmlImage.naturalWidth;
                 canvas.height = htmlImage.naturalHeight;
-                const ctx = canvas.getContext("2d");
+                const ctx = canvas.getContext("2d", {
+                    // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
+                    alpha: false,
+                });
                 if (!ctx) {
                     throw Error(`Assets: Failed to process the image: ${htmlImage.src}`);
                 }

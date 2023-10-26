@@ -1,5 +1,5 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v_ } from "../Vector2d";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
@@ -31,8 +31,29 @@ export class DrawRect {
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    BpxVector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
-      this.#pixel.draw(xy, color, clippingRegion, fillPattern);
-    });
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
+      xy.round(),
+      xy.add(wh).round(),
+    );
+    for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
+      if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
+        for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+          this.#pixel.draw(v_(x, y), color, clippingRegion, fillPattern);
+        }
+      } else {
+        this.#pixel.draw(
+          v_(xyMinInclusive.x, y),
+          color,
+          clippingRegion,
+          fillPattern,
+        );
+        this.#pixel.draw(
+          v_(xyMaxExclusive.x - 1, y),
+          color,
+          clippingRegion,
+          fillPattern,
+        );
+      }
+    }
   }
 }

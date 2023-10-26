@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawRect_canvasBytes, _DrawRect_canvasSize, _DrawRect_pixel;
-import { BpxVector2d } from "../Vector2d";
+import { BpxVector2d, v_ } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawRect {
@@ -29,9 +29,18 @@ export class DrawRect {
     // TODO: tests for CompositeColor and fillPattern
     // TODO: cover ClippingRegion with tests
     draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
-        BpxVector2d.forEachIntXyWithinRectOf(xy, wh, true, fill, (xy) => {
-            __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xy, color, clippingRegion, fillPattern);
-        });
+        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+        for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
+            if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
+                for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(x, y), color, clippingRegion, fillPattern);
+                }
+            }
+            else {
+                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMinInclusive.x, y), color, clippingRegion, fillPattern);
+                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMaxExclusive.x - 1, y), color, clippingRegion, fillPattern);
+            }
+        }
     }
 }
 _DrawRect_canvasBytes = new WeakMap(), _DrawRect_canvasSize = new WeakMap(), _DrawRect_pixel = new WeakMap();

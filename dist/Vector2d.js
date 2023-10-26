@@ -22,21 +22,6 @@ export class BpxVector2d {
     static unitFromAngle(turnAngle) {
         return new BpxVector2d(BpxUtils.trigCos(turnAngle), BpxUtils.trigSin(turnAngle));
     }
-    // TODO: sounds like something to mover outside the basic set of fns in Vector2d
-    static forEachIntXyWithinRectOf(xy, wh, roundValues, fill, callback) {
-        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(roundValues ? xy.round() : xy, roundValues ? xy.add(wh).round() : xy.add(wh));
-        for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
-            for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
-                if (fill ||
-                    x === xyMinInclusive.x ||
-                    x === xyMaxExclusive.x - 1 ||
-                    y === xyMinInclusive.y ||
-                    y === xyMaxExclusive.y - 1) {
-                    callback(v_(x, y));
-                }
-            }
-        }
-    }
     constructor(x, y) {
         this.x = x;
         this.y = y;

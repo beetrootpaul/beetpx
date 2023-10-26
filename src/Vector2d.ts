@@ -40,33 +40,6 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
-  // TODO: sounds like something to mover outside the basic set of fns in Vector2d
-  static forEachIntXyWithinRectOf(
-    xy: BpxVector2d,
-    wh: BpxVector2d,
-    roundValues: boolean,
-    fill: boolean,
-    callback: (xy: BpxVector2d) => void,
-  ): void {
-    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
-      roundValues ? xy.round() : xy,
-      roundValues ? xy.add(wh).round() : xy.add(wh),
-    );
-    for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
-      for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
-        if (
-          fill ||
-          x === xyMinInclusive.x ||
-          x === xyMaxExclusive.x - 1 ||
-          y === xyMinInclusive.y ||
-          y === xyMaxExclusive.y - 1
-        ) {
-          callback(v_(x, y));
-        }
-      }
-    }
-  }
-
   readonly x: number;
   readonly y: number;
 

@@ -43,4 +43,5 @@ which is specified in [.nvmrc](.nvmrc).
 
 ## Random Notes
 
-- gamepad input seems to be laggy (at least on Firefox), unsuitable for fast paced games
+- Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast paced games.
+- It's good to avoid `.forEach`, `.reduce` and similar functions and use classic `for` loops instead. The former tend to have significantly worse performance due to an extra function call in each iteration.

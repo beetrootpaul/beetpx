@@ -4,7 +4,6 @@ import {
   BpxSolidColor,
   BpxVector2d,
   spr_,
-  u_,
   v_,
   v_0_0_,
 } from "../../../src";
@@ -103,7 +102,7 @@ b_.init(
 
     b_.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
 
-    drawNShapes();
+    drawEllipses();
 
     drawSprites();
 
@@ -166,7 +165,7 @@ function drawRenderFpsVisualization(): void {
   }
 }
 
-function drawNShapes(): void {
+function drawEllipses(): void {
   b_.setFillPattern(BpxFillPattern.of(0x5b59));
   for (let ellipseIndex = 0; ellipseIndex < numberOfEllipses; ellipseIndex++) {
     const rComponent = ((30 * ellipseIndex) % 256)
@@ -176,7 +175,7 @@ function drawNShapes(): void {
       .toString(16)
       .padStart(2, "0");
     b_.ellipseFilled(
-      v_((ellipseIndex * 128) / numberOfEllipses, 70),
+      v_((ellipseIndex * 128) / numberOfEllipses, 60),
       v_(24, 24),
       BpxSolidColor.fromRgbCssHex(`#${rComponent}84${bComponent}`),
     );
@@ -200,13 +199,13 @@ function drawSprites(): void {
       to: logoInnerColor,
     },
   ]);
-  u_.range(numberOfBigSprites).forEach((_, i) => {
+  for (let i = 0; i < numberOfBigSprites; i++) {
     b_.sprite(
       logoSprite,
       logoPositionBase.sub(calculateLogoPositionOffset(b_.frameNumber + i)),
       v_(2, 2),
     );
-  });
+  }
   b_.mapSpriteColors(prevMapping);
 }
 

@@ -35,14 +35,15 @@ export class BpxUtils {
   // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
   static measureText(text: string): BpxVector2d {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
-    return charSprites.reduce(
-      (sizeSoFar, nextSprite) =>
-        BpxVector2d.max(
-          sizeSoFar,
-          nextSprite.positionInText.add(nextSprite.sprite.size()),
-        ),
-      v_0_0_,
-    );
+
+    let size = v_0_0_;
+    for (const charSprite of charSprites) {
+      size = BpxVector2d.max(
+        size,
+        charSprite.positionInText.add(charSprite.sprite.size()),
+      );
+    }
+    return size;
   }
 
   static noop(): void {}
@@ -69,9 +70,9 @@ export class BpxUtils {
     outlineColor: BpxSolidColor,
     centerXy: [boolean, boolean] = [false, false],
   ): void {
-    BpxUtils.offset8Directions().forEach((offset) => {
+    for (const offset of BpxUtils.offset8Directions()) {
       BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
-    });
+    }
     BeetPx.print(text, canvasXy1, textColor, centerXy);
   }
 
