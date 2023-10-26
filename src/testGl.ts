@@ -86,15 +86,7 @@ export function testGl(): void {
   };
 
   const normalize = (x1: number, y1: number): [number, number, number] => {
-    // const mid = 8 / 2;
-    // const x = (cx - mid) / mid + 1 / 8;
-    // const y = (mid - cy) / mid - 1 / 8;
-    // return [x, y, 0];
-    return [
-      ((Math.floor(x1) + 0.5) / w) * 2 - 1,
-      ((Math.floor(y1) + 0.5) / h) * 2 - 1,
-      0,
-    ];
+    return [((x1 + 0.5) / w) * 2 - 1, ((y1 + 0.5) / h) * 2 - 1, 0];
   };
 
   function toPointColors(pixels: [number, number, string][]) {
@@ -191,32 +183,8 @@ export function testGl(): void {
     // TODO: use gl.DYNAMIC_DRAW instead?
     gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.DYNAMIC_DRAW);
 
-    // Bind the attribute position to the 1st, 2nd and 3rd floats in every chunk of 6 floats in the buffer
-    const position = gl.getAttribLocation(pixelsProgram, "position");
-    gl.vertexAttribPointer(
-      position, // target
-      3, // interleaved data size
-      gl.FLOAT, // type
-      false, // normalize
-      FSIZE * 6, // stride (chunk size)
-      0, // offset (position of interleaved data in chunk)
-    );
-    gl.enableVertexAttribArray(position);
-
-    // Bind the attribute color to the 3rd, 4th and 5th float in every chunk
-    const color = gl.getAttribLocation(pixelsProgram, "color");
-    gl.vertexAttribPointer(
-      color, // target
-      3, // interleaved chunk size
-      gl.FLOAT, // type
-      false, // normalize
-      FSIZE * 6, // stride
-      FSIZE * 3, // offset
-    );
-    gl.enableVertexAttribArray(color);
-
-    const size = gl.getUniformLocation(pixelsProgram, "size");
-    gl.uniform1f(size, 1);
+    // const size = gl.getUniformLocation(pixelsProgram, "size");
+    // gl.uniform1f(size, 1);
 
     gl.drawArrays(gl.POINTS, 0, pixels.length);
 
