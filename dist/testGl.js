@@ -8,7 +8,7 @@ export function testGl() {
     canvas.width = 16;
     canvas.height = 16;
     canvas.style.backgroundColor = "grey";
-    const gl = canvas.getContext("webgl");
+    const gl = canvas.getContext("webgl2");
     if (!gl)
         throw "lol2";
     const compileProgram = ({ vertexShader, fragmentShader, }) => {
@@ -106,21 +106,24 @@ export function testGl() {
         // const x = (cx - mid) / mid + 1 / 8;
         // const y = (mid - cy) / mid - 1 / 8;
         // return [x, y, 0];
-        return [((x1 + 0.5) / w) * 2 - 1, ((y1 + 0.5) / h) * 2 - 1, 0];
+        return [
+            ((Math.floor(x1) + 0.5) / w) * 2 - 1,
+            ((Math.floor(y1) + 0.5) / h) * 2 - 1,
+            0,
+        ];
     };
     const pointsColors = new Float32Array([
         ...pixels
             .map(([x, y, hex]) => [...normalize(x, y), ...hex2rgb(hex)])
             .flat(),
     ]);
-    console.log(pointsColors);
     gl.useProgram(drawingProgram);
     const FSIZE = pointsColors.BYTES_PER_ELEMENT;
     // Create a buffer object
     const buffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     // TODO: use gl.DYNAMIC_DRAW instead?
-    gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.DYNAMIC_DRAW);
     // Bind the attribute position to the 1st, 2nd and 3rd floats in every chunk of 6 floats in the buffer
     const position = gl.getAttribLocation(drawingProgram, "position");
     gl.vertexAttribPointer(position, // target
@@ -142,8 +145,60 @@ export function testGl() {
     const size = gl.getUniformLocation(drawingProgram, "size");
     gl.uniform1f(size, 1);
     gl.drawArrays(gl.POINTS, 0, pixels.length);
-    function tick() {
-        pixels[7][0] = (pixels[7][0] + 1) % w;
+    let lol = 7;
+    let delta = 1;
+    let prevT = 1;
+    function tick(currentTimeMillis) {
+        delta = currentTimeMillis - prevT;
+        prevT = currentTimeMillis;
+        if (!gl)
+            throw Error("lolgl");
+        lol = (lol + 0.01 * delta) % w;
+        const pixels = [
+            [0, 0, "#ff0000"],
+            [1, 1, "#ffaa00"],
+            [2, 2, "#ffff00"],
+            [3, 3, "#00ff00"],
+            [4, 4, "#00ffaa"],
+            [5, 5, "#00ffff"],
+            [6, 6, "#0000ff"],
+            [lol, 7, "#ff00aa"],
+            [8, 8, "#ff00ff"],
+            [15, 15, "#400f8b"],
+        ];
+        const pointsColors = new Float32Array([
+            ...pixels
+                .map(([x, y, hex]) => [...normalize(x, y), ...hex2rgb(hex)])
+                .flat(),
+        ]);
+        gl.useProgram(drawingProgram);
+        const FSIZE = pointsColors.BYTES_PER_ELEMENT;
+        // Create a buffer object
+        // const buffer = gl.createBuffer();
+        // gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        // TODO: use gl.DYNAMIC_DRAW instead?
+        gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.DYNAMIC_DRAW);
+        // Bind the attribute position to the 1st, 2nd and 3rd floats in every chunk of 6 floats in the buffer
+        const position = gl.getAttribLocation(drawingProgram, "position");
+        gl.vertexAttribPointer(position, // target
+        3, // interleaved data size
+        gl.FLOAT, // type
+        false, // normalize
+        FSIZE * 6, // stride (chunk size)
+        0);
+        gl.enableVertexAttribArray(position);
+        // Bind the attribute color to the 3rd, 4th and 5th float in every chunk
+        const color = gl.getAttribLocation(drawingProgram, "color");
+        gl.vertexAttribPointer(color, // target
+        3, // interleaved chunk size
+        gl.FLOAT, // type
+        false, // normalize
+        FSIZE * 6, // stride
+        FSIZE * 3);
+        gl.enableVertexAttribArray(color);
+        const size = gl.getUniformLocation(drawingProgram, "size");
+        gl.uniform1f(size, 1);
+        gl.drawArrays(gl.POINTS, 0, pixels.length);
         requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);

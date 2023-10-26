@@ -46,33 +46,8 @@ export function testGl(): void {
     gl.clear(gl.COLOR_BUFFER_BIT);
     return program;
   };
-  /*
 
-  const gridProgram: WebGLProgram = compileProgram({
-    vertexShader: `
-attribute vec4 position;
-void main() {
-  gl_Position = position;
-}
-`,
-
-    fragmentShader: `
-precision mediump float;
-uniform float size;
-
-void main() {
-  if(
-   mod(gl_FragCoord.x,size)<1.0 ||
-   mod(gl_FragCoord.y,size)<1.0
-  ){
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.8);
-  }else {discard;}                      
-}
-`,
-  });
-  */
-
-  const drawingProgram = compileProgram({
+  const pixelsProgram = compileProgram({
     vertexShader: `
       attribute vec4 position;
       attribute vec4 color;
@@ -128,13 +103,17 @@ void main() {
     ];
   };
 
-  const pointsColors = new Float32Array([
-    ...pixels
-      .map(([x, y, hex]) => [...normalize(x, y), ...hex2rgb(hex)])
-      .flat(),
-  ]);
+  function toPointColors(pixels: [number, number, string][]) {
+    return new Float32Array([
+      ...pixels
+        .map(([x, y, hex]) => [...normalize(x, y), ...hex2rgb(hex)])
+        .flat(),
+    ]);
+  }
 
-  gl.useProgram(drawingProgram);
+  const pointsColors = toPointColors(pixels);
+
+  gl.useProgram(pixelsProgram);
   const FSIZE = pointsColors.BYTES_PER_ELEMENT;
 
   // Create a buffer object
@@ -145,7 +124,7 @@ void main() {
   gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.DYNAMIC_DRAW);
 
   // Bind the attribute position to the 1st, 2nd and 3rd floats in every chunk of 6 floats in the buffer
-  const position = gl.getAttribLocation(drawingProgram, "position");
+  const position = gl.getAttribLocation(pixelsProgram, "position");
   gl.vertexAttribPointer(
     position, // target
     3, // interleaved data size
@@ -157,7 +136,7 @@ void main() {
   gl.enableVertexAttribArray(position);
 
   // Bind the attribute color to the 3rd, 4th and 5th float in every chunk
-  const color = gl.getAttribLocation(drawingProgram, "color");
+  const color = gl.getAttribLocation(pixelsProgram, "color");
   gl.vertexAttribPointer(
     color, // target
     3, // interleaved chunk size
@@ -168,7 +147,7 @@ void main() {
   );
   gl.enableVertexAttribArray(color);
 
-  const size = gl.getUniformLocation(drawingProgram, "size");
+  const size = gl.getUniformLocation(pixelsProgram, "size");
   gl.uniform1f(size, 1);
 
   gl.drawArrays(gl.POINTS, 0, pixels.length);
@@ -198,24 +177,16 @@ void main() {
       [8, 8, "#ff00ff"],
       [15, 15, "#400f8b"],
     ] as [number, number, string][];
-    const pointsColors = new Float32Array([
-      ...pixels
-        .map(([x, y, hex]) => [...normalize(x, y), ...hex2rgb(hex)])
-        .flat(),
-    ]);
+    const pointsColors = toPointColors(pixels);
 
-    gl.useProgram(drawingProgram);
+    gl.useProgram(pixelsProgram);
     const FSIZE = pointsColors.BYTES_PER_ELEMENT;
-
-    // Create a buffer object
-    // const buffer = gl.createBuffer();
-    // gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
 
     // TODO: use gl.DYNAMIC_DRAW instead?
     gl.bufferData(gl.ARRAY_BUFFER, pointsColors, gl.DYNAMIC_DRAW);
 
     // Bind the attribute position to the 1st, 2nd and 3rd floats in every chunk of 6 floats in the buffer
-    const position = gl.getAttribLocation(drawingProgram, "position");
+    const position = gl.getAttribLocation(pixelsProgram, "position");
     gl.vertexAttribPointer(
       position, // target
       3, // interleaved data size
@@ -227,7 +198,7 @@ void main() {
     gl.enableVertexAttribArray(position);
 
     // Bind the attribute color to the 3rd, 4th and 5th float in every chunk
-    const color = gl.getAttribLocation(drawingProgram, "color");
+    const color = gl.getAttribLocation(pixelsProgram, "color");
     gl.vertexAttribPointer(
       color, // target
       3, // interleaved chunk size
@@ -238,7 +209,7 @@ void main() {
     );
     gl.enableVertexAttribArray(color);
 
-    const size = gl.getUniformLocation(drawingProgram, "size");
+    const size = gl.getUniformLocation(pixelsProgram, "size");
     gl.uniform1f(size, 1);
 
     gl.drawArrays(gl.POINTS, 0, pixels.length);
