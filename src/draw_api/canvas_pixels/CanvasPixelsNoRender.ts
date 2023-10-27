@@ -16,6 +16,12 @@ export class CanvasPixelsNoRender extends CanvasPixels {
     this.#rgbValues = u_.range(this.#length).map(() => 0);
   }
 
+  wasAlreadySet(index: number): boolean;
+  wasAlreadySet(x: number, y: number): boolean;
+  wasAlreadySet(xOrIndex: number, y?: number): boolean {
+    return false;
+  }
+
   set(index: number, color: BpxSolidColor): void {
     if (index >= this.#length) {
       throw Error(
@@ -33,6 +39,8 @@ export class CanvasPixelsNoRender extends CanvasPixels {
   }
 
   onWindowResize(): void {}
+
+  resetVisitedMarkers(): void {}
 
   doRender(): void {}
 }

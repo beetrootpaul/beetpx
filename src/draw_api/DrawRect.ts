@@ -15,6 +15,7 @@ export class DrawRect {
 
     this.#pixel = new DrawPixel(this.#canvasPixels, {
       disableRounding: true,
+      disableVisitedCheck: false,
     });
   }
 

@@ -21,6 +21,9 @@ export class CanvasPixelsNoRender extends CanvasPixels {
         __classPrivateFieldSet(this, _CanvasPixelsNoRender_length, canvasSize.x * canvasSize.y, "f");
         __classPrivateFieldSet(this, _CanvasPixelsNoRender_rgbValues, u_.range(__classPrivateFieldGet(this, _CanvasPixelsNoRender_length, "f")).map(() => 0), "f");
     }
+    wasAlreadySet(xOrIndex, y) {
+        return false;
+    }
     set(index, color) {
         if (index >= __classPrivateFieldGet(this, _CanvasPixelsNoRender_length, "f")) {
             throw Error(`CanvasPixelsNoRender: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsNoRender_length, "f") - 1}`);
@@ -31,6 +34,7 @@ export class CanvasPixelsNoRender extends CanvasPixels {
         return new CanvasPixels2dSnapshot([...__classPrivateFieldGet(this, _CanvasPixelsNoRender_rgbValues, "f")]);
     }
     onWindowResize() { }
+    resetVisitedMarkers() { }
     doRender() { }
 }
 _CanvasPixelsNoRender_length = new WeakMap(), _CanvasPixelsNoRender_rgbValues = new WeakMap();

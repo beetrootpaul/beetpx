@@ -20,6 +20,7 @@ export class DrawEllipse {
         __classPrivateFieldSet(this, _DrawEllipse_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f"), {
             disableRounding: true,
+            disableVisitedCheck: false,
         }), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?

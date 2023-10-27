@@ -1,11 +1,16 @@
 import {
   b_,
   BpxCanvasPixelsSnapshotId,
+  BpxCharSprite,
   BpxFillPattern,
+  BpxFont,
+  BpxFontId,
+  BpxImageUrl,
   BpxMappingColor,
   BpxSolidColor,
   BpxVector2d,
   spr_,
+  u_,
   v_,
   v_0_0_,
 } from "../../../src";
@@ -34,6 +39,41 @@ let logoPositionBase = v_0_0_;
 let numberOfEllipses = 4;
 let numberOfBigSprites = 1;
 
+const negative = (c: BpxSolidColor) =>
+  new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b);
+
+// TODO: REMOVE
+class Font1 implements BpxFont {
+  readonly id: BpxFontId = "f1";
+  readonly imageUrl: BpxImageUrl = "logo.png";
+
+  spritesFor(text: string): BpxCharSprite[] {
+    return [
+      {
+        positionInText: v_0_0_,
+        char: "a",
+        sprite: spr_("logo.png")(0, 0, 16, 8),
+      },
+    ];
+  }
+}
+
+// TODO: REMOVE
+class Font2 implements BpxFont {
+  readonly id: BpxFontId = "f2";
+  readonly imageUrl: BpxImageUrl = "logo.png";
+
+  spritesFor(text: string): BpxCharSprite[] {
+    return [
+      {
+        positionInText: v_0_0_,
+        char: "a",
+        sprite: spr_("logo.png")(14, 0, 2, 16),
+      },
+    ];
+  }
+}
+
 b_.init(
   {
     gameCanvasSize: "128x128",
@@ -43,7 +83,18 @@ b_.init(
   },
   {
     images: [{ url: "logo.png" }],
-    fonts: [],
+    fonts: [
+      {
+        font: new Font1(),
+        imageBgColor: logoOuterColor,
+        imageTextColor: logoInnerColor,
+      },
+      {
+        font: new Font2(),
+        imageBgColor: logoInnerColor,
+        imageTextColor: logoOuterColor,
+      },
+    ],
     sounds: [{ url: "music_base.wav" }, { url: "music_melody.wav" }],
     jsons: [],
   },
@@ -62,6 +113,7 @@ b_.init(
       updateCallsVisualization.historyIndex
     ] += 1;
 
+    console.group("UPDATE");
     b_.logDebug(`frame: ${b_.frameNumber}`);
     b_.logDebug(`FPS: ${b_.renderFps}`);
 
@@ -92,6 +144,7 @@ b_.init(
 
     b_.logDebug("numberOfBigSprites =", numberOfBigSprites);
     b_.logDebug("numberOfEllipses =", numberOfEllipses);
+    console.groupEnd();
   });
 
   b_.setOnDraw(() => {
@@ -102,29 +155,65 @@ b_.init(
 
     drawEllipses();
 
-    const canvasSnapshotId1: BpxCanvasPixelsSnapshotId =
-      b_.takeCanvasSnapshot();
-    const negative = (c: BpxSolidColor) =>
-      new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b);
+    const snapshotId1: BpxCanvasPixelsSnapshotId = b_.takeCanvasSnapshot();
     b_.rectFilled(
       v_(5, 65),
       v_(50, 10),
-      new BpxMappingColor(canvasSnapshotId1, negative),
+      new BpxMappingColor(snapshotId1, negative),
     );
     b_.rectFilled(
       v_(35, 70),
       v_(50, 10),
-      new BpxMappingColor(canvasSnapshotId1, negative),
+      new BpxMappingColor(snapshotId1, negative),
     );
-    const canvasSnapshotId2: BpxCanvasPixelsSnapshotId =
-      b_.takeCanvasSnapshot();
+    const snapshotId2: BpxCanvasPixelsSnapshotId = b_.takeCanvasSnapshot();
 
+    // TODO: REMOVE
+    b_.setFont("f1");
+    const s1 = u_.measureText("111");
+    b_.print("111", v_(1, 8), BpxSolidColor.fromRgbCssHex("#ff00ff"));
+    b_.print(
+      "111",
+      v_(1 + s1.x + 1, 8),
+      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+    );
+    b_.print(
+      "111",
+      v_(1, 8 + s1.y + 1),
+      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+    );
+    b_.setFont("f2");
+    const s2 = u_.measureText("222");
+    b_.print(
+      "222",
+      v_(1 + s1.x + 1 + s1.x + 1, 8),
+      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+    );
+    b_.print(
+      "222",
+      v_(1 + s1.x + 1 + s1.x + 1 + s2.x + 1, 8),
+      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+    );
+    b_.print(
+      "222",
+      v_(1 + s1.x + 1 + s1.x + 1, 8 + s2.y + 1),
+      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+    );
+
+    // TODO: REMOVE
+    b_.rectFilled(v_(5, 5), v_(50, 10), BpxSolidColor.fromRgbCssHex("#ffff00"));
     drawSprites();
+    // TODO: REMOVE
+    b_.rectFilled(
+      v_(35, 10),
+      v_(50, 10),
+      BpxSolidColor.fromRgbCssHex("#00ffff"),
+    );
 
     b_.rectFilled(
       v_(65, 75),
       v_(50, 10),
-      new BpxMappingColor(canvasSnapshotId2, negative),
+      new BpxMappingColor(snapshotId2, negative),
     );
 
     drawUpdateCallsVisualization();
@@ -205,6 +294,22 @@ function drawEllipses(): void {
 }
 
 function drawSprites(): void {
+  // TODO: REMOVE
+  b_.pixels(v_(1, -2), BpxSolidColor.fromRgbCssHex("#00ffff"), [
+    "####",
+    "####",
+    "####",
+    "################################",
+    "####",
+    "####",
+    "_##_",
+  ]);
+  b_.line(
+    v_0_0_,
+    logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),
+    BpxSolidColor.fromRgbCssHex("#ff4444"),
+  );
+
   b_.sprite(
     logoSprite,
     logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),

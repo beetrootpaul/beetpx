@@ -20,8 +20,11 @@ export class DrawClear {
     draw(color, clippingRegion = null) {
         for (let x = 0; x < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.x; ++x) {
             for (let y = 0; y < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.y; ++y) {
-                if (!clippingRegion || clippingRegion.allowsDrawingAt(v_(x, y))) {
-                    __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").set(y * __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.x + x, color);
+                if (!__classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").wasAlreadySet(x, y)) {
+                    if (!clippingRegion || clippingRegion.allowsDrawingAt(v_(x, y))) {
+                        const index = y * __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.x + x;
+                        __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").set(index, color);
+                    }
                 }
             }
         }

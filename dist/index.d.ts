@@ -264,12 +264,15 @@ declare abstract class CanvasPixels {
     #private;
     readonly canvasSize: BpxVector2d;
     protected constructor(canvasSize: BpxVector2d);
+    abstract wasAlreadySet(index: number): boolean;
+    abstract wasAlreadySet(x: number, y: number): boolean;
     abstract set(index: number, color: BpxSolidColor): void;
     generateNextSnapshotId(): BpxCanvasPixelsSnapshotId;
     takeSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): void;
     getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;
     protected abstract newSnapshot(): CanvasPixelsSnapshot;
     abstract onWindowResize(): void;
+    abstract resetVisitedMarkers(): void;
     render(): void;
     protected abstract doRender(): void;
 }

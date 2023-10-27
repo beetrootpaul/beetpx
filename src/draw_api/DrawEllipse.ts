@@ -15,6 +15,7 @@ export class DrawEllipse {
 
     this.#pixel = new DrawPixel(this.#canvasPixels, {
       disableRounding: true,
+      disableVisitedCheck: false,
     });
   }
 
@@ -101,6 +102,7 @@ export class DrawEllipse {
 
     while (bottom - top <= b) {
       // TODO: update the implementation below to honor fill pattern
+
       this.#pixel.draw(
         v_(left - 1, bottom),
         color,

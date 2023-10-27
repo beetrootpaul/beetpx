@@ -1,4 +1,4 @@
-import { ImageAsset } from "../Assets";
+import { FontAsset, ImageAsset } from "../Assets";
 import {
   BpxColor,
   BpxColorId,
@@ -6,6 +6,7 @@ import {
   BpxMappingColor,
   BpxSolidColor,
 } from "../Color";
+import { BpxCharSprite } from "../font/Font";
 import { BpxSprite } from "../Sprite";
 import { BpxVector2d } from "../Vector2d";
 import { BpxCanvasPixelsSnapshotId } from "./canvas_pixels/CanvasPixelsSnapshot";
@@ -20,7 +21,8 @@ export type DrawCommand =
   | DrwCmdLine
   | DrwCmdRect
   | DrwCmdEllipse
-  | DrwCmdSprite;
+  | DrwCmdSprite
+  | DrwCmdText;
 
 export type DrwCmdTakeCanvasSnapshot = {
   type: "take_canvas_snapshot";
@@ -86,5 +88,14 @@ export type DrwCmdSprite = {
   scaleXy: BpxVector2d;
   spriteColorMapping: Map<BpxColorId, BpxColor>;
   fillPattern: BpxFillPattern;
+  clippingRegion: BpxClippingRegion | null;
+};
+
+export type DrwCmdText = {
+  type: "text";
+  text: string;
+  canvasXy: BpxVector2d;
+  fontAsset: FontAsset;
+  color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor);
   clippingRegion: BpxClippingRegion | null;
 };

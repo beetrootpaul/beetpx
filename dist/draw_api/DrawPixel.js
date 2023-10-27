@@ -29,6 +29,10 @@ export class DrawPixel {
     draw(xy, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
         var _a;
         xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : xy.round();
+        if (!__classPrivateFieldGet(this, _DrawPixel_options, "f").disableVisitedCheck &&
+            __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").wasAlreadySet(xy.x, xy.y)) {
+            return;
+        }
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
         }

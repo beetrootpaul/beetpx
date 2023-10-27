@@ -20,6 +20,7 @@ export class DrawRect {
         __classPrivateFieldSet(this, _DrawRect_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawRect_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f"), {
             disableRounding: true,
+            disableVisitedCheck: false,
         }), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?

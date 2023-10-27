@@ -26,7 +26,10 @@ export class DrawSprite {
     this.#canvasPixels = canvasPixels;
     this.#options = options;
 
-    this.#pixel = new DrawPixel(this.#canvasPixels);
+    this.#pixel = new DrawPixel(this.#canvasPixels, {
+      disableRounding: true,
+      disableVisitedCheck: true,
+    });
   }
 
   // TODO: cover clippingRegion with tests
@@ -80,35 +83,37 @@ export class DrawSprite {
 
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
       for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
+        const canvasXyBase = targetXy.add(
+          v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y).mul(scaleXy),
+        );
+
         for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
           for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
-            const canvasXy = targetXy.add(
-              v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
-                .mul(scaleXy)
-                .add(xScaledStep, yScaledStep),
-            );
+            const canvasXy = canvasXyBase.add(xScaledStep, yScaledStep);
 
-            const imgBytesIndex = (imgY * imgW + imgX) * 4;
+            if (!this.#canvasPixels.wasAlreadySet(canvasXy.x, canvasXy.y)) {
+              const imgBytesIndex = (imgY * imgW + imgX) * 4;
+              if (imgBytes.length < imgBytesIndex + 4) {
+                throw Error(
+                  `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`,
+                );
+              }
 
-            if (imgBytes.length < imgBytesIndex + 4) {
-              throw Error(
-                `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`,
-              );
+              let color =
+                imgBytes[imgBytesIndex + 3]! >= 0xff / 2
+                  ? new BpxSolidColor(
+                      imgBytes[imgBytesIndex]!,
+                      imgBytes[imgBytesIndex + 1]!,
+                      imgBytes[imgBytesIndex + 2]!,
+                    )
+                  : transparent_;
+              color = colorMapping.get(color.id) ?? color;
+
+              // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+              //       - ff614f became ff6e59
+              //       - 00555a became 125359
+              this.#pixel.draw(canvasXy, color, fillPattern, clippingRegion);
             }
-            let color =
-              imgBytes[imgBytesIndex + 3]! >= 0xff / 2
-                ? new BpxSolidColor(
-                    imgBytes[imgBytesIndex]!,
-                    imgBytes[imgBytesIndex + 1]!,
-                    imgBytes[imgBytesIndex + 2]!,
-                  )
-                : transparent_;
-            color = colorMapping.get(color.id) ?? color;
-
-            // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
-            //       - ff614f became ff6e59
-            //       - 00555a became 125359
-            this.#pixel.draw(canvasXy, color, fillPattern, clippingRegion);
           }
         }
       }

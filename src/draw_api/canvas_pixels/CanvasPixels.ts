@@ -16,6 +16,9 @@ export abstract class CanvasPixels {
     this.canvasSize = canvasSize.round();
   }
 
+  abstract wasAlreadySet(index: number): boolean;
+  abstract wasAlreadySet(x: number, y: number): boolean;
+
   abstract set(index: number, color: BpxSolidColor): void;
 
   generateNextSnapshotId(): BpxCanvasPixelsSnapshotId {
@@ -35,6 +38,8 @@ export abstract class CanvasPixels {
   protected abstract newSnapshot(): CanvasPixelsSnapshot;
 
   abstract onWindowResize(): void;
+
+  abstract resetVisitedMarkers(): void;
 
   render(): void {
     this.#snapshots.clear();

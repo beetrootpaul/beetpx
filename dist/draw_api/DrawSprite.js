@@ -23,7 +23,10 @@ export class DrawSprite {
         _DrawSprite_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawSprite_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
-        __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f")), "f");
+        __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f"), {
+            disableRounding: true,
+            disableVisitedCheck: true,
+        }), "f");
     }
     // TODO: cover clippingRegion with tests
     draw(sourceImageAsset, sprite, targetXy, 
@@ -42,23 +45,24 @@ export class DrawSprite {
         sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
             for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
+                const canvasXyBase = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y).mul(scaleXy));
                 for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
                     for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
-                        const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
-                            .mul(scaleXy)
-                            .add(xScaledStep, yScaledStep));
-                        const imgBytesIndex = (imgY * imgW + imgX) * 4;
-                        if (imgBytes.length < imgBytesIndex + 4) {
-                            throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
+                        const canvasXy = canvasXyBase.add(xScaledStep, yScaledStep);
+                        if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").wasAlreadySet(canvasXy.x, canvasXy.y)) {
+                            const imgBytesIndex = (imgY * imgW + imgX) * 4;
+                            if (imgBytes.length < imgBytesIndex + 4) {
+                                throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
+                            }
+                            let color = imgBytes[imgBytesIndex + 3] >= 0xff / 2
+                                ? new BpxSolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
+                                : transparent_;
+                            color = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
+                            // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+                            //       - ff614f became ff6e59
+                            //       - 00555a became 125359
+                            __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color, fillPattern, clippingRegion);
                         }
-                        let color = imgBytes[imgBytesIndex + 3] >= 0xff / 2
-                            ? new BpxSolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
-                            : transparent_;
-                        color = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
-                        // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
-                        //       - ff614f became ff6e59
-                        //       - 00555a became 125359
-                        __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color, fillPattern, clippingRegion);
                     }
                 }
             }

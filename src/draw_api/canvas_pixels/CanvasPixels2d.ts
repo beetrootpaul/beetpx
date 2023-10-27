@@ -5,9 +5,11 @@ import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixels2dSnapshot } from "./CanvasPixels2dSnapshot";
 import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
 
+// TODO: rename to express the "occupancy check" aspect
 export class CanvasPixels2d extends CanvasPixels {
   readonly #length: number;
   readonly #rgbValues: number[];
+  readonly #visited: boolean[];
 
   readonly #htmlCanvas: HTMLCanvasElement;
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
@@ -23,6 +25,7 @@ export class CanvasPixels2d extends CanvasPixels {
 
     this.#length = canvasSize.x * canvasSize.y;
     this.#rgbValues = u_.range(this.#length).map(() => 0);
+    this.#visited = u_.range(this.#length).map(() => false);
 
     this.#htmlCanvas = htmlCanvas;
     this.#htmlCanvas.style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
@@ -59,6 +62,20 @@ export class CanvasPixels2d extends CanvasPixels {
     this.#initializeAsNonTransparent();
   }
 
+  wasAlreadySet(index: number): boolean;
+  wasAlreadySet(x: number, y: number): boolean;
+  wasAlreadySet(xOrIndex: number, y?: number): boolean {
+    // transform x and y to index, if needed
+    xOrIndex =
+      typeof y === "number" ? y * this.canvasSize.x + xOrIndex : xOrIndex;
+
+    if (xOrIndex < 0 || xOrIndex >= this.#length) {
+      return true;
+    }
+
+    return this.#visited[xOrIndex]!;
+  }
+
   set(index: number, color: BpxSolidColor): void {
     if (index >= this.#length) {
       throw Error(
@@ -69,6 +86,7 @@ export class CanvasPixels2d extends CanvasPixels {
     }
 
     this.#rgbValues[index] = (color.r << 16) + (color.g << 8) + color.b;
+    this.#visited[index] = true;
   }
 
   newSnapshot(): CanvasPixelsSnapshot {
@@ -84,6 +102,12 @@ export class CanvasPixels2d extends CanvasPixels {
 
     // seems like we have to set it every time the canvas size is changed
     this.#htmlCanvasContext.imageSmoothingEnabled = false;
+  }
+
+  resetVisitedMarkers(): void {
+    for (let index = 0; index < this.#length; index++) {
+      this.#visited[index] = false;
+    }
   }
 
   doRender(): void {

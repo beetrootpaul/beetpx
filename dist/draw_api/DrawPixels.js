@@ -11,10 +11,14 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawPixels_pixel;
 import { DrawPixel } from "./DrawPixel";
+import { BpxFillPattern } from "./FillPattern";
 export class DrawPixels {
     constructor(canvasPixels) {
         _DrawPixels_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawPixels_pixel, new DrawPixel(canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawPixels_pixel, new DrawPixel(canvasPixels, {
+            disableRounding: true,
+            disableVisitedCheck: false,
+        }), "f");
     }
     // TODO: add tests
     draw(xy, bits, color, clippingRegion = null) {
@@ -25,10 +29,7 @@ export class DrawPixels {
                     continue;
                 }
                 const canvasXy = xy.add(bitsX, bitsY);
-                if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
-                    return;
-                }
-                __classPrivateFieldGet(this, _DrawPixels_pixel, "f").draw(canvasXy, color);
+                __classPrivateFieldGet(this, _DrawPixels_pixel, "f").draw(canvasXy, color, BpxFillPattern.primaryOnly, clippingRegion);
             }
         }
     }

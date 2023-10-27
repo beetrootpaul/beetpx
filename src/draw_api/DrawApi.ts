@@ -43,7 +43,7 @@ type DrawApiOptions = {
 //       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
 
 export class DrawApi {
-  #queue: DrawCommand[] = [];
+  #queues: DrawCommand[][] = [[]];
 
   readonly #assets: Assets;
 
@@ -125,7 +125,8 @@ export class DrawApi {
   }
 
   clearCanvas(color: BpxSolidColor): void {
-    this.#queue.push({
+    // TODO: encapsulate queues logic
+    this.#queues[this.#queues.length - 1]!.push({
       type: "clear",
       color: color,
       clippingRegion: this.#clippingRegion,
@@ -133,7 +134,7 @@ export class DrawApi {
   }
 
   pixel(xy: BpxVector2d, color: BpxSolidColor): void {
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "pixel",
       xy: xy.sub(this.#cameraOffset),
       color: color,
@@ -146,7 +147,7 @@ export class DrawApi {
   //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
   //        from left to right.
   pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "pixels",
       xy: xy.sub(this.#cameraOffset),
       bits: bits,
@@ -160,7 +161,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "line",
       xy: xy.sub(this.#cameraOffset),
       wh: wh,
@@ -175,7 +176,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "rect",
       xy: xy.sub(this.#cameraOffset),
       wh: wh,
@@ -191,7 +192,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "rect",
       xy: xy.sub(this.#cameraOffset),
       wh: wh,
@@ -207,7 +208,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "ellipse",
       xy: xy.sub(this.#cameraOffset),
       wh: wh,
@@ -223,7 +224,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "ellipse",
       xy: xy.sub(this.#cameraOffset),
       wh: wh,
@@ -241,7 +242,7 @@ export class DrawApi {
     scaleXy: BpxVector2d = v_1_1_,
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
-    this.#queue.push({
+    this.#queues[this.#queues.length - 1]!.push({
       type: "sprite",
       sourceImageAsset: sourceImageAsset,
       sprite: sprite,
@@ -264,6 +265,7 @@ export class DrawApi {
     return this.#fontAsset?.font ?? null;
   }
 
+  // TODO: !!! MOVE TO QUEUE !!!
   // TODO: cover with tests
   print(
     text: string,
@@ -279,13 +281,14 @@ export class DrawApi {
       );
     }
     if (this.#fontAsset) {
-      this.#text.draw(
-        text,
-        canvasXy.sub(this.#cameraOffset),
-        this.#fontAsset,
-        color,
-        this.#clippingRegion,
-      );
+      this.#queues[this.#queues.length - 1]!.push({
+        type: "text",
+        text: text,
+        canvasXy: canvasXy.sub(this.#cameraOffset),
+        fontAsset: this.#fontAsset,
+        color: color,
+        clippingRegion: this.#clippingRegion,
+      });
     } else {
       Logger.infoBeetPx(
         `print: (${canvasXy.x},${canvasXy.y}) [${
@@ -297,65 +300,92 @@ export class DrawApi {
 
   takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId {
     const snapshotId = this.#canvasPixels.generateNextSnapshotId();
-    this.#queue.push({ type: "take_canvas_snapshot", snapshotId: snapshotId });
+    // Snapshots require the whole image to be drawn up to this point,
+    //   therefore we push this command to a separate queue:
+    //   the previous queue will get processed from the top-most
+    //   layer to the bottom, then the snapshot will get taken.
+    this.#queues.push([
+      {
+        type: "take_canvas_snapshot",
+        snapshotId: snapshotId,
+      },
+    ]);
+    // And let's create next empty queue for subsequent commands in order
+    //   for the snapshot to be taken immediately and not at the end of
+    //   the queue.
+    this.#queues.push([]);
     return snapshotId;
   }
 
   processQueuedCommands(): void {
-    for (const cmd of this.#queue) {
-      if (cmd.type === "clear") {
-        this.#clear.draw(cmd.color, cmd.clippingRegion);
-      } else if (cmd.type === "pixel") {
-        this.#pixel.draw(
-          cmd.xy,
-          cmd.color,
-          cmd.fillPattern,
-          cmd.clippingRegion,
-        );
-      } else if (cmd.type === "pixels") {
-        this.#pixels.draw(cmd.xy, cmd.bits, cmd.color, cmd.clippingRegion);
-      } else if (cmd.type === "line") {
-        this.#line.draw(
-          cmd.xy,
-          cmd.wh,
-          cmd.color,
-          cmd.fillPattern,
-          cmd.clippingRegion,
-        );
-      } else if (cmd.type === "rect") {
-        this.#rect.draw(
-          cmd.xy,
-          cmd.wh,
-          cmd.color,
-          cmd.fill,
-          cmd.fillPattern,
-          cmd.clippingRegion,
-        );
-      } else if (cmd.type === "ellipse") {
-        this.#ellipse.draw(
-          cmd.xy,
-          cmd.wh,
-          cmd.color,
-          cmd.fill,
-          cmd.fillPattern,
-          cmd.clippingRegion,
-        );
-      } else if (cmd.type === "sprite") {
-        this.#sprite.draw(
-          cmd.sourceImageAsset,
-          cmd.sprite,
-          cmd.targetXy,
-          cmd.scaleXy,
-          cmd.spriteColorMapping,
-          cmd.fillPattern,
-          cmd.clippingRegion,
-        );
-      } else if (cmd.type === "take_canvas_snapshot") {
-        this.#canvasPixels.takeSnapshot(cmd.snapshotId);
-      } else {
-        u_.assertUnreachable(cmd);
+    for (const queue of this.#queues) {
+      this.#canvasPixels.resetVisitedMarkers();
+
+      for (let i = queue.length - 1; i >= 0; i--) {
+        const cmd = queue[i]!;
+        if (cmd.type === "clear") {
+          this.#clear.draw(cmd.color, cmd.clippingRegion);
+        } else if (cmd.type === "pixel") {
+          this.#pixel.draw(
+            cmd.xy,
+            cmd.color,
+            cmd.fillPattern,
+            cmd.clippingRegion,
+          );
+        } else if (cmd.type === "pixels") {
+          this.#pixels.draw(cmd.xy, cmd.bits, cmd.color, cmd.clippingRegion);
+        } else if (cmd.type === "line") {
+          this.#line.draw(
+            cmd.xy,
+            cmd.wh,
+            cmd.color,
+            cmd.fillPattern,
+            cmd.clippingRegion,
+          );
+        } else if (cmd.type === "rect") {
+          this.#rect.draw(
+            cmd.xy,
+            cmd.wh,
+            cmd.color,
+            cmd.fill,
+            cmd.fillPattern,
+            cmd.clippingRegion,
+          );
+        } else if (cmd.type === "ellipse") {
+          this.#ellipse.draw(
+            cmd.xy,
+            cmd.wh,
+            cmd.color,
+            cmd.fill,
+            cmd.fillPattern,
+            cmd.clippingRegion,
+          );
+        } else if (cmd.type === "sprite") {
+          this.#sprite.draw(
+            cmd.sourceImageAsset,
+            cmd.sprite,
+            cmd.targetXy,
+            cmd.scaleXy,
+            cmd.spriteColorMapping,
+            cmd.fillPattern,
+            cmd.clippingRegion,
+          );
+        } else if (cmd.type === "text") {
+          this.#text.draw(
+            cmd.text,
+            cmd.canvasXy,
+            cmd.fontAsset,
+            cmd.color,
+            cmd.clippingRegion,
+          );
+        } else if (cmd.type === "take_canvas_snapshot") {
+          this.#canvasPixels.takeSnapshot(cmd.snapshotId);
+        } else {
+          u_.assertUnreachable(cmd);
+        }
       }
     }
-    this.#queue = [];
+
+    this.#queues = [[]];
   }
 }

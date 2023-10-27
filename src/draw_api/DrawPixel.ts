@@ -13,11 +13,14 @@ import { BpxFillPattern } from "./FillPattern";
 
 export class DrawPixel {
   readonly #canvasPixels: CanvasPixels;
-  readonly #options: { disableRounding?: boolean };
+  readonly #options: {
+    disableRounding?: boolean;
+    disableVisitedCheck?: boolean;
+  };
 
   constructor(
     canvasPixels: CanvasPixels,
-    options: { disableRounding?: boolean } = {},
+    options: { disableRounding?: boolean; disableVisitedCheck?: boolean } = {},
   ) {
     this.#canvasPixels = canvasPixels;
     this.#options = options;
@@ -34,6 +37,13 @@ export class DrawPixel {
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
     xy = this.#options.disableRounding ? xy : xy.round();
+
+    if (
+      !this.#options.disableVisitedCheck &&
+      this.#canvasPixels.wasAlreadySet(xy.x, xy.y)
+    ) {
+      return;
+    }
 
     if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
       return;
