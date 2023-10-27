@@ -10,6 +10,7 @@ export class CanvasPixelsWebGl2 extends CanvasPixels {
   readonly #length: number;
   readonly #xyzRgbValues: Float32Array;
 
+  readonly #htmlCanvas: HTMLCanvasElement;
   readonly #gl: WebGL2RenderingContext;
   readonly #pixelsProgram: WebGLProgram;
 
@@ -21,7 +22,6 @@ export class CanvasPixelsWebGl2 extends CanvasPixels {
     super(canvasSize);
 
     this.#length = canvasSize.x * canvasSize.y;
-    // TODO: REWORK
     const hex2rgb = (hex: string): [number, number, number] => {
       return [
         parseInt(hex.slice(1, 3), 16) / 255,
@@ -32,7 +32,7 @@ export class CanvasPixelsWebGl2 extends CanvasPixels {
     const normalize = (x1: number, y1: number): [number, number, number] => {
       return [
         ((x1 + 0.5) / canvasSize.x) * 2 - 1,
-        ((y1 + 0.5) / canvasSize.y) * 2 - 1,
+        -(((y1 + 0.5) / canvasSize.y) * 2 - 1),
         0,
       ];
     };
@@ -51,15 +51,11 @@ export class CanvasPixelsWebGl2 extends CanvasPixels {
         .flat(),
     ]);
 
-    // TODO: ???
-    // canvas.width = 16;
-    // canvas.height = 16;
-    // canvas.style.backgroundColor = "grey";
-    // this.#htmlCanvas = htmlCanvas;
-    htmlCanvas.style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
+    this.#htmlCanvas = htmlCanvas;
+    this.#htmlCanvas.style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
 
     const gl =
-      htmlCanvas.getContext("webgl2", {
+      this.#htmlCanvas.getContext("webgl2", {
         // we allow transparency in order ot make background color visible around the game itself
         alpha: true,
       }) ??
@@ -110,18 +106,14 @@ export class CanvasPixelsWebGl2 extends CanvasPixels {
     gl.attachShader(pixelsProgram, fragmentShader);
     gl.linkProgram(pixelsProgram);
 
-    // TODO: needed?
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.useProgram(pixelsProgram);
-
-    // TODO: REWORK
 
     gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 
     const xyzRgbElementSize = this.#xyzRgbValues.BYTES_PER_ELEMENT;
 
-    // TODO: REWORK
     // Bind the attribute position to the 1st, 2nd and 3rd floats in every chunk of 6 floats in the buffer
     const position = gl.getAttribLocation(pixelsProgram, "position");
     gl.vertexAttribPointer(
@@ -134,7 +126,6 @@ export class CanvasPixelsWebGl2 extends CanvasPixels {
     );
     gl.enableVertexAttribArray(position);
 
-    // TODO: REWORK
     // Bind the attribute color to the 3rd, 4th and 5th float in every chunk
     const color = gl.getAttribLocation(pixelsProgram, "color");
     gl.vertexAttribPointer(
@@ -159,27 +150,27 @@ export class CanvasPixelsWebGl2 extends CanvasPixels {
         }`,
       );
     }
-    // TODO: ???
 
-    // TODO: DOES IT WORK AT ALL?
     this.#xyzRgbValues[6 * index + 3] = color.r / 0xff;
     this.#xyzRgbValues[6 * index + 4] = color.g / 0xff;
     this.#xyzRgbValues[6 * index + 5] = color.b / 0xff;
   }
 
   takeSnapshot(): CanvasPixelsSnapshot {
-    // TODO: ???
-    return new CanvasPixelsWebGl2Snapshot();
+    return new CanvasPixelsWebGl2Snapshot(
+      new Float32Array([...this.#xyzRgbValues]),
+    );
   }
 
   onWindowResize(): void {
-    // TODO: ???
+    // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
+    this.#htmlCanvas.width =
+      this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
+    this.#htmlCanvas.height =
+      this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
   }
 
   render(): void {
-    // TODO: ???
-
-    // TODO: REWORK
     const gl = this.#gl;
     gl.useProgram(this.#pixelsProgram);
     gl.bufferData(gl.ARRAY_BUFFER, this.#xyzRgbValues, gl.DYNAMIC_DRAW);
