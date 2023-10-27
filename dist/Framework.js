@@ -49,9 +49,7 @@ export class Framework {
         _Framework_frameByFrame.set(this, void 0);
         _Framework_browserType.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
-        // TODO: REVERT
-        _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#ffff00"));
-        // BpxSolidColor.fromRgbCssHex("#000000");
+        _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#000000"));
         _Framework_loading.set(this, void 0);
         _Framework_gameLoop.set(this, void 0);
         _Framework_fullScreen.set(this, void 0);

@@ -43,10 +43,8 @@ export class Framework {
   readonly #browserType: BpxBrowserType;
 
   readonly #gameCanvasSize: BpxVector2d;
-  // TODO: REVERT
   readonly #htmlCanvasBackground: BpxSolidColor =
-    BpxSolidColor.fromRgbCssHex("#ffff00");
-  // BpxSolidColor.fromRgbCssHex("#000000");
+    BpxSolidColor.fromRgbCssHex("#000000");
 
   readonly #loading: Loading;
   readonly gameInput: GameInput;

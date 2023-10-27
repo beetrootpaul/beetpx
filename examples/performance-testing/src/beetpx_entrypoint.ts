@@ -1,6 +1,7 @@
 import {
   b_,
   BpxFillPattern,
+  BpxMappingColor,
   BpxSolidColor,
   BpxVector2d,
   spr_,
@@ -109,7 +110,28 @@ b_.init(
 
     drawEllipses();
 
+    const canvasSnapshot1 = b_.takeCanvasSnapshot();
+    const negative = (c: BpxSolidColor) =>
+      new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b);
+    b_.rectFilled(
+      v_(5, 65),
+      v_(50, 10),
+      new BpxMappingColor(canvasSnapshot1, negative),
+    );
+    b_.rectFilled(
+      v_(35, 70),
+      v_(50, 10),
+      new BpxMappingColor(canvasSnapshot1, negative),
+    );
+    const canvasSnapshot2 = b_.takeCanvasSnapshot();
+
     drawSprites();
+
+    b_.rectFilled(
+      v_(65, 75),
+      v_(50, 10),
+      new BpxMappingColor(canvasSnapshot2, negative),
+    );
 
     drawUpdateCallsVisualization();
 
