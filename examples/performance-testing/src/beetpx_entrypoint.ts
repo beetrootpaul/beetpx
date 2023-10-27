@@ -1,5 +1,6 @@
 import {
   b_,
+  BpxCanvasPixelsSnapshotId,
   BpxFillPattern,
   BpxMappingColor,
   BpxSolidColor,
@@ -27,7 +28,7 @@ const logoOuterColor = BpxSolidColor.fromRgbCssHex("#ff6e59");
 
 const velocity = 2;
 
-const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2).sub(0, 16);
+const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2).sub(0, 8);
 let logoPositionBase = v_0_0_;
 
 let numberOfEllipses = 4;
@@ -110,27 +111,29 @@ b_.init(
 
     drawEllipses();
 
-    const canvasSnapshot1 = b_.takeCanvasSnapshot();
+    const canvasSnapshotId1: BpxCanvasPixelsSnapshotId =
+      b_.takeCanvasSnapshot();
     const negative = (c: BpxSolidColor) =>
       new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b);
     b_.rectFilled(
       v_(5, 65),
       v_(50, 10),
-      new BpxMappingColor(canvasSnapshot1, negative),
+      new BpxMappingColor(canvasSnapshotId1, negative),
     );
     b_.rectFilled(
       v_(35, 70),
       v_(50, 10),
-      new BpxMappingColor(canvasSnapshot1, negative),
+      new BpxMappingColor(canvasSnapshotId1, negative),
     );
-    const canvasSnapshot2 = b_.takeCanvasSnapshot();
+    const canvasSnapshotId2: BpxCanvasPixelsSnapshotId =
+      b_.takeCanvasSnapshot();
 
     drawSprites();
 
     b_.rectFilled(
       v_(65, 75),
       v_(50, 10),
-      new BpxMappingColor(canvasSnapshot2, negative),
+      new BpxMappingColor(canvasSnapshotId2, negative),
     );
 
     drawUpdateCallsVisualization();

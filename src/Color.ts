@@ -1,4 +1,7 @@
-import { BpxCanvasSnapshot } from "./draw_api/DrawApi";
+import {
+  BpxCanvasPixelsSnapshotId,
+  CanvasPixelsSnapshot,
+} from "./draw_api/canvas_pixels/CanvasPixelsSnapshot";
 
 export type BpxColorId = string;
 
@@ -87,17 +90,23 @@ export class BpxMappingColor implements BpxColor {
 
   readonly id: BpxColorId = `mapping:${BpxMappingColor.#nextId++}`;
 
+  readonly snapshotId: BpxCanvasPixelsSnapshotId;
+
   readonly getMappedColorFromCanvasSnapshot: (
+    snapshot: CanvasPixelsSnapshot,
     index: number,
   ) => BpxSolidColor | BpxTransparentColor;
 
   constructor(
-    canvasSnapshot: BpxCanvasSnapshot,
+    snapshotId: BpxCanvasPixelsSnapshotId,
     mapping: (
       canvasColor: BpxSolidColor,
     ) => BpxSolidColor | BpxTransparentColor,
   ) {
-    this.getMappedColorFromCanvasSnapshot = (index: number) =>
-      mapping(canvasSnapshot.snapshot.get(index));
+    this.snapshotId = snapshotId;
+    this.getMappedColorFromCanvasSnapshot = (
+      snapshot: CanvasPixelsSnapshot,
+      index: number,
+    ) => mapping(snapshot.get(index));
   }
 }

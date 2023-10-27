@@ -11,6 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawPixel_instances, _DrawPixel_canvasPixels, _DrawPixel_options, _DrawPixel_drawSolid;
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../Color";
+import { u_ } from "../Utils";
 import { v_0_0_ } from "../Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawPixel {
@@ -26,6 +27,7 @@ export class DrawPixel {
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
     draw(xy, color, clippingRegion = null, fillPattern = BpxFillPattern.primaryOnly) {
+        var _a;
         xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : xy.round();
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
             return;
@@ -37,7 +39,8 @@ export class DrawPixel {
                     __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.primary);
                 }
                 else if (color instanceof BpxMappingColor) {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.getMappedColorFromCanvasSnapshot(index));
+                    const snapshot = (_a = __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").getSnapshot(color.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${color.snapshotId}`);
+                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.getMappedColorFromCanvasSnapshot(snapshot, index));
                 }
                 else {
                     __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color);

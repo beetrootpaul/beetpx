@@ -1,6 +1,9 @@
 import { BpxSolidColor } from "../../Color";
 import { BpxVector2d } from "../../Vector2d";
-import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
+import {
+  BpxCanvasPixelsSnapshotId,
+  CanvasPixelsSnapshot,
+} from "./CanvasPixelsSnapshot";
 
 export abstract class CanvasPixels {
   readonly canvasSize: BpxVector2d;
@@ -9,9 +12,13 @@ export abstract class CanvasPixels {
     this.canvasSize = canvasSize.round();
   }
 
-  abstract takeSnapshot(): CanvasPixelsSnapshot;
-
   abstract set(index: number, color: BpxSolidColor): void;
+
+  abstract takeSnapshot(): BpxCanvasPixelsSnapshotId;
+
+  abstract getSnapshot(
+    snapshotId: BpxCanvasPixelsSnapshotId,
+  ): CanvasPixelsSnapshot | null;
 
   abstract onWindowResize(): void;
 

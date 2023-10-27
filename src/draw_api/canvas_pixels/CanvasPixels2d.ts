@@ -3,7 +3,10 @@ import { u_ } from "../../Utils";
 import { BpxVector2d, v_ } from "../../Vector2d";
 import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixels2dSnapshot } from "./CanvasPixels2dSnapshot";
-import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
+import {
+  BpxCanvasPixelsSnapshotId,
+  CanvasPixelsSnapshot,
+} from "./CanvasPixelsSnapshot";
 
 export class CanvasPixels2d extends CanvasPixels {
   readonly #length: number;
@@ -13,6 +16,9 @@ export class CanvasPixels2d extends CanvasPixels {
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
   readonly #offscreenContext: OffscreenCanvasRenderingContext2D;
   readonly #offscreenImageData: ImageData;
+
+  readonly #snapshots: Map<BpxCanvasPixelsSnapshotId, CanvasPixelsSnapshot> =
+    new Map();
 
   constructor(
     canvasSize: BpxVector2d,
@@ -71,8 +77,16 @@ export class CanvasPixels2d extends CanvasPixels {
     this.#rgbValues[index] = (color.r << 16) + (color.g << 8) + color.b;
   }
 
-  takeSnapshot(): CanvasPixelsSnapshot {
-    return new CanvasPixels2dSnapshot([...this.#rgbValues]);
+  takeSnapshot(): BpxCanvasPixelsSnapshotId {
+    const id = this.#snapshots.size + 1;
+    this.#snapshots.set(id, new CanvasPixels2dSnapshot([...this.#rgbValues]));
+    return id;
+  }
+
+  getSnapshot(
+    snapshotId: BpxCanvasPixelsSnapshotId,
+  ): CanvasPixelsSnapshot | null {
+    return this.#snapshots.get(snapshotId) ?? null;
   }
 
   onWindowResize(): void {
@@ -87,6 +101,8 @@ export class CanvasPixels2d extends CanvasPixels {
   }
 
   render(): void {
+    this.#snapshots.clear();
+
     for (let index = 0; index < this.#length; index++) {
       const value = this.#rgbValues[index]!;
       const dataIndex = index * 4;

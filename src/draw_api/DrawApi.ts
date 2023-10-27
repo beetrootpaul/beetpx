@@ -23,17 +23,13 @@ import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { BpxFillPattern } from "./FillPattern";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
-import { CanvasPixelsSnapshot } from "./canvas_pixels/CanvasPixelsSnapshot";
+import { BpxCanvasPixelsSnapshotId } from "./canvas_pixels/CanvasPixelsSnapshot";
 
 // TODO: BpxColorMapping and BpxMappingColor are named way too similar, while doing different things!
 export type BpxColorMapping = Array<{
   from: BpxSolidColor;
   to: BpxSolidColor | BpxTransparentColor;
 }>;
-
-export type BpxCanvasSnapshot = {
-  snapshot: CanvasPixelsSnapshot;
-};
 
 type DrawApiOptions = {
   canvasPixels: CanvasPixels;
@@ -66,7 +62,7 @@ export class DrawApi {
 
   readonly #spriteColorMapping: Map<BpxColorId, BpxColor> = new Map();
 
-  readonly takeCanvasSnapshot: () => BpxCanvasSnapshot;
+  readonly takeCanvasSnapshot: () => BpxCanvasPixelsSnapshotId;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -80,9 +76,9 @@ export class DrawApi {
     this.#sprite = new DrawSprite(options.canvasPixels);
     this.#text = new DrawText(options.canvasPixels);
 
-    this.takeCanvasSnapshot = () => ({
-      snapshot: options.canvasPixels.takeSnapshot(),
-    });
+    this.takeCanvasSnapshot = () => {
+      return options.canvasPixels.takeSnapshot();
+    };
   }
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is

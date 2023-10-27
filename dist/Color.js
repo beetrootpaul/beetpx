@@ -55,10 +55,11 @@ export class BpxCompositeColor {
 }
 // TODO: make it a function which allows to implement catch it all color
 export class BpxMappingColor {
-    constructor(canvasSnapshot, mapping) {
+    constructor(snapshotId, mapping) {
         var _b, _c, _d;
         this.id = `mapping:${__classPrivateFieldSet(_b = BpxMappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _BpxMappingColor_nextId), _c = _d++, _d), "f", _BpxMappingColor_nextId), _c}`;
-        this.getMappedColorFromCanvasSnapshot = (index) => mapping(canvasSnapshot.snapshot.get(index));
+        this.snapshotId = snapshotId;
+        this.getMappedColorFromCanvasSnapshot = (snapshot, index) => mapping(snapshot.get(index));
     }
 }
 _a = BpxMappingColor;

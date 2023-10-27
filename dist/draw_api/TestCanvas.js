@@ -35,7 +35,8 @@ export class TestCanvas {
 _TestCanvas_instances = new WeakSet(), _TestCanvas_asAscii = function _TestCanvas_asAscii(colorToAscii) {
     var _a;
     let asciiImage = "";
-    const snapshot = this.pixels.takeSnapshot();
+    const snapshotId = this.pixels.takeSnapshot();
+    const snapshot = this.pixels.getSnapshot(snapshotId);
     for (let y = 0; y < this.pixels.canvasSize.y; y += 1) {
         for (let x = 0; x < this.pixels.canvasSize.x; x += 1) {
             const index = y * this.pixels.canvasSize.x + x;

@@ -5,6 +5,7 @@ import {
   BpxSolidColor,
   BpxTransparentColor,
 } from "../Color";
+import { u_ } from "../Utils";
 import { BpxVector2d, v_0_0_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
@@ -45,7 +46,15 @@ export class DrawPixel {
         if (color instanceof BpxCompositeColor) {
           this.#drawSolid(index, color.primary);
         } else if (color instanceof BpxMappingColor) {
-          this.#drawSolid(index, color.getMappedColorFromCanvasSnapshot(index));
+          const snapshot =
+            this.#canvasPixels.getSnapshot(color.snapshotId) ??
+            u_.throwError(
+              `Tried to access a non-existent canvas snapshot of ID: ${color.snapshotId}`,
+            );
+          this.#drawSolid(
+            index,
+            color.getMappedColorFromCanvasSnapshot(snapshot, index),
+          );
         } else {
           this.#drawSolid(index, color);
         }
