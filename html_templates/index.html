@@ -16,6 +16,10 @@
       href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAVdJREFUeJzt3MFNw0AQQFFAdMCRymiCrjlSQyiAPVh5o7Uh/x2jCIevlQd7Y55vnx+3pwfy9vX7te/3+9/34h/psRUQFRAVEL2uXlydQP8z+X1bgaiAqICogKiAqICogKiAqIBoeSXyF61uNR3VlciJCogKiAqItgyR6RP80T2M6c+y0gpEBUQFRAVE40Pk6gNj+hitQFRAVEBUQERDZPqveiGDQLQCUQFRAVEB0eEhsmNgHD2GXGGstCdyogKiAqICosNDZMctpOnPMn3clVYgKiAqICogGt8T2TEw5NZVeyIXU0BUQFRAtOXbWdN7E2dd2ay0AlEBUQFRAdGWPZHpfzWyet9ZT9m3AlEBUQFRAdFpDxtO31Y6SysQFRAVEBUQ0RCRE/yOZzh2aAWiAqICogKi8W9nTf+8Kw2MlVYgKiAqICogWg6RKz1EeHWtQFRAVEBUQPQDHRdHQWx83G0AAAAASUVORK5CYII="
     />
 
+    <!-- TODO: mouse GUI (mute/unmute, full screen)   -->
+
+    <!-- TODO: a bit of a border around the canvas   -->
+
     <!-- TODO: Allow a game title injection as build script params -->
     <title>BeetPx game</title>
 
@@ -151,26 +155,74 @@
       }
 
       /*
-       * LAYOUT for a SUPER THIN screen
+       * REGULAR GUI for a DESKTOP (portrait)
        */
-
       #unsupported_aspect_ratio {
-        display: block;
-
-        margin: 0;
-        text-align: center;
-        line-height: 1em;
-        overflow-wrap: break-word;
-      }
-
-      #game_display {
         display: none;
       }
 
+      #game_display {
+        display: grid;
+
+        border-width: 1vw;
+        border-bottom-width: 2vw;
+
+        grid-template-areas:
+          "."
+          "canv"
+          ".";
+        grid-template-columns: 98vw;
+        grid-template-rows:
+          1fr
+          98vw
+          1fr;
+      }
+
       /*
-       * LAYOUT for a REALLY VERTICAL screen
+       * REGULAR GUI for a DESKTOP (landscape)
        */
-      @media (min-aspect-ratio: 310/600) {
+      @media (min-aspect-ratio: 1/1) {
+        #unsupported_aspect_ratio {
+          display: none;
+        }
+
+        #game_display {
+          display: grid;
+
+          border-width: 1vh;
+          border-bottom-width: 2vh;
+
+          grid-template-areas: ". canv .";
+          grid-template-columns:
+            1fr
+            97vh
+            1fr;
+          grid-template-rows: 97vh;
+        }
+      }
+
+      /*
+       * TOUCH GUI for a SUPER THIN screen
+       */
+      @media (pointer: coarse) {
+        #unsupported_aspect_ratio {
+          display: block;
+
+          margin: 0;
+          text-align: center;
+          line-height: 1em;
+          overflow-wrap: break-word;
+        }
+
+        #game_display {
+          display: none;
+        }
+      }
+
+      /*
+       * TOUCH GUI for a REALLY VERTICAL screen
+       */
+      @media (pointer: coarse) and (min-aspect-ratio: 310/600) {
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -263,9 +315,9 @@
       }
 
       /*
-       * LAYOUT for a SLIGHTLY VERTICAL screen
+       * TOUCH GUI for a SLIGHTLY VERTICAL screen
        */
-      @media (min-aspect-ratio: 310/450) {
+      @media (pointer: coarse) and (min-aspect-ratio: 310/450) {
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -352,9 +404,9 @@
       }
 
       /*
-       * LAYOUT for a TALLER SQUARE screen
+       * TOUCH GUI for a TALLER SQUARE screen
        */
-      @media (min-aspect-ratio: 310/400) {
+      @media (pointer: coarse) and (min-aspect-ratio: 310/400) {
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -443,9 +495,9 @@
       }
 
       /*
-       * LAYOUT for a KINDA SQUARE screen
+       * TOUCH GUI for a KINDA SQUARE screen
        */
-      @media (min-aspect-ratio: 310/310) {
+      @media (pointer: coarse) and (min-aspect-ratio: 310/310) {
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -540,9 +592,9 @@
       }
 
       /*
-       * LAYOUT for a WIDER SQUARE screen
+       * TOUCH GUI for a WIDER SQUARE screen
        */
-      @media (min-aspect-ratio: 310/250) {
+      @media (pointer: coarse) and (min-aspect-ratio: 310/250) {
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -637,9 +689,9 @@
       }
 
       /*
-       * LAYOUT for a SLIGHTLY HORIZONTAL screen
+       * TOUCH GUI for a SLIGHTLY HORIZONTAL screen
        */
-      @media (min-aspect-ratio: 480/250) {
+      @media (pointer: coarse) and (min-aspect-ratio: 480/250) {
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -730,9 +782,9 @@
       }
 
       /*
-       * LAYOUT for a REALLY HORIZONTAL screen
+       * TOUCH GUI for a REALLY HORIZONTAL screen
        */
-      @media (min-aspect-ratio: 610/250) {
+      @media (pointer: coarse) and (min-aspect-ratio: 610/250) {
         #unsupported_aspect_ratio {
           display: none;
         }
