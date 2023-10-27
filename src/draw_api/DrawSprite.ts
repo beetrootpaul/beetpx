@@ -108,7 +108,7 @@ export class DrawSprite {
             // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
             //       - ff614f became ff6e59
             //       - 00555a became 125359
-            this.#pixel.draw(canvasXy, color, clippingRegion, fillPattern);
+            this.#pixel.draw(canvasXy, color, fillPattern, clippingRegion);
           }
         }
       }

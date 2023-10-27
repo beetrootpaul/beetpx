@@ -34,11 +34,6 @@ let logoPositionBase = v_0_0_;
 let numberOfEllipses = 4;
 let numberOfBigSprites = 1;
 
-// TODO: REMOVE
-const prev = localStorage.getItem("prev");
-const cct = prev === "2d" ? "webgl2" : "2d";
-localStorage.setItem("prev", cct);
-
 b_.init(
   {
     gameCanvasSize: "128x128",
@@ -67,7 +62,6 @@ b_.init(
       updateCallsVisualization.historyIndex
     ] += 1;
 
-    console.group("UPDATE", cct);
     b_.logDebug(`frame: ${b_.frameNumber}`);
     b_.logDebug(`FPS: ${b_.renderFps}`);
 
@@ -93,14 +87,11 @@ b_.init(
     }
 
     if (b_.wasJustPressed("menu")) {
-      // TODO: REVERT
-      // b_.restart();
-      location.reload();
+      b_.restart();
     }
 
     b_.logDebug("numberOfBigSprites =", numberOfBigSprites);
     b_.logDebug("numberOfEllipses =", numberOfEllipses);
-    console.groupEnd();
   });
 
   b_.setOnDraw(() => {

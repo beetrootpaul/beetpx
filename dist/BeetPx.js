@@ -119,12 +119,6 @@ BeetPx.setFillPattern = (...args) => {
 BeetPx.mapSpriteColors = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.mapSpriteColors(...args);
 };
-BeetPx.setFont = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFont(...args);
-};
-BeetPx.getFont = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.getFont(...args);
-};
 BeetPx.clearCanvas = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.clearCanvas(...args);
 };
@@ -149,11 +143,15 @@ BeetPx.ellipse = (...args) => {
 BeetPx.ellipseFilled = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.ellipseFilled(...args);
 };
-// TODO: make sure the whole API gets nice JSDoc even shown in the game itself, in IDE
 BeetPx.sprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);
 };
-// TODO: Create a similar JSDocs API description for other API methods as well
+BeetPx.setFont = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFont(...args);
+};
+BeetPx.getFont = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.getFont(...args);
+};
 BeetPx.print = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(...args);
 };

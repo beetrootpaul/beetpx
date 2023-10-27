@@ -31,12 +31,12 @@ export class DrawRect {
         for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
             if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
                 for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
-                    __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(x, y), color, clippingRegion, fillPattern);
+                    __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(x, y), color, fillPattern, clippingRegion);
                 }
             }
             else {
-                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMinInclusive.x, y), color, clippingRegion, fillPattern);
-                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMaxExclusive.x - 1, y), color, clippingRegion, fillPattern);
+                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMinInclusive.x, y), color, fillPattern, clippingRegion);
+                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMaxExclusive.x - 1, y), color, fillPattern, clippingRegion);
             }
         }
     }

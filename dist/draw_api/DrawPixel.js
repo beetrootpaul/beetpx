@@ -26,7 +26,7 @@ export class DrawPixel {
     // TODO: tests for MappingColor
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
-    draw(xy, color, clippingRegion = null, fillPattern = BpxFillPattern.primaryOnly) {
+    draw(xy, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
         var _a;
         xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : xy.round();
         if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {

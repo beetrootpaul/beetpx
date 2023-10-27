@@ -30,8 +30,8 @@ export class DrawPixel {
   draw(
     xy: BpxVector2d,
     color: BpxColor,
-    clippingRegion: BpxClippingRegion | null = null,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
+    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     xy = this.#options.disableRounding ? xy : xy.round();
 

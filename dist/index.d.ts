@@ -182,6 +182,19 @@ declare class BpxEasing {
 }
 
 declare class BpxUtils {
+    /**
+     * NOTE: This function makes sense in a TypeScript codebase only.
+     *
+     * This function is meant to be used in a last branch of `if - else if - … - else`
+     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+     *   a union type of which we check all possible cases. Someday we add one more
+     *   type to the union, but we forget to extend our `switch` by that one more `case`.
+     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+     *   will inform us about such mistake.
+     *
+     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+     */
+    static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
     static booleanChangingEveryNthFrame(n: number): boolean;
     static clamp(a: number, b: number, c: number): number;
     static identity<Param>(param: Param): Param;
@@ -248,13 +261,17 @@ declare class BpxFillPattern {
 }
 
 declare abstract class CanvasPixels {
+    #private;
     readonly canvasSize: BpxVector2d;
     protected constructor(canvasSize: BpxVector2d);
     abstract set(index: number, color: BpxSolidColor): void;
-    abstract takeSnapshot(): BpxCanvasPixelsSnapshotId;
-    abstract getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;
+    generateNextSnapshotId(): BpxCanvasPixelsSnapshotId;
+    takeSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): void;
+    getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;
+    protected abstract newSnapshot(): CanvasPixelsSnapshot;
     abstract onWindowResize(): void;
-    abstract render(): void;
+    render(): void;
+    protected abstract doRender(): void;
 }
 
 type BpxColorMapping = Array<{
@@ -267,15 +284,12 @@ type DrawApiOptions = {
 };
 declare class DrawApi {
     #private;
-    readonly takeCanvasSnapshot: () => BpxCanvasPixelsSnapshotId;
     constructor(options: DrawApiOptions);
     setCameraOffset(offset: BpxVector2d): void;
     setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
     removeClippingRegion(): void;
     setFillPattern(fillPattern: BpxFillPattern): void;
     mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping;
-    setFont(fontId: BpxFontId | null): void;
-    getFont(): BpxFont | null;
     clearCanvas(color: BpxSolidColor): void;
     pixel(xy: BpxVector2d, color: BpxSolidColor): void;
     pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void;
@@ -285,7 +299,11 @@ declare class DrawApi {
     ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
     ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
     sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
+    setFont(fontId: BpxFontId | null): void;
+    getFont(): BpxFont | null;
     print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean]): void;
+    takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId;
+    processQueuedCommands(): void;
 }
 
 declare class Button {
@@ -471,8 +489,6 @@ declare class BeetPx {
     static removeClippingRegion: DrawApi["removeClippingRegion"];
     static setFillPattern: DrawApi["setFillPattern"];
     static mapSpriteColors: DrawApi["mapSpriteColors"];
-    static setFont: DrawApi["setFont"];
-    static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
     static pixels: DrawApi["pixels"];
@@ -482,6 +498,8 @@ declare class BeetPx {
     static ellipse: DrawApi["ellipse"];
     static ellipseFilled: DrawApi["ellipseFilled"];
     static sprite: DrawApi["sprite"];
+    static setFont: DrawApi["setFont"];
+    static getFont: DrawApi["getFont"];
     static print: DrawApi["print"];
     static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"];
     static playSoundOnce: AudioApi["playSoundOnce"];

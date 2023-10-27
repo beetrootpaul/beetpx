@@ -154,14 +154,6 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.mapSpriteColors(...args);
   };
 
-  static setFont: DrawApi["setFont"] = (...args) => {
-    return this.#tryGetFramework().drawApi.setFont(...args);
-  };
-
-  static getFont: DrawApi["getFont"] = (...args) => {
-    return this.#tryGetFramework().drawApi.getFont(...args);
-  };
-
   static clearCanvas: DrawApi["clearCanvas"] = (...args) => {
     return this.#tryGetFramework().drawApi.clearCanvas(...args);
   };
@@ -194,13 +186,17 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.ellipseFilled(...args);
   };
 
-  // TODO: make sure the whole API gets nice JSDoc even shown in the game itself, in IDE
-
   static sprite: DrawApi["sprite"] = (...args) => {
     return this.#tryGetFramework().drawApi.sprite(...args);
   };
 
-  // TODO: Create a similar JSDocs API description for other API methods as well
+  static setFont: DrawApi["setFont"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setFont(...args);
+  };
+
+  static getFont: DrawApi["getFont"] = (...args) => {
+    return this.#tryGetFramework().drawApi.getFont(...args);
+  };
 
   static print: DrawApi["print"] = (...args) => {
     return this.#tryGetFramework().drawApi.print(...args);

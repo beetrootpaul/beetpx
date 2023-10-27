@@ -54,7 +54,7 @@ export class DrawLine {
             //
             // DRAW THE CURRENT PIXEL
             //
-            __classPrivateFieldGet(this, _DrawLine_pixel, "f").draw(currentXy, color, clippingRegion, fillPattern);
+            __classPrivateFieldGet(this, _DrawLine_pixel, "f").draw(currentXy, color, fillPattern, clippingRegion);
             if (currentXy.eq(targetXy))
                 break;
             //

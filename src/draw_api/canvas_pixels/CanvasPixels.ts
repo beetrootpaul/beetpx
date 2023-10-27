@@ -8,19 +8,39 @@ import {
 export abstract class CanvasPixels {
   readonly canvasSize: BpxVector2d;
 
+  readonly #snapshots: Map<BpxCanvasPixelsSnapshotId, CanvasPixelsSnapshot> =
+    new Map();
+  #nextSnapshotId: number = 1;
+
   protected constructor(canvasSize: BpxVector2d) {
     this.canvasSize = canvasSize.round();
   }
 
   abstract set(index: number, color: BpxSolidColor): void;
 
-  abstract takeSnapshot(): BpxCanvasPixelsSnapshotId;
+  generateNextSnapshotId(): BpxCanvasPixelsSnapshotId {
+    return this.#nextSnapshotId++;
+  }
 
-  abstract getSnapshot(
+  takeSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): void {
+    this.#snapshots.set(snapshotId, this.newSnapshot());
+  }
+
+  getSnapshot(
     snapshotId: BpxCanvasPixelsSnapshotId,
-  ): CanvasPixelsSnapshot | null;
+  ): CanvasPixelsSnapshot | null {
+    return this.#snapshots.get(snapshotId) ?? null;
+  }
+
+  protected abstract newSnapshot(): CanvasPixelsSnapshot;
 
   abstract onWindowResize(): void;
 
-  abstract render(): void;
+  render(): void {
+    this.#snapshots.clear();
+    this.#nextSnapshotId = 1;
+    this.doRender();
+  }
+
+  protected abstract doRender(): void;
 }

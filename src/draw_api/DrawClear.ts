@@ -1,4 +1,5 @@
 import { BpxSolidColor } from "../Color";
+import { v_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 
@@ -9,17 +10,20 @@ export class DrawClear {
     this.#canvasPixels = canvasPixels;
   }
 
-  // TODO: support ClippingRegion + cover with tests
+  // TODO: cover clippingRegion with tests
   draw(
     color: BpxSolidColor,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    for (
-      let pixel = 0;
-      pixel < this.#canvasPixels.canvasSize.x * this.#canvasPixels.canvasSize.y;
-      pixel += 1
-    ) {
-      this.#canvasPixels.set(pixel, color);
+    for (let x = 0; x < this.#canvasPixels.canvasSize.x; ++x) {
+      for (let y = 0; y < this.#canvasPixels.canvasSize.y; ++y) {
+        if (!clippingRegion || clippingRegion.allowsDrawingAt(v_(x, y))) {
+          this.#canvasPixels.set(
+            y * this.#canvasPixels.canvasSize.x + x,
+            color,
+          );
+        }
+      }
     }
   }
 }

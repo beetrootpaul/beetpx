@@ -291,6 +291,8 @@ export class Framework {
   }
 
   #render(): void {
+    this.drawApi.processQueuedCommands();
+
     this.#drawDebugMargin();
 
     this.#canvasPixels.render();

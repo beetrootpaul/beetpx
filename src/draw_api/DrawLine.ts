@@ -62,7 +62,7 @@ export class DrawLine {
       //
       // DRAW THE CURRENT PIXEL
       //
-      this.#pixel.draw(currentXy, color, clippingRegion, fillPattern);
+      this.#pixel.draw(currentXy, color, fillPattern, clippingRegion);
 
       if (currentXy.eq(targetXy)) break;
 

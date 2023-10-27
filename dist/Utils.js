@@ -3,6 +3,21 @@ import { BeetPx } from "./BeetPx";
 import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 // TODO: consider exposing those utils as BeetPx global API methods
 export class BpxUtils {
+    /**
+     * NOTE: This function makes sense in a TypeScript codebase only.
+     *
+     * This function is meant to be used in a last branch of `if - else if - … - else`
+     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+     *   a union type of which we check all possible cases. Someday we add one more
+     *   type to the union, but we forget to extend our `switch` by that one more `case`.
+     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+     *   will inform us about such mistake.
+     *
+     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+     */
+    static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint) {
+        throw Error("Somehow reached the unreachable code. Was TypeScript checker run on it?");
+    }
     // TODO: tests for edge cases
     static booleanChangingEveryNthFrame(n) {
         return BeetPx.frameNumber % (n * 2) < n;

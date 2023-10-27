@@ -8,12 +8,13 @@ import {
   BpxTransparentColor,
 } from "../Color";
 import { BpxSprite } from "../Sprite";
-import { BpxUtils } from "../Utils";
+import { BpxUtils, u_ } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
+import { DrawCommand } from "./DrawCommand";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
@@ -42,7 +43,11 @@ type DrawApiOptions = {
 //       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
 
 export class DrawApi {
+  #queue: DrawCommand[] = [];
+
   readonly #assets: Assets;
+
+  readonly #canvasPixels: CanvasPixels;
 
   readonly #clear: DrawClear;
   readonly #pixel: DrawPixel;
@@ -62,10 +67,10 @@ export class DrawApi {
 
   readonly #spriteColorMapping: Map<BpxColorId, BpxColor> = new Map();
 
-  readonly takeCanvasSnapshot: () => BpxCanvasPixelsSnapshotId;
-
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
+
+    this.#canvasPixels = options.canvasPixels;
 
     this.#clear = new DrawClear(options.canvasPixels);
     this.#pixel = new DrawPixel(options.canvasPixels);
@@ -75,10 +80,6 @@ export class DrawApi {
     this.#ellipse = new DrawEllipse(options.canvasPixels);
     this.#sprite = new DrawSprite(options.canvasPixels);
     this.#text = new DrawText(options.canvasPixels);
-
-    this.takeCanvasSnapshot = () => {
-      return options.canvasPixels.takeSnapshot();
-    };
   }
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
@@ -123,33 +124,35 @@ export class DrawApi {
     return previous;
   }
 
-  // TODO: cover it with tests
-  setFont(fontId: BpxFontId | null): void {
-    this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
-  }
-
-  getFont(): BpxFont | null {
-    return this.#fontAsset?.font ?? null;
-  }
-
   clearCanvas(color: BpxSolidColor): void {
-    this.#clear.draw(color, this.#clippingRegion);
+    this.#queue.push({
+      type: "clear",
+      color: color,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   pixel(xy: BpxVector2d, color: BpxSolidColor): void {
-    this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#clippingRegion);
+    this.#queue.push({
+      type: "pixel",
+      xy: xy.sub(this.#cameraOffset),
+      color: color,
+      fillPattern: BpxFillPattern.primaryOnly,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   // bits = an array representing rows from top to bottom, where each array element
   //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
   //        from left to right.
   pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
-    this.#pixels.draw(
-      xy.sub(this.#cameraOffset),
-      bits,
-      color,
-      this.#clippingRegion,
-    );
+    this.#queue.push({
+      type: "pixels",
+      xy: xy.sub(this.#cameraOffset),
+      bits: bits,
+      color: color,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   line(
@@ -157,13 +160,14 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#line.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#queue.push({
+      type: "line",
+      xy: xy.sub(this.#cameraOffset),
+      wh: wh,
+      color: color,
+      fillPattern: this.#fillPattern,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   rect(
@@ -171,14 +175,15 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#rect.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      false,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#queue.push({
+      type: "rect",
+      xy: xy.sub(this.#cameraOffset),
+      wh: wh,
+      color: color,
+      fill: false,
+      fillPattern: this.#fillPattern,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   rectFilled(
@@ -186,14 +191,15 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#rect.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      true,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#queue.push({
+      type: "rect",
+      xy: xy.sub(this.#cameraOffset),
+      wh: wh,
+      color: color,
+      fill: true,
+      fillPattern: this.#fillPattern,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   ellipse(
@@ -201,14 +207,15 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#ellipse.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      false,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#queue.push({
+      type: "ellipse",
+      xy: xy.sub(this.#cameraOffset),
+      wh: wh,
+      color: color,
+      fill: false,
+      fillPattern: this.#fillPattern,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   ellipseFilled(
@@ -216,14 +223,15 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#ellipse.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      true,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#queue.push({
+      type: "ellipse",
+      xy: xy.sub(this.#cameraOffset),
+      wh: wh,
+      color: color,
+      fill: true,
+      fillPattern: this.#fillPattern,
+      clippingRegion: this.#clippingRegion,
+    });
   }
 
   // TODO: make sprite make use of fillPattern as well?
@@ -233,15 +241,27 @@ export class DrawApi {
     scaleXy: BpxVector2d = v_1_1_,
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
-    this.#sprite.draw(
-      sourceImageAsset,
-      sprite,
-      canvasXy.sub(this.#cameraOffset),
-      scaleXy,
-      this.#spriteColorMapping,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#queue.push({
+      type: "sprite",
+      sourceImageAsset: sourceImageAsset,
+      sprite: sprite,
+      targetXy: canvasXy.sub(this.#cameraOffset),
+      scaleXy: scaleXy,
+      spriteColorMapping: new Map<BpxColorId, BpxColor>(
+        this.#spriteColorMapping.entries(),
+      ),
+      fillPattern: this.#fillPattern,
+      clippingRegion: this.#clippingRegion,
+    });
+  }
+
+  // TODO: cover it with tests
+  setFont(fontId: BpxFontId | null): void {
+    this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
+  }
+
+  getFont(): BpxFont | null {
+    return this.#fontAsset?.font ?? null;
   }
 
   // TODO: cover with tests
@@ -273,5 +293,69 @@ export class DrawApi {
         }] ${text}`,
       );
     }
+  }
+
+  takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId {
+    const snapshotId = this.#canvasPixels.generateNextSnapshotId();
+    this.#queue.push({ type: "take_canvas_snapshot", snapshotId: snapshotId });
+    return snapshotId;
+  }
+
+  processQueuedCommands(): void {
+    for (const cmd of this.#queue) {
+      if (cmd.type === "clear") {
+        this.#clear.draw(cmd.color, cmd.clippingRegion);
+      } else if (cmd.type === "pixel") {
+        this.#pixel.draw(
+          cmd.xy,
+          cmd.color,
+          cmd.fillPattern,
+          cmd.clippingRegion,
+        );
+      } else if (cmd.type === "pixels") {
+        this.#pixels.draw(cmd.xy, cmd.bits, cmd.color, cmd.clippingRegion);
+      } else if (cmd.type === "line") {
+        this.#line.draw(
+          cmd.xy,
+          cmd.wh,
+          cmd.color,
+          cmd.fillPattern,
+          cmd.clippingRegion,
+        );
+      } else if (cmd.type === "rect") {
+        this.#rect.draw(
+          cmd.xy,
+          cmd.wh,
+          cmd.color,
+          cmd.fill,
+          cmd.fillPattern,
+          cmd.clippingRegion,
+        );
+      } else if (cmd.type === "ellipse") {
+        this.#ellipse.draw(
+          cmd.xy,
+          cmd.wh,
+          cmd.color,
+          cmd.fill,
+          cmd.fillPattern,
+          cmd.clippingRegion,
+        );
+      } else if (cmd.type === "sprite") {
+        this.#sprite.draw(
+          cmd.sourceImageAsset,
+          cmd.sprite,
+          cmd.targetXy,
+          cmd.scaleXy,
+          cmd.spriteColorMapping,
+          cmd.fillPattern,
+          cmd.clippingRegion,
+        );
+      } else if (cmd.type === "take_canvas_snapshot") {
+        this.#canvasPixels.takeSnapshot(cmd.snapshotId);
+      } else {
+        u_.assertUnreachable(cmd);
+      }
+    }
+    this.#queue = [];
   }
 }
