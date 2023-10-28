@@ -3,10 +3,8 @@ import {
   BpxCompositeColor,
   BpxMappingColor,
   BpxSolidColor,
-  BpxTransparentColor,
 } from "../Color";
 import { u_ } from "../Utils";
-import { BpxVector2d, v_0_0_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
@@ -31,54 +29,60 @@ export class DrawPixel {
   // TODO: consider moving fill pattern and composite color support inside here
   // TODO: cover ClippingRegion with tests
   draw(
-    xy: BpxVector2d,
+    x: number,
+    y: number,
     color: BpxColor,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    xy = this.#options.disableRounding ? xy : xy.round();
+    x = this.#options.disableRounding ? x : Math.round(x);
+    y = this.#options.disableRounding ? y : Math.round(y);
 
     if (
       !this.#options.disableVisitedCheck &&
-      this.#canvasPixels.wasAlreadySet(xy.x, xy.y)
+      this.#canvasPixels.wasAlreadySet(x, y)
     ) {
       return;
     }
 
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
+    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
       return;
     }
 
-    if (xy.gte(v_0_0_) && xy.lt(this.#canvasPixels.canvasSize)) {
-      const index = xy.y * this.#canvasPixels.canvasSize.x + xy.x;
-
-      if (fillPattern.hasPrimaryColorAt(xy)) {
-        if (color instanceof BpxCompositeColor) {
-          this.#drawSolid(index, color.primary);
+    if (
+      x >= 0 &&
+      y >= 0 &&
+      x < this.#canvasPixels.canvasSize.x &&
+      y < this.#canvasPixels.canvasSize.y
+    ) {
+      if (fillPattern.hasPrimaryColorAt(x, y)) {
+        if (color instanceof BpxSolidColor) {
+          this.#canvasPixels.set(color, x, y);
+        } else if (color instanceof BpxCompositeColor) {
+          if (color.primary instanceof BpxSolidColor) {
+            this.#canvasPixels.set(color.primary, x, y);
+          }
         } else if (color instanceof BpxMappingColor) {
           const snapshot =
             this.#canvasPixels.getSnapshot(color.snapshotId) ??
             u_.throwError(
               `Tried to access a non-existent canvas snapshot of ID: ${color.snapshotId}`,
             );
-          this.#drawSolid(
-            index,
-            color.getMappedColorFromCanvasSnapshot(snapshot, index),
+          const mapped = color.getMappedColorFromCanvasSnapshot(
+            snapshot,
+            y * this.#canvasPixels.canvasSize.x + x,
           );
-        } else {
-          this.#drawSolid(index, color);
+          if (mapped instanceof BpxSolidColor) {
+            this.#canvasPixels.set(mapped, x, y);
+          }
         }
       } else {
         if (color instanceof BpxCompositeColor) {
-          this.#drawSolid(index, color.secondary);
+          if (color.secondary instanceof BpxSolidColor) {
+            this.#canvasPixels.set(color.secondary, x, y);
+          }
         }
       }
-    }
-  }
-
-  #drawSolid(canvasIndex: number, color: BpxSolidColor | BpxTransparentColor) {
-    if (color instanceof BpxSolidColor) {
-      this.#canvasPixels.set(canvasIndex, color);
     }
   }
 }

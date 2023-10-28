@@ -16,10 +16,9 @@ export abstract class CanvasPixels {
     this.canvasSize = canvasSize.round();
   }
 
-  abstract wasAlreadySet(index: number): boolean;
   abstract wasAlreadySet(x: number, y: number): boolean;
 
-  abstract set(index: number, color: BpxSolidColor): void;
+  abstract set(color: BpxSolidColor, x: number, y: number): void;
 
   generateNextSnapshotId(): BpxCanvasPixelsSnapshotId {
     return this.#nextSnapshotId++;

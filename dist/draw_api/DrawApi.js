@@ -247,7 +247,7 @@ export class DrawApi {
                     __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(cmd.color, cmd.clippingRegion);
                 }
                 else if (cmd.type === "pixel") {
-                    __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(cmd.xy, cmd.color, cmd.fillPattern, cmd.clippingRegion);
+                    __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(cmd.xy.x, cmd.xy.y, cmd.color, cmd.fillPattern, cmd.clippingRegion);
                 }
                 else if (cmd.type === "pixels") {
                     __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(cmd.xy, cmd.bits, cmd.color, cmd.clippingRegion);

@@ -31,7 +31,7 @@ import { AudioApi } from "./audio/AudioApi";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { CanvasPixels2d } from "./draw_api/canvas_pixels/CanvasPixels2d";
+import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
@@ -97,7 +97,7 @@ export class Framework {
         this.audioApi = new AudioApi(this.assets, audioContext);
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.newFor(HtmlTemplate.selectors.display, HtmlTemplate.selectors.controlsFullScreen), "f");
         __classPrivateFieldSet(this, _Framework_htmlCanvas, (_b = document.querySelector(HtmlTemplate.selectors.canvas)) !== null && _b !== void 0 ? _b : u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`), "f");
-        __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixels2d(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvas, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
+        __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixelsForProduction(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvas, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
             canvasPixels: __classPrivateFieldGet(this, _Framework_canvasPixels, "f"),
             assets: this.assets,

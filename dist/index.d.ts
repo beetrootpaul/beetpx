@@ -248,7 +248,7 @@ type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari
 declare class BpxClippingRegion {
     #private;
     constructor(xy: BpxVector2d, wh: BpxVector2d);
-    allowsDrawingAt(xy: BpxVector2d): boolean;
+    allowsDrawingAt(x: number, y: number): boolean;
 }
 
 declare class BpxFillPattern {
@@ -257,16 +257,15 @@ declare class BpxFillPattern {
     static primaryOnly: BpxFillPattern;
     static secondaryOnly: BpxFillPattern;
     private constructor();
-    hasPrimaryColorAt(xy: BpxVector2d): boolean;
+    hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
 declare abstract class CanvasPixels {
     #private;
     readonly canvasSize: BpxVector2d;
     protected constructor(canvasSize: BpxVector2d);
-    abstract wasAlreadySet(index: number): boolean;
     abstract wasAlreadySet(x: number, y: number): boolean;
-    abstract set(index: number, color: BpxSolidColor): void;
+    abstract set(color: BpxSolidColor, x: number, y: number): void;
     generateNextSnapshotId(): BpxCanvasPixelsSnapshotId;
     takeSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): void;
     getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;

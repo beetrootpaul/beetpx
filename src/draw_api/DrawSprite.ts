@@ -32,6 +32,10 @@ export class DrawSprite {
     });
   }
 
+  // TODO: drawing outside canvas is still very expensive, hmmmmm…
+  // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+  //       - ff614f became ff6e59
+  //       - 00555a became 125359
   // TODO: cover clippingRegion with tests
   draw(
     sourceImageAsset: ImageAsset,
@@ -81,17 +85,27 @@ export class DrawSprite {
       ),
     );
 
+    // avoid all computations if the whole sprite is outside the canvas
+    if (
+      targetXy.x + sprite.size().x * scaleXy.x < 0 ||
+      targetXy.y + sprite.size().y * scaleXy.y < 0 ||
+      targetXy.x >= this.#canvasPixels.canvasSize.x ||
+      targetXy.y >= this.#canvasPixels.canvasSize.y
+    ) {
+      return;
+    }
+
     for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
+      const canvasYBase = targetXy.y + (imgY - sprite.xy1.y) * scaleXy.y;
       for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        const canvasXyBase = targetXy.add(
-          v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y).mul(scaleXy),
-        );
+        const canvasXBase = targetXy.x + (imgX - sprite.xy1.x) * scaleXy.x;
 
         for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
           for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
-            const canvasXy = canvasXyBase.add(xScaledStep, yScaledStep);
+            const canvasX = canvasXBase + xScaledStep;
+            const canvasY = canvasYBase + yScaledStep;
 
-            if (!this.#canvasPixels.wasAlreadySet(canvasXy.x, canvasXy.y)) {
+            if (!this.#canvasPixels.wasAlreadySet(canvasX, canvasY)) {
               const imgBytesIndex = (imgY * imgW + imgX) * 4;
               if (imgBytes.length < imgBytesIndex + 4) {
                 throw Error(
@@ -109,10 +123,13 @@ export class DrawSprite {
                   : transparent_;
               color = colorMapping.get(color.id) ?? color;
 
-              // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
-              //       - ff614f became ff6e59
-              //       - 00555a became 125359
-              this.#pixel.draw(canvasXy, color, fillPattern, clippingRegion);
+              this.#pixel.draw(
+                canvasX,
+                canvasY,
+                color,
+                fillPattern,
+                clippingRegion,
+              );
             }
           }
         }

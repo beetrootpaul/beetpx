@@ -23,9 +23,10 @@ export class BpxFillPattern {
         __classPrivateFieldSet(this, _BpxFillPattern_bits, bits, "f");
     }
     // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
-    hasPrimaryColorAt(xy) {
-        const patternXy = xy.mod(4);
-        const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;
+    hasPrimaryColorAt(x, y) {
+        const patternX = x % 4;
+        const patternY = y % 4;
+        const bitPosition = 4 * 4 - (patternY * 4 + patternX) - 1;
         const isSecondary = Boolean(__classPrivateFieldGet(this, _BpxFillPattern_bits, "f") & (1 << bitPosition));
         return !isSecondary;
     }

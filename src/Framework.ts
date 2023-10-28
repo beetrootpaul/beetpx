@@ -14,7 +14,7 @@ import {
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
-import { CanvasPixels2d } from "./draw_api/canvas_pixels/CanvasPixels2d";
+import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
 import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -141,7 +141,7 @@ export class Framework {
         `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
       );
 
-    this.#canvasPixels = new CanvasPixels2d(
+    this.#canvasPixels = new CanvasPixelsForProduction(
       this.#gameCanvasSize,
       this.#htmlCanvas,
       this.#htmlCanvasBackground,

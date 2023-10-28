@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawRect_canvasPixels, _DrawRect_pixel;
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d } from "../Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawRect {
@@ -32,12 +32,12 @@ export class DrawRect {
         for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
             if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
                 for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
-                    __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(x, y), color, fillPattern, clippingRegion);
+                    __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(x, y, color, fillPattern, clippingRegion);
                 }
             }
             else {
-                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMinInclusive.x, y), color, fillPattern, clippingRegion);
-                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(v_(xyMaxExclusive.x - 1, y), color, fillPattern, clippingRegion);
+                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xyMinInclusive.x, y, color, fillPattern, clippingRegion);
+                __classPrivateFieldGet(this, _DrawRect_pixel, "f").draw(xyMaxExclusive.x - 1, y, color, fillPattern, clippingRegion);
             }
         }
     }

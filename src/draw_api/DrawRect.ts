@@ -1,5 +1,5 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
-import { BpxVector2d, v_ } from "../Vector2d";
+import { BpxVector2d } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawPixel } from "./DrawPixel";
@@ -38,17 +38,19 @@ export class DrawRect {
     for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
       if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
         for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
-          this.#pixel.draw(v_(x, y), color, fillPattern, clippingRegion);
+          this.#pixel.draw(x, y, color, fillPattern, clippingRegion);
         }
       } else {
         this.#pixel.draw(
-          v_(xyMinInclusive.x, y),
+          xyMinInclusive.x,
+          y,
           color,
           fillPattern,
           clippingRegion,
         );
         this.#pixel.draw(
-          v_(xyMaxExclusive.x - 1, y),
+          xyMaxExclusive.x - 1,
+          y,
           color,
           fillPattern,
           clippingRegion,

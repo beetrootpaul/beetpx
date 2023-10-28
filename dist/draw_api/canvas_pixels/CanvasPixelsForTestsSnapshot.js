@@ -9,16 +9,19 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _CanvasPixels2dSnapshot_rgbValues;
+var _CanvasPixelsForTestsSnapshot_rgbValues;
 import { BpxSolidColor } from "../../Color";
-export class CanvasPixels2dSnapshot {
+export class CanvasPixelsForTestsSnapshot {
     constructor(rgbValues) {
-        _CanvasPixels2dSnapshot_rgbValues.set(this, void 0);
-        __classPrivateFieldSet(this, _CanvasPixels2dSnapshot_rgbValues, rgbValues, "f");
+        _CanvasPixelsForTestsSnapshot_rgbValues.set(this, void 0);
+        __classPrivateFieldSet(this, _CanvasPixelsForTestsSnapshot_rgbValues, rgbValues, "f");
     }
     get(index) {
-        const value = __classPrivateFieldGet(this, _CanvasPixels2dSnapshot_rgbValues, "f")[index];
+        if (index >= __classPrivateFieldGet(this, _CanvasPixelsForTestsSnapshot_rgbValues, "f").length) {
+            throw Error(`CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsForTestsSnapshot_rgbValues, "f").length - 1}`);
+        }
+        const value = __classPrivateFieldGet(this, _CanvasPixelsForTestsSnapshot_rgbValues, "f")[index];
         return new BpxSolidColor((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
     }
 }
-_CanvasPixels2dSnapshot_rgbValues = new WeakMap();
+_CanvasPixelsForTestsSnapshot_rgbValues = new WeakMap();

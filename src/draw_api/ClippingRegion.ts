@@ -11,7 +11,9 @@ export class BpxClippingRegion {
   }
 
   // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
-  allowsDrawingAt(xy: BpxVector2d): boolean {
-    return xy.gte(this.#xy1) && xy.lt(this.#xy2);
+  allowsDrawingAt(x: number, y: number): boolean {
+    return (
+      x >= this.#xy1.x && y >= this.#xy1.y && x < this.#xy2.x && y < this.#xy2.y
+    );
   }
 }

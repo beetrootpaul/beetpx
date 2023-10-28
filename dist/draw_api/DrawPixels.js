@@ -28,8 +28,7 @@ export class DrawPixels {
                 if (bits[bitsY][bitsX] !== "#") {
                     continue;
                 }
-                const canvasXy = xy.add(bitsX, bitsY);
-                __classPrivateFieldGet(this, _DrawPixels_pixel, "f").draw(canvasXy, color, BpxFillPattern.primaryOnly, clippingRegion);
+                __classPrivateFieldGet(this, _DrawPixels_pixel, "f").draw(xy.x + bitsX, xy.y + bitsY, color, BpxFillPattern.primaryOnly, clippingRegion);
             }
         }
     }

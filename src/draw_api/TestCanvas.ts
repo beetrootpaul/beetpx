@@ -2,15 +2,17 @@ import { expect } from "@jest/globals";
 import { BpxColorId, BpxSolidColor } from "../Color";
 import { v_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
-import { CanvasPixelsNoRender } from "./canvas_pixels/CanvasPixelsNoRender";
+import { CanvasPixelsForTests } from "./canvas_pixels/CanvasPixelsForTests";
 
 export class TestCanvas {
   readonly pixels: CanvasPixels;
 
   constructor(width: number, height: number, color: BpxSolidColor) {
-    this.pixels = new CanvasPixelsNoRender(v_(width, height));
-    for (let i = 0; i < width * height; i += 1) {
-      this.pixels.set(i, color);
+    this.pixels = new CanvasPixelsForTests(v_(width, height));
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        this.pixels.set(color, x, y);
+      }
     }
   }
 

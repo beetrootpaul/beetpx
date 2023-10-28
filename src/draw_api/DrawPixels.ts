@@ -30,10 +30,9 @@ export class DrawPixels {
           continue;
         }
 
-        const canvasXy = xy.add(bitsX, bitsY);
-
         this.#pixel.draw(
-          canvasXy,
+          xy.x + bitsX,
+          xy.y + bitsY,
           color,
           BpxFillPattern.primaryOnly,
           clippingRegion,

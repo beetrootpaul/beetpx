@@ -9,14 +9,12 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawPixel_instances, _DrawPixel_canvasPixels, _DrawPixel_options, _DrawPixel_drawSolid;
+var _DrawPixel_canvasPixels, _DrawPixel_options;
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../Color";
 import { u_ } from "../Utils";
-import { v_0_0_ } from "../Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawPixel {
     constructor(canvasPixels, options = {}) {
-        _DrawPixel_instances.add(this);
         _DrawPixel_canvasPixels.set(this, void 0);
         _DrawPixel_options.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixel_canvasPixels, canvasPixels, "f");
@@ -26,40 +24,46 @@ export class DrawPixel {
     // TODO: tests for MappingColor
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
-    draw(xy, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+    draw(x, y, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
         var _a;
-        xy = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? xy : xy.round();
+        x = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? x : Math.round(x);
+        y = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? y : Math.round(y);
         if (!__classPrivateFieldGet(this, _DrawPixel_options, "f").disableVisitedCheck &&
-            __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").wasAlreadySet(xy.x, xy.y)) {
+            __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").wasAlreadySet(x, y)) {
             return;
         }
-        if (clippingRegion && !clippingRegion.allowsDrawingAt(xy)) {
+        if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
             return;
         }
-        if (xy.gte(v_0_0_) && xy.lt(__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize)) {
-            const index = xy.y * __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.x + xy.x;
-            if (fillPattern.hasPrimaryColorAt(xy)) {
-                if (color instanceof BpxCompositeColor) {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.primary);
+        if (x >= 0 &&
+            y >= 0 &&
+            x < __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.x &&
+            y < __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.y) {
+            if (fillPattern.hasPrimaryColorAt(x, y)) {
+                if (color instanceof BpxSolidColor) {
+                    __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color, x, y);
+                }
+                else if (color instanceof BpxCompositeColor) {
+                    if (color.primary instanceof BpxSolidColor) {
+                        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color.primary, x, y);
+                    }
                 }
                 else if (color instanceof BpxMappingColor) {
                     const snapshot = (_a = __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").getSnapshot(color.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${color.snapshotId}`);
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.getMappedColorFromCanvasSnapshot(snapshot, index));
-                }
-                else {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color);
+                    const mapped = color.getMappedColorFromCanvasSnapshot(snapshot, y * __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.x + x);
+                    if (mapped instanceof BpxSolidColor) {
+                        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(mapped, x, y);
+                    }
                 }
             }
             else {
                 if (color instanceof BpxCompositeColor) {
-                    __classPrivateFieldGet(this, _DrawPixel_instances, "m", _DrawPixel_drawSolid).call(this, index, color.secondary);
+                    if (color.secondary instanceof BpxSolidColor) {
+                        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color.secondary, x, y);
+                    }
                 }
             }
         }
     }
 }
-_DrawPixel_canvasPixels = new WeakMap(), _DrawPixel_options = new WeakMap(), _DrawPixel_instances = new WeakSet(), _DrawPixel_drawSolid = function _DrawPixel_drawSolid(canvasIndex, color) {
-    if (color instanceof BpxSolidColor) {
-        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(canvasIndex, color);
-    }
-};
+_DrawPixel_canvasPixels = new WeakMap(), _DrawPixel_options = new WeakMap();

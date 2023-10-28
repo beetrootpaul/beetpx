@@ -1,7 +1,7 @@
 import { BpxSolidColor } from "../../Color";
 import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
 
-export class CanvasPixels2dSnapshot implements CanvasPixelsSnapshot {
+export class CanvasPixelsForTestsSnapshot implements CanvasPixelsSnapshot {
   readonly #rgbValues: number[];
 
   constructor(rgbValues: number[]) {
@@ -9,6 +9,14 @@ export class CanvasPixels2dSnapshot implements CanvasPixelsSnapshot {
   }
 
   get(index: number): BpxSolidColor {
+    if (index >= this.#rgbValues.length) {
+      throw Error(
+        `CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${
+          this.#rgbValues.length - 1
+        }`,
+      );
+    }
+
     const value = this.#rgbValues[index]!;
     return new BpxSolidColor(
       (value & 0xff0000) >> 16,

@@ -10,7 +10,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawClear_canvasPixels;
-import { v_ } from "../Vector2d";
 export class DrawClear {
     constructor(canvasPixels) {
         _DrawClear_canvasPixels.set(this, void 0);
@@ -21,9 +20,8 @@ export class DrawClear {
         for (let x = 0; x < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.x; ++x) {
             for (let y = 0; y < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.y; ++y) {
                 if (!__classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").wasAlreadySet(x, y)) {
-                    if (!clippingRegion || clippingRegion.allowsDrawingAt(v_(x, y))) {
-                        const index = y * __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.x + x;
-                        __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").set(index, color);
+                    if (!clippingRegion || clippingRegion.allowsDrawingAt(x, y)) {
+                        __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").set(color, x, y);
                     }
                 }
             }

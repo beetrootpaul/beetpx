@@ -327,7 +327,8 @@ export class DrawApi {
           this.#clear.draw(cmd.color, cmd.clippingRegion);
         } else if (cmd.type === "pixel") {
           this.#pixel.draw(
-            cmd.xy,
+            cmd.xy.x,
+            cmd.xy.y,
             cmd.color,
             cmd.fillPattern,
             cmd.clippingRegion,

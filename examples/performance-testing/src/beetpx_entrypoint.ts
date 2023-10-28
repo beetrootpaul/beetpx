@@ -37,7 +37,7 @@ const logoPositionBaseDefault = v_((128 - 16) / 2, (128 - 16) / 2).sub(0, 8);
 let logoPositionBase = v_0_0_;
 
 let numberOfEllipses = 4;
-let numberOfBigSprites = 1;
+let numberOfBigSprites = 4;
 
 const negative = (c: BpxSolidColor) =>
   new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b);

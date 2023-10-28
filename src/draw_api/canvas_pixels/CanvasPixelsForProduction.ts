@@ -2,13 +2,13 @@ import { BpxSolidColor } from "../../Color";
 import { u_ } from "../../Utils";
 import { BpxVector2d, v_ } from "../../Vector2d";
 import { CanvasPixels } from "./CanvasPixels";
-import { CanvasPixels2dSnapshot } from "./CanvasPixels2dSnapshot";
+import { CanvasPixelsForProductionSnapshot } from "./CanvasPixelsForProductionSnapshot";
 import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
 
-// TODO: rename to express the "occupancy check" aspect
-export class CanvasPixels2d extends CanvasPixels {
+// TODO: rename, like, seriously…
+export class CanvasPixelsForProduction extends CanvasPixels {
   readonly #length: number;
-  readonly #rgbValues: number[];
+
   readonly #visited: boolean[];
 
   readonly #htmlCanvas: HTMLCanvasElement;
@@ -24,7 +24,6 @@ export class CanvasPixels2d extends CanvasPixels {
     super(canvasSize);
 
     this.#length = canvasSize.x * canvasSize.y;
-    this.#rgbValues = u_.range(this.#length).map(() => 0);
     this.#visited = u_.range(this.#length).map(() => false);
 
     this.#htmlCanvas = htmlCanvas;
@@ -62,21 +61,17 @@ export class CanvasPixels2d extends CanvasPixels {
     this.#initializeAsNonTransparent();
   }
 
-  wasAlreadySet(index: number): boolean;
-  wasAlreadySet(x: number, y: number): boolean;
-  wasAlreadySet(xOrIndex: number, y?: number): boolean {
-    // transform x and y to index, if needed
-    xOrIndex =
-      typeof y === "number" ? y * this.canvasSize.x + xOrIndex : xOrIndex;
-
-    if (xOrIndex < 0 || xOrIndex >= this.#length) {
+  wasAlreadySet(x: number, y: number): boolean {
+    const index = y * this.canvasSize.x + x;
+    if (index < 0 || index >= this.#length) {
       return true;
     }
-
-    return this.#visited[xOrIndex]!;
+    return this.#visited[index]!;
   }
 
-  set(index: number, color: BpxSolidColor): void {
+  set(color: BpxSolidColor, x: number, y: number): void {
+    const index = y * this.canvasSize.x + x;
+
     if (index >= this.#length) {
       throw Error(
         `CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${
@@ -85,12 +80,18 @@ export class CanvasPixels2d extends CanvasPixels {
       );
     }
 
-    this.#rgbValues[index] = (color.r << 16) + (color.g << 8) + color.b;
+    const dataIndex = index * 4;
+    this.#offscreenImageData.data[dataIndex] = color.r;
+    this.#offscreenImageData.data[dataIndex + 1] = color.g;
+    this.#offscreenImageData.data[dataIndex + 2] = color.b;
+
     this.#visited[index] = true;
   }
 
   newSnapshot(): CanvasPixelsSnapshot {
-    return new CanvasPixels2dSnapshot([...this.#rgbValues]);
+    return new CanvasPixelsForProductionSnapshot(
+      new Uint8ClampedArray(this.#offscreenImageData.data),
+    );
   }
 
   onWindowResize(): void {
@@ -111,14 +112,6 @@ export class CanvasPixels2d extends CanvasPixels {
   }
 
   doRender(): void {
-    for (let index = 0; index < this.#length; index++) {
-      const value = this.#rgbValues[index]!;
-      const dataIndex = index * 4;
-      this.#offscreenImageData.data[dataIndex] = (value & 0xff0000) >> 16;
-      this.#offscreenImageData.data[dataIndex + 1] = (value & 0x00ff00) >> 8;
-      this.#offscreenImageData.data[dataIndex + 2] = value & 0x0000ff;
-    }
-
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
     const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);

@@ -6,13 +6,15 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _TestCanvas_instances, _TestCanvas_asAscii;
 import { expect } from "@jest/globals";
 import { v_ } from "../Vector2d";
-import { CanvasPixelsNoRender } from "./canvas_pixels/CanvasPixelsNoRender";
+import { CanvasPixelsForTests } from "./canvas_pixels/CanvasPixelsForTests";
 export class TestCanvas {
     constructor(width, height, color) {
         _TestCanvas_instances.add(this);
-        this.pixels = new CanvasPixelsNoRender(v_(width, height));
-        for (let i = 0; i < width * height; i += 1) {
-            this.pixels.set(i, color);
+        this.pixels = new CanvasPixelsForTests(v_(width, height));
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                this.pixels.set(color, x, y);
+            }
         }
     }
     expectToEqual(params) {

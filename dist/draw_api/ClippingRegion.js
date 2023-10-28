@@ -21,8 +21,8 @@ export class BpxClippingRegion {
         _a = this, _b = this, [({ set value(_c) { __classPrivateFieldSet(_a, _BpxClippingRegion_xy1, _c, "f"); } }).value, ({ set value(_c) { __classPrivateFieldSet(_b, _BpxClippingRegion_xy2, _c, "f"); } }).value] = BpxVector2d.minMax(__classPrivateFieldGet(this, _BpxClippingRegion_xy1, "f"), __classPrivateFieldGet(this, _BpxClippingRegion_xy2, "f"));
     }
     // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
-    allowsDrawingAt(xy) {
-        return xy.gte(__classPrivateFieldGet(this, _BpxClippingRegion_xy1, "f")) && xy.lt(__classPrivateFieldGet(this, _BpxClippingRegion_xy2, "f"));
+    allowsDrawingAt(x, y) {
+        return (x >= __classPrivateFieldGet(this, _BpxClippingRegion_xy1, "f").x && y >= __classPrivateFieldGet(this, _BpxClippingRegion_xy1, "f").y && x < __classPrivateFieldGet(this, _BpxClippingRegion_xy2, "f").x && y < __classPrivateFieldGet(this, _BpxClippingRegion_xy2, "f").y);
     }
 }
 _BpxClippingRegion_xy1 = new WeakMap(), _BpxClippingRegion_xy2 = new WeakMap();
