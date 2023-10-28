@@ -126,14 +126,27 @@ export class DrawApi {
 
   clearCanvas(color: BpxSolidColor): void {
     // TODO: encapsulate queues logic
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "clear",
-      color: color,
-      clippingRegion: this.#clippingRegion,
-    });
+    // Canvas clear usually happens first among all the draw calls
+    //   and only once. We decided to keep it simple and therefore
+    //   canvas clear does *not* check whether given pixel is
+    //   already set by a some shape on top of it. Instead
+    //   we keep it in a separate draw queue and just clear
+    //   an entire canvas.
+    this.#queues.push([
+      {
+        type: "clear",
+        color: color,
+        clippingRegion: this.#clippingRegion,
+      },
+    ]);
+    // And let's create a next empty queue for subsequent commands in order
+    //   for the canvas clear to be done immediately and not at the end of
+    //   the queue.
+    this.#queues.push([]);
   }
 
   pixel(xy: BpxVector2d, color: BpxSolidColor): void {
+    // TODO: encapsulate queues logic
     this.#queues[this.#queues.length - 1]!.push({
       type: "pixel",
       xy: xy.sub(this.#cameraOffset),
@@ -310,7 +323,7 @@ export class DrawApi {
         snapshotId: snapshotId,
       },
     ]);
-    // And let's create next empty queue for subsequent commands in order
+    // And let's create a next empty queue for subsequent commands in order
     //   for the snapshot to be taken immediately and not at the end of
     //   the queue.
     this.#queues.push([]);
@@ -324,7 +337,7 @@ export class DrawApi {
       for (let i = queue.length - 1; i >= 0; i--) {
         const cmd = queue[i]!;
         if (cmd.type === "clear") {
-          this.#clear.draw(cmd.color, cmd.clippingRegion);
+          this.#clear.draw(cmd.color);
         } else if (cmd.type === "pixel") {
           this.#pixel.draw(
             cmd.xy.x,

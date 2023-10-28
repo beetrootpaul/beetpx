@@ -15,15 +15,10 @@ export class DrawClear {
         _DrawClear_canvasPixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawClear_canvasPixels, canvasPixels, "f");
     }
-    // TODO: cover clippingRegion with tests
-    draw(color, clippingRegion = null) {
+    draw(color) {
         for (let x = 0; x < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.x; ++x) {
             for (let y = 0; y < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.y; ++y) {
-                if (!__classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").wasAlreadySet(x, y)) {
-                    if (!clippingRegion || clippingRegion.allowsDrawingAt(x, y)) {
-                        __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").set(color, x, y);
-                    }
-                }
+                __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").set(color, x, y);
             }
         }
     }

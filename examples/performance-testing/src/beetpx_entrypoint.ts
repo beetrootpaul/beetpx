@@ -216,6 +216,12 @@ b_.init(
       new BpxMappingColor(snapshotId2, negative),
     );
 
+    for (let row = 0; row < 16; row++) {
+      for (let col = 0; col < 16; col++) {
+        b_.sprite(spr_("logo.png")(4, 4, 8, 8), v_(4 + row * 16, 4 + col * 16));
+      }
+    }
+
     drawUpdateCallsVisualization();
 
     drawRenderFpsVisualization();

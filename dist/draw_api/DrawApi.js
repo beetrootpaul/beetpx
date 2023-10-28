@@ -96,13 +96,26 @@ export class DrawApi {
     }
     clearCanvas(color) {
         // TODO: encapsulate queues logic
-        __classPrivateFieldGet(this, _DrawApi_queues, "f")[__classPrivateFieldGet(this, _DrawApi_queues, "f").length - 1].push({
-            type: "clear",
-            color: color,
-            clippingRegion: __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"),
-        });
+        // Canvas clear usually happens first among all the draw calls
+        //   and only once. We decided to keep it simple and therefore
+        //   canvas clear does *not* check whether given pixel is
+        //   already set by a some shape on top of it. Instead
+        //   we keep it in a separate draw queue and just clear
+        //   an entire canvas.
+        __classPrivateFieldGet(this, _DrawApi_queues, "f").push([
+            {
+                type: "clear",
+                color: color,
+                clippingRegion: __classPrivateFieldGet(this, _DrawApi_clippingRegion, "f"),
+            },
+        ]);
+        // And let's create a next empty queue for subsequent commands in order
+        //   for the canvas clear to be done immediately and not at the end of
+        //   the queue.
+        __classPrivateFieldGet(this, _DrawApi_queues, "f").push([]);
     }
     pixel(xy, color) {
+        // TODO: encapsulate queues logic
         __classPrivateFieldGet(this, _DrawApi_queues, "f")[__classPrivateFieldGet(this, _DrawApi_queues, "f").length - 1].push({
             type: "pixel",
             xy: xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")),
@@ -232,7 +245,7 @@ export class DrawApi {
                 snapshotId: snapshotId,
             },
         ]);
-        // And let's create next empty queue for subsequent commands in order
+        // And let's create a next empty queue for subsequent commands in order
         //   for the snapshot to be taken immediately and not at the end of
         //   the queue.
         __classPrivateFieldGet(this, _DrawApi_queues, "f").push([]);
@@ -244,7 +257,7 @@ export class DrawApi {
             for (let i = queue.length - 1; i >= 0; i--) {
                 const cmd = queue[i];
                 if (cmd.type === "clear") {
-                    __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(cmd.color, cmd.clippingRegion);
+                    __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(cmd.color);
                 }
                 else if (cmd.type === "pixel") {
                     __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(cmd.xy.x, cmd.xy.y, cmd.color, cmd.fillPattern, cmd.clippingRegion);
