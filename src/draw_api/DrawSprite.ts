@@ -1,18 +1,16 @@
 import { ImageAsset } from "../Assets";
-import {
-  BpxColorId,
-  BpxSolidColor,
-  BpxTransparentColor,
-  transparent_,
-} from "../Color";
+import { BpxColorId, BpxSolidColor, BpxTransparentColor } from "../Color";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
+import { PreparedSprites } from "./PreparedSprites";
 
 export class DrawSprite {
+  static readonly #preparedSprites: PreparedSprites = new PreparedSprites();
+
   readonly #canvasPixels: CanvasPixels;
   readonly #options: { disableRounding?: boolean };
 
@@ -89,10 +87,17 @@ export class DrawSprite {
       return;
     }
 
-    for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
-      const canvasYBase = targetXy.y + (imgY - sprite.xy1.y) * scaleXy.y;
-      for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-        const canvasXBase = targetXy.x + (imgX - sprite.xy1.x) * scaleXy.x;
+    const preparedSprite = DrawSprite.#preparedSprites.prepareOrGetFromCache(
+      sprite,
+      imgBytes,
+      imgW,
+      colorMapping,
+    );
+
+    for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
+      const canvasYBase = targetXy.y + spriteY * scaleXy.y;
+      for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
+        const canvasXBase = targetXy.x + spriteX * scaleXy.x;
 
         for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
           for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
@@ -105,25 +110,9 @@ export class DrawSprite {
                 clippingRegion.allowsDrawingAt(canvasX, canvasY)
               ) {
                 if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
-                  const imgBytesIndex = (imgY * imgW + imgX) * 4;
-                  if (imgBytes.length < imgBytesIndex + 4) {
-                    throw Error(
-                      `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`,
-                    );
-                  }
-
-                  const color: BpxSolidColor | BpxTransparentColor =
-                    imgBytes[imgBytesIndex + 3]! >= 0xff / 2
-                      ? new BpxSolidColor(
-                          imgBytes[imgBytesIndex]!,
-                          imgBytes[imgBytesIndex + 1]!,
-                          imgBytes[imgBytesIndex + 2]!,
-                        )
-                      : transparent_;
-                  const mappedColor = colorMapping.get(color.id) ?? color;
-
-                  if (mappedColor instanceof BpxSolidColor) {
-                    this.#canvasPixels.set(mappedColor, canvasX, canvasY);
+                  const color = preparedSprite.colors[spriteX]![spriteY];
+                  if (color) {
+                    this.#canvasPixels.set(color, canvasX, canvasY);
                   }
                 }
               }

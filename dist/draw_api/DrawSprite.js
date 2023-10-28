@@ -9,12 +9,12 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawSprite_canvasPixels, _DrawSprite_options;
-import { BpxSolidColor, transparent_, } from "../Color";
+var _a, _DrawSprite_preparedSprites, _DrawSprite_canvasPixels, _DrawSprite_options;
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { v_, v_1_1_ } from "../Vector2d";
 import { BpxFillPattern } from "./FillPattern";
+import { PreparedSprites } from "./PreparedSprites";
 export class DrawSprite {
     constructor(canvasPixels, options = {}) {
         _DrawSprite_canvasPixels.set(this, void 0);
@@ -32,7 +32,6 @@ export class DrawSprite {
     scaleXy = v_1_1_, colorMapping = new Map(), 
     // TODO: test it
     fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
-        var _a;
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = scaleXy.floor();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
@@ -47,10 +46,11 @@ export class DrawSprite {
             targetXy.y >= __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canvasSize.y) {
             return;
         }
-        for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
-            const canvasYBase = targetXy.y + (imgY - sprite.xy1.y) * scaleXy.y;
-            for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-                const canvasXBase = targetXy.x + (imgX - sprite.xy1.x) * scaleXy.x;
+        const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, colorMapping);
+        for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
+            const canvasYBase = targetXy.y + spriteY * scaleXy.y;
+            for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
+                const canvasXBase = targetXy.x + spriteX * scaleXy.x;
                 for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
                     for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
                         const canvasX = canvasXBase + xScaledStep;
@@ -59,16 +59,9 @@ export class DrawSprite {
                             if (!clippingRegion ||
                                 clippingRegion.allowsDrawingAt(canvasX, canvasY)) {
                                 if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
-                                    const imgBytesIndex = (imgY * imgW + imgX) * 4;
-                                    if (imgBytes.length < imgBytesIndex + 4) {
-                                        throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
-                                    }
-                                    const color = imgBytes[imgBytesIndex + 3] >= 0xff / 2
-                                        ? new BpxSolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
-                                        : transparent_;
-                                    const mappedColor = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
-                                    if (mappedColor instanceof BpxSolidColor) {
-                                        __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").set(mappedColor, canvasX, canvasY);
+                                    const color = preparedSprite.colors[spriteX][spriteY];
+                                    if (color) {
+                                        __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").set(color, canvasX, canvasY);
                                     }
                                 }
                             }
@@ -79,4 +72,5 @@ export class DrawSprite {
         }
     }
 }
-_DrawSprite_canvasPixels = new WeakMap(), _DrawSprite_options = new WeakMap();
+_a = DrawSprite, _DrawSprite_canvasPixels = new WeakMap(), _DrawSprite_options = new WeakMap();
+_DrawSprite_preparedSprites = { value: new PreparedSprites() };

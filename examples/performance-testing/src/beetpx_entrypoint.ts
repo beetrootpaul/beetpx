@@ -27,7 +27,7 @@ const renderFpsVisualization = {
   historyIndex: 0,
 };
 
-const logoSprite = spr_("logo.png")(0, 0, 16, 16);
+const logoSprite = spr_("logo.png")(1, 1, 14, 14);
 const logoInnerColor = BpxSolidColor.fromRgbCssHex("#125359");
 const logoOuterColor = BpxSolidColor.fromRgbCssHex("#ff6e59");
 
@@ -335,7 +335,7 @@ function drawSprites(): void {
     b_.sprite(
       logoSprite,
       logoPositionBase.sub(calculateLogoPositionOffset(b_.frameNumber + i)),
-      v_(2, 2),
+      v_(2, 3),
     );
   }
   b_.mapSpriteColors(prevMapping);

@@ -18,6 +18,16 @@ export class TestImage {
             height: normalizedAsciiImageLines.length,
             rgba8bitData: new Uint8ClampedArray(4 * normalizedAsciiImage.length),
         };
+        this.uniqueUrl =
+            "/" +
+                this.asset.width +
+                "/" +
+                this.asset.height +
+                "/" +
+                normalizedAsciiImage +
+                ".png";
+        // TODO: REMOVE
+        console.log(this.uniqueUrl);
         for (let i = 0; i < this.asset.width * this.asset.height; i += 1) {
             const color = asciiToColor[normalizedAsciiImage[i]];
             if (!color) {
