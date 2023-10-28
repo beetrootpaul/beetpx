@@ -68,7 +68,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_visited, "f")[index] = true;
     }
     newSnapshot() {
-        return new CanvasPixelsForProductionSnapshot(new Uint8ClampedArray(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f").data));
+        return new CanvasPixelsForProductionSnapshot(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f").data.slice());
     }
     onWindowResize() {
         // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays

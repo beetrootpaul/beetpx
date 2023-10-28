@@ -35,7 +35,7 @@ export class CanvasPixelsForTests extends CanvasPixels {
         __classPrivateFieldGet(this, _CanvasPixelsForTests_rgbValues, "f")[index] = (color.r << 16) + (color.g << 8) + color.b;
     }
     newSnapshot() {
-        return new CanvasPixelsForTestsSnapshot([...__classPrivateFieldGet(this, _CanvasPixelsForTests_rgbValues, "f")]);
+        return new CanvasPixelsForTestsSnapshot(__classPrivateFieldGet(this, _CanvasPixelsForTests_rgbValues, "f").slice());
     }
     onWindowResize() { }
     resetVisitedMarkers() { }

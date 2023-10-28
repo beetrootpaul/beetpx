@@ -43,7 +43,7 @@ export class CanvasPixelsForTests extends CanvasPixels {
   }
 
   newSnapshot(): CanvasPixelsSnapshot {
-    return new CanvasPixelsForTestsSnapshot([...this.#rgbValues]);
+    return new CanvasPixelsForTestsSnapshot(this.#rgbValues.slice());
   }
 
   onWindowResize(): void {}

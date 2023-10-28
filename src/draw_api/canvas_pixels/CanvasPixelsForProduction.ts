@@ -93,7 +93,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
 
   newSnapshot(): CanvasPixelsSnapshot {
     return new CanvasPixelsForProductionSnapshot(
-      new Uint8ClampedArray(this.#offscreenImageData.data),
+      this.#offscreenImageData.data.slice(),
     );
   }
 
