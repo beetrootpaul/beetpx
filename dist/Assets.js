@@ -48,6 +48,7 @@ export class Assets {
                 canvas.width = htmlImage.naturalWidth;
                 canvas.height = htmlImage.naturalHeight;
                 const ctx = canvas.getContext("2d", {
+                    colorSpace: "srgb",
                     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
                     alpha: false,
                 });
@@ -55,7 +56,7 @@ export class Assets {
                     throw Error(`Assets: Failed to process the image: ${htmlImage.src}`);
                 }
                 ctx.drawImage(htmlImage, 0, 0);
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: "srgb" });
                 __classPrivateFieldGet(this, _Assets_images, "f").set(url, {
                     width: imageData.width,
                     height: imageData.height,

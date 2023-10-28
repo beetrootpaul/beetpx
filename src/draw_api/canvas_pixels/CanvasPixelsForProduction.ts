@@ -37,6 +37,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
 
     this.#htmlCanvasContext =
       this.#htmlCanvas.getContext("2d", {
+        colorSpace: "srgb",
         // we allow transparency in order ot make background color visible around the game itself
         alpha: true,
       }) ?? u_.throwError("Was unable to obtain '2d' context from <canvas>");
@@ -49,6 +50,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
 
     this.#offscreenContext =
       offscreenCanvas.getContext("2d", {
+        colorSpace: "srgb",
         // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
         alpha: false,
       }) ??
@@ -57,6 +59,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     this.#offscreenImageData = this.#offscreenContext.createImageData(
       this.#offscreenContext.canvas.width,
       this.#offscreenContext.canvas.height,
+      { colorSpace: "srgb" },
     );
 
     this.#initializeAsNonTransparent();
