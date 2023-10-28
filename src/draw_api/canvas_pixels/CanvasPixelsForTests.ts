@@ -21,11 +21,19 @@ export class CanvasPixelsForTests extends CanvasPixels {
   }
 
   set(color: BpxSolidColor, x: number, y: number): void {
+    if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
+      throw Error(
+        `(x,y) index out of bounds: (x,y) = (${x},${y}), bottom bound = (0,0), upper bound = (${
+          this.canvasSize.x - 1
+        },${this.canvasSize.y - 1})`,
+      );
+    }
+
     const index = y * this.canvasSize.x + x;
 
     if (index >= this.#length) {
       throw Error(
-        `CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${
+        `index out of bounds: index = ${index}, max allowed index = ${
           this.#length - 1
         }`,
       );

@@ -33,10 +33,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
       this.#htmlCanvas.getContext("2d", {
         // we allow transparency in order ot make background color visible around the game itself
         alpha: true,
-      }) ??
-      u_.throwError(
-        "CanvasPixels2d: Was unable to obtain '2d' context from <canvas>",
-      );
+      }) ?? u_.throwError("Was unable to obtain '2d' context from <canvas>");
 
     const offscreenCanvas = document
       .createElement("canvas")
@@ -49,9 +46,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
         alpha: false,
       }) ??
-      u_.throwError(
-        "CanvasPixels2d: Was unable to obtain '2d' context from OffscreenCanvas",
-      );
+      u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas");
 
     this.#offscreenImageData = this.#offscreenContext.createImageData(
       this.#offscreenContext.canvas.width,
@@ -62,19 +57,27 @@ export class CanvasPixelsForProduction extends CanvasPixels {
   }
 
   wasAlreadySet(x: number, y: number): boolean {
-    const index = y * this.canvasSize.x + x;
-    if (index < 0 || index >= this.#length) {
+    if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
       return true;
     }
+    const index = y * this.canvasSize.x + x;
     return this.#visited[index]!;
   }
 
   set(color: BpxSolidColor, x: number, y: number): void {
+    if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
+      throw Error(
+        `(x,y) index out of bounds: (x,y) = (${x},${y}), bottom bound = (0,0), upper bound = (${
+          this.canvasSize.x - 1
+        },${this.canvasSize.y - 1})`,
+      );
+    }
+
     const index = y * this.canvasSize.x + x;
 
     if (index >= this.#length) {
       throw Error(
-        `CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${
+        `index out of bounds: index = ${index}, max allowed index = ${
           this.#length - 1
         }`,
       );

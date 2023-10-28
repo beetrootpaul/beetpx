@@ -18,7 +18,7 @@ export class CanvasPixelsForTestsSnapshot {
     }
     get(index) {
         if (index >= __classPrivateFieldGet(this, _CanvasPixelsForTestsSnapshot_rgbValues, "f").length) {
-            throw Error(`CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsForTestsSnapshot_rgbValues, "f").length - 1}`);
+            throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasPixelsForTestsSnapshot_rgbValues, "f").length - 1}`);
         }
         const value = __classPrivateFieldGet(this, _CanvasPixelsForTestsSnapshot_rgbValues, "f")[index];
         return new BpxSolidColor((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);

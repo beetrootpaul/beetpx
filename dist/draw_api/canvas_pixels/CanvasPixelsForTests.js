@@ -25,9 +25,12 @@ export class CanvasPixelsForTests extends CanvasPixels {
         return false;
     }
     set(color, x, y) {
+        if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
+            throw Error(`(x,y) index out of bounds: (x,y) = (${x},${y}), bottom bound = (0,0), upper bound = (${this.canvasSize.x - 1},${this.canvasSize.y - 1})`);
+        }
         const index = y * this.canvasSize.x + x;
         if (index >= __classPrivateFieldGet(this, _CanvasPixelsForTests_length, "f")) {
-            throw Error(`CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsForTests_length, "f") - 1}`);
+            throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasPixelsForTests_length, "f") - 1}`);
         }
         __classPrivateFieldGet(this, _CanvasPixelsForTests_rgbValues, "f")[index] = (color.r << 16) + (color.g << 8) + color.b;
     }

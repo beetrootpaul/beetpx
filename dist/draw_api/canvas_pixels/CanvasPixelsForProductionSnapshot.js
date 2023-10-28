@@ -18,7 +18,7 @@ export class CanvasPixelsForProductionSnapshot {
     }
     get(index) {
         if (index >= __classPrivateFieldGet(this, _CanvasPixelsForProductionSnapshot_imageDataData, "f").length / 4) {
-            throw Error(`CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsForProductionSnapshot_imageDataData, "f").length / 4 - 1}`);
+            throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasPixelsForProductionSnapshot_imageDataData, "f").length / 4 - 1}`);
         }
         const dataIndex = index * 4;
         return new BpxSolidColor(__classPrivateFieldGet(this, _CanvasPixelsForProductionSnapshot_imageDataData, "f")[dataIndex], __classPrivateFieldGet(this, _CanvasPixelsForProductionSnapshot_imageDataData, "f")[dataIndex + 1], __classPrivateFieldGet(this, _CanvasPixelsForProductionSnapshot_imageDataData, "f")[dataIndex + 2]);

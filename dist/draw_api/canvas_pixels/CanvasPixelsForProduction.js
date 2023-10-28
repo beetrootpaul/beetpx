@@ -33,7 +33,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_htmlCanvasContext, (_a = __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").getContext("2d", {
             // we allow transparency in order ot make background color visible around the game itself
             alpha: true,
-        })) !== null && _a !== void 0 ? _a : u_.throwError("CanvasPixels2d: Was unable to obtain '2d' context from <canvas>"), "f");
+        })) !== null && _a !== void 0 ? _a : u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
         const offscreenCanvas = document
             .createElement("canvas")
             .transferControlToOffscreen();
@@ -42,21 +42,24 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_offscreenContext, (_b = offscreenCanvas.getContext("2d", {
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
             alpha: false,
-        })) !== null && _b !== void 0 ? _b : u_.throwError("CanvasPixels2d: Was unable to obtain '2d' context from OffscreenCanvas"), "f");
+        })) !== null && _b !== void 0 ? _b : u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_offscreenImageData, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height), "f");
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_instances, "m", _CanvasPixelsForProduction_initializeAsNonTransparent).call(this);
     }
     wasAlreadySet(x, y) {
-        const index = y * this.canvasSize.x + x;
-        if (index < 0 || index >= __classPrivateFieldGet(this, _CanvasPixelsForProduction_length, "f")) {
+        if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
             return true;
         }
+        const index = y * this.canvasSize.x + x;
         return __classPrivateFieldGet(this, _CanvasPixelsForProduction_visited, "f")[index];
     }
     set(color, x, y) {
+        if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
+            throw Error(`(x,y) index out of bounds: (x,y) = (${x},${y}), bottom bound = (0,0), upper bound = (${this.canvasSize.x - 1},${this.canvasSize.y - 1})`);
+        }
         const index = y * this.canvasSize.x + x;
         if (index >= __classPrivateFieldGet(this, _CanvasPixelsForProduction_length, "f")) {
-            throw Error(`CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${__classPrivateFieldGet(this, _CanvasPixelsForProduction_length, "f") - 1}`);
+            throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasPixelsForProduction_length, "f") - 1}`);
         }
         const dataIndex = index * 4;
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f").data[dataIndex] = color.r;

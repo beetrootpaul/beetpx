@@ -11,7 +11,7 @@ export class CanvasPixelsForTestsSnapshot implements CanvasPixelsSnapshot {
   get(index: number): BpxSolidColor {
     if (index >= this.#rgbValues.length) {
       throw Error(
-        `CanvasPixels2d: index out of bounds: index = ${index}, maxAllowedIndex = ${
+        `index out of bounds: index = ${index}, max allowed index = ${
           this.#rgbValues.length - 1
         }`,
       );
