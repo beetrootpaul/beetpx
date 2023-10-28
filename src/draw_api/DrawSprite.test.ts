@@ -1,5 +1,10 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor, transparent_ } from "../Color";
+import {
+  BpxColorId,
+  BpxSolidColor,
+  BpxTransparentColor,
+  transparent_,
+} from "../Color";
 import { spr_ } from "../Sprite";
 import { v_, v_1_1_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
@@ -469,7 +474,7 @@ describe("DrawSprite", () => {
       s(0, 0, 4, 4),
       v_(0, 0),
       v_1_1_,
-      new Map([
+      new Map<BpxColorId, BpxSolidColor | BpxTransparentColor>([
         [c1.id, c4],
         [c2.id, c5],
         [c3.id, ct],

@@ -1,25 +1,20 @@
-import { BpxColor } from "../Color";
+import { BpxSolidColor } from "../Color";
 import { BpxVector2d } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
-import { DrawPixel } from "./DrawPixel";
-import { BpxFillPattern } from "./FillPattern";
 
 export class DrawPixels {
-  readonly #pixel: DrawPixel;
+  readonly #canvasPixels: CanvasPixels;
 
   constructor(canvasPixels: CanvasPixels) {
-    this.#pixel = new DrawPixel(canvasPixels, {
-      disableRounding: true,
-      disableVisitedCheck: false,
-    });
+    this.#canvasPixels = canvasPixels;
   }
 
   // TODO: add tests
   draw(
     xy: BpxVector2d,
     bits: string[],
-    color: BpxColor,
+    color: BpxSolidColor,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
     xy = xy.round();
@@ -30,13 +25,13 @@ export class DrawPixels {
           continue;
         }
 
-        this.#pixel.draw(
-          xy.x + bitsX,
-          xy.y + bitsY,
-          color,
-          BpxFillPattern.primaryOnly,
-          clippingRegion,
-        );
+        const x = xy.x + bitsX;
+        const y = xy.y + bitsY;
+        if (!this.#canvasPixels.wasAlreadySet(x, y)) {
+          if (!clippingRegion || clippingRegion.allowsDrawingAt(x, y)) {
+            this.#canvasPixels.set(color, x, y);
+          }
+        }
       }
     }
   }

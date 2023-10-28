@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawText_canvasPixels, _DrawText_sprite;
-import { transparent_ } from "../Color";
+import { transparent_, } from "../Color";
 import { v_1_1_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";

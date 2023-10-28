@@ -17,6 +17,9 @@ export class CanvasPixelsForTests extends CanvasPixels {
   }
 
   wasAlreadySet(x: number, y: number): boolean {
+    if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
+      return true;
+    }
     return false;
   }
 

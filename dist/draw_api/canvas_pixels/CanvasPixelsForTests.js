@@ -22,6 +22,9 @@ export class CanvasPixelsForTests extends CanvasPixels {
         __classPrivateFieldSet(this, _CanvasPixelsForTests_rgbValues, u_.range(__classPrivateFieldGet(this, _CanvasPixelsForTests_length, "f")).map(() => 0), "f");
     }
     wasAlreadySet(x, y) {
+        if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
+            return true;
+        }
         return false;
     }
     set(color, x, y) {

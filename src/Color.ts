@@ -14,6 +14,9 @@ export interface BpxColor {
 // TODO: split colors into separate files?
 
 export class BpxTransparentColor implements BpxColor {
+  // used to avoid a case where every color can be interpreted as BpxTransparentColor
+  readonly #nominalTypeHelper__transparent = true;
+
   readonly id: BpxColorId = "transparent";
 }
 
@@ -21,6 +24,8 @@ export const transparent_ = new BpxTransparentColor();
 
 // Red, green, and blue, each one as value between 0 and 255.
 export class BpxSolidColor implements BpxColor {
+  readonly #nominalTypeHelper__solid = true;
+
   readonly id: BpxColorId;
 
   readonly r: number;
@@ -69,6 +74,8 @@ export const green_ = BpxSolidColor.fromRgbCssHex("#00ff00");
 export const blue_ = BpxSolidColor.fromRgbCssHex("#0000ff");
 
 export class BpxCompositeColor implements BpxColor {
+  readonly #nominalTypeHelper__composite = true;
+
   readonly id: BpxColorId;
 
   readonly primary: BpxSolidColor | BpxTransparentColor;
@@ -87,6 +94,8 @@ export class BpxCompositeColor implements BpxColor {
 // TODO: make it a function which allows to implement catch it all color
 export class BpxMappingColor implements BpxColor {
   static #nextId = 1;
+
+  readonly #nominalTypeHelper__mapping = true;
 
   readonly id: BpxColorId = `mapping:${BpxMappingColor.#nextId++}`;
 

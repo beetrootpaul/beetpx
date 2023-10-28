@@ -9,19 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawEllipse_canvasPixels, _DrawEllipse_pixel;
+var _DrawEllipse_instances, _DrawEllipse_canvasPixels, _DrawEllipse_drawPixel;
+import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
+import { u_ } from "../Utils";
 import { BpxVector2d } from "../Vector2d";
-import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawEllipse {
     constructor(canvasPixels) {
+        _DrawEllipse_instances.add(this);
         _DrawEllipse_canvasPixels.set(this, void 0);
-        _DrawEllipse_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawEllipse_canvasPixels, canvasPixels, "f");
-        __classPrivateFieldSet(this, _DrawEllipse_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f"), {
-            disableRounding: true,
-            disableVisitedCheck: false,
-        }), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
     // TODO: tests for MappingColor
@@ -29,6 +26,7 @@ export class DrawEllipse {
     // TODO: cover ClippingRegion with tests
     // Based on http://members.chello.at/easyfilter/bresenham.html
     draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+        var _a;
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
             xyMaxExclusive.y - xyMinInclusive.y <= 0) {
@@ -41,6 +39,21 @@ export class DrawEllipse {
             xyMinInclusive.y >= __classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").canvasSize.y) {
             return;
         }
+        const c1 = color instanceof BpxCompositeColor
+            ? color.primary instanceof BpxSolidColor
+                ? color.primary
+                : null
+            : color;
+        const c2 = color instanceof BpxCompositeColor
+            ? color.secondary instanceof BpxSolidColor
+                ? color.secondary
+                : null
+            : null;
+        const sn = c1 instanceof BpxMappingColor
+            ? (_a = __classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
+            : null;
+        const fp = fillPattern;
+        const cr = clippingRegion;
         //
         // PREPARE
         //
@@ -60,14 +73,14 @@ export class DrawEllipse {
             //
             // DRAW THE CURRENT PIXEL IN EACH QUADRANT
             //
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(right, bottom, color, fillPattern, clippingRegion);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(left, bottom, color, fillPattern, clippingRegion);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(left, top, color, fillPattern, clippingRegion);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(right, top, color, fillPattern, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, bottom, c1, c2, fp, cr, sn);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, bottom, c1, c2, fp, cr, sn);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, top, c1, c2, fp, cr, sn);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, top, c1, c2, fp, cr, sn);
             if (fill) {
                 for (let x = left + 1; x < right; x++) {
-                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(x, top, color, fillPattern, clippingRegion);
-                    __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(x, bottom, color, fillPattern, clippingRegion);
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, fp, cr, sn);
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, fp, cr, sn);
                 }
             }
             //
@@ -93,13 +106,38 @@ export class DrawEllipse {
         //
         while (bottom - top <= b) {
             // TODO: update the implementation below to honor fill pattern
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(left - 1, bottom, color, fillPattern, clippingRegion);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(right + 1, bottom, color, fillPattern, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, bottom, c1, c2, fp, cr, sn);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, bottom, c1, c2, fp, cr, sn);
             bottom += 1;
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(left - 1, top, color, fillPattern, clippingRegion);
-            __classPrivateFieldGet(this, _DrawEllipse_pixel, "f").draw(right + 1, top, color, fillPattern, clippingRegion);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, top, c1, c2, fp, cr, sn);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, top, c1, c2, fp, cr, sn);
             top -= 1;
         }
     }
 }
-_DrawEllipse_canvasPixels = new WeakMap(), _DrawEllipse_pixel = new WeakMap();
+_DrawEllipse_canvasPixels = new WeakMap(), _DrawEllipse_instances = new WeakSet(), _DrawEllipse_drawPixel = function _DrawEllipse_drawPixel(x, y, c1, c2, fillPattern, clippingRegion, snapshot) {
+    if (__classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").wasAlreadySet(x, y)) {
+        return;
+    }
+    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
+        return;
+    }
+    if (fillPattern.hasPrimaryColorAt(x, y)) {
+        if (!c1) {
+        }
+        else if (c1 instanceof BpxSolidColor) {
+            __classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").set(c1, x, y);
+        }
+        else {
+            const mapped = c1.getMappedColorFromCanvasSnapshot(snapshot !== null && snapshot !== void 0 ? snapshot : u_.throwError("Snapshot was not passed when trying to obtain a mapped color"), y * __classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").canvasSize.x + x);
+            if (mapped instanceof BpxSolidColor) {
+                __classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").set(mapped, x, y);
+            }
+        }
+    }
+    else {
+        if (c2 != null) {
+            __classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").set(c2, x, y);
+        }
+    }
+};

@@ -1,6 +1,5 @@
 import { Assets, FontAsset } from "../Assets";
 import {
-  BpxColor,
   BpxColorId,
   BpxCompositeColor,
   BpxMappingColor,
@@ -65,7 +64,10 @@ export class DrawApi {
 
   #fontAsset: FontAsset | null = null;
 
-  readonly #spriteColorMapping: Map<BpxColorId, BpxColor> = new Map();
+  readonly #spriteColorMapping: Map<
+    BpxColorId,
+    BpxSolidColor | BpxTransparentColor
+  > = new Map();
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -261,9 +263,10 @@ export class DrawApi {
       sprite: sprite,
       targetXy: canvasXy.sub(this.#cameraOffset),
       scaleXy: scaleXy,
-      spriteColorMapping: new Map<BpxColorId, BpxColor>(
-        this.#spriteColorMapping.entries(),
-      ),
+      spriteColorMapping: new Map<
+        BpxColorId,
+        BpxSolidColor | BpxTransparentColor
+      >(this.#spriteColorMapping.entries()),
       fillPattern: this.#fillPattern,
       clippingRegion: this.#clippingRegion,
     });

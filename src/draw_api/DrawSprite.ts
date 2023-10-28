@@ -2,22 +2,19 @@ import { ImageAsset } from "../Assets";
 import {
   BpxColorId,
   BpxSolidColor,
+  BpxTransparentColor,
   transparent_,
-  type BpxColor,
 } from "../Color";
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
-import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawSprite {
   readonly #canvasPixels: CanvasPixels;
   readonly #options: { disableRounding?: boolean };
-
-  readonly #pixel: DrawPixel;
 
   constructor(
     canvasPixels: CanvasPixels,
@@ -25,11 +22,6 @@ export class DrawSprite {
   ) {
     this.#canvasPixels = canvasPixels;
     this.#options = options;
-
-    this.#pixel = new DrawPixel(this.#canvasPixels, {
-      disableRounding: true,
-      disableVisitedCheck: true,
-    });
   }
 
   // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
@@ -43,7 +35,10 @@ export class DrawSprite {
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy: BpxVector2d = v_1_1_,
-    colorMapping: Map<BpxColorId, BpxColor> = new Map(),
+    colorMapping: Map<
+      BpxColorId,
+      BpxSolidColor | BpxTransparentColor
+    > = new Map(),
     // TODO: test it
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
@@ -105,30 +100,33 @@ export class DrawSprite {
             const canvasY = canvasYBase + yScaledStep;
 
             if (!this.#canvasPixels.wasAlreadySet(canvasX, canvasY)) {
-              const imgBytesIndex = (imgY * imgW + imgX) * 4;
-              if (imgBytes.length < imgBytesIndex + 4) {
-                throw Error(
-                  `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`,
-                );
+              if (
+                !clippingRegion ||
+                clippingRegion.allowsDrawingAt(canvasX, canvasY)
+              ) {
+                if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
+                  const imgBytesIndex = (imgY * imgW + imgX) * 4;
+                  if (imgBytes.length < imgBytesIndex + 4) {
+                    throw Error(
+                      `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`,
+                    );
+                  }
+
+                  const color: BpxSolidColor | BpxTransparentColor =
+                    imgBytes[imgBytesIndex + 3]! >= 0xff / 2
+                      ? new BpxSolidColor(
+                          imgBytes[imgBytesIndex]!,
+                          imgBytes[imgBytesIndex + 1]!,
+                          imgBytes[imgBytesIndex + 2]!,
+                        )
+                      : transparent_;
+                  const mappedColor = colorMapping.get(color.id) ?? color;
+
+                  if (mappedColor instanceof BpxSolidColor) {
+                    this.#canvasPixels.set(mappedColor, canvasX, canvasY);
+                  }
+                }
               }
-
-              let color =
-                imgBytes[imgBytesIndex + 3]! >= 0xff / 2
-                  ? new BpxSolidColor(
-                      imgBytes[imgBytesIndex]!,
-                      imgBytes[imgBytesIndex + 1]!,
-                      imgBytes[imgBytesIndex + 2]!,
-                    )
-                  : transparent_;
-              color = colorMapping.get(color.id) ?? color;
-
-              this.#pixel.draw(
-                canvasX,
-                canvasY,
-                color,
-                fillPattern,
-                clippingRegion,
-              );
             }
           }
         }

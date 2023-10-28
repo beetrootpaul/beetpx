@@ -1,10 +1,10 @@
 import { FontAsset, ImageAsset } from "../Assets";
 import {
-  BpxColor,
   BpxColorId,
   BpxCompositeColor,
   BpxMappingColor,
   BpxSolidColor,
+  BpxTransparentColor,
 } from "../Color";
 import { BpxCharSprite } from "../font/Font";
 import { BpxSprite } from "../Sprite";
@@ -38,7 +38,7 @@ export type DrwCmdClear = {
 export type DrwCmdPixel = {
   type: "pixel";
   xy: BpxVector2d;
-  color: BpxColor;
+  color: BpxSolidColor;
   fillPattern: BpxFillPattern;
   clippingRegion: BpxClippingRegion | null;
 };
@@ -47,7 +47,7 @@ export type DrwCmdPixels = {
   type: "pixels";
   xy: BpxVector2d;
   bits: string[];
-  color: BpxColor;
+  color: BpxSolidColor;
   clippingRegion: BpxClippingRegion | null;
 };
 
@@ -86,7 +86,7 @@ export type DrwCmdSprite = {
   sprite: BpxSprite;
   targetXy: BpxVector2d;
   scaleXy: BpxVector2d;
-  spriteColorMapping: Map<BpxColorId, BpxColor>;
+  spriteColorMapping: Map<BpxColorId, BpxSolidColor | BpxTransparentColor>;
   fillPattern: BpxFillPattern;
   clippingRegion: BpxClippingRegion | null;
 };

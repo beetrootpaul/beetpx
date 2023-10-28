@@ -8,10 +8,12 @@ interface BpxColor {
     id: BpxColorId;
 }
 declare class BpxTransparentColor implements BpxColor {
+    #private;
     readonly id: BpxColorId;
 }
 declare const transparent_: BpxTransparentColor;
 declare class BpxSolidColor implements BpxColor {
+    #private;
     readonly id: BpxColorId;
     readonly r: number;
     readonly g: number;
@@ -26,6 +28,7 @@ declare const red_: BpxSolidColor;
 declare const green_: BpxSolidColor;
 declare const blue_: BpxSolidColor;
 declare class BpxCompositeColor implements BpxColor {
+    #private;
     readonly id: BpxColorId;
     readonly primary: BpxSolidColor | BpxTransparentColor;
     readonly secondary: BpxSolidColor | BpxTransparentColor;

@@ -9,61 +9,29 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawPixel_canvasPixels, _DrawPixel_options;
-import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../Color";
-import { u_ } from "../Utils";
+var _DrawPixel_canvasPixels;
 import { BpxFillPattern } from "./FillPattern";
 export class DrawPixel {
-    constructor(canvasPixels, options = {}) {
+    constructor(canvasPixels) {
         _DrawPixel_canvasPixels.set(this, void 0);
-        _DrawPixel_options.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixel_canvasPixels, canvasPixels, "f");
-        __classPrivateFieldSet(this, _DrawPixel_options, options, "f");
     }
     // TODO: consolidate where composite color and fill patterns are handled (look for `instanceof`). Consider renaming fill pattern to e.g. pattern color as well
     // TODO: tests for MappingColor
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
     draw(x, y, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
-        var _a;
-        x = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? x : Math.round(x);
-        y = __classPrivateFieldGet(this, _DrawPixel_options, "f").disableRounding ? y : Math.round(y);
-        if (!__classPrivateFieldGet(this, _DrawPixel_options, "f").disableVisitedCheck &&
-            __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").wasAlreadySet(x, y)) {
+        x = Math.round(x);
+        y = Math.round(y);
+        if (__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").wasAlreadySet(x, y)) {
             return;
         }
         if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
             return;
         }
-        if (x >= 0 &&
-            y >= 0 &&
-            x < __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.x &&
-            y < __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.y) {
-            if (fillPattern.hasPrimaryColorAt(x, y)) {
-                if (color instanceof BpxSolidColor) {
-                    __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color, x, y);
-                }
-                else if (color instanceof BpxCompositeColor) {
-                    if (color.primary instanceof BpxSolidColor) {
-                        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color.primary, x, y);
-                    }
-                }
-                else if (color instanceof BpxMappingColor) {
-                    const snapshot = (_a = __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").getSnapshot(color.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${color.snapshotId}`);
-                    const mapped = color.getMappedColorFromCanvasSnapshot(snapshot, y * __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canvasSize.x + x);
-                    if (mapped instanceof BpxSolidColor) {
-                        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(mapped, x, y);
-                    }
-                }
-            }
-            else {
-                if (color instanceof BpxCompositeColor) {
-                    if (color.secondary instanceof BpxSolidColor) {
-                        __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color.secondary, x, y);
-                    }
-                }
-            }
+        if (fillPattern.hasPrimaryColorAt(x, y)) {
+            __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color, x, y);
         }
     }
 }
-_DrawPixel_canvasPixels = new WeakMap(), _DrawPixel_options = new WeakMap();
+_DrawPixel_canvasPixels = new WeakMap();
