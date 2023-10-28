@@ -218,7 +218,6 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
         },
     });
 }, _Framework_render = function _Framework_render() {
-    this.drawApi.processQueuedCommands();
     __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_drawDebugMargin).call(this);
     __classPrivateFieldGet(this, _Framework_canvasPixels, "f").render();
 }, _Framework_drawDebugMargin = function _Framework_drawDebugMargin() {

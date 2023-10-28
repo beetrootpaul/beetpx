@@ -7,13 +7,12 @@ import {
   BpxTransparentColor,
 } from "../Color";
 import { BpxSprite } from "../Sprite";
-import { BpxUtils, u_ } from "../Utils";
+import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
-import { DrawCommand } from "./DrawCommand";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
 import { DrawPixel } from "./DrawPixel";
@@ -42,8 +41,6 @@ type DrawApiOptions = {
 //       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
 
 export class DrawApi {
-  #queues: DrawCommand[][] = [[]];
-
   readonly #assets: Assets;
 
   readonly #canvasPixels: CanvasPixels;
@@ -127,48 +124,28 @@ export class DrawApi {
   }
 
   clearCanvas(color: BpxSolidColor): void {
-    // TODO: encapsulate queues logic
-    // Canvas clear usually happens first among all the draw calls
-    //   and only once. We decided to keep it simple and therefore
-    //   canvas clear does *not* check whether given pixel is
-    //   already set by a some shape on top of it. Instead
-    //   we keep it in a separate draw queue and just clear
-    //   an entire canvas.
-    this.#queues.push([
-      {
-        type: "clear",
-        color: color,
-        clippingRegion: this.#clippingRegion,
-      },
-    ]);
-    // And let's create a next empty queue for subsequent commands in order
-    //   for the canvas clear to be done immediately and not at the end of
-    //   the queue.
-    this.#queues.push([]);
+    this.#clear.draw(color);
   }
 
   pixel(xy: BpxVector2d, color: BpxSolidColor): void {
-    // TODO: encapsulate queues logic
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "pixel",
-      xy: xy.sub(this.#cameraOffset),
-      color: color,
-      fillPattern: BpxFillPattern.primaryOnly,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#pixel.draw(
+      xy.sub(this.#cameraOffset),
+      color,
+      BpxFillPattern.primaryOnly,
+      this.#clippingRegion,
+    );
   }
 
   // bits = an array representing rows from top to bottom, where each array element
   //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
   //        from left to right.
   pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "pixels",
-      xy: xy.sub(this.#cameraOffset),
-      bits: bits,
-      color: color,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#pixels.draw(
+      xy.sub(this.#cameraOffset),
+      bits,
+      color,
+      this.#clippingRegion,
+    );
   }
 
   line(
@@ -176,14 +153,13 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "line",
-      xy: xy.sub(this.#cameraOffset),
-      wh: wh,
-      color: color,
-      fillPattern: this.#fillPattern,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#line.draw(
+      xy.sub(this.#cameraOffset),
+      wh,
+      color,
+      this.#fillPattern,
+      this.#clippingRegion,
+    );
   }
 
   rect(
@@ -191,15 +167,14 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "rect",
-      xy: xy.sub(this.#cameraOffset),
-      wh: wh,
-      color: color,
-      fill: false,
-      fillPattern: this.#fillPattern,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#rect.draw(
+      xy.sub(this.#cameraOffset),
+      wh,
+      color,
+      false,
+      this.#fillPattern,
+      this.#clippingRegion,
+    );
   }
 
   rectFilled(
@@ -207,15 +182,14 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "rect",
-      xy: xy.sub(this.#cameraOffset),
-      wh: wh,
-      color: color,
-      fill: true,
-      fillPattern: this.#fillPattern,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#rect.draw(
+      xy.sub(this.#cameraOffset),
+      wh,
+      color,
+      true,
+      this.#fillPattern,
+      this.#clippingRegion,
+    );
   }
 
   ellipse(
@@ -223,15 +197,14 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "ellipse",
-      xy: xy.sub(this.#cameraOffset),
-      wh: wh,
-      color: color,
-      fill: false,
-      fillPattern: this.#fillPattern,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#ellipse.draw(
+      xy.sub(this.#cameraOffset),
+      wh,
+      color,
+      false,
+      this.#fillPattern,
+      this.#clippingRegion,
+    );
   }
 
   ellipseFilled(
@@ -239,15 +212,14 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "ellipse",
-      xy: xy.sub(this.#cameraOffset),
-      wh: wh,
-      color: color,
-      fill: true,
-      fillPattern: this.#fillPattern,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#ellipse.draw(
+      xy.sub(this.#cameraOffset),
+      wh,
+      color,
+      true,
+      this.#fillPattern,
+      this.#clippingRegion,
+    );
   }
 
   // TODO: make sprite make use of fillPattern as well?
@@ -257,19 +229,15 @@ export class DrawApi {
     scaleXy: BpxVector2d = v_1_1_,
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
-    this.#queues[this.#queues.length - 1]!.push({
-      type: "sprite",
-      sourceImageAsset: sourceImageAsset,
-      sprite: sprite,
-      targetXy: canvasXy.sub(this.#cameraOffset),
-      scaleXy: scaleXy,
-      spriteColorMapping: new Map<
-        BpxColorId,
-        BpxSolidColor | BpxTransparentColor
-      >(this.#spriteColorMapping.entries()),
-      fillPattern: this.#fillPattern,
-      clippingRegion: this.#clippingRegion,
-    });
+    this.#sprite.draw(
+      sourceImageAsset,
+      sprite,
+      canvasXy.sub(this.#cameraOffset),
+      scaleXy,
+      this.#spriteColorMapping,
+      this.#fillPattern,
+      this.#clippingRegion,
+    );
   }
 
   // TODO: cover it with tests
@@ -297,14 +265,13 @@ export class DrawApi {
       );
     }
     if (this.#fontAsset) {
-      this.#queues[this.#queues.length - 1]!.push({
-        type: "text",
-        text: text,
-        canvasXy: canvasXy.sub(this.#cameraOffset),
-        fontAsset: this.#fontAsset,
-        color: color,
-        clippingRegion: this.#clippingRegion,
-      });
+      this.#text.draw(
+        text,
+        canvasXy.sub(this.#cameraOffset),
+        this.#fontAsset,
+        color,
+        this.#clippingRegion,
+      );
     } else {
       Logger.infoBeetPx(
         `print: (${canvasXy.x},${canvasXy.y}) [${
@@ -315,94 +282,6 @@ export class DrawApi {
   }
 
   takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId {
-    const snapshotId = this.#canvasPixels.generateNextSnapshotId();
-    // Snapshots require the whole image to be drawn up to this point,
-    //   therefore we push this command to a separate queue:
-    //   the previous queue will get processed from the top-most
-    //   layer to the bottom, then the snapshot will get taken.
-    this.#queues.push([
-      {
-        type: "take_canvas_snapshot",
-        snapshotId: snapshotId,
-      },
-    ]);
-    // And let's create a next empty queue for subsequent commands in order
-    //   for the snapshot to be taken immediately and not at the end of
-    //   the queue.
-    this.#queues.push([]);
-    return snapshotId;
-  }
-
-  processQueuedCommands(): void {
-    for (const queue of this.#queues) {
-      this.#canvasPixels.resetVisitedMarkers();
-
-      for (let i = queue.length - 1; i >= 0; --i) {
-        const cmd = queue[i]!;
-        if (cmd.type === "clear") {
-          this.#clear.draw(cmd.color);
-        } else if (cmd.type === "pixel") {
-          this.#pixel.draw(
-            cmd.xy.x,
-            cmd.xy.y,
-            cmd.color,
-            cmd.fillPattern,
-            cmd.clippingRegion,
-          );
-        } else if (cmd.type === "pixels") {
-          this.#pixels.draw(cmd.xy, cmd.bits, cmd.color, cmd.clippingRegion);
-        } else if (cmd.type === "line") {
-          this.#line.draw(
-            cmd.xy,
-            cmd.wh,
-            cmd.color,
-            cmd.fillPattern,
-            cmd.clippingRegion,
-          );
-        } else if (cmd.type === "rect") {
-          this.#rect.draw(
-            cmd.xy,
-            cmd.wh,
-            cmd.color,
-            cmd.fill,
-            cmd.fillPattern,
-            cmd.clippingRegion,
-          );
-        } else if (cmd.type === "ellipse") {
-          this.#ellipse.draw(
-            cmd.xy,
-            cmd.wh,
-            cmd.color,
-            cmd.fill,
-            cmd.fillPattern,
-            cmd.clippingRegion,
-          );
-        } else if (cmd.type === "sprite") {
-          this.#sprite.draw(
-            cmd.sourceImageAsset,
-            cmd.sprite,
-            cmd.targetXy,
-            cmd.scaleXy,
-            cmd.spriteColorMapping,
-            cmd.fillPattern,
-            cmd.clippingRegion,
-          );
-        } else if (cmd.type === "text") {
-          this.#text.draw(
-            cmd.text,
-            cmd.canvasXy,
-            cmd.fontAsset,
-            cmd.color,
-            cmd.clippingRegion,
-          );
-        } else if (cmd.type === "take_canvas_snapshot") {
-          this.#canvasPixels.takeSnapshot(cmd.snapshotId);
-        } else {
-          u_.assertUnreachable(cmd);
-        }
-      }
-    }
-
-    this.#queues = [[]];
+    return this.#canvasPixels.takeSnapshot();
   }
 }

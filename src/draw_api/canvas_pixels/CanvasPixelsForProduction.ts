@@ -5,11 +5,8 @@ import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixelsForProductionSnapshot } from "./CanvasPixelsForProductionSnapshot";
 import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
 
-// TODO: rename, like, seriously…
 export class CanvasPixelsForProduction extends CanvasPixels {
   readonly #length: number;
-
-  readonly #visited: boolean[];
 
   readonly #htmlCanvas: HTMLCanvasElement;
   readonly #htmlCanvasContext: CanvasRenderingContext2D;
@@ -24,7 +21,6 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     super(canvasSize);
 
     this.#length = canvasSize.x * canvasSize.y;
-    this.#visited = u_.range(this.#length).map(() => false);
 
     this.#htmlCanvas = htmlCanvas;
     this.#htmlCanvas.style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
@@ -56,12 +52,8 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     this.#initializeAsNonTransparent();
   }
 
-  wasAlreadySet(x: number, y: number): boolean {
-    if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
-      return true;
-    }
-    const index = y * this.canvasSize.x + x;
-    return this.#visited[index]!;
+  canSetAt(x: number, y: number): boolean {
+    return x >= 0 && y >= 0 && x < this.canvasSize.x && y < this.canvasSize.y;
   }
 
   set(color: BpxSolidColor, x: number, y: number): void {
@@ -87,8 +79,6 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     this.#offscreenImageData.data[dataIndex] = color.r;
     this.#offscreenImageData.data[dataIndex + 1] = color.g;
     this.#offscreenImageData.data[dataIndex + 2] = color.b;
-
-    this.#visited[index] = true;
   }
 
   newSnapshot(): CanvasPixelsSnapshot {
@@ -106,12 +96,6 @@ export class CanvasPixelsForProduction extends CanvasPixels {
 
     // seems like we have to set it every time the canvas size is changed
     this.#htmlCanvasContext.imageSmoothingEnabled = false;
-  }
-
-  resetVisitedMarkers(): void {
-    for (let index = 0; index < this.#length; ++index) {
-      this.#visited[index] = false;
-    }
   }
 
   doRender(): void {

@@ -16,12 +16,11 @@ export class CanvasPixels {
         _CanvasPixels_nextSnapshotId.set(this, 1);
         this.canvasSize = canvasSize.round();
     }
-    generateNextSnapshotId() {
+    takeSnapshot() {
         var _a, _b;
-        return __classPrivateFieldSet(this, _CanvasPixels_nextSnapshotId, (_b = __classPrivateFieldGet(this, _CanvasPixels_nextSnapshotId, "f"), _a = _b++, _b), "f"), _a;
-    }
-    takeSnapshot(snapshotId) {
+        const snapshotId = (__classPrivateFieldSet(this, _CanvasPixels_nextSnapshotId, (_b = __classPrivateFieldGet(this, _CanvasPixels_nextSnapshotId, "f"), _a = _b++, _b), "f"), _a);
         __classPrivateFieldGet(this, _CanvasPixels_snapshots, "f").set(snapshotId, this.newSnapshot());
+        return snapshotId;
     }
     getSnapshot(snapshotId) {
         var _a;

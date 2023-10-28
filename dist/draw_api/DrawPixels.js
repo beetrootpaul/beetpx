@@ -25,7 +25,7 @@ export class DrawPixels {
                 }
                 const x = xy.x + bitsX;
                 const y = xy.y + bitsY;
-                if (!__classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").wasAlreadySet(x, y)) {
+                if (__classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").canSetAt(x, y)) {
                     if (!clippingRegion || clippingRegion.allowsDrawingAt(x, y)) {
                         __classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").set(color, x, y);
                     }

@@ -1,4 +1,5 @@
 import { BpxSolidColor } from "../Color";
+import { BpxVector2d } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
@@ -15,25 +16,23 @@ export class DrawPixel {
   // TODO: consider moving fill pattern and composite color support inside here
   // TODO: cover ClippingRegion with tests
   draw(
-    x: number,
-    y: number,
+    xy: BpxVector2d,
     color: BpxSolidColor,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    x = Math.round(x);
-    y = Math.round(y);
+    xy = xy.round();
 
-    if (this.#canvasPixels.wasAlreadySet(x, y)) {
+    if (!this.#canvasPixels.canSetAt(xy.x, xy.y)) {
       return;
     }
 
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
+    if (clippingRegion && !clippingRegion.allowsDrawingAt(xy.x, xy.y)) {
       return;
     }
 
-    if (fillPattern.hasPrimaryColorAt(x, y)) {
-      this.#canvasPixels.set(color, x, y);
+    if (fillPattern.hasPrimaryColorAt(xy.x, xy.y)) {
+      this.#canvasPixels.set(color, xy.x, xy.y);
     }
   }
 }

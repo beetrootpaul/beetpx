@@ -154,7 +154,7 @@ export class DrawEllipse {
     clippingRegion: BpxClippingRegion | null,
     snapshot: CanvasPixelsSnapshot | null,
   ): void {
-    if (this.#canvasPixels.wasAlreadySet(x, y)) {
+    if (!this.#canvasPixels.canSetAt(x, y)) {
       return;
     }
 

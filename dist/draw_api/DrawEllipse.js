@@ -116,7 +116,7 @@ export class DrawEllipse {
     }
 }
 _DrawEllipse_canvasPixels = new WeakMap(), _DrawEllipse_instances = new WeakSet(), _DrawEllipse_drawPixel = function _DrawEllipse_drawPixel(x, y, c1, c2, fillPattern, clippingRegion, snapshot) {
-    if (__classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").wasAlreadySet(x, y)) {
+    if (!__classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").canSetAt(x, y)) {
         return;
     }
     if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {

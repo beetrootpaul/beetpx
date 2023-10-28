@@ -104,7 +104,7 @@ export class DrawSprite {
             const canvasX = canvasXBase + xScaledStep;
             const canvasY = canvasYBase + yScaledStep;
 
-            if (!this.#canvasPixels.wasAlreadySet(canvasX, canvasY)) {
+            if (this.#canvasPixels.canSetAt(canvasX, canvasY)) {
               if (
                 !clippingRegion ||
                 clippingRegion.allowsDrawingAt(canvasX, canvasY)

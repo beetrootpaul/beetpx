@@ -267,14 +267,12 @@ declare abstract class CanvasPixels {
     #private;
     readonly canvasSize: BpxVector2d;
     protected constructor(canvasSize: BpxVector2d);
-    abstract wasAlreadySet(x: number, y: number): boolean;
+    abstract canSetAt(x: number, y: number): boolean;
     abstract set(color: BpxSolidColor, x: number, y: number): void;
-    generateNextSnapshotId(): BpxCanvasPixelsSnapshotId;
-    takeSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): void;
+    takeSnapshot(): BpxCanvasPixelsSnapshotId;
     getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;
     protected abstract newSnapshot(): CanvasPixelsSnapshot;
     abstract onWindowResize(): void;
-    abstract resetVisitedMarkers(): void;
     render(): void;
     protected abstract doRender(): void;
 }
@@ -308,7 +306,6 @@ declare class DrawApi {
     getFont(): BpxFont | null;
     print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean]): void;
     takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId;
-    processQueuedCommands(): void;
 }
 
 declare class Button {

@@ -87,7 +87,7 @@ export class DrawLine {
     }
 }
 _DrawLine_canvasPixels = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, fillPattern, clippingRegion, snapshot) {
-    if (__classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").wasAlreadySet(x, y)) {
+    if (!__classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").canSetAt(x, y)) {
         return;
     }
     if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {

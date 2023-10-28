@@ -16,11 +16,8 @@ export class CanvasPixelsForTests extends CanvasPixels {
     this.#rgbValues = u_.range(this.#length).map(() => 0);
   }
 
-  wasAlreadySet(x: number, y: number): boolean {
-    if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
-      return true;
-    }
-    return false;
+  canSetAt(x: number, y: number): boolean {
+    return x >= 0 && y >= 0 && x < this.canvasSize.x && y < this.canvasSize.y;
   }
 
   set(color: BpxSolidColor, x: number, y: number): void {
@@ -50,8 +47,6 @@ export class CanvasPixelsForTests extends CanvasPixels {
   }
 
   onWindowResize(): void {}
-
-  resetVisitedMarkers(): void {}
 
   doRender(): void {}
 }

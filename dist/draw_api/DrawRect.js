@@ -68,7 +68,7 @@ export class DrawRect {
     }
 }
 _DrawRect_canvasPixels = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, fillPattern, clippingRegion, snapshot) {
-    if (__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").wasAlreadySet(x, y)) {
+    if (!__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canSetAt(x, y)) {
         return;
     }
     if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {

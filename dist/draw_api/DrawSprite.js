@@ -55,7 +55,7 @@ export class DrawSprite {
                     for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
                         const canvasX = canvasXBase + xScaledStep;
                         const canvasY = canvasYBase + yScaledStep;
-                        if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").wasAlreadySet(canvasX, canvasY)) {
+                        if (__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAt(canvasX, canvasY)) {
                             if (!clippingRegion ||
                                 clippingRegion.allowsDrawingAt(canvasX, canvasY)) {
                                 if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {

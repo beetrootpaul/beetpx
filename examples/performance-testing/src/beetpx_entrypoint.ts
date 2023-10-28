@@ -27,7 +27,7 @@ const renderFpsVisualization = {
   historyIndex: 0,
 };
 
-const logoSprite = spr_("logo.png")(1, 1, 14, 14);
+const logoSprite = spr_("logo.png")(0, 0, 16, 16);
 const logoInnerColor = BpxSolidColor.fromRgbCssHex("#125359");
 const logoOuterColor = BpxSolidColor.fromRgbCssHex("#ff6e59");
 
@@ -52,7 +52,7 @@ class Font1 implements BpxFont {
       {
         positionInText: v_0_0_,
         char: "a",
-        sprite: spr_("logo.png")(0, 0, 16, 8),
+        sprite: spr_("logo.png")(0, 0, 12, 8),
       },
     ];
   }

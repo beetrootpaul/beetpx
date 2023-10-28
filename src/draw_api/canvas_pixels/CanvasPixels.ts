@@ -10,22 +10,20 @@ export abstract class CanvasPixels {
 
   readonly #snapshots: Map<BpxCanvasPixelsSnapshotId, CanvasPixelsSnapshot> =
     new Map();
-  #nextSnapshotId: number = 1;
+  #nextSnapshotId: BpxCanvasPixelsSnapshotId = 1;
 
   protected constructor(canvasSize: BpxVector2d) {
     this.canvasSize = canvasSize.round();
   }
 
-  abstract wasAlreadySet(x: number, y: number): boolean;
+  abstract canSetAt(x: number, y: number): boolean;
 
   abstract set(color: BpxSolidColor, x: number, y: number): void;
 
-  generateNextSnapshotId(): BpxCanvasPixelsSnapshotId {
-    return this.#nextSnapshotId++;
-  }
-
-  takeSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): void {
+  takeSnapshot(): BpxCanvasPixelsSnapshotId {
+    const snapshotId = this.#nextSnapshotId++;
     this.#snapshots.set(snapshotId, this.newSnapshot());
+    return snapshotId;
   }
 
   getSnapshot(
@@ -37,8 +35,6 @@ export abstract class CanvasPixels {
   protected abstract newSnapshot(): CanvasPixelsSnapshot;
 
   abstract onWindowResize(): void;
-
-  abstract resetVisitedMarkers(): void;
 
   render(): void {
     this.#snapshots.clear();

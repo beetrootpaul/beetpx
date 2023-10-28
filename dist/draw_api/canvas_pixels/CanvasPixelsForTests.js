@@ -21,11 +21,8 @@ export class CanvasPixelsForTests extends CanvasPixels {
         __classPrivateFieldSet(this, _CanvasPixelsForTests_length, canvasSize.x * canvasSize.y, "f");
         __classPrivateFieldSet(this, _CanvasPixelsForTests_rgbValues, u_.range(__classPrivateFieldGet(this, _CanvasPixelsForTests_length, "f")).map(() => 0), "f");
     }
-    wasAlreadySet(x, y) {
-        if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
-            return true;
-        }
-        return false;
+    canSetAt(x, y) {
+        return x >= 0 && y >= 0 && x < this.canvasSize.x && y < this.canvasSize.y;
     }
     set(color, x, y) {
         if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
@@ -41,7 +38,6 @@ export class CanvasPixelsForTests extends CanvasPixels {
         return new CanvasPixelsForTestsSnapshot(__classPrivateFieldGet(this, _CanvasPixelsForTests_rgbValues, "f").slice());
     }
     onWindowResize() { }
-    resetVisitedMarkers() { }
     doRender() { }
 }
 _CanvasPixelsForTests_length = new WeakMap(), _CanvasPixelsForTests_rgbValues = new WeakMap();

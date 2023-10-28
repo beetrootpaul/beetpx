@@ -17,8 +17,7 @@ describe("DrawPixel", () => {
     const pixel = new DrawPixel(canvas.pixels);
 
     // when
-    const xy1 = v_(1, 1);
-    pixel.draw(1, 1, c1);
+    pixel.draw(v_(1, 1), c1);
 
     // then
     canvas.expectToEqual({
@@ -37,10 +36,10 @@ describe("DrawPixel", () => {
     const pixel = new DrawPixel(canvas.pixels);
 
     // when
-    pixel.draw(0, 0, c1);
-    pixel.draw(2, 0, c2);
-    pixel.draw(0, 2, c3);
-    pixel.draw(2, 2, c4);
+    pixel.draw(v_(0, 0), c1);
+    pixel.draw(v_(2, 0), c2);
+    pixel.draw(v_(0, 2), c3);
+    pixel.draw(v_(2, 2), c4);
 
     // then
     canvas.expectToEqual({
@@ -59,10 +58,10 @@ describe("DrawPixel", () => {
     const pixel = new DrawPixel(canvas.pixels);
 
     // when
-    pixel.draw(-1, 1, c1);
-    pixel.draw(3, 1, c1);
-    pixel.draw(1, -1, c1);
-    pixel.draw(1, 3, c1);
+    pixel.draw(v_(-1, 1), c1);
+    pixel.draw(v_(3, 1), c1);
+    pixel.draw(v_(1, -1), c1);
+    pixel.draw(v_(1, 3), c1);
 
     // then
     canvas.expectToEqual({

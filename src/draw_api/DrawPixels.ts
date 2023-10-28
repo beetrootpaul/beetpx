@@ -27,7 +27,7 @@ export class DrawPixels {
 
         const x = xy.x + bitsX;
         const y = xy.y + bitsY;
-        if (!this.#canvasPixels.wasAlreadySet(x, y)) {
+        if (this.#canvasPixels.canSetAt(x, y)) {
           if (!clippingRegion || clippingRegion.allowsDrawingAt(x, y)) {
             this.#canvasPixels.set(color, x, y);
           }
