@@ -44,7 +44,9 @@ export class Assets {
                 const htmlImage = new Image();
                 htmlImage.src = url;
                 yield htmlImage.decode();
-                const canvas = document.createElement("canvas");
+                const canvas = document
+                    .createElement("canvas")
+                    .transferControlToOffscreen();
                 canvas.width = htmlImage.naturalWidth;
                 canvas.height = htmlImage.naturalHeight;
                 const ctx = canvas.getContext("2d", {
@@ -55,6 +57,7 @@ export class Assets {
                 if (!ctx) {
                     throw Error(`Assets: Failed to process the image: ${htmlImage.src}`);
                 }
+                ctx.imageSmoothingEnabled = false;
                 ctx.drawImage(htmlImage, 0, 0);
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height, { colorSpace: "srgb" });
                 __classPrivateFieldGet(this, _Assets_images, "f").set(url, {
