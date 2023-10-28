@@ -101,7 +101,7 @@ export class DrawEllipse {
       this.#drawPixel(left, top, c1, c2, fp, cr, sn);
       this.#drawPixel(right, top, c1, c2, fp, cr, sn);
       if (fill) {
-        for (let x = left + 1; x < right; x++) {
+        for (let x = left + 1; x < right; ++x) {
           this.#drawPixel(x, top, c1, c2, fp, cr, sn);
           this.#drawPixel(x, bottom, c1, c2, fp, cr, sn);
         }

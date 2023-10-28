@@ -51,8 +51,8 @@ export class DrawSprite {
             const canvasYBase = targetXy.y + spriteY * scaleXy.y;
             for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
                 const canvasXBase = targetXy.x + spriteX * scaleXy.x;
-                for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
-                    for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
+                for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {
+                    for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
                         const canvasX = canvasXBase + xScaledStep;
                         const canvasY = canvasYBase + yScaledStep;
                         if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").wasAlreadySet(canvasX, canvasY)) {

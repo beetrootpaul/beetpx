@@ -46,7 +46,7 @@ export class GamepadGameInput implements SpecializedGameInput {
       for (
         let buttonIndex = 0;
         buttonIndex < gamepad.buttons.length;
-        buttonIndex++
+        ++buttonIndex
       ) {
         const event = mapping.eventForButton(
           buttonIndex,
@@ -58,7 +58,7 @@ export class GamepadGameInput implements SpecializedGameInput {
         }
       }
 
-      for (let axisIndex = 0; axisIndex < gamepad.axes.length; axisIndex++) {
+      for (let axisIndex = 0; axisIndex < gamepad.axes.length; ++axisIndex) {
         mapping
           .eventsForAxisValue(axisIndex, gamepad.axes[axisIndex]!)
           .forEach((event) => {

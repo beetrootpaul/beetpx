@@ -109,7 +109,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
   }
 
   resetVisitedMarkers(): void {
-    for (let index = 0; index < this.#length; index++) {
+    for (let index = 0; index < this.#length; ++index) {
       this.#visited[index] = false;
     }
   }

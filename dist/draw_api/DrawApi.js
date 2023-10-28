@@ -254,7 +254,7 @@ export class DrawApi {
     processQueuedCommands() {
         for (const queue of __classPrivateFieldGet(this, _DrawApi_queues, "f")) {
             __classPrivateFieldGet(this, _DrawApi_canvasPixels, "f").resetVisitedMarkers();
-            for (let i = queue.length - 1; i >= 0; i--) {
+            for (let i = queue.length - 1; i >= 0; --i) {
                 const cmd = queue[i];
                 if (cmd.type === "clear") {
                     __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(cmd.color);

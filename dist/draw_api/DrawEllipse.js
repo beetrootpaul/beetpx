@@ -78,7 +78,7 @@ export class DrawEllipse {
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, top, c1, c2, fp, cr, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, top, c1, c2, fp, cr, sn);
             if (fill) {
-                for (let x = left + 1; x < right; x++) {
+                for (let x = left + 1; x < right; ++x) {
                     __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, fp, cr, sn);
                     __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, fp, cr, sn);
                 }

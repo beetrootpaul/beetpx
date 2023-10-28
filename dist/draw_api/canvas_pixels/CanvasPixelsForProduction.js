@@ -80,7 +80,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
     }
     resetVisitedMarkers() {
-        for (let index = 0; index < __classPrivateFieldGet(this, _CanvasPixelsForProduction_length, "f"); index++) {
+        for (let index = 0; index < __classPrivateFieldGet(this, _CanvasPixelsForProduction_length, "f"); ++index) {
             __classPrivateFieldGet(this, _CanvasPixelsForProduction_visited, "f")[index] = false;
         }
     }

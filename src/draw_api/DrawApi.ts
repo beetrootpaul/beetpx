@@ -337,7 +337,7 @@ export class DrawApi {
     for (const queue of this.#queues) {
       this.#canvasPixels.resetVisitedMarkers();
 
-      for (let i = queue.length - 1; i >= 0; i--) {
+      for (let i = queue.length - 1; i >= 0; --i) {
         const cmd = queue[i]!;
         if (cmd.type === "clear") {
           this.#clear.draw(cmd.color);
