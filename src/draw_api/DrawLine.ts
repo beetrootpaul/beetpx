@@ -1,21 +1,15 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
+import { u_ } from "../Utils";
 import { BpxVector2d, v_ } from "../Vector2d";
-import { CanvasPixels } from "./CanvasPixels";
-import { BpxClippingRegion } from "./ClippingRegion";
-import { DrawPixel } from "./DrawPixel";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { CanvasPixelsSnapshot } from "./canvas_pixels/CanvasPixelsSnapshot";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawLine {
   readonly #canvasPixels: CanvasPixels;
 
-  readonly #pixel: DrawPixel;
-
   constructor(canvasPixels: CanvasPixels) {
     this.#canvasPixels = canvasPixels;
-
-    this.#pixel = new DrawPixel(this.#canvasPixels, {
-      disableRounding: true,
-    });
   }
 
   // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
@@ -29,7 +23,6 @@ export class DrawLine {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
     //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
@@ -45,6 +38,28 @@ export class DrawLine {
     wh = xyEnd.sub(xyStart);
 
     const whSub1 = wh.sub(wh.sign());
+
+    const c1: BpxSolidColor | BpxMappingColor | null =
+      color instanceof BpxCompositeColor
+        ? color.primary instanceof BpxSolidColor
+          ? color.primary
+          : null
+        : color;
+    const c2: BpxSolidColor | null =
+      color instanceof BpxCompositeColor
+        ? color.secondary instanceof BpxSolidColor
+          ? color.secondary
+          : null
+        : null;
+    const sn =
+      c1 instanceof BpxMappingColor
+        ? this.#canvasPixels.getSnapshot(c1.snapshotId) ??
+          u_.throwError(
+            `Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`,
+          )
+        : null;
+
+    const fp = fillPattern;
 
     //
     // PREPARE
@@ -62,7 +77,7 @@ export class DrawLine {
       //
       // DRAW THE CURRENT PIXEL
       //
-      this.#pixel.draw(currentXy, color, clippingRegion, fillPattern);
+      this.#drawPixel(currentXy.x, currentXy.y, c1, c2, fp, sn);
 
       if (currentXy.eq(targetXy)) break;
 
@@ -77,6 +92,41 @@ export class DrawLine {
       if (2 * errBeforeStep <= dXy.x) {
         currentXy = currentXy.add(v_(0, step.y));
         err += dXy.x;
+      }
+    }
+  }
+
+  #drawPixel(
+    x: number,
+    y: number,
+    c1: BpxSolidColor | BpxMappingColor | null,
+    c2: BpxSolidColor | null,
+    fillPattern: BpxFillPattern,
+    snapshot: CanvasPixelsSnapshot | null,
+  ): void {
+    if (!this.#canvasPixels.canSetAt(x, y)) {
+      return;
+    }
+
+    if (fillPattern.hasPrimaryColorAt(x, y)) {
+      if (!c1) {
+      } else if (c1 instanceof BpxSolidColor) {
+        this.#canvasPixels.set(c1, x, y);
+      } else {
+        const mapped = c1.getMappedColorFromCanvasSnapshot(
+          snapshot ??
+            u_.throwError(
+              "Snapshot was not passed when trying to obtain a mapped color",
+            ),
+          y * this.#canvasPixels.canvasSize.x + x,
+        );
+        if (mapped instanceof BpxSolidColor) {
+          this.#canvasPixels.set(mapped, x, y);
+        }
+      }
+    } else {
+      if (c2 != null) {
+        this.#canvasPixels.set(c2, x, y);
       }
     }
   }

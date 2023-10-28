@@ -1,6 +1,5 @@
 import { Assets, FontAsset } from "../Assets";
 import {
-  BpxColor,
   BpxColorId,
   BpxCompositeColor,
   BpxMappingColor,
@@ -12,8 +11,6 @@ import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
-import { CanvasPixels } from "./CanvasPixels";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
@@ -23,16 +20,14 @@ import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { BpxFillPattern } from "./FillPattern";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { BpxCanvasPixelsSnapshotId } from "./canvas_pixels/CanvasPixelsSnapshot";
 
 // TODO: BpxColorMapping and BpxMappingColor are named way too similar, while doing different things!
 export type BpxColorMapping = Array<{
   from: BpxSolidColor;
   to: BpxSolidColor | BpxTransparentColor;
 }>;
-
-export type BpxCanvasSnapshot = {
-  canvasPixels: CanvasPixels;
-};
 
 type DrawApiOptions = {
   canvasPixels: CanvasPixels;
@@ -47,6 +42,8 @@ type DrawApiOptions = {
 export class DrawApi {
   readonly #assets: Assets;
 
+  readonly #canvasPixels: CanvasPixels;
+
   readonly #clear: DrawClear;
   readonly #pixel: DrawPixel;
   readonly #pixels: DrawPixels;
@@ -58,17 +55,19 @@ export class DrawApi {
 
   #cameraOffset: BpxVector2d = v_(0, 0);
 
-  #clippingRegion: BpxClippingRegion | null = null;
   #fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly;
 
   #fontAsset: FontAsset | null = null;
 
-  readonly #spriteColorMapping: Map<BpxColorId, BpxColor> = new Map();
-
-  readonly takeCanvasSnapshot: () => BpxCanvasSnapshot;
+  readonly #spriteColorMapping: Map<
+    BpxColorId,
+    BpxSolidColor | BpxTransparentColor
+  > = new Map();
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
+
+    this.#canvasPixels = options.canvasPixels;
 
     this.#clear = new DrawClear(options.canvasPixels);
     this.#pixel = new DrawPixel(options.canvasPixels);
@@ -78,10 +77,6 @@ export class DrawApi {
     this.#ellipse = new DrawEllipse(options.canvasPixels);
     this.#sprite = new DrawSprite(options.canvasPixels);
     this.#text = new DrawText(options.canvasPixels);
-
-    this.takeCanvasSnapshot = () => ({
-      canvasPixels: options.canvasPixels.clone(),
-    });
   }
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
@@ -91,11 +86,11 @@ export class DrawApi {
   }
 
   setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
-    this.#clippingRegion = new BpxClippingRegion(xy, wh);
+    this.#canvasPixels.setClippingRegion(xy, wh);
   }
 
   removeClippingRegion(): void {
-    this.#clippingRegion = null;
+    this.#canvasPixels.removeClippingRegion();
   }
 
   // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
@@ -126,33 +121,23 @@ export class DrawApi {
     return previous;
   }
 
-  // TODO: cover it with tests
-  setFont(fontId: BpxFontId | null): void {
-    this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
-  }
-
-  getFont(): BpxFont | null {
-    return this.#fontAsset?.font ?? null;
-  }
-
   clearCanvas(color: BpxSolidColor): void {
-    this.#clear.draw(color, this.#clippingRegion);
+    this.#clear.draw(color);
   }
 
   pixel(xy: BpxVector2d, color: BpxSolidColor): void {
-    this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#clippingRegion);
+    this.#pixel.draw(
+      xy.sub(this.#cameraOffset),
+      color,
+      BpxFillPattern.primaryOnly,
+    );
   }
 
   // bits = an array representing rows from top to bottom, where each array element
   //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
   //        from left to right.
   pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
-    this.#pixels.draw(
-      xy.sub(this.#cameraOffset),
-      bits,
-      color,
-      this.#clippingRegion,
-    );
+    this.#pixels.draw(xy.sub(this.#cameraOffset), bits, color);
   }
 
   line(
@@ -160,13 +145,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#line.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#line.draw(xy.sub(this.#cameraOffset), wh, color, this.#fillPattern);
   }
 
   rect(
@@ -180,7 +159,6 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -195,7 +173,6 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -210,7 +187,6 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -225,7 +201,6 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -243,10 +218,19 @@ export class DrawApi {
       scaleXy,
       this.#spriteColorMapping,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
+  // TODO: cover it with tests
+  setFont(fontId: BpxFontId | null): void {
+    this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
+  }
+
+  getFont(): BpxFont | null {
+    return this.#fontAsset?.font ?? null;
+  }
+
+  // TODO: !!! MOVE TO QUEUE !!!
   // TODO: cover with tests
   print(
     text: string,
@@ -267,7 +251,6 @@ export class DrawApi {
         canvasXy.sub(this.#cameraOffset),
         this.#fontAsset,
         color,
-        this.#clippingRegion,
       );
     } else {
       Logger.infoBeetPx(
@@ -276,5 +259,9 @@ export class DrawApi {
         }] ${text}`,
       );
     }
+  }
+
+  takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId {
+    return this.#canvasPixels.takeSnapshot();
   }
 }

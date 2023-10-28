@@ -9,28 +9,27 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawPixels_pixel;
-import { DrawPixel } from "./DrawPixel";
+var _DrawPixels_canvasPixels;
 export class DrawPixels {
     constructor(canvasPixels) {
-        _DrawPixels_pixel.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawPixels_pixel, new DrawPixel(canvasPixels), "f");
+        _DrawPixels_canvasPixels.set(this, void 0);
+        __classPrivateFieldSet(this, _DrawPixels_canvasPixels, canvasPixels, "f");
     }
     // TODO: add tests
-    draw(xy, bits, color, clippingRegion = null) {
+    draw(xy, bits, color) {
         xy = xy.round();
         for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {
             for (let bitsX = 0; bitsX < bits[bitsY].length; bitsX += 1) {
                 if (bits[bitsY][bitsX] !== "#") {
                     continue;
                 }
-                const canvasXy = xy.add(bitsX, bitsY);
-                if (clippingRegion && !clippingRegion.allowsDrawingAt(canvasXy)) {
-                    return;
+                const x = xy.x + bitsX;
+                const y = xy.y + bitsY;
+                if (__classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").canSetAt(x, y)) {
+                    __classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").set(color, x, y);
                 }
-                __classPrivateFieldGet(this, _DrawPixels_pixel, "f").draw(canvasXy, color);
             }
         }
     }
 }
-_DrawPixels_pixel = new WeakMap();
+_DrawPixels_canvasPixels = new WeakMap();

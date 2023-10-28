@@ -14,3 +14,6 @@ HtmlTemplate.selectors = {
     controlsB: ".controls_b",
     controlsMenu: ".controls_menu",
 };
+HtmlTemplate.classes = {
+    canvasDebugBorder: "debug",
+};

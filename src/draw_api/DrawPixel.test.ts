@@ -17,7 +17,6 @@ describe("DrawPixel", () => {
     const pixel = new DrawPixel(canvas.pixels);
 
     // when
-    const xy1 = v_(1, 1);
     pixel.draw(v_(1, 1), c1);
 
     // then

@@ -1,11 +1,15 @@
 import { FontAsset } from "../Assets";
-import { BpxSolidColor, transparent_ } from "../Color";
+import {
+  BpxColorId,
+  BpxSolidColor,
+  BpxTransparentColor,
+  transparent_,
+} from "../Color";
 import { BpxVector2d, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite } from "../font/Font";
-import { CanvasPixels } from "./CanvasPixels";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 
 export class DrawText {
   readonly #canvasPixels: CanvasPixels;
@@ -27,7 +31,6 @@ export class DrawText {
     canvasXy: BpxVector2d,
     fontAsset: FontAsset,
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     canvasXy = canvasXy.round();
 
@@ -39,12 +42,11 @@ export class DrawText {
         charSprite.sprite,
         canvasXy.add(charSprite.positionInText),
         v_1_1_,
-        new Map([
+        new Map<BpxColorId, BpxSolidColor | BpxTransparentColor>([
           [fontAsset.imageTextColor.id, colorFn(charSprite)],
           [fontAsset.imageBgColor.id, transparent_],
         ]),
         BpxFillPattern.primaryOnly,
-        clippingRegion,
       );
     }
   }

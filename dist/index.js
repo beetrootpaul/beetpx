@@ -3,7 +3,6 @@ export { BpxEasing } from "./Easing";
 export { BpxSprite } from "./Sprite";
 export { BpxUtils } from "./Utils";
 export { BpxVector2d } from "./Vector2d";
-export { BpxClippingRegion } from "./draw_api/ClippingRegion";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { BpxTimer } from "./misc/Timer";
 export { BeetPx } from "./BeetPx";

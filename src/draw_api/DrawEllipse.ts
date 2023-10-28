@@ -1,21 +1,15 @@
 import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
-import { BpxVector2d, v_ } from "../Vector2d";
-import { CanvasPixels } from "./CanvasPixels";
-import { BpxClippingRegion } from "./ClippingRegion";
-import { DrawPixel } from "./DrawPixel";
+import { u_ } from "../Utils";
+import { BpxVector2d } from "../Vector2d";
+import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { CanvasPixelsSnapshot } from "./canvas_pixels/CanvasPixelsSnapshot";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawEllipse {
   readonly #canvasPixels: CanvasPixels;
 
-  readonly #pixel: DrawPixel;
-
   constructor(canvasPixels: CanvasPixels) {
     this.#canvasPixels = canvasPixels;
-
-    this.#pixel = new DrawPixel(this.#canvasPixels, {
-      disableRounding: true,
-    });
   }
 
   // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
@@ -29,25 +23,65 @@ export class DrawEllipse {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
     fill: boolean,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    const [xy1, xy2] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
+      xy.round(),
+      xy.add(wh).round(),
+    );
 
-    if (xy2.x - xy1.x <= 0 || xy2.y - xy1.y <= 0) {
+    // avoid all computations if the ellipse has a size of 0 in either direction
+    if (
+      xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
+      xyMaxExclusive.y - xyMinInclusive.y <= 0
+    ) {
       return;
     }
+
+    // avoid all computations if the whole rectangle is outside the canvas
+    if (
+      !this.#canvasPixels.canSetAny(
+        xyMinInclusive.x,
+        xyMinInclusive.y,
+        xyMaxExclusive.x - 1,
+        xyMaxExclusive.y - 1,
+      )
+    ) {
+      return;
+    }
+
+    const c1: BpxSolidColor | BpxMappingColor | null =
+      color instanceof BpxCompositeColor
+        ? color.primary instanceof BpxSolidColor
+          ? color.primary
+          : null
+        : color;
+    const c2: BpxSolidColor | null =
+      color instanceof BpxCompositeColor
+        ? color.secondary instanceof BpxSolidColor
+          ? color.secondary
+          : null
+        : null;
+    const sn =
+      c1 instanceof BpxMappingColor
+        ? this.#canvasPixels.getSnapshot(c1.snapshotId) ??
+          u_.throwError(
+            `Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`,
+          )
+        : null;
+
+    const fp = fillPattern;
 
     //
     // PREPARE
     //
 
-    let a = xy2.x - xy1.x - 1;
-    let b = xy2.y - xy1.y - 1;
+    let a = xyMaxExclusive.x - xyMinInclusive.x - 1;
+    let b = xyMaxExclusive.y - xyMinInclusive.y - 1;
     let b1 = b & 1;
 
-    let left = xy1.x;
-    let right = xy2.x - 1;
-    let bottom = xy1.y + Math.floor((b + 1) / 2);
+    let left = xyMinInclusive.x;
+    let right = xyMaxExclusive.x - 1;
+    let bottom = xyMinInclusive.y + Math.floor((b + 1) / 2);
     let top = bottom - b1;
 
     let errIncrementX = 4 * (1 - a) * b * b;
@@ -62,14 +96,14 @@ export class DrawEllipse {
       // DRAW THE CURRENT PIXEL IN EACH QUADRANT
       //
 
-      this.#pixel.draw(v_(right, bottom), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(left, bottom), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(left, top), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(right, top), color, clippingRegion, fillPattern);
+      this.#drawPixel(right, bottom, c1, c2, fp, sn);
+      this.#drawPixel(left, bottom, c1, c2, fp, sn);
+      this.#drawPixel(left, top, c1, c2, fp, sn);
+      this.#drawPixel(right, top, c1, c2, fp, sn);
       if (fill) {
-        for (let x = left + 1; x < right; x++) {
-          this.#pixel.draw(v_(x, top), color, clippingRegion, fillPattern);
-          this.#pixel.draw(v_(x, bottom), color, clippingRegion, fillPattern);
+        for (let x = left + 1; x < right; ++x) {
+          this.#drawPixel(x, top, c1, c2, fp, sn);
+          this.#drawPixel(x, bottom, c1, c2, fp, sn);
         }
       }
 
@@ -101,22 +135,48 @@ export class DrawEllipse {
 
     while (bottom - top <= b) {
       // TODO: update the implementation below to honor fill pattern
-      this.#pixel.draw(
-        v_(left - 1, bottom),
-        color,
-        clippingRegion,
-        fillPattern,
-      );
-      this.#pixel.draw(
-        v_(right + 1, bottom),
-        color,
-        clippingRegion,
-        fillPattern,
-      );
+
+      this.#drawPixel(left - 1, bottom, c1, c2, fp, sn);
+      this.#drawPixel(right + 1, bottom, c1, c2, fp, sn);
       bottom += 1;
-      this.#pixel.draw(v_(left - 1, top), color, clippingRegion, fillPattern);
-      this.#pixel.draw(v_(right + 1, top), color, clippingRegion, fillPattern);
+      this.#drawPixel(left - 1, top, c1, c2, fp, sn);
+      this.#drawPixel(right + 1, top, c1, c2, fp, sn);
       top -= 1;
+    }
+  }
+
+  #drawPixel(
+    x: number,
+    y: number,
+    c1: BpxSolidColor | BpxMappingColor | null,
+    c2: BpxSolidColor | null,
+    fillPattern: BpxFillPattern,
+    snapshot: CanvasPixelsSnapshot | null,
+  ): void {
+    if (!this.#canvasPixels.canSetAt(x, y)) {
+      return;
+    }
+
+    if (fillPattern.hasPrimaryColorAt(x, y)) {
+      if (!c1) {
+      } else if (c1 instanceof BpxSolidColor) {
+        this.#canvasPixels.set(c1, x, y);
+      } else {
+        const mapped = c1.getMappedColorFromCanvasSnapshot(
+          snapshot ??
+            u_.throwError(
+              "Snapshot was not passed when trying to obtain a mapped color",
+            ),
+          y * this.#canvasPixels.canvasSize.x + x,
+        );
+        if (mapped instanceof BpxSolidColor) {
+          this.#canvasPixels.set(mapped, x, y);
+        }
+      }
+    } else {
+      if (c2 != null) {
+        this.#canvasPixels.set(c2, x, y);
+      }
     }
   }
 }

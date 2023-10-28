@@ -33,12 +33,9 @@ export {
   type BpxSoundSequenceEntry,
 } from "./audio/SoundSequence";
 export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
-export { BpxClippingRegion } from "./draw_api/ClippingRegion";
-export {
-  type BpxCanvasSnapshot,
-  type BpxColorMapping,
-} from "./draw_api/DrawApi";
+export { type BpxColorMapping } from "./draw_api/DrawApi";
 export { BpxFillPattern } from "./draw_api/FillPattern";
+export { type BpxCanvasPixelsSnapshotId } from "./draw_api/canvas_pixels/CanvasPixelsSnapshot";
 export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
 export { type BpxButtonName } from "./game_input/Buttons";
 export { type BpxGameInputEvent } from "./game_input/GameInput";

@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawText_canvasPixels, _DrawText_sprite;
-import { transparent_ } from "../Color";
+import { transparent_, } from "../Color";
 import { v_1_1_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
@@ -25,14 +25,14 @@ export class DrawText {
     }
     // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
     // TODO: cover ClippingRegion with tests
-    draw(text, canvasXy, fontAsset, color, clippingRegion = null) {
+    draw(text, canvasXy, fontAsset, color) {
         canvasXy = canvasXy.round();
         const colorFn = typeof color === "function" ? color : () => color;
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), v_1_1_, new Map([
                 [fontAsset.imageTextColor.id, colorFn(charSprite)],
                 [fontAsset.imageBgColor.id, transparent_],
-            ]), BpxFillPattern.primaryOnly, clippingRegion);
+            ]), BpxFillPattern.primaryOnly);
         }
     }
 }

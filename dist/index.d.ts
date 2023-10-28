@@ -1,3 +1,47 @@
+type BpxCanvasPixelsSnapshotId = number;
+interface CanvasPixelsSnapshot {
+    get(index: number): BpxSolidColor;
+}
+
+type BpxColorId = string;
+interface BpxColor {
+    id: BpxColorId;
+}
+declare class BpxTransparentColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+}
+declare const transparent_: BpxTransparentColor;
+declare class BpxSolidColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+    readonly r: number;
+    readonly g: number;
+    readonly b: number;
+    constructor(r: number, g: number, b: number);
+    asRgbCssHex(): string;
+    static fromRgbCssHex(cssHex: string): BpxSolidColor;
+}
+declare const black_: BpxSolidColor;
+declare const white_: BpxSolidColor;
+declare const red_: BpxSolidColor;
+declare const green_: BpxSolidColor;
+declare const blue_: BpxSolidColor;
+declare class BpxCompositeColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+    readonly primary: BpxSolidColor | BpxTransparentColor;
+    readonly secondary: BpxSolidColor | BpxTransparentColor;
+    constructor(primary: BpxSolidColor | BpxTransparentColor, secondary: BpxSolidColor | BpxTransparentColor);
+}
+declare class BpxMappingColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+    readonly snapshotId: BpxCanvasPixelsSnapshotId;
+    readonly getMappedColorFromCanvasSnapshot: (snapshot: CanvasPixelsSnapshot, index: number) => BpxSolidColor | BpxTransparentColor;
+    constructor(snapshotId: BpxCanvasPixelsSnapshotId, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
+}
+
 interface PrintDebug {
     __printDebug(): string;
 }
@@ -79,94 +123,6 @@ interface BpxFont {
     spritesFor(text: string): BpxCharSprite[];
 }
 
-declare class CanvasPixels {
-    #private;
-    readonly canvasSize: BpxVector2d;
-    constructor(canvasSize: BpxVector2d, rgbValues?: number[]);
-    set(index: number, color: BpxSolidColor): void;
-    get(index: number): BpxSolidColor;
-    clone(): CanvasPixels;
-    renderTo(htmlCanvasData: Uint8ClampedArray): void;
-}
-
-declare class BpxFillPattern {
-    #private;
-    static of(bits: number): BpxFillPattern;
-    static primaryOnly: BpxFillPattern;
-    static secondaryOnly: BpxFillPattern;
-    private constructor();
-    hasPrimaryColorAt(xy: BpxVector2d): boolean;
-}
-
-type BpxColorMapping = Array<{
-    from: BpxSolidColor;
-    to: BpxSolidColor | BpxTransparentColor;
-}>;
-type BpxCanvasSnapshot = {
-    canvasPixels: CanvasPixels;
-};
-type DrawApiOptions = {
-    canvasPixels: CanvasPixels;
-    assets: Assets;
-};
-declare class DrawApi {
-    #private;
-    readonly takeCanvasSnapshot: () => BpxCanvasSnapshot;
-    constructor(options: DrawApiOptions);
-    setCameraOffset(offset: BpxVector2d): void;
-    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
-    removeClippingRegion(): void;
-    setFillPattern(fillPattern: BpxFillPattern): void;
-    mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping;
-    setFont(fontId: BpxFontId | null): void;
-    getFont(): BpxFont | null;
-    clearCanvas(color: BpxSolidColor): void;
-    pixel(xy: BpxVector2d, color: BpxSolidColor): void;
-    pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void;
-    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
-    print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean]): void;
-}
-
-type BpxColorId = string;
-interface BpxColor {
-    id: BpxColorId;
-}
-declare class BpxTransparentColor implements BpxColor {
-    readonly id: BpxColorId;
-}
-declare const transparent_: BpxTransparentColor;
-declare class BpxSolidColor implements BpxColor {
-    readonly id: BpxColorId;
-    readonly r: number;
-    readonly g: number;
-    readonly b: number;
-    constructor(r: number, g: number, b: number);
-    asRgbCssHex(): string;
-    static fromRgbCssHex(cssHex: string): BpxSolidColor;
-}
-declare const black_: BpxSolidColor;
-declare const white_: BpxSolidColor;
-declare const red_: BpxSolidColor;
-declare const green_: BpxSolidColor;
-declare const blue_: BpxSolidColor;
-declare class BpxCompositeColor implements BpxColor {
-    readonly id: BpxColorId;
-    readonly primary: BpxSolidColor | BpxTransparentColor;
-    readonly secondary: BpxSolidColor | BpxTransparentColor;
-    constructor(primary: BpxSolidColor | BpxTransparentColor, secondary: BpxSolidColor | BpxTransparentColor);
-}
-declare class BpxMappingColor implements BpxColor {
-    #private;
-    readonly id: BpxColorId;
-    readonly getMappedColorFromCanvasSnapshot: (index: number) => BpxSolidColor | BpxTransparentColor;
-    constructor(canvasSnapshot: BpxCanvasSnapshot, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
-}
-
 type AssetsToLoad = {
     images: ImageAssetToLoad[];
     fonts: FontAssetToLoad[];
@@ -229,6 +185,19 @@ declare class BpxEasing {
 }
 
 declare class BpxUtils {
+    /**
+     * NOTE: This function makes sense in a TypeScript codebase only.
+     *
+     * This function is meant to be used in a last branch of `if - else if - … - else`
+     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+     *   a union type of which we check all possible cases. Someday we add one more
+     *   type to the union, but we forget to extend our `switch` by that one more `case`.
+     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+     *   will inform us about such mistake.
+     *
+     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+     */
+    static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
     static booleanChangingEveryNthFrame(n: number): boolean;
     static clamp(a: number, b: number, c: number): number;
     static identity<Param>(param: Param): Param;
@@ -279,10 +248,61 @@ type SoundSequenceEntrySoundAdditional = SoundUrl | {
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
-declare class BpxClippingRegion {
+declare class BpxFillPattern {
     #private;
-    constructor(xy: BpxVector2d, wh: BpxVector2d);
-    allowsDrawingAt(xy: BpxVector2d): boolean;
+    static of(bits: number): BpxFillPattern;
+    static primaryOnly: BpxFillPattern;
+    static secondaryOnly: BpxFillPattern;
+    private constructor();
+    hasPrimaryColorAt(x: number, y: number): boolean;
+}
+
+declare abstract class CanvasPixels {
+    #private;
+    readonly canvasSize: BpxVector2d;
+    protected constructor(canvasSize: BpxVector2d);
+    abstract setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
+    abstract removeClippingRegion(): void;
+    abstract canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
+    abstract canSetAt(x: number, y: number): boolean;
+    abstract set(color: BpxSolidColor, x: number, y: number): void;
+    takeSnapshot(): BpxCanvasPixelsSnapshotId;
+    getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;
+    protected abstract newSnapshot(): CanvasPixelsSnapshot;
+    abstract onWindowResize(): void;
+    render(): void;
+    protected abstract doRender(): void;
+}
+
+type BpxColorMapping = Array<{
+    from: BpxSolidColor;
+    to: BpxSolidColor | BpxTransparentColor;
+}>;
+type DrawApiOptions = {
+    canvasPixels: CanvasPixels;
+    assets: Assets;
+};
+declare class DrawApi {
+    #private;
+    constructor(options: DrawApiOptions);
+    setCameraOffset(offset: BpxVector2d): void;
+    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
+    removeClippingRegion(): void;
+    setFillPattern(fillPattern: BpxFillPattern): void;
+    mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping;
+    clearCanvas(color: BpxSolidColor): void;
+    pixel(xy: BpxVector2d, color: BpxSolidColor): void;
+    pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void;
+    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
+    setFont(fontId: BpxFontId | null): void;
+    getFont(): BpxFont | null;
+    print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean]): void;
+    takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId;
 }
 
 declare class Button {
@@ -468,8 +488,6 @@ declare class BeetPx {
     static removeClippingRegion: DrawApi["removeClippingRegion"];
     static setFillPattern: DrawApi["setFillPattern"];
     static mapSpriteColors: DrawApi["mapSpriteColors"];
-    static setFont: DrawApi["setFont"];
-    static getFont: DrawApi["getFont"];
     static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
     static pixels: DrawApi["pixels"];
@@ -479,6 +497,8 @@ declare class BeetPx {
     static ellipse: DrawApi["ellipse"];
     static ellipseFilled: DrawApi["ellipseFilled"];
     static sprite: DrawApi["sprite"];
+    static setFont: DrawApi["setFont"];
+    static getFont: DrawApi["getFont"];
     static print: DrawApi["print"];
     static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"];
     static playSoundOnce: AudioApi["playSoundOnce"];
@@ -520,4 +540,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshot, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

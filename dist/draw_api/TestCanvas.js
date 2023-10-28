@@ -6,20 +6,22 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _TestCanvas_instances, _TestCanvas_asAscii;
 import { expect } from "@jest/globals";
 import { v_ } from "../Vector2d";
-import { CanvasPixels } from "./CanvasPixels";
+import { CanvasPixelsForTests } from "./canvas_pixels/CanvasPixelsForTests";
 export class TestCanvas {
     constructor(width, height, color) {
         _TestCanvas_instances.add(this);
-        this.pixels = new CanvasPixels(v_(width, height));
-        for (let i = 0; i < width * height; i += 1) {
-            this.pixels.set(i, color);
+        this.pixels = new CanvasPixelsForTests(v_(width, height));
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                this.pixels.set(color, x, y);
+            }
         }
     }
     expectToEqual(params) {
         const { withMapping: asciiToColor, expectedImageAsAscii } = params;
         const colorToAscii = new Map(Object.entries(asciiToColor).map(([ascii, color]) => [color.id, ascii]));
         const actualAscii = __classPrivateFieldGet(this, _TestCanvas_instances, "m", _TestCanvas_asAscii).call(this, colorToAscii);
-        const expectedAscii = params.expectedImageAsAscii
+        const expectedAscii = expectedImageAsAscii
             .trim()
             .split("\n")
             .map((line) => line
@@ -35,10 +37,12 @@ export class TestCanvas {
 _TestCanvas_instances = new WeakSet(), _TestCanvas_asAscii = function _TestCanvas_asAscii(colorToAscii) {
     var _a;
     let asciiImage = "";
+    const snapshotId = this.pixels.takeSnapshot();
+    const snapshot = this.pixels.getSnapshot(snapshotId);
     for (let y = 0; y < this.pixels.canvasSize.y; y += 1) {
         for (let x = 0; x < this.pixels.canvasSize.x; x += 1) {
             const index = y * this.pixels.canvasSize.x + x;
-            const color = this.pixels.get(index);
+            const color = snapshot.get(index);
             asciiImage += (_a = colorToAscii.get(color.id)) !== null && _a !== void 0 ? _a : "?";
         }
         asciiImage += "\n";

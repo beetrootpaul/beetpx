@@ -9,18 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawLine_canvasPixels, _DrawLine_pixel;
+var _DrawLine_instances, _DrawLine_canvasPixels, _DrawLine_drawPixel;
+import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
+import { u_ } from "../Utils";
 import { v_ } from "../Vector2d";
-import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawLine {
     constructor(canvasPixels) {
+        _DrawLine_instances.add(this);
         _DrawLine_canvasPixels.set(this, void 0);
-        _DrawLine_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawLine_canvasPixels, canvasPixels, "f");
-        __classPrivateFieldSet(this, _DrawLine_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawLine_canvasPixels, "f"), {
-            disableRounding: true,
-        }), "f");
     }
     // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
     // TODO: tests for MappingColor
@@ -28,7 +26,8 @@ export class DrawLine {
     // TODO: cover ClippingRegion with tests
     // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
     // Based on http://members.chello.at/easyfilter/bresenham.html
-    draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+    draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly) {
+        var _a;
         // When drawing a line, the order of drawing does matter. This is why we
         //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
         //   shapes, but about xyStart and xyEnd.
@@ -42,6 +41,20 @@ export class DrawLine {
         //   with xy+wh, and the obtain a new wh as xyEnd-xyStart, which makes it rounded.
         wh = xyEnd.sub(xyStart);
         const whSub1 = wh.sub(wh.sign());
+        const c1 = color instanceof BpxCompositeColor
+            ? color.primary instanceof BpxSolidColor
+                ? color.primary
+                : null
+            : color;
+        const c2 = color instanceof BpxCompositeColor
+            ? color.secondary instanceof BpxSolidColor
+                ? color.secondary
+                : null
+            : null;
+        const sn = c1 instanceof BpxMappingColor
+            ? (_a = __classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
+            : null;
+        const fp = fillPattern;
         //
         // PREPARE
         //
@@ -54,7 +67,7 @@ export class DrawLine {
             //
             // DRAW THE CURRENT PIXEL
             //
-            __classPrivateFieldGet(this, _DrawLine_pixel, "f").draw(currentXy, color, clippingRegion, fillPattern);
+            __classPrivateFieldGet(this, _DrawLine_instances, "m", _DrawLine_drawPixel).call(this, currentXy.x, currentXy.y, c1, c2, fp, sn);
             if (currentXy.eq(targetXy))
                 break;
             //
@@ -72,4 +85,26 @@ export class DrawLine {
         }
     }
 }
-_DrawLine_canvasPixels = new WeakMap(), _DrawLine_pixel = new WeakMap();
+_DrawLine_canvasPixels = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, fillPattern, snapshot) {
+    if (!__classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").canSetAt(x, y)) {
+        return;
+    }
+    if (fillPattern.hasPrimaryColorAt(x, y)) {
+        if (!c1) {
+        }
+        else if (c1 instanceof BpxSolidColor) {
+            __classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").set(c1, x, y);
+        }
+        else {
+            const mapped = c1.getMappedColorFromCanvasSnapshot(snapshot !== null && snapshot !== void 0 ? snapshot : u_.throwError("Snapshot was not passed when trying to obtain a mapped color"), y * __classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").canvasSize.x + x);
+            if (mapped instanceof BpxSolidColor) {
+                __classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").set(mapped, x, y);
+            }
+        }
+    }
+    else {
+        if (c2 != null) {
+            __classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").set(c2, x, y);
+        }
+    }
+};

@@ -4,16 +4,17 @@ import { BpxSolidColor, black_ } from "./Color";
 import { FullScreen } from "./FullScreen";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { Loading } from "./Loading";
-import { BpxUtils } from "./Utils";
-import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
+import { BpxUtils, u_ } from "./Utils";
+import { BpxVector2d, v_ } from "./Vector2d";
 import { AudioApi } from "./audio/AudioApi";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
 import { DebugMode } from "./debug/DebugMode";
-import { CanvasPixels } from "./draw_api/CanvasPixels";
 import { DrawApi } from "./draw_api/DrawApi";
+import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
+import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
 import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -45,10 +46,6 @@ export class Framework {
   readonly #htmlCanvasBackground: BpxSolidColor =
     BpxSolidColor.fromRgbCssHex("#000000");
 
-  readonly #htmlCanvasContext: CanvasRenderingContext2D;
-  readonly #offscreenContext: OffscreenCanvasRenderingContext2D;
-  readonly #offscreenImageData: ImageData;
-
   readonly #loading: Loading;
   readonly gameInput: GameInput;
   readonly #gameLoop: GameLoop;
@@ -59,15 +56,13 @@ export class Framework {
 
   readonly assets: Assets;
 
+  readonly #htmlCanvas: HTMLCanvasElement;
   readonly #canvasPixels: CanvasPixels;
   readonly drawApi: DrawApi;
 
   #onStarted?: () => void;
   #onUpdate?: () => void;
   #onDraw?: () => void;
-
-  #scaleToFill = 1;
-  #centeringOffset = v_0_0_;
 
   #frameNumber: number = 0;
   #renderFps: number = 1;
@@ -88,6 +83,9 @@ export class Framework {
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue
       : false;
+
+    Logger.debug("Framework options:", options);
+
     this.#frameByFrame = false;
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
@@ -102,38 +100,6 @@ export class Framework {
         : BpxUtils.throwError(
             `Unsupported canvas size: "${options.gameCanvasSize}"`,
           );
-
-    const htmlCanvas = document.querySelector<HTMLCanvasElement>(
-      HtmlTemplate.selectors.canvas,
-    );
-    if (!htmlCanvas) {
-      throw Error(
-        `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
-      );
-    }
-
-    const htmlCanvasContext = htmlCanvas.getContext("2d", {
-      // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
-      alpha: false,
-    });
-    if (!htmlCanvasContext) {
-      throw Error("Was unable to obtain <canvas>' 2D context");
-    }
-    this.#htmlCanvasContext = htmlCanvasContext;
-
-    const offscreenCanvas = document
-      .createElement("canvas")
-      .transferControlToOffscreen();
-    offscreenCanvas.width = this.#gameCanvasSize.x;
-    offscreenCanvas.height = this.#gameCanvasSize.y;
-    const offscreenContext = offscreenCanvas.getContext("2d", {
-      // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
-      alpha: false,
-    });
-    if (!offscreenContext) {
-      throw Error("Was unable to obtain OffscreenCanvas' 2D context");
-    }
-    this.#offscreenContext = offscreenContext;
 
     this.gameInput = new GameInput({
       visibleTouchButtons: options.visibleTouchButtons,
@@ -167,14 +133,20 @@ export class Framework {
       HtmlTemplate.selectors.controlsFullScreen,
     );
 
-    this.#offscreenImageData = this.#offscreenContext.createImageData(
-      this.#offscreenContext.canvas.width,
-      this.#offscreenContext.canvas.height,
+    this.#htmlCanvas =
+      document.querySelector<HTMLCanvasElement>(
+        HtmlTemplate.selectors.canvas,
+      ) ??
+      u_.throwError(
+        `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
+      );
+
+    this.#canvasPixels = new CanvasPixelsForProduction(
+      this.#gameCanvasSize,
+      this.#htmlCanvas,
+      this.#htmlCanvasBackground,
     );
 
-    this.#initializeAsNonTransparent(this.#offscreenImageData);
-
-    this.#canvasPixels = new CanvasPixels(this.#gameCanvasSize);
     this.drawApi = new DrawApi({
       canvasPixels: this.#canvasPixels,
       assets: this.assets,
@@ -216,12 +188,6 @@ export class Framework {
     this.#onStarted?.();
   }
 
-  #initializeAsNonTransparent(imageData: ImageData) {
-    for (let i = 3; i < imageData.data.length; i += 4) {
-      imageData.data[i] = 0xff;
-    }
-  }
-
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
   #startGame(): void {
     if (__BEETPX_IS_PROD__) {
@@ -239,9 +205,9 @@ export class Framework {
       });
     }
 
-    this.#setupHtmlCanvas();
+    this.#canvasPixels.onWindowResize();
     window.addEventListener("resize", (_event) => {
-      this.#setupHtmlCanvas();
+      this.#canvasPixels.onWindowResize();
     });
 
     this.#frameNumber = 0;
@@ -274,7 +240,8 @@ export class Framework {
               Framework.#storageDebugDisabledTrue,
             );
           }
-          this.#redrawDebugMargin();
+          // TODO: BRING IT BACK
+          // this.#redrawDebugMargin();
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
           this.#frameByFrame = !this.#frameByFrame;
@@ -323,73 +290,16 @@ export class Framework {
     });
   }
 
-  // This function assumes that <canvas> has width and height set to 100% by CSS.
-  #setupHtmlCanvas(): void {
-    // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
-    this.#htmlCanvasContext.canvas.width =
-      this.#htmlCanvasContext.canvas.getBoundingClientRect().width *
-      window.devicePixelRatio;
-    this.#htmlCanvasContext.canvas.height =
-      this.#htmlCanvasContext.canvas.getBoundingClientRect().height *
-      window.devicePixelRatio;
-
-    this.#htmlCanvasContext.imageSmoothingEnabled = false;
-
-    this.#htmlCanvasContext.fillStyle =
-      this.#htmlCanvasBackground.asRgbCssHex();
-    this.#htmlCanvasContext.fillRect(
-      0,
-      0,
-      this.#htmlCanvasContext.canvas.width,
-      this.#htmlCanvasContext.canvas.height,
-    );
-  }
-
   #render(): void {
-    this.#canvasPixels.renderTo(this.#offscreenImageData.data);
-
-    this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
-
-    const htmlCanvasSize = v_(
-      this.#htmlCanvasContext.canvas.width,
-      this.#htmlCanvasContext.canvas.height,
-    );
-    // TODO: encapsulate this calculation and related fields
-    this.#scaleToFill = Math.min(
-      htmlCanvasSize.div(this.#gameCanvasSize).floor().x,
-      htmlCanvasSize.div(this.#gameCanvasSize).floor().y,
-    );
-    this.#centeringOffset = htmlCanvasSize
-      .sub(this.#gameCanvasSize.mul(this.#scaleToFill))
-      .div(2)
-      .floor();
-    // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
-
-    this.#redrawDebugMargin();
-
-    this.#htmlCanvasContext.drawImage(
-      this.#offscreenContext.canvas,
-      0,
-      0,
-      this.#offscreenContext.canvas.width,
-      this.#offscreenContext.canvas.height,
-      this.#centeringOffset.x,
-      this.#centeringOffset.y,
-      this.#scaleToFill * this.#gameCanvasSize.x,
-      this.#scaleToFill * this.#gameCanvasSize.y,
-    );
+    this.#drawDebugMargin();
+    this.#canvasPixels.render();
   }
 
-  #redrawDebugMargin(): void {
-    const debugBgMargin = 1;
-    this.#htmlCanvasContext.fillStyle = DebugMode.enabled
-      ? "#ff0000"
-      : this.#htmlCanvasBackground.asRgbCssHex();
-    this.#htmlCanvasContext.fillRect(
-      this.#centeringOffset.x - debugBgMargin,
-      this.#centeringOffset.y - debugBgMargin,
-      this.#scaleToFill * this.#gameCanvasSize.x + 2 * debugBgMargin,
-      this.#scaleToFill * this.#gameCanvasSize.y + 2 * debugBgMargin,
-    );
+  #drawDebugMargin(): void {
+    if (DebugMode.enabled) {
+      this.#htmlCanvas.classList.add(HtmlTemplate.classes.canvasDebugBorder);
+    } else {
+      this.#htmlCanvas.classList.remove(HtmlTemplate.classes.canvasDebugBorder);
+    }
   }
 }

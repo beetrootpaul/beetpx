@@ -9,30 +9,29 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawSprite_canvasPixels, _DrawSprite_options, _DrawSprite_pixel;
-import { BpxSolidColor, transparent_, } from "../Color";
+var _a, _DrawSprite_preparedSprites, _DrawSprite_canvasPixels, _DrawSprite_options;
 import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { v_, v_1_1_ } from "../Vector2d";
-import { DrawPixel } from "./DrawPixel";
 import { BpxFillPattern } from "./FillPattern";
+import { PreparedSprites } from "./PreparedSprites";
 export class DrawSprite {
     constructor(canvasPixels, options = {}) {
         _DrawSprite_canvasPixels.set(this, void 0);
         _DrawSprite_options.set(this, void 0);
-        _DrawSprite_pixel.set(this, void 0);
         __classPrivateFieldSet(this, _DrawSprite_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
-        __classPrivateFieldSet(this, _DrawSprite_pixel, new DrawPixel(__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f")), "f");
     }
+    // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
+    //       - ff614f became ff6e59
+    //       - 00555a became 125359
     // TODO: cover clippingRegion with tests
     draw(sourceImageAsset, sprite, targetXy, 
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy = v_1_1_, colorMapping = new Map(), 
     // TODO: test it
-    fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
-        var _a;
+    fillPattern = BpxFillPattern.primaryOnly) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = scaleXy.floor();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
@@ -40,29 +39,32 @@ export class DrawSprite {
         sprite = new BpxSprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
         // clip sprite by image edges
         sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
-        for (let imgY = sprite.xy1.y; imgY < sprite.xy2.y; imgY += 1) {
-            for (let imgX = sprite.xy1.x; imgX < sprite.xy2.x; imgX += 1) {
-                for (let xScaledStep = 0; xScaledStep < scaleXy.x; xScaledStep++) {
-                    for (let yScaledStep = 0; yScaledStep < scaleXy.y; yScaledStep++) {
-                        const canvasXy = targetXy.add(v_(imgX - sprite.xy1.x, imgY - sprite.xy1.y)
-                            .mul(scaleXy)
-                            .add(xScaledStep, yScaledStep));
-                        const imgBytesIndex = (imgY * imgW + imgX) * 4;
-                        if (imgBytes.length < imgBytesIndex + 4) {
-                            throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgBytesIndex})`);
+        // avoid all computations if the whole sprite is outside the canvas
+        if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
+            return;
+        }
+        const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, colorMapping);
+        for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
+            const canvasYBase = targetXy.y + spriteY * scaleXy.y;
+            for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
+                const canvasXBase = targetXy.x + spriteX * scaleXy.x;
+                for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {
+                    for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
+                        const canvasX = canvasXBase + xScaledStep;
+                        const canvasY = canvasYBase + yScaledStep;
+                        if (__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAt(canvasX, canvasY)) {
+                            if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
+                                const color = preparedSprite.colors[spriteX][spriteY];
+                                if (color) {
+                                    __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").set(color, canvasX, canvasY);
+                                }
+                            }
                         }
-                        let color = imgBytes[imgBytesIndex + 3] >= 0xff / 2
-                            ? new BpxSolidColor(imgBytes[imgBytesIndex], imgBytes[imgBytesIndex + 1], imgBytes[imgBytesIndex + 2])
-                            : transparent_;
-                        color = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
-                        // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
-                        //       - ff614f became ff6e59
-                        //       - 00555a became 125359
-                        __classPrivateFieldGet(this, _DrawSprite_pixel, "f").draw(canvasXy, color, clippingRegion, fillPattern);
                     }
                 }
             }
         }
     }
 }
-_DrawSprite_canvasPixels = new WeakMap(), _DrawSprite_options = new WeakMap(), _DrawSprite_pixel = new WeakMap();
+_a = DrawSprite, _DrawSprite_canvasPixels = new WeakMap(), _DrawSprite_options = new WeakMap();
+_DrawSprite_preparedSprites = { value: new PreparedSprites() };

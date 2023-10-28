@@ -1,4 +1,7 @@
-import { BpxCanvasSnapshot } from "./draw_api/DrawApi";
+import {
+  BpxCanvasPixelsSnapshotId,
+  CanvasPixelsSnapshot,
+} from "./draw_api/canvas_pixels/CanvasPixelsSnapshot";
 
 export type BpxColorId = string;
 
@@ -11,6 +14,9 @@ export interface BpxColor {
 // TODO: split colors into separate files?
 
 export class BpxTransparentColor implements BpxColor {
+  // used to avoid a case where every color can be interpreted as BpxTransparentColor
+  readonly #nominalTypeHelper__transparent = true;
+
   readonly id: BpxColorId = "transparent";
 }
 
@@ -18,6 +24,8 @@ export const transparent_ = new BpxTransparentColor();
 
 // Red, green, and blue, each one as value between 0 and 255.
 export class BpxSolidColor implements BpxColor {
+  readonly #nominalTypeHelper__solid = true;
+
   readonly id: BpxColorId;
 
   readonly r: number;
@@ -66,6 +74,8 @@ export const green_ = BpxSolidColor.fromRgbCssHex("#00ff00");
 export const blue_ = BpxSolidColor.fromRgbCssHex("#0000ff");
 
 export class BpxCompositeColor implements BpxColor {
+  readonly #nominalTypeHelper__composite = true;
+
   readonly id: BpxColorId;
 
   readonly primary: BpxSolidColor | BpxTransparentColor;
@@ -85,19 +95,27 @@ export class BpxCompositeColor implements BpxColor {
 export class BpxMappingColor implements BpxColor {
   static #nextId = 1;
 
+  readonly #nominalTypeHelper__mapping = true;
+
   readonly id: BpxColorId = `mapping:${BpxMappingColor.#nextId++}`;
 
+  readonly snapshotId: BpxCanvasPixelsSnapshotId;
+
   readonly getMappedColorFromCanvasSnapshot: (
+    snapshot: CanvasPixelsSnapshot,
     index: number,
   ) => BpxSolidColor | BpxTransparentColor;
 
   constructor(
-    canvasSnapshot: BpxCanvasSnapshot,
+    snapshotId: BpxCanvasPixelsSnapshotId,
     mapping: (
       canvasColor: BpxSolidColor,
     ) => BpxSolidColor | BpxTransparentColor,
   ) {
-    this.getMappedColorFromCanvasSnapshot = (index: number) =>
-      mapping(canvasSnapshot.canvasPixels.get(index));
+    this.snapshotId = snapshotId;
+    this.getMappedColorFromCanvasSnapshot = (
+      snapshot: CanvasPixelsSnapshot,
+      index: number,
+    ) => mapping(snapshot.get(index));
   }
 }

@@ -1,5 +1,3 @@
-import { BpxVector2d } from "../Vector2d";
-
 // TODO: rename fill to draw? Since we are using it for sprites as well…
 // TODO: … and use it, like, for every drawing API we have in this framework.
 export class BpxFillPattern {
@@ -19,9 +17,10 @@ export class BpxFillPattern {
   }
 
   // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
-  hasPrimaryColorAt(xy: BpxVector2d): boolean {
-    const patternXy = xy.mod(4);
-    const bitPosition = 4 * 4 - (patternXy.y * 4 + patternXy.x) - 1;
+  hasPrimaryColorAt(x: number, y: number): boolean {
+    const patternX = x % 4;
+    const patternY = y % 4;
+    const bitPosition = 4 * 4 - (patternY * 4 + patternX) - 1;
     const isSecondary = Boolean(this.#bits & (1 << bitPosition));
     return !isSecondary;
   }

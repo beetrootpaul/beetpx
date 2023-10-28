@@ -1,5 +1,10 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor, transparent_ } from "../Color";
+import {
+  BpxColorId,
+  BpxSolidColor,
+  BpxTransparentColor,
+  transparent_,
+} from "../Color";
 import { spr_ } from "../Sprite";
 import { v_, v_1_1_ } from "../Vector2d";
 import { DrawSprite } from "./DrawSprite";
@@ -17,8 +22,6 @@ describe("DrawSprite", () => {
   const c4 = BpxSolidColor.fromRgbCssHex("#414243");
   const c5 = BpxSolidColor.fromRgbCssHex("#515253");
 
-  const s = spr_("any.image.url");
-
   test("1x1 image", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
@@ -29,6 +32,7 @@ describe("DrawSprite", () => {
         #
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(0, 0, 1, 1), v_(1, 1), v_1_1_, new Map());
@@ -56,6 +60,7 @@ describe("DrawSprite", () => {
         = = = = =
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(0, 0, 5, 3), v_(3, 2));
@@ -87,6 +92,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(1, 1, 2, 2), v_(2, 1));
@@ -116,6 +122,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(1, 1, 0, 0), v_(2, 1));
@@ -145,6 +152,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(3, 3, -2, -2), v_(2, 1));
@@ -174,6 +182,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(-2, 1, 4, 2), v_(3, 3));
@@ -207,6 +216,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(2, 1, 4, 2), v_(3, 3));
@@ -240,6 +250,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(1, -2, 2, 4), v_(3, 3));
@@ -273,6 +284,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(1, 2, 2, 4), v_(3, 3));
@@ -306,6 +318,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(0, 0, 4, 4), v_(-2, 1));
@@ -337,6 +350,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(0, 0, 4, 4), v_(4, 1));
@@ -368,6 +382,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(0, 0, 4, 4), v_(1, -2));
@@ -399,6 +414,7 @@ describe("DrawSprite", () => {
         # = : %
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(0, 0, 4, 4), v_(1, 4));
@@ -430,6 +446,7 @@ describe("DrawSprite", () => {
         # # # # : . . : . . % . . = = .
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(image.asset, s(0, 0, 4, 4), v_(0, 0));
@@ -462,6 +479,7 @@ describe("DrawSprite", () => {
         # . . #
       `,
     });
+    const s = spr_(image.uniqueUrl);
 
     // when
     sprite.draw(
@@ -469,7 +487,7 @@ describe("DrawSprite", () => {
       s(0, 0, 4, 4),
       v_(0, 0),
       v_1_1_,
-      new Map([
+      new Map<BpxColorId, BpxSolidColor | BpxTransparentColor>([
         [c1.id, c4],
         [c2.id, c5],
         [c3.id, ct],
