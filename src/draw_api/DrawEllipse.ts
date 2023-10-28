@@ -32,9 +32,25 @@ export class DrawEllipse {
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
     clippingRegion: BpxClippingRegion | null = null,
   ): void {
-    const [xy1, xy2] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
+      xy.round(),
+      xy.add(wh).round(),
+    );
 
-    if (xy2.x - xy1.x <= 0 || xy2.y - xy1.y <= 0) {
+    if (
+      xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
+      xyMaxExclusive.y - xyMinInclusive.y <= 0
+    ) {
+      return;
+    }
+
+    // avoid all computations if the whole rectangle is outside the canvas
+    if (
+      xyMaxExclusive.x <= 0 ||
+      xyMaxExclusive.y <= 0 ||
+      xyMinInclusive.x >= this.#canvasPixels.canvasSize.x ||
+      xyMinInclusive.y >= this.#canvasPixels.canvasSize.y
+    ) {
       return;
     }
 
@@ -42,13 +58,13 @@ export class DrawEllipse {
     // PREPARE
     //
 
-    let a = xy2.x - xy1.x - 1;
-    let b = xy2.y - xy1.y - 1;
+    let a = xyMaxExclusive.x - xyMinInclusive.x - 1;
+    let b = xyMaxExclusive.y - xyMinInclusive.y - 1;
     let b1 = b & 1;
 
-    let left = xy1.x;
-    let right = xy2.x - 1;
-    let bottom = xy1.y + Math.floor((b + 1) / 2);
+    let left = xyMinInclusive.x;
+    let right = xyMaxExclusive.x - 1;
+    let bottom = xyMinInclusive.y + Math.floor((b + 1) / 2);
     let top = bottom - b1;
 
     let errIncrementX = 4 * (1 - a) * b * b;

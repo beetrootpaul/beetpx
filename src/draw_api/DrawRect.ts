@@ -35,6 +35,25 @@ export class DrawRect {
       xy.round(),
       xy.add(wh).round(),
     );
+
+    // avoid all computations if the rectangle has a size of 0 in either direction
+    if (
+      xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
+      xyMaxExclusive.y - xyMinInclusive.y <= 0
+    ) {
+      return;
+    }
+
+    // avoid all computations if the whole rectangle is outside the canvas
+    if (
+      xyMaxExclusive.x <= 0 ||
+      xyMaxExclusive.y <= 0 ||
+      xyMinInclusive.x >= this.#canvasPixels.canvasSize.x ||
+      xyMinInclusive.y >= this.#canvasPixels.canvasSize.y
+    ) {
+      return;
+    }
+
     for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
       if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
         for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {

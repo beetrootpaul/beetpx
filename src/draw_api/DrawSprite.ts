@@ -32,7 +32,6 @@ export class DrawSprite {
     });
   }
 
-  // TODO: drawing outside canvas is still very expensive, hmmmmm…
   // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
   //       - ff614f became ff6e59
   //       - 00555a became 125359
