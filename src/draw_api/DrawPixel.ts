@@ -1,7 +1,6 @@
 import { BpxSolidColor } from "../Color";
 import { BpxVector2d } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawPixel {
@@ -19,15 +18,10 @@ export class DrawPixel {
     xy: BpxVector2d,
     color: BpxSolidColor,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     xy = xy.round();
 
     if (!this.#canvasPixels.canSetAt(xy.x, xy.y)) {
-      return;
-    }
-
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(xy.x, xy.y)) {
       return;
     }
 

@@ -24,7 +24,7 @@ export class DrawRect {
     // TODO: tests for MappingColor
     // TODO: tests for CompositeColor and fillPattern
     // TODO: cover ClippingRegion with tests
-    draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+    draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly) {
         var _a;
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         // avoid all computations if the rectangle has a size of 0 in either direction
@@ -33,10 +33,7 @@ export class DrawRect {
             return;
         }
         // avoid all computations if the whole rectangle is outside the canvas
-        if (xyMaxExclusive.x <= 0 ||
-            xyMaxExclusive.y <= 0 ||
-            xyMinInclusive.x >= __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canvasSize.x ||
-            xyMinInclusive.y >= __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canvasSize.y) {
+        if (!__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
         const c1 = color instanceof BpxCompositeColor
@@ -53,25 +50,21 @@ export class DrawRect {
             ? (_a = __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
             : null;
         const fp = fillPattern;
-        const cr = clippingRegion;
         for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
             if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
                 for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
-                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, cr, sn);
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
                 }
             }
             else {
-                __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMinInclusive.x, y, c1, c2, fp, cr, sn);
-                __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMaxExclusive.x - 1, y, c1, c2, fp, cr, sn);
+                __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMinInclusive.x, y, c1, c2, fp, sn);
+                __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
             }
         }
     }
 }
-_DrawRect_canvasPixels = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, fillPattern, clippingRegion, snapshot) {
+_DrawRect_canvasPixels = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, fillPattern, snapshot) {
     if (!__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canSetAt(x, y)) {
-        return;
-    }
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
         return;
     }
     if (fillPattern.hasPrimaryColorAt(x, y)) {

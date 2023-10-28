@@ -9,11 +9,48 @@ export class CanvasPixelsForTests extends CanvasPixels {
   readonly #length: number;
   readonly #rgbValues: number[];
 
+  #minX: number;
+  #minY: number;
+  #maxX: number;
+  #maxY: number;
+
   constructor(canvasSize: BpxVector2d) {
     super(canvasSize);
 
+    this.#minX = 0;
+    this.#minY = 0;
+    this.#maxX = canvasSize.x - 1;
+    this.#maxY = canvasSize.y - 1;
+
     this.#length = canvasSize.x * canvasSize.y;
     this.#rgbValues = u_.range(this.#length).map(() => 0);
+  }
+
+  setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
+      xy.round(),
+      xy.add(wh).round(),
+    );
+    this.#minX = xyMinInclusive.x;
+    this.#minY = xyMinInclusive.y;
+    this.#maxX = xyMaxExclusive.x - 1;
+    this.#maxY = xyMaxExclusive.y - 1;
+  }
+
+  removeClippingRegion(): void {
+    this.#minX = 0;
+    this.#minY = 0;
+    this.#maxX = this.canvasSize.x - 1;
+    this.#maxY = this.canvasSize.y - 1;
+  }
+
+  canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean {
+    return (
+      xMax >= this.#minX &&
+      yMax >= this.#minY &&
+      xMin <= this.#maxX &&
+      yMin <= this.#maxY
+    );
   }
 
   canSetAt(x: number, y: number): boolean {

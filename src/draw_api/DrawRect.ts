@@ -3,7 +3,6 @@ import { u_ } from "../Utils";
 import { BpxVector2d } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { CanvasPixelsSnapshot } from "./canvas_pixels/CanvasPixelsSnapshot";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawRect {
@@ -23,7 +22,6 @@ export class DrawRect {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
     fill: boolean,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       xy.round(),
@@ -40,10 +38,12 @@ export class DrawRect {
 
     // avoid all computations if the whole rectangle is outside the canvas
     if (
-      xyMaxExclusive.x <= 0 ||
-      xyMaxExclusive.y <= 0 ||
-      xyMinInclusive.x >= this.#canvasPixels.canvasSize.x ||
-      xyMinInclusive.y >= this.#canvasPixels.canvasSize.y
+      !this.#canvasPixels.canSetAny(
+        xyMinInclusive.x,
+        xyMinInclusive.y,
+        xyMaxExclusive.x - 1,
+        xyMaxExclusive.y - 1,
+      )
     ) {
       return;
     }
@@ -69,16 +69,15 @@ export class DrawRect {
         : null;
 
     const fp = fillPattern;
-    const cr = clippingRegion;
 
     for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
       if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
         for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
-          this.#drawPixel(x, y, c1, c2, fp, cr, sn);
+          this.#drawPixel(x, y, c1, c2, fp, sn);
         }
       } else {
-        this.#drawPixel(xyMinInclusive.x, y, c1, c2, fp, cr, sn);
-        this.#drawPixel(xyMaxExclusive.x - 1, y, c1, c2, fp, cr, sn);
+        this.#drawPixel(xyMinInclusive.x, y, c1, c2, fp, sn);
+        this.#drawPixel(xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
       }
     }
   }
@@ -89,14 +88,9 @@ export class DrawRect {
     c1: BpxSolidColor | BpxMappingColor | null,
     c2: BpxSolidColor | null,
     fillPattern: BpxFillPattern,
-    clippingRegion: BpxClippingRegion | null,
     snapshot: CanvasPixelsSnapshot | null,
   ): void {
     if (!this.#canvasPixels.canSetAt(x, y)) {
-      return;
-    }
-
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
       return;
     }
 

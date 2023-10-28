@@ -3,7 +3,6 @@ import { u_ } from "../Utils";
 import { BpxVector2d, v_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { CanvasPixelsSnapshot } from "./canvas_pixels/CanvasPixelsSnapshot";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawLine {
@@ -24,7 +23,6 @@ export class DrawLine {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
     //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
@@ -62,7 +60,6 @@ export class DrawLine {
         : null;
 
     const fp = fillPattern;
-    const cr = clippingRegion;
 
     //
     // PREPARE
@@ -80,7 +77,7 @@ export class DrawLine {
       //
       // DRAW THE CURRENT PIXEL
       //
-      this.#drawPixel(currentXy.x, currentXy.y, c1, c2, fp, cr, sn);
+      this.#drawPixel(currentXy.x, currentXy.y, c1, c2, fp, sn);
 
       if (currentXy.eq(targetXy)) break;
 
@@ -105,14 +102,9 @@ export class DrawLine {
     c1: BpxSolidColor | BpxMappingColor | null,
     c2: BpxSolidColor | null,
     fillPattern: BpxFillPattern,
-    clippingRegion: BpxClippingRegion | null,
     snapshot: CanvasPixelsSnapshot | null,
   ): void {
     if (!this.#canvasPixels.canSetAt(x, y)) {
-      return;
-    }
-
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
       return;
     }
 

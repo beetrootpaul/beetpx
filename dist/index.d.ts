@@ -248,12 +248,6 @@ type SoundSequenceEntrySoundAdditional = SoundUrl | {
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
-declare class BpxClippingRegion {
-    #private;
-    constructor(xy: BpxVector2d, wh: BpxVector2d);
-    allowsDrawingAt(x: number, y: number): boolean;
-}
-
 declare class BpxFillPattern {
     #private;
     static of(bits: number): BpxFillPattern;
@@ -267,6 +261,9 @@ declare abstract class CanvasPixels {
     #private;
     readonly canvasSize: BpxVector2d;
     protected constructor(canvasSize: BpxVector2d);
+    abstract setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
+    abstract removeClippingRegion(): void;
+    abstract canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
     abstract canSetAt(x: number, y: number): boolean;
     abstract set(color: BpxSolidColor, x: number, y: number): void;
     takeSnapshot(): BpxCanvasPixelsSnapshotId;
@@ -543,4 +540,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxClippingRegion, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

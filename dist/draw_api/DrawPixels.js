@@ -16,7 +16,7 @@ export class DrawPixels {
         __classPrivateFieldSet(this, _DrawPixels_canvasPixels, canvasPixels, "f");
     }
     // TODO: add tests
-    draw(xy, bits, color, clippingRegion = null) {
+    draw(xy, bits, color) {
         xy = xy.round();
         for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {
             for (let bitsX = 0; bitsX < bits[bitsY].length; bitsX += 1) {
@@ -26,9 +26,7 @@ export class DrawPixels {
                 const x = xy.x + bitsX;
                 const y = xy.y + bitsY;
                 if (__classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").canSetAt(x, y)) {
-                    if (!clippingRegion || clippingRegion.allowsDrawingAt(x, y)) {
-                        __classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").set(color, x, y);
-                    }
+                    __classPrivateFieldGet(this, _DrawPixels_canvasPixels, "f").set(color, x, y);
                 }
             }
         }

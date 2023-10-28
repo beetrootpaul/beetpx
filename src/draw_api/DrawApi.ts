@@ -11,7 +11,6 @@ import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
@@ -56,7 +55,6 @@ export class DrawApi {
 
   #cameraOffset: BpxVector2d = v_(0, 0);
 
-  #clippingRegion: BpxClippingRegion | null = null;
   #fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly;
 
   #fontAsset: FontAsset | null = null;
@@ -88,11 +86,11 @@ export class DrawApi {
   }
 
   setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
-    this.#clippingRegion = new BpxClippingRegion(xy, wh);
+    this.#canvasPixels.setClippingRegion(xy, wh);
   }
 
   removeClippingRegion(): void {
-    this.#clippingRegion = null;
+    this.#canvasPixels.removeClippingRegion();
   }
 
   // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
@@ -132,7 +130,6 @@ export class DrawApi {
       xy.sub(this.#cameraOffset),
       color,
       BpxFillPattern.primaryOnly,
-      this.#clippingRegion,
     );
   }
 
@@ -140,12 +137,7 @@ export class DrawApi {
   //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
   //        from left to right.
   pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
-    this.#pixels.draw(
-      xy.sub(this.#cameraOffset),
-      bits,
-      color,
-      this.#clippingRegion,
-    );
+    this.#pixels.draw(xy.sub(this.#cameraOffset), bits, color);
   }
 
   line(
@@ -153,13 +145,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
   ): void {
-    this.#line.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      this.#fillPattern,
-      this.#clippingRegion,
-    );
+    this.#line.draw(xy.sub(this.#cameraOffset), wh, color, this.#fillPattern);
   }
 
   rect(
@@ -173,7 +159,6 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -188,7 +173,6 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -203,7 +187,6 @@ export class DrawApi {
       color,
       false,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -218,7 +201,6 @@ export class DrawApi {
       color,
       true,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -236,7 +218,6 @@ export class DrawApi {
       scaleXy,
       this.#spriteColorMapping,
       this.#fillPattern,
-      this.#clippingRegion,
     );
   }
 
@@ -270,7 +251,6 @@ export class DrawApi {
         canvasXy.sub(this.#cameraOffset),
         this.#fontAsset,
         color,
-        this.#clippingRegion,
       );
     } else {
       Logger.infoBeetPx(

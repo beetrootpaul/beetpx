@@ -31,7 +31,7 @@ export class DrawSprite {
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy = v_1_1_, colorMapping = new Map(), 
     // TODO: test it
-    fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+    fillPattern = BpxFillPattern.primaryOnly) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = scaleXy.floor();
         const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
@@ -40,10 +40,7 @@ export class DrawSprite {
         // clip sprite by image edges
         sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         // avoid all computations if the whole sprite is outside the canvas
-        if (targetXy.x + sprite.size().x * scaleXy.x < 0 ||
-            targetXy.y + sprite.size().y * scaleXy.y < 0 ||
-            targetXy.x >= __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canvasSize.x ||
-            targetXy.y >= __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canvasSize.y) {
+        if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
             return;
         }
         const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, colorMapping);
@@ -56,13 +53,10 @@ export class DrawSprite {
                         const canvasX = canvasXBase + xScaledStep;
                         const canvasY = canvasYBase + yScaledStep;
                         if (__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAt(canvasX, canvasY)) {
-                            if (!clippingRegion ||
-                                clippingRegion.allowsDrawingAt(canvasX, canvasY)) {
-                                if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
-                                    const color = preparedSprite.colors[spriteX][spriteY];
-                                    if (color) {
-                                        __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").set(color, canvasX, canvasY);
-                                    }
+                            if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
+                                const color = preparedSprite.colors[spriteX][spriteY];
+                                if (color) {
+                                    __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").set(color, canvasX, canvasY);
                                 }
                             }
                         }

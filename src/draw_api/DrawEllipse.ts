@@ -3,7 +3,6 @@ import { u_ } from "../Utils";
 import { BpxVector2d } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 import { CanvasPixelsSnapshot } from "./canvas_pixels/CanvasPixelsSnapshot";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawEllipse {
@@ -24,13 +23,13 @@ export class DrawEllipse {
     color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
     fill: boolean,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       xy.round(),
       xy.add(wh).round(),
     );
 
+    // avoid all computations if the ellipse has a size of 0 in either direction
     if (
       xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
       xyMaxExclusive.y - xyMinInclusive.y <= 0
@@ -40,10 +39,12 @@ export class DrawEllipse {
 
     // avoid all computations if the whole rectangle is outside the canvas
     if (
-      xyMaxExclusive.x <= 0 ||
-      xyMaxExclusive.y <= 0 ||
-      xyMinInclusive.x >= this.#canvasPixels.canvasSize.x ||
-      xyMinInclusive.y >= this.#canvasPixels.canvasSize.y
+      !this.#canvasPixels.canSetAny(
+        xyMinInclusive.x,
+        xyMinInclusive.y,
+        xyMaxExclusive.x - 1,
+        xyMaxExclusive.y - 1,
+      )
     ) {
       return;
     }
@@ -69,7 +70,6 @@ export class DrawEllipse {
         : null;
 
     const fp = fillPattern;
-    const cr = clippingRegion;
 
     //
     // PREPARE
@@ -96,14 +96,14 @@ export class DrawEllipse {
       // DRAW THE CURRENT PIXEL IN EACH QUADRANT
       //
 
-      this.#drawPixel(right, bottom, c1, c2, fp, cr, sn);
-      this.#drawPixel(left, bottom, c1, c2, fp, cr, sn);
-      this.#drawPixel(left, top, c1, c2, fp, cr, sn);
-      this.#drawPixel(right, top, c1, c2, fp, cr, sn);
+      this.#drawPixel(right, bottom, c1, c2, fp, sn);
+      this.#drawPixel(left, bottom, c1, c2, fp, sn);
+      this.#drawPixel(left, top, c1, c2, fp, sn);
+      this.#drawPixel(right, top, c1, c2, fp, sn);
       if (fill) {
         for (let x = left + 1; x < right; ++x) {
-          this.#drawPixel(x, top, c1, c2, fp, cr, sn);
-          this.#drawPixel(x, bottom, c1, c2, fp, cr, sn);
+          this.#drawPixel(x, top, c1, c2, fp, sn);
+          this.#drawPixel(x, bottom, c1, c2, fp, sn);
         }
       }
 
@@ -136,11 +136,11 @@ export class DrawEllipse {
     while (bottom - top <= b) {
       // TODO: update the implementation below to honor fill pattern
 
-      this.#drawPixel(left - 1, bottom, c1, c2, fp, cr, sn);
-      this.#drawPixel(right + 1, bottom, c1, c2, fp, cr, sn);
+      this.#drawPixel(left - 1, bottom, c1, c2, fp, sn);
+      this.#drawPixel(right + 1, bottom, c1, c2, fp, sn);
       bottom += 1;
-      this.#drawPixel(left - 1, top, c1, c2, fp, cr, sn);
-      this.#drawPixel(right + 1, top, c1, c2, fp, cr, sn);
+      this.#drawPixel(left - 1, top, c1, c2, fp, sn);
+      this.#drawPixel(right + 1, top, c1, c2, fp, sn);
       top -= 1;
     }
   }
@@ -151,14 +151,9 @@ export class DrawEllipse {
     c1: BpxSolidColor | BpxMappingColor | null,
     c2: BpxSolidColor | null,
     fillPattern: BpxFillPattern,
-    clippingRegion: BpxClippingRegion | null,
     snapshot: CanvasPixelsSnapshot | null,
   ): void {
     if (!this.#canvasPixels.canSetAt(x, y)) {
-      return;
-    }
-
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
       return;
     }
 

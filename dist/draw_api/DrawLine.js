@@ -26,7 +26,7 @@ export class DrawLine {
     // TODO: cover ClippingRegion with tests
     // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
     // Based on http://members.chello.at/easyfilter/bresenham.html
-    draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+    draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly) {
         var _a;
         // When drawing a line, the order of drawing does matter. This is why we
         //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
@@ -55,7 +55,6 @@ export class DrawLine {
             ? (_a = __classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
             : null;
         const fp = fillPattern;
-        const cr = clippingRegion;
         //
         // PREPARE
         //
@@ -68,7 +67,7 @@ export class DrawLine {
             //
             // DRAW THE CURRENT PIXEL
             //
-            __classPrivateFieldGet(this, _DrawLine_instances, "m", _DrawLine_drawPixel).call(this, currentXy.x, currentXy.y, c1, c2, fp, cr, sn);
+            __classPrivateFieldGet(this, _DrawLine_instances, "m", _DrawLine_drawPixel).call(this, currentXy.x, currentXy.y, c1, c2, fp, sn);
             if (currentXy.eq(targetXy))
                 break;
             //
@@ -86,11 +85,8 @@ export class DrawLine {
         }
     }
 }
-_DrawLine_canvasPixels = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, fillPattern, clippingRegion, snapshot) {
+_DrawLine_canvasPixels = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, fillPattern, snapshot) {
     if (!__classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").canSetAt(x, y)) {
-        return;
-    }
-    if (clippingRegion && !clippingRegion.allowsDrawingAt(x, y)) {
         return;
     }
     if (fillPattern.hasPrimaryColorAt(x, y)) {

@@ -4,7 +4,6 @@ import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
 import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { BpxFillPattern } from "./FillPattern";
 import { PreparedSprites } from "./PreparedSprites";
 
@@ -39,7 +38,6 @@ export class DrawSprite {
     > = new Map(),
     // TODO: test it
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
 
@@ -79,10 +77,12 @@ export class DrawSprite {
 
     // avoid all computations if the whole sprite is outside the canvas
     if (
-      targetXy.x + sprite.size().x * scaleXy.x < 0 ||
-      targetXy.y + sprite.size().y * scaleXy.y < 0 ||
-      targetXy.x >= this.#canvasPixels.canvasSize.x ||
-      targetXy.y >= this.#canvasPixels.canvasSize.y
+      !this.#canvasPixels.canSetAny(
+        targetXy.x,
+        targetXy.y,
+        targetXy.x + sprite.size().x * scaleXy.x - 1,
+        targetXy.y + sprite.size().y * scaleXy.y - 1,
+      )
     ) {
       return;
     }
@@ -105,15 +105,10 @@ export class DrawSprite {
             const canvasY = canvasYBase + yScaledStep;
 
             if (this.#canvasPixels.canSetAt(canvasX, canvasY)) {
-              if (
-                !clippingRegion ||
-                clippingRegion.allowsDrawingAt(canvasX, canvasY)
-              ) {
-                if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
-                  const color = preparedSprite.colors[spriteX]![spriteY];
-                  if (color) {
-                    this.#canvasPixels.set(color, canvasX, canvasY);
-                  }
+              if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
+                const color = preparedSprite.colors[spriteX]![spriteY];
+                if (color) {
+                  this.#canvasPixels.set(color, canvasX, canvasY);
                 }
               }
             }

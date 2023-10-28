@@ -33,7 +33,6 @@ export {
   type BpxSoundSequenceEntry,
 } from "./audio/SoundSequence";
 export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
-export { BpxClippingRegion } from "./draw_api/ClippingRegion";
 export { type BpxColorMapping } from "./draw_api/DrawApi";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { type BpxCanvasPixelsSnapshotId } from "./draw_api/canvas_pixels/CanvasPixelsSnapshot";

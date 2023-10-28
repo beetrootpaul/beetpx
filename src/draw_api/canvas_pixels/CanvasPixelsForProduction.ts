@@ -13,6 +13,11 @@ export class CanvasPixelsForProduction extends CanvasPixels {
   readonly #offscreenContext: OffscreenCanvasRenderingContext2D;
   readonly #offscreenImageData: ImageData;
 
+  #minX: number;
+  #minY: number;
+  #maxX: number;
+  #maxY: number;
+
   constructor(
     canvasSize: BpxVector2d,
     htmlCanvas: HTMLCanvasElement,
@@ -21,6 +26,11 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     super(canvasSize);
 
     this.#length = canvasSize.x * canvasSize.y;
+
+    this.#minX = 0;
+    this.#minY = 0;
+    this.#maxX = canvasSize.x - 1;
+    this.#maxY = canvasSize.y - 1;
 
     this.#htmlCanvas = htmlCanvas;
     this.#htmlCanvas.style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
@@ -52,8 +62,37 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     this.#initializeAsNonTransparent();
   }
 
+  setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
+      xy.round(),
+      xy.add(wh).round(),
+    );
+    this.#minX = xyMinInclusive.x;
+    this.#minY = xyMinInclusive.y;
+    this.#maxX = xyMaxExclusive.x - 1;
+    this.#maxY = xyMaxExclusive.y - 1;
+  }
+
+  removeClippingRegion(): void {
+    this.#minX = 0;
+    this.#minY = 0;
+    this.#maxX = this.canvasSize.x - 1;
+    this.#maxY = this.canvasSize.y - 1;
+  }
+
+  canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean {
+    return (
+      xMax >= this.#minX &&
+      yMax >= this.#minY &&
+      xMin <= this.#maxX &&
+      yMin <= this.#maxY
+    );
+  }
+
   canSetAt(x: number, y: number): boolean {
-    return x >= 0 && y >= 0 && x < this.canvasSize.x && y < this.canvasSize.y;
+    return (
+      x >= this.#minX && y >= this.#minY && x <= this.#maxX && y <= this.#maxY
+    );
   }
 
   set(color: BpxSolidColor, x: number, y: number): void {

@@ -148,6 +148,8 @@ b_.init(
   });
 
   b_.setOnDraw(() => {
+    b_.setClippingRegion(v_(1, 1), v_(126, 126));
+
     renderFpsVisualization.history[renderFpsVisualization.historyIndex] =
       b_.renderFps;
 
@@ -221,6 +223,8 @@ b_.init(
         b_.sprite(spr_("logo.png")(4, 4, 8, 8), v_(4 + row * 16, 4 + col * 16));
       }
     }
+
+    b_.removeClippingRegion();
 
     drawUpdateCallsVisualization();
 

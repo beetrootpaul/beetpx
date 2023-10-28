@@ -20,12 +20,9 @@ export class DrawPixel {
     // TODO: tests for MappingColor
     // TODO: consider moving fill pattern and composite color support inside here
     // TODO: cover ClippingRegion with tests
-    draw(xy, color, fillPattern = BpxFillPattern.primaryOnly, clippingRegion = null) {
+    draw(xy, color, fillPattern = BpxFillPattern.primaryOnly) {
         xy = xy.round();
         if (!__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canSetAt(xy.x, xy.y)) {
-            return;
-        }
-        if (clippingRegion && !clippingRegion.allowsDrawingAt(xy.x, xy.y)) {
             return;
         }
         if (fillPattern.hasPrimaryColorAt(xy.x, xy.y)) {

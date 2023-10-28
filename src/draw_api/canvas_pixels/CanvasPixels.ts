@@ -16,8 +16,16 @@ export abstract class CanvasPixels {
     this.canvasSize = canvasSize.round();
   }
 
-  abstract canSetAt(x: number, y: number): boolean;
+  abstract setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
+  abstract removeClippingRegion(): void;
 
+  abstract canSetAny(
+    xMin: number,
+    yMin: number,
+    xMax: number,
+    yMax: number,
+  ): boolean;
+  abstract canSetAt(x: number, y: number): boolean;
   abstract set(color: BpxSolidColor, x: number, y: number): void;
 
   takeSnapshot(): BpxCanvasPixelsSnapshotId {

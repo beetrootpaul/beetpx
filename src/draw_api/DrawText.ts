@@ -7,7 +7,6 @@ import {
 } from "../Color";
 import { BpxVector2d, v_1_1_ } from "../Vector2d";
 import { BpxCharSprite } from "../font/Font";
-import { BpxClippingRegion } from "./ClippingRegion";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
 import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
@@ -32,7 +31,6 @@ export class DrawText {
     canvasXy: BpxVector2d,
     fontAsset: FontAsset,
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
-    clippingRegion: BpxClippingRegion | null = null,
   ): void {
     canvasXy = canvasXy.round();
 
@@ -49,7 +47,6 @@ export class DrawText {
           [fontAsset.imageBgColor.id, transparent_],
         ]),
         BpxFillPattern.primaryOnly,
-        clippingRegion,
       );
     }
   }
