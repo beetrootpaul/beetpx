@@ -130,8 +130,8 @@ type AssetsToLoad = {
     jsons: JsonAssetToLoad[];
 };
 type BpxImageUrl = string;
-type SoundUrl = string;
-type JsonUrl = string;
+type BpxSoundUrl = string;
+type BpxJsonUrl = string;
 type ImageAssetToLoad = {
     url: BpxImageUrl;
 };
@@ -141,10 +141,10 @@ type FontAssetToLoad = {
     imageBgColor: BpxSolidColor;
 };
 type SoundAssetToLoad = {
-    url: SoundUrl;
+    url: BpxSoundUrl;
 };
 type JsonAssetToLoad = {
-    url: JsonUrl;
+    url: BpxJsonUrl;
 };
 type ImageAsset = {
     width: number;
@@ -169,10 +169,14 @@ declare class Assets {
         decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
     });
     loadAssets(assetsToLoad: AssetsToLoad): Promise<void>;
+    /** NOTE: call `loadAssets` before this one */
     getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset;
+    /** NOTE: call `loadAssets` before this one */
     getFontAsset(fontId: BpxFontId): FontAsset;
-    getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
-    getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset;
+    /** NOTE: call `loadAssets` before this one */
+    getSoundAsset(urlOfAlreadyLoadedSound: BpxSoundUrl): SoundAsset;
+    /** NOTE: call `loadAssets` before this one */
+    getJsonAsset(urlOfAlreadyLoadedJson: BpxJsonUrl): JsonAsset;
 }
 
 type BpxEasingFn = (t: number) => number;
@@ -238,12 +242,12 @@ type BpxSoundSequenceEntry = [
     SoundSequenceEntrySoundMain,
     ...SoundSequenceEntrySoundAdditional[]
 ];
-type SoundSequenceEntrySoundMain = SoundUrl | {
-    url: SoundUrl;
+type SoundSequenceEntrySoundMain = BpxSoundUrl | {
+    url: BpxSoundUrl;
     durationMs?: (fullSoundDurationMs: number) => number;
 };
-type SoundSequenceEntrySoundAdditional = SoundUrl | {
-    url: SoundUrl;
+type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
+    url: BpxSoundUrl;
 };
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
@@ -376,8 +380,8 @@ declare class AudioApi {
     constructor(assets: Assets, audioContext: AudioContext);
     restart(): void;
     tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
-    playSoundOnce(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
-    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
+    playSoundOnce(soundUrl: BpxSoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
+    playSoundLooped(soundUrl: BpxSoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundSequence(soundSequence: BpxSoundSequence, muteOnStart?: boolean): BpxAudioPlaybackId;
     isAudioMuted(): boolean;
     muteAudio(opts?: {
@@ -540,4 +544,4 @@ declare global {
     const __BEETPX_IS_PROD__: boolean;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

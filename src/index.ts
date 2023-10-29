@@ -14,7 +14,7 @@ declare global {
   const __BEETPX_IS_PROD__: boolean;
 }
 
-export { type BpxImageUrl } from "./Assets";
+export { type BpxImageUrl, type BpxJsonUrl, type BpxSoundUrl } from "./Assets";
 export {
   BpxCompositeColor,
   BpxMappingColor,

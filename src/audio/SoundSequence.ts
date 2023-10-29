@@ -1,4 +1,4 @@
-import { SoundUrl } from "../Assets";
+import { BpxSoundUrl } from "../Assets";
 
 export type BpxSoundSequence = {
   intro?: BpxSoundSequenceEntry[];
@@ -11,14 +11,14 @@ export type BpxSoundSequenceEntry = [
 ];
 
 type SoundSequenceEntrySoundMain =
-  | SoundUrl
+  | BpxSoundUrl
   | {
-      url: SoundUrl;
+      url: BpxSoundUrl;
       durationMs?: (fullSoundDurationMs: number) => number;
     };
 
 type SoundSequenceEntrySoundAdditional =
-  | SoundUrl
+  | BpxSoundUrl
   | {
-      url: SoundUrl;
+      url: BpxSoundUrl;
     };

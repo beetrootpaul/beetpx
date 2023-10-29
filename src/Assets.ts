@@ -1,6 +1,6 @@
 import { BpxSolidColor } from "./Color";
-import { BpxFont, BpxFontId } from "./font/Font";
 import { BpxUtils } from "./Utils";
+import { BpxFont, BpxFontId } from "./font/Font";
 
 export type AssetsToLoad = {
   images: ImageAssetToLoad[];
@@ -10,8 +10,8 @@ export type AssetsToLoad = {
 };
 
 export type BpxImageUrl = string;
-export type SoundUrl = string;
-export type JsonUrl = string;
+export type BpxSoundUrl = string;
+export type BpxJsonUrl = string;
 
 type ImageAssetToLoad = {
   url: BpxImageUrl;
@@ -24,11 +24,11 @@ type FontAssetToLoad = {
 };
 
 type SoundAssetToLoad = {
-  url: SoundUrl;
+  url: BpxSoundUrl;
 };
 
 type JsonAssetToLoad = {
-  url: JsonUrl;
+  url: BpxJsonUrl;
 };
 
 export type ImageAsset = {
@@ -64,8 +64,8 @@ export class Assets {
       imageBgColor: BpxSolidColor;
     }
   > = new Map();
-  #sounds: Map<SoundUrl, SoundAsset> = new Map();
-  #jsons: Map<JsonUrl, JsonAsset> = new Map();
+  #sounds: Map<BpxSoundUrl, SoundAsset> = new Map();
+  #jsons: Map<BpxJsonUrl, JsonAsset> = new Map();
 
   constructor(params: {
     decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
@@ -83,75 +83,15 @@ export class Assets {
       ...assetsToLoad.images.map(({ url }) => url),
       ...assetsToLoad.fonts.map(({ font }) => font.imageUrl),
     ]);
-    await Promise.all(
-      Array.from(uniqueImageUrls).map(async (url) => {
-        const htmlImage = new Image();
-        htmlImage.src = url;
-        await htmlImage.decode();
-        const canvas = document
-          .createElement("canvas")
-          .transferControlToOffscreen();
-        canvas.width = htmlImage.naturalWidth;
-        canvas.height = htmlImage.naturalHeight;
-        const ctx = canvas.getContext("2d", {
-          colorSpace: "srgb",
-          // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
-          alpha: false,
-        });
-        if (!ctx) {
-          throw Error(`Assets: Failed to process the image: ${htmlImage.src}`);
-        }
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(htmlImage, 0, 0);
-        const imageData: ImageData = ctx.getImageData(
-          0,
-          0,
-          canvas.width,
-          canvas.height,
-          { colorSpace: "srgb" },
-        );
-        this.#images.set(url, {
-          width: imageData.width,
-          height: imageData.height,
-          rgba8bitData: imageData.data,
-        });
-      }),
-    );
 
-    // TODO: make sounds loaded in parallel with images above
-    await Promise.all(
-      assetsToLoad.sounds.map(async ({ url }) => {
-        if (
-          !url.toLowerCase().endsWith(".wav") &&
-          !url.toLowerCase().endsWith(".flac")
-        ) {
-          throw Error(
-            `Assets: only wav and flac sound files are supported due to Safari compatibility. The file which doesn't seem to be neither wav nor flac: "${url}"`,
-          );
-        }
-        const httpResponse = await fetch(url);
-        if (!this.#is2xx(httpResponse.status)) {
-          throw Error(`Assets: could not fetch sound file: "${url}"`);
-        }
-        const arrayBuffer = await httpResponse.arrayBuffer();
-        const audioBuffer = await this.#decodeAudioData(arrayBuffer);
-        this.#sounds.set(url, { audioBuffer });
-      }),
-    );
-
-    await Promise.all(
-      assetsToLoad.jsons.map(async ({ url }) => {
-        const httpResponse = await fetch(url);
-        if (!this.#is2xx(httpResponse.status)) {
-          throw Error(`Assets: could not fetch JSON file: "${url}"`);
-        }
-        const json = await httpResponse.json();
-        this.#jsons.set(url, { json });
-      }),
-    );
+    await Promise.all([
+      ...Array.from(uniqueImageUrls).map((url) => this.#loadImage(url)),
+      ...assetsToLoad.sounds.map(async ({ url }) => this.#loadSound(url)),
+      ...assetsToLoad.jsons.map(async ({ url }) => this.#loadJson(url)),
+    ]);
   }
 
-  // call `loadAssets` before this one
+  /** NOTE: call `loadAssets` before this one */
   getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset {
     const imageAsset = this.#images.get(urlOfAlreadyLoadedImage);
     if (!imageAsset) {
@@ -162,7 +102,7 @@ export class Assets {
     return imageAsset;
   }
 
-  // call `loadAssets` before this one
+  /** NOTE: call `loadAssets` before this one */
   getFontAsset(fontId: BpxFontId): FontAsset {
     const { font, imageTextColor, imageBgColor } =
       this.#fonts.get(fontId) ??
@@ -177,8 +117,8 @@ export class Assets {
     };
   }
 
-  // call `loadAssets` before this one
-  getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset {
+  /** NOTE: call `loadAssets` before this one */
+  getSoundAsset(urlOfAlreadyLoadedSound: BpxSoundUrl): SoundAsset {
     const soundAsset = this.#sounds.get(urlOfAlreadyLoadedSound);
     if (!soundAsset) {
       throw Error(
@@ -188,8 +128,8 @@ export class Assets {
     return soundAsset;
   }
 
-  // call `loadAssets` before this one
-  getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset {
+  /** NOTE: call `loadAssets` before this one */
+  getJsonAsset(urlOfAlreadyLoadedJson: BpxJsonUrl): JsonAsset {
     const jsonAsset = this.#jsons.get(urlOfAlreadyLoadedJson);
     if (!jsonAsset) {
       throw Error(
@@ -197,6 +137,73 @@ export class Assets {
       );
     }
     return jsonAsset;
+  }
+
+  async #loadImage(url: BpxImageUrl): Promise<void> {
+    if (!url.toLowerCase().endsWith(".png")) {
+      throw Error(
+        `Assets: only PNG image files are supported. The file which doesn't seem to be PNG: "${url}"`,
+      );
+    }
+
+    const htmlImage = new Image();
+    htmlImage.src = url;
+    await htmlImage.decode();
+    const canvas = document
+      .createElement("canvas")
+      .transferControlToOffscreen();
+    canvas.width = htmlImage.naturalWidth;
+    canvas.height = htmlImage.naturalHeight;
+    const ctx = canvas.getContext("2d", {
+      colorSpace: "srgb",
+      // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
+      alpha: false,
+    });
+    if (!ctx) {
+      throw Error(`Assets: Failed to process the image: ${htmlImage.src}`);
+    }
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(htmlImage, 0, 0);
+    const imageData: ImageData = ctx.getImageData(
+      0,
+      0,
+      canvas.width,
+      canvas.height,
+      { colorSpace: "srgb" },
+    );
+
+    this.#images.set(url, {
+      width: imageData.width,
+      height: imageData.height,
+      rgba8bitData: imageData.data,
+    });
+  }
+
+  async #loadSound(url: BpxSoundUrl): Promise<void> {
+    if (
+      !url.toLowerCase().endsWith(".wav") &&
+      !url.toLowerCase().endsWith(".flac")
+    ) {
+      throw Error(
+        `Assets: only wav and flac sound files are supported due to Safari compatibility. The file which doesn't seem to be neither wav nor flac: "${url}"`,
+      );
+    }
+    const httpResponse = await fetch(url);
+    if (!this.#is2xx(httpResponse.status)) {
+      throw Error(`Assets: could not fetch sound file: "${url}"`);
+    }
+    const arrayBuffer = await httpResponse.arrayBuffer();
+    const audioBuffer = await this.#decodeAudioData(arrayBuffer);
+    this.#sounds.set(url, { audioBuffer });
+  }
+
+  async #loadJson(url: BpxJsonUrl): Promise<void> {
+    const httpResponse = await fetch(url);
+    if (!this.#is2xx(httpResponse.status)) {
+      throw Error(`Assets: could not fetch JSON file: "${url}"`);
+    }
+    const json = await httpResponse.json();
+    this.#jsons.set(url, { json });
   }
 
   #is2xx(httpStatus: number): boolean {

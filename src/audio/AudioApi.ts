@@ -1,4 +1,4 @@
-import { Assets, SoundUrl } from "../Assets";
+import { Assets, BpxSoundUrl } from "../Assets";
 import { Logger } from "../logger/Logger";
 import { AudioHelpers } from "./AudioHelpers";
 import { AudioPlayback, type BpxAudioPlaybackId } from "./AudioPlayback";
@@ -90,7 +90,7 @@ export class AudioApi {
   }
 
   playSoundOnce(
-    soundUrl: SoundUrl,
+    soundUrl: BpxSoundUrl,
     muteOnStart: boolean = false,
   ): BpxAudioPlaybackId {
     Logger.debugBeetPx(`AudioApi.playSoundOnce (muteOnStart: ${muteOnStart})`);
@@ -110,7 +110,7 @@ export class AudioApi {
   }
 
   playSoundLooped(
-    soundUrl: SoundUrl,
+    soundUrl: BpxSoundUrl,
     muteOnStart: boolean = false,
   ): BpxAudioPlaybackId {
     Logger.debugBeetPx(
