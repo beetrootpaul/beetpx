@@ -15,6 +15,8 @@ import {
   v_0_0_,
 } from "../../../src";
 
+// TODO: EXTRACT PARTS OF THIS EXAMPLE TO SEPARATE TAILORED ONES
+
 const fps = 60;
 
 const updateCallsVisualization = {
@@ -26,6 +28,8 @@ const renderFpsVisualization = {
   history: Array.from({ length: 40 }, () => 0),
   historyIndex: 0,
 };
+
+const problematicSprite = spr_("pico-8-font.png")(0, 0, 32, 32);
 
 const logoSprite = spr_("logo.png")(0, 0, 16, 16);
 const logoInnerColor = BpxSolidColor.fromRgbCssHex("#125359");
@@ -82,7 +86,7 @@ b_.init(
     debugFeatures: !__BEETPX_IS_PROD__,
   },
   {
-    images: [{ url: "logo.png" }],
+    images: [{ url: "logo.png" }, { url: "pico-8-font.png" }],
     fonts: [
       {
         font: new Font1(),
@@ -229,6 +233,8 @@ b_.init(
     drawUpdateCallsVisualization();
 
     drawRenderFpsVisualization();
+
+    b_.sprite(problematicSprite, v_(100, 100));
 
     updateCallsVisualization.historyIndex++;
     updateCallsVisualization.historyIndex %=

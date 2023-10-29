@@ -1,3 +1,5 @@
+import { PngDataArray } from 'fast-png';
+
 type BpxCanvasPixelsSnapshotId = number;
 interface CanvasPixelsSnapshot {
     get(index: number): BpxSolidColor;
@@ -149,7 +151,8 @@ type JsonAssetToLoad = {
 type ImageAsset = {
     width: number;
     height: number;
-    rgba8bitData: Uint8ClampedArray;
+    channels: 3 | 4;
+    rgba8bitData: PngDataArray;
 };
 type FontAsset = {
     font: BpxFont;

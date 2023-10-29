@@ -1,3 +1,4 @@
+import { type PngDataArray } from "fast-png";
 import {
   BpxColorId,
   BpxSolidColor,
@@ -18,8 +19,9 @@ export class PreparedSprites {
 
   prepareOrGetFromCache(
     sprite: BpxSprite,
-    imgBytes: Uint8ClampedArray,
+    imgBytes: PngDataArray,
     imgW: number,
+    imgChannels: 3 | 4,
     // TODO: consider making color mapping into a class, especially that we need an unique ID out of it later on
     colorMapping: Map<BpxColorId, BpxSolidColor | BpxTransparentColor>,
   ): PreparedSprite {
@@ -52,15 +54,16 @@ export class PreparedSprites {
       for (let spriteX = 0; spriteX < w; ++spriteX) {
         const imgX = sprite.xy1.x + spriteX;
 
-        const imgIndex = (imgY * imgW + imgX) * 4;
-        if (imgBytes.length < imgIndex + 4) {
-          throw Error(
-            `DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgIndex})`,
-          );
-        }
+        const imgIndex = (imgY * imgW + imgX) * imgChannels;
 
         const color: BpxSolidColor | BpxTransparentColor =
-          imgBytes[imgIndex + 3]! >= 0xff / 2
+          imgChannels === 3
+            ? new BpxSolidColor(
+                imgBytes[imgIndex]!,
+                imgBytes[imgIndex + 1]!,
+                imgBytes[imgIndex + 2]!,
+              )
+            : imgBytes[imgIndex + 3]! >= 0xff / 2
             ? new BpxSolidColor(
                 imgBytes[imgIndex]!,
                 imgBytes[imgIndex + 1]!,

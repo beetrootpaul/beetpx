@@ -46,6 +46,7 @@ export class DrawSprite {
     const {
       width: imgW,
       height: imgH,
+      channels: imgChannels,
       rgba8bitData: imgBytes,
     } = sourceImageAsset;
 
@@ -91,6 +92,7 @@ export class DrawSprite {
       sprite,
       imgBytes,
       imgW,
+      imgChannels,
       colorMapping,
     );
 

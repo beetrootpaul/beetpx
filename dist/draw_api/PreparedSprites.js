@@ -11,7 +11,7 @@ export class PreparedSprites {
         _PreparedSprites_instances.add(this);
         _PreparedSprites_cache.set(this, new Map());
     }
-    prepareOrGetFromCache(sprite, imgBytes, imgW, 
+    prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels, 
     // TODO: consider making color mapping into a class, especially that we need an unique ID out of it later on
     colorMapping) {
         var _a;
@@ -38,13 +38,12 @@ export class PreparedSprites {
             const imgY = sprite.xy1.y + spriteY;
             for (let spriteX = 0; spriteX < w; ++spriteX) {
                 const imgX = sprite.xy1.x + spriteX;
-                const imgIndex = (imgY * imgW + imgX) * 4;
-                if (imgBytes.length < imgIndex + 4) {
-                    throw Error(`DrawSprite: there are less image bytes (${imgBytes.length}) than accessed byte index (${imgIndex})`);
-                }
-                const color = imgBytes[imgIndex + 3] >= 0xff / 2
+                const imgIndex = (imgY * imgW + imgX) * imgChannels;
+                const color = imgChannels === 3
                     ? new BpxSolidColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
-                    : transparent_;
+                    : imgBytes[imgIndex + 3] >= 0xff / 2
+                        ? new BpxSolidColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                        : transparent_;
                 const mappedColor = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
                 colors[spriteX][spriteY] =
                     mappedColor instanceof BpxSolidColor ? mappedColor : null;
