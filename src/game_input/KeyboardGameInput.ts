@@ -22,10 +22,10 @@ export class KeyboardGameInput implements SpecializedGameInput {
     ["d", "button_right"],
     ["D", "button_right"],
 
-    ["k", "button_a"],
-    ["K", "button_a"],
-    ["l", "button_b"],
-    ["L", "button_b"],
+    ["j", "button_a"],
+    ["J", "button_a"],
+    ["k", "button_b"],
+    ["K", "button_b"],
 
     ["c", "button_a"],
     ["C", "button_a"],

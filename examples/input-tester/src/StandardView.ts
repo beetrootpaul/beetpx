@@ -33,12 +33,12 @@ export class StandardView {
     k_right: spr(152, 8, 5, 6),
     //
     k_c: spr(128, 16, 5, 6),
-    k_k: spr(136, 16, 5, 6),
+    k_j: spr(136, 16, 5, 6),
     g_a: spr(144, 16, 5, 6),
     g_y: spr(152, 16, 5, 6),
     //
     k_x: spr(128, 24, 5, 6),
-    k_l: spr(136, 24, 5, 6),
+    k_k: spr(136, 24, 5, 6),
     g_b: spr(144, 24, 5, 6),
     g_x: spr(152, 24, 5, 6),
     //
@@ -202,7 +202,7 @@ export class StandardView {
     }
     if (ip.a) {
       b_.sprite(ps.k_c, v_(37, 40));
-      b_.sprite(ps.k_k, v_(49, 40));
+      b_.sprite(ps.k_j, v_(49, 40));
       b_.sprite(ps.g_a, v_(73, 40));
       b_.sprite(ps.g_y, v_(84, 40));
       b_.sprite(ps.g_dualsense_cross, v_(100, 40));
@@ -210,7 +210,7 @@ export class StandardView {
     }
     if (ip.b) {
       b_.sprite(ps.k_x, v_(37, 51));
-      b_.sprite(ps.k_l, v_(49, 51));
+      b_.sprite(ps.k_k, v_(49, 51));
       b_.sprite(ps.g_b, v_(73, 51));
       b_.sprite(ps.g_x, v_(84, 51));
       b_.sprite(ps.g_dualsense_circle, v_(100, 51));
