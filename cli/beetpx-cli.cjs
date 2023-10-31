@@ -224,5 +224,17 @@ function runZipCommand() {
 
   require("cross-zip").zipSync(inputDir, outputZip);
 
-  console.log(`Zip got created in: ${path.relative(process.cwd(), outputZip)}`);
+  const sizeBytes = fs.statSync(outputZip).size;
+  const sizeKibibytes = sizeBytes / 1024;
+  const sizeMebibytes = sizeKibibytes / 1024;
+  const sizePart =
+    sizeKibibytes >= 1024
+      ? `${sizeMebibytes.toFixed(0)} MiB`
+      : `${sizeKibibytes.toFixed(0)} KiB`;
+  console.log(
+    `Zip got created in: ${path.relative(
+      process.cwd(),
+      outputZip,
+    )} (${sizePart})`,
+  );
 }
