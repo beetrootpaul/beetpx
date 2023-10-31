@@ -535,16 +535,19 @@ declare const b_: typeof BeetPx;
 
 declare global {
     /**
-     * A globally available variable which tells whether you are using
-     *   a production bundle of the game (built with `beetpx prod`)
-     *   or not (e.g. run with `beetpx dev`).
-     *
      * Note: the generated documentation marks this variable as "Not Exported".
      *   This is *not* true.
      *
      * @notExported
      */
-    const __BEETPX_IS_PROD__: boolean;
+    const BEETPX__IS_PROD: boolean;
+    /**
+     * Note: the generated documentation marks this variable as "Not Exported".
+     *   This is *not* true.
+     *
+     * @notExported
+     */
+    const BEETPX__VERSION: string;
 }
 
 export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

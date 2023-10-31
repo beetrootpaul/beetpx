@@ -19,6 +19,7 @@ export class BeetPx {
     // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
     //
     static init(frameworkOptions, assetsToLoad) {
+        Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
         __classPrivateFieldSet(this, _a, new Framework(frameworkOptions), "f", _BeetPx_framework);
         return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).loadAssets(assetsToLoad);
     }

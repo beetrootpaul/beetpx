@@ -59,7 +59,7 @@
     "cross-zip": "4.0.0",
     "fast-png": "6.2.0",
     "jquery": "3.7.0",
-    "vite": "4.4.6",
+    "vite": "4.5.0",
     "yargs": "17.7.2"
   },
   "devDependencies": {

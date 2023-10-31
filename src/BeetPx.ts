@@ -21,6 +21,8 @@ export class BeetPx {
     frameworkOptions: FrameworkOptions,
     assetsToLoad: AssetsToLoad,
   ): ReturnType<Framework["loadAssets"]> {
+    Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
+
     this.#framework = new Framework(frameworkOptions);
     return this.#framework.loadAssets(assetsToLoad);
   }

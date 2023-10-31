@@ -33,6 +33,15 @@ const buildOutDirAsExpectedByVitePreview = "dist/";
 const distZipDir = "dist/";
 const distZipFile = "game.zip";
 
+const beetPxVersion = JSON.parse(
+  fs.readFileSync(path.resolve(beetPxCodebaseDir, "package.json"), {
+    encoding: "utf8",
+  }),
+).version;
+if (typeof beetPxVersion !== "string" || beetPxVersion.length <= 0) {
+  throw Error('Unable to read "version" from "package.json"');
+}
+
 if (argv._.includes("dev")) {
   runDevCommand();
 } else if (argv._.includes("build")) {
@@ -105,8 +114,10 @@ function runDevCommand() {
           binaryInterval: 1000,
         },
       },
+      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
       define: {
-        __BEETPX_IS_PROD__: false,
+        __BEETPX__IS_PROD__: false,
+        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
       },
       logLevel: "info",
     })
@@ -151,8 +162,10 @@ function runBuildCommand() {
         ),
         emptyOutDir: true,
       },
+      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
       define: {
-        __BEETPX_IS_PROD__: true,
+        __BEETPX__IS_PROD__: true,
+        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
       },
       logLevel: "info",
     })

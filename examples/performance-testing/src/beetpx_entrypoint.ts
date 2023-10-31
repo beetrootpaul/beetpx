@@ -83,7 +83,7 @@ b_.init(
     gameCanvasSize: "128x128",
     desiredUpdateFps: fps,
     visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
-    debugFeatures: !__BEETPX_IS_PROD__,
+    debugFeatures: !BEETPX__IS_PROD,
   },
   {
     images: [{ url: "logo.png" }, { url: "pico-8-font.png" }],

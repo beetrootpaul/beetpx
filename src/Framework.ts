@@ -84,7 +84,7 @@ export class Framework {
         Framework.#storageDebugDisabledTrue
       : false;
 
-    Logger.debug("Framework options:", options);
+    Logger.debugBeetPx("Framework options:", options);
 
     this.#frameByFrame = false;
 
@@ -159,7 +159,7 @@ export class Framework {
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
     return this.assets.loadAssets(assetsToLoad).then(() => {
-      Logger.infoBeetPx("initialized");
+      Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
       return {
         startGame: this.#startGame.bind(this),
       };
@@ -190,7 +190,7 @@ export class Framework {
 
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
   #startGame(): void {
-    if (__BEETPX_IS_PROD__) {
+    if (BEETPX__IS_PROD) {
       // A popup which prevents user from accidentally closing the browser tab during gameplay.
       // Implementation notes:
       // - returned message seems to be ignored by some browsers, therefore using `""`

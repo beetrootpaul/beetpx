@@ -66,7 +66,7 @@ export class Framework {
             ? window.localStorage.getItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey)) !==
                 __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue)
             : false;
-        Logger.debug("Framework options:", options);
+        Logger.debugBeetPx("Framework options:", options);
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         __classPrivateFieldSet(this, _Framework_loading, new Loading(HtmlTemplate.selectors.display), "f");
@@ -109,7 +109,7 @@ export class Framework {
     loadAssets(assetsToLoad) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.assets.loadAssets(assetsToLoad).then(() => {
-                Logger.infoBeetPx("initialized");
+                Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
                 return {
                     startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
                 };
@@ -135,7 +135,7 @@ export class Framework {
 }
 _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_htmlCanvas = new WeakMap(), _Framework_canvasPixels = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
-    if (__BEETPX_IS_PROD__) {
+    if (BEETPX__IS_PROD) {
         // A popup which prevents user from accidentally closing the browser tab during gameplay.
         // Implementation notes:
         // - returned message seems to be ignored by some browsers, therefore using `""`
