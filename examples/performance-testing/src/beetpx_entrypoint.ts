@@ -20,12 +20,12 @@ import {
 const fps = 60;
 
 const updateCallsVisualization = {
-  history: Array.from({ length: 120 }, () => 0),
+  history: Array.from({ length: 252 }, () => 0),
   historyIndex: 0,
 };
 
 const renderFpsVisualization = {
-  history: Array.from({ length: 40 }, () => 0),
+  history: Array.from({ length: 84 }, () => 0),
   historyIndex: 0,
 };
 
@@ -80,7 +80,7 @@ class Font2 implements BpxFont {
 
 b_.init(
   {
-    gameCanvasSize: "128x128",
+    gameCanvasSize: "256x256",
     desiredUpdateFps: fps,
     visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
     debugFeatures: !BEETPX__IS_PROD,
@@ -152,7 +152,7 @@ b_.init(
   });
 
   b_.setOnDraw(() => {
-    b_.setClippingRegion(v_(1, 1), v_(126, 126));
+    b_.setClippingRegion(v_(1, 1), v_(254, 254));
 
     renderFpsVisualization.history[renderFpsVisualization.historyIndex] =
       b_.renderFps;
@@ -228,13 +228,13 @@ b_.init(
       }
     }
 
+    b_.sprite(problematicSprite, v_(200, 200));
+
     b_.removeClippingRegion();
 
     drawUpdateCallsVisualization();
 
     drawRenderFpsVisualization();
-
-    b_.sprite(problematicSprite, v_(100, 100));
 
     updateCallsVisualization.historyIndex++;
     updateCallsVisualization.historyIndex %=
@@ -279,7 +279,7 @@ function drawRenderFpsVisualization(): void {
     const bars = Math.round(renderFpsVisualization.history[columnIndex]! / 10);
     for (let barIndex = 0; barIndex < bars; barIndex++) {
       b_.rectFilled(
-        v_(columnIndex * 3 + 2, 125 - barIndex * 3),
+        v_(columnIndex * 3 + 2, 252 - barIndex * 3),
         v_(2, 2),
         columnIndex === renderFpsVisualization.historyIndex
           ? BpxSolidColor.fromRgbCssHex("#ffffff")

@@ -22,7 +22,7 @@ import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 
 export type FrameworkOptions = {
-  gameCanvasSize: "64x64" | "128x128";
+  gameCanvasSize: "64x64" | "128x128" | "256x256";
   // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
   visibleTouchButtons: BpxButtonName[];
@@ -97,6 +97,8 @@ export class Framework {
         ? v_(64, 64)
         : options.gameCanvasSize === "128x128"
         ? v_(128, 128)
+        : options.gameCanvasSize === "256x256"
+        ? v_(256, 256)
         : BpxUtils.throwError(
             `Unsupported canvas size: "${options.gameCanvasSize}"`,
           );

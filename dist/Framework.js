@@ -74,7 +74,9 @@ export class Framework {
             ? v_(64, 64)
             : options.gameCanvasSize === "128x128"
                 ? v_(128, 128)
-                : BpxUtils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
+                : options.gameCanvasSize === "256x256"
+                    ? v_(256, 256)
+                    : BpxUtils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         this.gameInput = new GameInput({
             visibleTouchButtons: options.visibleTouchButtons,
             // TODO: are those selectors for both touch and mouse? Even if so, make them separate
