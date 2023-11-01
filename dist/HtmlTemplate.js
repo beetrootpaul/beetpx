@@ -1,8 +1,8 @@
 export class HtmlTemplate {
 }
 HtmlTemplate.selectors = {
-    display: "#display",
-    canvas: "#canvas",
+    display: "#game_display",
+    canvas: "#game_canvas",
     touchControls: ".touch_controls",
     controlsFullScreen: ".controls_fullscreen_toggle",
     controlsMuteToggle: ".controls_mute_toggle",

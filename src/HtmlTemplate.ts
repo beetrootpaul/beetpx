@@ -1,7 +1,7 @@
 export class HtmlTemplate {
   static readonly selectors = {
-    display: "#display",
-    canvas: "#canvas",
+    display: "#game_display",
+    canvas: "#game_canvas",
 
     touchControls: ".touch_controls",
 

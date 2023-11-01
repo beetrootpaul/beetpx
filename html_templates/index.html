@@ -42,7 +42,7 @@
         overflow: hidden;
       }
 
-      #display {
+      #game_display {
         visibility: hidden;
       }
 
@@ -77,7 +77,7 @@
         touch-action: none;
       }
 
-      #display {
+      #game_display {
         width: 100vw;
         height: 100vh;
         /*
@@ -90,11 +90,11 @@
         flex-direction: row;
       }
 
-      .app_loaded #display {
+      .app_loaded #game_display {
         visibility: visible;
       }
 
-      #canvas {
+      #game_canvas {
         width: 80vw;
         height: 100vh;
         image-rendering: pixelated;
@@ -102,7 +102,7 @@
         box-sizing: content-box;
       }
 
-      #canvas.debug {
+      #game_canvas.debug {
         border: 1px solid red;
         margin: -1px;
       }
@@ -267,7 +267,7 @@
       }
 
       @media (any-pointer: coarse) {
-        #canvas {
+        #game_canvas {
           width: 50vw;
         }
 
@@ -293,11 +293,11 @@
       }
 
       @media (any-pointer: coarse) and (orientation: portrait) {
-        #display {
+        #game_display {
           flex-direction: column;
         }
 
-        #canvas {
+        #game_canvas {
           width: 100vw;
           height: 50vh;
         }
@@ -327,7 +327,7 @@
   <body>
     <div id="loading"></div>
 
-    <main id="display">
+    <main id="game_display">
       <div class="mouse_controls_area_left"></div>
       <div class="touch_controls touch_controls_area_left">
         <div class="touch_button controls_up hidden">W</div>
@@ -337,7 +337,7 @@
         </div>
         <div class="touch_button controls_down hidden">S</div>
       </div>
-      <canvas id="canvas"></canvas>
+      <canvas id="game_canvas"></canvas>
       <div class="mouse_controls_area_right">
         <button class="controls_mute_toggle">mute<br />unmute</button>
         <button class="controls_fullscreen_toggle">FS</button>
