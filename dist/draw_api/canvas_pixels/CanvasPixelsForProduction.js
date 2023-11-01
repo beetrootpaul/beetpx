@@ -103,7 +103,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     doRender() {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f"), 0, 0);
         const htmlCanvasSize = v_(__classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").height);
-        const scaleToFill = Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y);
+        const scaleToFill = Math.max(1, Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y));
         const centeringOffset = htmlCanvasSize
             .sub(this.canvasSize.mul(scaleToFill))
             .div(2)

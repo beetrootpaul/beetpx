@@ -144,9 +144,12 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
     const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
-    const scaleToFill = Math.min(
-      htmlCanvasSize.div(this.canvasSize).floor().x,
-      htmlCanvasSize.div(this.canvasSize).floor().y,
+    const scaleToFill = Math.max(
+      1,
+      Math.min(
+        htmlCanvasSize.div(this.canvasSize).floor().x,
+        htmlCanvasSize.div(this.canvasSize).floor().y,
+      ),
     );
     const centeringOffset = htmlCanvasSize
       .sub(this.canvasSize.mul(scaleToFill))
