@@ -95,7 +95,7 @@ export class Framework {
             decodeAudioData: (arrayBuffer) => audioContext.decodeAudioData(arrayBuffer),
         });
         this.audioApi = new AudioApi(this.assets, audioContext);
-        __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.newFor(HtmlTemplate.selectors.display, HtmlTemplate.selectors.controlsFullScreen), "f");
+        __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.newFor(HtmlTemplate.selectors.fullScreenSubject, HtmlTemplate.selectors.controlsFullScreen), "f");
         __classPrivateFieldSet(this, _Framework_htmlCanvas, (_b = document.querySelector(HtmlTemplate.selectors.canvas)) !== null && _b !== void 0 ? _b : u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`), "f");
         __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixelsForProduction(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvas, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({

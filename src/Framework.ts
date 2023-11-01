@@ -129,7 +129,7 @@ export class Framework {
     this.audioApi = new AudioApi(this.assets, audioContext);
 
     this.#fullScreen = FullScreen.newFor(
-      HtmlTemplate.selectors.display,
+      HtmlTemplate.selectors.fullScreenSubject,
       HtmlTemplate.selectors.controlsFullScreen,
     );
 

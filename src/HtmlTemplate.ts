@@ -1,5 +1,8 @@
+// TODO: rework HTML and selectors
+
 export class HtmlTemplate {
   static readonly selectors = {
+    fullScreenSubject: "#fullscreen_subject",
     display: "#game_display",
     canvas: "#game_canvas",
 

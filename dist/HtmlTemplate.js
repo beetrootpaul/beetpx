@@ -1,6 +1,8 @@
+// TODO: rework HTML and selectors
 export class HtmlTemplate {
 }
 HtmlTemplate.selectors = {
+    fullScreenSubject: "#fullscreen_subject",
     display: "#game_display",
     canvas: "#game_canvas",
     touchControls: ".touch_controls",

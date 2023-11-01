@@ -145,7 +145,7 @@
 
       const runGameButtonEl = document.querySelector(".load_iframe_btn");
 
-      runGameButtonEl.addEventListener("click", function onButtonClick() {
+      runGameButtonEl.addEventListener("click", function onButtonClick(event) {
         const placeholderEl = document.querySelector(".iframe_placeholder");
         $(placeholderEl).replaceWith(placeholderEl.getAttribute("data-iframe"));
 
@@ -153,9 +153,8 @@
         iframeEl.focus();
       });
 
-      // This is NOT taken from itch.io, but helps a lot during development:
-      //   focus on the button allows us to run game with a single Return press,
-      //   without need to reach a mouse and click.
+      // This helps a lot during development: focus on the button allows us
+      //   to run game with a single Return press, without need to reach a mouse and click.
       runGameButtonEl.focus();
     </script>
   </body>
