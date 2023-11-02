@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _CanvasPixelsForProduction_instances, _CanvasPixelsForProduction_length, _CanvasPixelsForProduction_htmlCanvas, _CanvasPixelsForProduction_htmlCanvasContext, _CanvasPixelsForProduction_offscreenContext, _CanvasPixelsForProduction_offscreenImageData, _CanvasPixelsForProduction_minX, _CanvasPixelsForProduction_minY, _CanvasPixelsForProduction_maxX, _CanvasPixelsForProduction_maxY, _CanvasPixelsForProduction_initializeAsNonTransparent;
 import { u_ } from "../../Utils";
-import { BpxVector2d } from "../../Vector2d";
+import { BpxVector2d, v_ } from "../../Vector2d";
 import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixelsForProductionSnapshot } from "./CanvasPixelsForProductionSnapshot";
 export class CanvasPixelsForProduction extends CanvasPixels {
@@ -40,6 +40,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
             // we allow transparency in order ot make background color visible around the game itself
             alpha: true,
         })) !== null && _a !== void 0 ? _a : u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
+        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
         const offscreenCanvas = document
             .createElement("canvas")
             .transferControlToOffscreen();
@@ -91,6 +92,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     newSnapshot() {
         return new CanvasPixelsForProductionSnapshot(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f").data.slice());
     }
+    // TODO: unused?
     onWindowResize() {
         // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
         // this.#htmlCanvas.width =
@@ -102,25 +104,18 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     }
     doRender() {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f"), 0, 0);
-        // const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
-        // const scaleToFill = Math.max(
-        //   1,
-        //   Math.min(
-        //     htmlCanvasSize.div(this.canvasSize).floor().x,
-        //     htmlCanvasSize.div(this.canvasSize).floor().y,
-        //   ),
-        // );
-        // const centeringOffset = htmlCanvasSize
-        //   .sub(this.canvasSize.mul(scaleToFill))
-        //   .div(2)
-        //   .floor();
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height);
-        // console.group("RENDER");
-        // console.log(scaleToFill);
-        // console.log(
-        //   `${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`,
-        // );
-        // console.groupEnd();
+        const htmlCanvasSize = v_(__classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").height);
+        const scaleToFill = Math.max(1, Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y));
+        const centeringOffset = htmlCanvasSize
+            .sub(this.canvasSize.mul(scaleToFill))
+            .div(2)
+            .floor();
+        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height, centeringOffset.x, centeringOffset.y, scaleToFill * this.canvasSize.x, scaleToFill * this.canvasSize.y);
+        console.group("RENDER");
+        console.log(scaleToFill);
+        console.log(`${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`);
+        console.log(`offset: ${centeringOffset.x} x ${centeringOffset.y}`);
+        console.groupEnd();
     }
 }
 _CanvasPixelsForProduction_length = new WeakMap(), _CanvasPixelsForProduction_htmlCanvas = new WeakMap(), _CanvasPixelsForProduction_htmlCanvasContext = new WeakMap(), _CanvasPixelsForProduction_offscreenContext = new WeakMap(), _CanvasPixelsForProduction_offscreenImageData = new WeakMap(), _CanvasPixelsForProduction_minX = new WeakMap(), _CanvasPixelsForProduction_minY = new WeakMap(), _CanvasPixelsForProduction_maxX = new WeakMap(), _CanvasPixelsForProduction_maxY = new WeakMap(), _CanvasPixelsForProduction_instances = new WeakSet(), _CanvasPixelsForProduction_initializeAsNonTransparent = function _CanvasPixelsForProduction_initializeAsNonTransparent() {

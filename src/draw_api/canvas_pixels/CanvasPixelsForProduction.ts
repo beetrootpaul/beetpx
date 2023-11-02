@@ -1,6 +1,6 @@
 import { BpxSolidColor } from "../../Color";
 import { u_ } from "../../Utils";
-import { BpxVector2d } from "../../Vector2d";
+import { BpxVector2d, v_ } from "../../Vector2d";
 import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixelsForProductionSnapshot } from "./CanvasPixelsForProductionSnapshot";
 import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
@@ -41,6 +41,8 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         // we allow transparency in order ot make background color visible around the game itself
         alpha: true,
       }) ?? u_.throwError("Was unable to obtain '2d' context from <canvas>");
+
+    this.#htmlCanvasContext.imageSmoothingEnabled = false;
 
     const offscreenCanvas = document
       .createElement("canvas")
@@ -129,6 +131,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     );
   }
 
+  // TODO: unused?
   onWindowResize(): void {
     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
     // this.#htmlCanvas.width =
@@ -142,18 +145,18 @@ export class CanvasPixelsForProduction extends CanvasPixels {
   doRender(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
-    // const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
-    // const scaleToFill = Math.max(
-    //   1,
-    //   Math.min(
-    //     htmlCanvasSize.div(this.canvasSize).floor().x,
-    //     htmlCanvasSize.div(this.canvasSize).floor().y,
-    //   ),
-    // );
-    // const centeringOffset = htmlCanvasSize
-    //   .sub(this.canvasSize.mul(scaleToFill))
-    //   .div(2)
-    //   .floor();
+    const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
+    const scaleToFill = Math.max(
+      1,
+      Math.min(
+        htmlCanvasSize.div(this.canvasSize).floor().x,
+        htmlCanvasSize.div(this.canvasSize).floor().y,
+      ),
+    );
+    const centeringOffset = htmlCanvasSize
+      .sub(this.canvasSize.mul(scaleToFill))
+      .div(2)
+      .floor();
 
     this.#htmlCanvasContext.drawImage(
       this.#offscreenContext.canvas,
@@ -161,18 +164,19 @@ export class CanvasPixelsForProduction extends CanvasPixels {
       0,
       this.#offscreenContext.canvas.width,
       this.#offscreenContext.canvas.height,
-      // centeringOffset.x,
-      // centeringOffset.y,
-      // scaleToFill * this.canvasSize.x,
-      // scaleToFill * this.canvasSize.y,
+      centeringOffset.x,
+      centeringOffset.y,
+      scaleToFill * this.canvasSize.x,
+      scaleToFill * this.canvasSize.y,
     );
 
-    // console.group("RENDER");
-    // console.log(scaleToFill);
-    // console.log(
-    //   `${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`,
-    // );
-    // console.groupEnd();
+    console.group("RENDER");
+    console.log(scaleToFill);
+    console.log(
+      `${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`,
+    );
+    console.log(`offset: ${centeringOffset.x} x ${centeringOffset.y}`);
+    console.groupEnd();
   }
 
   #initializeAsNonTransparent() {
