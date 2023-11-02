@@ -112,46 +112,63 @@
 
       .gui_sprite {
         background-image: url(.beetpx/gui.png);
+        background-size: calc(var(--spr_cell_size) * 10);
       }
 
       #dpad_up {
         grid-area: dp_u;
+        background-position: calc(var(--spr_cell_size) * -1) 0;
       }
 
       #dpad_down {
         grid-area: dp_d;
+        background-position: calc(var(--spr_cell_size) * -1)
+          calc(var(--spr_cell_size) * -2);
       }
 
       #dpad_left {
         grid-area: dp_l;
+        background-position: 0 calc(var(--spr_cell_size) * -1);
       }
 
       #dpad_right {
         grid-area: dp_r;
+        background-position: calc(var(--spr_cell_size) * -2)
+          calc(var(--spr_cell_size) * -1);
       }
 
       #dpad_center {
         grid-area: dp_c;
+        background-position: calc(var(--spr_cell_size) * -1)
+          calc(var(--spr_cell_size) * -1);
       }
 
       #button_a {
         grid-area: btn_a;
+        background-position: calc(var(--spr_cell_size) * -4) 0;
       }
 
       #button_b {
         grid-area: btn_b;
+        background-position: calc(var(--spr_cell_size) * -7) 0;
       }
 
       #button_menu {
         grid-area: menu;
+        background-position: calc(var(--spr_cell_size) * -3)
+          calc(var(--spr_cell_size) * -3);
       }
 
       #button_mute {
         grid-area: mute;
+        background-position: calc(var(--spr_cell_size) * -6)
+          calc(var(--spr_cell_size) * -3);
       }
 
       #button_fullscreen {
         grid-area: fs;
+        background-position: calc(var(--spr_cell_size) * -8)
+          calc(var(--spr_cell_size) * -3);
       }
 
       /* TODO: polish mute + (optional)fs layout on desktop both variants */
@@ -160,6 +177,10 @@
       /*
        * REGULAR GUI for a DESKTOP (portrait)
        */
+      :root {
+        --spr_cell_size: 10vh;
+      }
+
       #unsupported_aspect_ratio {
         display: none;
       }
@@ -175,10 +196,7 @@
           "canv"
           ".";
         grid-template-columns: 98vw;
-        grid-template-rows:
-          1fr
-          98vw
-          1fr;
+        grid-template-rows: 1fr 98vw 1fr;
       }
 
       #game_canvas {
@@ -189,6 +207,10 @@
        * REGULAR GUI for a DESKTOP (landscape)
        */
       @media (min-aspect-ratio: 1/1) {
+        :root {
+          --spr_cell_size: 10vh;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -203,34 +225,12 @@
             ".    . . canv .  . ."
             ". mute . canv . fs ."
             ".    . . canv .  . .";
-          grid-template-columns:
-            1fr
-            10vh
-            4vh
-            97vh
-            4vh
-            10vh
-            1fr;
-          grid-template-rows:
-            4vh
-            10vh
-            83vh;
+          grid-template-columns: 1fr 10vh 4vh 97vh 4vh 10vh 1fr;
+          grid-template-rows: 4vh 10vh 83vh;
         }
 
         #game_canvas {
           border-width: 1vh;
-        }
-
-        .gui_sprite {
-          background-size: 100vh;
-        }
-
-        #button_mute {
-          background-position: -60vh -50vh;
-        }
-
-        #button_fullscreen {
-          background-position: -80vh -50vh;
         }
       }
 
@@ -255,6 +255,10 @@
        * TOUCH GUI for a REALLY VERTICAL screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 310/600) {
+        :root {
+          --spr_cell_size: 8vw;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -275,78 +279,12 @@
             "   .    . dp_d   .     .    .    .    .  btn_a btn_a     .     .    ."
             "   .    .    .   .     .   fs    .    .  btn_a btn_a     .     .    ."
             "   .    .    .   .     .    .    .    .      .     .     .     .    .";
-          grid-template-columns:
-            4vw
-            8vw
-            8vw
-            8vw
-            13vw
-            8vw
-            8vw
-            5vw
-            8vw
-            8vw
-            8vw
-            8vw
-            4vw;
-          grid-template-rows:
-            98vw
-            1fr
-            8vw
-            4vw
-            4vw
-            4vw
-            4vw
-            8vw
-            1fr;
+          grid-template-columns: 4vw 8vw 8vw 8vw 13vw 8vw 8vw 5vw 8vw 8vw 8vw 8vw 4vw;
+          grid-template-rows: 98vw 1fr 8vw 4vw 4vw 4vw 4vw 8vw 1fr;
         }
 
         #game_canvas {
           border-width: 1vw;
-        }
-
-        .gui_sprite {
-          background-size: 80vw;
-        }
-
-        #dpad_up {
-          background-position: -8vw 0;
-        }
-
-        #dpad_down {
-          background-position: -8vw -16vw;
-        }
-
-        #dpad_left {
-          background-position: 0 -8vw;
-        }
-
-        #dpad_right {
-          background-position: -16vw -8vw;
-        }
-
-        #dpad_center {
-          background-position: -8vw -8vw;
-        }
-
-        #button_a {
-          background-position: -32vw 0;
-        }
-
-        #button_b {
-          background-position: -56vw 0;
-        }
-
-        #button_menu {
-          background-position: -24vw -24vw;
-        }
-
-        #button_mute {
-          background-position: -48vw -24vw;
-        }
-
-        #button_fullscreen {
-          background-position: -64vw -24vw;
         }
       }
 
@@ -354,6 +292,10 @@
        * TOUCH GUI for a SLIGHTLY VERTICAL screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 310/450) {
+        :root {
+          --spr_cell_size: 8vw;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -371,75 +313,12 @@
             "   . dp_l dp_c dp_r    .    .    .    . btn_a btn_a btn_b btn_b    ."
             "   .    . dp_d   .     .   fs    .    . btn_a btn_a     .     .    ."
             "   .    .    .   .     .    .    .    .     .     .     .     .    .";
-          grid-template-columns:
-            2vw
-            8vw
-            8vw
-            8vw
-            8vw
-            8vw
-            6vw
-            16vw
-            8vw
-            8vw
-            8vw
-            8vw
-            2vw;
-          grid-template-rows:
-            98vw
-            2vw
-            8vw
-            8vw
-            8vw
-            1fr;
+          grid-template-columns: 2vw 8vw 8vw 8vw 8vw 8vw 6vw 16vw 8vw 8vw 8vw 8vw 2vw;
+          grid-template-rows: 98vw 2vw 8vw 8vw 8vw 1fr;
         }
 
         #game_canvas {
           border-width: 1vw;
-        }
-
-        .gui_sprite {
-          background-size: 80vw;
-        }
-
-        #dpad_up {
-          background-position: -8vw 0;
-        }
-
-        #dpad_down {
-          background-position: -8vw -16vw;
-        }
-
-        #dpad_left {
-          background-position: 0 -8vw;
-        }
-
-        #dpad_right {
-          background-position: -16vw -8vw;
-        }
-
-        #dpad_center {
-          background-position: -8vw -8vw;
-        }
-
-        #button_a {
-          background-position: -32vw 0;
-        }
-
-        #button_b {
-          background-position: -56vw 0;
-        }
-
-        #button_menu {
-          background-position: -24vw -24vw;
-        }
-
-        #button_mute {
-          background-position: -48vw -24vw;
-        }
-
-        #button_fullscreen {
-          background-position: -64vw -24vw;
         }
       }
 
@@ -447,6 +326,10 @@
        * TOUCH GUI for a TALLER SQUARE screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 310/400) {
+        :root {
+          --spr_cell_size: 6vh;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -464,77 +347,12 @@
             ".    . dp_l dp_c dp_r    .    .    .    . btn_a btn_a btn_b btn_b    . ."
             ".    .    . dp_d   .     .   fs    .    . btn_a btn_a     .     .    . ."
             ".    .    .    .   .     .    .    .    .     .     .     .     .    . .";
-          grid-template-columns:
-            1fr
-            2vh
-            6vh
-            6vh
-            6vh
-            6vh
-            6vh
-            5vh
-            12vh
-            6vh
-            6vh
-            6vh
-            6vh
-            2vh
-            1fr;
-          grid-template-rows:
-            75vh
-            2vh
-            6vh
-            6vh
-            6vh
-            1fr;
+          grid-template-columns: 1fr 2vh 6vh 6vh 6vh 6vh 6vh 5vh 12vh 6vh 6vh 6vh 6vh 2vh 1fr;
+          grid-template-rows: 75vh 2vh 6vh 6vh 6vh 1fr;
         }
 
         #game_canvas {
           border-width: 1vh;
-        }
-
-        .gui_sprite {
-          background-size: 60vh;
-        }
-
-        #dpad_up {
-          background-position: -6vh 0;
-        }
-
-        #dpad_down {
-          background-position: -6vh -12vh;
-        }
-
-        #dpad_left {
-          background-position: 0 -6vh;
-        }
-
-        #dpad_right {
-          background-position: -12vh -6vh;
-        }
-
-        #dpad_center {
-          background-position: -6vh -6vh;
-        }
-
-        #button_a {
-          background-position: -24vh 0;
-        }
-
-        #button_b {
-          background-position: -42vh 0;
-        }
-
-        #button_menu {
-          background-position: -18vh -18vh;
-        }
-
-        #button_mute {
-          background-position: -36vh -18vh;
-        }
-
-        #button_fullscreen {
-          background-position: -48vh -18vh;
         }
       }
 
@@ -542,6 +360,10 @@
        * TOUCH GUI for a KINDA SQUARE screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 310/310) {
+        :root {
+          --spr_cell_size: 7vh;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -563,79 +385,12 @@
             ". dp_l dp_c dp_c dp_r    .    . btn_a btn_a btn_b btn_b btn_b ."
             ".    . dp_d dp_d   .     .    . btn_a btn_a     .     .     . ."
             ".    .    .    .   .     .    .     .     .     .     .     . .";
-          grid-template-columns:
-            1fr
-            7vh
-            2vh
-            5vh
-            7vh
-            31vh
-            11vh
-            3vh
-            11vh
-            5vh
-            2vh
-            7vh
-            1fr;
-          grid-template-rows:
-            4vh
-            7vh
-            7vh
-            7vh
-            48vh
-            2vh
-            7vh
-            7vh
-            7vh
-            1fr;
+          grid-template-columns: 1fr 7vh 2vh 5vh 7vh 31vh 11vh 3vh 11vh 5vh 2vh 7vh 1fr;
+          grid-template-rows: 4vh 7vh 7vh 7vh 48vh 2vh 7vh 7vh 7vh 1fr;
         }
 
         #game_canvas {
           border-width: 1vh;
-        }
-
-        .gui_sprite {
-          background-size: 70vh;
-        }
-
-        #dpad_up {
-          background-position: -7vh 0;
-        }
-
-        #dpad_down {
-          background-position: -7vh -14vh;
-        }
-
-        #dpad_left {
-          background-position: 0 -7vh;
-        }
-
-        #dpad_right {
-          background-position: -14vh -7vh;
-        }
-
-        #dpad_center {
-          background-position: -7vh -7vh;
-        }
-
-        #button_a {
-          background-position: -28vh 0;
-        }
-
-        #button_b {
-          background-position: -49vh 0;
-        }
-
-        #button_menu {
-          background-position: -21vh -21vh;
-        }
-
-        #button_mute {
-          background-position: -42vh -21vh;
-        }
-
-        #button_fullscreen {
-          background-position: -56vh -21vh;
         }
       }
 
@@ -643,6 +398,10 @@
        * TOUCH GUI for a WIDER SQUARE screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 310/250) {
+        :root {
+          --spr_cell_size: 10vh;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -665,78 +424,12 @@
             ". dp_l dp_c dp_r dp_r    . btn_a btn_a btn_a     . ."
             ".    . dp_d    .   .     . btn_a btn_a btn_a     . ."
             ".    .    .    .   .     .     .     .     .     . .";
-          grid-template-columns:
-            1fr
-            10vh
-            10vh
-            2vh
-            8vh
-            58vh
-            8vh
-            2vh
-            10vh
-            10vh
-            1fr;
-          grid-template-rows:
-            4vh
-            10vh
-            10vh
-            10vh
-            22vh
-            10vh
-            8vh
-            2vh
-            10vh
-            10vh
-            1fr;
+          grid-template-columns: 1fr 10vh 10vh 2vh 8vh 58vh 8vh 2vh 10vh 10vh 1fr;
+          grid-template-rows: 4vh 10vh 10vh 10vh 22vh 10vh 8vh 2vh 10vh 10vh 1fr;
         }
 
         #game_canvas {
           border-width: 1vh;
-        }
-
-        .gui_sprite {
-          background-size: 100vh;
-        }
-
-        #dpad_up {
-          background-position: -10vh 0;
-        }
-
-        #dpad_down {
-          background-position: -10vh -20vh;
-        }
-
-        #dpad_left {
-          background-position: 0 -10vh;
-        }
-
-        #dpad_right {
-          background-position: -20vh -10vh;
-        }
-
-        #dpad_center {
-          background-position: -10vh -10vh;
-        }
-
-        #button_a {
-          background-position: -40vh 0;
-        }
-
-        #button_b {
-          background-position: -70vh 0;
-        }
-
-        #button_menu {
-          background-position: -30vh -30vh;
-        }
-
-        #button_mute {
-          background-position: -60vh -30vh;
-        }
-
-        #button_fullscreen {
-          background-position: -80vh -30vh;
         }
       }
 
@@ -744,6 +437,10 @@
        * TOUCH GUI for a SLIGHTLY HORIZONTAL screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 480/250) {
+        :root {
+          --spr_cell_size: 10vh;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -763,77 +460,12 @@
             ". dp_l dp_c dp_r . . canv . btn_a btn_a      .     . ."
             ".    . dp_d    . . . canv . btn_a btn_a      .     . ."
             ".    .    .    . . . canv .     .     .      .     . .";
-          grid-template-columns:
-            1fr
-            10vh
-            10vh
-            10vh
-            10vh
-            1fr
-            97vh
-            1fr
-            10vh
-            10vh
-            10vh
-            10vh
-            1fr;
-          grid-template-rows:
-            10vh
-            10vh
-            1fr
-            10vh
-            10vh
-            10vh
-            10vh
-            15vh;
+          grid-template-columns: 1fr 10vh 10vh 10vh 10vh 1fr 97vh 1fr 10vh 10vh 10vh 10vh 1fr;
+          grid-template-rows: 10vh 10vh 1fr 10vh 10vh 10vh 10vh 15vh;
         }
 
         #game_canvas {
           border-width: 1vh;
-        }
-
-        .gui_sprite {
-          background-size: 100vh;
-        }
-
-        #dpad_up {
-          background-position: -10vh 0;
-        }
-
-        #dpad_down {
-          background-position: -10vh -20vh;
-        }
-
-        #dpad_left {
-          background-position: 0 -10vh;
-        }
-
-        #dpad_right {
-          background-position: -20vh -10vh;
-        }
-
-        #dpad_center {
-          background-position: -10vh -10vh;
-        }
-
-        #button_a {
-          background-position: -40vh 0;
-        }
-
-        #button_b {
-          background-position: -70vh 0;
-        }
-
-        #button_menu {
-          background-position: -30vh -30vh;
-        }
-
-        #button_mute {
-          background-position: -60vh -30vh;
-        }
-
-        #button_fullscreen {
-          background-position: -80vh -30vh;
         }
       }
 
@@ -841,6 +473,10 @@
        * TOUCH GUI for a REALLY HORIZONTAL screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 610/250) {
+        :root {
+          --spr_cell_size: 10vh;
+        }
+
         #unsupported_aspect_ratio {
           display: none;
         }
@@ -860,77 +496,12 @@
             ". dp_l dp_c dp_r . . canv . btn_a btn_a      .     . ."
             ".    . dp_d    . . . canv . btn_a btn_a      .     . ."
             ".    .    .    . . . canv .     .     .      .     . .";
-          grid-template-columns:
-            15vh
-            10vh
-            10vh
-            10vh
-            10vh
-            1fr
-            97vh
-            1fr
-            10vh
-            10vh
-            10vh
-            10vh
-            15vh;
-          grid-template-rows:
-            10vh
-            10vh
-            1fr
-            10vh
-            10vh
-            10vh
-            10vh
-            15vh;
+          grid-template-columns: 15vh 10vh 10vh 10vh 10vh 1fr 97vh 1fr 10vh 10vh 10vh 10vh 15vh;
+          grid-template-rows: 10vh 10vh 1fr 10vh 10vh 10vh 10vh 15vh;
         }
 
         #game_canvas {
           border-width: 1vh;
-        }
-
-        .gui_sprite {
-          background-size: 100vh;
-        }
-
-        #dpad_up {
-          background-position: -10vh 0;
-        }
-
-        #dpad_down {
-          background-position: -10vh -20vh;
-        }
-
-        #dpad_left {
-          background-position: 0 -10vh;
-        }
-
-        #dpad_right {
-          background-position: -20vh -10vh;
-        }
-
-        #dpad_center {
-          background-position: -10vh -10vh;
-        }
-
-        #button_a {
-          background-position: -40vh 0;
-        }
-
-        #button_b {
-          background-position: -70vh 0;
-        }
-
-        #button_menu {
-          background-position: -30vh -30vh;
-        }
-
-        #button_mute {
-          background-position: -60vh -30vh;
-        }
-
-        #button_fullscreen {
-          background-position: -80vh -30vh;
         }
       }
 
