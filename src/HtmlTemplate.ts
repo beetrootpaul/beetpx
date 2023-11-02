@@ -5,21 +5,18 @@ export class HtmlTemplate {
     fullScreenSubject: "body",
     canvas: "#game_canvas",
 
-    // TODO: ??? REIMPLEMENT
-    touchControls: ".touch_controls",
+    touchControls: ".touch_control",
 
-    // TODO: ??? REIMPLEMENT
-    controlsFullScreen: ".controls_fullscreen_toggle",
-    controlsMuteToggle: ".controls_mute_toggle",
+    controlsLeft: "#dpad_left",
+    controlsRight: "#dpad_right",
+    controlsUp: "#dpad_up",
+    controlsDown: "#dpad_down",
+    controlsA: "#button_a",
+    controlsB: "#button_b",
+    controlsMenu: "#button_menu",
 
-    // TODO: ??? REIMPLEMENT
-    controlsLeft: ".controls_left",
-    controlsRight: ".controls_right",
-    controlsUp: ".controls_up",
-    controlsDown: ".controls_down",
-    controlsA: ".controls_a",
-    controlsB: ".controls_b",
-    controlsMenu: ".controls_menu",
+    controlsFullScreen: "#button_fullscreen",
+    controlsMuteToggle: "#button_mute",
   };
 
   static readonly classes = {

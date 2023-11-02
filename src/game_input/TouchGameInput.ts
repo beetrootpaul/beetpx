@@ -61,16 +61,11 @@ export class TouchGameInput implements SpecializedGameInput {
   readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
     new Set<BpxGameInputEvent>();
 
-  constructor(params: { visibleButtons: BpxButtonName[] }) {
+  constructor() {
     TouchGameInput.mapping.forEach(({ event, button, selector }) => {
       const touchButtonElements =
         document.querySelectorAll<HTMLElement>(selector);
       this.#eventsAndButtons.get(event)!.push(...touchButtonElements);
-      if (params.visibleButtons.includes(button)) {
-        for (const el of touchButtonElements) {
-          el.classList.remove("hidden");
-        }
-      }
     });
   }
 

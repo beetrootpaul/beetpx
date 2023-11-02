@@ -6,7 +6,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _TouchGameInput_instances, _TouchGameInput_eventsAndButtons, _TouchGameInput_eventsSinceLastUpdate, _TouchGameInput_handleTouchEvent;
 import { HtmlTemplate } from "../HtmlTemplate";
 export class TouchGameInput {
-    constructor(params) {
+    constructor() {
         _TouchGameInput_instances.add(this);
         this.inputMethod = "touch";
         _TouchGameInput_eventsAndButtons.set(this, new Map([
@@ -22,11 +22,6 @@ export class TouchGameInput {
         TouchGameInput.mapping.forEach(({ event, button, selector }) => {
             const touchButtonElements = document.querySelectorAll(selector);
             __classPrivateFieldGet(this, _TouchGameInput_eventsAndButtons, "f").get(event).push(...touchButtonElements);
-            if (params.visibleButtons.includes(button)) {
-                for (const el of touchButtonElements) {
-                    el.classList.remove("hidden");
-                }
-            }
         });
     }
     startListening() {

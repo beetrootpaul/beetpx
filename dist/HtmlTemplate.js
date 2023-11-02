@@ -4,19 +4,16 @@ export class HtmlTemplate {
 HtmlTemplate.selectors = {
     fullScreenSubject: "body",
     canvas: "#game_canvas",
-    // TODO: ??? REIMPLEMENT
-    touchControls: ".touch_controls",
-    // TODO: ??? REIMPLEMENT
-    controlsFullScreen: ".controls_fullscreen_toggle",
-    controlsMuteToggle: ".controls_mute_toggle",
-    // TODO: ??? REIMPLEMENT
-    controlsLeft: ".controls_left",
-    controlsRight: ".controls_right",
-    controlsUp: ".controls_up",
-    controlsDown: ".controls_down",
-    controlsA: ".controls_a",
-    controlsB: ".controls_b",
-    controlsMenu: ".controls_menu",
+    touchControls: ".touch_control",
+    controlsLeft: "#dpad_left",
+    controlsRight: "#dpad_right",
+    controlsUp: "#dpad_up",
+    controlsDown: "#dpad_down",
+    controlsA: "#button_a",
+    controlsB: "#button_b",
+    controlsMenu: "#button_menu",
+    controlsFullScreen: "#button_fullscreen",
+    controlsMuteToggle: "#button_mute",
 };
 HtmlTemplate.classes = {
     // TODO: ??? REIMPLEMENT

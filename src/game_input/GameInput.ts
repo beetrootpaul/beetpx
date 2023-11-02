@@ -1,6 +1,6 @@
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
 import { Button } from "./Button";
-import { BpxButtonName, Buttons } from "./Buttons";
+import { Buttons } from "./Buttons";
 import { BpxGamepadType, GamepadGameInput } from "./GamepadGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { MouseGameInput } from "./MouseGameInput";
@@ -41,7 +41,6 @@ export class GameInput {
   #mostRecentInputMethods: Set<GameInputMethod> = new Set();
 
   constructor(params: {
-    visibleTouchButtons: BpxButtonName[];
     muteButtonsSelector: string;
     fullScreenButtonsSelector: string;
     enableDebugInputs: boolean;
@@ -58,9 +57,7 @@ export class GameInput {
       new KeyboardGameInput({
         enableDebugInputs: params.enableDebugInputs,
       }),
-      new TouchGameInput({
-        visibleButtons: params.visibleTouchButtons,
-      }),
+      new TouchGameInput(),
       this.#gamepadGameInput,
     ];
 

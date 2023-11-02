@@ -33,9 +33,7 @@ export class GameInput {
             new KeyboardGameInput({
                 enableDebugInputs: params.enableDebugInputs,
             }),
-            new TouchGameInput({
-                visibleButtons: params.visibleTouchButtons,
-            }),
+            new TouchGameInput(),
             __classPrivateFieldGet(this, _GameInput_gamepadGameInput, "f"),
         ], "f");
         this.gameButtons = new Buttons();

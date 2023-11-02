@@ -82,7 +82,6 @@ b_.init(
   {
     gameCanvasSize: "256x256",
     desiredUpdateFps: fps,
-    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
     debugFeatures: !BEETPX__IS_PROD,
   },
   {

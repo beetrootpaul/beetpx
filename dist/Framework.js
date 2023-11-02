@@ -77,7 +77,6 @@ export class Framework {
                     ? v_(256, 256)
                     : BpxUtils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         this.gameInput = new GameInput({
-            visibleTouchButtons: options.visibleTouchButtons,
             // TODO: are those selectors for both touch and mouse? Even if so, make them separate
             muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
             // TODO: are those selectors for both touch and mouse? Even if so, make them separate

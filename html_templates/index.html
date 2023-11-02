@@ -154,6 +154,9 @@
         grid-area: fs;
       }
 
+      /* TODO: polish mute + (optional)fs layout on desktop both variants */
+      /* TODO: pressed button state */
+
       /*
        * REGULAR GUI for a DESKTOP (portrait)
        */
@@ -196,16 +199,38 @@
           border-width: 1vh;
           border-bottom-width: 2vh;
 
-          grid-template-areas: ". canv .";
+          grid-template-areas:
+            ".    . . canv .  . ."
+            ". mute . canv . fs ."
+            ".    . . canv .  . .";
           grid-template-columns:
             1fr
+            10vh
+            4vh
             97vh
+            4vh
+            10vh
             1fr;
-          grid-template-rows: 97vh;
+          grid-template-rows:
+            4vh
+            10vh
+            83vh;
         }
 
         #game_canvas {
           border-width: 1vh;
+        }
+
+        .gui_sprite {
+          background-size: 100vh;
+        }
+
+        #button_mute {
+          background-position: -60vh -50vh;
+        }
+
+        #button_fullscreen {
+          background-position: -80vh -50vh;
         }
       }
 
@@ -529,9 +554,9 @@
 
           grid-template-areas:
             ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
-            ".   fs    . canv canv canv canv  canv  canv  canv     .     . ."
-            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
             ". mute    . canv canv canv canv  canv  canv  canv     .     . ."
+            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
+            ".   fs    . canv canv canv canv  canv  canv  canv     .     . ."
             ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
             ".    .    .    .    .    .    .     .     .     .     .     . ."
             ".    . dp_u dp_u    .    . menu  menu     . btn_b btn_b btn_b ."
@@ -630,9 +655,9 @@
 
           grid-template-areas:
             ".    .    .    . canv canv  canv     .     .     . ."
-            ".    .   fs    . canv canv  canv     .     .     . ."
-            ".    .    .    . canv canv  canv     .  menu  menu ."
             ".    . mute    . canv canv  canv     .     .     . ."
+            ".    .    .    . canv canv  canv     .  menu  menu ."
+            ".    .   fs    . canv canv  canv     .     .     . ."
             ".    .    .    . canv canv  canv     .     .     . ."
             ".    .    .    . canv canv  canv     . btn_b btn_b ."
             ".    . dp_u    . canv canv  canv     . btn_b btn_b ."
@@ -930,16 +955,16 @@
     <div id="unsupported_aspect_ratio">unsupported aspect ratio</div>
     <main id="game_display">
       <canvas id="game_canvas" width="256" height="256"></canvas>
-      <div id="dpad_up" class="gui_sprite"></div>
-      <div id="dpad_down" class="gui_sprite"></div>
-      <div id="dpad_left" class="gui_sprite"></div>
-      <div id="dpad_right" class="gui_sprite"></div>
-      <div id="dpad_center" class="gui_sprite"></div>
-      <div id="button_a" class="gui_sprite"></div>
-      <div id="button_b" class="gui_sprite"></div>
-      <div id="button_menu" class="gui_sprite"></div>
-      <div id="button_mute" class="gui_sprite"></div>
-      <div id="button_fullscreen" class="gui_sprite"></div>
+      <div id="dpad_up" class="gui_sprite touch_control"></div>
+      <div id="dpad_down" class="gui_sprite touch_control"></div>
+      <div id="dpad_left" class="gui_sprite touch_control"></div>
+      <div id="dpad_right" class="gui_sprite touch_control"></div>
+      <div id="dpad_center" class="gui_sprite touch_control"></div>
+      <div id="button_a" class="gui_sprite touch_control"></div>
+      <div id="button_b" class="gui_sprite touch_control"></div>
+      <div id="button_menu" class="gui_sprite touch_control"></div>
+      <div id="button_mute" class="gui_sprite touch_control"></div>
+      <div id="button_fullscreen" class="gui_sprite touch_control"></div>
     </main>
   </body>
 

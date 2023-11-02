@@ -336,7 +336,6 @@ declare class GameInput {
     readonly buttonFrameByFrameToggle: Button;
     readonly buttonFrameByFrameStep: Button;
     constructor(params: {
-        visibleTouchButtons: BpxButtonName[];
         muteButtonsSelector: string;
         fullScreenButtonsSelector: string;
         enableDebugInputs: boolean;
@@ -428,7 +427,6 @@ declare class StorageApi {
 type FrameworkOptions = {
     gameCanvasSize: "64x64" | "128x128" | "256x256";
     desiredUpdateFps: 30 | 60;
-    visibleTouchButtons: BpxButtonName[];
     debugFeatures: boolean;
 };
 type OnAssetsLoaded = {

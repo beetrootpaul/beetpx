@@ -15,7 +15,6 @@ import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
 import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
-import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
@@ -25,7 +24,6 @@ export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128" | "256x256";
   // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
-  visibleTouchButtons: BpxButtonName[];
   debugFeatures: boolean;
 };
 
@@ -103,7 +101,6 @@ export class Framework {
           );
 
     this.gameInput = new GameInput({
-      visibleTouchButtons: options.visibleTouchButtons,
       // TODO: are those selectors for both touch and mouse? Even if so, make them separate
       muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
       // TODO: are those selectors for both touch and mouse? Even if so, make them separate
