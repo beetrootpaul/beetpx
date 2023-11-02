@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" id="fullscreen_subject">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
 
@@ -16,19 +16,25 @@
       href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAVdJREFUeJzt3MFNw0AQQFFAdMCRymiCrjlSQyiAPVh5o7Uh/x2jCIevlQd7Y55vnx+3pwfy9vX7te/3+9/34h/psRUQFRAVEL2uXlydQP8z+X1bgaiAqICogKiAqICogKiAqIBoeSXyF61uNR3VlciJCogKiAqItgyR6RP80T2M6c+y0gpEBUQFRAVE40Pk6gNj+hitQFRAVEBUQERDZPqveiGDQLQCUQFRAVEB0eEhsmNgHD2GXGGstCdyogKiAqICosNDZMctpOnPMn3clVYgKiAqICogGt8T2TEw5NZVeyIXU0BUQFRAtOXbWdN7E2dd2ay0AlEBUQFRAdGWPZHpfzWyet9ZT9m3AlEBUQFRAdFpDxtO31Y6SysQFRAVEBUQ0RCRE/yOZzh2aAWiAqICogKi8W9nTf+8Kw2MlVYgKiAqICogWg6RKz1EeHWtQFRAVEBUQPQDHRdHQWx83G0AAAAASUVORK5CYII="
     />
 
-    <title>poc--typescript-web-game</title>
+    <!-- TODO: Allow a game title injection as build script params -->
+    <title>BeetPx game</title>
 
     <!--
     Keep styles embedded in HTML here, because external CSS file is loaded by Vite in a way which can make GUI flicker.
     -->
     <style>
       :root {
-        --loading-bg-color: #000000;
+        /* TODO: re-implement loading, again */
+        /* TODO: use another color */
+        --loading-bg-color: #ff00ff;
+
+        --gui-bg-color: #5f574f;
       }
 
       * {
         margin: 0;
         box-sizing: border-box;
+        image-rendering: pixelated;
       }
 
       html {
@@ -40,33 +46,8 @@
         width: 100vw;
         height: 100vh;
         overflow: hidden;
-      }
 
-      #game_display {
-        visibility: hidden;
-      }
-
-      .touch_controls_area_left {
-        display: none;
-      }
-
-      .touch_controls_area_right {
-        display: none;
-      }
-
-      .touch_controls_area_bottom {
-        display: none;
-      }
-
-      #loading {
-        position: absolute;
-        width: 100vw;
-        height: 100vh;
-        background-color: var(--loading-bg-color);
-      }
-
-      .app_loaded #loading {
-        display: none;
+        background-color: var(--gui-bg-color);
       }
 
       * {
@@ -77,296 +58,787 @@
         touch-action: none;
       }
 
+      #unsupported_aspect_ratio {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+
+        padding: 0.2em;
+
+        color: #c2c3c7;
+        font-size: 24px;
+      }
+
       #game_display {
         width: 100vw;
         height: 100vh;
+
         /*
         We need this bg color to be set on the element which is zoomed in when in a full
           screen and we cannot do this for the entire <body>, because Safari ignores
           body's bg color on full screen, and includes only the zoomed in element.
         */
-        background-color: #000000;
-        display: flex;
-        flex-direction: row;
-      }
+        background-color: var(--gui-bg-color);
 
-      .app_loaded #game_display {
-        visibility: visible;
+        border-color: #c2c3c7;
+        border-style: solid;
+        border-width: 0;
+
+        gap: 0 0;
       }
 
       #game_canvas {
-        width: 80vw;
-        height: 100vh;
-        image-rendering: pixelated;
         /*  for debug border, to not affect canvas' size */
         box-sizing: content-box;
+
+        width: 100%;
+        height: 100%;
       }
 
-      #game_canvas.debug {
+      .debug #game_canvas {
         border: 1px solid red;
         margin: -1px;
       }
 
+      #game_canvas {
+        grid-area: canv;
+      }
+
+      .gui_sprite {
+        background-image: url(.beetpx/gui.png);
+      }
+
+      #dpad_up {
+        grid-area: dp_u;
+      }
+
+      #dpad_down {
+        grid-area: dp_d;
+      }
+
+      #dpad_left {
+        grid-area: dp_l;
+      }
+
+      #dpad_right {
+        grid-area: dp_r;
+      }
+
+      #dpad_center {
+        grid-area: dp_c;
+      }
+
+      #button_a {
+        grid-area: btn_a;
+      }
+
+      #button_b {
+        grid-area: btn_b;
+      }
+
+      #button_menu {
+        grid-area: menu;
+      }
+
+      #button_mute {
+        grid-area: mute;
+      }
+
+      #button_fullscreen {
+        grid-area: fs;
+      }
+
       /*
-      MOUSE & TOUCH CONTROLS
-        See:
-          - https://ferie.medium.com/detect-a-touch-device-with-only-css-9f8e30fa1134
-          - https://caniuse.com/css-media-interaction
-      */
+       * LAYOUT for a SUPER THIN screen
+       */
 
-      .mouse_controls_area_left {
-        width: 10vw;
-        height: 100vh;
+      #unsupported_aspect_ratio {
+        display: block;
+
+        margin: 0;
+        text-align: center;
+        line-height: 1em;
+        overflow-wrap: break-word;
       }
 
-      .mouse_controls_area_right {
-        width: 10vw;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: end;
-      }
-
-      .mouse_controls_area_right button {
-        margin: 1vw;
-        width: 8vw;
-        height: 8vw;
-      }
-
-      .mouse_controls_area_right button.controls_mute_toggle {
-        font-size: 0.6em;
-      }
-
-      .touch_button.hidden {
+      #game_display {
         display: none;
       }
 
-      .touch_controls_area_left {
-        --margin: 1vh;
-        margin: var(--margin);
-        width: 25vw;
-        height: calc(100vh - 2 * var(--margin));
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .touch_controls_area_left .touch_button {
-        margin: 0;
-        border-radius: 1vw;
-        width: 8vw;
-        height: 8vw;
-        background-color: #83769c;
-        line-height: 8vw;
-        font-size: 4vw;
-        text-align: center;
-        font-family: monospace;
-        color: #fff1e8;
-      }
-
-      .touch_controls_area_left .touch_buttons_row {
-        width: 24vw;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-
-      .touch_controls_area_right {
-        width: 25vw;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: end;
-        align-items: end;
-      }
-
-      .touch_controls_area_right .touch_button {
-        margin: 1vw;
-        border-radius: 1vw;
-        width: 8vw;
-        height: 8vw;
-        background-color: #83769c;
-        line-height: 8vw;
-        font-size: 4vw;
-        text-align: center;
-        font-family: monospace;
-        color: #fff1e8;
-      }
-
-      .touch_controls_area_right .touch_button.controls_menu {
-        line-height: 8vw;
-        font-size: 3vw;
-      }
-
-      .touch_controls_area_right .touch_button.controls_mute_toggle {
-        line-height: 4vw;
-        font-size: 2vw;
-      }
-
-      .touch_controls_area_bottom {
-        --margin: 2vh;
-        margin: var(--margin);
-        width: calc(100vw - 2 * var(--margin));
-        height: 50vh;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .touch_controls_area_bottom .touch_button {
-        margin: 0;
-        border-radius: 2vw;
-        width: 10vh;
-        height: 10vh;
-        background-color: #83769c;
-        line-height: 10vh;
-        font-size: 5vw;
-        text-align: center;
-        font-family: monospace;
-        color: #fff1e8;
-      }
-
-      .touch_controls_area_bottom .spacer {
-        flex-grow: 1;
-      }
-
-      .touch_controls_area_bottom .touch_buttons_row.controls_left_right {
-        width: 30vh;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-
-      .touch_controls_area_bottom .touch_buttons_row.controls_toggles {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
-
-      .touch_controls_area_bottom
-        .touch_buttons_row.controls_toggles
-        .touch_button {
-        width: 6vh;
-        height: 6vh;
-        line-height: 6vh;
-        font-size: 3vw;
-      }
-
-      .touch_controls_area_bottom
-        .touch_buttons_row.controls_toggles
-        .touch_button.controls_menu {
-        line-height: 5.75vh;
-        font-size: 2.25vw;
-      }
-
-      .touch_controls_area_bottom
-        .touch_buttons_row.controls_toggles
-        .touch_button.controls_mute_toggle {
-        line-height: 2.75vh;
-        font-size: 1.75vw;
-      }
-
-      @media (any-pointer: coarse) {
-        #game_canvas {
-          width: 50vw;
-        }
-
-        .mouse_controls_area_left {
+      /*
+       * LAYOUT for a REALLY VERTICAL screen
+       */
+      @media (min-aspect-ratio: 310/600) {
+        #unsupported_aspect_ratio {
           display: none;
         }
 
-        .mouse_controls_area_right {
-          display: none;
-        }
-
-        .touch_controls_area_left {
-          display: flex;
-        }
-
-        .touch_controls_area_right {
-          display: flex;
-        }
-
-        .touch_controls_area_bottom {
-          display: none;
-        }
-      }
-
-      @media (any-pointer: coarse) and (orientation: portrait) {
         #game_display {
-          flex-direction: column;
+          display: grid;
+
+          border-width: 1vw;
+          border-bottom-width: 2vw;
+
+          grid-template-areas:
+            "canv canv canv canv canv canv canv canv   canv  canv  canv  canv canv"
+            "   .    .    .    .    .    .    .    .      .     .     .     .    ."
+            "   .    . dp_u    .    . menu menu    .      .     . btn_b btn_b    ."
+            "   . dp_l dp_c dp_r    .    .    .    .      .     . btn_b btn_b    ."
+            "   . dp_l dp_c dp_r    . mute    .    .      .     . btn_b btn_b    ."
+            "   .    . dp_d   .     . mute    .    .  btn_a btn_a     .     .    ."
+            "   .    . dp_d   .     .    .    .    .  btn_a btn_a     .     .    ."
+            "   .    .    .   .     .   fs    .    .  btn_a btn_a     .     .    ."
+            "   .    .    .   .     .    .    .    .      .     .     .     .    .";
+          grid-template-columns:
+            4vw
+            8vw
+            8vw
+            8vw
+            13vw
+            8vw
+            8vw
+            5vw
+            8vw
+            8vw
+            8vw
+            8vw
+            4vw;
+          grid-template-rows:
+            98vw
+            1fr
+            8vw
+            4vw
+            4vw
+            4vw
+            4vw
+            8vw
+            1fr;
         }
 
-        #game_canvas {
-          width: 100vw;
-          height: 50vh;
+        .gui_sprite {
+          background-size: 80vw;
         }
 
-        .mouse_controls_area_left {
+        #dpad_up {
+          background-position: -8vw 0;
+        }
+
+        #dpad_down {
+          background-position: -8vw -16vw;
+        }
+
+        #dpad_left {
+          background-position: 0 -8vw;
+        }
+
+        #dpad_right {
+          background-position: -16vw -8vw;
+        }
+
+        #dpad_center {
+          background-position: -8vw -8vw;
+        }
+
+        #button_a {
+          background-position: -32vw 0;
+        }
+
+        #button_b {
+          background-position: -56vw 0;
+        }
+
+        #button_menu {
+          background-position: -24vw -24vw;
+        }
+
+        #button_mute {
+          background-position: -48vw -24vw;
+        }
+
+        #button_fullscreen {
+          background-position: -64vw -24vw;
+        }
+      }
+
+      /*
+       * LAYOUT for a SLIGHTLY VERTICAL screen
+       */
+      @media (min-aspect-ratio: 310/450) {
+        #unsupported_aspect_ratio {
           display: none;
         }
 
-        .mouse_controls_area_right {
+        #game_display {
+          display: grid;
+
+          border-width: 1vw;
+          border-bottom-width: 2vw;
+
+          grid-template-areas:
+            "canv canv canv canv canv canv canv canv  canv  canv  canv  canv canv"
+            "   .    .    .    .    .    .    .    .     .     .     .     .    ."
+            "   .    . dp_u    .    . mute    . menu     .     . btn_b btn_b    ."
+            "   . dp_l dp_c dp_r    .    .    .    . btn_a btn_a btn_b btn_b    ."
+            "   .    . dp_d   .     .   fs    .    . btn_a btn_a     .     .    ."
+            "   .    .    .   .     .    .    .    .     .     .     .     .    .";
+          grid-template-columns:
+            2vw
+            8vw
+            8vw
+            8vw
+            8vw
+            8vw
+            6vw
+            16vw
+            8vw
+            8vw
+            8vw
+            8vw
+            2vw;
+          grid-template-rows:
+            98vw
+            2vw
+            8vw
+            8vw
+            8vw
+            1fr;
+        }
+
+        .gui_sprite {
+          background-size: 80vw;
+        }
+
+        #dpad_up {
+          background-position: -8vw 0;
+        }
+
+        #dpad_down {
+          background-position: -8vw -16vw;
+        }
+
+        #dpad_left {
+          background-position: 0 -8vw;
+        }
+
+        #dpad_right {
+          background-position: -16vw -8vw;
+        }
+
+        #dpad_center {
+          background-position: -8vw -8vw;
+        }
+
+        #button_a {
+          background-position: -32vw 0;
+        }
+
+        #button_b {
+          background-position: -56vw 0;
+        }
+
+        #button_menu {
+          background-position: -24vw -24vw;
+        }
+
+        #button_mute {
+          background-position: -48vw -24vw;
+        }
+
+        #button_fullscreen {
+          background-position: -64vw -24vw;
+        }
+      }
+
+      /*
+       * LAYOUT for a TALLER SQUARE screen
+       */
+      @media (min-aspect-ratio: 310/400) {
+        #unsupported_aspect_ratio {
           display: none;
         }
 
-        .touch_controls_area_left {
+        #game_display {
+          display: grid;
+
+          border-width: 1vh;
+          border-bottom-width: 2vh;
+
+          grid-template-areas:
+            ". canv canv canv canv canv canv canv canv  canv  canv  canv  canv canv ."
+            ".    .    .    .    .    .    .    .    .     .     .     .     .    . ."
+            ".    .    . dp_u    .    . mute    . menu     .     . btn_b btn_b    . ."
+            ".    . dp_l dp_c dp_r    .    .    .    . btn_a btn_a btn_b btn_b    . ."
+            ".    .    . dp_d   .     .   fs    .    . btn_a btn_a     .     .    . ."
+            ".    .    .    .   .     .    .    .    .     .     .     .     .    . .";
+          grid-template-columns:
+            1fr
+            2vh
+            6vh
+            6vh
+            6vh
+            6vh
+            6vh
+            5vh
+            12vh
+            6vh
+            6vh
+            6vh
+            6vh
+            2vh
+            1fr;
+          grid-template-rows:
+            75vh
+            2vh
+            6vh
+            6vh
+            6vh
+            1fr;
+        }
+
+        .gui_sprite {
+          background-size: 60vh;
+        }
+
+        #dpad_up {
+          background-position: -6vh 0;
+        }
+
+        #dpad_down {
+          background-position: -6vh -12vh;
+        }
+
+        #dpad_left {
+          background-position: 0 -6vh;
+        }
+
+        #dpad_right {
+          background-position: -12vh -6vh;
+        }
+
+        #dpad_center {
+          background-position: -6vh -6vh;
+        }
+
+        #button_a {
+          background-position: -24vh 0;
+        }
+
+        #button_b {
+          background-position: -42vh 0;
+        }
+
+        #button_menu {
+          background-position: -18vh -18vh;
+        }
+
+        #button_mute {
+          background-position: -36vh -18vh;
+        }
+
+        #button_fullscreen {
+          background-position: -48vh -18vh;
+        }
+      }
+
+      /*
+       * LAYOUT for a KINDA SQUARE screen
+       */
+      @media (min-aspect-ratio: 310/310) {
+        #unsupported_aspect_ratio {
           display: none;
         }
 
-        .touch_controls_area_right {
+        #game_display {
+          display: grid;
+
+          border-width: 1vh;
+          border-bottom-width: 2vh;
+
+          grid-template-areas:
+            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
+            ".   fs    . canv canv canv canv  canv  canv  canv     .     . ."
+            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
+            ". mute    . canv canv canv canv  canv  canv  canv     .     . ."
+            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
+            ".    .    .    .    .    .    .     .     .     .     .     . ."
+            ".    . dp_u dp_u    .    . menu  menu     . btn_b btn_b btn_b ."
+            ". dp_l dp_c dp_c dp_r    .    . btn_a btn_a btn_b btn_b btn_b ."
+            ".    . dp_d dp_d   .     .    . btn_a btn_a     .     .     . ."
+            ".    .    .    .   .     .    .     .     .     .     .     . .";
+          grid-template-columns:
+            1fr
+            7vh
+            2vh
+            5vh
+            7vh
+            31vh
+            11vh
+            3vh
+            11vh
+            5vh
+            2vh
+            7vh
+            1fr;
+          grid-template-rows:
+            4vh
+            7vh
+            7vh
+            7vh
+            48vh
+            2vh
+            7vh
+            7vh
+            7vh
+            1fr;
+        }
+
+        .gui_sprite {
+          background-size: 70vh;
+        }
+
+        #dpad_up {
+          background-position: -7vh 0;
+        }
+
+        #dpad_down {
+          background-position: -7vh -14vh;
+        }
+
+        #dpad_left {
+          background-position: 0 -7vh;
+        }
+
+        #dpad_right {
+          background-position: -14vh -7vh;
+        }
+
+        #dpad_center {
+          background-position: -7vh -7vh;
+        }
+
+        #button_a {
+          background-position: -28vh 0;
+        }
+
+        #button_b {
+          background-position: -49vh 0;
+        }
+
+        #button_menu {
+          background-position: -21vh -21vh;
+        }
+
+        #button_mute {
+          background-position: -42vh -21vh;
+        }
+
+        #button_fullscreen {
+          background-position: -56vh -21vh;
+        }
+      }
+
+      /*
+       * LAYOUT for a WIDER SQUARE screen
+       */
+      @media (min-aspect-ratio: 310/250) {
+        #unsupported_aspect_ratio {
           display: none;
         }
 
-        .touch_controls_area_bottom {
-          display: flex;
+        #game_display {
+          display: grid;
+
+          border-width: 1vh;
+          border-bottom-width: 2vh;
+
+          grid-template-areas:
+            ".    .    .    . canv canv  canv     .     .     . ."
+            ".    .   fs    . canv canv  canv     .     .     . ."
+            ".    .    .    . canv canv  canv     .  menu  menu ."
+            ".    . mute    . canv canv  canv     .     .     . ."
+            ".    .    .    . canv canv  canv     .     .     . ."
+            ".    .    .    . canv canv  canv     . btn_b btn_b ."
+            ".    . dp_u    . canv canv  canv     . btn_b btn_b ."
+            ".    . dp_u    .    .    .     .     . btn_b btn_b ."
+            ". dp_l dp_c dp_r dp_r    . btn_a btn_a btn_a     . ."
+            ".    . dp_d    .   .     . btn_a btn_a btn_a     . ."
+            ".    .    .    .   .     .     .     .     .     . .";
+          grid-template-columns:
+            1fr
+            10vh
+            10vh
+            2vh
+            8vh
+            58vh
+            8vh
+            2vh
+            10vh
+            10vh
+            1fr;
+          grid-template-rows:
+            4vh
+            10vh
+            10vh
+            10vh
+            22vh
+            10vh
+            8vh
+            2vh
+            10vh
+            10vh
+            1fr;
+        }
+
+        .gui_sprite {
+          background-size: 100vh;
+        }
+
+        #dpad_up {
+          background-position: -10vh 0;
+        }
+
+        #dpad_down {
+          background-position: -10vh -20vh;
+        }
+
+        #dpad_left {
+          background-position: 0 -10vh;
+        }
+
+        #dpad_right {
+          background-position: -20vh -10vh;
+        }
+
+        #dpad_center {
+          background-position: -10vh -10vh;
+        }
+
+        #button_a {
+          background-position: -40vh 0;
+        }
+
+        #button_b {
+          background-position: -70vh 0;
+        }
+
+        #button_menu {
+          background-position: -30vh -30vh;
+        }
+
+        #button_mute {
+          background-position: -60vh -30vh;
+        }
+
+        #button_fullscreen {
+          background-position: -80vh -30vh;
+        }
+      }
+
+      /*
+       * LAYOUT for a SLIGHTLY HORIZONTAL screen
+       */
+      @media (min-aspect-ratio: 480/250) {
+        #unsupported_aspect_ratio {
+          display: none;
+        }
+
+        #game_display {
+          display: grid;
+
+          border-width: 1vh;
+          border-bottom-width: 2vh;
+
+          grid-template-areas:
+            ".    .    .    . . . canv .      .     .     .     . ."
+            ". mute    .   fs . . canv .      .     .  menu  menu ."
+            ".    .    .    . . . canv .      .     .     .     . ."
+            ".    .    .    . . . canv .      .     . btn_b btn_b ."
+            ".    . dp_u    . . . canv .      .     . btn_b btn_b ."
+            ". dp_l dp_c dp_r . . canv . btn_a btn_a      .     . ."
+            ".    . dp_d    . . . canv . btn_a btn_a      .     . ."
+            ".    .    .    . . . canv .     .     .      .     . .";
+          grid-template-columns:
+            1fr
+            10vh
+            10vh
+            10vh
+            10vh
+            1fr
+            97vh
+            1fr
+            10vh
+            10vh
+            10vh
+            10vh
+            1fr;
+          grid-template-rows:
+            10vh
+            10vh
+            1fr
+            10vh
+            10vh
+            10vh
+            10vh
+            15vh;
+        }
+
+        .gui_sprite {
+          background-size: 100vh;
+        }
+
+        #dpad_up {
+          background-position: -10vh 0;
+        }
+
+        #dpad_down {
+          background-position: -10vh -20vh;
+        }
+
+        #dpad_left {
+          background-position: 0 -10vh;
+        }
+
+        #dpad_right {
+          background-position: -20vh -10vh;
+        }
+
+        #dpad_center {
+          background-position: -10vh -10vh;
+        }
+
+        #button_a {
+          background-position: -40vh 0;
+        }
+
+        #button_b {
+          background-position: -70vh 0;
+        }
+
+        #button_menu {
+          background-position: -30vh -30vh;
+        }
+
+        #button_mute {
+          background-position: -60vh -30vh;
+        }
+
+        #button_fullscreen {
+          background-position: -80vh -30vh;
+        }
+      }
+
+      /*
+       * LAYOUT for a REALLY HORIZONTAL screen
+       */
+      @media (min-aspect-ratio: 610/250) {
+        #unsupported_aspect_ratio {
+          display: none;
+        }
+
+        #game_display {
+          display: grid;
+
+          border-width: 1vh;
+          border-bottom-width: 2vh;
+
+          grid-template-areas:
+            ".    .    .    . . . canv .      .     .     .     . ."
+            ". mute    .   fs . . canv .      .     .  menu  menu ."
+            ".    .    .    . . . canv .      .     .     .     . ."
+            ".    .    .    . . . canv .      .     . btn_b btn_b ."
+            ".    . dp_u    . . . canv .      .     . btn_b btn_b ."
+            ". dp_l dp_c dp_r . . canv . btn_a btn_a      .     . ."
+            ".    . dp_d    . . . canv . btn_a btn_a      .     . ."
+            ".    .    .    . . . canv .     .     .      .     . .";
+          grid-template-columns:
+            15vh
+            10vh
+            10vh
+            10vh
+            10vh
+            1fr
+            97vh
+            1fr
+            10vh
+            10vh
+            10vh
+            10vh
+            15vh;
+          grid-template-rows:
+            10vh
+            10vh
+            1fr
+            10vh
+            10vh
+            10vh
+            10vh
+            15vh;
+        }
+
+        .gui_sprite {
+          background-size: 100vh;
+        }
+
+        #dpad_up {
+          background-position: -10vh 0;
+        }
+
+        #dpad_down {
+          background-position: -10vh -20vh;
+        }
+
+        #dpad_left {
+          background-position: 0 -10vh;
+        }
+
+        #dpad_right {
+          background-position: -20vh -10vh;
+        }
+
+        #dpad_center {
+          background-position: -10vh -10vh;
+        }
+
+        #button_a {
+          background-position: -40vh 0;
+        }
+
+        #button_b {
+          background-position: -70vh 0;
+        }
+
+        #button_menu {
+          background-position: -30vh -30vh;
+        }
+
+        #button_mute {
+          background-position: -60vh -30vh;
+        }
+
+        #button_fullscreen {
+          background-position: -80vh -30vh;
         }
       }
     </style>
   </head>
   <body>
-    <div id="loading"></div>
-
+    <div id="unsupported_aspect_ratio">unsupported aspect ratio</div>
     <main id="game_display">
-      <div class="mouse_controls_area_left"></div>
-      <div class="touch_controls touch_controls_area_left">
-        <div class="touch_button controls_up hidden">W</div>
-        <div class="touch_buttons_row">
-          <div class="touch_button controls_left hidden">A</div>
-          <div class="touch_button controls_right hidden">D</div>
-        </div>
-        <div class="touch_button controls_down hidden">S</div>
-      </div>
-      <canvas id="game_canvas"></canvas>
-      <div class="mouse_controls_area_right">
-        <button class="controls_mute_toggle">mute<br />unmute</button>
-        <button class="controls_fullscreen_toggle">FS</button>
-      </div>
-      <div class="touch_controls touch_controls_area_right">
-        <div class="touch_button controls_menu hidden">menu</div>
-        <div class="touch_button controls_a hidden">A</div>
-        <div class="touch_button controls_b hidden">B</div>
-        <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
-        <div class="touch_button controls_fullscreen_toggle">FS</div>
-      </div>
-      <div class="touch_controls touch_controls_area_bottom">
-        <div class="touch_button controls_up hidden">W</div>
-        <div class="touch_buttons_row controls_left_right">
-          <div class="touch_button controls_left hidden">A</div>
-          <div class="touch_button controls_right hidden">D</div>
-        </div>
-        <div class="touch_button controls_down hidden">S</div>
-        <div class="spacer"></div>
-        <div class="touch_buttons_row controls_toggles">
-          <div class="touch_button controls_mute_toggle">mute<br />unmute</div>
-          <div class="touch_button controls_b hidden">B</div>
-          <div class="touch_button controls_a hidden">A</div>
-          <div class="touch_button controls_menu hidden">menu</div>
-          <div class="touch_button controls_fullscreen_toggle">FS</div>
-        </div>
-      </div>
+      <canvas id="game_canvas" width="256" height="256"></canvas>
+      <div id="dpad_up" class="gui_sprite"></div>
+      <div id="dpad_down" class="gui_sprite"></div>
+      <div id="dpad_left" class="gui_sprite"></div>
+      <div id="dpad_right" class="gui_sprite"></div>
+      <div id="dpad_center" class="gui_sprite"></div>
+      <div id="button_a" class="gui_sprite"></div>
+      <div id="button_b" class="gui_sprite"></div>
+      <div id="button_menu" class="gui_sprite"></div>
+      <div id="button_mute" class="gui_sprite"></div>
+      <div id="button_fullscreen" class="gui_sprite"></div>
     </main>
-
-    <script type="module" src="src/beetpx_entrypoint.ts"></script>
   </body>
+
+  <script type="module" src="src/beetpx_entrypoint.ts"></script>
 </html>

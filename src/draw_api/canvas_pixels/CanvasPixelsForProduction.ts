@@ -1,6 +1,6 @@
 import { BpxSolidColor } from "../../Color";
 import { u_ } from "../../Utils";
-import { BpxVector2d, v_ } from "../../Vector2d";
+import { BpxVector2d } from "../../Vector2d";
 import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixelsForProductionSnapshot } from "./CanvasPixelsForProductionSnapshot";
 import { CanvasPixelsSnapshot } from "./CanvasPixelsSnapshot";
@@ -131,31 +131,29 @@ export class CanvasPixelsForProduction extends CanvasPixels {
 
   onWindowResize(): void {
     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
-    this.#htmlCanvas.width =
-      this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
-    this.#htmlCanvas.height =
-      this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
-
+    // this.#htmlCanvas.width =
+    //   this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
+    // this.#htmlCanvas.height =
+    //   this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
     // seems like we have to set it every time the canvas size is changed
-    this.#htmlCanvasContext.imageSmoothingEnabled = false;
+    // this.#htmlCanvasContext.imageSmoothingEnabled = false;
   }
 
   doRender(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
-    const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
-    const scaleToFill = Math.max(
-      1,
-      Math.min(
-        htmlCanvasSize.div(this.canvasSize).floor().x,
-        htmlCanvasSize.div(this.canvasSize).floor().y,
-      ),
-    );
-    const centeringOffset = htmlCanvasSize
-      .sub(this.canvasSize.mul(scaleToFill))
-      .div(2)
-      .floor();
-    // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
+    // const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
+    // const scaleToFill = Math.max(
+    //   1,
+    //   Math.min(
+    //     htmlCanvasSize.div(this.canvasSize).floor().x,
+    //     htmlCanvasSize.div(this.canvasSize).floor().y,
+    //   ),
+    // );
+    // const centeringOffset = htmlCanvasSize
+    //   .sub(this.canvasSize.mul(scaleToFill))
+    //   .div(2)
+    //   .floor();
 
     this.#htmlCanvasContext.drawImage(
       this.#offscreenContext.canvas,
@@ -163,11 +161,18 @@ export class CanvasPixelsForProduction extends CanvasPixels {
       0,
       this.#offscreenContext.canvas.width,
       this.#offscreenContext.canvas.height,
-      centeringOffset.x,
-      centeringOffset.y,
-      scaleToFill * this.canvasSize.x,
-      scaleToFill * this.canvasSize.y,
+      // centeringOffset.x,
+      // centeringOffset.y,
+      // scaleToFill * this.canvasSize.x,
+      // scaleToFill * this.canvasSize.y,
     );
+
+    // console.group("RENDER");
+    // console.log(scaleToFill);
+    // console.log(
+    //   `${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`,
+    // );
+    // console.groupEnd();
   }
 
   #initializeAsNonTransparent() {

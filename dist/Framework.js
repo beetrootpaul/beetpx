@@ -18,7 +18,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_htmlCanvas, _Framework_canvasPixels, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame, _Framework_render, _Framework_drawDebugMargin;
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_fullScreen, _Framework_canvasPixels, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame, _Framework_render, _Framework_drawDebugMargin;
 import { Assets } from "./Assets";
 import { BeetPx } from "./BeetPx";
 import { BpxSolidColor, black_ } from "./Color";
@@ -53,7 +53,6 @@ export class Framework {
         _Framework_loading.set(this, void 0);
         _Framework_gameLoop.set(this, void 0);
         _Framework_fullScreen.set(this, void 0);
-        _Framework_htmlCanvas.set(this, void 0);
         _Framework_canvasPixels.set(this, void 0);
         _Framework_onStarted.set(this, void 0);
         _Framework_onUpdate.set(this, void 0);
@@ -69,7 +68,7 @@ export class Framework {
         Logger.debugBeetPx("Framework options:", options);
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
-        __classPrivateFieldSet(this, _Framework_loading, new Loading(HtmlTemplate.selectors.display), "f");
+        __classPrivateFieldSet(this, _Framework_loading, new Loading(), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
             ? v_(64, 64)
             : options.gameCanvasSize === "128x128"
@@ -98,8 +97,8 @@ export class Framework {
         });
         this.audioApi = new AudioApi(this.assets, audioContext);
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.newFor(HtmlTemplate.selectors.fullScreenSubject, HtmlTemplate.selectors.controlsFullScreen), "f");
-        __classPrivateFieldSet(this, _Framework_htmlCanvas, (_b = document.querySelector(HtmlTemplate.selectors.canvas)) !== null && _b !== void 0 ? _b : u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`), "f");
-        __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixelsForProduction(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvas, "f"), __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
+        const htmlCanvas = (_b = document.querySelector(HtmlTemplate.selectors.canvas)) !== null && _b !== void 0 ? _b : u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
+        __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixelsForProduction(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
             canvasPixels: __classPrivateFieldGet(this, _Framework_canvasPixels, "f"),
             assets: this.assets,
@@ -135,7 +134,7 @@ export class Framework {
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_htmlCanvas = new WeakMap(), _Framework_canvasPixels = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_canvasPixels = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
     if (BEETPX__IS_PROD) {
         // A popup which prevents user from accidentally closing the browser tab during gameplay.
@@ -224,10 +223,10 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
     __classPrivateFieldGet(this, _Framework_canvasPixels, "f").render();
 }, _Framework_drawDebugMargin = function _Framework_drawDebugMargin() {
     if (DebugMode.enabled) {
-        __classPrivateFieldGet(this, _Framework_htmlCanvas, "f").classList.add(HtmlTemplate.classes.canvasDebugBorder);
+        document.body.classList.add(HtmlTemplate.classes.canvasDebugBorder);
     }
     else {
-        __classPrivateFieldGet(this, _Framework_htmlCanvas, "f").classList.remove(HtmlTemplate.classes.canvasDebugBorder);
+        document.body.classList.remove(HtmlTemplate.classes.canvasDebugBorder);
     }
 };
 // TODO: Move debug responsibility to a separate class

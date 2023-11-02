@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _CanvasPixelsForProduction_instances, _CanvasPixelsForProduction_length, _CanvasPixelsForProduction_htmlCanvas, _CanvasPixelsForProduction_htmlCanvasContext, _CanvasPixelsForProduction_offscreenContext, _CanvasPixelsForProduction_offscreenImageData, _CanvasPixelsForProduction_minX, _CanvasPixelsForProduction_minY, _CanvasPixelsForProduction_maxX, _CanvasPixelsForProduction_maxY, _CanvasPixelsForProduction_initializeAsNonTransparent;
 import { u_ } from "../../Utils";
-import { BpxVector2d, v_ } from "../../Vector2d";
+import { BpxVector2d } from "../../Vector2d";
 import { CanvasPixels } from "./CanvasPixels";
 import { CanvasPixelsForProductionSnapshot } from "./CanvasPixelsForProductionSnapshot";
 export class CanvasPixelsForProduction extends CanvasPixels {
@@ -93,23 +93,34 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     }
     onWindowResize() {
         // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").width =
-            __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").getBoundingClientRect().width * window.devicePixelRatio;
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").height =
-            __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").getBoundingClientRect().height * window.devicePixelRatio;
+        // this.#htmlCanvas.width =
+        //   this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
+        // this.#htmlCanvas.height =
+        //   this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
         // seems like we have to set it every time the canvas size is changed
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
+        // this.#htmlCanvasContext.imageSmoothingEnabled = false;
     }
     doRender() {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f"), 0, 0);
-        const htmlCanvasSize = v_(__classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").height);
-        const scaleToFill = Math.max(1, Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y));
-        const centeringOffset = htmlCanvasSize
-            .sub(this.canvasSize.mul(scaleToFill))
-            .div(2)
-            .floor();
-        // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height, centeringOffset.x, centeringOffset.y, scaleToFill * this.canvasSize.x, scaleToFill * this.canvasSize.y);
+        // const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
+        // const scaleToFill = Math.max(
+        //   1,
+        //   Math.min(
+        //     htmlCanvasSize.div(this.canvasSize).floor().x,
+        //     htmlCanvasSize.div(this.canvasSize).floor().y,
+        //   ),
+        // );
+        // const centeringOffset = htmlCanvasSize
+        //   .sub(this.canvasSize.mul(scaleToFill))
+        //   .div(2)
+        //   .floor();
+        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height);
+        // console.group("RENDER");
+        // console.log(scaleToFill);
+        // console.log(
+        //   `${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`,
+        // );
+        // console.groupEnd();
     }
 }
 _CanvasPixelsForProduction_length = new WeakMap(), _CanvasPixelsForProduction_htmlCanvas = new WeakMap(), _CanvasPixelsForProduction_htmlCanvasContext = new WeakMap(), _CanvasPixelsForProduction_offscreenContext = new WeakMap(), _CanvasPixelsForProduction_offscreenImageData = new WeakMap(), _CanvasPixelsForProduction_minX = new WeakMap(), _CanvasPixelsForProduction_minY = new WeakMap(), _CanvasPixelsForProduction_maxX = new WeakMap(), _CanvasPixelsForProduction_maxY = new WeakMap(), _CanvasPixelsForProduction_instances = new WeakSet(), _CanvasPixelsForProduction_initializeAsNonTransparent = function _CanvasPixelsForProduction_initializeAsNonTransparent() {

@@ -27,8 +27,20 @@ const argv = require("yargs")
 const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
+
 const gameHtml = "index.html";
 const itchIoSimulationHtml = "itch_io_simulation.html";
+
+const beetPxHtmlTemplatesInDir = path.resolve(
+  beetPxCodebaseDir,
+  "html_templates",
+);
+const beetPxAdditionalPublicAssetsOutDir = path.resolve(
+  gameCodebaseDir,
+  "public",
+  ".beetpx",
+);
+
 const buildOutDirAsExpectedByVitePreview = "dist/";
 const distZipDir = "dist/";
 const distZipFile = "game.zip";
@@ -81,12 +93,21 @@ function runDevCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", itchIoSimulationHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, itchIoSimulationHtml),
     path.resolve(gameCodebaseDir, itchIoSimulationHtml),
   );
   fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", gameHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtml),
     path.resolve(gameCodebaseDir, gameHtml),
+  );
+
+  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
+    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  }
+  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  fs.copyFileSync(
+    path.resolve(beetPxHtmlTemplatesInDir, "gui.png"),
+    path.resolve(beetPxAdditionalPublicAssetsOutDir, "gui.png"),
   );
 
   // Vite docs:
@@ -139,8 +160,17 @@ function runBuildCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", gameHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtml),
     path.resolve(gameCodebaseDir, gameHtml),
+  );
+
+  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
+    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  }
+  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  fs.copyFileSync(
+    path.resolve(beetPxHtmlTemplatesInDir, "gui.png"),
+    path.resolve(beetPxAdditionalPublicAssetsOutDir, "gui.png"),
   );
 
   // Vite docs:

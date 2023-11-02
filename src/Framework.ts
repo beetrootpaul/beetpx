@@ -56,7 +56,6 @@ export class Framework {
 
   readonly assets: Assets;
 
-  readonly #htmlCanvas: HTMLCanvasElement;
   readonly #canvasPixels: CanvasPixels;
   readonly drawApi: DrawApi;
 
@@ -90,7 +89,7 @@ export class Framework {
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
-    this.#loading = new Loading(HtmlTemplate.selectors.display);
+    this.#loading = new Loading();
 
     this.#gameCanvasSize =
       options.gameCanvasSize === "64x64"
@@ -135,7 +134,7 @@ export class Framework {
       HtmlTemplate.selectors.controlsFullScreen,
     );
 
-    this.#htmlCanvas =
+    const htmlCanvas =
       document.querySelector<HTMLCanvasElement>(
         HtmlTemplate.selectors.canvas,
       ) ??
@@ -145,7 +144,7 @@ export class Framework {
 
     this.#canvasPixels = new CanvasPixelsForProduction(
       this.#gameCanvasSize,
-      this.#htmlCanvas,
+      htmlCanvas,
       this.#htmlCanvasBackground,
     );
 
@@ -299,9 +298,9 @@ export class Framework {
 
   #drawDebugMargin(): void {
     if (DebugMode.enabled) {
-      this.#htmlCanvas.classList.add(HtmlTemplate.classes.canvasDebugBorder);
+      document.body.classList.add(HtmlTemplate.classes.canvasDebugBorder);
     } else {
-      this.#htmlCanvas.classList.remove(HtmlTemplate.classes.canvasDebugBorder);
+      document.body.classList.remove(HtmlTemplate.classes.canvasDebugBorder);
     }
   }
 }
