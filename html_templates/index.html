@@ -94,16 +94,16 @@
       }
 
       #game_canvas {
-        /*  for debug border, to not affect canvas' size */
-        box-sizing: content-box;
-
         width: 100%;
         height: 100%;
+
+        background-color: #000000;
+        border: 1px solid #000000;
+        box-sizing: border-box;
       }
 
       .debug #game_canvas {
-        border: 1px solid red;
-        margin: -1px;
+        border-color: red;
       }
 
       #game_canvas {
@@ -178,6 +178,10 @@
           1fr;
       }
 
+      #game_canvas {
+        border-width: 1vw;
+      }
+
       /*
        * REGULAR GUI for a DESKTOP (landscape)
        */
@@ -199,6 +203,10 @@
             1fr;
           grid-template-rows: 97vh;
         }
+
+        #game_canvas {
+          border-width: 1vh;
+        }
       }
 
       /*
@@ -208,7 +216,6 @@
         #unsupported_aspect_ratio {
           display: block;
 
-          margin: 0;
           text-align: center;
           line-height: 1em;
           overflow-wrap: break-word;
@@ -267,6 +274,10 @@
             4vw
             8vw
             1fr;
+        }
+
+        #game_canvas {
+          border-width: 1vw;
         }
 
         .gui_sprite {
@@ -358,6 +369,10 @@
             1fr;
         }
 
+        #game_canvas {
+          border-width: 1vw;
+        }
+
         .gui_sprite {
           background-size: 80vw;
         }
@@ -447,6 +462,10 @@
             6vh
             6vh
             1fr;
+        }
+
+        #game_canvas {
+          border-width: 1vh;
         }
 
         .gui_sprite {
@@ -546,6 +565,10 @@
             1fr;
         }
 
+        #game_canvas {
+          border-width: 1vh;
+        }
+
         .gui_sprite {
           background-size: 70vh;
         }
@@ -643,6 +666,10 @@
             1fr;
         }
 
+        #game_canvas {
+          border-width: 1vh;
+        }
+
         .gui_sprite {
           background-size: 100vh;
         }
@@ -734,6 +761,10 @@
             10vh
             10vh
             15vh;
+        }
+
+        #game_canvas {
+          border-width: 1vh;
         }
 
         .gui_sprite {
@@ -829,6 +860,10 @@
             15vh;
         }
 
+        #game_canvas {
+          border-width: 1vh;
+        }
+
         .gui_sprite {
           background-size: 100vh;
         }
@@ -871,6 +906,22 @@
 
         #button_fullscreen {
           background-position: -80vh -30vh;
+        }
+      }
+
+      /*
+       * TOUCH GUI for a SUPER WIDE screen
+       */
+      @media (pointer: coarse) and (min-aspect-ratio: 800/250) {
+        #unsupported_aspect_ratio {
+          display: block;
+
+          text-align: center;
+          line-height: 100vh;
+        }
+
+        #game_display {
+          display: none;
         }
       }
     </style>
