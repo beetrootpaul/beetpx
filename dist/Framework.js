@@ -77,10 +77,6 @@ export class Framework {
                     ? v_(256, 256)
                     : BpxUtils.throwError(`Unsupported canvas size: "${options.gameCanvasSize}"`), "f");
         this.gameInput = new GameInput({
-            // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-            muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
-            // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-            fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
             enableDebugInputs: options.debugFeatures,
             browserType: __classPrivateFieldGet(this, _Framework_browserType, "f"),
         });

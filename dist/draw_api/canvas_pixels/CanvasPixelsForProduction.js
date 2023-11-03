@@ -111,11 +111,6 @@ export class CanvasPixelsForProduction extends CanvasPixels {
             .div(2)
             .floor();
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height, centeringOffset.x, centeringOffset.y, scaleToFill * this.canvasSize.x, scaleToFill * this.canvasSize.y);
-        console.group("RENDER");
-        console.log(scaleToFill);
-        console.log(`${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`);
-        console.log(`offset: ${centeringOffset.x} x ${centeringOffset.y}`);
-        console.groupEnd();
     }
 }
 _CanvasPixelsForProduction_length = new WeakMap(), _CanvasPixelsForProduction_htmlCanvas = new WeakMap(), _CanvasPixelsForProduction_htmlCanvasContext = new WeakMap(), _CanvasPixelsForProduction_offscreenContext = new WeakMap(), _CanvasPixelsForProduction_offscreenImageData = new WeakMap(), _CanvasPixelsForProduction_minX = new WeakMap(), _CanvasPixelsForProduction_minY = new WeakMap(), _CanvasPixelsForProduction_maxX = new WeakMap(), _CanvasPixelsForProduction_maxY = new WeakMap(), _CanvasPixelsForProduction_instances = new WeakSet(), _CanvasPixelsForProduction_initializeAsNonTransparent = function _CanvasPixelsForProduction_initializeAsNonTransparent() {

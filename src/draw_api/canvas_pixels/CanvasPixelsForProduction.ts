@@ -169,14 +169,6 @@ export class CanvasPixelsForProduction extends CanvasPixels {
       scaleToFill * this.canvasSize.x,
       scaleToFill * this.canvasSize.y,
     );
-
-    console.group("RENDER");
-    console.log(scaleToFill);
-    console.log(
-      `${scaleToFill * this.canvasSize.x} x ${scaleToFill * this.canvasSize.y}`,
-    );
-    console.log(`offset: ${centeringOffset.x} x ${centeringOffset.y}`);
-    console.groupEnd();
   }
 
   #initializeAsNonTransparent() {

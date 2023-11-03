@@ -64,16 +64,16 @@ export class KeyboardGameInput {
         for (const event of __classPrivateFieldGet(this, _KeyboardGameInput_eventsSinceLastUpdate, "f")) {
             eventsCollector.add(event);
             anythingAdded = true;
-            // On macOS Chrome and Safari "keyup" (for a full screen toggle key) is
-            //   not registered during full screen transition. If user presses the key
-            //   for a typical short duration, it ends up recognized as still pressed
-            //   after the full screen transition ends. Therefore, in order to toggle
-            //   full screen back, user has to press the key twice: once to "release"
-            //   the key, and second time to initiate the next full screen transition.
-            // As a workaround we do not keep "full_screen" event "pressed", so the framework
-            //   will recognize it as a key being up immediately.
-            __classPrivateFieldGet(this, _KeyboardGameInput_eventsSinceLastUpdate, "f").delete("full_screen");
         }
+        // On macOS Chrome and Safari "keyup" (for a full screen toggle key) is
+        //   not registered during full screen transition. If user presses the key
+        //   for a typical short duration, it ends up recognized as still pressed
+        //   after the full screen transition ends. Therefore, in order to toggle
+        //   full screen back, user has to press the key twice: once to "release"
+        //   the key, and second time to initiate the next full screen transition.
+        // As a workaround we do not keep "full_screen" event "pressed", so the framework
+        //   will recognize it as a key being up immediately.
+        __classPrivateFieldGet(this, _KeyboardGameInput_eventsSinceLastUpdate, "f").delete("full_screen");
         return anythingAdded;
     }
 }

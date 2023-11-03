@@ -101,10 +101,6 @@ export class Framework {
           );
 
     this.gameInput = new GameInput({
-      // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-      muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
-      // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-      fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
       enableDebugInputs: options.debugFeatures,
       browserType: this.#browserType,
     });

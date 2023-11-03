@@ -18,7 +18,7 @@ b_.init(
   {
     images: [{ url: "spritesheet.png" }],
     fonts: [],
-    sounds: [],
+    sounds: [{ url: "music_base.flac" }],
     jsons: [],
   },
 ).then(({ startGame }) => {
@@ -29,6 +29,8 @@ b_.init(
 
     prevDebugToggleState = false;
     nextDebugToggleState = false;
+
+    b_.playSoundLooped("music_base.flac");
   });
 
   b_.setOnUpdate(() => {

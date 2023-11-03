@@ -336,8 +336,6 @@ declare class GameInput {
     readonly buttonFrameByFrameToggle: Button;
     readonly buttonFrameByFrameStep: Button;
     constructor(params: {
-        muteButtonsSelector: string;
-        fullScreenButtonsSelector: string;
         enableDebugInputs: boolean;
         browserType: BpxBrowserType;
     });

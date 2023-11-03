@@ -39,6 +39,13 @@
         margin: 0;
         box-sizing: border-box;
         image-rendering: pixelated;
+
+        /* Dear Safari, please do NOT highlight any text or div when I press
+           it for a longer time. Those are game buttons and they are meant
+           to be kept pressed… */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
       }
 
       html {
@@ -112,29 +119,61 @@
 
       .gui_sprite {
         background-image: url(.beetpx/gui.png);
-        background-size: calc(var(--spr_cell_size) * 10);
+        background-size: calc(var(--spr_cell_size) * 20);
       }
 
-      #dpad_up {
+      #dpad_u {
         grid-area: dp_u;
         background-position: calc(var(--spr_cell_size) * -1) 0;
       }
 
-      #dpad_down {
+      .pressed_l #dpad_u {
+        background-position-y: calc(var(--spr_cell_size) * -4);
+      }
+
+      .pressed_u.pressed_l #dpad_u {
+        background-position-y: calc(var(--spr_cell_size) * -8);
+      }
+
+      #dpad_d {
         grid-area: dp_d;
         background-position: calc(var(--spr_cell_size) * -1)
           calc(var(--spr_cell_size) * -2);
       }
 
-      #dpad_left {
+      .pressed_l #dpad_d {
+        background-position-y: calc(var(--spr_cell_size) * -6);
+      }
+
+      .pressed_u.pressed_l #dpad_d {
+        background-position-y: calc(var(--spr_cell_size) * -10);
+      }
+
+      #dpad_l {
         grid-area: dp_l;
         background-position: 0 calc(var(--spr_cell_size) * -1);
       }
 
-      #dpad_right {
+      .pressed_l #dpad_l {
+        background-position-y: calc(var(--spr_cell_size) * -5);
+      }
+
+      .pressed_u.pressed_l #dpad_l {
+        background-position-y: calc(var(--spr_cell_size) * -9);
+      }
+
+      #dpad_r {
         grid-area: dp_r;
         background-position: calc(var(--spr_cell_size) * -2)
           calc(var(--spr_cell_size) * -1);
+      }
+
+      .pressed_l #dpad_r {
+        background-position-y: calc(var(--spr_cell_size) * -5);
+      }
+
+      .pressed_u.pressed_l #dpad_r {
+        background-position-y: calc(var(--spr_cell_size) * -9);
       }
 
       #dpad_center {
@@ -143,9 +182,21 @@
           calc(var(--spr_cell_size) * -1);
       }
 
+      .pressed_l #dpad_center {
+        background-position-y: calc(var(--spr_cell_size) * -5);
+      }
+
+      .pressed_u.pressed_l #dpad_center {
+        background-position-y: calc(var(--spr_cell_size) * -9);
+      }
+
       #button_a {
         grid-area: btn_a;
         background-position: calc(var(--spr_cell_size) * -4) 0;
+      }
+
+      .pressed_a #button_a {
+        background-position-y: calc(var(--spr_cell_size) * -3);
       }
 
       #button_b {
@@ -153,22 +204,45 @@
         background-position: calc(var(--spr_cell_size) * -7) 0;
       }
 
+      .pressed_b #button_b {
+        background-position-y: calc(var(--spr_cell_size) * -3);
+      }
+
       #button_menu {
         grid-area: menu;
-        background-position: calc(var(--spr_cell_size) * -3)
-          calc(var(--spr_cell_size) * -3);
+        background-position: calc(var(--spr_cell_size) * -10) 0;
+      }
+
+      .pressed_menu #button_menu {
+        background-position-y: calc(var(--spr_cell_size) * -3);
       }
 
       #button_mute {
         grid-area: mute;
-        background-position: calc(var(--spr_cell_size) * -6)
-          calc(var(--spr_cell_size) * -3);
+        background-position: calc(var(--spr_cell_size) * -13) 0;
+      }
+
+      .pressed_mute #button_mute {
+        background-position-y: calc(var(--spr_cell_size) * -3);
       }
 
       #button_fullscreen {
         grid-area: fs;
-        background-position: calc(var(--spr_cell_size) * -8)
-          calc(var(--spr_cell_size) * -3);
+        background-position: calc(var(--spr_cell_size) * -15) 0;
+      }
+
+      .pressed_fullscreen #button_fullscreen {
+        background-position-y: calc(var(--spr_cell_size) * -3);
+      }
+
+      @media not (pointer: coarse) {
+        #button_mute {
+          background-position-x: calc(var(--spr_cell_size) * -17);
+        }
+
+        #button_fullscreen {
+          background-position-x: calc(var(--spr_cell_size) * -19);
+        }
       }
 
       /* TODO: polish mute + (optional)fs layout on desktop both variants */
@@ -526,10 +600,10 @@
     <div id="unsupported_aspect_ratio">unsupported aspect ratio</div>
     <main id="game_display">
       <canvas id="game_canvas" width="256" height="256"></canvas>
-      <div id="dpad_up" class="gui_sprite touch_control"></div>
-      <div id="dpad_down" class="gui_sprite touch_control"></div>
-      <div id="dpad_left" class="gui_sprite touch_control"></div>
-      <div id="dpad_right" class="gui_sprite touch_control"></div>
+      <div id="dpad_u" class="gui_sprite touch_control"></div>
+      <div id="dpad_d" class="gui_sprite touch_control"></div>
+      <div id="dpad_l" class="gui_sprite touch_control"></div>
+      <div id="dpad_r" class="gui_sprite touch_control"></div>
       <div id="dpad_center" class="gui_sprite touch_control"></div>
       <div id="button_a" class="gui_sprite touch_control"></div>
       <div id="button_b" class="gui_sprite touch_control"></div>
