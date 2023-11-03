@@ -43,9 +43,23 @@ export class MouseGameInput {
 _MouseGameInput_eventsSinceLastUpdate = new WeakMap();
 MouseGameInput.mapping = [
     { event: "button_left", selector: HtmlTemplate.selectors.controlsLeft },
+    { event: "button_left", selector: HtmlTemplate.selectors.controlsUpLeft },
+    { event: "button_left", selector: HtmlTemplate.selectors.controlsDownLeft },
     { event: "button_right", selector: HtmlTemplate.selectors.controlsRight },
+    { event: "button_right", selector: HtmlTemplate.selectors.controlsUpRight },
+    {
+        event: "button_right",
+        selector: HtmlTemplate.selectors.controlsDownRight,
+    },
     { event: "button_up", selector: HtmlTemplate.selectors.controlsUp },
+    { event: "button_up", selector: HtmlTemplate.selectors.controlsUpLeft },
+    { event: "button_up", selector: HtmlTemplate.selectors.controlsUpRight },
     { event: "button_down", selector: HtmlTemplate.selectors.controlsDown },
+    { event: "button_down", selector: HtmlTemplate.selectors.controlsDownLeft },
+    {
+        event: "button_down",
+        selector: HtmlTemplate.selectors.controlsDownRight,
+    },
     { event: "button_a", selector: HtmlTemplate.selectors.controlsA },
     { event: "button_b", selector: HtmlTemplate.selectors.controlsB },
     { event: "button_menu", selector: HtmlTemplate.selectors.controlsMenu },

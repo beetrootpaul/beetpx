@@ -16,9 +16,9 @@
       href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAVdJREFUeJzt3MFNw0AQQFFAdMCRymiCrjlSQyiAPVh5o7Uh/x2jCIevlQd7Y55vnx+3pwfy9vX7te/3+9/34h/psRUQFRAVEL2uXlydQP8z+X1bgaiAqICogKiAqICogKiAqIBoeSXyF61uNR3VlciJCogKiAqItgyR6RP80T2M6c+y0gpEBUQFRAVE40Pk6gNj+hitQFRAVEBUQERDZPqveiGDQLQCUQFRAVEB0eEhsmNgHD2GXGGstCdyogKiAqICosNDZMctpOnPMn3clVYgKiAqICogGt8T2TEw5NZVeyIXU0BUQFRAtOXbWdN7E2dd2ay0AlEBUQFRAdGWPZHpfzWyet9ZT9m3AlEBUQFRAdFpDxtO31Y6SysQFRAVEBUQ0RCRE/yOZzh2aAWiAqICogKi8W9nTf+8Kw2MlVYgKiAqICogWg6RKz1EeHWtQFRAVEBUQPQDHRdHQWx83G0AAAAASUVORK5CYII="
     />
 
-    <!-- TODO: mouse GUI (mute/unmute, full screen)   -->
+    <!-- TODO: start button to initiate sounds!  -->
 
-    <!-- TODO: a bit of a border around the canvas   -->
+    <!-- TODO: mouse GUI all aspect ratios  -->
 
     <!-- TODO: Allow a game title injection as build script params -->
     <title>BeetPx game</title>
@@ -190,6 +190,22 @@
         background-position-y: calc(var(--spr_cell_size) * -9);
       }
 
+      #dpad_ul {
+        grid-area: dp_ul;
+      }
+
+      #dpad_ur {
+        grid-area: dp_ur;
+      }
+
+      #dpad_dl {
+        grid-area: dp_dl;
+      }
+
+      #dpad_dr {
+        grid-area: dp_dr;
+      }
+
       #button_a {
         grid-area: btn_a;
         background-position: calc(var(--spr_cell_size) * -4) 0;
@@ -246,7 +262,6 @@
       }
 
       /* TODO: polish mute + (optional)fs layout on desktop both variants */
-      /* TODO: pressed button state */
 
       /*
        * REGULAR GUI for a DESKTOP (portrait)
@@ -344,17 +359,17 @@
           border-bottom-width: 2vw;
 
           grid-template-areas:
-            "canv canv canv canv canv canv canv canv   canv  canv  canv  canv canv"
-            "   .    .    .    .    .    .    .    .      .     .     .     .    ."
-            "   .    . dp_u    .    . menu menu    .      .     . btn_b btn_b    ."
-            "   . dp_l dp_c dp_r    .    .    .    .      .     . btn_b btn_b    ."
-            "   . dp_l dp_c dp_r    . mute    .    .      .     . btn_b btn_b    ."
-            "   .    . dp_d   .     . mute    .    .  btn_a btn_a     .     .    ."
-            "   .    . dp_d   .     .    .    .    .  btn_a btn_a     .     .    ."
-            "   .    .    .   .     .   fs    .    .  btn_a btn_a     .     .    ."
-            "   .    .    .   .     .    .    .    .      .     .     .     .    .";
+            "canv  canv canv  canv canv canv canv canv   canv  canv  canv  canv canv"
+            "   .     .    .     .    .    .    .    .      .     .     .     .    ."
+            "   . dp_ul dp_u dp_ur    . menu menu    .      .     . btn_b btn_b    ."
+            "   .  dp_l dp_c  dp_r    .    .    .    .      .     . btn_b btn_b    ."
+            "   .  dp_l dp_c  dp_r    . mute    .    .      .     . btn_b btn_b    ."
+            "   . dp_dl dp_d dp_dr    . mute    .    .  btn_a btn_a     .     .    ."
+            "   . dp_dl dp_d dp_dr    .    .    .    .  btn_a btn_a     .     .    ."
+            "   .     .    .     .    .   fs    .    .  btn_a btn_a     .     .    ."
+            "   .     .    .     .    .    .    .    .      .     .     .     .    .";
           grid-template-columns: 4vw 8vw 8vw 8vw 13vw 8vw 8vw 5vw 8vw 8vw 8vw 8vw 4vw;
-          grid-template-rows: 98vw 1fr 8vw 4vw 4vw 4vw 4vw 8vw 1fr;
+          grid-template-rows: 98vw 1fr 8vw 4vw 4vw 4vw 4vw 8vw 2fr;
         }
 
         #game_canvas {
@@ -381,12 +396,12 @@
           border-bottom-width: 2vw;
 
           grid-template-areas:
-            "canv canv canv canv canv canv canv canv  canv  canv  canv  canv canv"
-            "   .    .    .    .    .    .    .    .     .     .     .     .    ."
-            "   .    . dp_u    .    . mute    . menu     .     . btn_b btn_b    ."
-            "   . dp_l dp_c dp_r    .    .    .    . btn_a btn_a btn_b btn_b    ."
-            "   .    . dp_d   .     .   fs    .    . btn_a btn_a     .     .    ."
-            "   .    .    .   .     .    .    .    .     .     .     .     .    .";
+            "canv  canv canv  canv canv canv canv canv  canv  canv  canv  canv canv"
+            "   .     .    .     .    .    .    .    .     .     .     .     .    ."
+            "   . dp_ul dp_u dp_ur    . mute    . menu     .     . btn_b btn_b    ."
+            "   .  dp_l dp_c  dp_r    .    .    .    . btn_a btn_a btn_b btn_b    ."
+            "   . dp_dl dp_d dp_dr    .   fs    .    . btn_a btn_a     .     .    ."
+            "   .     .    .     .    .    .    .    .     .     .     .     .    .";
           grid-template-columns: 2vw 8vw 8vw 8vw 8vw 8vw 6vw 16vw 8vw 8vw 8vw 8vw 2vw;
           grid-template-rows: 98vw 2vw 8vw 8vw 8vw 1fr;
         }
@@ -415,12 +430,12 @@
           border-bottom-width: 2vh;
 
           grid-template-areas:
-            ". canv canv canv canv canv canv canv canv  canv  canv  canv  canv canv ."
-            ".    .    .    .    .    .    .    .    .     .     .     .     .    . ."
-            ".    .    . dp_u    .    . mute    . menu     .     . btn_b btn_b    . ."
-            ".    . dp_l dp_c dp_r    .    .    .    . btn_a btn_a btn_b btn_b    . ."
-            ".    .    . dp_d   .     .   fs    .    . btn_a btn_a     .     .    . ."
-            ".    .    .    .   .     .    .    .    .     .     .     .     .    . .";
+            ". canv  canv canv  canv canv canv canv canv  canv  canv  canv  canv canv ."
+            ".    .     .    .     .    .    .    .    .     .     .     .     .    . ."
+            ".    . dp_ul dp_u dp_ur    . mute    . menu     .     . btn_b btn_b    . ."
+            ".    .  dp_l dp_c  dp_r    .    .    .    . btn_a btn_a btn_b btn_b    . ."
+            ".    . dp_dl dp_d dp_dr    .   fs    .    . btn_a btn_a     .     .    . ."
+            ".    .     .    .     .    .    .    .    .     .     .     .     .    . .";
           grid-template-columns: 1fr 2vh 6vh 6vh 6vh 6vh 6vh 5vh 12vh 6vh 6vh 6vh 6vh 2vh 1fr;
           grid-template-rows: 75vh 2vh 6vh 6vh 6vh 1fr;
         }
@@ -449,16 +464,16 @@
           border-bottom-width: 2vh;
 
           grid-template-areas:
-            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
-            ". mute    . canv canv canv canv  canv  canv  canv     .     . ."
-            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
-            ".   fs    . canv canv canv canv  canv  canv  canv     .     . ."
-            ".    .    . canv canv canv canv  canv  canv  canv     .     . ."
-            ".    .    .    .    .    .    .     .     .     .     .     . ."
-            ".    . dp_u dp_u    .    . menu  menu     . btn_b btn_b btn_b ."
-            ". dp_l dp_c dp_c dp_r    .    . btn_a btn_a btn_b btn_b btn_b ."
-            ".    . dp_d dp_d   .     .    . btn_a btn_a     .     .     . ."
-            ".    .    .    .   .     .    .     .     .     .     .     . .";
+            ".     .    . canv  canv canv canv  canv  canv  canv     .     . ."
+            ".  mute    . canv  canv canv canv  canv  canv  canv     .     . ."
+            ".     .    . canv  canv canv canv  canv  canv  canv     .     . ."
+            ".    fs    . canv  canv canv canv  canv  canv  canv     .     . ."
+            ".     .    . canv  canv canv canv  canv  canv  canv     .     . ."
+            ".     .    .    .     .    .    .     .     .     .     .     . ."
+            ". dp_ul dp_u dp_u dp_ur    . menu  menu     . btn_b btn_b btn_b ."
+            ".  dp_l dp_c dp_c  dp_r    .    . btn_a btn_a btn_b btn_b btn_b ."
+            ". dp_dl dp_d dp_d dp_dr    .    . btn_a btn_a     .     .     . ."
+            ".     .    .    .     .    .    .     .     .     .     .     . .";
           grid-template-columns: 1fr 7vh 2vh 5vh 7vh 31vh 11vh 3vh 11vh 5vh 2vh 7vh 1fr;
           grid-template-rows: 4vh 7vh 7vh 7vh 48vh 2vh 7vh 7vh 7vh 1fr;
         }
@@ -471,7 +486,7 @@
       /*
        * TOUCH GUI for a WIDER SQUARE screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 310/250) {
+      @media (pointer: coarse) and (min-aspect-ratio: 350/250) {
         :root {
           --spr_cell_size: 10vh;
         }
@@ -487,18 +502,18 @@
           border-bottom-width: 2vh;
 
           grid-template-areas:
-            ".    .    .    . canv canv  canv     .     .     . ."
-            ".    . mute    . canv canv  canv     .     .     . ."
-            ".    .    .    . canv canv  canv     .  menu  menu ."
-            ".    .   fs    . canv canv  canv     .     .     . ."
-            ".    .    .    . canv canv  canv     .     .     . ."
-            ".    .    .    . canv canv  canv     . btn_b btn_b ."
-            ".    . dp_u    . canv canv  canv     . btn_b btn_b ."
-            ".    . dp_u    .    .    .     .     . btn_b btn_b ."
-            ". dp_l dp_c dp_r dp_r    . btn_a btn_a btn_a     . ."
-            ".    . dp_d    .   .     . btn_a btn_a btn_a     . ."
-            ".    .    .    .   .     .     .     .     .     . .";
-          grid-template-columns: 1fr 10vh 10vh 2vh 8vh 58vh 8vh 2vh 10vh 10vh 1fr;
+            ".     .    .     .  . canv .     .     .     . ."
+            ".     . mute     .  . canv .     .     .     . ."
+            ".     .    .     .  . canv .     .  menu  menu ."
+            ".     .   fs     .  . canv .     .     .     . ."
+            ".     .    .     .  . canv .     .     .     . ."
+            ".     .    .     .  . canv .     . btn_b btn_b ."
+            ". dp_ul dp_u dp_ur  . canv .     . btn_b btn_b ."
+            ". dp_ul dp_u dp_ur  .    . .     . btn_b btn_b ."
+            ".  dp_l dp_c  dp_r  .    . . btn_a btn_a     . ."
+            ". dp_dl dp_d dp_dr  .    . . btn_a btn_a     . ."
+            ".     .    .     .  .    . .     .     .     . .";
+          grid-template-columns: 1fr 10vh 10vh 10vh 1fr 74vh 1fr 10vh 10vh 10vh 1fr;
           grid-template-rows: 4vh 10vh 10vh 10vh 22vh 10vh 8vh 2vh 10vh 10vh 1fr;
         }
 
@@ -526,14 +541,14 @@
           border-bottom-width: 2vh;
 
           grid-template-areas:
-            ".    .    .    . . . canv .      .     .     .     . ."
-            ". mute    .   fs . . canv .      .     .  menu  menu ."
-            ".    .    .    . . . canv .      .     .     .     . ."
-            ".    .    .    . . . canv .      .     . btn_b btn_b ."
-            ".    . dp_u    . . . canv .      .     . btn_b btn_b ."
-            ". dp_l dp_c dp_r . . canv . btn_a btn_a      .     . ."
-            ".    . dp_d    . . . canv . btn_a btn_a      .     . ."
-            ".    .    .    . . . canv .     .     .      .     . .";
+            ".     .    .     . . . canv .      .     .     .     . ."
+            ".  mute    .    fs . . canv .      .     .  menu  menu ."
+            ".     .    .     . . . canv .      .     .     .     . ."
+            ".     .    .     . . . canv .      .     . btn_b btn_b ."
+            ". dp_ul dp_u dp_ur . . canv .      .     . btn_b btn_b ."
+            ".  dp_l dp_c  dp_r . . canv . btn_a btn_a      .     . ."
+            ". dp_dl dp_d dp_dr . . canv . btn_a btn_a      .     . ."
+            ".     .    .     . . . canv .     .     .      .     . .";
           grid-template-columns: 1fr 10vh 10vh 10vh 10vh 1fr 97vh 1fr 10vh 10vh 10vh 10vh 1fr;
           grid-template-rows: 10vh 10vh 1fr 10vh 10vh 10vh 10vh 15vh;
         }
@@ -562,14 +577,14 @@
           border-bottom-width: 2vh;
 
           grid-template-areas:
-            ".    .    .    . . . canv .      .     .     .     . ."
-            ". mute    .   fs . . canv .      .     .  menu  menu ."
-            ".    .    .    . . . canv .      .     .     .     . ."
-            ".    .    .    . . . canv .      .     . btn_b btn_b ."
-            ".    . dp_u    . . . canv .      .     . btn_b btn_b ."
-            ". dp_l dp_c dp_r . . canv . btn_a btn_a      .     . ."
-            ".    . dp_d    . . . canv . btn_a btn_a      .     . ."
-            ".    .    .    . . . canv .     .     .      .     . .";
+            ".     .    .     . . . canv .      .     .     .     . ."
+            ".  mute    .    fs . . canv .      .     .  menu  menu ."
+            ".     .    .     . . . canv .      .     .     .     . ."
+            ".     .    .     . . . canv .      .     . btn_b btn_b ."
+            ". dp_ul dp_u dp_ur . . canv .      .     . btn_b btn_b ."
+            ".  dp_l dp_c  dp_r . . canv . btn_a btn_a      .     . ."
+            ". dp_dl dp_d dp_dr . . canv . btn_a btn_a      .     . ."
+            ".     .    .     . . . canv .     .     .      .     . .";
           grid-template-columns: 15vh 10vh 10vh 10vh 10vh 1fr 97vh 1fr 10vh 10vh 10vh 10vh 15vh;
           grid-template-rows: 10vh 10vh 1fr 10vh 10vh 10vh 10vh 15vh;
         }
@@ -598,16 +613,25 @@
   </head>
   <body>
     <div id="unsupported_aspect_ratio">unsupported aspect ratio</div>
+
     <main id="game_display">
       <canvas id="game_canvas" width="256" height="256"></canvas>
+
       <div id="dpad_u" class="gui_sprite touch_control"></div>
       <div id="dpad_d" class="gui_sprite touch_control"></div>
       <div id="dpad_l" class="gui_sprite touch_control"></div>
       <div id="dpad_r" class="gui_sprite touch_control"></div>
       <div id="dpad_center" class="gui_sprite touch_control"></div>
+      <div id="dpad_ul" class="gui_sprite touch_control"></div>
+      <div id="dpad_ur" class="gui_sprite touch_control"></div>
+      <div id="dpad_dl" class="gui_sprite touch_control"></div>
+      <div id="dpad_dr" class="gui_sprite touch_control"></div>
+
       <div id="button_a" class="gui_sprite touch_control"></div>
       <div id="button_b" class="gui_sprite touch_control"></div>
+
       <div id="button_menu" class="gui_sprite touch_control"></div>
+
       <div id="button_mute" class="gui_sprite touch_control"></div>
       <div id="button_fullscreen" class="gui_sprite touch_control"></div>
     </main>
