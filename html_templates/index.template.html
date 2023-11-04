@@ -102,14 +102,15 @@
         width: 100vw;
         height: 100vh;
 
-        padding: 0.2em;
-
         background-color: var(--loading-bg-color);
 
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+        display: grid;
+        grid-template-areas:
+          ".     . ."
+          ". start ."
+          ".     . .";
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-rows: 1fr 3fr 1fr;
       }
 
       .started #screen_start_game {
@@ -117,27 +118,17 @@
       }
 
       #screen_start_game__button {
-        width: Min(60vw, 50vh);
-        height: Min(60vw, 50vh);
+        grid-area: start;
 
-        font-family: monospace;
-        font-size: Min(15vw, 15vh);
+        /* Remove standard visual aspects of a button */
+        background-color: transparent;
+        border: none;
 
-        padding: 8px;
-
-        color: #ff004d;
-        background-color: #f3ef7d;
-        border-color: #ff004d;
-
-        border-width: 0;
-        border-bottom-width: Min(1vh, 1vw);
-      }
-
-      #screen_start_game__button:active {
-        color: #754665;
-        background-color: #c2c3c7;
-        border-bottom-width: 0;
-        transform: translateY(Min(1vh, 1vw));
+        /* Add an image to act as a button */
+        background-image: url(.beetpx/start.png);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       /* TODO: Polish this screen */
@@ -737,7 +728,7 @@
     </div>
 
     <div id="screen_start_game">
-      <button id="screen_start_game__button">start</button>
+      <button id="screen_start_game__button" tabindex="0"></button>
     </div>
 
     <!-- TODO: polish this screen   -->

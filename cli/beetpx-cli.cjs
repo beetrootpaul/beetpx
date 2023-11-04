@@ -100,10 +100,12 @@ function runDevCommand() {
     fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
   }
   fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, "gui.png"),
-    path.resolve(beetPxAdditionalPublicAssetsOutDir, "gui.png"),
-  );
+  ["gui.png", "start.png"].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
+      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
+    );
+  });
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#createserver
@@ -163,10 +165,12 @@ function runBuildCommand() {
     fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
   }
   fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, "gui.png"),
-    path.resolve(beetPxAdditionalPublicAssetsOutDir, "gui.png"),
-  );
+  ["gui.png", "start.png"].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
+      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
+    );
+  });
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#build
