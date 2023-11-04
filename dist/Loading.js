@@ -25,7 +25,7 @@ import { u_ } from "./Utils";
 export class Loading {
     constructor(params) {
         var _a;
-        _Loading_minWaitToAvoidFlicker.set(this, u_.wait(1000));
+        _Loading_minWaitToAvoidFlicker.set(this, u_.wait(750));
         _Loading_startButton.set(this, void 0);
         _Loading_startClicked.set(this, void 0);
         __classPrivateFieldSet(this, _Loading_startButton, (_a = document.querySelector(HtmlTemplate.selectors.startButton)) !== null && _a !== void 0 ? _a : u_.throwError(`Unable to find a start button under a selector "${HtmlTemplate.selectors.startButton}"`), "f");

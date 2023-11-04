@@ -100,7 +100,19 @@ function runDevCommand() {
     fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
   }
   fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  ["gui.png", "loading.gif", "start.png"].forEach((pngAsset) => {
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
     fs.copyFileSync(
       path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
       path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
@@ -165,7 +177,19 @@ function runBuildCommand() {
     fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
   }
   fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  ["gui.png", "loading.gif", "start.png"].forEach((pngAsset) => {
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
     fs.copyFileSync(
       path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
       path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),

@@ -29,7 +29,7 @@
     <style>
       :root {
         --loading-bg-color: #49333b;
-        --gui-bg-color: #5f574f;
+        --gui-bg-color: #49333b;
       }
 
       * {
@@ -141,29 +141,6 @@
         background-repeat: no-repeat;
       }
 
-      /* TODO: Polish this screen */
-      #screen_unsupported_aspect_ratio {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-
-        padding: 0.2em;
-
-        color: #c2c3c7;
-        font-size: 24px;
-        text-align: center;
-        line-break: anywhere;
-
-        background-color: var(--gui-bg-color);
-
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-      }
-
       #game_display {
         width: 100vw;
         height: 100vh;
@@ -175,10 +152,7 @@
         */
         background-color: var(--gui-bg-color);
 
-        border-color: #c2c3c7;
-        border-style: solid;
-        border-width: 0;
-
+        display: grid;
         gap: 0 0;
       }
 
@@ -192,11 +166,73 @@
       }
 
       .debug #game_canvas {
-        border-color: red;
+        border-color: #ff004d;
       }
 
       #game_canvas {
         grid-area: canv;
+      }
+
+      #edge_tl {
+        grid-area: e_TL;
+        background-image: url(.beetpx/edge_tl.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: no-repeat;
+      }
+
+      #edge_t {
+        grid-area: e_t_;
+        background-image: url(.beetpx/edge_t.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: repeat-x;
+      }
+
+      #edge_tr {
+        grid-area: e_TR;
+        background-image: url(.beetpx/edge_tr.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: no-repeat;
+        background-position-x: right;
+      }
+
+      #edge_l {
+        grid-area: e__l;
+        background-image: url(.beetpx/edge_l.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: repeat-y;
+      }
+
+      #edge_r {
+        grid-area: e__r;
+        background-image: url(.beetpx/edge_r.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: repeat-y;
+        background-position-x: right;
+      }
+
+      #edge_bl {
+        grid-area: e_BL;
+        background-image: url(.beetpx/edge_bl.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: no-repeat;
+        background-position-y: bottom;
+      }
+
+      #edge_b {
+        grid-area: e_b_;
+        background-image: url(.beetpx/edge_b.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: repeat-x;
+        background-position-y: bottom;
+      }
+
+      #edge_br {
+        grid-area: e_BR;
+        background-image: url(.beetpx/edge_br.png);
+        background-size: var(--spr_cell_size);
+        background-repeat: no-repeat;
+        background-position-x: right;
+        background-position-y: bottom;
       }
 
       .gui_sprite {
@@ -205,7 +241,7 @@
       }
 
       #dpad_u {
-        grid-area: dp_u;
+        grid-area: d_u_;
         background-position: calc(var(--spr_cell_size) * -1) 0;
       }
 
@@ -218,7 +254,7 @@
       }
 
       #dpad_d {
-        grid-area: dp_d;
+        grid-area: d_d_;
         background-position: calc(var(--spr_cell_size) * -1)
           calc(var(--spr_cell_size) * -2);
       }
@@ -232,7 +268,7 @@
       }
 
       #dpad_l {
-        grid-area: dp_l;
+        grid-area: d__l;
         background-position: 0 calc(var(--spr_cell_size) * -1);
       }
 
@@ -245,7 +281,7 @@
       }
 
       #dpad_r {
-        grid-area: dp_r;
+        grid-area: d__r;
         background-position: calc(var(--spr_cell_size) * -2)
           calc(var(--spr_cell_size) * -1);
       }
@@ -259,7 +295,7 @@
       }
 
       #dpad_center {
-        grid-area: dp_c;
+        grid-area: d___;
         background-position: calc(var(--spr_cell_size) * -1)
           calc(var(--spr_cell_size) * -1);
       }
@@ -277,19 +313,19 @@
       }
 
       #dpad_ur {
-        grid-area: dp_ur;
+        grid-area: d_ur;
       }
 
       #dpad_dl {
-        grid-area: dp_dl;
+        grid-area: d_dl;
       }
 
       #dpad_dr {
-        grid-area: dp_dr;
+        grid-area: d_dr;
       }
 
       #button_a {
-        grid-area: btn_a;
+        grid-area: bt_a;
         background-position: calc(var(--spr_cell_size) * -4) 0;
       }
 
@@ -298,7 +334,7 @@
       }
 
       #button_b {
-        grid-area: btn_b;
+        grid-area: bt_b;
         background-position: calc(var(--spr_cell_size) * -7) 0;
       }
 
@@ -325,7 +361,7 @@
       }
 
       #button_fullscreen {
-        grid-area: fs;
+        grid-area: full;
         background-position: calc(var(--spr_cell_size) * -15) 0;
       }
 
@@ -354,32 +390,27 @@
         }
       }
 
-      /* TODO: polish mute + (optional)fs layout on desktop both variants */
+      /* TODO: polish mute + (optional)full layout on desktop both variants */
 
       /*
-       * REGULAR GUI for a DESKTOP (portrait)
+       * MOUSE GUI – portrait
        */
       :root {
-        --spr_cell_size: 10vh;
-      }
-
-      #screen_unsupported_aspect_ratio {
-        display: none;
+        --spr_cell_size: 10vw;
       }
 
       #game_display {
-        display: grid;
-
-        border-width: 1vw;
-        border-bottom-width: 2vw;
-        padding: 1vh;
-
         grid-template-areas:
-          "."
-          "canv"
-          ".";
-        grid-template-columns: 96vw;
-        grid-template-rows: 1fr 96vw 1fr;
+          "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+          "e__l    .    . full    . b_mu b_mu e__r"
+          "e__l    .    .    .    . i_mu i_mu e__r"
+          "e__l    .    .    .    .    .    . e__r"
+          "e__l canv canv canv canv canv canv e__r"
+          "e__l    .    .    .    .    .    . e__r"
+          "e__l    .    .    .    .    .    . e__r"
+          "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+        grid-template-columns: 5vw 5vw 1fr 10vw 5vw 5vw 5vw 5vw;
+        grid-template-rows: 5vw 10vw 10vw 1fr 90vw 1fr 20vw 5vw;
       }
 
       #game_canvas {
@@ -387,31 +418,99 @@
       }
 
       /*
-       * REGULAR GUI for a DESKTOP (landscape)
+       * MOUSE GUI – portrait low
        */
-      @media (min-aspect-ratio: 1/1) {
+      @media (min-aspect-ratio: 250/360) {
         :root {
-          --spr_cell_size: 10vh;
-        }
-
-        #screen_unsupported_aspect_ratio {
-          display: none;
+          --spr_cell_size: 10vw;
         }
 
         #game_display {
-          display: grid;
-
-          border-width: 1vh;
-          border-bottom-width: 2vh;
-          padding: 1vh;
-
           grid-template-areas:
-            ".    . . canv .  . ."
-            ". b_mu . canv . fs ."
-            ". i_mu . canv .  . ."
-            ".    . . canv .  . .";
-          grid-template-columns: 1fr 10vh 4vh 95vh 4vh 10vh 1fr;
-          grid-template-rows: 4vh 10vh 10vh 71vh;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    .    .    . e__r"
+            "e__l canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    . e__r"
+            "e__l    .    . full    . b_mu b_mu e__r"
+            "e__l    .    .    .    . i_mu i_mu e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5vw 5vw 1fr 10vw 5vw 5vw 5vw 5vw;
+          grid-template-rows: 5vw 1fr 90vw 5vw 10vw 10vw 5vw;
+        }
+
+        #game_canvas {
+          border-width: 1vw;
+        }
+      }
+
+      /*
+       * MOUSE GUI – tall square
+       */
+      @media (min-aspect-ratio: 250/310) {
+        :root {
+          --spr_cell_size: 8vw;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    . e__r"
+            "e__l    .    . full    . b_mu b_mu e__r"
+            "e__l    .    .    .    . i_mu i_mu e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4vw 4vw 1fr 8vw 4vw 4vw 4vw 4vw;
+          grid-template-rows: 4vw 92vw 1fr 8vw 4vw 4vw;
+        }
+
+        #game_canvas {
+          border-width: 1vw;
+        }
+      }
+
+      /*
+       * MOUSE GUI – mid square
+       */
+      @media (min-aspect-ratio: 250/290) {
+        :root {
+          --spr_cell_size: 6vw;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l b_mu b_mu    . canv    . full full e__r"
+            "e__l i_mu i_mu    . canv    .    .    . e__r"
+            "e__l    .    .    . canv    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 3vw 3vw 3vw 3vw 76vw 3vw 3vw 3vw 3vw;
+          grid-template-rows: 3vw 6vw 6vw 64vw 1fr 3vw;
+        }
+
+        #game_canvas {
+          border-width: 1vw;
+        }
+      }
+
+      /*
+       * MOUSE GUI – wide square
+       */
+      @media (min-aspect-ratio: 250/210) {
+        :root {
+          --spr_cell_size: 8vh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    . b_mu    . canv    . full    . e__r"
+            "e__l    . i_mu    . canv    .    .    . e__r"
+            "e__l    .    .    . canv    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4vh 4vh 8vh 1fr 80vh 1fr 8vh 4vh 4vh;
+          grid-template-rows: 4vh 8vh 8vh 64vh 1fr 4vh;
         }
 
         #game_canvas {
@@ -420,49 +519,52 @@
       }
 
       /*
-       * TOUCH GUI for a SUPER THIN screen
+       * MOUSE GUI – landscape
        */
-      @media (pointer: coarse) {
-        #screen_unsupported_aspect_ratio {
-          display: flex;
+      @media (min-aspect-ratio: 250/170) {
+        :root {
+          --spr_cell_size: 10vh;
         }
 
         #game_display {
-          display: none;
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    . b_mu    . canv    . full    .    . e__r"
+            "e__l    .    . i_mu    . canv    .    .    .    . e__r"
+            "e__l    .    .    .    . canv    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5vh 5vh 1fr 10vh 5vh 90vh 5vh 10vh 1fr 5vh 5vh;
+          grid-template-rows: 5vh 10vh 10vh 1fr 5vh;
+        }
+
+        #game_canvas {
+          border-width: 1vh;
         }
       }
 
       /*
        * TOUCH GUI for a REALLY VERTICAL screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 310/600) {
+      @media (pointer: coarse) {
         :root {
           --spr_cell_size: 8vw;
         }
 
-        #screen_unsupported_aspect_ratio {
-          display: none;
-        }
-
         #game_display {
-          display: grid;
-
-          border-width: 1vw;
-          border-bottom-width: 2vw;
-          padding: 1vw;
-
           grid-template-areas:
-            "canv  canv canv  canv canv canv canv canv canv   canv  canv  canv  canv canv"
-            "   .     .    .     .    .    .    .    .    .      .     .     .     .    ."
-            "   . dp_ul dp_u dp_ur    .    . menu menu    .      .     . btn_b btn_b    ."
-            "   .  dp_l dp_c  dp_r    .    .    .    .    .      .     . btn_b btn_b    ."
-            "   .  dp_l dp_c  dp_r    .    . b_mu    .    .      .     . btn_b btn_b    ."
-            "   . dp_dl dp_d dp_dr    .    . b_mu    .    .  btn_a btn_a     .     .    ."
-            "   . dp_dl dp_d dp_dr    .    . i_mu    .    .  btn_a btn_a     .     .    ."
-            "   .     .    .     .    .    .   fs    .    .  btn_a btn_a     .     .    ."
-            "   .     .    .     .    .    .    .    .    .      .     .     .     .    .";
-          grid-template-columns: 4vw 8vw 8vw 8vw 8vw 4vw 8vw 8vw 4vw 8vw 8vw 8vw 8vw 4vw;
-          grid-template-rows: 96vw 1fr 8vw 4vw 4vw 4vw 4vw 8vw 2fr;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    . d_ul d_u_ d_ur    . menu menu    .    . bt_b    . e__r"
+            "e__l    . d__l d___ d__r    .    .    .    .    . bt_b    . e__r"
+            "e__l    . d__l d___ d__r    . b_mu    .    .    . bt_b    . e__r"
+            "e__l    . d_dl d_d_ d_dr    . b_mu    .    . bt_a    .    . e__r"
+            "e__l    . d_dl d_d_ d_dr    . i_mu    .    . bt_a    .    . e__r"
+            "e__l    .    .    .    .    . full    .    . bt_a    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4vw 4vw 8vw 8vw 8vw 8vw 8vw 8vw 4vw 16vw 16vw 4vw 4vw;
+          grid-template-rows: 4vw 92vw 1fr 8vw 3vw 5vw 3vw 5vw 8vw 2fr 4vw;
         }
 
         #game_canvas {
@@ -473,31 +575,23 @@
       /*
        * TOUCH GUI for a SLIGHTLY VERTICAL screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 310/450) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/360) {
         :root {
           --spr_cell_size: 8vw;
         }
 
-        #screen_unsupported_aspect_ratio {
-          display: none;
-        }
-
         #game_display {
-          display: grid;
-
-          border-width: 1vw;
-          border-bottom-width: 2vw;
-          padding: 1vw;
-
           grid-template-areas:
-            "canv  canv canv  canv canv canv canv canv canv  canv  canv  canv  canv canv"
-            "   .     .    .     .    .    .    .    .    .     .     .     .     .    ."
-            "   . dp_ul dp_u dp_ur    . b_mu    . menu menu     .     . btn_b btn_b    ."
-            "   .  dp_l dp_c  dp_r    . i_mu    .    .    . btn_a btn_a btn_b btn_b    ."
-            "   . dp_dl dp_d dp_dr    .   fs    .    .    . btn_a btn_a     .     .    ."
-            "   .     .    .     .    .    .    .    .    .     .     .     .     .    .";
-          grid-template-columns: 2vw 8vw 8vw 8vw 7vw 8vw 5vw 8vw 8vw 8vw 8vw 8vw 8vw 2vw;
-          grid-template-rows: 96vw 2vw 8vw 8vw 8vw 1fr;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l d_ul d_ul d_u_ d_ur    . b_mu    . menu    . bt_b bt_b e__r"
+            "e__l d__l d__l d___ d__r    . i_mu    .    . bt_a bt_b bt_b e__r"
+            "e__l d_dl d_dl d_d_ d_dr    . full    .    . bt_a    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4vw 4vw 4vw 8vw 8vw 1fr 8vw 1fr 16vw 16vw 12vw 4vw 4vw;
+          grid-template-rows: 4vw 92vw 4vw 8vw 8vw 8vw 1fr 4vw;
         }
 
         #game_canvas {
@@ -508,31 +602,23 @@
       /*
        * TOUCH GUI for a TALLER SQUARE screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 310/400) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/320) {
         :root {
           --spr_cell_size: 6vh;
         }
 
-        #screen_unsupported_aspect_ratio {
-          display: none;
-        }
-
         #game_display {
-          display: grid;
-
-          border-width: 1vh;
-          border-bottom-width: 2vh;
-          padding: 1vh;
-
           grid-template-areas:
-            ". canv  canv canv  canv canv canv canv canv canv  canv  canv  canv  canv canv ."
-            ".    .     .    .     .    .    .    .    .    .     .     .     .     .    . ."
-            ".    . dp_ul dp_u dp_ur    . b_mu    . menu menu     .     . btn_b btn_b    . ."
-            ".    .  dp_l dp_c  dp_r    . i_mu    .    .    . btn_a btn_a btn_b btn_b    . ."
-            ".    . dp_dl dp_d dp_dr    .   fs    .    .    . btn_a btn_a     .     .    . ."
-            ".    .     .    .     .    .    .    .    .    .     .     .     .     .    . .";
-          grid-template-columns: 1fr 2vh 6vh 6vh 6vh 5vh 6vh 4vh 6vh 6vh 6vh 6vh 6vh 6vh 2vh 1fr;
-          grid-template-rows: 73vh 2vh 6vh 6vh 6vh 1fr;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    . canv canv canv canv canv canv canv canv canv    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    . b_mu    . menu    . bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    . i_mu    .    . bt_a bt_b    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    . full    .    . bt_a    .    .    . e__r"
+            "e__l    .    .     .   .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 3vh 3vh 1fr 6vh 6vh 6vh 3vh 6vh 3vh 12vh 12vh 12vh 1fr 3vh 3vh;
+          grid-template-rows: 3vh 66vh 1fr 6vh 6vh 6vh 1fr 3vh;
         }
 
         #game_canvas {
@@ -541,37 +627,29 @@
       }
 
       /*
-       * TOUCH GUI for a KINDA SQUARE screen
+       * TOUCH GUI for a MID SQUARE screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 310/310) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/250) {
         :root {
-          --spr_cell_size: 7vh;
-        }
-
-        #screen_unsupported_aspect_ratio {
-          display: none;
+          --spr_cell_size: 6vh;
         }
 
         #game_display {
-          display: grid;
-
-          border-width: 1vh;
-          border-bottom-width: 2vh;
-          padding: 1vh;
-
           grid-template-areas:
-            ".     .    . canv  canv canv canv  canv  canv  canv     .     . ."
-            ".  b_mu    . canv  canv canv canv  canv  canv  canv     .     . ."
-            ".  i_mu    . canv  canv canv canv  canv  canv  canv     .     . ."
-            ".    fs    . canv  canv canv canv  canv  canv  canv     .     . ."
-            ".     .    . canv  canv canv canv  canv  canv  canv     .     . ."
-            ".     .    .    .     .    .    .     .     .     .     .     . ."
-            ". dp_ul dp_u dp_u dp_ur    . menu  menu     . btn_b btn_b btn_b ."
-            ".  dp_l dp_c dp_c  dp_r    .    . btn_a btn_a btn_b btn_b btn_b ."
-            ". dp_dl dp_d dp_d dp_dr    .    . btn_a btn_a     .     .     . ."
-            ".     .    .    .     .    .    .     .     .     .     .     . .";
-          grid-template-columns: 1fr 7vh 2vh 5vh 7vh 29vh 11vh 3vh 11vh 5vh 2vh 7vh 1fr;
-          grid-template-rows: 4vh 7vh 7vh 7vh 46vh 2vh 7vh 7vh 7vh 1fr;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    . b_mu    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    . i_mu    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    . full    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    .    .    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_u_ d_ur    . menu menu    . bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d___ d__r    .    . bt_a bt_a bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_d_ d_dr    .    . bt_a bt_a    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 3vh 3vh 1fr 6vh 2vh 4vh 6vh 37vh 8vh 4vh 8vh 4vh 2vh 6vh 1fr 3vh 3vh;
+          grid-template-rows: 3vh 3vh 6vh 6vh 6vh 50vh 2vh 6vh 6vh 6vh 1fr 3vh;
         }
 
         #game_canvas {
@@ -582,36 +660,28 @@
       /*
        * TOUCH GUI for a WIDER SQUARE screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 350/250) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/180) {
         :root {
-          --spr_cell_size: 10vh;
-        }
-
-        #screen_unsupported_aspect_ratio {
-          display: none;
+          --spr_cell_size: 8vh;
         }
 
         #game_display {
-          display: grid;
-
-          border-width: 1vh;
-          border-bottom-width: 2vh;
-          padding: 1vh;
-
           grid-template-areas:
-            ".     .    .     .  . canv .     .     .     . ."
-            ".     . b_mu     .  . canv .     .     .     . ."
-            ".     . i_mu     .  . canv .     .  menu  menu ."
-            ".     .   fs     .  . canv .     .     .     . ."
-            ".     .    .     .  . canv .     .     .     . ."
-            ".     .    .     .  . canv .     . btn_b btn_b ."
-            ". dp_ul dp_u dp_ur  . canv .     . btn_b btn_b ."
-            ". dp_ul dp_u dp_ur  .    . .     . btn_b btn_b ."
-            ".  dp_l dp_c  dp_r  .    . . btn_a btn_a     . ."
-            ". dp_dl dp_d dp_dr  .    . . btn_a btn_a     . ."
-            ".     .    .     .  .    . .     .     .     . .";
-          grid-template-columns: 1fr 10vh 10vh 10vh 1fr 72vh 1fr 10vh 10vh 10vh 1fr;
-          grid-template-rows: 4vh 10vh 10vh 10vh 20vh 10vh 8vh 2vh 10vh 10vh 1fr;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    .    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    . b_mu    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    . i_mu    .    . canv    .    . menu menu    .    . e__r"
+            "e__l    .    .    . full    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    . canv    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    . canv    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    .    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    .    .    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4vh 4vh 1fr 8vh 8vh 8vh 1fr 66vh 1fr 8vh 8vh 8vh 1fr 4vh 4vh;
+          grid-template-rows: 4vh 8vh 8vh 8vh 8vh 20vh 8vh 6vh 2vh 8vh 8vh 1fr 4vh;
         }
 
         #game_canvas {
@@ -622,34 +692,26 @@
       /*
        * TOUCH GUI for a SLIGHTLY HORIZONTAL screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 480/250) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/130) {
         :root {
           --spr_cell_size: 10vh;
         }
 
-        #screen_unsupported_aspect_ratio {
-          display: none;
-        }
-
         #game_display {
-          display: grid;
-
-          border-width: 1vh;
-          border-bottom-width: 2vh;
-          padding: 1vh;
-
           grid-template-areas:
-            ".     .    .     . . . canv .      .     .     .     . ."
-            ".  b_mu    .    fs . . canv .      .     .  menu  menu ."
-            ".  i_mu    .     . . . canv .      .     .     .     . ."
-            ".     .    .     . . . canv .      .     .     .     . ."
-            ".     .    .     . . . canv .      .     . btn_b btn_b ."
-            ". dp_ul dp_u dp_ur . . canv .      .     . btn_b btn_b ."
-            ".  dp_l dp_c  dp_r . . canv . btn_a btn_a      .     . ."
-            ". dp_dl dp_d dp_dr . . canv . btn_a btn_a      .     . ."
-            ".     .    .     . . . canv .     .     .      .     . .";
-          grid-template-columns: 1fr 10vh 10vh 10vh 10vh 1fr 95vh 1fr 10vh 10vh 10vh 10vh 1fr;
-          grid-template-rows: 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 15vh;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    . b_mu    . full    .    . canv    .    .    . menu menu menu    .    . e__r"
+            "e__l    .    . i_mu    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    . bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    . canv    .    .    . bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5vh 5vh 1fr 10vh 10vh 10vh 4vh 1fr 90vh 1fr 10vh 6vh 4vh 6vh 10vh 1fr 5vh 5vh;
+          grid-template-rows: 5vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 5vh;
         }
 
         #game_canvas {
@@ -660,57 +722,45 @@
       /*
        * TOUCH GUI for a REALLY HORIZONTAL screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 610/250) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/100) {
         :root {
           --spr_cell_size: 10vh;
         }
 
-        #screen_unsupported_aspect_ratio {
-          display: none;
-        }
-
         #game_display {
-          display: grid;
-
-          border-width: 1vh;
-          border-bottom-width: 2vh;
-          padding: 1vh;
-
           grid-template-areas:
-            ".     .    .     . . . canv .      .     .     .     . ."
-            ".  b_mu    .    fs . . canv .      .     .  menu  menu ."
-            ".  i_mu    .     . . . canv .      .     .     .     . ."
-            ".     .    .     . . . canv .      .     .     .     . ."
-            ".     .    .     . . . canv .      .     . btn_b btn_b ."
-            ". dp_ul dp_u dp_ur . . canv .      .     . btn_b btn_b ."
-            ".  dp_l dp_c  dp_r . . canv . btn_a btn_a      .     . ."
-            ". dp_dl dp_d dp_dr . . canv . btn_a btn_a      .     . ."
-            ".     .    .     . . . canv .     .     .      .     . .";
-          grid-template-columns: 15vh 10vh 10vh 10vh 10vh 1fr 95vh 1fr 10vh 10vh 10vh 10vh 15vh;
-          grid-template-rows: 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 15vh;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    . e__r"
+            "e__l    .    . b_mu    . full    .    . canv    .    .    . menu menu    .    . e__r"
+            "e__l    .    . i_mu    .    .    .    . canv    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    . canv    .    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    . canv    . bt_a bt_a    .    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_a bt_a    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5vh 5vh 15vh 10vh 10vh 10vh 10vh 1fr 90vh 1fr 10vh 10vh 10vh 10vh 15vh 5vh 5vh;
+          grid-template-rows: 5vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 5vh;
         }
 
         #game_canvas {
           border-width: 1vh;
         }
       }
-
-      /*
-       * TOUCH GUI for a SUPER WIDE screen
-       */
-      @media (pointer: coarse) and (min-aspect-ratio: 800/250) {
-        #screen_unsupported_aspect_ratio {
-          display: flex;
-        }
-
-        #game_display {
-          display: none;
-        }
-      }
     </style>
   </head>
   <body>
     <main id="game_display">
+      <div id="edge_tl"></div>
+      <div id="edge_t"></div>
+      <div id="edge_tr"></div>
+      <div id="edge_l"></div>
+      <div id="edge_r"></div>
+      <div id="edge_bl"></div>
+      <div id="edge_b"></div>
+      <div id="edge_br"></div>
+
       <canvas id="game_canvas" width="256" height="256"></canvas>
 
       <div id="dpad_u" class="gui_sprite touch_control"></div>
@@ -732,10 +782,6 @@
       <div id="indicator_mute" class="gui_sprite"></div>
       <div id="button_fullscreen" class="gui_sprite touch_control"></div>
     </main>
-
-    <div id="screen_unsupported_aspect_ratio">
-      <div>unsupported aspect ratio</div>
-    </div>
 
     <div id="screen_start_game">
       <button id="screen_start_game__button" tabindex="0"></button>

@@ -4,7 +4,7 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { u_ } from "./Utils";
 
 export class Loading {
-  readonly #minWaitToAvoidFlicker: Promise<void> = u_.wait(1000);
+  readonly #minWaitToAvoidFlicker: Promise<void> = u_.wait(750);
 
   readonly #startButton: HTMLElement;
   readonly #startClicked: Promise<void>;
