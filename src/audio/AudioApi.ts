@@ -1,4 +1,5 @@
 import { Assets, BpxSoundUrl } from "../Assets";
+import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 import { AudioHelpers } from "./AudioHelpers";
 import { AudioPlayback, type BpxAudioPlaybackId } from "./AudioPlayback";
@@ -31,6 +32,7 @@ export class AudioApi {
     this.#audioContext = audioContext;
 
     this.#isMuted = this.#loadStoredGlobalMuteUnmuteState();
+    HtmlTemplate.updateMutedClass(this.#isMuted);
 
     this.#globalGainNode = this.#audioContext.createGain();
     this.#globalGainNode.gain.value = this.#isMuted ? 0 : 1;
@@ -167,6 +169,7 @@ export class AudioApi {
 
     this.#storeGlobalMuteUnmuteState(true);
     this.#isMuted = true;
+    HtmlTemplate.updateMutedClass(this.#isMuted);
 
     AudioHelpers.muteGain(
       this.#globalGainNode,
@@ -186,6 +189,7 @@ export class AudioApi {
 
     this.#storeGlobalMuteUnmuteState(false);
     this.#isMuted = false;
+    HtmlTemplate.updateMutedClass(this.#isMuted);
 
     AudioHelpers.unmuteGain(
       this.#globalGainNode,

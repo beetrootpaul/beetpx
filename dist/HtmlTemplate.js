@@ -5,6 +5,9 @@ export class HtmlTemplate {
     static addStartedClass() {
         document.body.classList.add("started");
     }
+    static updateMutedClass(isMuted) {
+        document.body.classList[isMuted ? "add" : "remove"]("muted");
+    }
     static updateDebugClass(isDebug) {
         document.body.classList[isDebug ? "add" : "remove"]("debug");
     }

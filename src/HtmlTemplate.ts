@@ -31,6 +31,10 @@ export class HtmlTemplate {
     document.body.classList.add("started");
   }
 
+  static updateMutedClass(isMuted: boolean): void {
+    document.body.classList[isMuted ? "add" : "remove"]("muted");
+  }
+
   static updateDebugClass(isDebug: boolean): void {
     document.body.classList[isDebug ? "add" : "remove"]("debug");
   }
