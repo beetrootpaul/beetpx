@@ -2,7 +2,7 @@
 
 export class Loading {
   showApp(): void {
-    // TODO: ???
+    // TODO: ??? + move to HtmlTemplate
     // document.body.classList.add(HtmlTemplate.classes.appLoaded);
   }
 }

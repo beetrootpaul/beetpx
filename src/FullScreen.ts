@@ -1,3 +1,4 @@
+import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 
 declare global {
@@ -14,22 +15,19 @@ declare global {
 }
 
 export abstract class FullScreen {
-  static newFor(
-    fullScreenSubjectSelector: string,
-    buttonsSelector: string,
-  ): FullScreen {
+  static create(): FullScreen {
     return document.fullscreenEnabled || document.webkitFullscreenEnabled
-      ? new FullScreenSupported(fullScreenSubjectSelector)
-      : new FullScreenNoop(buttonsSelector);
+      ? new FullScreenSupported()
+      : new FullScreenNoop();
   }
 
   abstract toggle(): void;
 }
 
 class FullScreenNoop implements FullScreen {
-  constructor(buttonsSelector: string) {
+  constructor() {
     document
-      .querySelectorAll<HTMLElement>(buttonsSelector)
+      .querySelectorAll<HTMLElement>(HtmlTemplate.selectors.controlsFullScreen)
       .forEach((button) => {
         button.style.display = "none";
       });
@@ -45,11 +43,13 @@ class FullScreenSupported implements FullScreen {
   readonly #nativeRequestFullscreen: () => void | Promise<void>;
   readonly #nativeExitFullscreen: () => void | Promise<void>;
 
-  constructor(fullScreenSubjectSelector: string) {
-    const fullScreenSubject = document.querySelector(fullScreenSubjectSelector);
+  constructor() {
+    const fullScreenSubject = document.querySelector(
+      HtmlTemplate.selectors.fullScreenSubject,
+    );
     if (!fullScreenSubject) {
       throw Error(
-        `Was unable to find a full screen subject by selector '${fullScreenSubjectSelector}'`,
+        `Was unable to find a full screen subject by selector '${HtmlTemplate.selectors.fullScreenSubject}'`,
       );
     }
     this.#fullScreenSubject = fullScreenSubject;

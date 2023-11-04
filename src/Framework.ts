@@ -122,10 +122,7 @@ export class Framework {
 
     this.audioApi = new AudioApi(this.assets, audioContext);
 
-    this.#fullScreen = FullScreen.newFor(
-      HtmlTemplate.selectors.fullScreenSubject,
-      HtmlTemplate.selectors.controlsFullScreen,
-    );
+    this.#fullScreen = FullScreen.create();
 
     const htmlCanvas =
       document.querySelector<HTMLCanvasElement>(
@@ -279,21 +276,8 @@ export class Framework {
 
         this.#onDraw?.();
 
-        this.#render();
+        this.#canvasPixels.render();
       },
     });
-  }
-
-  #render(): void {
-    this.#drawDebugMargin();
-    this.#canvasPixels.render();
-  }
-
-  #drawDebugMargin(): void {
-    if (DebugMode.enabled) {
-      document.body.classList.add(HtmlTemplate.classes.canvasDebugBorder);
-    } else {
-      document.body.classList.remove(HtmlTemplate.classes.canvasDebugBorder);
-    }
   }
 }

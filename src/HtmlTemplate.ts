@@ -1,14 +1,7 @@
-// TODO: rework HTML and selectors
-
-import { u_ } from "./Utils";
-
 export class HtmlTemplate {
-  static #gameDisplay: Element | undefined;
-
   static readonly selectors = {
     fullScreenSubject: "body",
     canvas: "#game_canvas",
-    gameDisplay: "#game_display",
 
     touchControls: ".touch_control",
 
@@ -28,13 +21,9 @@ export class HtmlTemplate {
     controlsMuteToggle: "#button_mute",
   };
 
-  static readonly classes = {
-    // TODO: ??? REIMPLEMENT
-    canvasDebugBorder: "debug",
-
-    // TODO: ??? REIMPLEMENT
-    appLoaded: "game_loaded",
-  };
+  static updateDebugClass(isDebug: boolean): void {
+    document.body.classList[isDebug ? "add" : "remove"]("debug");
+  }
 
   static updatePressedClasses(isPressed: {
     up: boolean;
@@ -46,59 +35,17 @@ export class HtmlTemplate {
     menu: boolean;
     mute: boolean;
     fullscreen: boolean;
-  }) {
-    if (!HtmlTemplate.#gameDisplay) {
-      HtmlTemplate.#gameDisplay =
-        document.querySelectorAll(HtmlTemplate.selectors.gameDisplay)[0] ??
-        u_.throwError(
-          `Was unable to locale a game display under selector "${HtmlTemplate.selectors.gameDisplay}"`,
-        );
-    }
-
-    if (isPressed.up) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_u");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_u");
-    }
-    if (isPressed.down) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_d");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_d");
-    }
-    if (isPressed.left) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_l");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_l");
-    }
-    if (isPressed.right) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_r");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_r");
-    }
-    if (isPressed.a) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_a");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_a");
-    }
-    if (isPressed.b) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_b");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_b");
-    }
-    if (isPressed.menu) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_menu");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_menu");
-    }
-    if (isPressed.mute) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_mute");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_mute");
-    }
-    if (isPressed.fullscreen) {
-      HtmlTemplate.#gameDisplay?.classList.add("pressed_fullscreen");
-    } else {
-      HtmlTemplate.#gameDisplay?.classList.remove("pressed_fullscreen");
-    }
+  }): void {
+    document.body.classList[isPressed.up ? "add" : "remove"]("pressed_u");
+    document.body.classList[isPressed.down ? "add" : "remove"]("pressed_d");
+    document.body.classList[isPressed.left ? "add" : "remove"]("pressed_l");
+    document.body.classList[isPressed.right ? "add" : "remove"]("pressed_r");
+    document.body.classList[isPressed.a ? "add" : "remove"]("pressed_a");
+    document.body.classList[isPressed.b ? "add" : "remove"]("pressed_b");
+    document.body.classList[isPressed.menu ? "add" : "remove"]("pressed_menu");
+    document.body.classList[isPressed.mute ? "add" : "remove"]("pressed_mute");
+    document.body.classList[isPressed.fullscreen ? "add" : "remove"](
+      "pressed_fullscreen",
+    );
   }
 }
