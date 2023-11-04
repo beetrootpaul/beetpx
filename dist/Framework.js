@@ -102,14 +102,13 @@ export class Framework {
     detectedBrowserType() {
         return __classPrivateFieldGet(this, _Framework_browserType, "f");
     }
-    loadAssets(assetsToLoad) {
+    init(assetsToLoad) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.assets.loadAssets(assetsToLoad).then(() => {
-                Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
-                return {
-                    startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
-                };
-            });
+            yield this.assets.loadAssets(assetsToLoad);
+            Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
+            return {
+                startGame: __classPrivateFieldGet(this, _Framework_instances, "m", _Framework_startGame).bind(this),
+            };
         });
     }
     setOnStarted(onStarted) {
@@ -131,87 +130,89 @@ export class Framework {
 }
 _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_fullScreen = new WeakMap(), _Framework_canvasPixels = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
-    if (BEETPX__IS_PROD) {
-        // A popup which prevents user from accidentally closing the browser tab during gameplay.
-        // Implementation notes:
-        // - returned message seems to be ignored by some browsers, therefore using `""`
-        // - this event is *not* always run when for example there was no mouse click inside
-        //   iframe with the game in Firefox
-        // - there are two ways of implementing this, because of browsers incompatibilities,
-        //   therefore using both of them here (`event.returnValue =` and `return`)
-        window.addEventListener("beforeunload", (event) => {
-            event.preventDefault();
-            event.returnValue = "";
-            return "";
-        });
-    }
-    __classPrivateFieldGet(this, _Framework_canvasPixels, "f").onWindowResize();
-    window.addEventListener("resize", (_event) => {
-        __classPrivateFieldGet(this, _Framework_canvasPixels, "f").onWindowResize();
-    });
-    __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
-    (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
-    __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
-    this.gameInput.startListening();
-    __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
-        updateFn: () => {
-            var _b;
-            if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
-                __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
-            }
-            if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
-                if (this.audioApi.isAudioMuted()) {
-                    this.audioApi.unmuteAudio();
-                }
-                else {
-                    this.audioApi.muteAudio();
-                }
-            }
-            if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
-                DebugMode.enabled = !DebugMode.enabled;
-                if (DebugMode.enabled) {
-                    window.localStorage.removeItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey));
-                }
-                else {
-                    window.localStorage.setItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey), __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue));
-                }
-                // TODO: BRING IT BACK
-                // this.#redrawDebugMargin();
-            }
-            if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
-                __classPrivateFieldSet(this, _Framework_frameByFrame, !__classPrivateFieldGet(this, _Framework_frameByFrame, "f"), "f");
-                Logger.infoBeetPx(`FrameByFrame mode set to: ${__classPrivateFieldGet(this, _Framework_frameByFrame, "f")}`);
-            }
-            const shouldUpdate = !__classPrivateFieldGet(this, _Framework_frameByFrame, "f") ||
-                this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
-            const hasAnyInteractionHappened = this.gameInput.update({
-                skipGameButtons: !shouldUpdate,
+    return __awaiter(this, void 0, void 0, function* () {
+        if (BEETPX__IS_PROD) {
+            // A popup which prevents user from accidentally closing the browser tab during gameplay.
+            // Implementation notes:
+            // - returned message seems to be ignored by some browsers, therefore using `""`
+            // - this event is *not* always run when for example there was no mouse click inside
+            //   iframe with the game in Firefox
+            // - there are two ways of implementing this, because of browsers incompatibilities,
+            //   therefore using both of them here (`event.returnValue =` and `return`)
+            window.addEventListener("beforeunload", (event) => {
+                event.preventDefault();
+                event.returnValue = "";
+                return "";
             });
-            if (hasAnyInteractionHappened && !__classPrivateFieldGet(this, _Framework_alreadyResumedAudioContext, "f")) {
-                this.audioApi
-                    .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
-                    .then((resumed) => {
-                    if (resumed) {
-                        __classPrivateFieldSet(this, _Framework_alreadyResumedAudioContext, true, "f");
-                    }
-                });
-            }
-            if (shouldUpdate) {
-                if (__classPrivateFieldGet(this, _Framework_frameByFrame, "f")) {
-                    Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_frameNumber, "f")}`);
+        }
+        __classPrivateFieldGet(this, _Framework_canvasPixels, "f").onWindowResize();
+        window.addEventListener("resize", (_event) => {
+            __classPrivateFieldGet(this, _Framework_canvasPixels, "f").onWindowResize();
+        });
+        __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
+        yield __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
+        (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
+        this.gameInput.startListening();
+        __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
+            updateFn: () => {
+                var _b;
+                if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
+                    __classPrivateFieldGet(this, _Framework_fullScreen, "f").toggle();
                 }
-                (_b = __classPrivateFieldGet(this, _Framework_onUpdate, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
-                __classPrivateFieldSet(this, _Framework_frameNumber, __classPrivateFieldGet(this, _Framework_frameNumber, "f") >= Number.MAX_SAFE_INTEGER
-                    ? 0
-                    : __classPrivateFieldGet(this, _Framework_frameNumber, "f") + 1, "f");
-            }
-        },
-        renderFn: (renderFps) => {
-            var _b;
-            __classPrivateFieldSet(this, _Framework_renderFps, renderFps, "f");
-            (_b = __classPrivateFieldGet(this, _Framework_onDraw, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
-            __classPrivateFieldGet(this, _Framework_canvasPixels, "f").render();
-        },
+                if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
+                    if (this.audioApi.isAudioMuted()) {
+                        this.audioApi.unmuteAudio();
+                    }
+                    else {
+                        this.audioApi.muteAudio();
+                    }
+                }
+                if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
+                    DebugMode.enabled = !DebugMode.enabled;
+                    if (DebugMode.enabled) {
+                        window.localStorage.removeItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey));
+                    }
+                    else {
+                        window.localStorage.setItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey), __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue));
+                    }
+                    // TODO: BRING IT BACK
+                    // this.#redrawDebugMargin();
+                }
+                if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
+                    __classPrivateFieldSet(this, _Framework_frameByFrame, !__classPrivateFieldGet(this, _Framework_frameByFrame, "f"), "f");
+                    Logger.infoBeetPx(`FrameByFrame mode set to: ${__classPrivateFieldGet(this, _Framework_frameByFrame, "f")}`);
+                }
+                const shouldUpdate = !__classPrivateFieldGet(this, _Framework_frameByFrame, "f") ||
+                    this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
+                const hasAnyInteractionHappened = this.gameInput.update({
+                    skipGameButtons: !shouldUpdate,
+                });
+                if (hasAnyInteractionHappened && !__classPrivateFieldGet(this, _Framework_alreadyResumedAudioContext, "f")) {
+                    this.audioApi
+                        .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+                        .then((resumed) => {
+                        if (resumed) {
+                            __classPrivateFieldSet(this, _Framework_alreadyResumedAudioContext, true, "f");
+                        }
+                    });
+                }
+                if (shouldUpdate) {
+                    if (__classPrivateFieldGet(this, _Framework_frameByFrame, "f")) {
+                        Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_frameNumber, "f")}`);
+                    }
+                    (_b = __classPrivateFieldGet(this, _Framework_onUpdate, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
+                    __classPrivateFieldSet(this, _Framework_frameNumber, __classPrivateFieldGet(this, _Framework_frameNumber, "f") >= Number.MAX_SAFE_INTEGER
+                        ? 0
+                        : __classPrivateFieldGet(this, _Framework_frameNumber, "f") + 1, "f");
+                }
+            },
+            renderFn: (renderFps) => {
+                var _b;
+                __classPrivateFieldSet(this, _Framework_renderFps, renderFps, "f");
+                (_b = __classPrivateFieldGet(this, _Framework_onDraw, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
+                __classPrivateFieldGet(this, _Framework_canvasPixels, "f").render();
+            },
+        });
     });
 };
 // TODO: Move debug responsibility to a separate class

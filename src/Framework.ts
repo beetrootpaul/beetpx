@@ -148,13 +148,14 @@ export class Framework {
     return this.#browserType;
   }
 
-  async loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
-    return this.assets.loadAssets(assetsToLoad).then(() => {
-      Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
-      return {
-        startGame: this.#startGame.bind(this),
-      };
-    });
+  async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
+    await this.assets.loadAssets(assetsToLoad);
+
+    Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
+
+    return {
+      startGame: this.#startGame.bind(this),
+    };
   }
 
   setOnStarted(onStarted: () => void) {
@@ -180,7 +181,7 @@ export class Framework {
   }
 
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
-  #startGame(): void {
+  async #startGame(): Promise<void> {
     if (BEETPX__IS_PROD) {
       // A popup which prevents user from accidentally closing the browser tab during gameplay.
       // Implementation notes:
@@ -203,9 +204,9 @@ export class Framework {
 
     this.#frameNumber = 0;
 
-    this.#onStarted?.();
+    await this.#loading.showApp();
 
-    this.#loading.showApp();
+    this.#onStarted?.();
 
     this.gameInput.startListening();
 

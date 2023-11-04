@@ -20,11 +20,11 @@ export class BeetPx {
   static init(
     frameworkOptions: FrameworkOptions,
     assetsToLoad: AssetsToLoad,
-  ): ReturnType<Framework["loadAssets"]> {
+  ): ReturnType<Framework["init"]> {
     Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
 
     this.#framework = new Framework(frameworkOptions);
-    return this.#framework.loadAssets(assetsToLoad);
+    return this.#framework.init(assetsToLoad);
   }
 
   //

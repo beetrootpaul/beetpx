@@ -132,6 +132,12 @@ export class BpxUtils {
   static trigSin(turnAngle: number): number {
     return Math.sin(turnAngle * Math.PI * 2);
   }
+
+  static wait(millis: number): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(), millis);
+    });
+  }
 }
 
 export const u_ = BpxUtils;

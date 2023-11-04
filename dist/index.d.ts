@@ -232,6 +232,7 @@ declare class BpxUtils {
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static trigSin(turnAngle: number): number;
+    static wait(millis: number): Promise<void>;
 }
 declare const u_: typeof BpxUtils;
 
@@ -441,7 +442,7 @@ declare class Framework {
     get renderFps(): number;
     constructor(options: FrameworkOptions);
     detectedBrowserType(): BpxBrowserType;
-    loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
+    init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
@@ -462,7 +463,7 @@ declare class Logger {
 
 declare class BeetPx {
     #private;
-    static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["loadAssets"]>;
+    static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["init"]>;
     static get debug(): typeof DebugMode.enabled;
     /**
      * Number of frames processed since game started.
