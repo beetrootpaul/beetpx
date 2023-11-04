@@ -29,7 +29,6 @@ const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
 
 const gameHtmlTemplate = "index.template.html";
-const itchIoSimulationHtmlTemplate = "itch_io_simulation.template.html";
 
 const beetPxHtmlTemplatesInDir = path.resolve(
   beetPxCodebaseDir,
@@ -93,13 +92,6 @@ function runDevCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, itchIoSimulationHtmlTemplate),
-    path.resolve(
-      gameCodebaseDir,
-      itchIoSimulationHtmlTemplate.replace(".template", ""),
-    ),
-  );
-  fs.copyFileSync(
     path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
     path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
@@ -131,7 +123,7 @@ function runDevCommand() {
       //   and the latter does not work there.
       base: "./",
       server: {
-        open: itchIoSimulationHtmlTemplate.replace(".template", ""),
+        open: gameHtmlTemplate.replace(".template", ""),
         hmr: true,
         watch: {
           interval: 500,
