@@ -2,6 +2,9 @@ export class HtmlTemplate {
     static addLoadedClass() {
         document.body.classList.add("loaded");
     }
+    static addStartedClass() {
+        document.body.classList.add("started");
+    }
     static updateDebugClass(isDebug) {
         document.body.classList[isDebug ? "add" : "remove"]("debug");
     }
@@ -20,6 +23,7 @@ export class HtmlTemplate {
 HtmlTemplate.selectors = {
     fullScreenSubject: "body",
     canvas: "#game_canvas",
+    startButton: "#screen_start_game__button",
     touchControls: ".touch_control",
     controlsLeft: "#dpad_l",
     controlsRight: "#dpad_r",

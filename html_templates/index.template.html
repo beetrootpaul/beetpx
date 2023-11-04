@@ -94,7 +94,54 @@
         display: none;
       }
 
-      #unsupported_aspect_ratio {
+      /* TODO: Polish this screen */
+      #screen_start_game {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+
+        padding: 0.2em;
+
+        background-color: var(--loading-bg-color);
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .started #screen_start_game {
+        display: none;
+      }
+
+      #screen_start_game__button {
+        width: Min(60vw, 50vh);
+        height: Min(60vw, 50vh);
+
+        font-family: monospace;
+        font-size: Min(15vw, 15vh);
+
+        padding: 8px;
+
+        color: #ff004d;
+        background-color: #f3ef7d;
+        border-color: #ff004d;
+
+        border-width: 0;
+        border-bottom-width: Min(1vh, 1vw);
+      }
+
+      #screen_start_game__button:active {
+        color: #754665;
+        background-color: #c2c3c7;
+        border-bottom-width: 0;
+        transform: translateY(Min(1vh, 1vw));
+      }
+
+      /* TODO: Polish this screen */
+      #screen_unsupported_aspect_ratio {
         position: absolute;
         top: 0;
         left: 0;
@@ -304,7 +351,7 @@
         --spr_cell_size: 10vh;
       }
 
-      #unsupported_aspect_ratio {
+      #screen_unsupported_aspect_ratio {
         display: none;
       }
 
@@ -334,7 +381,7 @@
           --spr_cell_size: 10vh;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -361,7 +408,7 @@
        * TOUCH GUI for a SUPER THIN screen
        */
       @media (pointer: coarse) {
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: flex;
         }
 
@@ -378,7 +425,7 @@
           --spr_cell_size: 8vw;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -415,7 +462,7 @@
           --spr_cell_size: 8vw;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -449,7 +496,7 @@
           --spr_cell_size: 6vh;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -483,7 +530,7 @@
           --spr_cell_size: 7vh;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -521,7 +568,7 @@
           --spr_cell_size: 10vh;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -560,7 +607,7 @@
           --spr_cell_size: 10vh;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -596,7 +643,7 @@
           --spr_cell_size: 10vh;
         }
 
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: none;
         }
 
@@ -628,7 +675,7 @@
        * TOUCH GUI for a SUPER WIDE screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 800/250) {
-        #unsupported_aspect_ratio {
+        #screen_unsupported_aspect_ratio {
           display: flex;
         }
 
@@ -661,8 +708,12 @@
       <div id="button_fullscreen" class="gui_sprite touch_control"></div>
     </main>
 
-    <div id="unsupported_aspect_ratio">
+    <div id="screen_unsupported_aspect_ratio">
       <div>unsupported aspect ratio</div>
+    </div>
+
+    <div id="screen_start_game">
+      <button id="screen_start_game__button">start</button>
     </div>
 
     <!-- TODO: polish this screen   -->

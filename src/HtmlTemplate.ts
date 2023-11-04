@@ -3,6 +3,8 @@ export class HtmlTemplate {
     fullScreenSubject: "body",
     canvas: "#game_canvas",
 
+    startButton: "#screen_start_game__button",
+
     touchControls: ".touch_control",
 
     controlsLeft: "#dpad_l",
@@ -23,6 +25,10 @@ export class HtmlTemplate {
 
   static addLoadedClass(): void {
     document.body.classList.add("loaded");
+  }
+
+  static addStartedClass(): void {
+    document.body.classList.add("started");
   }
 
   static updateDebugClass(isDebug: boolean): void {

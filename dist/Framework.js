@@ -68,7 +68,6 @@ export class Framework {
         Logger.debugBeetPx("Framework options:", options);
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
-        __classPrivateFieldSet(this, _Framework_loading, new Loading(), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
             ? v_(64, 64)
             : options.gameCanvasSize === "128x128"
@@ -91,6 +90,17 @@ export class Framework {
             decodeAudioData: (arrayBuffer) => audioContext.decodeAudioData(arrayBuffer),
         });
         this.audioApi = new AudioApi(this.assets, audioContext);
+        __classPrivateFieldSet(this, _Framework_loading, new Loading({
+            onStartClicked: () => {
+                this.audioApi
+                    .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+                    .then((resumed) => {
+                    if (resumed) {
+                        __classPrivateFieldSet(this, _Framework_alreadyResumedAudioContext, true, "f");
+                    }
+                });
+            },
+        }), "f");
         __classPrivateFieldSet(this, _Framework_fullScreen, FullScreen.create(), "f");
         const htmlCanvas = (_b = document.querySelector(HtmlTemplate.selectors.canvas)) !== null && _b !== void 0 ? _b : u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
         __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixelsForProduction(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
@@ -150,7 +160,7 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
             __classPrivateFieldGet(this, _Framework_canvasPixels, "f").onWindowResize();
         });
         __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
-        yield __classPrivateFieldGet(this, _Framework_loading, "f").showApp();
+        yield __classPrivateFieldGet(this, _Framework_loading, "f").showStartScreen();
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
         this.gameInput.startListening();
         __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({

@@ -87,8 +87,6 @@ export class Framework {
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
-    this.#loading = new Loading();
-
     this.#gameCanvasSize =
       options.gameCanvasSize === "64x64"
         ? v_(64, 64)
@@ -121,6 +119,18 @@ export class Framework {
     });
 
     this.audioApi = new AudioApi(this.assets, audioContext);
+
+    this.#loading = new Loading({
+      onStartClicked: () => {
+        this.audioApi
+          .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+          .then((resumed) => {
+            if (resumed) {
+              this.#alreadyResumedAudioContext = true;
+            }
+          });
+      },
+    });
 
     this.#fullScreen = FullScreen.create();
 
@@ -204,7 +214,7 @@ export class Framework {
 
     this.#frameNumber = 0;
 
-    await this.#loading.showApp();
+    await this.#loading.showStartScreen();
 
     this.#onStarted?.();
 
