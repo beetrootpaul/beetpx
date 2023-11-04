@@ -28,10 +28,7 @@
     -->
     <style>
       :root {
-        /* TODO: re-implement loading, again */
-        /* TODO: use another color */
-        --loading-bg-color: #ff00ff;
-
+        --loading-bg-color: #49333b;
         --gui-bg-color: #5f574f;
       }
 
@@ -58,6 +55,8 @@
         height: 100vh;
         overflow: hidden;
 
+        font-family: monospace;
+
         background-color: var(--gui-bg-color);
       }
 
@@ -67,6 +66,32 @@
           https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#touch-action_css_property
         */
         touch-action: none;
+      }
+
+      #screen_loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+
+        padding: 0.2em;
+
+        color: #c2c3c7;
+        font-size: 24px;
+        text-align: center;
+        line-break: anywhere;
+
+        background-color: var(--loading-bg-color);
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .loaded #screen_loading {
+        display: none;
       }
 
       #unsupported_aspect_ratio {
@@ -80,6 +105,15 @@
 
         color: #c2c3c7;
         font-size: 24px;
+        text-align: center;
+        line-break: anywhere;
+
+        background-color: var(--gui-bg-color);
+
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
       }
 
       #game_display {
@@ -328,11 +362,7 @@
        */
       @media (pointer: coarse) {
         #unsupported_aspect_ratio {
-          display: block;
-
-          text-align: center;
-          line-height: 1em;
-          overflow-wrap: break-word;
+          display: flex;
         }
 
         #game_display {
@@ -599,10 +629,7 @@
        */
       @media (pointer: coarse) and (min-aspect-ratio: 800/250) {
         #unsupported_aspect_ratio {
-          display: block;
-
-          text-align: center;
-          line-height: 100vh;
+          display: flex;
         }
 
         #game_display {
@@ -612,8 +639,6 @@
     </style>
   </head>
   <body>
-    <div id="unsupported_aspect_ratio">unsupported aspect ratio</div>
-
     <main id="game_display">
       <canvas id="game_canvas" width="256" height="256"></canvas>
 
@@ -635,6 +660,15 @@
       <div id="button_mute" class="gui_sprite touch_control"></div>
       <div id="button_fullscreen" class="gui_sprite touch_control"></div>
     </main>
+
+    <div id="unsupported_aspect_ratio">
+      <div>unsupported aspect ratio</div>
+    </div>
+
+    <!-- TODO: polish this screen   -->
+    <div id="screen_loading">
+      <div>loading…</div>
+    </div>
   </body>
 
   <script type="module" src="src/beetpx_entrypoint.ts"></script>

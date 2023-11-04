@@ -1,8 +1,9 @@
 // TODO: add some loading animation
 
+import { HtmlTemplate } from "./HtmlTemplate";
+
 export class Loading {
   showApp(): void {
-    // TODO: ??? + move to HtmlTemplate
-    // document.body.classList.add(HtmlTemplate.classes.appLoaded);
+    HtmlTemplate.addLoadedClass();
   }
 }

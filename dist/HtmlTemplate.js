@@ -1,4 +1,7 @@
 export class HtmlTemplate {
+    static addLoadedClass() {
+        document.body.classList.add("loaded");
+    }
     static updateDebugClass(isDebug) {
         document.body.classList[isDebug ? "add" : "remove"]("debug");
     }

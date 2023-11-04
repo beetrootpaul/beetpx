@@ -21,6 +21,10 @@ export class HtmlTemplate {
     controlsMuteToggle: "#button_mute",
   };
 
+  static addLoadedClass(): void {
+    document.body.classList.add("loaded");
+  }
+
   static updateDebugClass(isDebug: boolean): void {
     document.body.classList[isDebug ? "add" : "remove"]("debug");
   }
