@@ -371,13 +371,14 @@
 
         border-width: 1vw;
         border-bottom-width: 2vw;
+        padding: 1vh;
 
         grid-template-areas:
           "."
           "canv"
           ".";
-        grid-template-columns: 98vw;
-        grid-template-rows: 1fr 98vw 1fr;
+        grid-template-columns: 96vw;
+        grid-template-rows: 1fr 96vw 1fr;
       }
 
       #game_canvas {
@@ -401,14 +402,15 @@
 
           border-width: 1vh;
           border-bottom-width: 2vh;
+          padding: 1vh;
 
           grid-template-areas:
             ".    . . canv .  . ."
             ". b_mu . canv . fs ."
             ". i_mu . canv .  . ."
             ".    . . canv .  . .";
-          grid-template-columns: 1fr 10vh 4vh 97vh 4vh 10vh 1fr;
-          grid-template-rows: 4vh 10vh 10vh 73vh;
+          grid-template-columns: 1fr 10vh 4vh 95vh 4vh 10vh 1fr;
+          grid-template-rows: 4vh 10vh 10vh 71vh;
         }
 
         #game_canvas {
@@ -446,19 +448,20 @@
 
           border-width: 1vw;
           border-bottom-width: 2vw;
+          padding: 1vw;
 
           grid-template-areas:
-            "canv  canv canv  canv canv canv canv canv   canv  canv  canv  canv canv"
-            "   .     .    .     .    .    .    .    .      .     .     .     .    ."
-            "   . dp_ul dp_u dp_ur    . menu menu    .      .     . btn_b btn_b    ."
-            "   .  dp_l dp_c  dp_r    .    .    .    .      .     . btn_b btn_b    ."
-            "   .  dp_l dp_c  dp_r    . b_mu    .    .      .     . btn_b btn_b    ."
-            "   . dp_dl dp_d dp_dr    . b_mu    .    .  btn_a btn_a     .     .    ."
-            "   . dp_dl dp_d dp_dr    . i_mu    .    .  btn_a btn_a     .     .    ."
-            "   .     .    .     .    .   fs    .    .  btn_a btn_a     .     .    ."
-            "   .     .    .     .    .    .    .    .      .     .     .     .    .";
-          grid-template-columns: 4vw 8vw 8vw 8vw 13vw 8vw 8vw 5vw 8vw 8vw 8vw 8vw 4vw;
-          grid-template-rows: 98vw 1fr 8vw 4vw 4vw 4vw 4vw 8vw 2fr;
+            "canv  canv canv  canv canv canv canv canv canv   canv  canv  canv  canv canv"
+            "   .     .    .     .    .    .    .    .    .      .     .     .     .    ."
+            "   . dp_ul dp_u dp_ur    .    . menu menu    .      .     . btn_b btn_b    ."
+            "   .  dp_l dp_c  dp_r    .    .    .    .    .      .     . btn_b btn_b    ."
+            "   .  dp_l dp_c  dp_r    .    . b_mu    .    .      .     . btn_b btn_b    ."
+            "   . dp_dl dp_d dp_dr    .    . b_mu    .    .  btn_a btn_a     .     .    ."
+            "   . dp_dl dp_d dp_dr    .    . i_mu    .    .  btn_a btn_a     .     .    ."
+            "   .     .    .     .    .    .   fs    .    .  btn_a btn_a     .     .    ."
+            "   .     .    .     .    .    .    .    .    .      .     .     .     .    .";
+          grid-template-columns: 4vw 8vw 8vw 8vw 8vw 4vw 8vw 8vw 4vw 8vw 8vw 8vw 8vw 4vw;
+          grid-template-rows: 96vw 1fr 8vw 4vw 4vw 4vw 4vw 8vw 2fr;
         }
 
         #game_canvas {
@@ -483,16 +486,17 @@
 
           border-width: 1vw;
           border-bottom-width: 2vw;
+          padding: 1vw;
 
           grid-template-areas:
-            "canv  canv canv  canv canv canv canv canv  canv  canv  canv  canv canv"
-            "   .     .    .     .    .    .    .    .     .     .     .     .    ."
-            "   . dp_ul dp_u dp_ur    . b_mu    . menu     .     . btn_b btn_b    ."
-            "   .  dp_l dp_c  dp_r    . i_mu    .    . btn_a btn_a btn_b btn_b    ."
-            "   . dp_dl dp_d dp_dr    .   fs    .    . btn_a btn_a     .     .    ."
-            "   .     .    .     .    .    .    .    .     .     .     .     .    .";
-          grid-template-columns: 2vw 8vw 8vw 8vw 8vw 8vw 6vw 16vw 8vw 8vw 8vw 8vw 2vw;
-          grid-template-rows: 98vw 2vw 8vw 8vw 8vw 1fr;
+            "canv  canv canv  canv canv canv canv canv canv  canv  canv  canv  canv canv"
+            "   .     .    .     .    .    .    .    .    .     .     .     .     .    ."
+            "   . dp_ul dp_u dp_ur    . b_mu    . menu menu     .     . btn_b btn_b    ."
+            "   .  dp_l dp_c  dp_r    . i_mu    .    .    . btn_a btn_a btn_b btn_b    ."
+            "   . dp_dl dp_d dp_dr    .   fs    .    .    . btn_a btn_a     .     .    ."
+            "   .     .    .     .    .    .    .    .    .     .     .     .     .    .";
+          grid-template-columns: 2vw 8vw 8vw 8vw 7vw 8vw 5vw 8vw 8vw 8vw 8vw 8vw 8vw 2vw;
+          grid-template-rows: 96vw 2vw 8vw 8vw 8vw 1fr;
         }
 
         #game_canvas {
@@ -517,16 +521,17 @@
 
           border-width: 1vh;
           border-bottom-width: 2vh;
+          padding: 1vh;
 
           grid-template-areas:
-            ". canv  canv canv  canv canv canv canv canv  canv  canv  canv  canv canv ."
-            ".    .     .    .     .    .    .    .    .     .     .     .     .    . ."
-            ".    . dp_ul dp_u dp_ur    . b_mu    . menu     .     . btn_b btn_b    . ."
-            ".    .  dp_l dp_c  dp_r    . i_mu    .    . btn_a btn_a btn_b btn_b    . ."
-            ".    . dp_dl dp_d dp_dr    .   fs    .    . btn_a btn_a     .     .    . ."
-            ".    .     .    .     .    .    .    .    .     .     .     .     .    . .";
-          grid-template-columns: 1fr 2vh 6vh 6vh 6vh 6vh 6vh 5vh 12vh 6vh 6vh 6vh 6vh 2vh 1fr;
-          grid-template-rows: 75vh 2vh 6vh 6vh 6vh 1fr;
+            ". canv  canv canv  canv canv canv canv canv canv  canv  canv  canv  canv canv ."
+            ".    .     .    .     .    .    .    .    .    .     .     .     .     .    . ."
+            ".    . dp_ul dp_u dp_ur    . b_mu    . menu menu     .     . btn_b btn_b    . ."
+            ".    .  dp_l dp_c  dp_r    . i_mu    .    .    . btn_a btn_a btn_b btn_b    . ."
+            ".    . dp_dl dp_d dp_dr    .   fs    .    .    . btn_a btn_a     .     .    . ."
+            ".    .     .    .     .    .    .    .    .    .     .     .     .     .    . .";
+          grid-template-columns: 1fr 2vh 6vh 6vh 6vh 5vh 6vh 4vh 6vh 6vh 6vh 6vh 6vh 6vh 2vh 1fr;
+          grid-template-rows: 73vh 2vh 6vh 6vh 6vh 1fr;
         }
 
         #game_canvas {
@@ -551,6 +556,7 @@
 
           border-width: 1vh;
           border-bottom-width: 2vh;
+          padding: 1vh;
 
           grid-template-areas:
             ".     .    . canv  canv canv canv  canv  canv  canv     .     . ."
@@ -563,8 +569,8 @@
             ".  dp_l dp_c dp_c  dp_r    .    . btn_a btn_a btn_b btn_b btn_b ."
             ". dp_dl dp_d dp_d dp_dr    .    . btn_a btn_a     .     .     . ."
             ".     .    .    .     .    .    .     .     .     .     .     . .";
-          grid-template-columns: 1fr 7vh 2vh 5vh 7vh 31vh 11vh 3vh 11vh 5vh 2vh 7vh 1fr;
-          grid-template-rows: 4vh 7vh 7vh 7vh 48vh 2vh 7vh 7vh 7vh 1fr;
+          grid-template-columns: 1fr 7vh 2vh 5vh 7vh 29vh 11vh 3vh 11vh 5vh 2vh 7vh 1fr;
+          grid-template-rows: 4vh 7vh 7vh 7vh 46vh 2vh 7vh 7vh 7vh 1fr;
         }
 
         #game_canvas {
@@ -589,6 +595,7 @@
 
           border-width: 1vh;
           border-bottom-width: 2vh;
+          padding: 1vh;
 
           grid-template-areas:
             ".     .    .     .  . canv .     .     .     . ."
@@ -602,8 +609,8 @@
             ".  dp_l dp_c  dp_r  .    . . btn_a btn_a     . ."
             ". dp_dl dp_d dp_dr  .    . . btn_a btn_a     . ."
             ".     .    .     .  .    . .     .     .     . .";
-          grid-template-columns: 1fr 10vh 10vh 10vh 1fr 74vh 1fr 10vh 10vh 10vh 1fr;
-          grid-template-rows: 4vh 10vh 10vh 10vh 22vh 10vh 8vh 2vh 10vh 10vh 1fr;
+          grid-template-columns: 1fr 10vh 10vh 10vh 1fr 72vh 1fr 10vh 10vh 10vh 1fr;
+          grid-template-rows: 4vh 10vh 10vh 10vh 20vh 10vh 8vh 2vh 10vh 10vh 1fr;
         }
 
         #game_canvas {
@@ -628,6 +635,7 @@
 
           border-width: 1vh;
           border-bottom-width: 2vh;
+          padding: 1vh;
 
           grid-template-areas:
             ".     .    .     . . . canv .      .     .     .     . ."
@@ -639,8 +647,8 @@
             ".  dp_l dp_c  dp_r . . canv . btn_a btn_a      .     . ."
             ". dp_dl dp_d dp_dr . . canv . btn_a btn_a      .     . ."
             ".     .    .     . . . canv .     .     .      .     . .";
-          grid-template-columns: 1fr 10vh 10vh 10vh 10vh 1fr 97vh 1fr 10vh 10vh 10vh 10vh 1fr;
-          grid-template-rows: 10vh 10vh 10vh 1fr 10vh 10vh 10vh 10vh 15vh;
+          grid-template-columns: 1fr 10vh 10vh 10vh 10vh 1fr 95vh 1fr 10vh 10vh 10vh 10vh 1fr;
+          grid-template-rows: 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 15vh;
         }
 
         #game_canvas {
@@ -665,6 +673,7 @@
 
           border-width: 1vh;
           border-bottom-width: 2vh;
+          padding: 1vh;
 
           grid-template-areas:
             ".     .    .     . . . canv .      .     .     .     . ."
@@ -676,8 +685,8 @@
             ".  dp_l dp_c  dp_r . . canv . btn_a btn_a      .     . ."
             ". dp_dl dp_d dp_dr . . canv . btn_a btn_a      .     . ."
             ".     .    .     . . . canv .     .     .      .     . .";
-          grid-template-columns: 15vh 10vh 10vh 10vh 10vh 1fr 97vh 1fr 10vh 10vh 10vh 10vh 15vh;
-          grid-template-rows: 10vh 10vh 10vh 1fr 10vh 10vh 10vh 10vh 15vh;
+          grid-template-columns: 15vh 10vh 10vh 10vh 10vh 1fr 95vh 1fr 10vh 10vh 10vh 10vh 15vh;
+          grid-template-rows: 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 15vh;
         }
 
         #game_canvas {
