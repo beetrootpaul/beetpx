@@ -180,9 +180,6 @@ export class AudioApi {
         if (!__classPrivateFieldGet(this, _AudioApi_isPaused, "f"))
             return;
         __classPrivateFieldSet(this, _AudioApi_isPaused, false, "f");
-        // We have to immediately mute first, otherwise we might hear some leftovers
-        //   of mute fade out which was happening in `pauseAudio()`.
-        __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f").gain.value = 0;
         __classPrivateFieldGet(this, _AudioApi_audioContext, "f")
             .resume()
             .then(() => {

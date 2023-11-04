@@ -254,9 +254,6 @@ export class AudioApi {
     if (!this.#isPaused) return;
     this.#isPaused = false;
 
-    // We have to immediately mute first, otherwise we might hear some leftovers
-    //   of mute fade out which was happening in `pauseAudio()`.
-    this.#pauseFadeNode.gain.value = 0;
     this.#audioContext
       .resume()
       .then(() => {
