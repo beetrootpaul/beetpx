@@ -28,8 +28,8 @@ const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
 
-const gameHtml = "index.html";
-const itchIoSimulationHtml = "itch_io_simulation.html";
+const gameHtmlTemplate = "index.template.html";
+const itchIoSimulationHtmlTemplate = "itch_io_simulation.template.html";
 
 const beetPxHtmlTemplatesInDir = path.resolve(
   beetPxCodebaseDir,
@@ -93,12 +93,15 @@ function runDevCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, itchIoSimulationHtml),
-    path.resolve(gameCodebaseDir, itchIoSimulationHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, itchIoSimulationHtmlTemplate),
+    path.resolve(
+      gameCodebaseDir,
+      itchIoSimulationHtmlTemplate.replace(".template", ""),
+    ),
   );
   fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, gameHtml),
-    path.resolve(gameCodebaseDir, gameHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
 
   if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
@@ -128,7 +131,7 @@ function runDevCommand() {
       //   and the latter does not work there.
       base: "./",
       server: {
-        open: itchIoSimulationHtml,
+        open: itchIoSimulationHtmlTemplate.replace(".template", ""),
         hmr: true,
         watch: {
           interval: 500,
@@ -160,8 +163,8 @@ function runBuildCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, gameHtml),
-    path.resolve(gameCodebaseDir, gameHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
 
   if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
