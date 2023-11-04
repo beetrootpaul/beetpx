@@ -75,23 +75,33 @@
         width: 100vw;
         height: 100vh;
 
-        padding: 0.2em;
-
-        color: #c2c3c7;
-        font-size: 24px;
-        text-align: center;
-        line-break: anywhere;
-
         background-color: var(--loading-bg-color);
 
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
+        display: grid;
+        grid-template-areas:
+          ".       . ."
+          ". spinner ."
+          ".       . .";
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-rows: 1fr 3fr 1fr;
       }
 
       .loaded #screen_loading {
         display: none;
+      }
+
+      #screen_start_game__spinner {
+        grid-area: spinner;
+
+        /* Remove standard visual aspects of a button */
+        background-color: transparent;
+        border: none;
+
+        /* Add an image to act as a button */
+        background-image: url(.beetpx/loading.gif);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
       }
 
       /* TODO: Polish this screen */
@@ -731,9 +741,8 @@
       <button id="screen_start_game__button" tabindex="0"></button>
     </div>
 
-    <!-- TODO: polish this screen   -->
     <div id="screen_loading">
-      <div>loading…</div>
+      <div id="screen_start_game__spinner"></div>
     </div>
   </body>
 

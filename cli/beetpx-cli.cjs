@@ -100,7 +100,7 @@ function runDevCommand() {
     fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
   }
   fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  ["gui.png", "start.png"].forEach((pngAsset) => {
+  ["gui.png", "loading.gif", "start.png"].forEach((pngAsset) => {
     fs.copyFileSync(
       path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
       path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
@@ -165,7 +165,7 @@ function runBuildCommand() {
     fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
   }
   fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  ["gui.png", "start.png"].forEach((pngAsset) => {
+  ["gui.png", "loading.gif", "start.png"].forEach((pngAsset) => {
     fs.copyFileSync(
       path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
       path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
