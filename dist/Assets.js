@@ -119,7 +119,6 @@ _Assets_decodeAudioData = new WeakMap(), _Assets_images = new WeakMap(), _Assets
         //    need that lime to be exactly same RGB hex as defined in the color mapping, otherwise
         //    it will not get mapped and display as lime.
         const decodedPng = fastPngDecode(arrayBuffer);
-        console.log(decodedPng);
         if (decodedPng.channels !== 3 && decodedPng.channels !== 4) {
             throw Error(`Assets: only PNG image files with 3 or 4 channels are supported. The file which seems to have ${decodedPng.channels} channels instead: "${url}"`);
         }
