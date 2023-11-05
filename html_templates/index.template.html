@@ -600,24 +600,24 @@
        */
       @media (pointer: coarse) {
         :root {
-          --scs: 8vw;
+          --scs: 10vw;
         }
 
         #game_display {
           grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l canv canv canv canv canv canv canv canv canv canv canv e__r"
-            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l    . d_ul d_u_ d_ur    . menu menu    .    . bt_b    . e__r"
-            "e__l    . d__l d___ d__r    .    .    .    .    . bt_b    . e__r"
-            "e__l    . d__l d___ d__r    . b_mu    .    .    . bt_b    . e__r"
-            "e__l    . d_dl d_d_ d_dr    . b_mu    .    . bt_a    .    . e__r"
-            "e__l    . d_dl d_d_ d_dr    . i_mu    .    . bt_a    .    . e__r"
-            "e__l    .    .    .    .    . full    .    . bt_a    .    . e__r"
-            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4vw 4vw 8vw 8vw 8vw 8vw 8vw 8vw 4vw 16vw 16vw 4vw 4vw;
-          grid-template-rows: 4vw 92vw 1fr 8vw 3vw 5vw 3vw 5vw 8vw 2fr 4vw;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    . menu menu menu    . bt_b bt_b bt_b e__r"
+            "e__l d_ul d_ul d_u_ d_ur    .    .    .    .    . bt_b bt_b bt_b e__r"
+            "e__l d_ul d_ul d_u_ d_ur    . full    .    .    . bt_b bt_b bt_b e__r"
+            "e__l d__l d__l d___ d__r    . full    . bt_a bt_a bt_a    .    . e__r"
+            "e__l d__l d__l d___ d__r    .    .    . bt_a bt_a bt_a    .    . e__r"
+            "e__l d_dl d_dl d_d_ d_dr    . b_mu    . bt_a bt_a bt_a    .    . e__r"
+            "e__l    .    .    .    .    . i_mu    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5vw 5vw 5vw 10vw 10vw 12vw 10vw 8vw 2vw 8vw 10vw 5vw 5vw 5vw;
+          grid-template-rows: 5vw 92vw 1fr 10vw 4vw 6vw 4vw 6vw 10vw 2fr 5vw;
         }
 
         #game_canvas {
@@ -628,22 +628,22 @@
       /*
        * TOUCH GUI for a SLIGHTLY VERTICAL screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 250/360) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/370) {
         :root {
           --scs: 8vw;
         }
 
         #game_display {
           grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l canv canv canv canv canv canv canv canv canv canv canv e__r"
-            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l d_ul d_ul d_u_ d_ur    . b_mu    . menu    . bt_b bt_b e__r"
-            "e__l d__l d__l d___ d__r    . i_mu    .    . bt_a bt_b bt_b e__r"
-            "e__l d_dl d_dl d_d_ d_dr    . full    .    . bt_a    .    . e__r"
-            "e__l    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4vw 4vw 4vw 8vw 8vw 1fr 8vw 1fr 16vw 16vw 12vw 4vw 4vw;
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l d_ul d_ul d_u_ d_ur    . full    . menu menu    . bt_b bt_b e__r"
+            "e__l d__l d__l d___ d__r    .    .    .    .    . bt_a bt_b bt_b e__r"
+            "e__l d_dl d_dl d_d_ d_dr    .    .    . b_mu    . bt_a    .    . e__r"
+            "e__l    .    .    .    .    .    .    . i_mu    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4vw 4vw 4vw 8vw 8vw 3fr 8vw 4vw 8vw 8vw 16vw 12vw 4vw 4vw;
           grid-template-rows: 4vw 92vw 4vw 8vw 8vw 8vw 1fr 4vw;
         }
 
@@ -655,7 +655,7 @@
       /*
        * TOUCH GUI for a TALLER SQUARE screen
        */
-      @media (pointer: coarse) and (min-aspect-ratio: 250/320) {
+      @media (pointer: coarse) and (min-aspect-ratio: 250/330) {
         :root {
           --scs: 6vh;
         }
@@ -665,13 +665,16 @@
             "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
             "e__l    .    . canv canv canv canv canv canv canv canv canv    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_ur    . b_mu    . menu    . bt_b    .    . e__r"
-            "e__l    .    . d__l d___ d__r    . i_mu    .    . bt_a bt_b    .    . e__r"
-            "e__l    .    . d_dl d_d_ d_dr    . full    .    . bt_a    .    .    . e__r"
-            "e__l    .    .     .   .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    . menu menu    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    . full    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    . full    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    .    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    . b_mu    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    .     .   .    .    . i_mu    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 3vh 3vh 1fr 6vh 6vh 6vh 3vh 6vh 3vh 12vh 12vh 12vh 1fr 3vh 3vh;
-          grid-template-rows: 3vh 66vh 1fr 6vh 6vh 6vh 1fr 3vh;
+          grid-template-columns: 3vh 3vh 1fr 6vh 6vh 6vh 12vh 6vh 6vh 6vh 6vh 6vh 1fr 3vh 3vh;
+          grid-template-rows: 3vh 60vh 1fr 6vh 3vh 3vh 3vh 3vh 6vh 1fr 3vh;
         }
 
         #game_canvas {
@@ -715,15 +718,15 @@
        */
       @media (pointer: coarse) and (min-aspect-ratio: 250/180) {
         :root {
-          --scs: 8vh;
+          --scs: 10vh;
         }
 
         #game_display {
           grid-template-areas:
             "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
             "e__l    .    .    .    .    .    . canv    .    .    .    .    .    . e__r"
-            "e__l    .    .    . b_mu    .    . canv    .    .    .    .    .    . e__r"
-            "e__l    .    .    . i_mu    .    . canv    .    . menu menu    .    . e__r"
+            "e__l    .    .    . b_mu    .    . canv    .    . menu menu    .    . e__r"
+            "e__l    .    .    . i_mu    .    . canv    .    .    .    .    .    . e__r"
             "e__l    .    .    . full    .    . canv    .    .    .    .    .    . e__r"
             "e__l    .    .    .    .    .    . canv    .    .    .    .    .    . e__r"
             "e__l    .    .    .    .    .    . canv    .    . bt_b bt_b    .    . e__r"
@@ -733,8 +736,8 @@
             "e__l    .    . d_dl d_d_ d_dr    .    .    . bt_a bt_a    .    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4vh 4vh 1fr 8vh 8vh 8vh 1fr 66vh 1fr 8vh 8vh 8vh 1fr 4vh 4vh;
-          grid-template-rows: 4vh 8vh 8vh 8vh 8vh 20vh 8vh 6vh 2vh 8vh 8vh 1fr 4vh;
+          grid-template-columns: 5vh 5vh 1fr 10vh 10vh 10vh 1fr 58vh 1fr 10vh 10vh 10vh 1fr 5vh 5vh;
+          grid-template-rows: 5vh 5vh 10vh 10vh 10vh 8vh 10vh 5vh 5vh 10vh 10vh 1fr 5vh;
         }
 
         #game_canvas {
@@ -743,11 +746,11 @@
       }
 
       /*
-       * TOUCH GUI for a SLIGHTLY HORIZONTAL screen
+       * TOUCH GUI for a HORIZONTAL screen
        */
       @media (pointer: coarse) and (min-aspect-ratio: 250/130) {
         :root {
-          --scs: 10vh;
+          --scs: 12vh;
         }
 
         #game_display {
@@ -763,38 +766,8 @@
             "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5vh 5vh 1fr 10vh 10vh 10vh 4vh 1fr 90vh 1fr 10vh 6vh 4vh 6vh 10vh 1fr 5vh 5vh;
-          grid-template-rows: 5vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 5vh;
-        }
-
-        #game_canvas {
-          border-width: 1vh;
-        }
-      }
-
-      /*
-       * TOUCH GUI for a REALLY HORIZONTAL screen
-       */
-      @media (pointer: coarse) and (min-aspect-ratio: 250/100) {
-        :root {
-          --scs: 10vh;
-        }
-
-        #game_display {
-          grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    . e__r"
-            "e__l    .    . b_mu    . full    .    . canv    .    .    . menu menu    .    . e__r"
-            "e__l    .    . i_mu    .    .    .    . canv    .    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    .    . canv    .    .    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_ur    .    . canv    .    .    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d__l d___ d__r    .    . canv    . bt_a bt_a    .    .    .    . e__r"
-            "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_a bt_a    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5vh 5vh 15vh 10vh 10vh 10vh 10vh 1fr 90vh 1fr 10vh 10vh 10vh 10vh 15vh 5vh 5vh;
-          grid-template-rows: 5vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 10vh 5vh;
+          grid-template-columns: 6vh 6vh 1fr 12vh 12vh 12vh 3vh 3fr 88vh 3fr 12vh 3vh 9vh 3vh 12vh 1fr 6vh 6vh;
+          grid-template-rows: 6vh 6vh 12vh 12vh 4vh 12vh 12vh 12vh 12vh 6vh 6vh;
         }
 
         #game_canvas {
@@ -816,24 +789,24 @@
 
       <canvas id="game_canvas" width="256" height="256"></canvas>
 
-      <div id="dpad_u" class="gui_sprite touch_control"></div>
-      <div id="dpad_d" class="gui_sprite touch_control"></div>
-      <div id="dpad_l" class="gui_sprite touch_control"></div>
-      <div id="dpad_r" class="gui_sprite touch_control"></div>
-      <div id="dpad_center" class="gui_sprite touch_control"></div>
-      <div id="dpad_ul" class="touch_control"></div>
-      <div id="dpad_ur" class="touch_control"></div>
-      <div id="dpad_dl" class="touch_control"></div>
-      <div id="dpad_dr" class="touch_control"></div>
+      <div id="dpad_u" class="gui_sprite"></div>
+      <div id="dpad_d" class="gui_sprite"></div>
+      <div id="dpad_l" class="gui_sprite"></div>
+      <div id="dpad_r" class="gui_sprite"></div>
+      <div id="dpad_center" class="gui_sprite"></div>
+      <div id="dpad_ul"></div>
+      <div id="dpad_ur"></div>
+      <div id="dpad_dl"></div>
+      <div id="dpad_dr"></div>
 
-      <div id="button_a" class="gui_sprite touch_control"></div>
-      <div id="button_b" class="gui_sprite touch_control"></div>
+      <div id="button_a" class="gui_sprite"></div>
+      <div id="button_b" class="gui_sprite"></div>
 
-      <div id="button_menu" class="gui_sprite touch_control"></div>
+      <div id="button_menu" class="gui_sprite"></div>
 
-      <div id="button_mute" class="gui_sprite touch_control"></div>
+      <div id="button_mute" class="gui_sprite"></div>
       <div id="indicator_mute" class="gui_sprite"></div>
-      <div id="button_fullscreen" class="gui_sprite touch_control"></div>
+      <div id="button_fullscreen" class="gui_sprite"></div>
     </main>
 
     <div id="screen_start_game">

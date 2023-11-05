@@ -282,7 +282,7 @@ function runZipCommand() {
   const sizeMebibytes = sizeKibibytes / 1024;
   const sizePart =
     sizeKibibytes >= 1024
-      ? `${sizeMebibytes.toFixed(0)} MiB`
+      ? `${sizeMebibytes.toFixed(1)} MiB`
       : `${sizeKibibytes.toFixed(0)} KiB`;
   console.log(
     `Zip got created in: ${path.relative(

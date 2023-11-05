@@ -5,8 +5,6 @@ export class HtmlTemplate {
 
     startButton: "#screen_start_game__button",
 
-    touchControls: ".touch_control",
-
     controlsLeft: "#dpad_l",
     controlsRight: "#dpad_r",
     controlsUp: "#dpad_u",
