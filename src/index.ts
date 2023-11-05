@@ -62,8 +62,6 @@ export { timer_ } from "./misc/Timer";
 
 // TODO: remove comments from HTMLs from the generated game
 
-// TODO: improve bg color on itch around the game, but under the buttons
-
 // TODO: refactor HTML templates, rework canvas vs buttons layout vs screen orientation
 
 // TODO: remove ability to select touch button's text
@@ -73,8 +71,6 @@ export { timer_ } from "./misc/Timer";
 // TODO: iOS Safari: prevent selection of button text on long touch
 
 // TODO: make it possible to show game cover before the game loads
-
-// TODO: consider adding own start button (auto-focused) and make it auto-load in itch. And make sure this makes audio context always work
 
 // TODO: test out a flow in which I work with assets while working on game and have fast feedback loop. Maybe run a watcher on Aseprite file and run its CLI to export to `public/`?
 

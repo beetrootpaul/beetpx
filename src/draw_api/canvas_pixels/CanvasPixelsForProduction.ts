@@ -42,6 +42,8 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         alpha: true,
       }) ?? u_.throwError("Was unable to obtain '2d' context from <canvas>");
 
+    this.#htmlCanvasContext.imageSmoothingEnabled = false;
+
     const offscreenCanvas = document
       .createElement("canvas")
       .transferControlToOffscreen();
@@ -129,30 +131,32 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     );
   }
 
+  // TODO: unused?
   onWindowResize(): void {
     // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
-    this.#htmlCanvas.width =
-      this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
-    this.#htmlCanvas.height =
-      this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
-
+    // this.#htmlCanvas.width =
+    //   this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
+    // this.#htmlCanvas.height =
+    //   this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
     // seems like we have to set it every time the canvas size is changed
-    this.#htmlCanvasContext.imageSmoothingEnabled = false;
+    // this.#htmlCanvasContext.imageSmoothingEnabled = false;
   }
 
   doRender(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
     const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
-    const scaleToFill = Math.min(
-      htmlCanvasSize.div(this.canvasSize).floor().x,
-      htmlCanvasSize.div(this.canvasSize).floor().y,
+    const scaleToFill = Math.max(
+      1,
+      Math.min(
+        htmlCanvasSize.div(this.canvasSize).floor().x,
+        htmlCanvasSize.div(this.canvasSize).floor().y,
+      ),
     );
     const centeringOffset = htmlCanvasSize
       .sub(this.canvasSize.mul(scaleToFill))
       .div(2)
       .floor();
-    // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
 
     this.#htmlCanvasContext.drawImage(
       this.#offscreenContext.canvas,

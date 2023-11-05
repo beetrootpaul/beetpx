@@ -1,5 +1,4 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { BpxButtonName } from "./Buttons";
 import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
 
@@ -8,43 +7,36 @@ export class TouchGameInput implements SpecializedGameInput {
 
   static mapping: Array<{
     event: BpxGameInputEvent;
-    button: BpxButtonName;
     selector: string;
   }> = [
-    {
-      event: "button_left",
-      button: "left",
-      selector: HtmlTemplate.selectors.controlsLeft,
-    },
+    { event: "button_left", selector: HtmlTemplate.selectors.controlsLeft },
+    { event: "button_left", selector: HtmlTemplate.selectors.controlsUpLeft },
+    { event: "button_left", selector: HtmlTemplate.selectors.controlsDownLeft },
+    { event: "button_right", selector: HtmlTemplate.selectors.controlsRight },
+    { event: "button_right", selector: HtmlTemplate.selectors.controlsUpRight },
     {
       event: "button_right",
-      button: "right",
-      selector: HtmlTemplate.selectors.controlsRight,
+      selector: HtmlTemplate.selectors.controlsDownRight,
     },
-    {
-      event: "button_up",
-      button: "up",
-      selector: HtmlTemplate.selectors.controlsUp,
-    },
+    { event: "button_up", selector: HtmlTemplate.selectors.controlsUp },
+    { event: "button_up", selector: HtmlTemplate.selectors.controlsUpLeft },
+    { event: "button_up", selector: HtmlTemplate.selectors.controlsUpRight },
+    { event: "button_down", selector: HtmlTemplate.selectors.controlsDown },
+    { event: "button_down", selector: HtmlTemplate.selectors.controlsDownLeft },
     {
       event: "button_down",
-      button: "down",
-      selector: HtmlTemplate.selectors.controlsDown,
+      selector: HtmlTemplate.selectors.controlsDownRight,
+    },
+    { event: "button_a", selector: HtmlTemplate.selectors.controlsA },
+    { event: "button_b", selector: HtmlTemplate.selectors.controlsB },
+    { event: "button_menu", selector: HtmlTemplate.selectors.controlsMenu },
+    {
+      event: "mute_unmute_toggle",
+      selector: HtmlTemplate.selectors.controlsMuteToggle,
     },
     {
-      event: "button_a",
-      button: "a",
-      selector: HtmlTemplate.selectors.controlsA,
-    },
-    {
-      event: "button_b",
-      button: "b",
-      selector: HtmlTemplate.selectors.controlsB,
-    },
-    {
-      event: "button_menu",
-      button: "menu",
-      selector: HtmlTemplate.selectors.controlsMenu,
+      event: "full_screen",
+      selector: HtmlTemplate.selectors.controlsFullScreen,
     },
   ];
 
@@ -56,21 +48,17 @@ export class TouchGameInput implements SpecializedGameInput {
     ["button_a", []],
     ["button_b", []],
     ["button_menu", []],
+    ["mute_unmute_toggle", []],
+    ["full_screen", []],
   ]);
 
   readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
     new Set<BpxGameInputEvent>();
 
-  constructor(params: { visibleButtons: BpxButtonName[] }) {
-    TouchGameInput.mapping.forEach(({ event, button, selector }) => {
-      const touchButtonElements =
-        document.querySelectorAll<HTMLElement>(selector);
-      this.#eventsAndButtons.get(event)!.push(...touchButtonElements);
-      if (params.visibleButtons.includes(button)) {
-        for (const el of touchButtonElements) {
-          el.classList.remove("hidden");
-        }
-      }
+  constructor() {
+    TouchGameInput.mapping.forEach(({ event, selector }) => {
+      const buttons = document.querySelectorAll<HTMLElement>(selector);
+      this.#eventsAndButtons.get(event)!.push(...buttons);
     });
   }
 
@@ -94,6 +82,11 @@ export class TouchGameInput implements SpecializedGameInput {
   }
 
   #handleTouchEvent(touchEvent: TouchEvent): void {
+    // Try to prevent iOS Safari from doing helpful things that do not apply
+    //   to a game like: text selection, div selection, area zoom on a double
+    //   tap, etc.
+    touchEvent.preventDefault();
+
     for (const [gameInputEvent, buttons] of this.#eventsAndButtons.entries()) {
       let hasTouchWithinButtonBounds = false;
       Array.from(touchEvent.touches).forEach((touch) => {
@@ -124,6 +117,16 @@ export class TouchGameInput implements SpecializedGameInput {
       eventsCollector.add(event);
       anythingAdded = true;
     }
+
+    // On macOS Chrome and Safari touch events are not registered during full
+    //   screen transition. If user touches the button for a typical short duration,
+    //   it ends up recognized as still pressed after the full screen transition
+    //   ends. Therefore, in order to toggle full screen back, user has to press
+    //   the button twice: once to "release" the key, and second time to initiate
+    //   the next full screen transition.
+    // As a workaround we do not keep "full_screen" event "pressed", so the framework
+    //   will recognize it as a key being up immediately.
+    this.#eventsSinceLastUpdate.delete("full_screen");
 
     return anythingAdded;
   }

@@ -21,7 +21,7 @@ export class BeetPx {
     static init(frameworkOptions, assetsToLoad) {
         Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
         __classPrivateFieldSet(this, _a, new Framework(frameworkOptions), "f", _BeetPx_framework);
-        return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).loadAssets(assetsToLoad);
+        return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).init(assetsToLoad);
     }
     //
     // field-like getters, the ones meant to be used

@@ -1,3 +1,4 @@
+import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 
 export class DebugMode {
@@ -9,6 +10,8 @@ export class DebugMode {
   static set enabled(value: boolean) {
     this.#enabled = value;
     Logger.infoBeetPx(`Debug flag set to: ${this.#enabled}`);
+
+    HtmlTemplate.updateDebugClass(DebugMode.enabled);
   }
 }
 

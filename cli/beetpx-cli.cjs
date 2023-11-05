@@ -27,8 +27,19 @@ const argv = require("yargs")
 const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
-const gameHtml = "index.html";
-const itchIoSimulationHtml = "itch_io_simulation.html";
+
+const gameHtmlTemplate = "index.template.html";
+
+const beetPxHtmlTemplatesInDir = path.resolve(
+  beetPxCodebaseDir,
+  "html_templates",
+);
+const beetPxAdditionalPublicAssetsOutDir = path.resolve(
+  gameCodebaseDir,
+  "public",
+  ".beetpx",
+);
+
 const buildOutDirAsExpectedByVitePreview = "dist/";
 const distZipDir = "dist/";
 const distZipFile = "game.zip";
@@ -81,13 +92,32 @@ function runDevCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", itchIoSimulationHtml),
-    path.resolve(gameCodebaseDir, itchIoSimulationHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
-  fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", gameHtml),
-    path.resolve(gameCodebaseDir, gameHtml),
-  );
+
+  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
+    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  }
+  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
+      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
+    );
+  });
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#createserver
@@ -107,7 +137,7 @@ function runDevCommand() {
       //   and the latter does not work there.
       base: "./",
       server: {
-        open: itchIoSimulationHtml,
+        open: gameHtmlTemplate.replace(".template", ""),
         hmr: true,
         watch: {
           interval: 500,
@@ -139,9 +169,32 @@ function runBuildCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", gameHtml),
-    path.resolve(gameCodebaseDir, gameHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
+
+  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
+    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  }
+  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
+      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
+    );
+  });
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#build

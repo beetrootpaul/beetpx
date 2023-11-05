@@ -232,6 +232,7 @@ declare class BpxUtils {
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static trigSin(turnAngle: number): number;
+    static wait(millis: number): Promise<void>;
 }
 declare const u_: typeof BpxUtils;
 
@@ -336,9 +337,6 @@ declare class GameInput {
     readonly buttonFrameByFrameToggle: Button;
     readonly buttonFrameByFrameStep: Button;
     constructor(params: {
-        visibleTouchButtons: BpxButtonName[];
-        muteButtonsSelector: string;
-        fullScreenButtonsSelector: string;
         enableDebugInputs: boolean;
         browserType: BpxBrowserType;
     });
@@ -426,9 +424,8 @@ declare class StorageApi {
 }
 
 type FrameworkOptions = {
-    gameCanvasSize: "64x64" | "128x128";
+    gameCanvasSize: "64x64" | "128x128" | "256x256";
     desiredUpdateFps: 30 | 60;
-    visibleTouchButtons: BpxButtonName[];
     debugFeatures: boolean;
 };
 type OnAssetsLoaded = {
@@ -445,7 +442,7 @@ declare class Framework {
     get renderFps(): number;
     constructor(options: FrameworkOptions);
     detectedBrowserType(): BpxBrowserType;
-    loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
+    init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
@@ -466,7 +463,7 @@ declare class Logger {
 
 declare class BeetPx {
     #private;
-    static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["loadAssets"]>;
+    static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["init"]>;
     static get debug(): typeof DebugMode.enabled;
     /**
      * Number of frames processed since game started.
