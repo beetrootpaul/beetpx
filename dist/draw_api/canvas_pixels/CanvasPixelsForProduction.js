@@ -36,19 +36,22 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_htmlCanvas, htmlCanvas, "f");
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_htmlCanvasContext, (_a = __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").getContext("2d", {
+            colorSpace: "srgb",
             // we allow transparency in order ot make background color visible around the game itself
             alpha: true,
         })) !== null && _a !== void 0 ? _a : u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
+        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
         const offscreenCanvas = document
             .createElement("canvas")
             .transferControlToOffscreen();
         offscreenCanvas.width = canvasSize.x;
         offscreenCanvas.height = canvasSize.y;
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_offscreenContext, (_b = offscreenCanvas.getContext("2d", {
+            colorSpace: "srgb",
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
             alpha: false,
         })) !== null && _b !== void 0 ? _b : u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
-        __classPrivateFieldSet(this, _CanvasPixelsForProduction_offscreenImageData, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height), "f");
+        __classPrivateFieldSet(this, _CanvasPixelsForProduction_offscreenImageData, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height, { colorSpace: "srgb" }), "f");
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_instances, "m", _CanvasPixelsForProduction_initializeAsNonTransparent).call(this);
     }
     setClippingRegion(xy, wh) {
@@ -89,24 +92,24 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     newSnapshot() {
         return new CanvasPixelsForProductionSnapshot(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f").data.slice());
     }
+    // TODO: unused?
     onWindowResize() {
         // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").width =
-            __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").getBoundingClientRect().width * window.devicePixelRatio;
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").height =
-            __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").getBoundingClientRect().height * window.devicePixelRatio;
+        // this.#htmlCanvas.width =
+        //   this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
+        // this.#htmlCanvas.height =
+        //   this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
         // seems like we have to set it every time the canvas size is changed
-        __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
+        // this.#htmlCanvasContext.imageSmoothingEnabled = false;
     }
     doRender() {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f"), 0, 0);
         const htmlCanvasSize = v_(__classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").height);
-        const scaleToFill = Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y);
+        const scaleToFill = Math.max(1, Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y));
         const centeringOffset = htmlCanvasSize
             .sub(this.canvasSize.mul(scaleToFill))
             .div(2)
             .floor();
-        // TODO: does the fitting algorithm take DPI into account? Maybe it would allow low res game to occupy more space?
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height, centeringOffset.x, centeringOffset.y, scaleToFill * this.canvasSize.x, scaleToFill * this.canvasSize.y);
     }
 }

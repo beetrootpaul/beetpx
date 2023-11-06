@@ -34,7 +34,7 @@ export class DrawSprite {
     fillPattern = BpxFillPattern.primaryOnly) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = scaleXy.floor();
-        const { width: imgW, height: imgH, rgba8bitData: imgBytes, } = sourceImageAsset;
+        const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
         // make sure xy1 is top-left and xy2 is bottom right
         sprite = new BpxSprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
         // clip sprite by image edges
@@ -43,7 +43,7 @@ export class DrawSprite {
         if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
             return;
         }
-        const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, colorMapping);
+        const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels, colorMapping);
         for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
             const canvasYBase = targetXy.y + spriteY * scaleXy.y;
             for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {

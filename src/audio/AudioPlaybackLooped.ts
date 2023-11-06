@@ -1,4 +1,4 @@
-import { Assets, SoundUrl } from "../Assets";
+import { Assets, BpxSoundUrl } from "../Assets";
 import { AudioPlayback, BpxAudioPlaybackId } from "./AudioPlayback";
 
 export class AudioPlaybackLooped extends AudioPlayback {
@@ -8,7 +8,7 @@ export class AudioPlaybackLooped extends AudioPlayback {
   readonly #sourceNode: AudioBufferSourceNode;
 
   constructor(
-    soundUrl: SoundUrl,
+    soundUrl: BpxSoundUrl,
     params: {
       assets: Assets;
       audioContext: AudioContext;

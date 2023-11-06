@@ -28,6 +28,7 @@ export class TestImage {
     this.asset = {
       width: normalizedAsciiImageLines[0]!.length,
       height: normalizedAsciiImageLines.length,
+      channels: 4,
       rgba8bitData: new Uint8ClampedArray(4 * normalizedAsciiImage.length),
     };
 

@@ -13,13 +13,12 @@ b_.init(
   {
     gameCanvasSize: "128x128",
     desiredUpdateFps: 60,
-    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
     debugFeatures: true,
   },
   {
     images: [{ url: "spritesheet.png" }],
     fonts: [],
-    sounds: [],
+    sounds: [{ url: "music_base.flac" }],
     jsons: [],
   },
 ).then(({ startGame }) => {
@@ -30,6 +29,8 @@ b_.init(
 
     prevDebugToggleState = false;
     nextDebugToggleState = false;
+
+    b_.playSoundLooped("music_base.flac");
   });
 
   b_.setOnUpdate(() => {

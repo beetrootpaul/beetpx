@@ -10,6 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _GameInput_specializedGameInputs, _GameInput_gamepadGameInput, _GameInput_eventsCapturesInLastUpdate, _GameInput_mostRecentInputMethods;
+import { HtmlTemplate } from "../HtmlTemplate";
 import { Button } from "./Button";
 import { Buttons } from "./Buttons";
 import { GamepadGameInput } from "./GamepadGameInput";
@@ -26,16 +27,11 @@ export class GameInput {
             browserType: params.browserType,
         }), "f");
         __classPrivateFieldSet(this, _GameInput_specializedGameInputs, [
-            new MouseGameInput({
-                muteButtonsSelector: params.muteButtonsSelector,
-                fullScreenButtonsSelector: params.fullScreenButtonsSelector,
-            }),
+            new MouseGameInput(),
             new KeyboardGameInput({
                 enableDebugInputs: params.enableDebugInputs,
             }),
-            new TouchGameInput({
-                visibleButtons: params.visibleTouchButtons,
-            }),
+            new TouchGameInput(),
             __classPrivateFieldGet(this, _GameInput_gamepadGameInput, "f"),
         ], "f");
         this.gameButtons = new Buttons();
@@ -72,6 +68,17 @@ export class GameInput {
         this.buttonDebugToggle.update(events.has("debug_toggle"));
         this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
         this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
+        HtmlTemplate.updatePressedClasses({
+            up: this.gameButtons.isPressed("up"),
+            down: this.gameButtons.isPressed("down"),
+            left: this.gameButtons.isPressed("left"),
+            right: this.gameButtons.isPressed("right"),
+            a: this.gameButtons.isPressed("a"),
+            b: this.gameButtons.isPressed("b"),
+            menu: this.gameButtons.isPressed("menu"),
+            mute: this.buttonMuteUnmute.isPressed,
+            fullscreen: this.buttonFullScreen.isPressed,
+        });
         return events.size > 0;
     }
     mostRecentInputMethods() {

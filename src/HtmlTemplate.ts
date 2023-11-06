@@ -1,23 +1,63 @@
 export class HtmlTemplate {
   static readonly selectors = {
-    display: "#display",
-    canvas: "#canvas",
+    fullScreenSubject: "body",
+    canvas: "#game_canvas",
 
-    touchControls: ".touch_controls",
+    startButton: "#screen_start_game__button",
 
-    controlsFullScreen: ".controls_fullscreen_toggle",
-    controlsMuteToggle: ".controls_mute_toggle",
+    controlsLeft: "#dpad_l",
+    controlsRight: "#dpad_r",
+    controlsUp: "#dpad_u",
+    controlsDown: "#dpad_d",
+    controlsUpLeft: "#dpad_ul",
+    controlsUpRight: "#dpad_ur",
+    controlsDownLeft: "#dpad_dl",
+    controlsDownRight: "#dpad_dr",
+    controlsA: "#button_a",
+    controlsB: "#button_b",
+    controlsMenu: "#button_menu",
 
-    controlsLeft: ".controls_left",
-    controlsRight: ".controls_right",
-    controlsUp: ".controls_up",
-    controlsDown: ".controls_down",
-    controlsA: ".controls_a",
-    controlsB: ".controls_b",
-    controlsMenu: ".controls_menu",
+    controlsFullScreen: "#button_fullscreen",
+    controlsMuteToggle: "#button_mute",
   };
 
-  static readonly classes = {
-    canvasDebugBorder: "debug",
-  };
+  static addLoadedClass(): void {
+    document.body.classList.add("loaded");
+  }
+
+  static addStartedClass(): void {
+    document.body.classList.add("started");
+  }
+
+  static updateMutedClass(isMuted: boolean): void {
+    document.body.classList[isMuted ? "add" : "remove"]("muted");
+  }
+
+  static updateDebugClass(isDebug: boolean): void {
+    document.body.classList[isDebug ? "add" : "remove"]("debug");
+  }
+
+  static updatePressedClasses(isPressed: {
+    up: boolean;
+    down: boolean;
+    left: boolean;
+    right: boolean;
+    a: boolean;
+    b: boolean;
+    menu: boolean;
+    mute: boolean;
+    fullscreen: boolean;
+  }): void {
+    document.body.classList[isPressed.up ? "add" : "remove"]("pressed_u");
+    document.body.classList[isPressed.down ? "add" : "remove"]("pressed_d");
+    document.body.classList[isPressed.left ? "add" : "remove"]("pressed_l");
+    document.body.classList[isPressed.right ? "add" : "remove"]("pressed_r");
+    document.body.classList[isPressed.a ? "add" : "remove"]("pressed_a");
+    document.body.classList[isPressed.b ? "add" : "remove"]("pressed_b");
+    document.body.classList[isPressed.menu ? "add" : "remove"]("pressed_menu");
+    document.body.classList[isPressed.mute ? "add" : "remove"]("pressed_mute");
+    document.body.classList[isPressed.fullscreen ? "add" : "remove"](
+      "pressed_fullscreen",
+    );
+  }
 }

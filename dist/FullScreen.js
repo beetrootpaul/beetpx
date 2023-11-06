@@ -10,18 +10,19 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _FullScreenSupported_instances, _FullScreenSupported_fullScreenSubject, _FullScreenSupported_nativeRequestFullscreen, _FullScreenSupported_nativeExitFullscreen, _FullScreenSupported_fullScreenOn, _FullScreenSupported_fullScreenOff;
+import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 export class FullScreen {
-    static newFor(fullScreenSubjectSelector, buttonsSelector) {
+    static create() {
         return document.fullscreenEnabled || document.webkitFullscreenEnabled
-            ? new FullScreenSupported(fullScreenSubjectSelector)
-            : new FullScreenNoop(buttonsSelector);
+            ? new FullScreenSupported()
+            : new FullScreenNoop();
     }
 }
 class FullScreenNoop {
-    constructor(buttonsSelector) {
+    constructor() {
         document
-            .querySelectorAll(buttonsSelector)
+            .querySelectorAll(HtmlTemplate.selectors.controlsFullScreen)
             .forEach((button) => {
             button.style.display = "none";
         });
@@ -30,15 +31,15 @@ class FullScreenNoop {
 }
 // noinspection SuspiciousTypeOfGuard
 class FullScreenSupported {
-    constructor(fullScreenSubjectSelector) {
+    constructor() {
         var _a, _b, _c, _d;
         _FullScreenSupported_instances.add(this);
         _FullScreenSupported_fullScreenSubject.set(this, void 0);
         _FullScreenSupported_nativeRequestFullscreen.set(this, void 0);
         _FullScreenSupported_nativeExitFullscreen.set(this, void 0);
-        const fullScreenSubject = document.querySelector(fullScreenSubjectSelector);
+        const fullScreenSubject = document.querySelector(HtmlTemplate.selectors.fullScreenSubject);
         if (!fullScreenSubject) {
-            throw Error(`Was unable to find a full screen subject by selector '${fullScreenSubjectSelector}'`);
+            throw Error(`Was unable to find a full screen subject by selector '${HtmlTemplate.selectors.fullScreenSubject}'`);
         }
         __classPrivateFieldSet(this, _FullScreenSupported_fullScreenSubject, fullScreenSubject, "f");
         const nativeRequestFullscreen = (_b = (_a = __classPrivateFieldGet(this, _FullScreenSupported_fullScreenSubject, "f").requestFullscreen) !== null && _a !== void 0 ? _a : __classPrivateFieldGet(this, _FullScreenSupported_fullScreenSubject, "f").webkitRequestFullscreen) !== null && _b !== void 0 ? _b : (() => { });

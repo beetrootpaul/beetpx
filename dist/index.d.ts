@@ -1,3 +1,5 @@
+import { PngDataArray } from 'fast-png';
+
 type BpxCanvasPixelsSnapshotId = number;
 interface CanvasPixelsSnapshot {
     get(index: number): BpxSolidColor;
@@ -130,8 +132,8 @@ type AssetsToLoad = {
     jsons: JsonAssetToLoad[];
 };
 type BpxImageUrl = string;
-type SoundUrl = string;
-type JsonUrl = string;
+type BpxSoundUrl = string;
+type BpxJsonUrl = string;
 type ImageAssetToLoad = {
     url: BpxImageUrl;
 };
@@ -141,15 +143,16 @@ type FontAssetToLoad = {
     imageBgColor: BpxSolidColor;
 };
 type SoundAssetToLoad = {
-    url: SoundUrl;
+    url: BpxSoundUrl;
 };
 type JsonAssetToLoad = {
-    url: JsonUrl;
+    url: BpxJsonUrl;
 };
 type ImageAsset = {
     width: number;
     height: number;
-    rgba8bitData: Uint8ClampedArray;
+    channels: 3 | 4;
+    rgba8bitData: PngDataArray;
 };
 type FontAsset = {
     font: BpxFont;
@@ -169,10 +172,14 @@ declare class Assets {
         decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
     });
     loadAssets(assetsToLoad: AssetsToLoad): Promise<void>;
+    /** NOTE: call `loadAssets` before this one */
     getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset;
+    /** NOTE: call `loadAssets` before this one */
     getFontAsset(fontId: BpxFontId): FontAsset;
-    getSoundAsset(urlOfAlreadyLoadedSound: SoundUrl): SoundAsset;
-    getJsonAsset(urlOfAlreadyLoadedJson: JsonUrl): JsonAsset;
+    /** NOTE: call `loadAssets` before this one */
+    getSoundAsset(urlOfAlreadyLoadedSound: BpxSoundUrl): SoundAsset;
+    /** NOTE: call `loadAssets` before this one */
+    getJsonAsset(urlOfAlreadyLoadedJson: BpxJsonUrl): JsonAsset;
 }
 
 type BpxEasingFn = (t: number) => number;
@@ -225,6 +232,7 @@ declare class BpxUtils {
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static trigSin(turnAngle: number): number;
+    static wait(millis: number): Promise<void>;
 }
 declare const u_: typeof BpxUtils;
 
@@ -238,12 +246,12 @@ type BpxSoundSequenceEntry = [
     SoundSequenceEntrySoundMain,
     ...SoundSequenceEntrySoundAdditional[]
 ];
-type SoundSequenceEntrySoundMain = SoundUrl | {
-    url: SoundUrl;
+type SoundSequenceEntrySoundMain = BpxSoundUrl | {
+    url: BpxSoundUrl;
     durationMs?: (fullSoundDurationMs: number) => number;
 };
-type SoundSequenceEntrySoundAdditional = SoundUrl | {
-    url: SoundUrl;
+type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
+    url: BpxSoundUrl;
 };
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
@@ -329,9 +337,6 @@ declare class GameInput {
     readonly buttonFrameByFrameToggle: Button;
     readonly buttonFrameByFrameStep: Button;
     constructor(params: {
-        visibleTouchButtons: BpxButtonName[];
-        muteButtonsSelector: string;
-        fullScreenButtonsSelector: string;
         enableDebugInputs: boolean;
         browserType: BpxBrowserType;
     });
@@ -376,8 +381,8 @@ declare class AudioApi {
     constructor(assets: Assets, audioContext: AudioContext);
     restart(): void;
     tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
-    playSoundOnce(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
-    playSoundLooped(soundUrl: SoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
+    playSoundOnce(soundUrl: BpxSoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
+    playSoundLooped(soundUrl: BpxSoundUrl, muteOnStart?: boolean): BpxAudioPlaybackId;
     playSoundSequence(soundSequence: BpxSoundSequence, muteOnStart?: boolean): BpxAudioPlaybackId;
     isAudioMuted(): boolean;
     muteAudio(opts?: {
@@ -419,9 +424,8 @@ declare class StorageApi {
 }
 
 type FrameworkOptions = {
-    gameCanvasSize: "64x64" | "128x128";
+    gameCanvasSize: "64x64" | "128x128" | "256x256";
     desiredUpdateFps: 30 | 60;
-    visibleTouchButtons: BpxButtonName[];
     debugFeatures: boolean;
 };
 type OnAssetsLoaded = {
@@ -438,7 +442,7 @@ declare class Framework {
     get renderFps(): number;
     constructor(options: FrameworkOptions);
     detectedBrowserType(): BpxBrowserType;
-    loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
+    init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
@@ -459,7 +463,7 @@ declare class Logger {
 
 declare class BeetPx {
     #private;
-    static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["loadAssets"]>;
+    static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["init"]>;
     static get debug(): typeof DebugMode.enabled;
     /**
      * Number of frames processed since game started.
@@ -528,16 +532,19 @@ declare const b_: typeof BeetPx;
 
 declare global {
     /**
-     * A globally available variable which tells whether you are using
-     *   a production bundle of the game (built with `beetpx prod`)
-     *   or not (e.g. run with `beetpx dev`).
-     *
      * Note: the generated documentation marks this variable as "Not Exported".
      *   This is *not* true.
      *
      * @notExported
      */
-    const __BEETPX_IS_PROD__: boolean;
+    const BEETPX__IS_PROD: boolean;
+    /**
+     * Note: the generated documentation marks this variable as "Not Exported".
+     *   This is *not* true.
+     *
+     * @notExported
+     */
+    const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

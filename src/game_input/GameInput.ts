@@ -1,6 +1,7 @@
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
+import { HtmlTemplate } from "../HtmlTemplate";
 import { Button } from "./Button";
-import { BpxButtonName, Buttons } from "./Buttons";
+import { Buttons } from "./Buttons";
 import { BpxGamepadType, GamepadGameInput } from "./GamepadGameInput";
 import { KeyboardGameInput } from "./KeyboardGameInput";
 import { MouseGameInput } from "./MouseGameInput";
@@ -41,9 +42,6 @@ export class GameInput {
   #mostRecentInputMethods: Set<GameInputMethod> = new Set();
 
   constructor(params: {
-    visibleTouchButtons: BpxButtonName[];
-    muteButtonsSelector: string;
-    fullScreenButtonsSelector: string;
     enableDebugInputs: boolean;
     browserType: BpxBrowserType;
   }) {
@@ -51,16 +49,11 @@ export class GameInput {
       browserType: params.browserType,
     });
     this.#specializedGameInputs = [
-      new MouseGameInput({
-        muteButtonsSelector: params.muteButtonsSelector,
-        fullScreenButtonsSelector: params.fullScreenButtonsSelector,
-      }),
+      new MouseGameInput(),
       new KeyboardGameInput({
         enableDebugInputs: params.enableDebugInputs,
       }),
-      new TouchGameInput({
-        visibleButtons: params.visibleTouchButtons,
-      }),
+      new TouchGameInput(),
       this.#gamepadGameInput,
     ];
 
@@ -105,6 +98,18 @@ export class GameInput {
     this.buttonDebugToggle.update(events.has("debug_toggle"));
     this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
     this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
+
+    HtmlTemplate.updatePressedClasses({
+      up: this.gameButtons.isPressed("up"),
+      down: this.gameButtons.isPressed("down"),
+      left: this.gameButtons.isPressed("left"),
+      right: this.gameButtons.isPressed("right"),
+      a: this.gameButtons.isPressed("a"),
+      b: this.gameButtons.isPressed("b"),
+      menu: this.gameButtons.isPressed("menu"),
+      mute: this.buttonMuteUnmute.isPressed,
+      fullscreen: this.buttonFullScreen.isPressed,
+    });
 
     return events.size > 0;
   }

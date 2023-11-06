@@ -15,17 +15,15 @@ import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
 import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
-import { BpxButtonName } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { StorageApi } from "./storage/StorageApi";
 
 export type FrameworkOptions = {
-  gameCanvasSize: "64x64" | "128x128";
+  gameCanvasSize: "64x64" | "128x128" | "256x256";
   // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
-  visibleTouchButtons: BpxButtonName[];
   debugFeatures: boolean;
 };
 
@@ -56,7 +54,6 @@ export class Framework {
 
   readonly assets: Assets;
 
-  readonly #htmlCanvas: HTMLCanvasElement;
   readonly #canvasPixels: CanvasPixels;
   readonly drawApi: DrawApi;
 
@@ -84,29 +81,24 @@ export class Framework {
         Framework.#storageDebugDisabledTrue
       : false;
 
-    Logger.debug("Framework options:", options);
+    Logger.debugBeetPx("Framework options:", options);
 
     this.#frameByFrame = false;
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
-
-    this.#loading = new Loading(HtmlTemplate.selectors.display);
 
     this.#gameCanvasSize =
       options.gameCanvasSize === "64x64"
         ? v_(64, 64)
         : options.gameCanvasSize === "128x128"
         ? v_(128, 128)
+        : options.gameCanvasSize === "256x256"
+        ? v_(256, 256)
         : BpxUtils.throwError(
             `Unsupported canvas size: "${options.gameCanvasSize}"`,
           );
 
     this.gameInput = new GameInput({
-      visibleTouchButtons: options.visibleTouchButtons,
-      // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-      muteButtonsSelector: HtmlTemplate.selectors.controlsMuteToggle,
-      // TODO: are those selectors for both touch and mouse? Even if so, make them separate
-      fullScreenButtonsSelector: HtmlTemplate.selectors.controlsFullScreen,
       enableDebugInputs: options.debugFeatures,
       browserType: this.#browserType,
     });
@@ -128,12 +120,21 @@ export class Framework {
 
     this.audioApi = new AudioApi(this.assets, audioContext);
 
-    this.#fullScreen = FullScreen.newFor(
-      HtmlTemplate.selectors.display,
-      HtmlTemplate.selectors.controlsFullScreen,
-    );
+    this.#loading = new Loading({
+      onStartClicked: () => {
+        this.audioApi
+          .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+          .then((resumed) => {
+            if (resumed) {
+              this.#alreadyResumedAudioContext = true;
+            }
+          });
+      },
+    });
 
-    this.#htmlCanvas =
+    this.#fullScreen = FullScreen.create();
+
+    const htmlCanvas =
       document.querySelector<HTMLCanvasElement>(
         HtmlTemplate.selectors.canvas,
       ) ??
@@ -143,7 +144,7 @@ export class Framework {
 
     this.#canvasPixels = new CanvasPixelsForProduction(
       this.#gameCanvasSize,
-      this.#htmlCanvas,
+      htmlCanvas,
       this.#htmlCanvasBackground,
     );
 
@@ -157,13 +158,14 @@ export class Framework {
     return this.#browserType;
   }
 
-  async loadAssets(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
-    return this.assets.loadAssets(assetsToLoad).then(() => {
-      Logger.infoBeetPx("initialized");
-      return {
-        startGame: this.#startGame.bind(this),
-      };
-    });
+  async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
+    await this.assets.loadAssets(assetsToLoad);
+
+    Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
+
+    return {
+      startGame: this.#startGame.bind(this),
+    };
   }
 
   setOnStarted(onStarted: () => void) {
@@ -189,8 +191,8 @@ export class Framework {
   }
 
   // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
-  #startGame(): void {
-    if (__BEETPX_IS_PROD__) {
+  async #startGame(): Promise<void> {
+    if (BEETPX__IS_PROD) {
       // A popup which prevents user from accidentally closing the browser tab during gameplay.
       // Implementation notes:
       // - returned message seems to be ignored by some browsers, therefore using `""`
@@ -212,9 +214,9 @@ export class Framework {
 
     this.#frameNumber = 0;
 
-    this.#onStarted?.();
+    await this.#loading.showStartScreen();
 
-    this.#loading.showApp();
+    this.#onStarted?.();
 
     this.gameInput.startListening();
 
@@ -285,21 +287,8 @@ export class Framework {
 
         this.#onDraw?.();
 
-        this.#render();
+        this.#canvasPixels.render();
       },
     });
-  }
-
-  #render(): void {
-    this.#drawDebugMargin();
-    this.#canvasPixels.render();
-  }
-
-  #drawDebugMargin(): void {
-    if (DebugMode.enabled) {
-      this.#htmlCanvas.classList.add(HtmlTemplate.classes.canvasDebugBorder);
-    } else {
-      this.#htmlCanvas.classList.remove(HtmlTemplate.classes.canvasDebugBorder);
-    }
   }
 }

@@ -27,11 +27,31 @@ const argv = require("yargs")
 const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
-const gameHtml = "index.html";
-const itchIoSimulationHtml = "itch_io_simulation.html";
+
+const gameHtmlTemplate = "index.template.html";
+
+const beetPxHtmlTemplatesInDir = path.resolve(
+  beetPxCodebaseDir,
+  "html_templates",
+);
+const beetPxAdditionalPublicAssetsOutDir = path.resolve(
+  gameCodebaseDir,
+  "public",
+  ".beetpx",
+);
+
 const buildOutDirAsExpectedByVitePreview = "dist/";
 const distZipDir = "dist/";
 const distZipFile = "game.zip";
+
+const beetPxVersion = JSON.parse(
+  fs.readFileSync(path.resolve(beetPxCodebaseDir, "package.json"), {
+    encoding: "utf8",
+  }),
+).version;
+if (typeof beetPxVersion !== "string" || beetPxVersion.length <= 0) {
+  throw Error('Unable to read "version" from "package.json"');
+}
 
 if (argv._.includes("dev")) {
   runDevCommand();
@@ -72,13 +92,32 @@ function runDevCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", itchIoSimulationHtml),
-    path.resolve(gameCodebaseDir, itchIoSimulationHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
-  fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", gameHtml),
-    path.resolve(gameCodebaseDir, gameHtml),
-  );
+
+  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
+    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  }
+  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
+      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
+    );
+  });
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#createserver
@@ -98,15 +137,17 @@ function runDevCommand() {
       //   and the latter does not work there.
       base: "./",
       server: {
-        open: itchIoSimulationHtml,
+        open: gameHtmlTemplate.replace(".template", ""),
         hmr: true,
         watch: {
           interval: 500,
           binaryInterval: 1000,
         },
       },
+      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
       define: {
-        __BEETPX_IS_PROD__: false,
+        __BEETPX__IS_PROD__: false,
+        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
       },
       logLevel: "info",
     })
@@ -128,9 +169,32 @@ function runBuildCommand() {
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
-    path.resolve(beetPxCodebaseDir, "html_templates", gameHtml),
-    path.resolve(gameCodebaseDir, gameHtml),
+    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
+
+  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
+    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  }
+  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
+      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
+    );
+  });
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#build
@@ -151,8 +215,10 @@ function runBuildCommand() {
         ),
         emptyOutDir: true,
       },
+      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
       define: {
-        __BEETPX_IS_PROD__: true,
+        __BEETPX__IS_PROD__: true,
+        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
       },
       logLevel: "info",
     })
@@ -211,5 +277,17 @@ function runZipCommand() {
 
   require("cross-zip").zipSync(inputDir, outputZip);
 
-  console.log(`Zip got created in: ${path.relative(process.cwd(), outputZip)}`);
+  const sizeBytes = fs.statSync(outputZip).size;
+  const sizeKibibytes = sizeBytes / 1024;
+  const sizeMebibytes = sizeKibibytes / 1024;
+  const sizePart =
+    sizeKibibytes >= 1024
+      ? `${sizeMebibytes.toFixed(1)} MiB`
+      : `${sizeKibibytes.toFixed(0)} KiB`;
+  console.log(
+    `Zip got created in: ${path.relative(
+      process.cwd(),
+      outputZip,
+    )} (${sizePart})`,
+  );
 }

@@ -1,3 +1,7 @@
+// @ts-ignore
+window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
+// @ts-ignore
+window.BEETPX__VERSION = __BEETPX__VERSION__;
 export { BpxCompositeColor, BpxMappingColor, BpxSolidColor, BpxTransparentColor, } from "./Color";
 export { BpxEasing } from "./Easing";
 export { BpxSprite } from "./Sprite";
@@ -13,13 +17,11 @@ export { u_ } from "./Utils";
 export { v_, v_0_0_, v_1_1_ } from "./Vector2d";
 export { timer_ } from "./misc/Timer";
 // TODO: remove comments from HTMLs from the generated game
-// TODO: improve bg color on itch around the game, but under the buttons
 // TODO: refactor HTML templates, rework canvas vs buttons layout vs screen orientation
 // TODO: remove ability to select touch button's text
 // TODO: fire pause menu event whenever browser tab is switched
 // TODO: iOS Safari: prevent selection of button text on long touch
 // TODO: make it possible to show game cover before the game loads
-// TODO: consider adding own start button (auto-focused) and make it auto-load in itch. And make sure this makes audio context always work
 // TODO: test out a flow in which I work with assets while working on game and have fast feedback loop. Maybe run a watcher on Aseprite file and run its CLI to export to `public/`?
 // TODO: write down a checklist of things to test manually, eg. game controllers support or browser tab close prevention
 // TODO: expose a global variable with a BeetPx version. Or at least `BeetPx.version`

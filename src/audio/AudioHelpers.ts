@@ -38,7 +38,7 @@ export class AudioHelpers {
   ): void {
     fadeInMillis = Math.max(0, fadeInMillis);
     Logger.debugBeetPx(
-      `AudioHelpers.muteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeInMillis: ${fadeInMillis})`,
+      `AudioHelpers.unmuteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeInMillis: ${fadeInMillis})`,
     );
 
     AudioHelpers.#tryNTimes(15, 100, () => {

@@ -15,17 +15,21 @@ import {
   v_0_0_,
 } from "../../../src";
 
+// TODO: EXTRACT PARTS OF THIS EXAMPLE TO SEPARATE TAILORED ONES
+
 const fps = 60;
 
 const updateCallsVisualization = {
-  history: Array.from({ length: 120 }, () => 0),
+  history: Array.from({ length: 252 }, () => 0),
   historyIndex: 0,
 };
 
 const renderFpsVisualization = {
-  history: Array.from({ length: 40 }, () => 0),
+  history: Array.from({ length: 84 }, () => 0),
   historyIndex: 0,
 };
+
+const problematicSprite = spr_("pico-8-font.png")(0, 0, 32, 32);
 
 const logoSprite = spr_("logo.png")(0, 0, 16, 16);
 const logoInnerColor = BpxSolidColor.fromRgbCssHex("#125359");
@@ -76,13 +80,12 @@ class Font2 implements BpxFont {
 
 b_.init(
   {
-    gameCanvasSize: "128x128",
+    gameCanvasSize: "256x256",
     desiredUpdateFps: fps,
-    visibleTouchButtons: ["left", "right", "up", "down", "a", "b", "menu"],
-    debugFeatures: !__BEETPX_IS_PROD__,
+    debugFeatures: !BEETPX__IS_PROD,
   },
   {
-    images: [{ url: "logo.png" }],
+    images: [{ url: "logo.png" }, { url: "pico-8-font.png" }],
     fonts: [
       {
         font: new Font1(),
@@ -148,7 +151,7 @@ b_.init(
   });
 
   b_.setOnDraw(() => {
-    b_.setClippingRegion(v_(1, 1), v_(126, 126));
+    b_.setClippingRegion(v_(1, 1), v_(254, 254));
 
     renderFpsVisualization.history[renderFpsVisualization.historyIndex] =
       b_.renderFps;
@@ -224,6 +227,8 @@ b_.init(
       }
     }
 
+    b_.sprite(problematicSprite, v_(200, 200));
+
     b_.removeClippingRegion();
 
     drawUpdateCallsVisualization();
@@ -273,7 +278,7 @@ function drawRenderFpsVisualization(): void {
     const bars = Math.round(renderFpsVisualization.history[columnIndex]! / 10);
     for (let barIndex = 0; barIndex < bars; barIndex++) {
       b_.rectFilled(
-        v_(columnIndex * 3 + 2, 125 - barIndex * 3),
+        v_(columnIndex * 3 + 2, 252 - barIndex * 3),
         v_(2, 2),
         columnIndex === renderFpsVisualization.historyIndex
           ? BpxSolidColor.fromRgbCssHex("#ffffff")

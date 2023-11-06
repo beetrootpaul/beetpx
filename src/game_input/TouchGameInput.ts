@@ -1,128 +1,229 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { BpxButtonName } from "./Buttons";
 import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { SpecializedGameInput } from "./SpecializedGameInput";
+
+type BitMask = number;
 
 export class TouchGameInput implements SpecializedGameInput {
   inputMethod: GameInputMethod = "touch";
 
-  static mapping: Array<{
-    event: BpxGameInputEvent;
-    button: BpxButtonName;
+  static readonly #bitMasks = {
+    up: 0b1000_00_0_00,
+    down: 0b0100_00_0_00,
+    left: 0b0010_00_0_00,
+    right: 0b0001_00_0_00,
+    a: 0b0000_10_0_00,
+    b: 0b0000_01_0_00,
+    menu: 0b0000_00_1_00,
+    muteUnmute: 0b0000_00_0_10,
+    fullScreen: 0b0000_00_0_01,
+  } as const;
+
+  readonly #config: Array<{
+    bitMask: BitMask;
+    events: BpxGameInputEvent[];
+    requiresStart: boolean;
     selector: string;
+    elements: HTMLElement[];
   }> = [
     {
-      event: "button_left",
-      button: "left",
-      selector: HtmlTemplate.selectors.controlsLeft,
+      bitMask: TouchGameInput.#bitMasks.up | TouchGameInput.#bitMasks.left,
+      events: ["button_up", "button_left"],
+      requiresStart: false,
+      selector: HtmlTemplate.selectors.controlsUpLeft,
+      elements: [],
     },
     {
-      event: "button_right",
-      button: "right",
-      selector: HtmlTemplate.selectors.controlsRight,
-    },
-    {
-      event: "button_up",
-      button: "up",
+      bitMask: TouchGameInput.#bitMasks.up,
+      events: ["button_up"],
+      requiresStart: false,
       selector: HtmlTemplate.selectors.controlsUp,
+      elements: [],
     },
     {
-      event: "button_down",
-      button: "down",
+      bitMask: TouchGameInput.#bitMasks.up | TouchGameInput.#bitMasks.right,
+      events: ["button_up", "button_right"],
+      requiresStart: false,
+      selector: HtmlTemplate.selectors.controlsUpRight,
+      elements: [],
+    },
+    {
+      bitMask: TouchGameInput.#bitMasks.left,
+      events: ["button_left"],
+      requiresStart: false,
+      selector: HtmlTemplate.selectors.controlsLeft,
+      elements: [],
+    },
+    {
+      bitMask: TouchGameInput.#bitMasks.right,
+      events: ["button_right"],
+      requiresStart: false,
+      selector: HtmlTemplate.selectors.controlsRight,
+      elements: [],
+    },
+    {
+      bitMask: TouchGameInput.#bitMasks.down | TouchGameInput.#bitMasks.left,
+      events: ["button_down", "button_left"],
+      requiresStart: false,
+      selector: HtmlTemplate.selectors.controlsDownLeft,
+      elements: [],
+    },
+    {
+      bitMask: TouchGameInput.#bitMasks.down,
+      events: ["button_down"],
+      requiresStart: false,
       selector: HtmlTemplate.selectors.controlsDown,
+      elements: [],
     },
     {
-      event: "button_a",
-      button: "a",
+      bitMask: TouchGameInput.#bitMasks.down | TouchGameInput.#bitMasks.right,
+      events: ["button_down", "button_right"],
+      requiresStart: false,
+      selector: HtmlTemplate.selectors.controlsDownRight,
+      elements: [],
+    },
+    {
+      bitMask: TouchGameInput.#bitMasks.a,
+      events: ["button_a"],
+      requiresStart: false,
       selector: HtmlTemplate.selectors.controlsA,
+      elements: [],
     },
     {
-      event: "button_b",
-      button: "b",
+      bitMask: TouchGameInput.#bitMasks.b,
+      events: ["button_b"],
+      requiresStart: false,
       selector: HtmlTemplate.selectors.controlsB,
+      elements: [],
     },
     {
-      event: "button_menu",
-      button: "menu",
+      bitMask: TouchGameInput.#bitMasks.menu,
+      events: ["button_menu"],
+      requiresStart: true,
       selector: HtmlTemplate.selectors.controlsMenu,
+      elements: [],
+    },
+    {
+      bitMask: TouchGameInput.#bitMasks.muteUnmute,
+      events: ["mute_unmute_toggle"],
+      requiresStart: true,
+      selector: HtmlTemplate.selectors.controlsMuteToggle,
+      elements: [],
+    },
+    {
+      bitMask: TouchGameInput.#bitMasks.fullScreen,
+      events: ["full_screen"],
+      requiresStart: true,
+      selector: HtmlTemplate.selectors.controlsFullScreen,
+      elements: [],
     },
   ];
 
-  readonly #eventsAndButtons: Map<BpxGameInputEvent, HTMLElement[]> = new Map([
-    ["button_left", []],
-    ["button_right", []],
-    ["button_up", []],
-    ["button_down", []],
-    ["button_a", []],
-    ["button_b", []],
-    ["button_menu", []],
-  ]);
+  readonly #ongoingTouches: Map<Touch["identifier"], BitMask> = new Map();
 
-  readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
-    new Set<BpxGameInputEvent>();
-
-  constructor(params: { visibleButtons: BpxButtonName[] }) {
-    TouchGameInput.mapping.forEach(({ event, button, selector }) => {
-      const touchButtonElements =
-        document.querySelectorAll<HTMLElement>(selector);
-      this.#eventsAndButtons.get(event)!.push(...touchButtonElements);
-      if (params.visibleButtons.includes(button)) {
-        for (const el of touchButtonElements) {
-          el.classList.remove("hidden");
-        }
-      }
+  constructor() {
+    this.#config.forEach(({ selector, elements }) => {
+      elements.push(...document.querySelectorAll<HTMLElement>(selector));
     });
   }
 
   startListening(): void {
-    document
-      .querySelectorAll<HTMLElement>(HtmlTemplate.selectors.touchControls)
-      .forEach((touchArea) => {
-        touchArea.addEventListener("touchstart", (touchEvent) => {
-          this.#handleTouchEvent(touchEvent);
-        });
-        touchArea.addEventListener("touchmove", (touchEvent) => {
-          this.#handleTouchEvent(touchEvent);
-        });
-        touchArea.addEventListener("touchcancel", (touchEvent) => {
-          this.#handleTouchEvent(touchEvent);
-        });
-        touchArea.addEventListener("touchend", (touchEvent) => {
-          this.#handleTouchEvent(touchEvent);
-        });
-      });
+    document.addEventListener("touchstart", this.#handleTouchEvent.bind(this));
+    document.addEventListener("touchmove", this.#handleTouchEvent.bind(this));
+    document.addEventListener("touchcancel", this.#handleTouchEvent.bind(this));
+    document.addEventListener("touchend", this.#handleTouchEvent.bind(this));
   }
 
   #handleTouchEvent(touchEvent: TouchEvent): void {
-    for (const [gameInputEvent, buttons] of this.#eventsAndButtons.entries()) {
-      let hasTouchWithinButtonBounds = false;
-      Array.from(touchEvent.touches).forEach((touch) => {
-        buttons.forEach((b) => {
-          const boundingRect = b.getBoundingClientRect();
+    // Try to prevent iOS Safari from doing helpful things that do not apply
+    //   to a game like: text selection, div selection, area zoom on a double
+    //   tap, etc.
+    touchEvent.preventDefault();
+
+    for (const touch of touchEvent.changedTouches) {
+      if (touchEvent.type === "touchmove") {
+        let detectedEvents = 0;
+        for (const { elements, bitMask, requiresStart } of this.#config) {
           if (
-            touch.clientX > boundingRect.left &&
-            touch.clientX < boundingRect.right &&
-            touch.clientY > boundingRect.top &&
-            touch.clientY < boundingRect.bottom
+            !requiresStart &&
+            this.#isAnyElementTouched(elements, touch, bitMask)
           ) {
-            hasTouchWithinButtonBounds = true;
+            detectedEvents |= bitMask;
           }
-        });
-      });
-      if (hasTouchWithinButtonBounds) {
-        this.#eventsSinceLastUpdate.add(gameInputEvent);
-      } else {
-        this.#eventsSinceLastUpdate.delete(gameInputEvent);
+        }
+        this.#ongoingTouches.set(touch.identifier, detectedEvents);
+      } else if (touchEvent.type === "touchstart") {
+        let detectedEvents = 0;
+        for (const { elements, bitMask, events } of this.#config) {
+          if (this.#isAnyElementTouched(elements, touch, bitMask)) {
+            detectedEvents |= bitMask;
+          }
+        }
+        this.#ongoingTouches.set(touch.identifier, detectedEvents);
+      } else if (
+        touchEvent.type === "touchend" ||
+        touchEvent.type === "touchcancel"
+      ) {
+        this.#ongoingTouches.delete(touch.identifier);
       }
     }
+  }
+
+  #isAnyElementTouched(
+    elements: HTMLElement[],
+    touch: Touch,
+    bitMask: BitMask,
+  ): boolean {
+    for (const el of elements) {
+      const bcr = el.getBoundingClientRect();
+      if (
+        touch.clientX >=
+          bcr.left -
+            (bitMask & TouchGameInput.#bitMasks.left ? bcr.width : 0) &&
+        touch.clientX <=
+          bcr.right +
+            (bitMask & TouchGameInput.#bitMasks.right ? bcr.width : 0) &&
+        touch.clientY >=
+          bcr.top - (bitMask & TouchGameInput.#bitMasks.up ? bcr.height : 0) &&
+        touch.clientY <=
+          bcr.bottom +
+            (bitMask & TouchGameInput.#bitMasks.down ? bcr.height : 0)
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   update(eventsCollector: Set<BpxGameInputEvent>): boolean {
     let anythingAdded = false;
 
-    for (const event of this.#eventsSinceLastUpdate) {
-      eventsCollector.add(event);
-      anythingAdded = true;
+    for (const [
+      touchIdentifier,
+      ongoingEvents,
+    ] of this.#ongoingTouches.entries()) {
+      for (const { bitMask, events } of this.#config) {
+        if ((ongoingEvents & bitMask) === bitMask) {
+          for (const event of events) {
+            eventsCollector.add(event);
+          }
+        }
+      }
+
+      // On macOS Chrome and Safari touch events are not registered during full
+      //   screen transition. If user touches the button for a typical short duration,
+      //   it ends up recognized as still pressed after the full screen transition
+      //   ends. Therefore, in order to toggle full screen back, user has to press
+      //   the button twice: once to "release" the key, and second time to initiate
+      //   the next full screen transition.
+      // As a workaround we do not keep "full_screen" event "pressed", so the framework
+      //   will recognize it as a key being up immediately.
+      if (ongoingEvents & TouchGameInput.#bitMasks.fullScreen) {
+        this.#ongoingTouches.set(
+          touchIdentifier,
+          ongoingEvents & ~TouchGameInput.#bitMasks.fullScreen,
+        );
+      }
     }
 
     return anythingAdded;

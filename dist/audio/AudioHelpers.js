@@ -33,7 +33,7 @@ export class AudioHelpers {
     }
     static unmuteGain(gainNode, audioContextCurrentTime, fadeInMillis, onUnmuted = u_.noop) {
         fadeInMillis = Math.max(0, fadeInMillis);
-        Logger.debugBeetPx(`AudioHelpers.muteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeInMillis: ${fadeInMillis})`);
+        Logger.debugBeetPx(`AudioHelpers.unmuteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeInMillis: ${fadeInMillis})`);
         __classPrivateFieldGet(AudioHelpers, _a, "m", _AudioHelpers_tryNTimes).call(AudioHelpers, 15, 100, () => {
             if (fadeInMillis > 0) {
                 gainNode.gain.setValueCurveAtTime([gainNode.gain.value, 1], audioContextCurrentTime, fadeInMillis / 1000);
