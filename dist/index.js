@@ -1,6 +1,6 @@
-// @ts-expect-error
+// @ts-ignore
 window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
-// @ts-expect-error
+// @ts-ignore
 window.BEETPX__VERSION = __BEETPX__VERSION__;
 export { BpxCompositeColor, BpxMappingColor, BpxSolidColor, BpxTransparentColor, } from "./Color";
 export { BpxEasing } from "./Easing";

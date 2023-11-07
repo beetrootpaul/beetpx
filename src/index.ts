@@ -18,9 +18,9 @@ declare global {
   const BEETPX__VERSION: string;
 }
 
-// @ts-expect-error
+// @ts-ignore
 window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
-// @ts-expect-error
+// @ts-ignore
 window.BEETPX__VERSION = __BEETPX__VERSION__;
 
 export { type BpxImageUrl, type BpxJsonUrl, type BpxSoundUrl } from "./Assets";
