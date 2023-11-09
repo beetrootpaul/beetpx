@@ -32,9 +32,10 @@ export class KeyboardGameInput implements SpecializedGameInput {
     ["x", "button_b"],
     ["x", "button_b"],
 
-    ["Escape", "button_menu"],
     ["p", "button_menu"],
     ["P", "button_menu"],
+    ["Escape", "button_menu"],
+    ["Enter", "button_menu"],
 
     ["m", "mute_unmute_toggle"],
     ["M", "mute_unmute_toggle"],

@@ -42,8 +42,9 @@ export class StandardView {
     g_b: spr(144, 24, 5, 6),
     g_x: spr(152, 24, 5, 6),
     //
-    k_esc: spr(128, 32, 13, 6),
     k_p: spr(144, 32, 5, 6),
+    k_esc: spr(128, 32, 13, 6),
+    k_enter: spr(149, 30, 8, 10),
     //
     k_m: spr(128, 40, 5, 6),
     k_f: spr(136, 40, 5, 6),
@@ -217,8 +218,9 @@ export class StandardView {
       b_.sprite(ps.g_dualsense_square, v_(111, 51));
     }
     if (ip.menu) {
-      b_.sprite(ps.k_esc, v_(17, 65));
-      b_.sprite(ps.k_p, v_(37, 65));
+      b_.sprite(ps.k_p, v_(6, 65));
+      b_.sprite(ps.k_esc, v_(16, 65));
+      b_.sprite(ps.k_enter, v_(34, 61));
       b_.sprite(ps.g_xbox_menu, v_(84, 65));
       b_.sprite(ps.g_ps_menu, v_(100, 65));
     }
