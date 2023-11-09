@@ -5,6 +5,7 @@ import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Framework, type FrameworkOptions } from "./Framework";
+import { FullScreen } from "./FullScreen";
 import { Buttons } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
 import { Logger } from "./logger/Logger";
@@ -270,6 +271,24 @@ export class BeetPx {
     ...args
   ) => {
     return this.#tryGetFramework().audioApi.__internal__globalGainNode(...args);
+  };
+
+  //
+  // Full Screen
+  //
+
+  static isFullScreenSupported: FullScreen["isFullScreenSupported"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().fullScreen.isFullScreenSupported(...args);
+  };
+
+  static isInFullScreen: FullScreen["isInFullScreen"] = (...args) => {
+    return this.#tryGetFramework().fullScreen.isInFullScreen(...args);
+  };
+
+  static toggleFullScreen: FullScreen["toggleFullScreen"] = (...args) => {
+    return this.#tryGetFramework().fullScreen.toggleFullScreen(...args);
   };
 
   //

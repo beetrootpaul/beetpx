@@ -415,6 +415,24 @@ declare class DebugMode {
     static set enabled(value: boolean);
 }
 
+declare global {
+    interface Document {
+        webkitFullscreenEnabled?: boolean;
+        webkitFullscreenElement?: () => Element;
+        webkitExitFullscreen?: () => void;
+    }
+    interface Element {
+        webkitRequestFullscreen?: () => void;
+    }
+}
+declare abstract class FullScreen {
+    #private;
+    isFullScreenSupported(): boolean;
+    abstract isInFullScreen(): boolean;
+    static create(): FullScreen;
+    abstract toggleFullScreen(): void;
+}
+
 type PersistedStateValueContraints = Record<string, string | number | boolean | null>;
 declare class StorageApi {
     #private;
@@ -435,6 +453,7 @@ declare class Framework {
     #private;
     readonly gameInput: GameInput;
     readonly audioApi: AudioApi;
+    readonly fullScreen: FullScreen;
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
@@ -519,6 +538,9 @@ declare class BeetPx {
     static stopPlayback: AudioApi["stopPlayback"];
     static __internal__audioContext: AudioApi["__internal__audioContext"];
     static __internal__globalGainNode: AudioApi["__internal__globalGainNode"];
+    static isFullScreenSupported: FullScreen["isFullScreenSupported"];
+    static isInFullScreen: FullScreen["isInFullScreen"];
+    static toggleFullScreen: FullScreen["toggleFullScreen"];
     static savePersistedState: StorageApi["savePersistedState"];
     static loadPersistedState: StorageApi["loadPersistedState"];
     static clearPersistedState: StorageApi["clearPersistedState"];

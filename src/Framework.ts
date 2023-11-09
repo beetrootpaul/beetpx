@@ -48,7 +48,7 @@ export class Framework {
   readonly gameInput: GameInput;
   readonly #gameLoop: GameLoop;
   readonly audioApi: AudioApi;
-  readonly #fullScreen: FullScreen;
+  readonly fullScreen: FullScreen;
 
   readonly storageApi: StorageApi;
 
@@ -132,7 +132,7 @@ export class Framework {
       },
     });
 
-    this.#fullScreen = FullScreen.create();
+    this.fullScreen = FullScreen.create();
 
     const htmlCanvas =
       document.querySelector<HTMLCanvasElement>(
@@ -223,7 +223,7 @@ export class Framework {
     this.#gameLoop.start({
       updateFn: () => {
         if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
-          this.#fullScreen.toggle();
+          this.fullScreen.toggleFullScreen();
         }
         if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
           if (this.audioApi.isAudioMuted()) {

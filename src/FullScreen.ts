@@ -15,17 +15,30 @@ declare global {
 }
 
 export abstract class FullScreen {
+  // noinspection PointlessBooleanExpressionJS
+  static readonly #isFullScreenSupported: boolean = !!(
+    document.fullscreenEnabled || document.webkitFullscreenEnabled
+  );
+
+  isFullScreenSupported(): boolean {
+    return FullScreen.#isFullScreenSupported;
+  }
+
+  abstract isInFullScreen(): boolean;
+
   static create(): FullScreen {
-    return document.fullscreenEnabled || document.webkitFullscreenEnabled
+    return FullScreen.#isFullScreenSupported
       ? new FullScreenSupported()
       : new FullScreenNoop();
   }
 
-  abstract toggle(): void;
+  abstract toggleFullScreen(): void;
 }
 
-class FullScreenNoop implements FullScreen {
+class FullScreenNoop extends FullScreen {
   constructor() {
+    super();
+
     document
       .querySelectorAll<HTMLElement>(HtmlTemplate.selectors.controlsFullScreen)
       .forEach((button) => {
@@ -33,17 +46,23 @@ class FullScreenNoop implements FullScreen {
       });
   }
 
-  toggle(): void {}
+  isInFullScreen(): boolean {
+    return false;
+  }
+
+  toggleFullScreen(): void {}
 }
 
 // noinspection SuspiciousTypeOfGuard
-class FullScreenSupported implements FullScreen {
+class FullScreenSupported extends FullScreen {
   readonly #fullScreenSubject: Element;
 
   readonly #nativeRequestFullscreen: () => void | Promise<void>;
   readonly #nativeExitFullscreen: () => void | Promise<void>;
 
   constructor() {
+    super();
+
     const fullScreenSubject = document.querySelector(
       HtmlTemplate.selectors.fullScreenSubject,
     );
@@ -67,8 +86,12 @@ class FullScreenSupported implements FullScreen {
     this.#nativeExitFullscreen = nativeExitFullscreen.bind(document);
   }
 
-  toggle(): void {
-    if (document.fullscreenElement || document.webkitFullscreenElement) {
+  isInFullScreen(): boolean {
+    return !!(document.fullscreenElement || document.webkitFullscreenElement);
+  }
+
+  toggleFullScreen(): void {
+    if (this.isInFullScreen()) {
       this.#fullScreenOff();
     } else {
       this.#fullScreenOn();

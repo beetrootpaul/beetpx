@@ -205,6 +205,18 @@ BeetPx.__internal__globalGainNode = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.__internal__globalGainNode(...args);
 };
 //
+// Full Screen
+//
+BeetPx.isFullScreenSupported = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).fullScreen.isFullScreenSupported(...args);
+};
+BeetPx.isInFullScreen = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).fullScreen.isInFullScreen(...args);
+};
+BeetPx.toggleFullScreen = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).fullScreen.toggleFullScreen(...args);
+};
+//
 // Storage API
 //
 BeetPx.savePersistedState = (...args) => {
