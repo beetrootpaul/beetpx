@@ -189,8 +189,6 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
                     else {
                         window.localStorage.setItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey), __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue));
                     }
-                    // TODO: BRING IT BACK
-                    // this.#redrawDebugMargin();
                 }
                 if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
                     __classPrivateFieldSet(this, _Framework_frameByFrame, !__classPrivateFieldGet(this, _Framework_frameByFrame, "f"), "f");

@@ -5,14 +5,28 @@
 const path = require("path");
 const fs = require("fs");
 
+const yargsBuilderHtmlTitle = {
+  htmlTitle: {
+    type: "string",
+    describe: "A title to use in <title> tag of a generated HTML page",
+    demandOption: false,
+    requiresArg: true,
+  },
+};
+
 const argv = require("yargs")
   .strict()
   .scriptName("beetpx")
   .command(
     ["dev", "$0"],
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
+    {
+      ...yargsBuilderHtmlTitle,
+    },
   )
-  .command("build", "Builds a production-ready bundle with the game.")
+  .command("build", "Builds a production-ready bundle with the game.", {
+    ...yargsBuilderHtmlTitle,
+  })
   .command("preview", "Starts a production-ready bundle of the game.")
   .command(
     "zip",
@@ -53,16 +67,15 @@ if (typeof beetPxVersion !== "string" || beetPxVersion.length <= 0) {
   throw Error('Unable to read "version" from "package.json"');
 }
 
-if (argv._.includes("dev")) {
-  runDevCommand();
+if (argv._.includes("dev") || argv._.length <= 0) {
+  runDevCommand({ htmlTitle: argv.htmlTitle ?? "BeetPx game" });
 } else if (argv._.includes("build")) {
-  runBuildCommand();
+  runBuildCommand({ htmlTitle: argv.htmlTitle ?? "BeetPx game" });
 } else if (argv._.includes("preview")) {
   runPreviewCommand();
 } else if (argv._.includes("zip")) {
   runZipCommand();
 } else {
-  // TODO: make yargs error on invalid command
   throw Error("This code should not be reached :-)");
 }
 
@@ -85,7 +98,9 @@ function WatchPublicDir() {
   };
 }
 
-function runDevCommand() {
+function runDevCommand(params) {
+  const htmlTitle = params.htmlTitle;
+
   fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
     recursive: true,
   });
@@ -93,6 +108,10 @@ function runDevCommand() {
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
     path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
+  );
+  injectHtmlTitle(
+    htmlTitle,
     path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
 
@@ -162,7 +181,9 @@ function runDevCommand() {
     });
 }
 
-function runBuildCommand() {
+function runBuildCommand(params) {
+  const htmlTitle = params.htmlTitle;
+
   fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
     recursive: true,
   });
@@ -170,6 +191,10 @@ function runBuildCommand() {
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   fs.copyFileSync(
     path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
+  );
+  injectHtmlTitle(
+    htmlTitle,
     path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
   );
 
@@ -289,5 +314,15 @@ function runZipCommand() {
       process.cwd(),
       outputZip,
     )} (${sizePart})`,
+  );
+}
+
+function injectHtmlTitle(htmlTitle, filePath) {
+  fs.writeFileSync(
+    filePath,
+    fs
+      .readFileSync(filePath, { encoding: "utf8" })
+      .replace("__HTML_TITLE__", htmlTitle),
+    { encoding: "utf8" },
   );
 }

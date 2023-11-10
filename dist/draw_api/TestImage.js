@@ -27,8 +27,6 @@ export class TestImage {
                 "/" +
                 normalizedAsciiImage +
                 ".png";
-        // TODO: REMOVE
-        console.log(this.uniqueUrl);
         for (let i = 0; i < this.asset.width * this.asset.height; i += 1) {
             const color = asciiToColor[normalizedAsciiImage[i]];
             if (!color) {

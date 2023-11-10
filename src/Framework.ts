@@ -251,8 +251,6 @@ export class Framework {
               Framework.#storageDebugDisabledTrue,
             );
           }
-          // TODO: BRING IT BACK
-          // this.#redrawDebugMargin();
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
           this.#frameByFrame = !this.#frameByFrame;

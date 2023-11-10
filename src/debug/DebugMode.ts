@@ -14,5 +14,3 @@ export class DebugMode {
     HtmlTemplate.updateDebugClass(DebugMode.enabled);
   }
 }
-
-// TODO: consider `private _abc` notation instead of `#abc`
