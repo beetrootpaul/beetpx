@@ -15,6 +15,7 @@ import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
 import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
+import { Button } from "./game_input/Button";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
@@ -82,6 +83,14 @@ export class Framework {
       : false;
 
     Logger.debugBeetPx("Framework options:", options);
+
+    if (options.desiredUpdateFps !== 30 && options.desiredUpdateFps !== 60) {
+      BpxUtils.throwError(
+        `Unsupported desiredUpdateFps: ${options.desiredUpdateFps}`,
+      );
+    }
+
+    Button.setRepeatingParamsFor(options.desiredUpdateFps);
 
     this.#frameByFrame = false;
 

@@ -315,8 +315,9 @@ declare class DrawApi {
 
 declare class Button {
     #private;
-    static readonly repeatingFramesStart = 30;
-    static readonly repeatingFramesInterval = 8;
+    static get repeatingFramesStart(): number;
+    static get repeatingFramesInterval(): number;
+    static setRepeatingParamsFor(updateFps: 30 | 60): void;
     get isPressed(): boolean;
     wasJustPressed(repeating: boolean): boolean;
     wasJustReleased(repeating: boolean): boolean;

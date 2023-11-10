@@ -1,9 +1,32 @@
 import { BpxTimer } from "../misc/Timer";
+import { BpxUtils } from "../Utils";
 
 export class Button {
-  // TODO: these numbers work good for 60 FPS. Make them depending on FPS to have the same durations in seconds
-  static readonly repeatingFramesStart = 30;
-  static readonly repeatingFramesInterval = 8;
+  static #repeatingFramesStart = 30;
+  static #repeatingFramesInterval = 8;
+
+  static get repeatingFramesStart(): number {
+    return Button.#repeatingFramesStart;
+  }
+
+  static get repeatingFramesInterval(): number {
+    return Button.#repeatingFramesInterval;
+  }
+
+  static setRepeatingParamsFor(updateFps: 30 | 60) {
+    Button.#repeatingFramesStart =
+      updateFps === 30
+        ? 15
+        : updateFps === 60
+        ? 30
+        : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
+    Button.#repeatingFramesInterval =
+      updateFps === 30
+        ? 4
+        : updateFps === 60
+        ? 8
+        : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
+  }
 
   #isPressed = false;
   #wasJustToggled = false;

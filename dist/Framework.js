@@ -32,6 +32,7 @@ import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
+import { Button } from "./game_input/Button";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
@@ -65,6 +66,10 @@ export class Framework {
                 __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue)
             : false;
         Logger.debugBeetPx("Framework options:", options);
+        if (options.desiredUpdateFps !== 30 && options.desiredUpdateFps !== 60) {
+            BpxUtils.throwError(`Unsupported desiredUpdateFps: ${options.desiredUpdateFps}`);
+        }
+        Button.setRepeatingParamsFor(options.desiredUpdateFps);
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
