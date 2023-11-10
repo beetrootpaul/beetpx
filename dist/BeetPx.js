@@ -84,6 +84,9 @@ BeetPx.logError = (...args) => {
 BeetPx.isPressed = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.isPressed(...args);
 };
+BeetPx.areDirectionsPressedAsVector = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.areDirectionsPressedAsVector(...args);
+};
 BeetPx.setRepeating = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.setRepeating(...args);
 };

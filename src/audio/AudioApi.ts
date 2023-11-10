@@ -155,7 +155,6 @@ export class AudioApi {
     return playback.id;
   }
 
-  // TODO: make it visible somewhere in the GUI whether audio is muted or not
   isAudioMuted(): boolean {
     return this.#isMuted;
   }

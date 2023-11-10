@@ -79,7 +79,6 @@ export class Assets {
     this.#decodeAudioData = params.decodeAudioData;
   }
 
-  // TODO: game loading screen during assets loading?
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
     assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {
       this.#fonts.set(font.id, { font, imageTextColor, imageBgColor });

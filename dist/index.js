@@ -37,3 +37,4 @@ export { timer_ } from "./misc/Timer";
 // TODO: consider regenerating docs and compiled files only on released versions. Like: have a version
 //       bump script which asks whether it's major or minor or patch and checks if we are on `main`, then
 //       generates docs etc. before the commit
+// TODO: rework examples

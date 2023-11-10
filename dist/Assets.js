@@ -31,7 +31,6 @@ export class Assets {
         _Assets_jsons.set(this, new Map());
         __classPrivateFieldSet(this, _Assets_decodeAudioData, params.decodeAudioData, "f");
     }
-    // TODO: game loading screen during assets loading?
     loadAssets(assetsToLoad) {
         return __awaiter(this, void 0, void 0, function* () {
             assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {

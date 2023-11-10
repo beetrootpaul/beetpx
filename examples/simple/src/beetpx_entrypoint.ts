@@ -58,19 +58,9 @@ b_.init(
       isMusicPaused = !isMusicPaused;
     }
 
-    // TODO: consider exposing some XY (-1,1) representation of directions
-    if (b_.isPressed("right")) {
-      logoPositionBase = logoPositionBase.add(velocity, 0);
-    }
-    if (b_.isPressed("left")) {
-      logoPositionBase = logoPositionBase.add(-velocity, 0);
-    }
-    if (b_.isPressed("up")) {
-      logoPositionBase = logoPositionBase.add(0, -velocity);
-    }
-    if (b_.isPressed("down")) {
-      logoPositionBase = logoPositionBase.add(0, velocity);
-    }
+    logoPositionBase = logoPositionBase.add(
+      b_.areDirectionsPressedAsVector().mul(velocity),
+    );
 
     logoPositionOffset = v_(
       Math.cos((b_.frameNumber / 30) * Math.PI),

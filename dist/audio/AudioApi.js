@@ -124,7 +124,6 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f").set(playback.id, playback);
         return playback.id;
     }
-    // TODO: make it visible somewhere in the GUI whether audio is muted or not
     isAudioMuted() {
         return __classPrivateFieldGet(this, _AudioApi_isMuted, "f");
     }

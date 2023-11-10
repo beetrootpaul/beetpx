@@ -1,3 +1,4 @@
+import { BpxVector2d, v_ } from "../Vector2d";
 import { Button } from "./Button";
 import { BpxGameInputEvent } from "./GameInput";
 
@@ -57,6 +58,13 @@ export class Buttons {
       case "menu":
         return this.#menu.isPressed;
     }
+  }
+
+  areDirectionsPressedAsVector(): BpxVector2d {
+    return v_(
+      (this.#left.isPressed ? -1 : 0) + (this.#right.isPressed ? 1 : 0),
+      (this.#up.isPressed ? -1 : 0) + (this.#down.isPressed ? 1 : 0),
+    );
   }
 
   setRepeating(button: BpxButtonName, repeating: boolean): void {

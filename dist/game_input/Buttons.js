@@ -10,6 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_a, _Buttons_b, _Buttons_menu, _Buttons_repeatingLeft, _Buttons_repeatingRight, _Buttons_repeatingUp, _Buttons_repeatingDown, _Buttons_repeatingA, _Buttons_repeatingB, _Buttons_repeatingMenu;
+import { v_ } from "../Vector2d";
 import { Button } from "./Button";
 export class Buttons {
     constructor() {
@@ -54,6 +55,9 @@ export class Buttons {
             case "menu":
                 return __classPrivateFieldGet(this, _Buttons_menu, "f").isPressed;
         }
+    }
+    areDirectionsPressedAsVector() {
+        return v_((__classPrivateFieldGet(this, _Buttons_left, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_right, "f").isPressed ? 1 : 0), (__classPrivateFieldGet(this, _Buttons_up, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_down, "f").isPressed ? 1 : 0));
     }
     setRepeating(button, repeating) {
         switch (button) {

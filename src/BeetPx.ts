@@ -97,6 +97,13 @@ export class BeetPx {
     return this.#tryGetFramework().gameInput.gameButtons.isPressed(...args);
   };
 
+  static areDirectionsPressedAsVector: Buttons["areDirectionsPressedAsVector"] =
+    (...args) => {
+      return this.#tryGetFramework().gameInput.gameButtons.areDirectionsPressedAsVector(
+        ...args,
+      );
+    };
+
   static setRepeating: Buttons["setRepeating"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.setRepeating(...args);
   };

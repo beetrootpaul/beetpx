@@ -15,8 +15,6 @@ import {
   v_0_0_,
 } from "../../../src";
 
-// TODO: EXTRACT PARTS OF THIS EXAMPLE TO SEPARATE TAILORED ONES
-
 const fps = 60;
 
 const updateCallsVisualization = {
@@ -46,7 +44,6 @@ let numberOfBigSprites = 4;
 const negative = (c: BpxSolidColor) =>
   new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b);
 
-// TODO: REMOVE
 class Font1 implements BpxFont {
   readonly id: BpxFontId = "f1";
   readonly imageUrl: BpxImageUrl = "logo.png";
@@ -62,7 +59,6 @@ class Font1 implements BpxFont {
   }
 }
 
-// TODO: REMOVE
 class Font2 implements BpxFont {
   readonly id: BpxFontId = "f2";
   readonly imageUrl: BpxImageUrl = "logo.png";
@@ -103,8 +99,6 @@ b_.init(
   },
 ).then(({ startGame }) => {
   b_.setOnStarted(() => {
-    // TODO: this call is probably no longer needed, since handled by BeetPx internally
-    b_.stopAllPlaybacks();
     b_.playSoundLooped("music_base.wav");
     b_.playSoundLooped("music_melody.wav");
 
@@ -173,7 +167,6 @@ b_.init(
     );
     const snapshotId2: BpxCanvasPixelsSnapshotId = b_.takeCanvasSnapshot();
 
-    // TODO: REMOVE
     b_.setFont("f1");
     const s1 = u_.measureText("111");
     b_.print("111", v_(1, 8), BpxSolidColor.fromRgbCssHex("#ff00ff"));
@@ -205,10 +198,8 @@ b_.init(
       BpxSolidColor.fromRgbCssHex("#ff00ff"),
     );
 
-    // TODO: REMOVE
     b_.rectFilled(v_(5, 5), v_(50, 10), BpxSolidColor.fromRgbCssHex("#ffff00"));
     drawSprites();
-    // TODO: REMOVE
     b_.rectFilled(
       v_(35, 10),
       v_(50, 10),
@@ -309,7 +300,6 @@ function drawEllipses(): void {
 }
 
 function drawSprites(): void {
-  // TODO: REMOVE
   b_.pixels(v_(1, -2), BpxSolidColor.fromRgbCssHex("#00ffff"), [
     "####",
     "####",
