@@ -9,8 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _BpxTransparentColor_nominalTypeHelper__transparent, _BpxSolidColor_nominalTypeHelper__solid, _BpxCompositeColor_nominalTypeHelper__composite, _a, _BpxMappingColor_nextId, _BpxMappingColor_nominalTypeHelper__mapping;
-// TODO: split colors into separate files?
+var _BpxTransparentColor_nominalTypeHelper__transparent, _BpxSolidColor_nominalTypeHelper__solid, _BpxCompositeColor_nominalTypeHelper__composite, _a, _BpxMappingColor_nextId;
 export class BpxTransparentColor {
     constructor() {
         // used to avoid a case where every color can be interpreted as BpxTransparentColor
@@ -64,11 +63,10 @@ _BpxCompositeColor_nominalTypeHelper__composite = new WeakMap();
 export class BpxMappingColor {
     constructor(snapshotId, mapping) {
         var _b, _c, _d;
-        _BpxMappingColor_nominalTypeHelper__mapping.set(this, true);
         this.id = `mapping:${__classPrivateFieldSet(_b = BpxMappingColor, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _BpxMappingColor_nextId), _c = _d++, _d), "f", _BpxMappingColor_nextId), _c}`;
         this.snapshotId = snapshotId;
         this.getMappedColorFromCanvasSnapshot = (snapshot, index) => mapping(snapshot.get(index));
     }
 }
-_a = BpxMappingColor, _BpxMappingColor_nominalTypeHelper__mapping = new WeakMap();
+_a = BpxMappingColor;
 _BpxMappingColor_nextId = { value: 1 };

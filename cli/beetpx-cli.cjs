@@ -4,6 +4,8 @@
 
 const path = require("path");
 const fs = require("fs");
+const removeHtmlComments = require("remove-html-comments");
+const removeCssComments = require("strip-comments");
 
 const yargsBuilderHtmlTitle = {
   htmlTitle: {
@@ -101,41 +103,23 @@ function WatchPublicDir() {
 function runDevCommand(params) {
   const htmlTitle = params.htmlTitle;
 
-  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
-    recursive: true,
+  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
+  generateHtmlFile({
+    inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    outputFile: path.resolve(
+      gameCodebaseDir,
+      gameHtmlTemplate.replace(".template", ""),
+    ),
+    htmlTitle: htmlTitle,
   });
 
-  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
-  fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
-    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
-  );
-  injectHtmlTitle(
-    htmlTitle,
-    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
-  );
+  copyBeetPxAdditionalAssets({
+    inputDir: beetPxHtmlTemplatesInDir,
+    outputDir: beetPxAdditionalPublicAssetsOutDir,
+  });
 
-  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
-    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  }
-  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  [
-    "edge_tl.png",
-    "edge_t.png",
-    "edge_tr.png",
-    "edge_l.png",
-    "edge_r.png",
-    "edge_bl.png",
-    "edge_b.png",
-    "edge_br.png",
-    "gui.png",
-    "loading.gif",
-    "start.png",
-  ].forEach((pngAsset) => {
-    fs.copyFileSync(
-      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
-      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
-    );
+  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
+    recursive: true,
   });
 
   // Vite docs:
@@ -184,41 +168,23 @@ function runDevCommand(params) {
 function runBuildCommand(params) {
   const htmlTitle = params.htmlTitle;
 
-  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
-    recursive: true,
+  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
+  generateHtmlFile({
+    inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    outputFile: path.resolve(
+      gameCodebaseDir,
+      gameHtmlTemplate.replace(".template", ""),
+    ),
+    htmlTitle: htmlTitle,
   });
 
-  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
-  fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
-    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
-  );
-  injectHtmlTitle(
-    htmlTitle,
-    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
-  );
+  copyBeetPxAdditionalAssets({
+    inputDir: beetPxHtmlTemplatesInDir,
+    outputDir: beetPxAdditionalPublicAssetsOutDir,
+  });
 
-  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
-    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  }
-  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  [
-    "edge_tl.png",
-    "edge_t.png",
-    "edge_tr.png",
-    "edge_l.png",
-    "edge_r.png",
-    "edge_bl.png",
-    "edge_b.png",
-    "edge_br.png",
-    "gui.png",
-    "loading.gif",
-    "start.png",
-  ].forEach((pngAsset) => {
-    fs.copyFileSync(
-      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
-      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
-    );
+  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
+    recursive: true,
   });
 
   // Vite docs:
@@ -317,12 +283,51 @@ function runZipCommand() {
   );
 }
 
-function injectHtmlTitle(htmlTitle, filePath) {
-  fs.writeFileSync(
-    filePath,
-    fs
-      .readFileSync(filePath, { encoding: "utf8" })
-      .replace("__HTML_TITLE__", htmlTitle),
-    { encoding: "utf8" },
-  );
+function generateHtmlFile(params) {
+  const { inputFile, outputFile, htmlTitle } = params;
+
+  let content = fs.readFileSync(inputFile, { encoding: "utf8" });
+
+  content = removeHtmlComments(content).data;
+  content = removeCssComments(content, {
+    line: true,
+    block: true,
+    keepProtected: false,
+    preserveNewlines: true,
+  });
+
+  const htmlTitleSlot = "__HTML_TITLE__";
+  while (content.indexOf(htmlTitleSlot) >= 0) {
+    content = content.replace(htmlTitleSlot, htmlTitle);
+  }
+
+  fs.writeFileSync(outputFile, content, { encoding: "utf8" });
+}
+
+function copyBeetPxAdditionalAssets(params) {
+  const { inputDir, outputDir } = params;
+
+  if (fs.existsSync(outputDir)) {
+    fs.rmdirSync(outputDir, { recursive: true });
+  }
+
+  fs.mkdirSync(outputDir, { recursive: true });
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(inputDir, pngAsset),
+      path.resolve(outputDir, pngAsset),
+    );
+  });
 }

@@ -11,8 +11,6 @@ export interface BpxColor {
   id: BpxColorId;
 }
 
-// TODO: split colors into separate files?
-
 export class BpxTransparentColor implements BpxColor {
   // used to avoid a case where every color can be interpreted as BpxTransparentColor
   readonly #nominalTypeHelper__transparent = true;
@@ -94,8 +92,6 @@ export class BpxCompositeColor implements BpxColor {
 // TODO: make it a function which allows to implement catch it all color
 export class BpxMappingColor implements BpxColor {
   static #nextId = 1;
-
-  readonly #nominalTypeHelper__mapping = true;
 
   readonly id: BpxColorId = `mapping:${BpxMappingColor.#nextId++}`;
 
