@@ -32,7 +32,7 @@ const argv = require("yargs")
     ["dev", "$0"],
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
     {
-      // TODO: allow own favicon and check for its existnce
+      // TODO: allow own favicon and check for its existence
       ...yargsBuilderHtmlTitle,
       ...yargsBuilderOpen,
     },
@@ -119,7 +119,6 @@ function WatchPublicDir() {
 function runDevCommand(params) {
   const { htmlTitle, open } = params;
 
-  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   generateHtmlFile({
     inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
     outputFile: path.resolve(
@@ -184,7 +183,6 @@ function runDevCommand(params) {
 function runBuildCommand(params) {
   const htmlTitle = params.htmlTitle;
 
-  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   generateHtmlFile({
     inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
     outputFile: path.resolve(
@@ -265,7 +263,6 @@ function runPreviewCommand() {
 }
 
 function runZipCommand() {
-  // TODO: throw error if "build" was not invoked before or rather there are no files to zip
   fs.mkdirSync(path.resolve(gameCodebaseDir, distZipDir), {
     recursive: true,
   });

@@ -4,7 +4,8 @@ import { BeetPx } from "./BeetPx";
 import { BpxSolidColor } from "./Color";
 import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
 
-// TODO: consider exposing those utils as BeetPx global API methods
+// TODO: re-check what are the names, how the entire Utils API looks like
+
 export class BpxUtils {
   /**
    * NOTE: This function makes sense in a TypeScript codebase only.

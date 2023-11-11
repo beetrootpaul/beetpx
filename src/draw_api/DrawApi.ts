@@ -112,6 +112,7 @@ export class DrawApi {
         to: this.#spriteColorMapping.get(from.id) ?? from,
       });
       // TODO: consider writing a custom equality check function
+      // TODO: or remove "id" at all if possible?
       if (from.id === to.id) {
         this.#spriteColorMapping.delete(from.id);
       } else {
@@ -208,6 +209,7 @@ export class DrawApi {
   sprite(
     sprite: BpxSprite,
     canvasXy: BpxVector2d,
+    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy: BpxVector2d = v_1_1_,
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
@@ -230,13 +232,13 @@ export class DrawApi {
     return this.#fontAsset?.font ?? null;
   }
 
-  // TODO: !!! MOVE TO QUEUE !!!
   // TODO: cover with tests
   print(
     text: string,
     canvasXy: BpxVector2d,
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
     centerXy: [boolean, boolean] = [false, false],
+    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     // TODO: introduce scaleXy + cover it with tests
     // scaleXy: BpxVector2d = v_1_1_,
   ): void {

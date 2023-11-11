@@ -15,7 +15,6 @@ export class StorageApi {
     );
   }
 
-  // TODO: use zod or some other popular lib and validate value's shape here
   loadPersistedState<
     PersistedStateValue extends PersistedStateValueContraints,
   >(): PersistedStateValue | null {

@@ -16,7 +16,7 @@ export class DrawLine {
   // TODO: tests for MappingColor
   // TODO: tests for CompositeColor and fillPattern
   // TODO: cover ClippingRegion with tests
-  // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
+
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
     xy: BpxVector2d,

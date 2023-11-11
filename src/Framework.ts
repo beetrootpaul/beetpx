@@ -23,7 +23,6 @@ import { StorageApi } from "./storage/StorageApi";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128" | "256x256";
-  // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
   debugFeatures: boolean;
 };
@@ -33,7 +32,6 @@ export type OnAssetsLoaded = {
 };
 
 export class Framework {
-  // TODO: Move debug responsibility to a separate class
   static readonly #storageDebugDisabledKey = "framework__debug_disabled";
   static readonly #storageDebugDisabledTrue = "yes";
 

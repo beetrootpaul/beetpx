@@ -25,7 +25,6 @@ export class DrawLine {
     
     
     
-    
     draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly) {
         var _a;
         

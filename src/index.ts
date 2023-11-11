@@ -60,15 +60,6 @@ export { u_ } from "./Utils";
 export { v_, v_0_0_, v_1_1_ } from "./Vector2d";
 export { timer_ } from "./misc/Timer";
 
-// TODO: suggested tsconfig changes:
-//       - moduleDetection force https://www.typescriptlang.org/tsconfig#moduleDetection
-//       - isolated modules https://www.typescriptlang.org/tsconfig#isolatedModules
-//       - verbatim module syntax https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax
-
-// TODO: sometimes the canvas gets stretched after screen orientation change. Fix that
-
-// TODO: consider regenerating docs and compiled files only on released versions. Like: have a version
-//       bump script which asks whether it's major or minor or patch and checks if we are on `main`, then
-//       generates docs etc. before the commit
-
 // TODO: rework examples
+
+// TODO: re-check what do we export here

@@ -2,8 +2,6 @@ import { BpxVector2d, v_ } from "../Vector2d";
 import { Button } from "./Button";
 import { BpxGameInputEvent } from "./GameInput";
 
-// TODO: consider a bit mask approach for buttons
-// TODO: consider moving towards Z/X instead of O/X. Or some other keys?
 export type BpxButtonName =
   | "left"
   | "right"

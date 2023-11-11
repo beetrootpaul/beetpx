@@ -22,7 +22,6 @@ export class BpxFillPattern {
         _BpxFillPattern_bits.set(this, void 0);
         __classPrivateFieldSet(this, _BpxFillPattern_bits, bits, "f");
     }
-    
     hasPrimaryColorAt(x, y) {
         const patternX = x % 4;
         const patternY = y % 4;

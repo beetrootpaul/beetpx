@@ -16,7 +16,6 @@ export class BpxFillPattern {
     this.#bits = bits;
   }
 
-  // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
   hasPrimaryColorAt(x: number, y: number): boolean {
     const patternX = x % 4;
     const patternY = y % 4;

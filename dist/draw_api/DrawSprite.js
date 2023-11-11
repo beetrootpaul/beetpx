@@ -23,9 +23,6 @@ export class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
     }
     
-    
-    
-    
     draw(sourceImageAsset, sprite, targetXy, 
     
     

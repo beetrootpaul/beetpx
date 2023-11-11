@@ -82,6 +82,7 @@ export class DrawApi {
                 to: (_a = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id)) !== null && _a !== void 0 ? _a : from,
             });
             
+            
             if (from.id === to.id) {
                 __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id);
             }
@@ -119,7 +120,9 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"));
     }
     
-    sprite(sprite, canvasXy, scaleXy = v_1_1_) {
+    sprite(sprite, canvasXy, 
+    
+    scaleXy = v_1_1_) {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), scaleXy, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"));
     }
@@ -131,7 +134,6 @@ export class DrawApi {
         var _a, _b;
         return (_b = (_a = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) === null || _a === void 0 ? void 0 : _a.font) !== null && _b !== void 0 ? _b : null;
     }
-    
     
     print(text, canvasXy, color, centerXy = [false, false]) {
         if (centerXy[0] || centerXy[1]) {
