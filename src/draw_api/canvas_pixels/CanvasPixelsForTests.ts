@@ -83,7 +83,5 @@ export class CanvasPixelsForTests extends CanvasPixels {
     return new CanvasPixelsForTestsSnapshot(this.#rgbValues.slice());
   }
 
-  onWindowResize(): void {}
-
   doRender(): void {}
 }

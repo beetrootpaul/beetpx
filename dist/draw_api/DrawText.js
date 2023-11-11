@@ -23,8 +23,8 @@ export class DrawText {
             disableRounding: true,
         }), "f");
     }
-    // TODO: tests, especially to check that we iterate over emojis like "➡️" correctly
-    // TODO: cover ClippingRegion with tests
+    
+    
     draw(text, canvasXy, fontAsset, color) {
         canvasXy = canvasXy.round();
         const colorFn = typeof color === "function" ? color : () => color;

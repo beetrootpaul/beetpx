@@ -1,4 +1,4 @@
-// noinspection JSUnusedGlobalSymbols
+
 import { BpxUtils } from "./Utils";
 export function v_(x, y) {
     return new BpxVector2d(x, y);
@@ -29,11 +29,11 @@ export class BpxVector2d {
     asArray() {
         return [this.x, this.y];
     }
-    // TODO: cover with tests
+    
     magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
-    // TODO: cover with tests
+    
     sign() {
         return new BpxVector2d(Math.sign(this.x), Math.sign(this.y));
     }

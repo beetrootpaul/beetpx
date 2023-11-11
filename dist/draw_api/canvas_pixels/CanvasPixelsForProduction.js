@@ -37,7 +37,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_htmlCanvasContext, (_a = __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvas, "f").getContext("2d", {
             colorSpace: "srgb",
-            // we allow transparency in order ot make background color visible around the game itself
+            
             alpha: true,
         })) !== null && _a !== void 0 ? _a : u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
@@ -48,7 +48,7 @@ export class CanvasPixelsForProduction extends CanvasPixels {
         offscreenCanvas.height = canvasSize.y;
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_offscreenContext, (_b = offscreenCanvas.getContext("2d", {
             colorSpace: "srgb",
-            // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
+            
             alpha: false,
         })) !== null && _b !== void 0 ? _b : u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
         __classPrivateFieldSet(this, _CanvasPixelsForProduction_offscreenImageData, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").canvas.height, { colorSpace: "srgb" }), "f");
@@ -91,16 +91,6 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     }
     newSnapshot() {
         return new CanvasPixelsForProductionSnapshot(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f").data.slice());
-    }
-    // TODO: unused?
-    onWindowResize() {
-        // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
-        // this.#htmlCanvas.width =
-        //   this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
-        // this.#htmlCanvas.height =
-        //   this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
-        // seems like we have to set it every time the canvas size is changed
-        // this.#htmlCanvasContext.imageSmoothingEnabled = false;
     }
     doRender() {
         __classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _CanvasPixelsForProduction_offscreenImageData, "f"), 0, 0);

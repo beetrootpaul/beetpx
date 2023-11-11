@@ -20,19 +20,19 @@ export class DrawRect {
         _DrawRect_canvasPixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawRect_canvasPixels, canvasPixels, "f");
     }
-    // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
-    // TODO: tests for MappingColor
-    // TODO: tests for CompositeColor and fillPattern
-    // TODO: cover ClippingRegion with tests
+    
+    
+    
+    
     draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly) {
         var _a;
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
-        // avoid all computations if the rectangle has a size of 0 in either direction
+        
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
             xyMaxExclusive.y - xyMinInclusive.y <= 0) {
             return;
         }
-        // avoid all computations if the whole rectangle is outside the canvas
+        
         if (!__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }

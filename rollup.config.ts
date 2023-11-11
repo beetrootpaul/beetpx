@@ -18,7 +18,7 @@ const config = [
         //   dts plugin from typechecking test files inside `src/`, while
         //   they should not bother it at all (because `./.dist/index.d.ts`
         //   is the input, and not `./src/index.ts`).
-        // But still, let's provide the plugin with the the correct
+        // But still, let's provide the plugin with the correct
         //   tsconfig and not the default one.
         tsconfig: "tsconfig.compile.json",
       }),

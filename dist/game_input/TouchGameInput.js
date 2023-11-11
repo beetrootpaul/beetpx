@@ -123,14 +123,14 @@ export class TouchGameInput {
                     }
                 }
             }
-            // On macOS Chrome and Safari touch events are not registered during full
-            //   screen transition. If user touches the button for a typical short duration,
-            //   it ends up recognized as still pressed after the full screen transition
-            //   ends. Therefore, in order to toggle full screen back, user has to press
-            //   the button twice: once to "release" the key, and second time to initiate
-            //   the next full screen transition.
-            // As a workaround we do not keep "full_screen" event "pressed", so the framework
-            //   will recognize it as a key being up immediately.
+            
+            
+            
+            
+            
+            
+            
+            
             if (ongoingEvents & __classPrivateFieldGet(TouchGameInput, _a, "f", _TouchGameInput_bitMasks).fullScreen) {
                 __classPrivateFieldGet(this, _TouchGameInput_ongoingTouches, "f").set(touchIdentifier, ongoingEvents & ~__classPrivateFieldGet(TouchGameInput, _a, "f", _TouchGameInput_bitMasks).fullScreen);
             }
@@ -139,9 +139,9 @@ export class TouchGameInput {
     }
 }
 _a = TouchGameInput, _TouchGameInput_config = new WeakMap(), _TouchGameInput_ongoingTouches = new WeakMap(), _TouchGameInput_instances = new WeakSet(), _TouchGameInput_handleTouchEvent = function _TouchGameInput_handleTouchEvent(touchEvent) {
-    // Try to prevent iOS Safari from doing helpful things that do not apply
-    //   to a game like: text selection, div selection, area zoom on a double
-    //   tap, etc.
+    
+    
+    
     touchEvent.preventDefault();
     for (const touch of touchEvent.changedTouches) {
         if (touchEvent.type === "touchmove") {

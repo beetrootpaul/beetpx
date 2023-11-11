@@ -65,7 +65,6 @@ export class CanvasPixelsForTests extends CanvasPixels {
     newSnapshot() {
         return new CanvasPixelsForTestsSnapshot(__classPrivateFieldGet(this, _CanvasPixelsForTests_rgbValues, "f").slice());
     }
-    onWindowResize() { }
     doRender() { }
 }
 _CanvasPixelsForTests_length = new WeakMap(), _CanvasPixelsForTests_rgbValues = new WeakMap(), _CanvasPixelsForTests_minX = new WeakMap(), _CanvasPixelsForTests_minY = new WeakMap(), _CanvasPixelsForTests_maxX = new WeakMap(), _CanvasPixelsForTests_maxY = new WeakMap();

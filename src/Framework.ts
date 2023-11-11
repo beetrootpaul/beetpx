@@ -216,11 +216,6 @@ export class Framework {
       });
     }
 
-    this.#canvasPixels.onWindowResize();
-    window.addEventListener("resize", (_event) => {
-      this.#canvasPixels.onWindowResize();
-    });
-
     this.#frameNumber = 0;
 
     await this.#loading.showStartScreen();

@@ -10,19 +10,19 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxFillPattern_bits;
-// TODO: rename fill to draw? Since we are using it for sprites as well…
-// TODO: … and use it, like, for every drawing API we have in this framework.
+
+
 export class BpxFillPattern {
-    // TODO: create a helper to generate FillPattern from ASCII
+    
     static of(bits) {
         return new BpxFillPattern(bits);
     }
-    // TODO: tests that bits do not have for example an accidental extra digit in its binary representation. It happened to me in tests and debugging was a hell
+    
     constructor(bits) {
         _BpxFillPattern_bits.set(this, void 0);
         __classPrivateFieldSet(this, _BpxFillPattern_bits, bits, "f");
     }
-    // TODO: consider a faster implementation based on bitmasks for a continuous chunks of pixels
+    
     hasPrimaryColorAt(x, y) {
         const patternX = x % 4;
         const patternY = y % 4;

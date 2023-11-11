@@ -20,25 +20,25 @@ export class DrawLine {
         _DrawLine_canvasPixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawLine_canvasPixels, canvasPixels, "f");
     }
-    // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
-    // TODO: tests for MappingColor
-    // TODO: tests for CompositeColor and fillPattern
-    // TODO: cover ClippingRegion with tests
-    // TODO: replace iterated new instances of Vector2d for XY with regular primitive numbers for X and Y
-    // Based on http://members.chello.at/easyfilter/bresenham.html
+    
+    
+    
+    
+    
+    
     draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly) {
         var _a;
-        // When drawing a line, the order of drawing does matter. This is why we
-        //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
-        //   shapes, but about xyStart and xyEnd.
+        
+        
+        
         const xyStart = xy.round();
         const xyEnd = xy.add(wh).round();
         if (xyEnd.x - xyStart.x === 0 || xyEnd.y - xyStart.y === 0) {
             return;
         }
-        // We cannot just round wh, because we don't want to lose the precision of xy+wh.
-        //   But what we can do (and we do here) is to round xyStart and xyEnd calculated
-        //   with xy+wh, and the obtain a new wh as xyEnd-xyStart, which makes it rounded.
+        
+        
+        
         wh = xyEnd.sub(xyStart);
         const whSub1 = wh.sub(wh.sign());
         const c1 = color instanceof BpxCompositeColor
@@ -55,24 +55,24 @@ export class DrawLine {
             ? (_a = __classPrivateFieldGet(this, _DrawLine_canvasPixels, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
             : null;
         const fp = fillPattern;
-        //
-        // PREPARE
-        //
+        
+        
+        
         let dXy = whSub1.abs().mul(v_(1, -1));
         let currentXy = xyStart;
         const targetXy = xyStart.add(whSub1);
         const step = whSub1.sign();
         let err = dXy.x + dXy.y;
         while (true) {
-            //
-            // DRAW THE CURRENT PIXEL
-            //
+            
+            
+            
             __classPrivateFieldGet(this, _DrawLine_instances, "m", _DrawLine_drawPixel).call(this, currentXy.x, currentXy.y, c1, c2, fp, sn);
             if (currentXy.eq(targetXy))
                 break;
-            //
-            // STEP TO THE NEXT PIXEL
-            //
+            
+            
+            
             const errBeforeStep = err;
             if (2 * errBeforeStep >= dXy.y) {
                 currentXy = currentXy.add(v_(step.x, 0));

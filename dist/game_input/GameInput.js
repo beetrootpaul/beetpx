@@ -54,8 +54,8 @@ export class GameInput {
         const events = new Set();
         for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
             if (sgi.update(events)) {
-                // We do not care here if there were many input methods active at once,
-                //   since usually it will be just one method.
+                
+                
                 __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").add(sgi.inputMethod);
             }
         }

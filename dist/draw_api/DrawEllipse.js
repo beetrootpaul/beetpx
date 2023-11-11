@@ -20,20 +20,20 @@ export class DrawEllipse {
         _DrawEllipse_canvasPixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawEllipse_canvasPixels, canvasPixels, "f");
     }
-    // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
-    // TODO: tests for MappingColor
-    // TODO: tests for CompositeColor and fillPattern
-    // TODO: cover ClippingRegion with tests
-    // Based on http://members.chello.at/easyfilter/bresenham.html
+    
+    
+    
+    
+    
     draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly) {
         var _a;
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
-        // avoid all computations if the ellipse has a size of 0 in either direction
+        
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
             xyMaxExclusive.y - xyMinInclusive.y <= 0) {
             return;
         }
-        // avoid all computations if the whole rectangle is outside the canvas
+        
         if (!__classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
@@ -51,9 +51,9 @@ export class DrawEllipse {
             ? (_a = __classPrivateFieldGet(this, _DrawEllipse_canvasPixels, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
             : null;
         const fp = fillPattern;
-        //
-        // PREPARE
-        //
+        
+        
+        
         let a = xyMaxExclusive.x - xyMinInclusive.x - 1;
         let b = xyMaxExclusive.y - xyMinInclusive.y - 1;
         let b1 = b & 1;
@@ -67,9 +67,9 @@ export class DrawEllipse {
         a = 8 * a * a;
         b1 = 8 * b * b;
         do {
-            //
-            // DRAW THE CURRENT PIXEL IN EACH QUADRANT
-            //
+            
+            
+            
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, bottom, c1, c2, fp, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, bottom, c1, c2, fp, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, top, c1, c2, fp, sn);
@@ -80,9 +80,9 @@ export class DrawEllipse {
                     __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, fp, sn);
                 }
             }
-            //
-            // STEP TO THE NEXT PIXEL
-            //
+            
+            
+            
             const currentErrBeforeStep = currentErr;
             if (2 * currentErrBeforeStep <= errIncrementY) {
                 bottom += 1;
@@ -98,11 +98,11 @@ export class DrawEllipse {
                 currentErr += errIncrementX;
             }
         } while (left <= right);
-        //
-        // DRAW MISSING TOP & BOTTOM PARTS
-        //
+        
+        
+        
         while (bottom - top <= b) {
-            // TODO: update the implementation below to honor fill pattern
+            
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, bottom, c1, c2, fp, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, bottom, c1, c2, fp, sn);
             bottom += 1;

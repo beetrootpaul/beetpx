@@ -82,7 +82,6 @@ export class BpxUtils {
     ];
   }
 
-  // TODO: consider moving this to either DrawApi or the game itself
   static printWithOutline(
     text: string,
     canvasXy1: BpxVector2d,

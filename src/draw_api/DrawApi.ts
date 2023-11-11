@@ -237,6 +237,8 @@ export class DrawApi {
     canvasXy: BpxVector2d,
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
     centerXy: [boolean, boolean] = [false, false],
+    // TODO: introduce scaleXy + cover it with tests
+    // scaleXy: BpxVector2d = v_1_1_,
   ): void {
     if (centerXy[0] || centerXy[1]) {
       const size = BpxUtils.measureText(text);

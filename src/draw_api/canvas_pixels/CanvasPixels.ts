@@ -42,8 +42,6 @@ export abstract class CanvasPixels {
 
   protected abstract newSnapshot(): CanvasPixelsSnapshot;
 
-  abstract onWindowResize(): void;
-
   render(): void {
     this.#snapshots.clear();
     this.#nextSnapshotId = 1;

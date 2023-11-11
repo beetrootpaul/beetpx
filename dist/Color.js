@@ -12,14 +12,14 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _BpxTransparentColor_nominalTypeHelper__transparent, _BpxSolidColor_nominalTypeHelper__solid, _BpxCompositeColor_nominalTypeHelper__composite, _a, _BpxMappingColor_nextId;
 export class BpxTransparentColor {
     constructor() {
-        // used to avoid a case where every color can be interpreted as BpxTransparentColor
+        
         _BpxTransparentColor_nominalTypeHelper__transparent.set(this, true);
         this.id = "transparent";
     }
 }
 _BpxTransparentColor_nominalTypeHelper__transparent = new WeakMap();
 export const transparent_ = new BpxTransparentColor();
-// Red, green, and blue, each one as value between 0 and 255.
+
 export class BpxSolidColor {
     constructor(r, g, b) {
         _BpxSolidColor_nominalTypeHelper__solid.set(this, true);
@@ -59,7 +59,7 @@ export class BpxCompositeColor {
     }
 }
 _BpxCompositeColor_nominalTypeHelper__composite = new WeakMap();
-// TODO: make it a function which allows to implement catch it all color
+
 export class BpxMappingColor {
     constructor(snapshotId, mapping) {
         var _b, _c, _d;

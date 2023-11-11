@@ -1,5 +1,3 @@
-// TODO: add some loading animation
-
 import { HtmlTemplate } from "./HtmlTemplate";
 import { u_ } from "./Utils";
 

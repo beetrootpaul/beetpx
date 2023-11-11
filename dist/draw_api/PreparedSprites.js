@@ -12,7 +12,7 @@ export class PreparedSprites {
         _PreparedSprites_cache.set(this, new Map());
     }
     prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels, 
-    // TODO: consider making color mapping into a class, especially that we need an unique ID out of it later on
+    
     colorMapping) {
         var _a;
         const key = sprite.imageUrl +

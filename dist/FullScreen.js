@@ -23,7 +23,7 @@ export class FullScreen {
     }
 }
 _a = FullScreen;
-// noinspection PointlessBooleanExpressionJS
+
 _FullScreen_isFullScreenSupported = { value: !!(document.fullscreenEnabled || document.webkitFullscreenEnabled) };
 class FullScreenNoop extends FullScreen {
     constructor() {
@@ -39,7 +39,7 @@ class FullScreenNoop extends FullScreen {
     }
     toggleFullScreen() { }
 }
-// noinspection SuspiciousTypeOfGuard
+
 class FullScreenSupported extends FullScreen {
     constructor() {
         var _b, _c, _d, _e;

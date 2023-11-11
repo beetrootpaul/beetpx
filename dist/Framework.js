@@ -59,7 +59,7 @@ export class Framework {
         _Framework_onDraw.set(this, void 0);
         _Framework_frameNumber.set(this, 0);
         _Framework_renderFps.set(this, 1);
-        // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
+        
         _Framework_alreadyResumedAudioContext.set(this, false);
         DebugMode.enabled = options.debugFeatures
             ? window.localStorage.getItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey)) !==
@@ -146,23 +146,19 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
     var _b;
     return __awaiter(this, void 0, void 0, function* () {
         if (BEETPX__IS_PROD) {
-            // A popup which prevents user from accidentally closing the browser tab during gameplay.
-            // Implementation notes:
-            // - returned message seems to be ignored by some browsers, therefore using `""`
-            // - this event is *not* always run when for example there was no mouse click inside
-            //   iframe with the game in Firefox
-            // - there are two ways of implementing this, because of browsers incompatibilities,
-            //   therefore using both of them here (`event.returnValue =` and `return`)
+            
+            
+            
+            
+            
+            
+            
             window.addEventListener("beforeunload", (event) => {
                 event.preventDefault();
                 event.returnValue = "";
                 return "";
             });
         }
-        __classPrivateFieldGet(this, _Framework_canvasPixels, "f").onWindowResize();
-        window.addEventListener("resize", (_event) => {
-            __classPrivateFieldGet(this, _Framework_canvasPixels, "f").onWindowResize();
-        });
         __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
         yield __classPrivateFieldGet(this, _Framework_loading, "f").showStartScreen();
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
@@ -227,6 +223,6 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
         });
     });
 };
-// TODO: Move debug responsibility to a separate class
+
 _Framework_storageDebugDisabledKey = { value: "framework__debug_disabled" };
 _Framework_storageDebugDisabledTrue = { value: "yes" };

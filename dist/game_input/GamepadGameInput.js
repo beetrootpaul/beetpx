@@ -33,7 +33,7 @@ export class GamepadGameInput {
         __classPrivateFieldSet(this, _GamepadGameInput_browserType, params.browserType, "f");
     }
     startListening() {
-        // do nothing
+        
     }
     update(eventsCollector) {
         let wasAnyEventDetected = false;
@@ -78,9 +78,9 @@ _GamepadGameInput_browserType = new WeakMap(), _GamepadGameInput_mappings = new 
             return __classPrivateFieldGet(this, _GamepadGameInput_mappings, "f").firefoxOther;
         }
     }
-    // We cannot check `mapping` before checking if it is Firefox, because
-    //   Firefox claims the `mapping` of Xbox One controller is `"standard"`,
-    //   while it is not…
+    
+    
+    
     if (gamepad.mapping === "standard") {
         return __classPrivateFieldGet(this, _GamepadGameInput_mappings, "f").standard;
     }

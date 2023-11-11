@@ -22,9 +22,9 @@ import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { BpxFillPattern } from "./FillPattern";
-// TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
-// TODO: tests for float rounding: different shapes and sprites drawn for same coords should be aligned visually, not off by 1.
-//       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
+
+
+
 export class DrawApi {
     constructor(options) {
         _DrawApi_assets.set(this, void 0);
@@ -52,8 +52,8 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvasPixels), "f");
         __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasPixels), "f");
     }
-    // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
-    // TODO: consider returning the previous offset
+    
+    
     setCameraOffset(offset) {
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset, "f");
     }
@@ -63,16 +63,16 @@ export class DrawApi {
     removeClippingRegion() {
         __classPrivateFieldGet(this, _DrawApi_canvasPixels, "f").removeClippingRegion();
     }
-    // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
-    // TODO: cover it with tests
+    
+    
     setFillPattern(fillPattern) {
         __classPrivateFieldSet(this, _DrawApi_fillPattern, fillPattern, "f");
     }
-    // TODO: rename to `setSpriteColorMapping`?
-    // TODO: make it more clear this fn is additive and `mapSpriteColor([])` does NOT reset the current mapping
-    // TODO: super confusing: 1) prevMapping = mapSpriteColors(…) 2) mapSpriteColors(other) 3) mapSpriteColors(prevMapping) DOES NOT reset 2nd call
-    // TODO: ability to remove all mappings
-    // TODO: cover it with tests
+    
+    
+    
+    
+    
     mapSpriteColors(mapping) {
         const previous = [];
         mapping.forEach(({ from, to }) => {
@@ -81,7 +81,7 @@ export class DrawApi {
                 from,
                 to: (_a = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").get(from.id)) !== null && _a !== void 0 ? _a : from,
             });
-            // TODO: consider writing a custom equality check function
+            
             if (from.id === to.id) {
                 __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f").delete(from.id);
             }
@@ -97,9 +97,9 @@ export class DrawApi {
     pixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, BpxFillPattern.primaryOnly);
     }
-    // bits = an array representing rows from top to bottom, where each array element
-    //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
-    //        from left to right.
+    
+    
+    
     pixels(xy, color, bits) {
         __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color);
     }
@@ -118,12 +118,12 @@ export class DrawApi {
     ellipseFilled(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"));
     }
-    // TODO: make sprite make use of fillPattern as well?
+    
     sprite(sprite, canvasXy, scaleXy = v_1_1_) {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sourceImageAsset, sprite, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), scaleXy, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_fillPattern, "f"));
     }
-    // TODO: cover it with tests
+    
     setFont(fontId) {
         __classPrivateFieldSet(this, _DrawApi_fontAsset, fontId ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontId) : null, "f");
     }
@@ -131,8 +131,8 @@ export class DrawApi {
         var _a, _b;
         return (_b = (_a = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) === null || _a === void 0 ? void 0 : _a.font) !== null && _b !== void 0 ? _b : null;
     }
-    // TODO: !!! MOVE TO QUEUE !!!
-    // TODO: cover with tests
+    
+    
     print(text, canvasXy, color, centerXy = [false, false]) {
         if (centerXy[0] || centerXy[1]) {
             const size = BpxUtils.measureText(text);

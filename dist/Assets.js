@@ -93,30 +93,30 @@ _Assets_decodeAudioData = new WeakMap(), _Assets_images = new WeakMap(), _Assets
             throw Error(`Assets: could not fetch PNG file: "${url}"`);
         }
         const arrayBuffer = yield httpResponse.arrayBuffer();
-        // You might be surprised why do we use "fast-png" for PNG decoding instead of
-        //   a more popular solution of:
-        //     ```
-        //       const htmlImage = new Image();
-        //       htmlImage.src = url;
-        //       await htmlImage.decode();
-        //       const canvas = document.createElement("canvas");
-        //       canvas.width = htmlImage.naturalWidth;
-        //       canvas.height = htmlImage.naturalHeight;
-        //       const ctx = canvas.getContext("2d")!;
-        //       ctx.drawImage(htmlImage, 0, 0);
-        //       const imageData: ImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        //       return imageData.data;
-        //     ```
-        //   This is because such approach was prone to browser's color management features.
-        //   In particular, we had a case of Firefox on Window 10 on an old Zenbook laptop, which
-        //     was adjusting rendered colors. We were able to overcome it by setting
-        //     `gfx.color_management.native_srgb` to `true` on `about:config` page of that
-        //     particular browser. But still, it would require users to modify their browser config.
-        //  Moreover, you might wonder why is it a problem that some colors are slightly adjusted?
-        //    It wouldn't be a problem if not for a sprite color mapping. If we define in BeetPx
-        //    that we want to map, let's say, lime background into a transparency, then we
-        //    need that lime to be exactly same RGB hex as defined in the color mapping, otherwise
-        //    it will not get mapped and display as lime.
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         const decodedPng = fastPngDecode(arrayBuffer);
         if (decodedPng.channels !== 3 && decodedPng.channels !== 4) {
             throw Error(`Assets: only PNG image files with 3 or 4 channels are supported. The file which seems to have ${decodedPng.channels} channels instead: "${url}"`);

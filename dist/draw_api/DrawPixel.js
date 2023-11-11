@@ -16,10 +16,10 @@ export class DrawPixel {
         _DrawPixel_canvasPixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixel_canvasPixels, canvasPixels, "f");
     }
-    // TODO: consolidate where composite color and fill patterns are handled (look for `instanceof`). Consider renaming fill pattern to e.g. pattern color as well
-    // TODO: tests for MappingColor
-    // TODO: consider moving fill pattern and composite color support inside here
-    // TODO: cover ClippingRegion with tests
+    
+    
+    
+    
     draw(xy, color, fillPattern = BpxFillPattern.primaryOnly) {
         xy = xy.round();
         if (!__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canSetAt(xy.x, xy.y)) {

@@ -24,7 +24,7 @@ export class GameLoop {
         _GameLoop_accumulatedDeltaTimeMillis.set(this, 0);
         _GameLoop_updateCallsCounter.set(this, 0);
         _GameLoop_updateCallsLimit.set(this, 5);
-        // Keep this function as an arrow one in order to avoid issues with `this`.
+        
         _GameLoop_tick.set(this, (currentTimeMillis) => {
             var _a;
             if (__classPrivateFieldGet(this, _GameLoop_documentVisibilityStateProvider, "f").visibilityState === "hidden") {

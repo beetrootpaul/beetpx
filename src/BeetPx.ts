@@ -40,6 +40,8 @@ export class BeetPx {
    * Number of frames processed since game started.
    * It gets reset to 0 when `BeetPx.restart()` is called.
    * It counts update calls, not draw calls.
+   *
+   * @return number
    */
   static get frameNumber(): Framework["frameNumber"] {
     return this.#tryGetFramework().frameNumber;

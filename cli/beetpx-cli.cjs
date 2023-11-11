@@ -32,6 +32,7 @@ const argv = require("yargs")
     ["dev", "$0"],
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
     {
+      // TODO: allow own favicon and check for its existnce
       ...yargsBuilderHtmlTitle,
       ...yargsBuilderOpen,
     },

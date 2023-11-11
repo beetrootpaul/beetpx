@@ -277,7 +277,6 @@ declare abstract class CanvasPixels {
     takeSnapshot(): BpxCanvasPixelsSnapshotId;
     getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;
     protected abstract newSnapshot(): CanvasPixelsSnapshot;
-    abstract onWindowResize(): void;
     render(): void;
     protected abstract doRender(): void;
 }
@@ -490,6 +489,8 @@ declare class BeetPx {
      * Number of frames processed since game started.
      * It gets reset to 0 when `BeetPx.restart()` is called.
      * It counts update calls, not draw calls.
+     *
+     * @return number
      */
     static get frameNumber(): Framework["frameNumber"];
     static get renderFps(): Framework["renderFps"];

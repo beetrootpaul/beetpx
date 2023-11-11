@@ -15,7 +15,7 @@ export class DrawPixels {
         _DrawPixels_canvasPixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixels_canvasPixels, canvasPixels, "f");
     }
-    // TODO: add tests
+    
     draw(xy, bits, color) {
         xy = xy.round();
         for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {

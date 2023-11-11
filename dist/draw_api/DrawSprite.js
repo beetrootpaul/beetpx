@@ -22,24 +22,24 @@ export class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_canvasPixels, canvasPixels, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
     }
-    // TODO: Investigate why colors recognized by color picked in WebStorm on PNG are different from those drawn:
-    //       - ff614f became ff6e59
-    //       - 00555a became 125359
-    // TODO: cover clippingRegion with tests
+    
+    
+    
+    
     draw(sourceImageAsset, sprite, targetXy, 
-    // TODO: test it
-    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
+    
+    
     scaleXy = v_1_1_, colorMapping = new Map(), 
-    // TODO: test it
+    
     fillPattern = BpxFillPattern.primaryOnly) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = scaleXy.floor();
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
-        // make sure xy1 is top-left and xy2 is bottom right
+        
         sprite = new BpxSprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
-        // clip sprite by image edges
+        
         sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
-        // avoid all computations if the whole sprite is outside the canvas
+        
         if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
             return;
         }

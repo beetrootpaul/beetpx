@@ -131,17 +131,6 @@ export class CanvasPixelsForProduction extends CanvasPixels {
     );
   }
 
-  // TODO: unused?
-  onWindowResize(): void {
-    // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#scaling_for_high_resolution_displays
-    // this.#htmlCanvas.width =
-    //   this.#htmlCanvas.getBoundingClientRect().width * window.devicePixelRatio;
-    // this.#htmlCanvas.height =
-    //   this.#htmlCanvas.getBoundingClientRect().height * window.devicePixelRatio;
-    // seems like we have to set it every time the canvas size is changed
-    // this.#htmlCanvasContext.imageSmoothingEnabled = false;
-  }
-
   doRender(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
