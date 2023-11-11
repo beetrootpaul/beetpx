@@ -5,7 +5,7 @@
   "author": "Beetroot Paul",
   "license": "MIT",
   "scripts": {
-    "start": "beetpx dev --htmlTitle \"[dev] Input Tester | BeetPx example\"",
+    "start": "beetpx dev --open --htmlTitle \"[dev] Input Tester | BeetPx example\"",
     "build": "beetpx build --htmlTitle \"Input Tester | BeetPx example\"",
     "prod": "npm run build && beetpx preview",
     "zip": "npm run build && beetpx zip",

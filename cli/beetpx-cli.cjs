@@ -16,6 +16,15 @@ const yargsBuilderHtmlTitle = {
   },
 };
 
+const yargsBuilderOpen = {
+  open: {
+    type: "boolean",
+    describe: "Automatically open the game in a browser",
+    demandOption: false,
+  },
+};
+
+// yargs docs: https://yargs.js.org/docs/
 const argv = require("yargs")
   .strict()
   .scriptName("beetpx")
@@ -24,6 +33,7 @@ const argv = require("yargs")
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
     {
       ...yargsBuilderHtmlTitle,
+      ...yargsBuilderOpen,
     },
   )
   .command("build", "Builds a production-ready bundle with the game.", {
@@ -70,9 +80,14 @@ if (typeof beetPxVersion !== "string" || beetPxVersion.length <= 0) {
 }
 
 if (argv._.includes("dev") || argv._.length <= 0) {
-  runDevCommand({ htmlTitle: argv.htmlTitle ?? "BeetPx game" });
+  runDevCommand({
+    htmlTitle: argv.htmlTitle ?? "BeetPx game",
+    open: argv.open ?? false,
+  });
 } else if (argv._.includes("build")) {
-  runBuildCommand({ htmlTitle: argv.htmlTitle ?? "BeetPx game" });
+  runBuildCommand({
+    htmlTitle: argv.htmlTitle ?? "BeetPx game",
+  });
 } else if (argv._.includes("preview")) {
   runPreviewCommand();
 } else if (argv._.includes("zip")) {
@@ -101,7 +116,7 @@ function WatchPublicDir() {
 }
 
 function runDevCommand(params) {
-  const htmlTitle = params.htmlTitle;
+  const { htmlTitle, open } = params;
 
   // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
   generateHtmlFile({
@@ -140,7 +155,7 @@ function runDevCommand(params) {
       //   and the latter does not work there.
       base: "./",
       server: {
-        open: gameHtmlTemplate.replace(".template", ""),
+        open: open ? gameHtmlTemplate.replace(".template", "") : false,
         hmr: true,
         watch: {
           interval: 500,
