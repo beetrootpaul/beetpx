@@ -1,10 +1,6 @@
-// noinspection JSUnusedGlobalSymbols
-
 import { BeetPx } from "./BeetPx";
 import { BpxRgbColor } from "./color/RgbColor";
 import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
-
-// TODO: re-check what are the names, how the entire Utils API looks like
 
 export class BpxUtils {
   /**
@@ -23,9 +19,8 @@ export class BpxUtils {
     throw Error(`Somehow reached the unreachable code ¯\\_(ツ)_/¯`);
   }
 
-  // TODO: tests for edge cases
   static booleanChangingEveryNthFrame(n: number): boolean {
-    return BeetPx.frameNumber % (n * 2) < n;
+    return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
   }
 
   // Returns the middle number. Example usage: `clamp(min, value, max)`
@@ -34,7 +29,7 @@ export class BpxUtils {
   //   - `min` if `value` is `< min`
   //   - `max` if `value` is `> max`
   static clamp(a: number, b: number, c: number): number {
-    return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
+    return a < b ? (b < c ? b : a < c ? c : a) : b > c ? b : a > c ? c : a;
   }
 
   static identity<Param>(param: Param): Param {
@@ -49,7 +44,6 @@ export class BpxUtils {
     return a + (b - a) * t;
   }
 
-  // TODO: test size measurements, especially for text combining regular and wider glyphs, like "➡️"
   static measureText(text: string): BpxVector2d {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
 
@@ -64,6 +58,11 @@ export class BpxUtils {
   }
 
   static noop(): void {}
+
+  // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
+  static offset4Directions(): BpxVector2d[] {
+    return [v_(-1, -1), v_(1, -1), v_(1, 1), v_(-1, 1)];
+  }
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
   static offset8Directions(): BpxVector2d[] {
@@ -112,7 +111,7 @@ export class BpxUtils {
    * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   static trigAtan2(x: number, y: number): number {
-    return Math.atan2(y, x) / Math.PI / 2;
+    return (Math.atan2(y, x) / Math.PI / 2 + 1) % 1;
   }
 
   /**

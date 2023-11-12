@@ -16,9 +16,9 @@ describe("Vector2d", () => {
       expect(new BpxVector2d(-123, 0).toAngle()).toEqual(0.5);
       expect(new BpxVector2d(-1.23, 0).toAngle()).toEqual(0.5);
 
-      expect(new BpxVector2d(0, -1).toAngle()).toEqual(-0.25);
-      expect(new BpxVector2d(0, -123).toAngle()).toEqual(-0.25);
-      expect(new BpxVector2d(0, -1.23).toAngle()).toEqual(-0.25);
+      expect(new BpxVector2d(0, -1).toAngle()).toEqual(0.75);
+      expect(new BpxVector2d(0, -123).toAngle()).toEqual(0.75);
+      expect(new BpxVector2d(0, -1.23).toAngle()).toEqual(0.75);
     });
 
     test("basic angle to vector conversions (right angles)", () => {
@@ -39,11 +39,11 @@ describe("Vector2d", () => {
       const v = new BpxVector2d(-123, -456);
       expect(BpxVector2d.unitFromAngle(v.toAngle()).x).toBeCloseTo(
         v.x / v.magnitude(),
-        15,
+        14,
       );
       expect(BpxVector2d.unitFromAngle(v.toAngle()).y).toBeCloseTo(
         v.y / v.magnitude(),
-        15,
+        14,
       );
     });
   });

@@ -94,6 +94,7 @@ declare class BpxUtils {
     static lerp(a: number, b: number, t: number): number;
     static measureText(text: string): BpxVector2d;
     static noop(): void;
+    static offset4Directions(): BpxVector2d[];
     static offset8Directions(): BpxVector2d[];
     static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, centerXy?: [boolean, boolean]): void;
     static randomElementOf<V>(array: V[]): V | undefined;

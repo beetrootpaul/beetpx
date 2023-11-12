@@ -1,7 +1,5 @@
-
 import { BeetPx } from "./BeetPx";
 import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
-
 export class BpxUtils {
     /**
      * This function is meant to be used in a last branch of `if - else if - … - else`
@@ -16,9 +14,8 @@ export class BpxUtils {
     static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint) {
         throw Error(`Somehow reached the unreachable code ¯\\_(ツ)_/¯`);
     }
-    
     static booleanChangingEveryNthFrame(n) {
-        return BeetPx.frameNumber % (n * 2) < n;
+        return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
     }
     
     
@@ -26,7 +23,7 @@ export class BpxUtils {
     
     
     static clamp(a, b, c) {
-        return a + b + c - Math.min(a, b, c) - Math.max(a, b, c);
+        return a < b ? (b < c ? b : a < c ? c : a) : b > c ? b : a > c ? c : a;
     }
     static identity(param) {
         return param;
@@ -37,7 +34,6 @@ export class BpxUtils {
     static lerp(a, b, t) {
         return a + (b - a) * t;
     }
-    
     static measureText(text) {
         var _a, _b;
         const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
@@ -48,6 +44,10 @@ export class BpxUtils {
         return size;
     }
     static noop() { }
+    
+    static offset4Directions() {
+        return [v_(-1, -1), v_(1, -1), v_(1, 1), v_(-1, 1)];
+    }
     
     static offset8Directions() {
         return [
@@ -85,7 +85,7 @@ export class BpxUtils {
      * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static trigAtan2(x, y) {
-        return Math.atan2(y, x) / Math.PI / 2;
+        return (Math.atan2(y, x) / Math.PI / 2 + 1) % 1;
     }
     /**
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
