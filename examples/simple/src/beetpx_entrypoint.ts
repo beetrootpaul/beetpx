@@ -1,4 +1,4 @@
-import { b_, BpxSolidColor, spr_, v_, v_0_0_ } from "../../../src";
+import { b_, BpxRgbColor, spr_, v_, v_0_0_ } from "../../../src";
 
 b_.init(
   {
@@ -73,7 +73,7 @@ b_.init(
   });
 
   b_.setOnDraw(() => {
-    b_.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
+    b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
     b_.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
@@ -83,7 +83,7 @@ b_.init(
       b_.line(
         v_(0, 0),
         logoPositionBase.add(logoPositionOffset),
-        BpxSolidColor.fromRgbCssHex("#ff0000"),
+        BpxRgbColor.fromCssHex("#ff0000"),
       );
     }
   });

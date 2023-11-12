@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawRect_instances, _DrawRect_canvas, _DrawRect_drawPixel;
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawRect {
@@ -37,12 +37,12 @@ export class DrawRect {
             return;
         }
         const c1 = color instanceof BpxCompositeColor
-            ? color.primary instanceof BpxSolidColor
+            ? color.primary instanceof BpxRgbColor
                 ? color.primary
                 : null
             : color;
         const c2 = color instanceof BpxCompositeColor
-            ? color.secondary instanceof BpxSolidColor
+            ? color.secondary instanceof BpxRgbColor
                 ? color.secondary
                 : null
             : null;
@@ -70,12 +70,12 @@ _DrawRect_canvas = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect
     if (fillPattern.hasPrimaryColorAt(x, y)) {
         if (!c1) {
         }
-        else if (c1 instanceof BpxSolidColor) {
+        else if (c1 instanceof BpxRgbColor) {
             __classPrivateFieldGet(this, _DrawRect_canvas, "f").set(c1, x, y);
         }
         else {
             const mapped = c1.getMappedColor(snapshot, y * __classPrivateFieldGet(this, _DrawRect_canvas, "f").canvasSize.x + x);
-            if (mapped instanceof BpxSolidColor) {
+            if (mapped instanceof BpxRgbColor) {
                 __classPrivateFieldGet(this, _DrawRect_canvas, "f").set(mapped, x, y);
             }
         }

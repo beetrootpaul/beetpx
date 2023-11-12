@@ -8,7 +8,7 @@ import {
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas_pixels/Canvas";
 import { CanvasForProduction } from "./canvas_pixels/CanvasForProduction";
-import { BpxSolidColor, black_ } from "./color/SolidColor";
+import { BpxRgbColor, black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
@@ -40,8 +40,8 @@ export class Framework {
   readonly #browserType: BpxBrowserType;
 
   readonly #gameCanvasSize: BpxVector2d;
-  readonly #htmlCanvasBackground: BpxSolidColor =
-    BpxSolidColor.fromRgbCssHex("#000000");
+  readonly #htmlCanvasBackground: BpxRgbColor =
+    BpxRgbColor.fromCssHex("#000000");
 
   readonly #loading: Loading;
   readonly gameInput: GameInput;

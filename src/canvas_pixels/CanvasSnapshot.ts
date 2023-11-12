@@ -1,5 +1,5 @@
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 
 export interface CanvasSnapshot {
-  getColorAtIndex(index: number): BpxSolidColor;
+  getColorAtIndex(index: number): BpxRgbColor;
 }

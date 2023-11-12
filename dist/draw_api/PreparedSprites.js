@@ -5,7 +5,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _PreparedSprites_cache;
 import { u_ } from "../Utils";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 export class PreparedSprites {
     constructor() {
         _PreparedSprites_cache.set(this, new Map());
@@ -34,9 +34,9 @@ export class PreparedSprites {
                 const imgX = sprite.xy1.x + spriteX;
                 const imgIndex = (imgY * imgW + imgX) * imgChannels;
                 const color = imgChannels === 3
-                    ? new BpxSolidColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                    ? new BpxRgbColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                     : imgBytes[imgIndex + 3] >= 0xff / 2
-                        ? new BpxSolidColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                        ? new BpxRgbColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                         : null;
                 colors[spriteX][spriteY] = color;
             }

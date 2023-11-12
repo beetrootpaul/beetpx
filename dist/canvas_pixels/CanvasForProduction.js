@@ -10,8 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasForProduction_instances, _CanvasForProduction_length, _CanvasForProduction_htmlCanvas, _CanvasForProduction_htmlCanvasContext, _CanvasForProduction_offscreenContext, _CanvasForProduction_offscreenImageData, _CanvasForProduction_minX, _CanvasForProduction_minY, _CanvasForProduction_maxX, _CanvasForProduction_maxY, _CanvasForProduction_initializeAsNonTransparent;
-import { u_ } from "../Utils";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
+import { u_ } from "../Utils";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
 export class CanvasForProduction extends Canvas {
@@ -34,7 +34,7 @@ export class CanvasForProduction extends Canvas {
         __classPrivateFieldSet(this, _CanvasForProduction_maxX, canvasSize.x - 1, "f");
         __classPrivateFieldSet(this, _CanvasForProduction_maxY, canvasSize.y - 1, "f");
         __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvas, htmlCanvas, "f");
-        __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
+        __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").style.backgroundColor = htmlCanvasBackground.cssHex;
         __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvasContext, (_a = __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").getContext("2d", {
             colorSpace: "srgb",
             

@@ -34,7 +34,7 @@ export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMappin
 export { type BpxColor, type BpxColorId } from "./color/Color";
 export { type BpxColorMapper } from "./color/ColorMapper";
 export { BpxCompositeColor } from "./color/CompositeColor";
-export { BpxSolidColor } from "./color/SolidColor";
+export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { BpxSprite } from "./draw_api/Sprite";
@@ -55,7 +55,7 @@ export { BeetPx } from "./BeetPx";
 
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
-export { black_, blue_, green_, red_, white_ } from "./color/SolidColor";
+export { black_, blue_, green_, red_, white_ } from "./color/RgbColor";
 export { spr_ } from "./draw_api/Sprite";
 export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";

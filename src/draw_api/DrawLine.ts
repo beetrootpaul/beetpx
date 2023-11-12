@@ -2,7 +2,7 @@ import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 
@@ -22,7 +22,7 @@ export class DrawLine {
   draw(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
@@ -40,15 +40,15 @@ export class DrawLine {
 
     const whSub1 = wh.sub(wh.sign());
 
-    const c1: BpxSolidColor | BpxCanvasSnapshotColorMapping | null =
+    const c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null =
       color instanceof BpxCompositeColor
-        ? color.primary instanceof BpxSolidColor
+        ? color.primary instanceof BpxRgbColor
           ? color.primary
           : null
         : color;
-    const c2: BpxSolidColor | null =
+    const c2: BpxRgbColor | null =
       color instanceof BpxCompositeColor
-        ? color.secondary instanceof BpxSolidColor
+        ? color.secondary instanceof BpxRgbColor
           ? color.secondary
           : null
         : null;
@@ -97,8 +97,8 @@ export class DrawLine {
   #drawPixel(
     x: number,
     y: number,
-    c1: BpxSolidColor | BpxCanvasSnapshotColorMapping | null,
-    c2: BpxSolidColor | null,
+    c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null,
+    c2: BpxRgbColor | null,
     fillPattern: BpxFillPattern,
     snapshot: CanvasSnapshot | null,
   ): void {
@@ -108,14 +108,14 @@ export class DrawLine {
 
     if (fillPattern.hasPrimaryColorAt(x, y)) {
       if (!c1) {
-      } else if (c1 instanceof BpxSolidColor) {
+      } else if (c1 instanceof BpxRgbColor) {
         this.#canvas.set(c1, x, y);
       } else {
         const mapped = c1.getMappedColor(
           snapshot,
           y * this.#canvas.canvasSize.x + x,
         );
-        if (mapped instanceof BpxSolidColor) {
+        if (mapped instanceof BpxRgbColor) {
           this.#canvas.set(mapped, x, y);
         }
       }

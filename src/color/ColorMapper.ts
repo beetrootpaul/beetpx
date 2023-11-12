@@ -1,5 +1,5 @@
-import { BpxSolidColor } from "./SolidColor";
+import { BpxRgbColor } from "./RgbColor";
 
 export type BpxColorMapper = (
-  sourceColor: BpxSolidColor | null,
-) => BpxSolidColor | null;
+  sourceColor: BpxRgbColor | null,
+) => BpxRgbColor | null;

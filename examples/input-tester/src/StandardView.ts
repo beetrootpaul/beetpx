@@ -1,6 +1,6 @@
 import {
   b_,
-  BpxSolidColor,
+  BpxRgbColor,
   BpxSpriteColorMapping,
   spr_,
   v_,
@@ -9,13 +9,13 @@ import {
 
 const spr = spr_("spritesheet.png");
 
-const lime = BpxSolidColor.fromRgbCssHex("#a8e72e");
-const pink = BpxSolidColor.fromRgbCssHex("#ff77a8");
-const yellow = BpxSolidColor.fromRgbCssHex("#f3ef7d");
-const darkGreen = BpxSolidColor.fromRgbCssHex("#125359");
-const darkBlue = BpxSolidColor.fromRgbCssHex("#1d2b53");
-const lightGrey = BpxSolidColor.fromRgbCssHex("#c2c3c7");
-const darkGrey = BpxSolidColor.fromRgbCssHex("#83769c");
+const lime = BpxRgbColor.fromCssHex("#a8e72e");
+const pink = BpxRgbColor.fromCssHex("#ff77a8");
+const yellow = BpxRgbColor.fromCssHex("#f3ef7d");
+const darkGreen = BpxRgbColor.fromCssHex("#125359");
+const darkBlue = BpxRgbColor.fromCssHex("#1d2b53");
+const lightGrey = BpxRgbColor.fromCssHex("#c2c3c7");
+const darkGrey = BpxRgbColor.fromCssHex("#83769c");
 
 export class StandardView {
   // ps = pressed sprite

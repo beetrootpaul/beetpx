@@ -1,12 +1,12 @@
 import { type PngDataArray } from "fast-png";
 import { u_ } from "../Utils";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSprite } from "./Sprite";
 
 export type PreparedSprite = {
   w: number;
   h: number;
-  colors: (BpxSolidColor | null)[][];
+  colors: (BpxRgbColor | null)[][];
 };
 
 export class PreparedSprites {
@@ -36,7 +36,7 @@ export class PreparedSprites {
     const w = sprite.size().x;
     const h = sprite.size().y;
 
-    const colors: (BpxSolidColor | null)[][] = u_
+    const colors: (BpxRgbColor | null)[][] = u_
       .range(w)
       .map(() => u_.range(h).map(() => null));
 
@@ -47,15 +47,15 @@ export class PreparedSprites {
 
         const imgIndex = (imgY * imgW + imgX) * imgChannels;
 
-        const color: BpxSolidColor | null =
+        const color: BpxRgbColor | null =
           imgChannels === 3
-            ? new BpxSolidColor(
+            ? new BpxRgbColor(
                 imgBytes[imgIndex]!,
                 imgBytes[imgIndex + 1]!,
                 imgBytes[imgIndex + 2]!,
               )
             : imgBytes[imgIndex + 3]! >= 0xff / 2
-            ? new BpxSolidColor(
+            ? new BpxRgbColor(
                 imgBytes[imgIndex]!,
                 imgBytes[imgIndex + 1]!,
                 imgBytes[imgIndex + 2]!,

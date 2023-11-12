@@ -128,7 +128,7 @@ export class DrawApi {
             __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, scaleXy);
         }
         else {
-            Logger.infoBeetPx(`print: (${canvasXy.x},${canvasXy.y}) [${typeof color === "function" ? "computed" : color.asRgbCssHex()}] ${text}`);
+            Logger.infoBeetPx(`print: (${canvasXy.x},${canvasXy.y}) [${typeof color === "function" ? "computed" : color.cssHex}] ${text}`);
         }
     }
     takeCanvasSnapshot() {

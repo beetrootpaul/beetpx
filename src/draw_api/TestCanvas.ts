@@ -2,13 +2,13 @@ import { expect } from "@jest/globals";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasForTests } from "../canvas_pixels/CanvasForTests";
 import { BpxColorId } from "../color/Color";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 
 export class TestCanvas {
   readonly canvas: Canvas;
 
-  constructor(width: number, height: number, color: BpxSolidColor) {
+  constructor(width: number, height: number, color: BpxRgbColor) {
     this.canvas = new CanvasForTests(v_(width, height));
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
@@ -18,7 +18,7 @@ export class TestCanvas {
   }
 
   expectToEqual(params: {
-    withMapping: Record<string, BpxSolidColor>;
+    withMapping: Record<string, BpxRgbColor>;
     expectedImageAsAscii: string;
   }) {
     const { withMapping: asciiToColor, expectedImageAsAscii } = params;

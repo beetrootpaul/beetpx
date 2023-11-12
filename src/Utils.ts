@@ -1,7 +1,7 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { BeetPx } from "./BeetPx";
-import { BpxSolidColor } from "./color/SolidColor";
+import { BpxRgbColor } from "./color/RgbColor";
 import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
 
 // TODO: re-check what are the names, how the entire Utils API looks like
@@ -82,8 +82,8 @@ export class BpxUtils {
   static printWithOutline(
     text: string,
     canvasXy1: BpxVector2d,
-    textColor: BpxSolidColor,
-    outlineColor: BpxSolidColor,
+    textColor: BpxRgbColor,
+    outlineColor: BpxRgbColor,
     centerXy: [boolean, boolean] = [false, false],
   ): void {
     for (const offset of BpxUtils.offset8Directions()) {

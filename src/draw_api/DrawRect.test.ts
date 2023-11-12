@@ -1,6 +1,6 @@
 import { describe, test } from "@jest/globals";
 import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 import { DrawRect } from "./DrawRect";
 import { BpxFillPattern } from "./FillPattern";
@@ -8,12 +8,12 @@ import { TestCanvas } from "./TestCanvas";
 
 describe("DrawRect", () => {
   const ct = null;
-  const c0 = BpxSolidColor.fromRgbCssHex("#010203");
-  const c1 = BpxSolidColor.fromRgbCssHex("#111213");
-  const c2 = BpxSolidColor.fromRgbCssHex("#212223");
-  const c3 = BpxSolidColor.fromRgbCssHex("#313233");
-  const c4 = BpxSolidColor.fromRgbCssHex("#414243");
-  const c5 = BpxSolidColor.fromRgbCssHex("#515253");
+  const c0 = BpxRgbColor.fromCssHex("#010203");
+  const c1 = BpxRgbColor.fromCssHex("#111213");
+  const c2 = BpxRgbColor.fromCssHex("#212223");
+  const c3 = BpxRgbColor.fromCssHex("#313233");
+  const c4 = BpxRgbColor.fromCssHex("#414243");
+  const c5 = BpxRgbColor.fromCssHex("#515253");
 
   describe("regular", () => {
     test("simple 1x1", () => {
@@ -222,7 +222,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with a single solid color", () => {
+    test("fill pattern: simple one, with a single color", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -248,7 +248,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with two solid colors", () => {
+    test("fill pattern: simple one, with two colors", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -632,7 +632,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with a single solid color", () => {
+    test("fill pattern: simple one, with a single color", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -658,7 +658,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with two solid colors", () => {
+    test("fill pattern: simple one, with two colors", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);

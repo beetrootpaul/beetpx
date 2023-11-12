@@ -25,7 +25,7 @@ import { BpxUtils, u_ } from "./Utils";
 import { AudioApi } from "./audio/AudioApi";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas_pixels/CanvasForProduction";
-import { BpxSolidColor, black_ } from "./color/SolidColor";
+import { BpxRgbColor, black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
@@ -50,7 +50,7 @@ export class Framework {
         _Framework_frameByFrame.set(this, void 0);
         _Framework_browserType.set(this, void 0);
         _Framework_gameCanvasSize.set(this, void 0);
-        _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#000000"));
+        _Framework_htmlCanvasBackground.set(this, BpxRgbColor.fromCssHex("#000000"));
         _Framework_loading.set(this, void 0);
         _Framework_gameLoop.set(this, void 0);
         _Framework_canvas.set(this, void 0);

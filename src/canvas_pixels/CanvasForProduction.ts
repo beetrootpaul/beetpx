@@ -1,6 +1,6 @@
-import { u_ } from "../Utils";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
+import { u_ } from "../Utils";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
@@ -21,7 +21,7 @@ export class CanvasForProduction extends Canvas {
   constructor(
     canvasSize: BpxVector2d,
     htmlCanvas: HTMLCanvasElement,
-    htmlCanvasBackground: BpxSolidColor,
+    htmlCanvasBackground: BpxRgbColor,
   ) {
     super(canvasSize);
 
@@ -33,7 +33,7 @@ export class CanvasForProduction extends Canvas {
     this.#maxY = canvasSize.y - 1;
 
     this.#htmlCanvas = htmlCanvas;
-    this.#htmlCanvas.style.backgroundColor = htmlCanvasBackground.asRgbCssHex();
+    this.#htmlCanvas.style.backgroundColor = htmlCanvasBackground.cssHex;
 
     this.#htmlCanvasContext =
       this.#htmlCanvas.getContext("2d", {
@@ -100,7 +100,7 @@ export class CanvasForProduction extends Canvas {
     );
   }
 
-  set(color: BpxSolidColor, x: number, y: number): void {
+  set(color: BpxRgbColor, x: number, y: number): void {
     if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
       throw Error(
         `(x,y) index out of bounds: (x,y) = (${x},${y}), bottom bound = (0,0), upper bound = (${

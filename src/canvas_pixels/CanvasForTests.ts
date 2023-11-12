@@ -1,5 +1,5 @@
 import { u_ } from "../Utils";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
@@ -57,7 +57,7 @@ export class CanvasForTests extends Canvas {
     return x >= 0 && y >= 0 && x < this.canvasSize.x && y < this.canvasSize.y;
   }
 
-  set(color: BpxSolidColor, x: number, y: number): void {
+  set(color: BpxRgbColor, x: number, y: number): void {
     if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {
       throw Error(
         `(x,y) index out of bounds: (x,y) = (${x},${y}), bottom bound = (0,0), upper bound = (${

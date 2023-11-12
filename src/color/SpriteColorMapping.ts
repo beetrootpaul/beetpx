@@ -1,14 +1,14 @@
 import { BpxColor, BpxColorId } from "./Color";
 import { BpxColorMapper } from "./ColorMapper";
-import { BpxSolidColor } from "./SolidColor";
+import { BpxRgbColor } from "./RgbColor";
 
 export class BpxSpriteColorMapping implements BpxColor {
   static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping((c) => c);
 
   static fromMapEntries(
-    mapEntries: Array<[BpxColorId, BpxSolidColor | null]>,
+    mapEntries: Array<[BpxColorId, BpxRgbColor | null]>,
   ): BpxSpriteColorMapping {
-    const map = new Map<BpxColorId, BpxSolidColor | null>(mapEntries);
+    const map = new Map<BpxColorId, BpxRgbColor | null>(mapEntries);
     return new BpxSpriteColorMapping((spriteColor) => {
       if (!spriteColor) return spriteColor;
       const mapped = map.get(spriteColor.id);
@@ -30,7 +30,7 @@ export class BpxSpriteColorMapping implements BpxColor {
     this.#mapping = mapping;
   }
 
-  getMappedColor(spriteColor: BpxSolidColor | null): BpxSolidColor | null {
+  getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null {
     return this.#mapping(spriteColor);
   }
 }

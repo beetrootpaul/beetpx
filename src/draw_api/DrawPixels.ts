@@ -1,5 +1,5 @@
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 
 export class DrawPixels {
@@ -10,7 +10,7 @@ export class DrawPixels {
   }
 
   // TODO: add tests
-  draw(xy: BpxVector2d, bits: string[], color: BpxSolidColor): void {
+  draw(xy: BpxVector2d, bits: string[], color: BpxRgbColor): void {
     xy = xy.round();
 
     for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {

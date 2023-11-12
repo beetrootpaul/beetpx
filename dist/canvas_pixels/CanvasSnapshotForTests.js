@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasSnapshotForTests_rgbValues;
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 export class CanvasSnapshotForTests {
     constructor(rgbValues) {
         _CanvasSnapshotForTests_rgbValues.set(this, void 0);
@@ -21,7 +21,7 @@ export class CanvasSnapshotForTests {
             throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasSnapshotForTests_rgbValues, "f").length - 1}`);
         }
         const value = __classPrivateFieldGet(this, _CanvasSnapshotForTests_rgbValues, "f")[index];
-        return new BpxSolidColor((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
+        return new BpxRgbColor((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
     }
 }
 _CanvasSnapshotForTests_rgbValues = new WeakMap();

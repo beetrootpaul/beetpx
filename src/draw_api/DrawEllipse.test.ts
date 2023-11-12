@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 import { DrawEllipse } from "./DrawEllipse";
 import { TestCanvas } from "./TestCanvas";
@@ -7,8 +7,8 @@ import { TestCanvas } from "./TestCanvas";
 // TODO: tests for fill pattern
 
 describe("DrawEllipse", () => {
-  const c0 = BpxSolidColor.fromRgbCssHex("#010203");
-  const c1 = BpxSolidColor.fromRgbCssHex("#111213");
+  const c0 = BpxRgbColor.fromCssHex("#010203");
+  const c1 = BpxRgbColor.fromCssHex("#111213");
 
   describe("regular", () => {
     test("0-size", () => {

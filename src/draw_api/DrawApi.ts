@@ -2,7 +2,7 @@ import { BpxUtils } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
@@ -94,11 +94,11 @@ export class DrawApi {
     return prevMapping;
   }
 
-  clearCanvas(color: BpxSolidColor): void {
+  clearCanvas(color: BpxRgbColor): void {
     this.#clear.draw(color);
   }
 
-  pixel(xy: BpxVector2d, color: BpxSolidColor): void {
+  pixel(xy: BpxVector2d, color: BpxRgbColor): void {
     this.#pixel.draw(
       xy.sub(this.#cameraOffset),
       color,
@@ -109,14 +109,14 @@ export class DrawApi {
   // bits = an array representing rows from top to bottom, where each array element
   //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
   //        from left to right.
-  pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void {
+  pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void {
     this.#pixels.draw(xy.sub(this.#cameraOffset), bits, color);
   }
 
   line(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#line.draw(xy.sub(this.#cameraOffset), wh, color, this.#fillPattern);
   }
@@ -124,7 +124,7 @@ export class DrawApi {
   rect(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset),
@@ -138,7 +138,7 @@ export class DrawApi {
   rectFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset),
@@ -152,7 +152,7 @@ export class DrawApi {
   ellipse(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset),
@@ -166,7 +166,7 @@ export class DrawApi {
   ellipseFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset),
@@ -208,7 +208,7 @@ export class DrawApi {
   print(
     text: string,
     canvasXy: BpxVector2d,
-    color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
+    color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
     centerXy: [boolean, boolean] = [false, false],
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy: BpxVector2d = v_1_1_,
@@ -231,7 +231,7 @@ export class DrawApi {
     } else {
       Logger.infoBeetPx(
         `print: (${canvasXy.x},${canvasXy.y}) [${
-          typeof color === "function" ? "computed" : color.asRgbCssHex()
+          typeof color === "function" ? "computed" : color.cssHex
         }] ${text}`,
       );
     }

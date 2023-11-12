@@ -1,5 +1,5 @@
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxCharSprite } from "../font/Font";
 import { FontAsset } from "../misc/Assets";
@@ -26,7 +26,7 @@ export class DrawText {
     text: string,
     canvasXy: BpxVector2d,
     fontAsset: FontAsset,
-    color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
+    color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
     // TODO: use scaleXy + cover it with tests
     scaleXy: BpxVector2d = v_1_1_,
   ): void {

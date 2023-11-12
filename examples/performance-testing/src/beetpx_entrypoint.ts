@@ -5,7 +5,7 @@ import {
   BpxFont,
   BpxFontId,
   BpxImageUrl,
-  BpxSolidColor,
+  BpxRgbColor,
   BpxSpriteColorMapping,
   BpxVector2d,
   b_,
@@ -30,8 +30,8 @@ const renderFpsVisualization = {
 const problematicSprite = spr_("pico-8-font.png")(0, 0, 32, 32);
 
 const logoSprite = spr_("logo.png")(0, 0, 16, 16);
-const logoInnerColor = BpxSolidColor.fromRgbCssHex("#125359");
-const logoOuterColor = BpxSolidColor.fromRgbCssHex("#ff6e59");
+const logoInnerColor = BpxRgbColor.fromCssHex("#125359");
+const logoOuterColor = BpxRgbColor.fromCssHex("#ff6e59");
 
 const velocity = 2;
 
@@ -42,8 +42,8 @@ let numberOfEllipses = 4;
 let numberOfBigSprites = 4;
 
 const negative = new BpxCanvasSnapshotColorMapping((c) =>
-  c instanceof BpxSolidColor
-    ? new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b)
+  c instanceof BpxRgbColor
+    ? new BpxRgbColor(0xff - c.r, 0xff - c.g, 0xff - c.b)
     : null,
 );
 
@@ -153,7 +153,7 @@ b_.init(
     renderFpsVisualization.history[renderFpsVisualization.historyIndex] =
       b_.renderFps;
 
-    b_.clearCanvas(BpxSolidColor.fromRgbCssHex("#754665"));
+    b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
 
     drawEllipses();
 
@@ -164,42 +164,30 @@ b_.init(
 
     b_.setFont("f1");
     const s1 = u_.measureText("111");
-    b_.print("111", v_(1, 8), BpxSolidColor.fromRgbCssHex("#ff00ff"));
-    b_.print(
-      "111",
-      v_(1 + s1.x + 1, 8),
-      BpxSolidColor.fromRgbCssHex("#ff00ff"),
-    );
-    b_.print(
-      "111",
-      v_(1, 8 + s1.y + 1),
-      BpxSolidColor.fromRgbCssHex("#ff00ff"),
-    );
+    b_.print("111", v_(1, 8), BpxRgbColor.fromCssHex("#ff00ff"));
+    b_.print("111", v_(1 + s1.x + 1, 8), BpxRgbColor.fromCssHex("#ff00ff"));
+    b_.print("111", v_(1, 8 + s1.y + 1), BpxRgbColor.fromCssHex("#ff00ff"));
     b_.setFont("f2");
     const s2 = u_.measureText("222");
     b_.print(
       "222",
       v_(1 + s1.x + 1 + s1.x + 1, 8),
-      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+      BpxRgbColor.fromCssHex("#ff00ff"),
     );
     b_.print(
       "222",
       v_(1 + s1.x + 1 + s1.x + 1 + s2.x + 1, 8),
-      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+      BpxRgbColor.fromCssHex("#ff00ff"),
     );
     b_.print(
       "222",
       v_(1 + s1.x + 1 + s1.x + 1, 8 + s2.y + 1),
-      BpxSolidColor.fromRgbCssHex("#ff00ff"),
+      BpxRgbColor.fromCssHex("#ff00ff"),
     );
 
-    b_.rectFilled(v_(5, 5), v_(50, 10), BpxSolidColor.fromRgbCssHex("#ffff00"));
+    b_.rectFilled(v_(5, 5), v_(50, 10), BpxRgbColor.fromCssHex("#ffff00"));
     drawSprites();
-    b_.rectFilled(
-      v_(35, 10),
-      v_(50, 10),
-      BpxSolidColor.fromRgbCssHex("#00ffff"),
-    );
+    b_.rectFilled(v_(35, 10), v_(50, 10), BpxRgbColor.fromCssHex("#00ffff"));
 
     b_.rectFilled(v_(65, 75), v_(50, 10), negative);
 
@@ -244,8 +232,8 @@ function drawUpdateCallsVisualization(): void {
       b_.pixel(
         v_(columnIndex + 3, 1 + barIndex * 2),
         columnIndex === updateCallsVisualization.historyIndex
-          ? BpxSolidColor.fromRgbCssHex("#ffffff")
-          : BpxSolidColor.fromRgbCssHex("#ff8888"),
+          ? BpxRgbColor.fromCssHex("#ffffff")
+          : BpxRgbColor.fromCssHex("#ff8888"),
       );
     }
   }
@@ -263,10 +251,10 @@ function drawRenderFpsVisualization(): void {
         v_(columnIndex * 3 + 2, 252 - barIndex * 3),
         v_(2, 2),
         columnIndex === renderFpsVisualization.historyIndex
-          ? BpxSolidColor.fromRgbCssHex("#ffffff")
+          ? BpxRgbColor.fromCssHex("#ffffff")
           : barIndex % 3 === 2
-          ? BpxSolidColor.fromRgbCssHex("#ff4444")
-          : BpxSolidColor.fromRgbCssHex("#ff8888"),
+          ? BpxRgbColor.fromCssHex("#ff4444")
+          : BpxRgbColor.fromCssHex("#ff8888"),
       );
     }
   }
@@ -284,14 +272,14 @@ function drawEllipses(): void {
     b_.ellipseFilled(
       v_((ellipseIndex * 128) / numberOfEllipses, 60),
       v_(24, 24),
-      BpxSolidColor.fromRgbCssHex(`#${rComponent}84${bComponent}`),
+      BpxRgbColor.fromCssHex(`#${rComponent}84${bComponent}`),
     );
   }
   b_.setFillPattern(BpxFillPattern.primaryOnly);
 }
 
 function drawSprites(): void {
-  b_.pixels(v_(1, -2), BpxSolidColor.fromRgbCssHex("#00ffff"), [
+  b_.pixels(v_(1, -2), BpxRgbColor.fromCssHex("#00ffff"), [
     "####",
     "####",
     "####",
@@ -303,7 +291,7 @@ function drawSprites(): void {
   b_.line(
     v_0_0_,
     logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),
-    BpxSolidColor.fromRgbCssHex("#ff4444"),
+    BpxRgbColor.fromCssHex("#ff4444"),
   );
 
   b_.sprite(

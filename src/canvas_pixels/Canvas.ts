@@ -1,4 +1,4 @@
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 
@@ -21,7 +21,7 @@ export abstract class Canvas {
     yMax: number,
   ): boolean;
   abstract canSetAt(x: number, y: number): boolean;
-  abstract set(color: BpxSolidColor, x: number, y: number): void;
+  abstract set(color: BpxRgbColor, x: number, y: number): void;
 
   takeSnapshot(): void {
     this.#snapshot = this.newSnapshot();

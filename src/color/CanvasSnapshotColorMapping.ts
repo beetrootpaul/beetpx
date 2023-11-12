@@ -1,7 +1,7 @@
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
 import { BpxColor, BpxColorId } from "./Color";
 import { BpxColorMapper } from "./ColorMapper";
-import { BpxSolidColor } from "./SolidColor";
+import { BpxRgbColor } from "./RgbColor";
 
 export class BpxCanvasSnapshotColorMapping implements BpxColor {
   static #nextId = 1;
@@ -21,7 +21,7 @@ export class BpxCanvasSnapshotColorMapping implements BpxColor {
   getMappedColor(
     snapshot: CanvasSnapshot | null,
     index: number,
-  ): BpxSolidColor | null {
+  ): BpxRgbColor | null {
     return snapshot ? this.#mapping(snapshot.getColorAtIndex(index)) : null;
   }
 }

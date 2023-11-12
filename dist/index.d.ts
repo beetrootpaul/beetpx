@@ -5,21 +5,22 @@ interface BpxColor {
     id: BpxColorId;
 }
 
-declare class BpxSolidColor implements BpxColor {
+type BpxRgbCssHex = string;
+declare class BpxRgbColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
     readonly r: number;
     readonly g: number;
     readonly b: number;
+    readonly cssHex: BpxRgbCssHex;
     constructor(r: number, g: number, b: number);
-    asRgbCssHex(): string;
-    static fromRgbCssHex(cssHex: string): BpxSolidColor;
+    static fromCssHex(cssHex: string): BpxRgbColor;
 }
-declare const black_: BpxSolidColor;
-declare const white_: BpxSolidColor;
-declare const red_: BpxSolidColor;
-declare const green_: BpxSolidColor;
-declare const blue_: BpxSolidColor;
+declare const black_: BpxRgbColor;
+declare const white_: BpxRgbColor;
+declare const red_: BpxRgbColor;
+declare const green_: BpxRgbColor;
+declare const blue_: BpxRgbColor;
 
 interface PrintDebug {
     __printDebug(): string;
@@ -100,7 +101,7 @@ declare class BpxUtils {
     static measureText(text: string): BpxVector2d;
     static noop(): void;
     static offset8Directions(): BpxVector2d[];
-    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor, centerXy?: [boolean, boolean]): void;
+    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, centerXy?: [boolean, boolean]): void;
     static randomElementOf<V>(array: V[]): V | undefined;
     static range(n: number): number[];
     /**
@@ -161,8 +162,8 @@ type ImageAssetToLoad = {
 };
 type FontAssetToLoad = {
     font: BpxFont;
-    imageTextColor: BpxSolidColor;
-    imageBgColor: BpxSolidColor;
+    imageTextColor: BpxRgbColor;
+    imageBgColor: BpxRgbColor;
 };
 type SoundAssetToLoad = {
     url: BpxSoundUrl;
@@ -179,8 +180,8 @@ type ImageAsset = {
 type FontAsset = {
     font: BpxFont;
     image: ImageAsset;
-    imageTextColor: BpxSolidColor;
-    imageBgColor: BpxSolidColor;
+    imageTextColor: BpxRgbColor;
+    imageBgColor: BpxRgbColor;
 };
 type SoundAsset = {
     audioBuffer: AudioBuffer;
@@ -223,34 +224,34 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
 interface CanvasSnapshot {
-    getColorAtIndex(index: number): BpxSolidColor;
+    getColorAtIndex(index: number): BpxRgbColor;
 }
 
-type BpxColorMapper = (sourceColor: BpxSolidColor | null) => BpxSolidColor | null;
+type BpxColorMapper = (sourceColor: BpxRgbColor | null) => BpxRgbColor | null;
 
 declare class BpxCanvasSnapshotColorMapping implements BpxColor {
     #private;
     readonly id: BpxColorId;
     constructor(mapping: BpxColorMapper);
-    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxSolidColor | null;
+    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
 }
 
 declare class BpxCompositeColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
-    readonly primary: BpxSolidColor | null;
-    readonly secondary: BpxSolidColor | null;
-    constructor(primary: BpxSolidColor | null, secondary: BpxSolidColor | null);
+    readonly primary: BpxRgbColor | null;
+    readonly secondary: BpxRgbColor | null;
+    constructor(primary: BpxRgbColor | null, secondary: BpxRgbColor | null);
 }
 
 declare class BpxSpriteColorMapping implements BpxColor {
     #private;
     static noMapping: BpxSpriteColorMapping;
-    static fromMapEntries(mapEntries: Array<[BpxColorId, BpxSolidColor | null]>): BpxSpriteColorMapping;
+    static fromMapEntries(mapEntries: Array<[BpxColorId, BpxRgbColor | null]>): BpxSpriteColorMapping;
     static nextId: number;
     readonly id: BpxColorId;
     constructor(mapping: BpxColorMapper);
-    getMappedColor(spriteColor: BpxSolidColor | null): BpxSolidColor | null;
+    getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
 }
 
 declare class BpxFillPattern {
@@ -398,7 +399,7 @@ declare abstract class Canvas {
     abstract removeClippingRegion(): void;
     abstract canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
     abstract canSetAt(x: number, y: number): boolean;
-    abstract set(color: BpxSolidColor, x: number, y: number): void;
+    abstract set(color: BpxRgbColor, x: number, y: number): void;
     takeSnapshot(): void;
     getMostRecentSnapshot(): CanvasSnapshot | null;
     protected abstract newSnapshot(): CanvasSnapshot;
@@ -418,18 +419,18 @@ declare class DrawApi {
     removeClippingRegion(): void;
     setFillPattern(fillPattern: BpxFillPattern): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-    clearCanvas(color: BpxSolidColor): void;
-    pixel(xy: BpxVector2d, color: BpxSolidColor): void;
-    pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void;
-    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    clearCanvas(color: BpxRgbColor): void;
+    pixel(xy: BpxVector2d, color: BpxRgbColor): void;
+    pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void;
+    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
     sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
     setFont(fontId: BpxFontId | null): void;
     getFont(): BpxFont | null;
-    print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean], scaleXy?: BpxVector2d): void;
+    print(text: string, canvasXy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), centerXy?: [boolean, boolean], scaleXy?: BpxVector2d): void;
     takeCanvasSnapshot(): void;
 }
 
@@ -596,4 +597,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapper, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapper, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };

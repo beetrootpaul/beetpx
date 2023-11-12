@@ -1,5 +1,5 @@
 import { BpxColor, BpxColorId } from "./Color";
-import { BpxSolidColor } from "./SolidColor";
+import { BpxRgbColor } from "./RgbColor";
 
 export class BpxCompositeColor implements BpxColor {
   // noinspection JSUnusedLocalSymbols
@@ -7,10 +7,10 @@ export class BpxCompositeColor implements BpxColor {
 
   readonly id: BpxColorId;
 
-  readonly primary: BpxSolidColor | null;
-  readonly secondary: BpxSolidColor | null;
+  readonly primary: BpxRgbColor | null;
+  readonly secondary: BpxRgbColor | null;
 
-  constructor(primary: BpxSolidColor | null, secondary: BpxSolidColor | null) {
+  constructor(primary: BpxRgbColor | null, secondary: BpxRgbColor | null) {
     this.primary = primary;
     this.secondary = secondary;
     this.id = `composite:${this.primary?.id ?? "transparent"}:${

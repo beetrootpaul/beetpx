@@ -1,4 +1,4 @@
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 
 export class CanvasSnapshotForTests implements CanvasSnapshot {
@@ -8,7 +8,7 @@ export class CanvasSnapshotForTests implements CanvasSnapshot {
     this.#rgbValues = rgbValues;
   }
 
-  getColorAtIndex(index: number): BpxSolidColor {
+  getColorAtIndex(index: number): BpxRgbColor {
     if (index >= this.#rgbValues.length) {
       throw Error(
         `index out of bounds: index = ${index}, max allowed index = ${
@@ -18,7 +18,7 @@ export class CanvasSnapshotForTests implements CanvasSnapshot {
     }
 
     const value = this.#rgbValues[index]!;
-    return new BpxSolidColor(
+    return new BpxRgbColor(
       (value & 0xff0000) >> 16,
       (value & 0x00ff00) >> 8,
       value & 0x0000ff,

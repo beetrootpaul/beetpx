@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { v_, v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
@@ -11,12 +11,12 @@ import { TestImage } from "./TestImage";
 
 describe("DrawSprite", () => {
   const ct = null;
-  const c0 = BpxSolidColor.fromRgbCssHex("#010203");
-  const c1 = BpxSolidColor.fromRgbCssHex("#111213");
-  const c2 = BpxSolidColor.fromRgbCssHex("#212223");
-  const c3 = BpxSolidColor.fromRgbCssHex("#313233");
-  const c4 = BpxSolidColor.fromRgbCssHex("#414243");
-  const c5 = BpxSolidColor.fromRgbCssHex("#515253");
+  const c0 = BpxRgbColor.fromCssHex("#010203");
+  const c1 = BpxRgbColor.fromCssHex("#111213");
+  const c2 = BpxRgbColor.fromCssHex("#212223");
+  const c3 = BpxRgbColor.fromCssHex("#313233");
+  const c4 = BpxRgbColor.fromCssHex("#414243");
+  const c5 = BpxRgbColor.fromCssHex("#515253");
 
   test("1x1 image", () => {
     // given

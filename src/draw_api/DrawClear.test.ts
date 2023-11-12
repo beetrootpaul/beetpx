@@ -1,11 +1,11 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { DrawClear } from "./DrawClear";
 import { TestCanvas } from "./TestCanvas";
 
 describe("DrawClear", () => {
-  const c0 = BpxSolidColor.fromRgbCssHex("#010203");
-  const c1 = BpxSolidColor.fromRgbCssHex("#111213");
+  const c0 = BpxRgbColor.fromCssHex("#010203");
+  const c1 = BpxRgbColor.fromCssHex("#111213");
 
   test("clear the whole canvas with a given color", () => {
     // given

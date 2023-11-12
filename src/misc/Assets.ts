@@ -4,7 +4,7 @@ import {
   type PngDataArray,
 } from "fast-png";
 import { BpxUtils } from "../Utils";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxFont, BpxFontId } from "../font/Font";
 
 export type AssetsToLoad = {
@@ -24,8 +24,8 @@ type ImageAssetToLoad = {
 
 type FontAssetToLoad = {
   font: BpxFont;
-  imageTextColor: BpxSolidColor;
-  imageBgColor: BpxSolidColor;
+  imageTextColor: BpxRgbColor;
+  imageBgColor: BpxRgbColor;
 };
 
 type SoundAssetToLoad = {
@@ -46,8 +46,8 @@ export type ImageAsset = {
 export type FontAsset = {
   font: BpxFont;
   image: ImageAsset;
-  imageTextColor: BpxSolidColor;
-  imageBgColor: BpxSolidColor;
+  imageTextColor: BpxRgbColor;
+  imageBgColor: BpxRgbColor;
 };
 
 export type SoundAsset = {
@@ -66,8 +66,8 @@ export class Assets {
     BpxFontId,
     {
       font: BpxFont;
-      imageTextColor: BpxSolidColor;
-      imageBgColor: BpxSolidColor;
+      imageTextColor: BpxRgbColor;
+      imageBgColor: BpxRgbColor;
     }
   > = new Map();
   #sounds: Map<BpxSoundUrl, SoundAsset> = new Map();

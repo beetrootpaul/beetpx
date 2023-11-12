@@ -1,5 +1,5 @@
 import { BpxColor } from "../color/Color";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { ImageAsset } from "../misc/Assets";
 
 export class TestImage {
@@ -48,7 +48,7 @@ export class TestImage {
         throw Error(
           `TestImage: Missing color mapping for "${normalizedAsciiImage[i]}"`,
         );
-      } else if (color instanceof BpxSolidColor) {
+      } else if (color instanceof BpxRgbColor) {
         this.asset.rgba8bitData[4 * i] = color.r;
         this.asset.rgba8bitData[4 * i + 1] = color.g;
         this.asset.rgba8bitData[4 * i + 2] = color.b;

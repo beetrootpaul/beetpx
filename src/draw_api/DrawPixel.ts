@@ -1,5 +1,5 @@
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxSolidColor } from "../color/SolidColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 
@@ -10,13 +10,12 @@ export class DrawPixel {
     this.#canvas = canvas;
   }
 
-  // TODO: consolidate where composite color and fill patterns are handled (look for `instanceof`). Consider renaming fill pattern to e.g. pattern color as well
   // TODO: tests for MappingColor
   // TODO: consider moving fill pattern and composite color support inside here
   // TODO: cover ClippingRegion with tests
   draw(
     xy: BpxVector2d,
-    color: BpxSolidColor,
+    color: BpxRgbColor,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
   ): void {
     xy = xy.round();
