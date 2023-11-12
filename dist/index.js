@@ -7,7 +7,6 @@ export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMappin
 export { BpxCompositeColor } from "./color/CompositeColor";
 export { BpxSolidColor } from "./color/SolidColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
-export { BpxTransparentColor } from "./color/TransparentColor";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { BpxSprite } from "./draw_api/Sprite";
 export { BpxEasing } from "./misc/Easing";
@@ -17,7 +16,6 @@ export { BeetPx } from "./BeetPx";
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
 export { black_, blue_, green_, red_, white_ } from "./color/SolidColor";
-export { transparent_ } from "./color/TransparentColor";
 export { spr_ } from "./draw_api/Sprite";
 export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";

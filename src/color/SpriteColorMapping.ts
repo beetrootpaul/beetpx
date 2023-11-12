@@ -1,20 +1,19 @@
 import { BpxColor, BpxColorId } from "./Color";
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxSolidColor } from "./SolidColor";
-import { BpxTransparentColor } from "./TransparentColor";
 
 export class BpxSpriteColorMapping implements BpxColor {
   static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping((c) => c);
 
   static fromMapEntries(
-    mapEntries: Array<[BpxColorId, BpxSolidColor | BpxTransparentColor]>,
+    mapEntries: Array<[BpxColorId, BpxSolidColor | null]>,
   ): BpxSpriteColorMapping {
-    const map = new Map<BpxColorId, BpxSolidColor | BpxTransparentColor>(
-      mapEntries,
-    );
-    return new BpxSpriteColorMapping(
-      (spriteColor) => map.get(spriteColor.id) ?? spriteColor,
-    );
+    const map = new Map<BpxColorId, BpxSolidColor | null>(mapEntries);
+    return new BpxSpriteColorMapping((spriteColor) => {
+      if (!spriteColor) return spriteColor;
+      const mapped = map.get(spriteColor.id);
+      return typeof mapped === "undefined" ? spriteColor : mapped;
+    });
   }
 
   // TODO: REMOVE
@@ -31,9 +30,7 @@ export class BpxSpriteColorMapping implements BpxColor {
     this.#mapping = mapping;
   }
 
-  getMappedColor(
-    spriteColor: BpxSolidColor | BpxTransparentColor,
-  ): BpxSolidColor | BpxTransparentColor {
+  getMappedColor(spriteColor: BpxSolidColor | null): BpxSolidColor | null {
     return this.#mapping(spriteColor);
   }
 }

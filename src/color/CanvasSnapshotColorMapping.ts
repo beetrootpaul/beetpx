@@ -1,9 +1,7 @@
-// TODO: make it a function which allows to implement catch it all color
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
 import { BpxColor, BpxColorId } from "./Color";
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxSolidColor } from "./SolidColor";
-import { BpxTransparentColor, transparent_ } from "./TransparentColor";
 
 export class BpxCanvasSnapshotColorMapping implements BpxColor {
   static #nextId = 1;
@@ -23,9 +21,7 @@ export class BpxCanvasSnapshotColorMapping implements BpxColor {
   getMappedColor(
     snapshot: CanvasSnapshot | null,
     index: number,
-  ): BpxSolidColor | BpxTransparentColor {
-    return snapshot
-      ? this.#mapping(snapshot.getColorAtIndex(index))
-      : transparent_;
+  ): BpxSolidColor | null {
+    return snapshot ? this.#mapping(snapshot.getColorAtIndex(index)) : null;
   }
 }

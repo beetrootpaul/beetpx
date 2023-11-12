@@ -8,7 +8,7 @@ export class TestImage {
 
   constructor(params: {
     image: string;
-    withMapping: Record<string, BpxColor>;
+    withMapping: Record<string, BpxColor | null>;
   }) {
     const asciiImage = params.image;
     const asciiToColor = params.withMapping;
@@ -44,7 +44,7 @@ export class TestImage {
 
     for (let i = 0; i < this.asset.width * this.asset.height; i += 1) {
       const color = asciiToColor[normalizedAsciiImage[i]!];
-      if (!color) {
+      if (typeof color === "undefined") {
         throw Error(
           `TestImage: Missing color mapping for "${normalizedAsciiImage[i]}"`,
         );

@@ -29,7 +29,7 @@ export class TestImage {
                 ".png";
         for (let i = 0; i < this.asset.width * this.asset.height; i += 1) {
             const color = asciiToColor[normalizedAsciiImage[i]];
-            if (!color) {
+            if (typeof color === "undefined") {
                 throw Error(`TestImage: Missing color mapping for "${normalizedAsciiImage[i]}"`);
             }
             else if (color instanceof BpxSolidColor) {

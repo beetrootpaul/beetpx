@@ -1,13 +1,12 @@
 import { type PngDataArray } from "fast-png";
 import { u_ } from "../Utils";
 import { BpxSolidColor } from "../color/SolidColor";
-import { BpxTransparentColor, transparent_ } from "../color/TransparentColor";
 import { BpxSprite } from "./Sprite";
 
 export type PreparedSprite = {
   w: number;
   h: number;
-  colors: (BpxSolidColor | BpxTransparentColor)[][];
+  colors: (BpxSolidColor | null)[][];
 };
 
 export class PreparedSprites {
@@ -37,9 +36,9 @@ export class PreparedSprites {
     const w = sprite.size().x;
     const h = sprite.size().y;
 
-    const colors: (BpxSolidColor | BpxTransparentColor)[][] = u_
+    const colors: (BpxSolidColor | null)[][] = u_
       .range(w)
-      .map(() => u_.range(h).map(() => transparent_));
+      .map(() => u_.range(h).map(() => null));
 
     for (let spriteY = 0; spriteY < h; ++spriteY) {
       const imgY = sprite.xy1.y + spriteY;
@@ -48,7 +47,7 @@ export class PreparedSprites {
 
         const imgIndex = (imgY * imgW + imgX) * imgChannels;
 
-        const color: BpxSolidColor | BpxTransparentColor =
+        const color: BpxSolidColor | null =
           imgChannels === 3
             ? new BpxSolidColor(
                 imgBytes[imgIndex]!,
@@ -61,7 +60,7 @@ export class PreparedSprites {
                 imgBytes[imgIndex + 1]!,
                 imgBytes[imgIndex + 2]!,
               )
-            : transparent_;
+            : null;
 
         colors[spriteX]![spriteY] = color;
       }

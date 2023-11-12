@@ -10,7 +10,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BpxCanvasSnapshotColorMapping_nextId, _BpxCanvasSnapshotColorMapping_nominalTypeHelper__canvasSnapshotMapping, _BpxCanvasSnapshotColorMapping_mapping;
-import { transparent_ } from "./TransparentColor";
 export class BpxCanvasSnapshotColorMapping {
     constructor(mapping) {
         var _b, _c, _d;
@@ -21,9 +20,7 @@ export class BpxCanvasSnapshotColorMapping {
         __classPrivateFieldSet(this, _BpxCanvasSnapshotColorMapping_mapping, mapping, "f");
     }
     getMappedColor(snapshot, index) {
-        return snapshot
-            ? __classPrivateFieldGet(this, _BpxCanvasSnapshotColorMapping_mapping, "f").call(this, snapshot.getColorAtIndex(index))
-            : transparent_;
+        return snapshot ? __classPrivateFieldGet(this, _BpxCanvasSnapshotColorMapping_mapping, "f").call(this, snapshot.getColorAtIndex(index)) : null;
     }
 }
 _a = BpxCanvasSnapshotColorMapping, _BpxCanvasSnapshotColorMapping_nominalTypeHelper__canvasSnapshotMapping = new WeakMap(), _BpxCanvasSnapshotColorMapping_mapping = new WeakMap();

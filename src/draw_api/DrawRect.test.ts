@@ -1,14 +1,13 @@
 import { describe, test } from "@jest/globals";
 import { BpxCompositeColor } from "../color/CompositeColor";
 import { BpxSolidColor } from "../color/SolidColor";
-import { transparent_ } from "../color/TransparentColor";
 import { v_ } from "../misc/Vector2d";
 import { DrawRect } from "./DrawRect";
 import { BpxFillPattern } from "./FillPattern";
 import { TestCanvas } from "./TestCanvas";
 
 describe("DrawRect", () => {
-  const ct = transparent_;
+  const ct = null;
   const c0 = BpxSolidColor.fromRgbCssHex("#010203");
   const c1 = BpxSolidColor.fromRgbCssHex("#111213");
   const c2 = BpxSolidColor.fromRgbCssHex("#212223");

@@ -3,7 +3,6 @@ import {
   BpxSolidColor,
   BpxSpriteColorMapping,
   spr_,
-  transparent_,
   v_,
   v_0_0_,
 } from "../../../src";
@@ -136,10 +135,10 @@ export class StandardView {
     // background: keyboard vs gamepad
     let prevMapping = b_.setSpriteColorMapping(
       new BpxSpriteColorMapping((c) => {
-        if (this.highlightKeyboard && c.id === pink.id) {
+        if (this.highlightKeyboard && c?.id === pink.id) {
           return darkGreen;
         }
-        if (!this.highlightKeyboard && c.id === yellow.id) {
+        if (!this.highlightKeyboard && c?.id === yellow.id) {
           return darkBlue;
         }
         return c;
@@ -169,7 +168,7 @@ export class StandardView {
 
     // pressed buttons
     prevMapping = b_.setSpriteColorMapping(
-      BpxSpriteColorMapping.fromMapEntries([[lime.id, transparent_]]),
+      BpxSpriteColorMapping.fromMapEntries([[lime.id, null]]),
     );
     if (ip.up) {
       b_.sprite(ps.k_w, v_(21, 17));

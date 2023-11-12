@@ -1,7 +1,6 @@
 import { describe, test } from "@jest/globals";
 import { BpxSolidColor } from "../color/SolidColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { transparent_ } from "../color/TransparentColor";
 import { v_, v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { spr_ } from "./Sprite";
@@ -11,7 +10,7 @@ import { TestImage } from "./TestImage";
 // TODO: tests for fill pattern
 
 describe("DrawSprite", () => {
-  const ct = transparent_;
+  const ct = null;
   const c0 = BpxSolidColor.fromRgbCssHex("#010203");
   const c1 = BpxSolidColor.fromRgbCssHex("#111213");
   const c2 = BpxSolidColor.fromRgbCssHex("#212223");

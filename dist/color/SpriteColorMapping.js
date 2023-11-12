@@ -13,7 +13,12 @@ var _BpxSpriteColorMapping_nominalTypeHelper__spriteMapping, _BpxSpriteColorMapp
 export class BpxSpriteColorMapping {
     static fromMapEntries(mapEntries) {
         const map = new Map(mapEntries);
-        return new BpxSpriteColorMapping((spriteColor) => { var _a; return (_a = map.get(spriteColor.id)) !== null && _a !== void 0 ? _a : spriteColor; });
+        return new BpxSpriteColorMapping((spriteColor) => {
+            if (!spriteColor)
+                return spriteColor;
+            const mapped = map.get(spriteColor.id);
+            return typeof mapped === "undefined" ? spriteColor : mapped;
+        });
     }
     constructor(mapping) {
         

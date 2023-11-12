@@ -10,7 +10,6 @@ import {
   BpxVector2d,
   b_,
   spr_,
-  transparent_,
   u_,
   v_,
   v_0_0_,
@@ -42,11 +41,10 @@ let logoPositionBase = v_0_0_;
 let numberOfEllipses = 4;
 let numberOfBigSprites = 4;
 
-// TODO: replace `instanceof` calls with property checks to potentially improve performance
 const negative = new BpxCanvasSnapshotColorMapping((c) =>
   c instanceof BpxSolidColor
     ? new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b)
-    : transparent_,
+    : null,
 );
 
 class Font1 implements BpxFont {

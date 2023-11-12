@@ -11,7 +11,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawText_canvas, _DrawText_sprite;
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { transparent_ } from "../color/TransparentColor";
 import { v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
@@ -32,14 +31,14 @@ export class DrawText {
         canvasXy = canvasXy.round();
         const colorMapping = typeof color === "function"
             ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => {
-                return spriteColor.id === fontAsset.imageTextColor.id
+                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.id) === fontAsset.imageTextColor.id
                     ? color(charSprite)
-                    : transparent_;
+                    : null;
             })
             : new BpxSpriteColorMapping((spriteColor) => {
-                return spriteColor.id === fontAsset.imageTextColor.id
+                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.id) === fontAsset.imageTextColor.id
                     ? color
-                    : transparent_;
+                    : null;
             });
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), v_1_1_, typeof colorMapping === "function"

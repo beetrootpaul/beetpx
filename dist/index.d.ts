@@ -226,37 +226,31 @@ interface CanvasSnapshot {
     getColorAtIndex(index: number): BpxSolidColor;
 }
 
-declare class BpxTransparentColor implements BpxColor {
-    #private;
-    readonly id: BpxColorId;
-}
-declare const transparent_: BpxTransparentColor;
-
-type BpxColorMapper = (sourceColor: BpxSolidColor | BpxTransparentColor) => BpxSolidColor | BpxTransparentColor;
+type BpxColorMapper = (sourceColor: BpxSolidColor | null) => BpxSolidColor | null;
 
 declare class BpxCanvasSnapshotColorMapping implements BpxColor {
     #private;
     readonly id: BpxColorId;
     constructor(mapping: BpxColorMapper);
-    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxSolidColor | BpxTransparentColor;
+    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxSolidColor | null;
 }
 
 declare class BpxCompositeColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
-    readonly primary: BpxSolidColor | BpxTransparentColor;
-    readonly secondary: BpxSolidColor | BpxTransparentColor;
-    constructor(primary: BpxSolidColor | BpxTransparentColor, secondary: BpxSolidColor | BpxTransparentColor);
+    readonly primary: BpxSolidColor | null;
+    readonly secondary: BpxSolidColor | null;
+    constructor(primary: BpxSolidColor | null, secondary: BpxSolidColor | null);
 }
 
 declare class BpxSpriteColorMapping implements BpxColor {
     #private;
     static noMapping: BpxSpriteColorMapping;
-    static fromMapEntries(mapEntries: Array<[BpxColorId, BpxSolidColor | BpxTransparentColor]>): BpxSpriteColorMapping;
+    static fromMapEntries(mapEntries: Array<[BpxColorId, BpxSolidColor | null]>): BpxSpriteColorMapping;
     static nextId: number;
     readonly id: BpxColorId;
     constructor(mapping: BpxColorMapper);
-    getMappedColor(spriteColor: BpxSolidColor | BpxTransparentColor): BpxSolidColor | BpxTransparentColor;
+    getMappedColor(spriteColor: BpxSolidColor | null): BpxSolidColor | null;
 }
 
 declare class BpxFillPattern {
@@ -602,4 +596,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapper, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapper, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
