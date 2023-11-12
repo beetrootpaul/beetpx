@@ -82,8 +82,6 @@ declare const v_1_1_: BpxVector2d;
 
 declare class BpxUtils {
     /**
-     * NOTE: This function makes sense in a TypeScript codebase only.
-     *
      * This function is meant to be used in a last branch of `if - else if - … - else`
      *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
      *   a union type of which we check all possible cases. Someday we add one more

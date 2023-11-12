@@ -8,8 +8,6 @@ import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
 
 export class BpxUtils {
   /**
-   * NOTE: This function makes sense in a TypeScript codebase only.
-   *
    * This function is meant to be used in a last branch of `if - else if - … - else`
    *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
    *   a union type of which we check all possible cases. Someday we add one more
@@ -22,9 +20,7 @@ export class BpxUtils {
   static assertUnreachable(
     thingThatShouldBeOfTypeNeverAtThisPoint: never,
   ): void {
-    throw Error(
-      "Somehow reached the unreachable code. Was TypeScript checker run on it?",
-    );
+    throw Error(`Somehow reached the unreachable code ¯\\_(ツ)_/¯`);
   }
 
   // TODO: tests for edge cases

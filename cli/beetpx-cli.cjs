@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-// TODO: prevent CLI from running inside this repo or, in general, add some safety nets against messing up with files
-
 const path = require("path");
 const fs = require("fs");
 const removeHtmlComments = require("remove-html-comments");
@@ -55,6 +53,12 @@ const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
 
+const tsEntrypoint = path.resolve(
+  gameCodebaseDir,
+  "src",
+  "beetpx_entrypoint.ts",
+);
+
 const gameHtmlTemplate = "index.template.html";
 
 const beetPxHtmlTemplatesInDir = path.resolve(
@@ -78,6 +82,13 @@ const beetPxVersion = JSON.parse(
 ).version;
 if (typeof beetPxVersion !== "string" || beetPxVersion.length <= 0) {
   throw Error('Unable to read "version" from "package.json"');
+}
+
+if (!fs.existsSync(tsEntrypoint)) {
+  console.error(
+    `Could not find required BeetPx entrypoint TypeScript file: "${tsEntrypoint}"`,
+  );
+  process.exit(1);
 }
 
 if (argv._.includes("dev") || argv._.length <= 0) {
