@@ -1,10 +1,7 @@
 import { describe, test } from "@jest/globals";
-import {
-  BpxColorId,
-  BpxSolidColor,
-  BpxTransparentColor,
-  transparent_,
-} from "../misc/Color";
+import { BpxColorId } from "../color/Color";
+import { BpxSolidColor } from "../color/SolidColor";
+import { BpxTransparentColor, transparent_ } from "../color/TransparentColor";
 import { v_, v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { spr_ } from "./Sprite";

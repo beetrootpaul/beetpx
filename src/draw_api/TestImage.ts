@@ -1,5 +1,6 @@
+import { BpxColor } from "../color/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 import { ImageAsset } from "../misc/Assets";
-import { BpxSolidColor, type BpxColor } from "../misc/Color";
 
 export class TestImage {
   readonly asset: ImageAsset;

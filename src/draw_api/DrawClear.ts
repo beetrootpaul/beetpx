@@ -1,5 +1,5 @@
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxSolidColor } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 
 export class DrawClear {
   readonly #canvas: Canvas;

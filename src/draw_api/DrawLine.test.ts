@@ -1,5 +1,6 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor, transparent_ } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
+import { transparent_ } from "../color/TransparentColor";
 import { v_ } from "../misc/Vector2d";
 import { DrawLine } from "./DrawLine";
 import { TestCanvas } from "./TestCanvas";

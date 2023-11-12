@@ -5,7 +5,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _PreparedSprites_instances, _PreparedSprites_cache, _PreparedSprites_keyPortionFromColorMapping;
 import { u_ } from "../Utils";
-import { BpxSolidColor, transparent_, } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
+import { transparent_ } from "../color/TransparentColor";
 export class PreparedSprites {
     constructor() {
         _PreparedSprites_instances.add(this);

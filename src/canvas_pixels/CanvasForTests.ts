@@ -1,5 +1,5 @@
 import { u_ } from "../Utils";
-import { BpxSolidColor } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";

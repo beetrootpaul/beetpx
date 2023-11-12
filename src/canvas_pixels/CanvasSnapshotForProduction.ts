@@ -1,4 +1,4 @@
-import { BpxSolidColor } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 
 export class CanvasSnapshotForProduction implements CanvasSnapshot {

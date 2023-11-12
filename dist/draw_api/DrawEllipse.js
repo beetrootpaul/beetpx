@@ -11,7 +11,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawEllipse_instances, _DrawEllipse_canvas, _DrawEllipse_drawPixel;
 import { u_ } from "../Utils";
-import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../misc/Color";
+import { BpxCompositeColor } from "../color/CompositeColor";
+import { BpxMappingColor } from "../color/MappingColor";
+import { BpxSolidColor } from "../color/SolidColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawEllipse {

@@ -8,6 +8,7 @@ import {
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas_pixels/Canvas";
 import { CanvasForProduction } from "./canvas_pixels/CanvasForProduction";
+import { BpxSolidColor, black_ } from "./color/SolidColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
@@ -15,7 +16,6 @@ import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { Assets, AssetsToLoad } from "./misc/Assets";
-import { BpxSolidColor, black_ } from "./misc/Color";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d, v_ } from "./misc/Vector2d";

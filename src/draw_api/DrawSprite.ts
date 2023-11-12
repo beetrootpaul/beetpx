@@ -1,7 +1,9 @@
 import { BpxUtils } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
+import { BpxColorId } from "../color/Color";
+import { BpxSolidColor } from "../color/SolidColor";
+import { BpxTransparentColor } from "../color/TransparentColor";
 import { ImageAsset } from "../misc/Assets";
-import { BpxColorId, BpxSolidColor, BpxTransparentColor } from "../misc/Color";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 import { PreparedSprites } from "./PreparedSprites";

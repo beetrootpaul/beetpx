@@ -1,16 +1,14 @@
 import { BpxUtils } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { BpxCanvasSnapshotId } from "../canvas_pixels/CanvasSnapshot";
+import { BpxColorId } from "../color/Color";
+import { BpxCompositeColor } from "../color/CompositeColor";
+import { BpxMappingColor } from "../color/MappingColor";
+import { BpxSolidColor } from "../color/SolidColor";
+import { BpxTransparentColor } from "../color/TransparentColor";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { Assets, FontAsset } from "../misc/Assets";
-import {
-  BpxColorId,
-  BpxCompositeColor,
-  BpxMappingColor,
-  BpxSolidColor,
-  BpxTransparentColor,
-} from "../misc/Color";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";

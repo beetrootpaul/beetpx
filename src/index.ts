@@ -31,6 +31,11 @@ export {
 } from "./audio/SoundSequence";
 export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
 export { type BpxCanvasSnapshotId } from "./canvas_pixels/CanvasSnapshot";
+export { type BpxColor, type BpxColorId } from "./color/Color";
+export { BpxCompositeColor } from "./color/CompositeColor";
+export { BpxMappingColor } from "./color/MappingColor";
+export { BpxSolidColor } from "./color/SolidColor";
+export { BpxTransparentColor } from "./color/TransparentColor";
 export { type BpxColorMapping } from "./draw_api/DrawApi";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { BpxSprite } from "./draw_api/Sprite";
@@ -43,14 +48,6 @@ export {
   type BpxJsonUrl,
   type BpxSoundUrl,
 } from "./misc/Assets";
-export {
-  BpxCompositeColor,
-  BpxMappingColor,
-  BpxSolidColor,
-  BpxTransparentColor,
-  type BpxColor,
-  type BpxColorId,
-} from "./misc/Color";
 export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";
 export { BpxVector2d } from "./misc/Vector2d";
@@ -59,15 +56,9 @@ export { BeetPx } from "./BeetPx";
 
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
+export { black_, blue_, green_, red_, white_ } from "./color/SolidColor";
+export { transparent_ } from "./color/TransparentColor";
 export { spr_ } from "./draw_api/Sprite";
-export {
-  black_,
-  blue_,
-  green_,
-  red_,
-  transparent_,
-  white_,
-} from "./misc/Color";
 export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 

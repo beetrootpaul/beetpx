@@ -1,11 +1,9 @@
 import { u_ } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
-import {
-  BpxCompositeColor,
-  BpxMappingColor,
-  BpxSolidColor,
-} from "../misc/Color";
+import { BpxCompositeColor } from "../color/CompositeColor";
+import { BpxMappingColor } from "../color/MappingColor";
+import { BpxSolidColor } from "../color/SolidColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 

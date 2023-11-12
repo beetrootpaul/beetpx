@@ -1,7 +1,8 @@
 import { expect } from "@jest/globals";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasForTests } from "../canvas_pixels/CanvasForTests";
-import { BpxColorId, BpxSolidColor } from "../misc/Color";
+import { BpxColorId } from "../color/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 import { v_ } from "../misc/Vector2d";
 
 export class TestCanvas {

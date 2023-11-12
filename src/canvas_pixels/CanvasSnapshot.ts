@@ -1,4 +1,4 @@
-import { BpxSolidColor } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 
 export type BpxCanvasSnapshotId = number;
 

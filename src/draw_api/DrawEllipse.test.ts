@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 import { v_ } from "../misc/Vector2d";
 import { DrawEllipse } from "./DrawEllipse";
 import { TestCanvas } from "./TestCanvas";

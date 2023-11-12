@@ -1,4 +1,4 @@
-import { BpxSolidColor } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 export class TestImage {
     constructor(params) {
         const asciiImage = params.image;

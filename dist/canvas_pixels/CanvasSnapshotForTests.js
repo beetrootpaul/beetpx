@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasSnapshotForTests_rgbValues;
-import { BpxSolidColor } from "../misc/Color";
+import { BpxSolidColor } from "../color/SolidColor";
 export class CanvasSnapshotForTests {
     constructor(rgbValues) {
         _CanvasSnapshotForTests_rgbValues.set(this, void 0);

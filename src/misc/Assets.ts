@@ -4,8 +4,8 @@ import {
   type PngDataArray,
 } from "fast-png";
 import { BpxUtils } from "../Utils";
+import { BpxSolidColor } from "../color/SolidColor";
 import { BpxFont, BpxFontId } from "../font/Font";
-import { BpxSolidColor } from "./Color";
 
 export type AssetsToLoad = {
   images: ImageAssetToLoad[];

@@ -1,11 +1,8 @@
 import { type PngDataArray } from "fast-png";
 import { u_ } from "../Utils";
-import {
-  BpxColorId,
-  BpxSolidColor,
-  BpxTransparentColor,
-  transparent_,
-} from "../misc/Color";
+import { BpxColorId } from "../color/Color";
+import { BpxSolidColor } from "../color/SolidColor";
+import { BpxTransparentColor, transparent_ } from "../color/TransparentColor";
 import { BpxSprite } from "./Sprite";
 
 export type PreparedSprite = {

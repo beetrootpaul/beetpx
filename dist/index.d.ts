@@ -1,19 +1,10 @@
 import { PngDataArray } from 'fast-png';
 
-type BpxCanvasSnapshotId = number;
-interface CanvasSnapshot {
-    get(index: number): BpxSolidColor;
-}
-
 type BpxColorId = string;
 interface BpxColor {
     id: BpxColorId;
 }
-declare class BpxTransparentColor implements BpxColor {
-    #private;
-    readonly id: BpxColorId;
-}
-declare const transparent_: BpxTransparentColor;
+
 declare class BpxSolidColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
@@ -29,20 +20,6 @@ declare const white_: BpxSolidColor;
 declare const red_: BpxSolidColor;
 declare const green_: BpxSolidColor;
 declare const blue_: BpxSolidColor;
-declare class BpxCompositeColor implements BpxColor {
-    #private;
-    readonly id: BpxColorId;
-    readonly primary: BpxSolidColor | BpxTransparentColor;
-    readonly secondary: BpxSolidColor | BpxTransparentColor;
-    constructor(primary: BpxSolidColor | BpxTransparentColor, secondary: BpxSolidColor | BpxTransparentColor);
-}
-declare class BpxMappingColor implements BpxColor {
-    #private;
-    readonly id: BpxColorId;
-    readonly snapshotId: BpxCanvasSnapshotId;
-    readonly getMappedColorFromCanvasSnapshot: (snapshot: CanvasSnapshot, index: number) => BpxSolidColor | BpxTransparentColor;
-    constructor(snapshotId: BpxCanvasSnapshotId, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
-}
 
 interface PrintDebug {
     __printDebug(): string;
@@ -246,6 +223,33 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 };
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
+
+type BpxCanvasSnapshotId = number;
+interface CanvasSnapshot {
+    get(index: number): BpxSolidColor;
+}
+
+declare class BpxTransparentColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+}
+declare const transparent_: BpxTransparentColor;
+
+declare class BpxCompositeColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+    readonly primary: BpxSolidColor | BpxTransparentColor;
+    readonly secondary: BpxSolidColor | BpxTransparentColor;
+    constructor(primary: BpxSolidColor | BpxTransparentColor, secondary: BpxSolidColor | BpxTransparentColor);
+}
+
+declare class BpxMappingColor implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+    readonly snapshotId: BpxCanvasSnapshotId;
+    readonly getMappedColorFromCanvasSnapshot: (snapshot: CanvasSnapshot, index: number) => BpxSolidColor | BpxTransparentColor;
+    constructor(snapshotId: BpxCanvasSnapshotId, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
+}
 
 declare abstract class Canvas {
     #private;
