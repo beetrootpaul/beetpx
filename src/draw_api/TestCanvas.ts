@@ -1,17 +1,17 @@
 import { expect } from "@jest/globals";
-import { BpxColorId, BpxSolidColor } from "../Color";
-import { v_ } from "../Vector2d";
-import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
-import { CanvasPixelsForTests } from "./canvas_pixels/CanvasPixelsForTests";
+import { Canvas } from "../canvas_pixels/Canvas";
+import { CanvasForTests } from "../canvas_pixels/CanvasForTests";
+import { BpxColorId, BpxSolidColor } from "../misc/Color";
+import { v_ } from "../misc/Vector2d";
 
 export class TestCanvas {
-  readonly pixels: CanvasPixels;
+  readonly canvas: Canvas;
 
   constructor(width: number, height: number, color: BpxSolidColor) {
-    this.pixels = new CanvasPixelsForTests(v_(width, height));
+    this.canvas = new CanvasForTests(v_(width, height));
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        this.pixels.set(color, x, y);
+        this.canvas.set(color, x, y);
       }
     }
   }
@@ -48,11 +48,11 @@ export class TestCanvas {
   #asAscii(colorToAscii: Map<BpxColorId, string>): string {
     let asciiImage = "";
 
-    const snapshotId = this.pixels.takeSnapshot();
-    const snapshot = this.pixels.getSnapshot(snapshotId)!;
-    for (let y = 0; y < this.pixels.canvasSize.y; y += 1) {
-      for (let x = 0; x < this.pixels.canvasSize.x; x += 1) {
-        const index = y * this.pixels.canvasSize.x + x;
+    const snapshotId = this.canvas.takeSnapshot();
+    const snapshot = this.canvas.getSnapshot(snapshotId)!;
+    for (let y = 0; y < this.canvas.canvasSize.y; y += 1) {
+      for (let x = 0; x < this.canvas.canvasSize.x; x += 1) {
+        const index = y * this.canvas.canvasSize.x + x;
         const color = snapshot.get(index);
         asciiImage += colorToAscii.get(color.id) ?? "?";
       }

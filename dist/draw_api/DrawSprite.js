@@ -9,17 +9,17 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _DrawSprite_preparedSprites, _DrawSprite_canvasPixels, _DrawSprite_options;
-import { BpxSprite } from "../Sprite";
+var _a, _DrawSprite_preparedSprites, _DrawSprite_canvas, _DrawSprite_options;
 import { BpxUtils } from "../Utils";
-import { v_, v_1_1_ } from "../Vector2d";
+import { v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 import { PreparedSprites } from "./PreparedSprites";
+import { BpxSprite } from "./Sprite";
 export class DrawSprite {
-    constructor(canvasPixels, options = {}) {
-        _DrawSprite_canvasPixels.set(this, void 0);
+    constructor(canvas, options = {}) {
+        _DrawSprite_canvas.set(this, void 0);
         _DrawSprite_options.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawSprite_canvasPixels, canvasPixels, "f");
+        __classPrivateFieldSet(this, _DrawSprite_canvas, canvas, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
     }
     
@@ -37,7 +37,7 @@ export class DrawSprite {
         
         sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         
-        if (!__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
+        if (!__classPrivateFieldGet(this, _DrawSprite_canvas, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
             return;
         }
         const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels, colorMapping);
@@ -49,11 +49,11 @@ export class DrawSprite {
                     for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
                         const canvasX = canvasXBase + xScaledStep;
                         const canvasY = canvasYBase + yScaledStep;
-                        if (__classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").canSetAt(canvasX, canvasY)) {
+                        if (__classPrivateFieldGet(this, _DrawSprite_canvas, "f").canSetAt(canvasX, canvasY)) {
                             if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
                                 const color = preparedSprite.colors[spriteX][spriteY];
                                 if (color) {
-                                    __classPrivateFieldGet(this, _DrawSprite_canvasPixels, "f").set(color, canvasX, canvasY);
+                                    __classPrivateFieldGet(this, _DrawSprite_canvas, "f").set(color, canvasX, canvasY);
                                 }
                             }
                         }
@@ -63,5 +63,5 @@ export class DrawSprite {
         }
     }
 }
-_a = DrawSprite, _DrawSprite_canvasPixels = new WeakMap(), _DrawSprite_options = new WeakMap();
+_a = DrawSprite, _DrawSprite_canvas = new WeakMap(), _DrawSprite_options = new WeakMap();
 _DrawSprite_preparedSprites = { value: new PreparedSprites() };

@@ -1,6 +1,6 @@
 import * as ABU from "audio-buffer-utils";
-import { Assets } from "../Assets";
 import { u_ } from "../Utils";
+import { Assets } from "../misc/Assets";
 import { AudioPlayback, BpxAudioPlaybackId } from "./AudioPlayback";
 import { BpxSoundSequence, BpxSoundSequenceEntry } from "./SoundSequence";
 

@@ -1,7 +1,7 @@
 import { PngDataArray } from 'fast-png';
 
-type BpxCanvasPixelsSnapshotId = number;
-interface CanvasPixelsSnapshot {
+type BpxCanvasSnapshotId = number;
+interface CanvasSnapshot {
     get(index: number): BpxSolidColor;
 }
 
@@ -39,9 +39,9 @@ declare class BpxCompositeColor implements BpxColor {
 declare class BpxMappingColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
-    readonly snapshotId: BpxCanvasPixelsSnapshotId;
-    readonly getMappedColorFromCanvasSnapshot: (snapshot: CanvasPixelsSnapshot, index: number) => BpxSolidColor | BpxTransparentColor;
-    constructor(snapshotId: BpxCanvasPixelsSnapshotId, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
+    readonly snapshotId: BpxCanvasSnapshotId;
+    readonly getMappedColorFromCanvasSnapshot: (snapshot: CanvasSnapshot, index: number) => BpxSolidColor | BpxTransparentColor;
+    constructor(snapshotId: BpxCanvasSnapshotId, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
 }
 
 interface PrintDebug {
@@ -102,6 +102,53 @@ declare class BpxVector2d implements PrintDebug {
 }
 declare const v_0_0_: BpxVector2d;
 declare const v_1_1_: BpxVector2d;
+
+declare class BpxUtils {
+    /**
+     * NOTE: This function makes sense in a TypeScript codebase only.
+     *
+     * This function is meant to be used in a last branch of `if - else if - … - else`
+     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+     *   a union type of which we check all possible cases. Someday we add one more
+     *   type to the union, but we forget to extend our `switch` by that one more `case`.
+     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+     *   will inform us about such mistake.
+     *
+     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+     */
+    static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
+    static booleanChangingEveryNthFrame(n: number): boolean;
+    static clamp(a: number, b: number, c: number): number;
+    static identity<Param>(param: Param): Param;
+    static isDefined<Value>(value: Value | null | undefined): value is Value;
+    static lerp(a: number, b: number, t: number): number;
+    static measureText(text: string): BpxVector2d;
+    static noop(): void;
+    static offset8Directions(): BpxVector2d[];
+    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor, centerXy?: [boolean, boolean]): void;
+    static randomElementOf<V>(array: V[]): V | undefined;
+    static range(n: number): number[];
+    /**
+     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+     */
+    static throwError(message: string): never;
+    /**
+     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigAtan2(x: number, y: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigCos(turnAngle: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigSin(turnAngle: number): number;
+    static wait(millis: number): Promise<void>;
+}
+declare const u_: typeof BpxUtils;
+
+type BpxAudioPlaybackId = number;
 
 type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
 declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
@@ -182,62 +229,6 @@ declare class Assets {
     getJsonAsset(urlOfAlreadyLoadedJson: BpxJsonUrl): JsonAsset;
 }
 
-type BpxEasingFn = (t: number) => number;
-declare class BpxEasing {
-    static linear: BpxEasingFn;
-    static inQuadratic: BpxEasingFn;
-    static outQuadratic: BpxEasingFn;
-    static inQuartic: BpxEasingFn;
-    static outQuartic: BpxEasingFn;
-}
-
-declare class BpxUtils {
-    /**
-     * NOTE: This function makes sense in a TypeScript codebase only.
-     *
-     * This function is meant to be used in a last branch of `if - else if - … - else`
-     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
-     *   a union type of which we check all possible cases. Someday we add one more
-     *   type to the union, but we forget to extend our `switch` by that one more `case`.
-     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
-     *   will inform us about such mistake.
-     *
-     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
-     */
-    static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
-    static booleanChangingEveryNthFrame(n: number): boolean;
-    static clamp(a: number, b: number, c: number): number;
-    static identity<Param>(param: Param): Param;
-    static isDefined<Value>(value: Value | null | undefined): value is Value;
-    static lerp(a: number, b: number, t: number): number;
-    static measureText(text: string): BpxVector2d;
-    static noop(): void;
-    static offset8Directions(): BpxVector2d[];
-    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxSolidColor, outlineColor: BpxSolidColor, centerXy?: [boolean, boolean]): void;
-    static randomElementOf<V>(array: V[]): V | undefined;
-    static range(n: number): number[];
-    /**
-     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
-     */
-    static throwError(message: string): never;
-    /**
-     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    static trigAtan2(x: number, y: number): number;
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    static trigCos(turnAngle: number): number;
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    static trigSin(turnAngle: number): number;
-    static wait(millis: number): Promise<void>;
-}
-declare const u_: typeof BpxUtils;
-
-type BpxAudioPlaybackId = number;
-
 type BpxSoundSequence = {
     intro?: BpxSoundSequenceEntry[];
     loop?: BpxSoundSequenceEntry[];
@@ -256,6 +247,22 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
+declare abstract class Canvas {
+    #private;
+    readonly canvasSize: BpxVector2d;
+    protected constructor(canvasSize: BpxVector2d);
+    abstract setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
+    abstract removeClippingRegion(): void;
+    abstract canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
+    abstract canSetAt(x: number, y: number): boolean;
+    abstract set(color: BpxSolidColor, x: number, y: number): void;
+    takeSnapshot(): BpxCanvasSnapshotId;
+    getSnapshot(snapshotId: BpxCanvasSnapshotId): CanvasSnapshot | null;
+    protected abstract newSnapshot(): CanvasSnapshot;
+    render(): void;
+    protected abstract doRender(): void;
+}
+
 declare class BpxFillPattern {
     #private;
     static of(bits: number): BpxFillPattern;
@@ -265,28 +272,12 @@ declare class BpxFillPattern {
     hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
-declare abstract class CanvasPixels {
-    #private;
-    readonly canvasSize: BpxVector2d;
-    protected constructor(canvasSize: BpxVector2d);
-    abstract setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
-    abstract removeClippingRegion(): void;
-    abstract canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
-    abstract canSetAt(x: number, y: number): boolean;
-    abstract set(color: BpxSolidColor, x: number, y: number): void;
-    takeSnapshot(): BpxCanvasPixelsSnapshotId;
-    getSnapshot(snapshotId: BpxCanvasPixelsSnapshotId): CanvasPixelsSnapshot | null;
-    protected abstract newSnapshot(): CanvasPixelsSnapshot;
-    render(): void;
-    protected abstract doRender(): void;
-}
-
 type BpxColorMapping = Array<{
     from: BpxSolidColor;
     to: BpxSolidColor | BpxTransparentColor;
 }>;
 type DrawApiOptions = {
-    canvasPixels: CanvasPixels;
+    canvas: Canvas;
     assets: Assets;
 };
 declare class DrawApi {
@@ -309,7 +300,7 @@ declare class DrawApi {
     setFont(fontId: BpxFontId | null): void;
     getFont(): BpxFont | null;
     print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean]): void;
-    takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId;
+    takeCanvasSnapshot(): BpxCanvasSnapshotId;
 }
 
 declare class Button {
@@ -323,13 +314,46 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
+type BpxButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
+declare class Buttons {
+    #private;
+    update(events: Set<BpxGameInputEvent>): void;
+    isPressed(button: BpxButtonName): boolean;
+    areDirectionsPressedAsVector(): BpxVector2d;
+    setRepeating(button: BpxButtonName, repeating: boolean): void;
+    wasAnyJustPressed(): boolean;
+    wasJustPressed(button: BpxButtonName): boolean;
+    wasJustReleased(button: BpxButtonName): boolean;
+}
+
+interface GameInputSpecialized {
+    inputMethod: GameInputMethod;
+    startListening(): void;
+    /**
+     * @return Whether any events were added to eventsCollector
+     */
+    update(eventsCollector: Set<BpxGameInputEvent>): boolean;
+}
+
 declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "other"];
 type BpxGamepadType = (typeof supportedGamepadTypes)[number];
+declare class GameInputGamepad implements GameInputSpecialized {
+    #private;
+    inputMethod: GameInputMethod;
+    constructor(params: {
+        browserType: BpxBrowserType;
+    });
+    startListening(): void;
+    update(eventsCollector: Set<BpxGameInputEvent>): boolean;
+    connectedGamepadTypes(): Set<BpxGamepadType>;
+}
 
 type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 declare class GameInput {
     #private;
+    readonly gameInputsSpecialized: GameInputSpecialized[];
+    readonly gameInputGamepad: GameInputGamepad;
     readonly gameButtons: Buttons;
     readonly buttonFullScreen: Button;
     readonly buttonMuteUnmute: Button;
@@ -352,16 +376,13 @@ declare class GameInput {
     __internal__capturedEvents(): Set<BpxGameInputEvent>;
 }
 
-type BpxButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
-declare class Buttons {
-    #private;
-    update(events: Set<BpxGameInputEvent>): void;
-    isPressed(button: BpxButtonName): boolean;
-    areDirectionsPressedAsVector(): BpxVector2d;
-    setRepeating(button: BpxButtonName, repeating: boolean): void;
-    wasAnyJustPressed(): boolean;
-    wasJustPressed(button: BpxButtonName): boolean;
-    wasJustReleased(button: BpxButtonName): boolean;
+type BpxEasingFn = (t: number) => number;
+declare class BpxEasing {
+    static linear: BpxEasingFn;
+    static inQuadratic: BpxEasingFn;
+    static outQuadratic: BpxEasingFn;
+    static inQuartic: BpxEasingFn;
+    static outQuartic: BpxEasingFn;
 }
 
 declare function timer_(frames: number): BpxTimer;
@@ -410,12 +431,6 @@ declare class AudioApi {
     __internal__globalGainNode(): GainNode;
 }
 
-declare class DebugMode {
-    #private;
-    static get enabled(): boolean;
-    static set enabled(value: boolean);
-}
-
 declare global {
     interface Document {
         webkitFullscreenEnabled?: boolean;
@@ -434,11 +449,11 @@ declare abstract class FullScreen {
     abstract toggleFullScreen(): void;
 }
 
-type PersistedStateValueContraints = Record<string, string | number | boolean | null>;
+type PersistedStateValueConstraints = Record<string, string | number | boolean | null>;
 declare class StorageApi {
     #private;
-    savePersistedState<PersistedStateValue extends PersistedStateValueContraints>(value: PersistedStateValue): void;
-    loadPersistedState<PersistedStateValue extends PersistedStateValueContraints>(): PersistedStateValue | null;
+    savePersistedState<PersistedStateValue extends PersistedStateValueConstraints>(value: PersistedStateValue): void;
+    loadPersistedState<PersistedStateValue extends PersistedStateValueConstraints>(): PersistedStateValue | null;
     clearPersistedState(): void;
 }
 
@@ -467,6 +482,12 @@ declare class Framework {
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
     restart(): void;
+}
+
+declare class DebugMode {
+    #private;
+    static get enabled(): boolean;
+    static set enabled(value: boolean);
 }
 
 declare class Logger {
@@ -573,4 +594,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasPixelsSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

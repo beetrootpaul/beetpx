@@ -1,16 +1,17 @@
-import { Assets, FontAsset } from "../Assets";
+import { BpxUtils } from "../Utils";
+import { Canvas } from "../canvas_pixels/Canvas";
+import { BpxCanvasSnapshotId } from "../canvas_pixels/CanvasSnapshot";
+import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
+import { Logger } from "../logger/Logger";
+import { Assets, FontAsset } from "../misc/Assets";
 import {
   BpxColorId,
   BpxCompositeColor,
   BpxMappingColor,
   BpxSolidColor,
   BpxTransparentColor,
-} from "../Color";
-import { BpxSprite } from "../Sprite";
-import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
-import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
-import { Logger } from "../logger/Logger";
+} from "../misc/Color";
+import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
@@ -20,8 +21,7 @@ import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { BpxFillPattern } from "./FillPattern";
-import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
-import { BpxCanvasPixelsSnapshotId } from "./canvas_pixels/CanvasPixelsSnapshot";
+import { BpxSprite } from "./Sprite";
 
 // TODO: BpxColorMapping and BpxMappingColor are named way too similar, while doing different things!
 export type BpxColorMapping = Array<{
@@ -30,7 +30,7 @@ export type BpxColorMapping = Array<{
 }>;
 
 type DrawApiOptions = {
-  canvasPixels: CanvasPixels;
+  canvas: Canvas;
   assets: Assets;
 };
 
@@ -42,7 +42,7 @@ type DrawApiOptions = {
 export class DrawApi {
   readonly #assets: Assets;
 
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
 
   readonly #clear: DrawClear;
   readonly #pixel: DrawPixel;
@@ -67,16 +67,16 @@ export class DrawApi {
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
 
-    this.#canvasPixels = options.canvasPixels;
+    this.#canvas = options.canvas;
 
-    this.#clear = new DrawClear(options.canvasPixels);
-    this.#pixel = new DrawPixel(options.canvasPixels);
-    this.#pixels = new DrawPixels(options.canvasPixels);
-    this.#line = new DrawLine(options.canvasPixels);
-    this.#rect = new DrawRect(options.canvasPixels);
-    this.#ellipse = new DrawEllipse(options.canvasPixels);
-    this.#sprite = new DrawSprite(options.canvasPixels);
-    this.#text = new DrawText(options.canvasPixels);
+    this.#clear = new DrawClear(options.canvas);
+    this.#pixel = new DrawPixel(options.canvas);
+    this.#pixels = new DrawPixels(options.canvas);
+    this.#line = new DrawLine(options.canvas);
+    this.#rect = new DrawRect(options.canvas);
+    this.#ellipse = new DrawEllipse(options.canvas);
+    this.#sprite = new DrawSprite(options.canvas);
+    this.#text = new DrawText(options.canvas);
   }
 
   // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
@@ -86,11 +86,11 @@ export class DrawApi {
   }
 
   setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
-    this.#canvasPixels.setClippingRegion(xy, wh);
+    this.#canvas.setClippingRegion(xy, wh);
   }
 
   removeClippingRegion(): void {
-    this.#canvasPixels.removeClippingRegion();
+    this.#canvas.removeClippingRegion();
   }
 
   // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
@@ -265,7 +265,7 @@ export class DrawApi {
     }
   }
 
-  takeCanvasSnapshot(): BpxCanvasPixelsSnapshotId {
-    return this.#canvasPixels.takeSnapshot();
+  takeCanvasSnapshot(): BpxCanvasSnapshotId {
+    return this.#canvas.takeSnapshot();
   }
 }

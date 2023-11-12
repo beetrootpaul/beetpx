@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor } from "../Color";
+import { BpxSolidColor } from "../misc/Color";
 import { DrawClear } from "./DrawClear";
 import { TestCanvas } from "./TestCanvas";
 
@@ -10,7 +10,7 @@ describe("DrawClear", () => {
   test("clear the whole canvas with a given color", () => {
     // given
     const canvas = new TestCanvas(4, 3, c0);
-    const clear = new DrawClear(canvas.pixels);
+    const clear = new DrawClear(canvas.canvas);
 
     // when
     clear.draw(c1);

@@ -1,5 +1,5 @@
 import { b_, BpxSolidColor, spr_, u_, v_, v_0_0_ } from "../../../src";
-import { BpxGamepadType } from "../../../src/game_input/GamepadGameInput";
+import { BpxGamepadType } from "../../../src/game_input/GameInputGamepad";
 import { GamepadTypeDetector } from "../../../src/game_input/GamepadTypeDetector";
 
 const spr = spr_("spritesheet.png");

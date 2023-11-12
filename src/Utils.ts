@@ -1,8 +1,8 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { BeetPx } from "./BeetPx";
-import { BpxSolidColor } from "./Color";
-import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
+import { BpxSolidColor } from "./misc/Color";
+import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
 
 // TODO: re-check what are the names, how the entire Utils API looks like
 

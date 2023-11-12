@@ -1,12 +1,12 @@
-import { BpxSolidColor } from "../Color";
-import { BpxVector2d } from "../Vector2d";
-import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { Canvas } from "../canvas_pixels/Canvas";
+import { BpxSolidColor } from "../misc/Color";
+import { BpxVector2d } from "../misc/Vector2d";
 
 export class DrawPixels {
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
 
-  constructor(canvasPixels: CanvasPixels) {
-    this.#canvasPixels = canvasPixels;
+  constructor(canvas: Canvas) {
+    this.#canvas = canvas;
   }
 
   // TODO: add tests
@@ -21,8 +21,8 @@ export class DrawPixels {
 
         const x = xy.x + bitsX;
         const y = xy.y + bitsY;
-        if (this.#canvasPixels.canSetAt(x, y)) {
-          this.#canvasPixels.set(color, x, y);
+        if (this.#canvas.canSetAt(x, y)) {
+          this.#canvas.set(color, x, y);
         }
       }
     }

@@ -9,18 +9,18 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawClear_canvasPixels;
+var _DrawClear_canvas;
 export class DrawClear {
-    constructor(canvasPixels) {
-        _DrawClear_canvasPixels.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawClear_canvasPixels, canvasPixels, "f");
+    constructor(canvas) {
+        _DrawClear_canvas.set(this, void 0);
+        __classPrivateFieldSet(this, _DrawClear_canvas, canvas, "f");
     }
     draw(color) {
-        for (let x = 0; x < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.x; ++x) {
-            for (let y = 0; y < __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").canvasSize.y; ++y) {
-                __classPrivateFieldGet(this, _DrawClear_canvasPixels, "f").set(color, x, y);
+        for (let x = 0; x < __classPrivateFieldGet(this, _DrawClear_canvas, "f").canvasSize.x; ++x) {
+            for (let y = 0; y < __classPrivateFieldGet(this, _DrawClear_canvas, "f").canvasSize.y; ++y) {
+                __classPrivateFieldGet(this, _DrawClear_canvas, "f").set(color, x, y);
             }
         }
     }
 }
-_DrawClear_canvasPixels = new WeakMap();
+_DrawClear_canvas = new WeakMap();

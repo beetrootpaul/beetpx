@@ -4,8 +4,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _PreparedSprites_instances, _PreparedSprites_cache, _PreparedSprites_keyPortionFromColorMapping;
-import { BpxSolidColor, transparent_, } from "../Color";
 import { u_ } from "../Utils";
+import { BpxSolidColor, transparent_, } from "../misc/Color";
 export class PreparedSprites {
     constructor() {
         _PreparedSprites_instances.add(this);

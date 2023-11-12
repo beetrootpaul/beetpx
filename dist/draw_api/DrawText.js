@@ -9,17 +9,17 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawText_canvasPixels, _DrawText_sprite;
-import { transparent_, } from "../Color";
-import { v_1_1_ } from "../Vector2d";
+var _DrawText_canvas, _DrawText_sprite;
+import { transparent_, } from "../misc/Color";
+import { v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawText {
-    constructor(canvasPixels) {
-        _DrawText_canvasPixels.set(this, void 0);
+    constructor(canvas) {
+        _DrawText_canvas.set(this, void 0);
         _DrawText_sprite.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawText_canvasPixels, canvasPixels, "f");
-        __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite(__classPrivateFieldGet(this, _DrawText_canvasPixels, "f"), {
+        __classPrivateFieldSet(this, _DrawText_canvas, canvas, "f");
+        __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite(__classPrivateFieldGet(this, _DrawText_canvas, "f"), {
             disableRounding: true,
         }), "f");
     }
@@ -36,4 +36,4 @@ export class DrawText {
         }
     }
 }
-_DrawText_canvasPixels = new WeakMap(), _DrawText_sprite = new WeakMap();
+_DrawText_canvas = new WeakMap(), _DrawText_sprite = new WeakMap();

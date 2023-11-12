@@ -1,6 +1,6 @@
 import { describe, test } from "@jest/globals";
-import { BpxSolidColor } from "../Color";
-import { v_ } from "../Vector2d";
+import { BpxSolidColor } from "../misc/Color";
+import { v_ } from "../misc/Vector2d";
 import { DrawPixel } from "./DrawPixel";
 import { TestCanvas } from "./TestCanvas";
 
@@ -14,7 +14,7 @@ describe("DrawPixel", () => {
   test("a single pixel", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const pixel = new DrawPixel(canvas.pixels);
+    const pixel = new DrawPixel(canvas.canvas);
 
     // when
     pixel.draw(v_(1, 1), c1);
@@ -33,7 +33,7 @@ describe("DrawPixel", () => {
   test("canvas' corners", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const pixel = new DrawPixel(canvas.pixels);
+    const pixel = new DrawPixel(canvas.canvas);
 
     // when
     pixel.draw(v_(0, 0), c1);
@@ -55,7 +55,7 @@ describe("DrawPixel", () => {
   test("outside canvas", () => {
     // given
     const canvas = new TestCanvas(3, 3, c0);
-    const pixel = new DrawPixel(canvas.pixels);
+    const pixel = new DrawPixel(canvas.canvas);
 
     // when
     pixel.draw(v_(-1, 1), c1);

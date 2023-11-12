@@ -1,6 +1,6 @@
-import { BpxImageUrl } from "../Assets";
-import { BpxSprite } from "../Sprite";
-import { BpxVector2d } from "../Vector2d";
+import { BpxSprite } from "../draw_api/Sprite";
+import { BpxImageUrl } from "../misc/Assets";
+import { BpxVector2d } from "../misc/Vector2d";
 
 // TODO: allow pixels instead of images + provide user with a default font
 

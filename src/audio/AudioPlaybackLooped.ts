@@ -1,4 +1,4 @@
-import { Assets, BpxSoundUrl } from "../Assets";
+import { Assets, BpxSoundUrl } from "../misc/Assets";
 import { AudioPlayback, BpxAudioPlaybackId } from "./AudioPlayback";
 
 export class AudioPlaybackLooped extends AudioPlayback {

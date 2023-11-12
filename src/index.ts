@@ -23,7 +23,26 @@ window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
 // @ts-ignore
 window.BEETPX__VERSION = __BEETPX__VERSION__;
 
-export { type BpxImageUrl, type BpxJsonUrl, type BpxSoundUrl } from "./Assets";
+export { BpxUtils } from "./Utils";
+export { type BpxAudioPlaybackId } from "./audio/AudioPlayback";
+export {
+  type BpxSoundSequence,
+  type BpxSoundSequenceEntry,
+} from "./audio/SoundSequence";
+export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
+export { type BpxCanvasSnapshotId } from "./canvas_pixels/CanvasSnapshot";
+export { type BpxColorMapping } from "./draw_api/DrawApi";
+export { BpxFillPattern } from "./draw_api/FillPattern";
+export { BpxSprite } from "./draw_api/Sprite";
+export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
+export { type BpxGameInputEvent } from "./game_input/GameInput";
+export { type BpxGamepadType } from "./game_input/GameInputGamepad";
+export { type BpxButtonName } from "./game_input/buttons/Buttons";
+export {
+  type BpxImageUrl,
+  type BpxJsonUrl,
+  type BpxSoundUrl,
+} from "./misc/Assets";
 export {
   BpxCompositeColor,
   BpxMappingColor,
@@ -31,34 +50,26 @@ export {
   BpxTransparentColor,
   type BpxColor,
   type BpxColorId,
-} from "./Color";
-export { BpxEasing, type BpxEasingFn } from "./Easing";
-export { BpxSprite } from "./Sprite";
-export { BpxUtils } from "./Utils";
-export { BpxVector2d } from "./Vector2d";
-export { type BpxAudioPlaybackId } from "./audio/AudioPlayback";
-export {
-  type BpxSoundSequence,
-  type BpxSoundSequenceEntry,
-} from "./audio/SoundSequence";
-export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
-export { type BpxColorMapping } from "./draw_api/DrawApi";
-export { BpxFillPattern } from "./draw_api/FillPattern";
-export { type BpxCanvasPixelsSnapshotId } from "./draw_api/canvas_pixels/CanvasPixelsSnapshot";
-export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
-export { type BpxButtonName } from "./game_input/Buttons";
-export { type BpxGameInputEvent } from "./game_input/GameInput";
-export { type BpxGamepadType } from "./game_input/GamepadGameInput";
+} from "./misc/Color";
+export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";
+export { BpxVector2d } from "./misc/Vector2d";
 
 export { BeetPx } from "./BeetPx";
 
 export { b_ } from "./BeetPx";
-export { black_, blue_, green_, red_, transparent_, white_ } from "./Color";
-export { spr_ } from "./Sprite";
 export { u_ } from "./Utils";
-export { v_, v_0_0_, v_1_1_ } from "./Vector2d";
+export { spr_ } from "./draw_api/Sprite";
+export {
+  black_,
+  blue_,
+  green_,
+  red_,
+  transparent_,
+  white_,
+} from "./misc/Color";
 export { timer_ } from "./misc/Timer";
+export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 
 // TODO: rework examples
 

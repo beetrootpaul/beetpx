@@ -1,23 +1,20 @@
-import { ImageAsset } from "../Assets";
-import { BpxColorId, BpxSolidColor, BpxTransparentColor } from "../Color";
-import { BpxSprite } from "../Sprite";
 import { BpxUtils } from "../Utils";
-import { BpxVector2d, v_, v_1_1_ } from "../Vector2d";
-import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { Canvas } from "../canvas_pixels/Canvas";
+import { ImageAsset } from "../misc/Assets";
+import { BpxColorId, BpxSolidColor, BpxTransparentColor } from "../misc/Color";
+import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 import { PreparedSprites } from "./PreparedSprites";
+import { BpxSprite } from "./Sprite";
 
 export class DrawSprite {
   static readonly #preparedSprites: PreparedSprites = new PreparedSprites();
 
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
   readonly #options: { disableRounding?: boolean };
 
-  constructor(
-    canvasPixels: CanvasPixels,
-    options: { disableRounding?: boolean } = {},
-  ) {
-    this.#canvasPixels = canvasPixels;
+  constructor(canvas: Canvas, options: { disableRounding?: boolean } = {}) {
+    this.#canvas = canvas;
     this.#options = options;
   }
 
@@ -75,7 +72,7 @@ export class DrawSprite {
 
     // avoid all computations if the whole sprite is outside the canvas
     if (
-      !this.#canvasPixels.canSetAny(
+      !this.#canvas.canSetAny(
         targetXy.x,
         targetXy.y,
         targetXy.x + sprite.size().x * scaleXy.x - 1,
@@ -103,11 +100,11 @@ export class DrawSprite {
             const canvasX = canvasXBase + xScaledStep;
             const canvasY = canvasYBase + yScaledStep;
 
-            if (this.#canvasPixels.canSetAt(canvasX, canvasY)) {
+            if (this.#canvas.canSetAt(canvasX, canvasY)) {
               if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
                 const color = preparedSprite.colors[spriteX]![spriteY];
                 if (color) {
-                  this.#canvasPixels.set(color, canvasX, canvasY);
+                  this.#canvas.set(color, canvasX, canvasY);
                 }
               }
             }

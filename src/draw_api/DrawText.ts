@@ -1,25 +1,25 @@
-import { FontAsset } from "../Assets";
+import { Canvas } from "../canvas_pixels/Canvas";
+import { BpxCharSprite } from "../font/Font";
+import { FontAsset } from "../misc/Assets";
 import {
   BpxColorId,
   BpxSolidColor,
   BpxTransparentColor,
   transparent_,
-} from "../Color";
-import { BpxVector2d, v_1_1_ } from "../Vector2d";
-import { BpxCharSprite } from "../font/Font";
+} from "../misc/Color";
+import { BpxVector2d, v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { BpxFillPattern } from "./FillPattern";
-import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
 
 export class DrawText {
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
 
   readonly #sprite: DrawSprite;
 
-  constructor(canvasPixels: CanvasPixels) {
-    this.#canvasPixels = canvasPixels;
+  constructor(canvas: Canvas) {
+    this.#canvas = canvas;
 
-    this.#sprite = new DrawSprite(this.#canvasPixels, {
+    this.#sprite = new DrawSprite(this.#canvas, {
       disableRounding: true,
     });
   }

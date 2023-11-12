@@ -1,6 +1,6 @@
 import {
   b_,
-  BpxCanvasPixelsSnapshotId,
+  BpxCanvasSnapshotId,
   BpxCharSprite,
   BpxFillPattern,
   BpxFont,
@@ -154,7 +154,7 @@ b_.init(
 
     drawEllipses();
 
-    const snapshotId1: BpxCanvasPixelsSnapshotId = b_.takeCanvasSnapshot();
+    const snapshotId1: BpxCanvasSnapshotId = b_.takeCanvasSnapshot();
     b_.rectFilled(
       v_(5, 65),
       v_(50, 10),
@@ -165,7 +165,7 @@ b_.init(
       v_(50, 10),
       new BpxMappingColor(snapshotId1, negative),
     );
-    const snapshotId2: BpxCanvasPixelsSnapshotId = b_.takeCanvasSnapshot();
+    const snapshotId2: BpxCanvasSnapshotId = b_.takeCanvasSnapshot();
 
     b_.setFont("f1");
     const s1 = u_.measureText("111");

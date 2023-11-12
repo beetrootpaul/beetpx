@@ -1,14 +1,14 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { Assets, AssetsToLoad } from "./Assets";
+import { Framework, type FrameworkOptions } from "./Framework";
 import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { Framework, type FrameworkOptions } from "./Framework";
-import { FullScreen } from "./FullScreen";
-import { Buttons } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
+import { Buttons } from "./game_input/buttons/Buttons";
 import { Logger } from "./logger/Logger";
+import { Assets, AssetsToLoad } from "./misc/Assets";
+import { FullScreen } from "./misc/FullScreen";
 import { StorageApi } from "./storage/StorageApi";
 
 // TODO: re-check what are the names, how the entire API looks like

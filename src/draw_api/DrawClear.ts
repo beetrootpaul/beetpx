@@ -1,17 +1,17 @@
-import { BpxSolidColor } from "../Color";
-import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { Canvas } from "../canvas_pixels/Canvas";
+import { BpxSolidColor } from "../misc/Color";
 
 export class DrawClear {
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
 
-  constructor(canvasPixels: CanvasPixels) {
-    this.#canvasPixels = canvasPixels;
+  constructor(canvas: Canvas) {
+    this.#canvas = canvas;
   }
 
   draw(color: BpxSolidColor): void {
-    for (let x = 0; x < this.#canvasPixels.canvasSize.x; ++x) {
-      for (let y = 0; y < this.#canvasPixels.canvasSize.y; ++y) {
-        this.#canvasPixels.set(color, x, y);
+    for (let x = 0; x < this.#canvas.canvasSize.x; ++x) {
+      for (let y = 0; y < this.#canvas.canvasSize.y; ++y) {
+        this.#canvas.set(color, x, y);
       }
     }
   }

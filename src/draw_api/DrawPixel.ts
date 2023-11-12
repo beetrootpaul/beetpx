@@ -1,13 +1,13 @@
-import { BpxSolidColor } from "../Color";
-import { BpxVector2d } from "../Vector2d";
-import { CanvasPixels } from "./canvas_pixels/CanvasPixels";
+import { Canvas } from "../canvas_pixels/Canvas";
+import { BpxSolidColor } from "../misc/Color";
+import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 
 export class DrawPixel {
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
 
-  constructor(canvasPixels: CanvasPixels) {
-    this.#canvasPixels = canvasPixels;
+  constructor(canvas: Canvas) {
+    this.#canvas = canvas;
   }
 
   // TODO: consolidate where composite color and fill patterns are handled (look for `instanceof`). Consider renaming fill pattern to e.g. pattern color as well
@@ -21,12 +21,12 @@ export class DrawPixel {
   ): void {
     xy = xy.round();
 
-    if (!this.#canvasPixels.canSetAt(xy.x, xy.y)) {
+    if (!this.#canvas.canSetAt(xy.x, xy.y)) {
       return;
     }
 
     if (fillPattern.hasPrimaryColorAt(xy.x, xy.y)) {
-      this.#canvasPixels.set(color, xy.x, xy.y);
+      this.#canvas.set(color, xy.x, xy.y);
     }
   }
 }

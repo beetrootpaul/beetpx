@@ -1,24 +1,24 @@
-import { Assets, AssetsToLoad } from "./Assets";
 import { BeetPx } from "./BeetPx";
-import { BpxSolidColor, black_ } from "./Color";
-import { FullScreen } from "./FullScreen";
 import { HtmlTemplate } from "./HtmlTemplate";
-import { Loading } from "./Loading";
 import { BpxUtils, u_ } from "./Utils";
-import { BpxVector2d, v_ } from "./Vector2d";
 import { AudioApi } from "./audio/AudioApi";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
+import { Canvas } from "./canvas_pixels/Canvas";
+import { CanvasForProduction } from "./canvas_pixels/CanvasForProduction";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
-import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
-import { Button } from "./game_input/Button";
 import { GameInput } from "./game_input/GameInput";
+import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
+import { Assets, AssetsToLoad } from "./misc/Assets";
+import { BpxSolidColor, black_ } from "./misc/Color";
+import { FullScreen } from "./misc/FullScreen";
+import { Loading } from "./misc/Loading";
+import { BpxVector2d, v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
 
 export type FrameworkOptions = {
@@ -53,7 +53,7 @@ export class Framework {
 
   readonly assets: Assets;
 
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
   readonly drawApi: DrawApi;
 
   #onStarted?: () => void;
@@ -149,14 +149,14 @@ export class Framework {
         `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
       );
 
-    this.#canvasPixels = new CanvasPixelsForProduction(
+    this.#canvas = new CanvasForProduction(
       this.#gameCanvasSize,
       htmlCanvas,
       this.#htmlCanvasBackground,
     );
 
     this.drawApi = new DrawApi({
-      canvasPixels: this.#canvasPixels,
+      canvas: this.#canvas,
       assets: this.assets,
     });
   }
@@ -287,7 +287,7 @@ export class Framework {
 
         this.#onDraw?.();
 
-        this.#canvasPixels.render();
+        this.#canvas.render();
       },
     });
   }

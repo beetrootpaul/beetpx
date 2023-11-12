@@ -1,6 +1,6 @@
 import { describe, test } from "@jest/globals";
-import { BpxCompositeColor, BpxSolidColor, transparent_ } from "../Color";
-import { v_ } from "../Vector2d";
+import { BpxCompositeColor, BpxSolidColor, transparent_ } from "../misc/Color";
+import { v_ } from "../misc/Vector2d";
 import { DrawRect } from "./DrawRect";
 import { BpxFillPattern } from "./FillPattern";
 import { TestCanvas } from "./TestCanvas";
@@ -18,7 +18,7 @@ describe("DrawRect", () => {
     test("simple 1x1", () => {
       // given
       const canvas = new TestCanvas(3, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 1), v_(1, 1), c1, false);
@@ -37,7 +37,7 @@ describe("DrawRect", () => {
     test("simple 4x3", () => {
       // given
       const canvas = new TestCanvas(6, 5, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 1), v_(4, 3), c1, false);
@@ -58,7 +58,7 @@ describe("DrawRect", () => {
     test("drawing on very edges of a canvas", () => {
       // given
       const canvas = new TestCanvas(4, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(0, 0), v_(4, 3), c1, false);
@@ -77,7 +77,7 @@ describe("DrawRect", () => {
     test("0-size", () => {
       // given
       const canvas = new TestCanvas(3, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 1), v_(0, 0), c1, false);
@@ -96,7 +96,7 @@ describe("DrawRect", () => {
     test("negative left-top corner", () => {
       // given
       const canvas = new TestCanvas(3, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(-1, -1), v_(3, 3), c1, false);
@@ -115,7 +115,7 @@ describe("DrawRect", () => {
     test("negative size", () => {
       // given
       const canvas = new TestCanvas(6, 5, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(5, 4), v_(-4, -3), c1, false);
@@ -136,7 +136,7 @@ describe("DrawRect", () => {
     test("clipping: over the left edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(-2, 1), v_(4, 4), c1, false);
@@ -158,7 +158,7 @@ describe("DrawRect", () => {
     test("clipping: over the right edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(4, 1), v_(4, 4), c1, false);
@@ -180,7 +180,7 @@ describe("DrawRect", () => {
     test("clipping: over the top edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, -2), v_(4, 4), c1, false);
@@ -202,7 +202,7 @@ describe("DrawRect", () => {
     test("clipping: over the bottom edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 4), v_(4, 4), c1, false);
@@ -224,7 +224,7 @@ describe("DrawRect", () => {
     test("fill pattern: simple one, with a single solid color", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(
@@ -250,7 +250,7 @@ describe("DrawRect", () => {
     test("fill pattern: simple one, with two solid colors", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(
@@ -276,7 +276,7 @@ describe("DrawRect", () => {
     test("fill pattern: various 4x4 patterns", () => {
       // given
       const canvas = new TestCanvas(10, 10, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(
@@ -393,7 +393,7 @@ describe("DrawRect", () => {
     test("fill pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
       // given
       const canvas = new TestCanvas(11, 11, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(
@@ -428,7 +428,7 @@ describe("DrawRect", () => {
     test("simple 1x1", () => {
       // given
       const canvas = new TestCanvas(3, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 1), v_(1, 1), c1, true);
@@ -447,7 +447,7 @@ describe("DrawRect", () => {
     test("simple 4x3", () => {
       // given
       const canvas = new TestCanvas(6, 5, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 1), v_(4, 3), c1, true);
@@ -468,7 +468,7 @@ describe("DrawRect", () => {
     test("drawing on very edges of a canvas", () => {
       // given
       const canvas = new TestCanvas(4, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(0, 0), v_(4, 3), c1, true);
@@ -487,7 +487,7 @@ describe("DrawRect", () => {
     test("0-size", () => {
       // given
       const canvas = new TestCanvas(3, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 1), v_(0, 0), c1, true);
@@ -506,7 +506,7 @@ describe("DrawRect", () => {
     test("negative left-top corner", () => {
       // given
       const canvas = new TestCanvas(3, 3, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(-1, -1), v_(3, 3), c1, true);
@@ -525,7 +525,7 @@ describe("DrawRect", () => {
     test("negative size", () => {
       // given
       const canvas = new TestCanvas(6, 5, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(5, 4), v_(-4, -3), c1, true);
@@ -546,7 +546,7 @@ describe("DrawRect", () => {
     test("clipping: over the left edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(-2, 1), v_(4, 4), c1, true);
@@ -568,7 +568,7 @@ describe("DrawRect", () => {
     test("clipping: over the right edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(4, 1), v_(4, 4), c1, true);
@@ -590,7 +590,7 @@ describe("DrawRect", () => {
     test("clipping: over the top edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, -2), v_(4, 4), c1, true);
@@ -612,7 +612,7 @@ describe("DrawRect", () => {
     test("clipping: over the bottom edge", () => {
       // given
       const canvas = new TestCanvas(6, 6, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(v_(1, 4), v_(4, 4), c1, true);
@@ -634,7 +634,7 @@ describe("DrawRect", () => {
     test("fill pattern: simple one, with a single solid color", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(
@@ -660,7 +660,7 @@ describe("DrawRect", () => {
     test("fill pattern: simple one, with two solid colors", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(
@@ -686,7 +686,7 @@ describe("DrawRect", () => {
     test("fill pattern: various 4x4 patterns", () => {
       // given
       const canvas = new TestCanvas(10, 10, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(
@@ -803,7 +803,7 @@ describe("DrawRect", () => {
     test("fill pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
       // given
       const canvas = new TestCanvas(11, 11, c0);
-      const rect = new DrawRect(canvas.pixels);
+      const rect = new DrawRect(canvas.canvas);
 
       // when
       rect.draw(

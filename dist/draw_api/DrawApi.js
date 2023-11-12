@@ -9,10 +9,10 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawApi_assets, _DrawApi_canvasPixels, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
+var _DrawApi_assets, _DrawApi_canvas, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_cameraOffset, _DrawApi_fillPattern, _DrawApi_fontAsset, _DrawApi_spriteColorMapping;
 import { BpxUtils } from "../Utils";
-import { v_, v_1_1_ } from "../Vector2d";
 import { Logger } from "../logger/Logger";
+import { v_, v_1_1_ } from "../misc/Vector2d";
 import { DrawClear } from "./DrawClear";
 import { DrawEllipse } from "./DrawEllipse";
 import { DrawLine } from "./DrawLine";
@@ -28,7 +28,7 @@ import { BpxFillPattern } from "./FillPattern";
 export class DrawApi {
     constructor(options) {
         _DrawApi_assets.set(this, void 0);
-        _DrawApi_canvasPixels.set(this, void 0);
+        _DrawApi_canvas.set(this, void 0);
         _DrawApi_clear.set(this, void 0);
         _DrawApi_pixel.set(this, void 0);
         _DrawApi_pixels.set(this, void 0);
@@ -42,15 +42,15 @@ export class DrawApi {
         _DrawApi_fontAsset.set(this, null);
         _DrawApi_spriteColorMapping.set(this, new Map());
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
-        __classPrivateFieldSet(this, _DrawApi_canvasPixels, options.canvasPixels, "f");
-        __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvasPixels), "f");
-        __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel(options.canvasPixels), "f");
-        __classPrivateFieldSet(this, _DrawApi_pixels, new DrawPixels(options.canvasPixels), "f");
-        __classPrivateFieldSet(this, _DrawApi_line, new DrawLine(options.canvasPixels), "f");
-        __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect(options.canvasPixels), "f");
-        __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvasPixels), "f");
-        __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvasPixels), "f");
-        __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvasPixels), "f");
+        __classPrivateFieldSet(this, _DrawApi_canvas, options.canvas, "f");
+        __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvas), "f");
+        __classPrivateFieldSet(this, _DrawApi_pixel, new DrawPixel(options.canvas), "f");
+        __classPrivateFieldSet(this, _DrawApi_pixels, new DrawPixels(options.canvas), "f");
+        __classPrivateFieldSet(this, _DrawApi_line, new DrawLine(options.canvas), "f");
+        __classPrivateFieldSet(this, _DrawApi_rect, new DrawRect(options.canvas), "f");
+        __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvas), "f");
+        __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvas), "f");
+        __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvas), "f");
     }
     
     
@@ -58,10 +58,10 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset, "f");
     }
     setClippingRegion(xy, wh) {
-        __classPrivateFieldGet(this, _DrawApi_canvasPixels, "f").setClippingRegion(xy, wh);
+        __classPrivateFieldGet(this, _DrawApi_canvas, "f").setClippingRegion(xy, wh);
     }
     removeClippingRegion() {
-        __classPrivateFieldGet(this, _DrawApi_canvasPixels, "f").removeClippingRegion();
+        __classPrivateFieldGet(this, _DrawApi_canvas, "f").removeClippingRegion();
     }
     
     
@@ -148,7 +148,7 @@ export class DrawApi {
         }
     }
     takeCanvasSnapshot() {
-        return __classPrivateFieldGet(this, _DrawApi_canvasPixels, "f").takeSnapshot();
+        return __classPrivateFieldGet(this, _DrawApi_canvas, "f").takeSnapshot();
     }
 }
-_DrawApi_assets = new WeakMap(), _DrawApi_canvasPixels = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_pixels = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();
+_DrawApi_assets = new WeakMap(), _DrawApi_canvas = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_pixels = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_cameraOffset = new WeakMap(), _DrawApi_fillPattern = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap();

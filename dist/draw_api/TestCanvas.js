@@ -5,15 +5,15 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _TestCanvas_instances, _TestCanvas_asAscii;
 import { expect } from "@jest/globals";
-import { v_ } from "../Vector2d";
-import { CanvasPixelsForTests } from "./canvas_pixels/CanvasPixelsForTests";
+import { CanvasForTests } from "../canvas_pixels/CanvasForTests";
+import { v_ } from "../misc/Vector2d";
 export class TestCanvas {
     constructor(width, height, color) {
         _TestCanvas_instances.add(this);
-        this.pixels = new CanvasPixelsForTests(v_(width, height));
+        this.canvas = new CanvasForTests(v_(width, height));
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
-                this.pixels.set(color, x, y);
+                this.canvas.set(color, x, y);
             }
         }
     }
@@ -37,11 +37,11 @@ export class TestCanvas {
 _TestCanvas_instances = new WeakSet(), _TestCanvas_asAscii = function _TestCanvas_asAscii(colorToAscii) {
     var _a;
     let asciiImage = "";
-    const snapshotId = this.pixels.takeSnapshot();
-    const snapshot = this.pixels.getSnapshot(snapshotId);
-    for (let y = 0; y < this.pixels.canvasSize.y; y += 1) {
-        for (let x = 0; x < this.pixels.canvasSize.x; x += 1) {
-            const index = y * this.pixels.canvasSize.x + x;
+    const snapshotId = this.canvas.takeSnapshot();
+    const snapshot = this.canvas.getSnapshot(snapshotId);
+    for (let y = 0; y < this.canvas.canvasSize.y; y += 1) {
+        for (let x = 0; x < this.canvas.canvasSize.x; x += 1) {
+            const index = y * this.canvas.canvasSize.x + x;
             const color = snapshot.get(index);
             asciiImage += (_a = colorToAscii.get(color.id)) !== null && _a !== void 0 ? _a : "?";
         }

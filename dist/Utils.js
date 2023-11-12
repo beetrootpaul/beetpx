@@ -1,6 +1,6 @@
 
 import { BeetPx } from "./BeetPx";
-import { BpxVector2d, v_, v_0_0_ } from "./Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
 
 export class BpxUtils {
     /**

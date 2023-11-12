@@ -9,16 +9,16 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawRect_instances, _DrawRect_canvasPixels, _DrawRect_drawPixel;
-import { BpxCompositeColor, BpxMappingColor, BpxSolidColor } from "../Color";
+var _DrawRect_instances, _DrawRect_canvas, _DrawRect_drawPixel;
 import { u_ } from "../Utils";
-import { BpxVector2d } from "../Vector2d";
+import { BpxCompositeColor, BpxMappingColor, BpxSolidColor, } from "../misc/Color";
+import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawRect {
-    constructor(canvasPixels) {
+    constructor(canvas) {
         _DrawRect_instances.add(this);
-        _DrawRect_canvasPixels.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawRect_canvasPixels, canvasPixels, "f");
+        _DrawRect_canvas.set(this, void 0);
+        __classPrivateFieldSet(this, _DrawRect_canvas, canvas, "f");
     }
     
     
@@ -33,7 +33,7 @@ export class DrawRect {
             return;
         }
         
-        if (!__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
+        if (!__classPrivateFieldGet(this, _DrawRect_canvas, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
         const c1 = color instanceof BpxCompositeColor
@@ -47,7 +47,7 @@ export class DrawRect {
                 : null
             : null;
         const sn = c1 instanceof BpxMappingColor
-            ? (_a = __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
+            ? (_a = __classPrivateFieldGet(this, _DrawRect_canvas, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
             : null;
         const fp = fillPattern;
         for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
@@ -63,26 +63,26 @@ export class DrawRect {
         }
     }
 }
-_DrawRect_canvasPixels = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, fillPattern, snapshot) {
-    if (!__classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canSetAt(x, y)) {
+_DrawRect_canvas = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, fillPattern, snapshot) {
+    if (!__classPrivateFieldGet(this, _DrawRect_canvas, "f").canSetAt(x, y)) {
         return;
     }
     if (fillPattern.hasPrimaryColorAt(x, y)) {
         if (!c1) {
         }
         else if (c1 instanceof BpxSolidColor) {
-            __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").set(c1, x, y);
+            __classPrivateFieldGet(this, _DrawRect_canvas, "f").set(c1, x, y);
         }
         else {
-            const mapped = c1.getMappedColorFromCanvasSnapshot(snapshot !== null && snapshot !== void 0 ? snapshot : u_.throwError("Snapshot was not passed when trying to obtain a mapped color"), y * __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").canvasSize.x + x);
+            const mapped = c1.getMappedColorFromCanvasSnapshot(snapshot !== null && snapshot !== void 0 ? snapshot : u_.throwError("Snapshot was not passed when trying to obtain a mapped color"), y * __classPrivateFieldGet(this, _DrawRect_canvas, "f").canvasSize.x + x);
             if (mapped instanceof BpxSolidColor) {
-                __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").set(mapped, x, y);
+                __classPrivateFieldGet(this, _DrawRect_canvas, "f").set(mapped, x, y);
             }
         }
     }
     else {
         if (c2 != null) {
-            __classPrivateFieldGet(this, _DrawRect_canvasPixels, "f").set(c2, x, y);
+            __classPrivateFieldGet(this, _DrawRect_canvas, "f").set(c2, x, y);
         }
     }
 };

@@ -9,12 +9,12 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawPixel_canvasPixels;
+var _DrawPixel_canvas;
 import { BpxFillPattern } from "./FillPattern";
 export class DrawPixel {
-    constructor(canvasPixels) {
-        _DrawPixel_canvasPixels.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawPixel_canvasPixels, canvasPixels, "f");
+    constructor(canvas) {
+        _DrawPixel_canvas.set(this, void 0);
+        __classPrivateFieldSet(this, _DrawPixel_canvas, canvas, "f");
     }
     
     
@@ -22,12 +22,12 @@ export class DrawPixel {
     
     draw(xy, color, fillPattern = BpxFillPattern.primaryOnly) {
         xy = xy.round();
-        if (!__classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").canSetAt(xy.x, xy.y)) {
+        if (!__classPrivateFieldGet(this, _DrawPixel_canvas, "f").canSetAt(xy.x, xy.y)) {
             return;
         }
         if (fillPattern.hasPrimaryColorAt(xy.x, xy.y)) {
-            __classPrivateFieldGet(this, _DrawPixel_canvasPixels, "f").set(color, xy.x, xy.y);
+            __classPrivateFieldGet(this, _DrawPixel_canvas, "f").set(color, xy.x, xy.y);
         }
     }
 }
-_DrawPixel_canvasPixels = new WeakMap();
+_DrawPixel_canvas = new WeakMap();

@@ -18,24 +18,24 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_canvasPixels, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame;
-import { Assets } from "./Assets";
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_canvas, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame;
 import { BeetPx } from "./BeetPx";
-import { BpxSolidColor, black_ } from "./Color";
-import { FullScreen } from "./FullScreen";
 import { HtmlTemplate } from "./HtmlTemplate";
-import { Loading } from "./Loading";
 import { BpxUtils, u_ } from "./Utils";
-import { v_ } from "./Vector2d";
 import { AudioApi } from "./audio/AudioApi";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
+import { CanvasForProduction } from "./canvas_pixels/CanvasForProduction";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
-import { Button } from "./game_input/Button";
 import { GameInput } from "./game_input/GameInput";
+import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
+import { Assets } from "./misc/Assets";
+import { BpxSolidColor, black_ } from "./misc/Color";
+import { FullScreen } from "./misc/FullScreen";
+import { Loading } from "./misc/Loading";
+import { v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
 export class Framework {
     get frameNumber() {
@@ -53,7 +53,7 @@ export class Framework {
         _Framework_htmlCanvasBackground.set(this, BpxSolidColor.fromRgbCssHex("#000000"));
         _Framework_loading.set(this, void 0);
         _Framework_gameLoop.set(this, void 0);
-        _Framework_canvasPixels.set(this, void 0);
+        _Framework_canvas.set(this, void 0);
         _Framework_onStarted.set(this, void 0);
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
@@ -107,9 +107,9 @@ export class Framework {
         }), "f");
         this.fullScreen = FullScreen.create();
         const htmlCanvas = (_b = document.querySelector(HtmlTemplate.selectors.canvas)) !== null && _b !== void 0 ? _b : u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
-        __classPrivateFieldSet(this, _Framework_canvasPixels, new CanvasPixelsForProduction(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
+        __classPrivateFieldSet(this, _Framework_canvas, new CanvasForProduction(__classPrivateFieldGet(this, _Framework_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Framework_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
-            canvasPixels: __classPrivateFieldGet(this, _Framework_canvasPixels, "f"),
+            canvas: __classPrivateFieldGet(this, _Framework_canvas, "f"),
             assets: this.assets,
         });
     }
@@ -142,7 +142,7 @@ export class Framework {
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_canvasPixels = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_canvas = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
     return __awaiter(this, void 0, void 0, function* () {
         if (BEETPX__IS_PROD) {
@@ -218,7 +218,7 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
                 var _b;
                 __classPrivateFieldSet(this, _Framework_renderFps, renderFps, "f");
                 (_b = __classPrivateFieldGet(this, _Framework_onDraw, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
-                __classPrivateFieldGet(this, _Framework_canvasPixels, "f").render();
+                __classPrivateFieldGet(this, _Framework_canvas, "f").render();
             },
         });
     });
