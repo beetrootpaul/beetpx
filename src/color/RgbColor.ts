@@ -1,8 +1,7 @@
 export type BpxRgbCssHex = string;
 
 export class BpxRgbColor {
-  // noinspection JSUnusedLocalSymbols
-  readonly #nominalTypeHelper__rgb = true;
+  readonly type = "rgb";
 
   // values between 0 and 255
   readonly r: number;

@@ -1,8 +1,7 @@
 import { BpxRgbColor } from "./RgbColor";
 
 export class BpxCompositeColor {
-  // noinspection JSUnusedLocalSymbols
-  readonly #nominalTypeHelper__composite = true;
+  readonly type = "composite";
 
   readonly primary: BpxRgbColor | null;
   readonly secondary: BpxRgbColor | null;

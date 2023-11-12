@@ -10,9 +10,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawLine_instances, _DrawLine_canvas, _DrawLine_drawPixel;
-import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
-import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 export class DrawLine {
@@ -40,17 +37,9 @@ export class DrawLine {
         
         wh = xyEnd.sub(xyStart);
         const whSub1 = wh.sub(wh.sign());
-        const c1 = color instanceof BpxCompositeColor
-            ? color.primary instanceof BpxRgbColor
-                ? color.primary
-                : null
-            : color;
-        const c2 = color instanceof BpxCompositeColor
-            ? color.secondary instanceof BpxRgbColor
-                ? color.secondary
-                : null
-            : null;
-        const sn = c1 instanceof BpxCanvasSnapshotColorMapping
+        const c1 = color.type === "composite" ? color.primary : color;
+        const c2 = color.type === "composite" ? color.secondary : null;
+        const sn = (c1 === null || c1 === void 0 ? void 0 : c1.type) === "canvas_snapshot_mapping"
             ? __classPrivateFieldGet(this, _DrawLine_canvas, "f").getMostRecentSnapshot()
             : null;
         const fp = fillPattern;
@@ -91,12 +80,12 @@ _DrawLine_canvas = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine
     if (fillPattern.hasPrimaryColorAt(x, y)) {
         if (!c1) {
         }
-        else if (c1 instanceof BpxRgbColor) {
+        else if (c1.type === "rgb") {
             __classPrivateFieldGet(this, _DrawLine_canvas, "f").set(c1, x, y);
         }
         else {
             const mapped = c1.getMappedColor(snapshot, y * __classPrivateFieldGet(this, _DrawLine_canvas, "f").canvasSize.x + x);
-            if (mapped instanceof BpxRgbColor) {
+            if (mapped) {
                 __classPrivateFieldGet(this, _DrawLine_canvas, "f").set(mapped, x, y);
             }
         }

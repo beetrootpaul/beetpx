@@ -51,19 +51,11 @@ export class DrawEllipse {
     }
 
     const c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null =
-      color instanceof BpxCompositeColor
-        ? color.primary instanceof BpxRgbColor
-          ? color.primary
-          : null
-        : color;
+      color.type === "composite" ? color.primary : color;
     const c2: BpxRgbColor | null =
-      color instanceof BpxCompositeColor
-        ? color.secondary instanceof BpxRgbColor
-          ? color.secondary
-          : null
-        : null;
+      color.type === "composite" ? color.secondary : null;
     const sn =
-      c1 instanceof BpxCanvasSnapshotColorMapping
+      c1?.type === "canvas_snapshot_mapping"
         ? this.#canvas.getMostRecentSnapshot()
         : null;
 
@@ -157,14 +149,14 @@ export class DrawEllipse {
 
     if (fillPattern.hasPrimaryColorAt(x, y)) {
       if (!c1) {
-      } else if (c1 instanceof BpxRgbColor) {
+      } else if (c1.type === "rgb") {
         this.#canvas.set(c1, x, y);
       } else {
         const mapped = c1.getMappedColor(
           snapshot,
           y * this.#canvas.canvasSize.x + x,
         );
-        if (mapped instanceof BpxRgbColor) {
+        if (mapped) {
           this.#canvas.set(mapped, x, y);
         }
       }

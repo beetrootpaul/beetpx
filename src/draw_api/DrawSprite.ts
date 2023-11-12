@@ -1,6 +1,5 @@
 import { BpxUtils } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { ImageAsset } from "../misc/Assets";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
@@ -102,7 +101,7 @@ export class DrawSprite {
                 const color = preparedSprite.colors[spriteX]![spriteY];
                 if (color) {
                   const mappedColor = colorMapping.getMappedColor(color);
-                  if (mappedColor instanceof BpxRgbColor) {
+                  if (mappedColor) {
                     this.#canvas.set(mappedColor, canvasX, canvasY);
                   }
                 }

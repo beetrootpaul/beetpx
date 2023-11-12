@@ -72,14 +72,14 @@ class FullScreenSupported extends FullScreen {
 }
 _FullScreenSupported_fullScreenSubject = new WeakMap(), _FullScreenSupported_nativeRequestFullscreen = new WeakMap(), _FullScreenSupported_nativeExitFullscreen = new WeakMap(), _FullScreenSupported_instances = new WeakSet(), _FullScreenSupported_fullScreenOn = function _FullScreenSupported_fullScreenOn() {
     const result = __classPrivateFieldGet(this, _FullScreenSupported_nativeRequestFullscreen, "f").call(this);
-    if (result instanceof Promise) {
+    if (typeof result === "object") {
         result.catch((err) => {
             Logger.errorBeetPx(err);
         });
     }
 }, _FullScreenSupported_fullScreenOff = function _FullScreenSupported_fullScreenOff() {
     const result = __classPrivateFieldGet(this, _FullScreenSupported_nativeExitFullscreen, "f").call(this);
-    if (result instanceof Promise) {
+    if (typeof result === "object") {
         result.catch((err) => {
             Logger.errorBeetPx(err);
         });

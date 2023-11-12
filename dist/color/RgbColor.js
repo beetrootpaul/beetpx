@@ -1,8 +1,6 @@
-var _BpxRgbColor_nominalTypeHelper__rgb;
 export class BpxRgbColor {
     constructor(r, g, b) {
-        
-        _BpxRgbColor_nominalTypeHelper__rgb.set(this, true);
+        this.type = "rgb";
         if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
             throw Error(`One of color components is outside 0-255 range: r=${r}, g=${g}, b=${b}.`);
         }
@@ -22,7 +20,6 @@ export class BpxRgbColor {
         return new BpxRgbColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
     }
 }
-_BpxRgbColor_nominalTypeHelper__rgb = new WeakMap();
 export const black_ = BpxRgbColor.fromCssHex("#000000");
 export const white_ = BpxRgbColor.fromCssHex("#ffffff");
 export const red_ = BpxRgbColor.fromCssHex("#ff0000");

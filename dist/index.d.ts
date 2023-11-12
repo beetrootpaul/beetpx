@@ -2,7 +2,7 @@ import { PngDataArray } from 'fast-png';
 
 type BpxRgbCssHex = string;
 declare class BpxRgbColor {
-    #private;
+    readonly type = "rgb";
     readonly r: number;
     readonly g: number;
     readonly b: number;
@@ -225,12 +225,13 @@ type BpxColorMapper = (sourceColor: BpxRgbColor | null) => BpxRgbColor | null;
 
 declare class BpxCanvasSnapshotColorMapping {
     #private;
+    readonly type = "canvas_snapshot_mapping";
     constructor(mapping: BpxColorMapper);
     getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
 }
 
 declare class BpxCompositeColor {
-    #private;
+    readonly type = "composite";
     readonly primary: BpxRgbColor | null;
     readonly secondary: BpxRgbColor | null;
     constructor(primary: BpxRgbColor | null, secondary: BpxRgbColor | null);
@@ -240,6 +241,7 @@ declare class BpxSpriteColorMapping {
     #private;
     static noMapping: BpxSpriteColorMapping;
     static from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>): BpxSpriteColorMapping;
+    readonly type = "sprite_mapping";
     constructor(mapping: BpxColorMapper);
     getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
 }

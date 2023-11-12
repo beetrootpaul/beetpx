@@ -11,7 +11,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _a, _DrawSprite_preparedSprites, _DrawSprite_canvas, _DrawSprite_options;
 import { BpxUtils } from "../Utils";
-import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
@@ -56,7 +55,7 @@ export class DrawSprite {
                                 const color = preparedSprite.colors[spriteX][spriteY];
                                 if (color) {
                                     const mappedColor = colorMapping.getMappedColor(color);
-                                    if (mappedColor instanceof BpxRgbColor) {
+                                    if (mappedColor) {
                                         __classPrivateFieldGet(this, _DrawSprite_canvas, "f").set(mappedColor, canvasX, canvasY);
                                     }
                                 }

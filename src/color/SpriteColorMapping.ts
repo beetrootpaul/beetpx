@@ -16,9 +16,7 @@ export class BpxSpriteColorMapping {
       return typeof mapped === "undefined" ? spriteColor : mapped;
     });
   }
-
-  // noinspection JSUnusedLocalSymbols
-  readonly #nominalTypeHelper__spriteMapping = true;
+  readonly type = "sprite_mapping";
 
   readonly #mapping: BpxColorMapper;
 

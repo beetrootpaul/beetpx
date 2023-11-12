@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _BpxSpriteColorMapping_nominalTypeHelper__spriteMapping, _BpxSpriteColorMapping_mapping;
+var _BpxSpriteColorMapping_mapping;
 export class BpxSpriteColorMapping {
     static from(colorMappingEntries) {
         const map = new Map(colorMappingEntries.map(([from, to]) => [from.cssHex, to]));
@@ -21,8 +21,7 @@ export class BpxSpriteColorMapping {
         });
     }
     constructor(mapping) {
-        
-        _BpxSpriteColorMapping_nominalTypeHelper__spriteMapping.set(this, true);
+        this.type = "sprite_mapping";
         _BpxSpriteColorMapping_mapping.set(this, void 0);
         __classPrivateFieldSet(this, _BpxSpriteColorMapping_mapping, mapping, "f");
     }
@@ -30,5 +29,5 @@ export class BpxSpriteColorMapping {
         return __classPrivateFieldGet(this, _BpxSpriteColorMapping_mapping, "f").call(this, spriteColor);
     }
 }
-_BpxSpriteColorMapping_nominalTypeHelper__spriteMapping = new WeakMap(), _BpxSpriteColorMapping_mapping = new WeakMap();
+_BpxSpriteColorMapping_mapping = new WeakMap();
 BpxSpriteColorMapping.noMapping = new BpxSpriteColorMapping((c) => c);

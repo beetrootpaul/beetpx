@@ -3,8 +3,7 @@ import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor } from "./RgbColor";
 
 export class BpxCanvasSnapshotColorMapping {
-  // noinspection JSUnusedLocalSymbols
-  readonly #nominalTypeHelper__canvasSnapshotMapping = true;
+  readonly type = "canvas_snapshot_mapping";
 
   readonly #mapping: BpxColorMapper;
 

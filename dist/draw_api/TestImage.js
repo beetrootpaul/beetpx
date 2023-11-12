@@ -1,4 +1,3 @@
-import { BpxRgbColor } from "../color/RgbColor";
 export class TestImage {
     constructor(params) {
         const asciiImage = params.image;
@@ -32,7 +31,7 @@ export class TestImage {
             if (typeof color === "undefined") {
                 throw Error(`TestImage: Missing color mapping for "${normalizedAsciiImage[i]}"`);
             }
-            else if (color instanceof BpxRgbColor) {
+            else if (color) {
                 this.asset.rgba8bitData[4 * i] = color.r;
                 this.asset.rgba8bitData[4 * i + 1] = color.g;
                 this.asset.rgba8bitData[4 * i + 2] = color.b;

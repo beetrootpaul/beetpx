@@ -42,9 +42,7 @@ let numberOfEllipses = 4;
 let numberOfBigSprites = 4;
 
 const negative = new BpxCanvasSnapshotColorMapping((c) =>
-  c instanceof BpxRgbColor
-    ? new BpxRgbColor(0xff - c.r, 0xff - c.g, 0xff - c.b)
-    : null,
+  c ? new BpxRgbColor(0xff - c.r, 0xff - c.g, 0xff - c.b) : null,
 );
 
 class Font1 implements BpxFont {

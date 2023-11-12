@@ -100,7 +100,7 @@ class FullScreenSupported extends FullScreen {
 
   #fullScreenOn(): void {
     const result = this.#nativeRequestFullscreen();
-    if (result instanceof Promise) {
+    if (typeof result === "object") {
       result.catch((err) => {
         Logger.errorBeetPx(err);
       });
@@ -109,7 +109,7 @@ class FullScreenSupported extends FullScreen {
 
   #fullScreenOff(): void {
     const result = this.#nativeExitFullscreen();
-    if (result instanceof Promise) {
+    if (typeof result === "object") {
       result.catch((err) => {
         Logger.errorBeetPx(err);
       });
