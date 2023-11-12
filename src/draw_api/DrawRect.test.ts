@@ -1,5 +1,5 @@
 import { describe, test } from "@jest/globals";
-import { BpxCompositeColor } from "../color/CompositeColor";
+import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 import { DrawRect } from "./DrawRect";
@@ -257,7 +257,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(4, 4),
-        new BpxCompositeColor(c1, c2),
+        new BpxPatternColors(c1, c2),
         false,
         BpxPattern.of(0b0000_0001_0011_0111),
       );
@@ -283,7 +283,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new BpxCompositeColor(c4, c1),
+        new BpxPatternColors(c4, c1),
         false,
         BpxPattern.primaryOnly,
       );
@@ -309,7 +309,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(2, 2),
         v_(6, 6),
-        new BpxCompositeColor(c4, c2),
+        new BpxPatternColors(c4, c2),
         false,
         BpxPattern.secondaryOnly,
       );
@@ -335,7 +335,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new BpxCompositeColor(c3, ct),
+        new BpxPatternColors(c3, ct),
         false,
         BpxPattern.of(0b0000_0001_0011_0111),
       );
@@ -361,14 +361,14 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 5),
-        new BpxCompositeColor(c5, ct),
+        new BpxPatternColors(c5, ct),
         false,
         BpxPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
         v_(0, 5),
         v_(10, 5),
-        new BpxCompositeColor(c5, c1),
+        new BpxPatternColors(c5, c1),
         false,
         BpxPattern.of(0b1100_1100_1100_1100),
       );
@@ -400,7 +400,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(1, 1),
         v_(9, 9),
-        new BpxCompositeColor(c1, ct),
+        new BpxPatternColors(c1, ct),
         false,
         BpxPattern.of(0b0000_0001_0011_0111),
       );
@@ -667,7 +667,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(4, 4),
-        new BpxCompositeColor(c1, c2),
+        new BpxPatternColors(c1, c2),
         true,
         BpxPattern.of(0b0000_0001_0011_0111),
       );
@@ -693,7 +693,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new BpxCompositeColor(c4, c1),
+        new BpxPatternColors(c4, c1),
         true,
         BpxPattern.primaryOnly,
       );
@@ -719,7 +719,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(2, 2),
         v_(6, 6),
-        new BpxCompositeColor(c4, c2),
+        new BpxPatternColors(c4, c2),
         true,
         BpxPattern.secondaryOnly,
       );
@@ -745,7 +745,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 10),
-        new BpxCompositeColor(c3, ct),
+        new BpxPatternColors(c3, ct),
         true,
         BpxPattern.of(0b0000_0001_0011_0111),
       );
@@ -771,14 +771,14 @@ describe("DrawRect", () => {
       rect.draw(
         v_(0, 0),
         v_(10, 5),
-        new BpxCompositeColor(c5, ct),
+        new BpxPatternColors(c5, ct),
         true,
         BpxPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
         v_(0, 5),
         v_(10, 5),
-        new BpxCompositeColor(c5, c1),
+        new BpxPatternColors(c5, c1),
         true,
         BpxPattern.of(0b1100_1100_1100_1100),
       );
@@ -810,7 +810,7 @@ describe("DrawRect", () => {
       rect.draw(
         v_(1, 1),
         v_(9, 9),
-        new BpxCompositeColor(c1, ct),
+        new BpxPatternColors(c1, ct),
         true,
         BpxPattern.of(0b0000_0001_0011_0111),
       );

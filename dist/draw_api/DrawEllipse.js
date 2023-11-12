@@ -34,8 +34,8 @@ export class DrawEllipse {
         if (!__classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
-        const c1 = color.type === "composite" ? color.primary : color;
-        const c2 = color.type === "composite" ? color.secondary : null;
+        const c1 = color.type === "pattern" ? color.primary : color;
+        const c2 = color.type === "pattern" ? color.secondary : null;
         const sn = (c1 === null || c1 === void 0 ? void 0 : c1.type) === "canvas_snapshot_mapping"
             ? __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").getMostRecentSnapshot()
             : null;

@@ -1,7 +1,7 @@
-export class BpxCompositeColor {
+export class BpxPatternColors {
     constructor(primary, secondary) {
-        this.type = "composite";
         this.primary = primary;
         this.secondary = secondary;
+        this.type = "pattern";
     }
 }

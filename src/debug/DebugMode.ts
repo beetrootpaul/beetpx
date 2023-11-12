@@ -7,6 +7,7 @@ export class DebugMode {
   static get enabled(): boolean {
     return this.#enabled;
   }
+
   static set enabled(value: boolean) {
     this.#enabled = value;
     Logger.infoBeetPx(`Debug flag set to: ${this.#enabled}`);

@@ -40,13 +40,10 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
-  readonly x: number;
-  readonly y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
+  constructor(
+    readonly x: number,
+    readonly y: number,
+  ) {}
 
   asArray(): [number, number] {
     return [this.x, this.y];

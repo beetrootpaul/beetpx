@@ -32,7 +32,7 @@ export {
 export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { type BpxColorMapper } from "./color/ColorMapper";
-export { BpxCompositeColor } from "./color/CompositeColor";
+export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxPattern } from "./draw_api/Pattern";

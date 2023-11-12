@@ -1,7 +1,7 @@
 import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
-import { BpxCompositeColor } from "../color/CompositeColor";
+import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxPattern } from "./Pattern";
@@ -21,7 +21,7 @@ export class DrawEllipse {
   draw(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
     fill: boolean,
     pattern: BpxPattern = BpxPattern.primaryOnly,
   ): void {
@@ -51,9 +51,9 @@ export class DrawEllipse {
     }
 
     const c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null =
-      color.type === "composite" ? color.primary : color;
+      color.type === "pattern" ? color.primary : color;
     const c2: BpxRgbColor | null =
-      color.type === "composite" ? color.secondary : null;
+      color.type === "pattern" ? color.secondary : null;
     const sn =
       c1?.type === "canvas_snapshot_mapping"
         ? this.#canvas.getMostRecentSnapshot()

@@ -4,7 +4,7 @@ window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
 window.BEETPX__VERSION = __BEETPX__VERSION__;
 export { BpxUtils } from "./Utils";
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
-export { BpxCompositeColor } from "./color/CompositeColor";
+export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxPattern } from "./draw_api/Pattern";

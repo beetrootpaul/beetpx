@@ -1,7 +1,7 @@
 import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
-import { BpxCompositeColor } from "../color/CompositeColor";
+import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
 import { BpxPattern } from "./Pattern";
@@ -22,7 +22,7 @@ export class DrawLine {
   draw(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
+    color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
     pattern: BpxPattern = BpxPattern.primaryOnly,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
@@ -41,9 +41,9 @@ export class DrawLine {
     const whSub1 = wh.sub(wh.sign());
 
     const c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null =
-      color.type === "composite" ? color.primary : color;
+      color.type === "pattern" ? color.primary : color;
     const c2: BpxRgbColor | null =
-      color.type === "composite" ? color.secondary : null;
+      color.type === "pattern" ? color.secondary : null;
     const sn =
       c1?.type === "canvas_snapshot_mapping"
         ? this.#canvas.getMostRecentSnapshot()

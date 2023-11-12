@@ -22,6 +22,8 @@ interface PrintDebug {
 
 declare function v_(x: number, y: number): BpxVector2d;
 declare class BpxVector2d implements PrintDebug {
+    readonly x: number;
+    readonly y: number;
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
@@ -30,8 +32,6 @@ declare class BpxVector2d implements PrintDebug {
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static unitFromAngle(turnAngle: number): BpxVector2d;
-    readonly x: number;
-    readonly y: number;
     constructor(x: number, y: number);
     asArray(): [number, number];
     magnitude(): number;
@@ -230,10 +230,10 @@ declare class BpxCanvasSnapshotColorMapping {
     getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
 }
 
-declare class BpxCompositeColor {
-    readonly type = "composite";
+declare class BpxPatternColors {
     readonly primary: BpxRgbColor | null;
     readonly secondary: BpxRgbColor | null;
+    readonly type = "pattern";
     constructor(primary: BpxRgbColor | null, secondary: BpxRgbColor | null);
 }
 
@@ -414,11 +414,11 @@ declare class DrawApi {
     clearCanvas(color: BpxRgbColor): void;
     pixel(xy: BpxVector2d, color: BpxRgbColor): void;
     pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void;
-    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
-    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
     setFont(fontId: BpxFontId | null): void;
     getFont(): BpxFont | null;
@@ -589,4 +589,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxPattern, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxEasing, BpxEasingFn, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxPattern, BpxPatternColors, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
