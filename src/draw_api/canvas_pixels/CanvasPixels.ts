@@ -10,6 +10,8 @@ export abstract class CanvasPixels {
 
   readonly #snapshots: Map<BpxCanvasPixelsSnapshotId, CanvasPixelsSnapshot> =
     new Map();
+
+  // start from 1 to avoid a case when someone checks for ID being truthy and gets `false`, because of value `0`
   #nextSnapshotId: BpxCanvasPixelsSnapshotId = 1;
 
   protected constructor(canvasSize: BpxVector2d) {

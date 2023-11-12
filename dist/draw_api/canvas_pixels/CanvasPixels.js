@@ -13,6 +13,7 @@ var _CanvasPixels_snapshots, _CanvasPixels_nextSnapshotId;
 export class CanvasPixels {
     constructor(canvasSize) {
         _CanvasPixels_snapshots.set(this, new Map());
+        
         _CanvasPixels_nextSnapshotId.set(this, 1);
         this.canvasSize = canvasSize.round();
     }

@@ -28,7 +28,6 @@ export class BpxTimer {
     this.#t = Math.max(0, this.#t - 1);
   }
 
-  // TODO: cover with tests
   restart(): void {
     this.#t = Math.max(0, this.#frames);
   }

@@ -32,7 +32,6 @@ export class BpxTimer {
     update() {
         __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_t, "f") - 1), "f");
     }
-    
     restart() {
         __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_frames, "f")), "f");
     }
