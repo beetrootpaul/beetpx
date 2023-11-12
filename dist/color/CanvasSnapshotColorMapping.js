@@ -9,13 +9,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _BpxCanvasSnapshotColorMapping_nextId, _BpxCanvasSnapshotColorMapping_nominalTypeHelper__canvasSnapshotMapping, _BpxCanvasSnapshotColorMapping_mapping;
+var _BpxCanvasSnapshotColorMapping_nominalTypeHelper__canvasSnapshotMapping, _BpxCanvasSnapshotColorMapping_mapping;
 export class BpxCanvasSnapshotColorMapping {
     constructor(mapping) {
-        var _b, _c, _d;
         
         _BpxCanvasSnapshotColorMapping_nominalTypeHelper__canvasSnapshotMapping.set(this, true);
-        this.id = `canvas-snapshot-mapping:${__classPrivateFieldSet(_b = BpxCanvasSnapshotColorMapping, _a, (_d = __classPrivateFieldGet(_b, _a, "f", _BpxCanvasSnapshotColorMapping_nextId), _c = _d++, _d), "f", _BpxCanvasSnapshotColorMapping_nextId), _c}`;
         _BpxCanvasSnapshotColorMapping_mapping.set(this, void 0);
         __classPrivateFieldSet(this, _BpxCanvasSnapshotColorMapping_mapping, mapping, "f");
     }
@@ -23,5 +21,4 @@ export class BpxCanvasSnapshotColorMapping {
         return snapshot ? __classPrivateFieldGet(this, _BpxCanvasSnapshotColorMapping_mapping, "f").call(this, snapshot.getColorAtIndex(index)) : null;
     }
 }
-_a = BpxCanvasSnapshotColorMapping, _BpxCanvasSnapshotColorMapping_nominalTypeHelper__canvasSnapshotMapping = new WeakMap(), _BpxCanvasSnapshotColorMapping_mapping = new WeakMap();
-_BpxCanvasSnapshotColorMapping_nextId = { value: 1 };
+_BpxCanvasSnapshotColorMapping_nominalTypeHelper__canvasSnapshotMapping = new WeakMap(), _BpxCanvasSnapshotColorMapping_mapping = new WeakMap();

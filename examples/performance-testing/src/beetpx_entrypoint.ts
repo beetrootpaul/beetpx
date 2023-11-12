@@ -300,9 +300,9 @@ function drawSprites(): void {
   );
 
   const prevMapping = b_.setSpriteColorMapping(
-    BpxSpriteColorMapping.fromMapEntries([
-      [logoInnerColor.id, logoOuterColor],
-      [logoOuterColor.id, logoInnerColor],
+    BpxSpriteColorMapping.from([
+      [logoInnerColor, logoOuterColor],
+      [logoOuterColor, logoInnerColor],
     ]),
   );
   for (let i = 0; i < numberOfBigSprites; i++) {

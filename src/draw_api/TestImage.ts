@@ -1,4 +1,3 @@
-import { BpxColor } from "../color/Color";
 import { BpxRgbColor } from "../color/RgbColor";
 import { ImageAsset } from "../misc/Assets";
 
@@ -8,7 +7,7 @@ export class TestImage {
 
   constructor(params: {
     image: string;
-    withMapping: Record<string, BpxColor | null>;
+    withMapping: Record<string, BpxRgbColor | null>;
   }) {
     const asciiImage = params.image;
     const asciiToColor = params.withMapping;

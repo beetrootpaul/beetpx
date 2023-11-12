@@ -31,12 +31,12 @@ export class DrawText {
         canvasXy = canvasXy.round();
         const colorMapping = typeof color === "function"
             ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => {
-                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.id) === fontAsset.imageTextColor.id
+                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
                     ? color(charSprite)
                     : null;
             })
             : new BpxSpriteColorMapping((spriteColor) => {
-                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.id) === fontAsset.imageTextColor.id
+                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
                     ? color
                     : null;
             });

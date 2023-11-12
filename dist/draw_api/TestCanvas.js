@@ -19,7 +19,10 @@ export class TestCanvas {
     }
     expectToEqual(params) {
         const { withMapping: asciiToColor, expectedImageAsAscii } = params;
-        const colorToAscii = new Map(Object.entries(asciiToColor).map(([ascii, color]) => [color.id, ascii]));
+        const colorToAscii = new Map(Object.entries(asciiToColor).map(([ascii, color]) => [
+            color.cssHex,
+            ascii,
+        ]));
         const actualAscii = __classPrivateFieldGet(this, _TestCanvas_instances, "m", _TestCanvas_asAscii).call(this, colorToAscii);
         const expectedAscii = expectedImageAsAscii
             .trim()
@@ -43,7 +46,7 @@ _TestCanvas_instances = new WeakSet(), _TestCanvas_asAscii = function _TestCanva
         for (let x = 0; x < this.canvas.canvasSize.x; x += 1) {
             const index = y * this.canvas.canvasSize.x + x;
             const color = snapshot.getColorAtIndex(index);
-            asciiImage += (_a = colorToAscii.get(color.id)) !== null && _a !== void 0 ? _a : "?";
+            asciiImage += (_a = colorToAscii.get(color.cssHex)) !== null && _a !== void 0 ? _a : "?";
         }
         asciiImage += "\n";
     }

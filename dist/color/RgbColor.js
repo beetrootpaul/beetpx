@@ -14,7 +14,6 @@ export class BpxRgbColor {
                 r.toString(16).padStart(2, "0") +
                 g.toString(16).padStart(2, "0") +
                 b.toString(16).padStart(2, "0");
-        this.id = "rgb-" + this.cssHex;
     }
     static fromCssHex(cssHex) {
         if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {

@@ -1,16 +1,10 @@
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
-import { BpxColor, BpxColorId } from "./Color";
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor } from "./RgbColor";
 
-export class BpxCanvasSnapshotColorMapping implements BpxColor {
-  static #nextId = 1;
-
+export class BpxCanvasSnapshotColorMapping {
   // noinspection JSUnusedLocalSymbols
   readonly #nominalTypeHelper__canvasSnapshotMapping = true;
-
-  readonly id: BpxColorId = `canvas-snapshot-mapping:${BpxCanvasSnapshotColorMapping
-    .#nextId++}`;
 
   readonly #mapping: BpxColorMapper;
 

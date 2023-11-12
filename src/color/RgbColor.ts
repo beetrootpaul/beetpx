@@ -1,12 +1,8 @@
-import { BpxColor, BpxColorId } from "./Color";
-
 export type BpxRgbCssHex = string;
 
-export class BpxRgbColor implements BpxColor {
+export class BpxRgbColor {
   // noinspection JSUnusedLocalSymbols
   readonly #nominalTypeHelper__rgb = true;
-
-  readonly id: BpxColorId;
 
   // values between 0 and 255
   readonly r: number;
@@ -30,8 +26,6 @@ export class BpxRgbColor implements BpxColor {
       r.toString(16).padStart(2, "0") +
       g.toString(16).padStart(2, "0") +
       b.toString(16).padStart(2, "0");
-
-    this.id = "rgb-" + this.cssHex;
   }
   static fromCssHex(cssHex: string): BpxRgbColor {
     if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {

@@ -1,8 +1,7 @@
 import { expect } from "@jest/globals";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasForTests } from "../canvas_pixels/CanvasForTests";
-import { BpxColorId } from "../color/Color";
-import { BpxRgbColor } from "../color/RgbColor";
+import { BpxRgbColor, BpxRgbCssHex } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 
 export class TestCanvas {
@@ -23,8 +22,11 @@ export class TestCanvas {
   }) {
     const { withMapping: asciiToColor, expectedImageAsAscii } = params;
 
-    const colorToAscii: Map<BpxColorId, string> = new Map(
-      Object.entries(asciiToColor).map(([ascii, color]) => [color.id, ascii]),
+    const colorToAscii: Map<BpxRgbCssHex, string> = new Map(
+      Object.entries(asciiToColor).map(([ascii, color]) => [
+        color.cssHex,
+        ascii,
+      ]),
     );
 
     const actualAscii = this.#asAscii(colorToAscii);
@@ -46,7 +48,7 @@ export class TestCanvas {
     expect(actualAscii).toEqual(expectedAscii);
   }
 
-  #asAscii(colorToAscii: Map<BpxColorId, string>): string {
+  #asAscii(colorToAscii: Map<BpxRgbCssHex, string>): string {
     let asciiImage = "";
 
     this.canvas.takeSnapshot();
@@ -55,7 +57,7 @@ export class TestCanvas {
       for (let x = 0; x < this.canvas.canvasSize.x; x += 1) {
         const index = y * this.canvas.canvasSize.x + x;
         const color = snapshot.getColorAtIndex(index);
-        asciiImage += colorToAscii.get(color.id) ?? "?";
+        asciiImage += colorToAscii.get(color.cssHex) ?? "?";
       }
       asciiImage += "\n";
     }

@@ -483,10 +483,10 @@ describe("DrawSprite", () => {
       s(0, 0, 4, 4),
       v_(0, 0),
       v_1_1_,
-      BpxSpriteColorMapping.fromMapEntries([
-        [c1.id, c4],
-        [c2.id, c5],
-        [c3.id, ct],
+      BpxSpriteColorMapping.from([
+        [c1, c4],
+        [c2, c5],
+        [c3, ct],
       ]),
     );
 

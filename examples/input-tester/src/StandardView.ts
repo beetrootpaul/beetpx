@@ -134,15 +134,9 @@ export class StandardView {
 
     // background: keyboard vs gamepad
     let prevMapping = b_.setSpriteColorMapping(
-      new BpxSpriteColorMapping((c) => {
-        if (this.highlightKeyboard && c?.id === pink.id) {
-          return darkGreen;
-        }
-        if (!this.highlightKeyboard && c?.id === yellow.id) {
-          return darkBlue;
-        }
-        return c;
-      }),
+      this.highlightKeyboard
+        ? BpxSpriteColorMapping.from([[pink, darkGreen]])
+        : BpxSpriteColorMapping.from([[yellow, darkBlue]]),
     );
     b_.setClippingRegion(v_(0, 0), v_(128, 3));
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
@@ -156,7 +150,7 @@ export class StandardView {
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setSpriteColorMapping(prevMapping);
     prevMapping = b_.setSpriteColorMapping(
-      BpxSpriteColorMapping.fromMapEntries([[lightGrey.id, darkGrey]]),
+      BpxSpriteColorMapping.from([[lightGrey, darkGrey]]),
     );
     b_.setClippingRegion(
       this.highlightKeyboard ? v_(110, 3) : v_(3, 3),
@@ -168,7 +162,7 @@ export class StandardView {
 
     // pressed buttons
     prevMapping = b_.setSpriteColorMapping(
-      BpxSpriteColorMapping.fromMapEntries([[lime.id, null]]),
+      BpxSpriteColorMapping.from([[lime, null]]),
     );
     if (ip.up) {
       b_.sprite(ps.k_w, v_(21, 17));

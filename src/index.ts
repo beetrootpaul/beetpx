@@ -31,7 +31,6 @@ export {
 } from "./audio/SoundSequence";
 export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
-export { type BpxColor, type BpxColorId } from "./color/Color";
 export { type BpxColorMapper } from "./color/ColorMapper";
 export { BpxCompositeColor } from "./color/CompositeColor";
 export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";

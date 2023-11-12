@@ -11,19 +11,18 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _BpxSpriteColorMapping_nominalTypeHelper__spriteMapping, _BpxSpriteColorMapping_mapping;
 export class BpxSpriteColorMapping {
-    static fromMapEntries(mapEntries) {
-        const map = new Map(mapEntries);
+    static from(colorMappingEntries) {
+        const map = new Map(colorMappingEntries.map(([from, to]) => [from.cssHex, to]));
         return new BpxSpriteColorMapping((spriteColor) => {
             if (!spriteColor)
                 return spriteColor;
-            const mapped = map.get(spriteColor.id);
+            const mapped = map.get(spriteColor.cssHex);
             return typeof mapped === "undefined" ? spriteColor : mapped;
         });
     }
     constructor(mapping) {
         
         _BpxSpriteColorMapping_nominalTypeHelper__spriteMapping.set(this, true);
-        this.id = `sprite-mapping:${BpxSpriteColorMapping.nextId++}`;
         _BpxSpriteColorMapping_mapping.set(this, void 0);
         __classPrivateFieldSet(this, _BpxSpriteColorMapping_mapping, mapping, "f");
     }
@@ -33,5 +32,3 @@ export class BpxSpriteColorMapping {
 }
 _BpxSpriteColorMapping_nominalTypeHelper__spriteMapping = new WeakMap(), _BpxSpriteColorMapping_mapping = new WeakMap();
 BpxSpriteColorMapping.noMapping = new BpxSpriteColorMapping((c) => c);
-
-BpxSpriteColorMapping.nextId = 1;

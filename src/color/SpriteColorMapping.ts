@@ -1,28 +1,24 @@
-import { BpxColor, BpxColorId } from "./Color";
 import { BpxColorMapper } from "./ColorMapper";
-import { BpxRgbColor } from "./RgbColor";
+import { BpxRgbColor, BpxRgbCssHex } from "./RgbColor";
 
-export class BpxSpriteColorMapping implements BpxColor {
+export class BpxSpriteColorMapping {
   static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping((c) => c);
 
-  static fromMapEntries(
-    mapEntries: Array<[BpxColorId, BpxRgbColor | null]>,
+  static from(
+    colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>,
   ): BpxSpriteColorMapping {
-    const map = new Map<BpxColorId, BpxRgbColor | null>(mapEntries);
+    const map = new Map<BpxRgbCssHex, BpxRgbColor | null>(
+      colorMappingEntries.map(([from, to]) => [from.cssHex, to]),
+    );
     return new BpxSpriteColorMapping((spriteColor) => {
       if (!spriteColor) return spriteColor;
-      const mapped = map.get(spriteColor.id);
+      const mapped = map.get(spriteColor.cssHex);
       return typeof mapped === "undefined" ? spriteColor : mapped;
     });
   }
 
-  // TODO: REMOVE
-  static nextId = 1;
-
   // noinspection JSUnusedLocalSymbols
   readonly #nominalTypeHelper__spriteMapping = true;
-
-  readonly id: BpxColorId = `sprite-mapping:${BpxSpriteColorMapping.nextId++}`;
 
   readonly #mapping: BpxColorMapper;
 
