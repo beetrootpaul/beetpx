@@ -1,10 +1,9 @@
 import { BpxUtils } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
-import { BpxColorId } from "../color/Color";
 import { BpxCompositeColor } from "../color/CompositeColor";
 import { BpxSolidColor } from "../color/SolidColor";
-import { BpxTransparentColor } from "../color/TransparentColor";
+import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { Assets, FontAsset } from "../misc/Assets";
@@ -19,12 +18,6 @@ import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
 import { BpxFillPattern } from "./FillPattern";
 import { BpxSprite } from "./Sprite";
-
-// TODO: BpxColorMapping and BpxMappingColor are named way too similar, while doing different things!
-export type BpxColorMapping = Array<{
-  from: BpxSolidColor;
-  to: BpxSolidColor | BpxTransparentColor;
-}>;
 
 type DrawApiOptions = {
   canvas: Canvas;
@@ -54,12 +47,9 @@ export class DrawApi {
 
   #fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly;
 
-  #fontAsset: FontAsset | null = null;
+  #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
-  readonly #spriteColorMapping: Map<
-    BpxColorId,
-    BpxSolidColor | BpxTransparentColor
-  > = new Map();
+  #fontAsset: FontAsset | null = null;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -96,27 +86,12 @@ export class DrawApi {
     this.#fillPattern = fillPattern;
   }
 
-  // TODO: rename to `setSpriteColorMapping`?
-  // TODO: make it more clear this fn is additive and `mapSpriteColor([])` does NOT reset the current mapping
-  // TODO: super confusing: 1) prevMapping = mapSpriteColors(…) 2) mapSpriteColors(other) 3) mapSpriteColors(prevMapping) DOES NOT reset 2nd call
-  // TODO: ability to remove all mappings
-  // TODO: cover it with tests
-  mapSpriteColors(mapping: BpxColorMapping): BpxColorMapping {
-    const previous: BpxColorMapping = [];
-    mapping.forEach(({ from, to }) => {
-      previous.push({
-        from,
-        to: this.#spriteColorMapping.get(from.id) ?? from,
-      });
-      // TODO: consider writing a custom equality check function
-      // TODO: or remove "id" at all if possible?
-      if (from.id === to.id) {
-        this.#spriteColorMapping.delete(from.id);
-      } else {
-        this.#spriteColorMapping.set(from.id, to);
-      }
-    });
-    return previous;
+  setSpriteColorMapping(
+    spriteColorMapping: BpxSpriteColorMapping,
+  ): BpxSpriteColorMapping {
+    const prevMapping = this.#spriteColorMapping;
+    this.#spriteColorMapping = spriteColorMapping;
+    return prevMapping;
   }
 
   clearCanvas(color: BpxSolidColor): void {
@@ -236,8 +211,7 @@ export class DrawApi {
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
     centerXy: [boolean, boolean] = [false, false],
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
-    // TODO: introduce scaleXy + cover it with tests
-    // scaleXy: BpxVector2d = v_1_1_,
+    scaleXy: BpxVector2d = v_1_1_,
   ): void {
     if (centerXy[0] || centerXy[1]) {
       const size = BpxUtils.measureText(text);
@@ -252,6 +226,7 @@ export class DrawApi {
         canvasXy.sub(this.#cameraOffset),
         this.#fontAsset,
         color,
+        scaleXy,
       );
     } else {
       Logger.infoBeetPx(

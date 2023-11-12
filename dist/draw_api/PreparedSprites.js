@@ -3,19 +3,15 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _PreparedSprites_instances, _PreparedSprites_cache, _PreparedSprites_keyPortionFromColorMapping;
+var _PreparedSprites_cache;
 import { u_ } from "../Utils";
 import { BpxSolidColor } from "../color/SolidColor";
 import { transparent_ } from "../color/TransparentColor";
 export class PreparedSprites {
     constructor() {
-        _PreparedSprites_instances.add(this);
         _PreparedSprites_cache.set(this, new Map());
     }
-    prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels, 
-    
-    colorMapping) {
-        var _a;
+    prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels) {
         const key = sprite.imageUrl +
             "::" +
             sprite.xy1.x.toString() +
@@ -24,9 +20,7 @@ export class PreparedSprites {
             ":" +
             sprite.xy2.x.toString() +
             ":" +
-            sprite.xy2.y.toString() +
-            "::" +
-            __classPrivateFieldGet(this, _PreparedSprites_instances, "m", _PreparedSprites_keyPortionFromColorMapping).call(this, colorMapping);
+            sprite.xy2.y.toString();
         if (__classPrivateFieldGet(this, _PreparedSprites_cache, "f").has(key)) {
             return __classPrivateFieldGet(this, _PreparedSprites_cache, "f").get(key);
         }
@@ -34,7 +28,7 @@ export class PreparedSprites {
         const h = sprite.size().y;
         const colors = u_
             .range(w)
-            .map(() => u_.range(h).map(() => null));
+            .map(() => u_.range(h).map(() => transparent_));
         for (let spriteY = 0; spriteY < h; ++spriteY) {
             const imgY = sprite.xy1.y + spriteY;
             for (let spriteX = 0; spriteX < w; ++spriteX) {
@@ -45,9 +39,7 @@ export class PreparedSprites {
                     : imgBytes[imgIndex + 3] >= 0xff / 2
                         ? new BpxSolidColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                         : transparent_;
-                const mappedColor = (_a = colorMapping.get(color.id)) !== null && _a !== void 0 ? _a : color;
-                colors[spriteX][spriteY] =
-                    mappedColor instanceof BpxSolidColor ? mappedColor : null;
+                colors[spriteX][spriteY] = color;
             }
         }
         const preparedSprite = {
@@ -59,8 +51,4 @@ export class PreparedSprites {
         return preparedSprite;
     }
 }
-_PreparedSprites_cache = new WeakMap(), _PreparedSprites_instances = new WeakSet(), _PreparedSprites_keyPortionFromColorMapping = function _PreparedSprites_keyPortionFromColorMapping(colorMapping) {
-    return Array.from(colorMapping.entries())
-        .map(([fromId, colorTo]) => fromId + ">" + colorTo.id)
-        .join(":");
-};
+_PreparedSprites_cache = new WeakMap();

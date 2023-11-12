@@ -164,8 +164,10 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.setFillPattern(...args);
   };
 
-  static mapSpriteColors: DrawApi["mapSpriteColors"] = (...args) => {
-    return this.#tryGetFramework().drawApi.mapSpriteColors(...args);
+  static setSpriteColorMapping: DrawApi["setSpriteColorMapping"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().drawApi.setSpriteColorMapping(...args);
   };
 
   static clearCanvas: DrawApi["clearCanvas"] = (...args) => {

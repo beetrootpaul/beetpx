@@ -6,6 +6,7 @@ export { BpxUtils } from "./Utils";
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { BpxCompositeColor } from "./color/CompositeColor";
 export { BpxSolidColor } from "./color/SolidColor";
+export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxTransparentColor } from "./color/TransparentColor";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { BpxSprite } from "./draw_api/Sprite";

@@ -10,6 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawText_canvas, _DrawText_sprite;
+import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { transparent_ } from "../color/TransparentColor";
 import { v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
@@ -25,14 +26,25 @@ export class DrawText {
     }
     
     
-    draw(text, canvasXy, fontAsset, color) {
+    draw(text, canvasXy, fontAsset, color, 
+    
+    scaleXy = v_1_1_) {
         canvasXy = canvasXy.round();
-        const colorFn = typeof color === "function" ? color : () => color;
+        const colorMapping = typeof color === "function"
+            ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => {
+                return spriteColor.id === fontAsset.imageTextColor.id
+                    ? color(charSprite)
+                    : transparent_;
+            })
+            : new BpxSpriteColorMapping((spriteColor) => {
+                return spriteColor.id === fontAsset.imageTextColor.id
+                    ? color
+                    : transparent_;
+            });
         for (const charSprite of fontAsset.font.spritesFor(text)) {
-            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), v_1_1_, new Map([
-                [fontAsset.imageTextColor.id, colorFn(charSprite)],
-                [fontAsset.imageBgColor.id, transparent_],
-            ]), BpxFillPattern.primaryOnly);
+            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), v_1_1_, typeof colorMapping === "function"
+                ? colorMapping(charSprite)
+                : colorMapping, BpxFillPattern.primaryOnly);
         }
     }
 }

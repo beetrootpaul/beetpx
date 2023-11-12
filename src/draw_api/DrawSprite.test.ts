@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals";
-import { BpxColorId } from "../color/Color";
 import { BpxSolidColor } from "../color/SolidColor";
-import { BpxTransparentColor, transparent_ } from "../color/TransparentColor";
+import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
+import { transparent_ } from "../color/TransparentColor";
 import { v_, v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
 import { spr_ } from "./Sprite";
@@ -32,7 +32,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
 
     // when
-    sprite.draw(image.asset, s(0, 0, 1, 1), v_(1, 1), v_1_1_, new Map());
+    sprite.draw(image.asset, s(0, 0, 1, 1), v_(1, 1), v_1_1_);
 
     // then
     canvas.expectToEqual({
@@ -484,7 +484,7 @@ describe("DrawSprite", () => {
       s(0, 0, 4, 4),
       v_(0, 0),
       v_1_1_,
-      new Map<BpxColorId, BpxSolidColor | BpxTransparentColor>([
+      BpxSpriteColorMapping.fromMapEntries([
         [c1.id, c4],
         [c2.id, c5],
         [c3.id, ct],

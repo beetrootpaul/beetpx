@@ -1,8 +1,7 @@
 import { BpxUtils } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxColorId } from "../color/Color";
 import { BpxSolidColor } from "../color/SolidColor";
-import { BpxTransparentColor } from "../color/TransparentColor";
+import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { ImageAsset } from "../misc/Assets";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
@@ -28,10 +27,7 @@ export class DrawSprite {
     // TODO: test it
     // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy: BpxVector2d = v_1_1_,
-    colorMapping: Map<
-      BpxColorId,
-      BpxSolidColor | BpxTransparentColor
-    > = new Map(),
+    colorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping,
     // TODO: test it
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
   ): void {
@@ -89,7 +85,6 @@ export class DrawSprite {
       imgBytes,
       imgW,
       imgChannels,
-      colorMapping,
     );
 
     for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
@@ -106,7 +101,10 @@ export class DrawSprite {
               if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
                 const color = preparedSprite.colors[spriteX]![spriteY];
                 if (color) {
-                  this.#canvas.set(color, canvasX, canvasY);
+                  const mappedColor = colorMapping.getMappedColor(color);
+                  if (mappedColor instanceof BpxSolidColor) {
+                    this.#canvas.set(mappedColor, canvasX, canvasY);
+                  }
                 }
               }
             }

@@ -1,6 +1,7 @@
 import {
   b_,
   BpxSolidColor,
+  BpxSpriteColorMapping,
   spr_,
   transparent_,
   v_,
@@ -133,12 +134,17 @@ export class StandardView {
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
 
     // background: keyboard vs gamepad
-    let prevMapping = b_.mapSpriteColors([
-      {
-        from: this.highlightKeyboard ? pink : yellow,
-        to: this.highlightKeyboard ? darkGreen : darkBlue,
-      },
-    ]);
+    let prevMapping = b_.setSpriteColorMapping(
+      new BpxSpriteColorMapping((c) => {
+        if (this.highlightKeyboard && c.id === pink.id) {
+          return darkGreen;
+        }
+        if (!this.highlightKeyboard && c.id === yellow.id) {
+          return darkBlue;
+        }
+        return c;
+      }),
+    );
     b_.setClippingRegion(v_(0, 0), v_(128, 3));
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(126, 0), v_(126, 128));
@@ -149,18 +155,22 @@ export class StandardView {
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(64, 77), v_(64, 6));
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
-    b_.mapSpriteColors(prevMapping);
-    prevMapping = b_.mapSpriteColors([{ from: lightGrey, to: darkGrey }]);
+    b_.setSpriteColorMapping(prevMapping);
+    prevMapping = b_.setSpriteColorMapping(
+      BpxSpriteColorMapping.fromMapEntries([[lightGrey.id, darkGrey]]),
+    );
     b_.setClippingRegion(
       this.highlightKeyboard ? v_(110, 3) : v_(3, 3),
       v_(15, 11),
     );
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
     b_.removeClippingRegion();
-    b_.mapSpriteColors(prevMapping);
+    b_.setSpriteColorMapping(prevMapping);
 
     // pressed buttons
-    prevMapping = b_.mapSpriteColors([{ from: lime, to: transparent_ }]);
+    prevMapping = b_.setSpriteColorMapping(
+      BpxSpriteColorMapping.fromMapEntries([[lime.id, transparent_]]),
+    );
     if (ip.up) {
       b_.sprite(ps.k_w, v_(21, 17));
       b_.sprite(ps.k_up, v_(47, 17));
@@ -239,6 +249,6 @@ export class StandardView {
     if (ip.frameByFrameStep) {
       b_.sprite(ps.k_period, v_(118, 118));
     }
-    b_.mapSpriteColors(prevMapping);
+    b_.setSpriteColorMapping(prevMapping);
   }
 }

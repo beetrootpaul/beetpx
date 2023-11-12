@@ -1,6 +1,5 @@
 import { type PngDataArray } from "fast-png";
 import { u_ } from "../Utils";
-import { BpxColorId } from "../color/Color";
 import { BpxSolidColor } from "../color/SolidColor";
 import { BpxTransparentColor, transparent_ } from "../color/TransparentColor";
 import { BpxSprite } from "./Sprite";
@@ -8,7 +7,7 @@ import { BpxSprite } from "./Sprite";
 export type PreparedSprite = {
   w: number;
   h: number;
-  colors: (BpxSolidColor | null)[][];
+  colors: (BpxSolidColor | BpxTransparentColor)[][];
 };
 
 export class PreparedSprites {
@@ -19,8 +18,6 @@ export class PreparedSprites {
     imgBytes: PngDataArray,
     imgW: number,
     imgChannels: 3 | 4,
-    // TODO: consider making color mapping into a class, especially that we need an unique ID out of it later on
-    colorMapping: Map<BpxColorId, BpxSolidColor | BpxTransparentColor>,
   ): PreparedSprite {
     const key =
       sprite.imageUrl +
@@ -31,9 +28,7 @@ export class PreparedSprites {
       ":" +
       sprite.xy2.x.toString() +
       ":" +
-      sprite.xy2.y.toString() +
-      "::" +
-      this.#keyPortionFromColorMapping(colorMapping);
+      sprite.xy2.y.toString();
 
     if (this.#cache.has(key)) {
       return this.#cache.get(key)!;
@@ -42,9 +37,9 @@ export class PreparedSprites {
     const w = sprite.size().x;
     const h = sprite.size().y;
 
-    const colors: (BpxSolidColor | null)[][] = u_
+    const colors: (BpxSolidColor | BpxTransparentColor)[][] = u_
       .range(w)
-      .map(() => u_.range(h).map(() => null));
+      .map(() => u_.range(h).map(() => transparent_));
 
     for (let spriteY = 0; spriteY < h; ++spriteY) {
       const imgY = sprite.xy1.y + spriteY;
@@ -68,10 +63,7 @@ export class PreparedSprites {
               )
             : transparent_;
 
-        const mappedColor = colorMapping.get(color.id) ?? color;
-
-        colors[spriteX]![spriteY] =
-          mappedColor instanceof BpxSolidColor ? mappedColor : null;
+        colors[spriteX]![spriteY] = color;
       }
     }
 
@@ -83,13 +75,5 @@ export class PreparedSprites {
     this.#cache.set(key, preparedSprite);
 
     return preparedSprite;
-  }
-
-  #keyPortionFromColorMapping(
-    colorMapping: Map<BpxColorId, BpxSolidColor | BpxTransparentColor>,
-  ): string {
-    return Array.from(colorMapping.entries())
-      .map(([fromId, colorTo]) => fromId + ">" + colorTo.id)
-      .join(":");
   }
 }

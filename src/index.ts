@@ -32,10 +32,11 @@ export {
 export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { type BpxColor, type BpxColorId } from "./color/Color";
+export { type BpxColorMapper } from "./color/ColorMapper";
 export { BpxCompositeColor } from "./color/CompositeColor";
 export { BpxSolidColor } from "./color/SolidColor";
+export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxTransparentColor } from "./color/TransparentColor";
-export { type BpxColorMapping } from "./draw_api/DrawApi";
 export { BpxFillPattern } from "./draw_api/FillPattern";
 export { BpxSprite } from "./draw_api/Sprite";
 export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";

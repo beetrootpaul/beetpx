@@ -11,6 +11,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _a, _DrawSprite_preparedSprites, _DrawSprite_canvas, _DrawSprite_options;
 import { BpxUtils } from "../Utils";
+import { BpxSolidColor } from "../color/SolidColor";
+import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
 import { PreparedSprites } from "./PreparedSprites";
@@ -26,7 +28,7 @@ export class DrawSprite {
     draw(sourceImageAsset, sprite, targetXy, 
     
     
-    scaleXy = v_1_1_, colorMapping = new Map(), 
+    scaleXy = v_1_1_, colorMapping = BpxSpriteColorMapping.noMapping, 
     
     fillPattern = BpxFillPattern.primaryOnly) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
@@ -40,7 +42,7 @@ export class DrawSprite {
         if (!__classPrivateFieldGet(this, _DrawSprite_canvas, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
             return;
         }
-        const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels, colorMapping);
+        const preparedSprite = __classPrivateFieldGet(DrawSprite, _a, "f", _DrawSprite_preparedSprites).prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels);
         for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
             const canvasYBase = targetXy.y + spriteY * scaleXy.y;
             for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
@@ -53,7 +55,10 @@ export class DrawSprite {
                             if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
                                 const color = preparedSprite.colors[spriteX][spriteY];
                                 if (color) {
-                                    __classPrivateFieldGet(this, _DrawSprite_canvas, "f").set(color, canvasX, canvasY);
+                                    const mappedColor = colorMapping.getMappedColor(color);
+                                    if (mappedColor instanceof BpxSolidColor) {
+                                        __classPrivateFieldGet(this, _DrawSprite_canvas, "f").set(mappedColor, canvasX, canvasY);
+                                    }
                                 }
                             }
                         }

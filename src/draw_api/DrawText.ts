@@ -1,7 +1,7 @@
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxColorId } from "../color/Color";
 import { BpxSolidColor } from "../color/SolidColor";
-import { BpxTransparentColor, transparent_ } from "../color/TransparentColor";
+import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
+import { transparent_ } from "../color/TransparentColor";
 import { BpxCharSprite } from "../font/Font";
 import { FontAsset } from "../misc/Assets";
 import { BpxVector2d, v_1_1_ } from "../misc/Vector2d";
@@ -28,10 +28,24 @@ export class DrawText {
     canvasXy: BpxVector2d,
     fontAsset: FontAsset,
     color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor),
+    // TODO: use scaleXy + cover it with tests
+    scaleXy: BpxVector2d = v_1_1_,
   ): void {
     canvasXy = canvasXy.round();
 
-    const colorFn = typeof color === "function" ? color : () => color;
+    const colorMapping =
+      typeof color === "function"
+        ? (charSprite: BpxCharSprite) =>
+            new BpxSpriteColorMapping((spriteColor) => {
+              return spriteColor.id === fontAsset.imageTextColor.id
+                ? color(charSprite)
+                : transparent_;
+            })
+        : new BpxSpriteColorMapping((spriteColor) => {
+            return spriteColor.id === fontAsset.imageTextColor.id
+              ? color
+              : transparent_;
+          });
 
     for (const charSprite of fontAsset.font.spritesFor(text)) {
       this.#sprite.draw(
@@ -39,10 +53,9 @@ export class DrawText {
         charSprite.sprite,
         canvasXy.add(charSprite.positionInText),
         v_1_1_,
-        new Map<BpxColorId, BpxSolidColor | BpxTransparentColor>([
-          [fontAsset.imageTextColor.id, colorFn(charSprite)],
-          [fontAsset.imageBgColor.id, transparent_],
-        ]),
+        typeof colorMapping === "function"
+          ? colorMapping(charSprite)
+          : colorMapping,
         BpxFillPattern.primaryOnly,
       );
     }

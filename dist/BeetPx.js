@@ -123,8 +123,8 @@ BeetPx.removeClippingRegion = (...args) => {
 BeetPx.setFillPattern = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFillPattern(...args);
 };
-BeetPx.mapSpriteColors = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.mapSpriteColors(...args);
+BeetPx.setSpriteColorMapping = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setSpriteColorMapping(...args);
 };
 BeetPx.clearCanvas = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.clearCanvas(...args);

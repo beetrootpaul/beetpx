@@ -6,9 +6,11 @@ import {
   BpxFontId,
   BpxImageUrl,
   BpxSolidColor,
+  BpxSpriteColorMapping,
   BpxVector2d,
   b_,
   spr_,
+  transparent_,
   u_,
   v_,
   v_0_0_,
@@ -40,8 +42,12 @@ let logoPositionBase = v_0_0_;
 let numberOfEllipses = 4;
 let numberOfBigSprites = 4;
 
-const negative = (c: BpxSolidColor) =>
-  new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b);
+// TODO: replace `instanceof` calls with property checks to potentially improve performance
+const negative = new BpxCanvasSnapshotColorMapping((c) =>
+  c instanceof BpxSolidColor
+    ? new BpxSolidColor(0xff - c.r, 0xff - c.g, 0xff - c.b)
+    : transparent_,
+);
 
 class Font1 implements BpxFont {
   readonly id: BpxFontId = "f1";
@@ -154,16 +160,8 @@ b_.init(
     drawEllipses();
 
     b_.takeCanvasSnapshot();
-    b_.rectFilled(
-      v_(5, 65),
-      v_(50, 10),
-      new BpxCanvasSnapshotColorMapping(negative),
-    );
-    b_.rectFilled(
-      v_(35, 70),
-      v_(50, 10),
-      new BpxCanvasSnapshotColorMapping(negative),
-    );
+    b_.rectFilled(v_(5, 65), v_(50, 10), negative);
+    b_.rectFilled(v_(35, 70), v_(50, 10), negative);
     b_.takeCanvasSnapshot();
 
     b_.setFont("f1");
@@ -205,11 +203,7 @@ b_.init(
       BpxSolidColor.fromRgbCssHex("#00ffff"),
     );
 
-    b_.rectFilled(
-      v_(65, 75),
-      v_(50, 10),
-      new BpxCanvasSnapshotColorMapping(negative),
-    );
+    b_.rectFilled(v_(65, 75), v_(50, 10), negative);
 
     for (let row = 0; row < 16; row++) {
       for (let col = 0; col < 16; col++) {
@@ -319,16 +313,12 @@ function drawSprites(): void {
     logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),
   );
 
-  const prevMapping = b_.mapSpriteColors([
-    {
-      from: logoInnerColor,
-      to: logoOuterColor,
-    },
-    {
-      from: logoOuterColor,
-      to: logoInnerColor,
-    },
-  ]);
+  const prevMapping = b_.setSpriteColorMapping(
+    BpxSpriteColorMapping.fromMapEntries([
+      [logoInnerColor.id, logoOuterColor],
+      [logoOuterColor.id, logoInnerColor],
+    ]),
+  );
   for (let i = 0; i < numberOfBigSprites; i++) {
     b_.sprite(
       logoSprite,
@@ -336,7 +326,7 @@ function drawSprites(): void {
       v_(2, 3),
     );
   }
-  b_.mapSpriteColors(prevMapping);
+  b_.setSpriteColorMapping(prevMapping);
 }
 
 function calculateLogoPositionOffset(frameNumber: number): BpxVector2d {
