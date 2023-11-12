@@ -3,8 +3,8 @@ window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
 
 window.BEETPX__VERSION = __BEETPX__VERSION__;
 export { BpxUtils } from "./Utils";
+export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { BpxCompositeColor } from "./color/CompositeColor";
-export { BpxMappingColor } from "./color/MappingColor";
 export { BpxSolidColor } from "./color/SolidColor";
 export { BpxTransparentColor } from "./color/TransparentColor";
 export { BpxFillPattern } from "./draw_api/FillPattern";

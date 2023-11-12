@@ -1,14 +1,11 @@
 import { BpxSolidColor } from "../color/SolidColor";
 import { BpxVector2d } from "../misc/Vector2d";
-import { BpxCanvasSnapshotId, CanvasSnapshot } from "./CanvasSnapshot";
+import { CanvasSnapshot } from "./CanvasSnapshot";
 
 export abstract class Canvas {
   readonly canvasSize: BpxVector2d;
 
-  readonly #snapshots: Map<BpxCanvasSnapshotId, CanvasSnapshot> = new Map();
-
-  // start from 1 to avoid a case when someone checks for ID being truthy and gets `false`, because of value `0`
-  #nextSnapshotId: BpxCanvasSnapshotId = 1;
+  #snapshot: CanvasSnapshot | null = null;
 
   protected constructor(canvasSize: BpxVector2d) {
     this.canvasSize = canvasSize.round();
@@ -26,21 +23,18 @@ export abstract class Canvas {
   abstract canSetAt(x: number, y: number): boolean;
   abstract set(color: BpxSolidColor, x: number, y: number): void;
 
-  takeSnapshot(): BpxCanvasSnapshotId {
-    const snapshotId = this.#nextSnapshotId++;
-    this.#snapshots.set(snapshotId, this.newSnapshot());
-    return snapshotId;
+  takeSnapshot(): void {
+    this.#snapshot = this.newSnapshot();
   }
 
-  getSnapshot(snapshotId: BpxCanvasSnapshotId): CanvasSnapshot | null {
-    return this.#snapshots.get(snapshotId) ?? null;
+  getMostRecentSnapshot(): CanvasSnapshot | null {
+    return this.#snapshot;
   }
 
   protected abstract newSnapshot(): CanvasSnapshot;
 
   render(): void {
-    this.#snapshots.clear();
-    this.#nextSnapshotId = 1;
+    this.#snapshot = null;
     this.doRender();
   }
 

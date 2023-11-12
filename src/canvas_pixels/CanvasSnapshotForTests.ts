@@ -8,7 +8,7 @@ export class CanvasSnapshotForTests implements CanvasSnapshot {
     this.#rgbValues = rgbValues;
   }
 
-  get(index: number): BpxSolidColor {
+  getColorAtIndex(index: number): BpxSolidColor {
     if (index >= this.#rgbValues.length) {
       throw Error(
         `index out of bounds: index = ${index}, max allowed index = ${

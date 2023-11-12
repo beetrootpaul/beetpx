@@ -1,9 +1,8 @@
 import { BpxUtils } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
-import { BpxCanvasSnapshotId } from "../canvas_pixels/CanvasSnapshot";
+import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxColorId } from "../color/Color";
 import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxMappingColor } from "../color/MappingColor";
 import { BpxSolidColor } from "../color/SolidColor";
 import { BpxTransparentColor } from "../color/TransparentColor";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
@@ -142,7 +141,7 @@ export class DrawApi {
   line(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
+    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#line.draw(xy.sub(this.#cameraOffset), wh, color, this.#fillPattern);
   }
@@ -150,7 +149,7 @@ export class DrawApi {
   rect(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
+    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset),
@@ -164,7 +163,7 @@ export class DrawApi {
   rectFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
+    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#rect.draw(
       xy.sub(this.#cameraOffset),
@@ -178,7 +177,7 @@ export class DrawApi {
   ellipse(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
+    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset),
@@ -192,7 +191,7 @@ export class DrawApi {
   ellipseFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
+    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
     this.#ellipse.draw(
       xy.sub(this.#cameraOffset),
@@ -263,7 +262,7 @@ export class DrawApi {
     }
   }
 
-  takeCanvasSnapshot(): BpxCanvasSnapshotId {
+  takeCanvasSnapshot(): void {
     return this.#canvas.takeSnapshot();
   }
 }

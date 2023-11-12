@@ -10,9 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawEllipse_instances, _DrawEllipse_canvas, _DrawEllipse_drawPixel;
-import { u_ } from "../Utils";
+import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxMappingColor } from "../color/MappingColor";
 import { BpxSolidColor } from "../color/SolidColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
@@ -28,7 +27,6 @@ export class DrawEllipse {
     
     
     draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly) {
-        var _a;
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
@@ -49,8 +47,8 @@ export class DrawEllipse {
                 ? color.secondary
                 : null
             : null;
-        const sn = c1 instanceof BpxMappingColor
-            ? (_a = __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").getSnapshot(c1.snapshotId)) !== null && _a !== void 0 ? _a : u_.throwError(`Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`)
+        const sn = c1 instanceof BpxCanvasSnapshotColorMapping
+            ? __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").getMostRecentSnapshot()
             : null;
         const fp = fillPattern;
         
@@ -125,7 +123,7 @@ _DrawEllipse_canvas = new WeakMap(), _DrawEllipse_instances = new WeakSet(), _Dr
             __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").set(c1, x, y);
         }
         else {
-            const mapped = c1.getMappedColorFromCanvasSnapshot(snapshot !== null && snapshot !== void 0 ? snapshot : u_.throwError("Snapshot was not passed when trying to obtain a mapped color"), y * __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x + x);
+            const mapped = c1.getMappedColor(snapshot, y * __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x + x);
             if (mapped instanceof BpxSolidColor) {
                 __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").set(mapped, x, y);
             }

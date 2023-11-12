@@ -1,8 +1,7 @@
-import { u_ } from "../Utils";
 import { Canvas } from "../canvas_pixels/Canvas";
 import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
+import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxCompositeColor } from "../color/CompositeColor";
-import { BpxMappingColor } from "../color/MappingColor";
 import { BpxSolidColor } from "../color/SolidColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxFillPattern } from "./FillPattern";
@@ -22,7 +21,7 @@ export class DrawEllipse {
   draw(
     xy: BpxVector2d,
     wh: BpxVector2d,
-    color: BpxSolidColor | BpxCompositeColor | BpxMappingColor,
+    color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
     fill: boolean,
     fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
   ): void {
@@ -51,7 +50,7 @@ export class DrawEllipse {
       return;
     }
 
-    const c1: BpxSolidColor | BpxMappingColor | null =
+    const c1: BpxSolidColor | BpxCanvasSnapshotColorMapping | null =
       color instanceof BpxCompositeColor
         ? color.primary instanceof BpxSolidColor
           ? color.primary
@@ -64,11 +63,8 @@ export class DrawEllipse {
           : null
         : null;
     const sn =
-      c1 instanceof BpxMappingColor
-        ? this.#canvas.getSnapshot(c1.snapshotId) ??
-          u_.throwError(
-            `Tried to access a non-existent canvas snapshot of ID: ${c1.snapshotId}`,
-          )
+      c1 instanceof BpxCanvasSnapshotColorMapping
+        ? this.#canvas.getMostRecentSnapshot()
         : null;
 
     const fp = fillPattern;
@@ -150,7 +146,7 @@ export class DrawEllipse {
   #drawPixel(
     x: number,
     y: number,
-    c1: BpxSolidColor | BpxMappingColor | null,
+    c1: BpxSolidColor | BpxCanvasSnapshotColorMapping | null,
     c2: BpxSolidColor | null,
     fillPattern: BpxFillPattern,
     snapshot: CanvasSnapshot | null,
@@ -164,11 +160,8 @@ export class DrawEllipse {
       } else if (c1 instanceof BpxSolidColor) {
         this.#canvas.set(c1, x, y);
       } else {
-        const mapped = c1.getMappedColorFromCanvasSnapshot(
-          snapshot ??
-            u_.throwError(
-              "Snapshot was not passed when trying to obtain a mapped color",
-            ),
+        const mapped = c1.getMappedColor(
+          snapshot,
           y * this.#canvas.canvasSize.x + x,
         );
         if (mapped instanceof BpxSolidColor) {

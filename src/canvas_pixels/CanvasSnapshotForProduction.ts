@@ -8,7 +8,7 @@ export class CanvasSnapshotForProduction implements CanvasSnapshot {
     this.#imageDataData = imageDataData;
   }
 
-  get(index: number): BpxSolidColor {
+  getColorAtIndex(index: number): BpxSolidColor {
     if (index >= this.#imageDataData.length / 4) {
       throw Error(
         `index out of bounds: index = ${index}, max allowed index = ${

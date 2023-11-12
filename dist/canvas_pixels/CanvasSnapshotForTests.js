@@ -16,7 +16,7 @@ export class CanvasSnapshotForTests {
         _CanvasSnapshotForTests_rgbValues.set(this, void 0);
         __classPrivateFieldSet(this, _CanvasSnapshotForTests_rgbValues, rgbValues, "f");
     }
-    get(index) {
+    getColorAtIndex(index) {
         if (index >= __classPrivateFieldGet(this, _CanvasSnapshotForTests_rgbValues, "f").length) {
             throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasSnapshotForTests_rgbValues, "f").length - 1}`);
         }

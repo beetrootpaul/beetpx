@@ -1,14 +1,13 @@
 import {
-  b_,
-  BpxCanvasSnapshotId,
+  BpxCanvasSnapshotColorMapping,
   BpxCharSprite,
   BpxFillPattern,
   BpxFont,
   BpxFontId,
   BpxImageUrl,
-  BpxMappingColor,
   BpxSolidColor,
   BpxVector2d,
+  b_,
   spr_,
   u_,
   v_,
@@ -154,18 +153,18 @@ b_.init(
 
     drawEllipses();
 
-    const snapshotId1: BpxCanvasSnapshotId = b_.takeCanvasSnapshot();
+    b_.takeCanvasSnapshot();
     b_.rectFilled(
       v_(5, 65),
       v_(50, 10),
-      new BpxMappingColor(snapshotId1, negative),
+      new BpxCanvasSnapshotColorMapping(negative),
     );
     b_.rectFilled(
       v_(35, 70),
       v_(50, 10),
-      new BpxMappingColor(snapshotId1, negative),
+      new BpxCanvasSnapshotColorMapping(negative),
     );
-    const snapshotId2: BpxCanvasSnapshotId = b_.takeCanvasSnapshot();
+    b_.takeCanvasSnapshot();
 
     b_.setFont("f1");
     const s1 = u_.measureText("111");
@@ -209,7 +208,7 @@ b_.init(
     b_.rectFilled(
       v_(65, 75),
       v_(50, 10),
-      new BpxMappingColor(snapshotId2, negative),
+      new BpxCanvasSnapshotColorMapping(negative),
     );
 
     for (let row = 0; row < 16; row++) {

@@ -224,9 +224,8 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
-type BpxCanvasSnapshotId = number;
 interface CanvasSnapshot {
-    get(index: number): BpxSolidColor;
+    getColorAtIndex(index: number): BpxSolidColor;
 }
 
 declare class BpxTransparentColor implements BpxColor {
@@ -235,20 +234,19 @@ declare class BpxTransparentColor implements BpxColor {
 }
 declare const transparent_: BpxTransparentColor;
 
+declare class BpxCanvasSnapshotColorMapping implements BpxColor {
+    #private;
+    readonly id: BpxColorId;
+    readonly getMappedColor: (snapshot: CanvasSnapshot | null, index: number) => BpxSolidColor | BpxTransparentColor;
+    constructor(mapping: (canvasSnapshotColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
+}
+
 declare class BpxCompositeColor implements BpxColor {
     #private;
     readonly id: BpxColorId;
     readonly primary: BpxSolidColor | BpxTransparentColor;
     readonly secondary: BpxSolidColor | BpxTransparentColor;
     constructor(primary: BpxSolidColor | BpxTransparentColor, secondary: BpxSolidColor | BpxTransparentColor);
-}
-
-declare class BpxMappingColor implements BpxColor {
-    #private;
-    readonly id: BpxColorId;
-    readonly snapshotId: BpxCanvasSnapshotId;
-    readonly getMappedColorFromCanvasSnapshot: (snapshot: CanvasSnapshot, index: number) => BpxSolidColor | BpxTransparentColor;
-    constructor(snapshotId: BpxCanvasSnapshotId, mapping: (canvasColor: BpxSolidColor) => BpxSolidColor | BpxTransparentColor);
 }
 
 declare abstract class Canvas {
@@ -260,8 +258,8 @@ declare abstract class Canvas {
     abstract canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
     abstract canSetAt(x: number, y: number): boolean;
     abstract set(color: BpxSolidColor, x: number, y: number): void;
-    takeSnapshot(): BpxCanvasSnapshotId;
-    getSnapshot(snapshotId: BpxCanvasSnapshotId): CanvasSnapshot | null;
+    takeSnapshot(): void;
+    getMostRecentSnapshot(): CanvasSnapshot | null;
     protected abstract newSnapshot(): CanvasSnapshot;
     render(): void;
     protected abstract doRender(): void;
@@ -295,16 +293,16 @@ declare class DrawApi {
     clearCanvas(color: BpxSolidColor): void;
     pixel(xy: BpxVector2d, color: BpxSolidColor): void;
     pixels(xy: BpxVector2d, color: BpxSolidColor, bits: string[]): void;
-    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
-    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxMappingColor): void;
+    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
+    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxSolidColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping): void;
     sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
     setFont(fontId: BpxFontId | null): void;
     getFont(): BpxFont | null;
     print(text: string, canvasXy: BpxVector2d, color: BpxSolidColor | ((charSprite: BpxCharSprite) => BpxSolidColor), centerXy?: [boolean, boolean]): void;
-    takeCanvasSnapshot(): BpxCanvasSnapshotId;
+    takeCanvasSnapshot(): void;
 }
 
 declare class Button {
@@ -598,4 +596,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotId, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxMappingColor, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColor, BpxColorId, BpxColorMapping, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxSolidColor, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxTimer, BpxTransparentColor, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, transparent_, u_, v_, v_0_0_, v_1_1_, white_ };

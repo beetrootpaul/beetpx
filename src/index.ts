@@ -30,10 +30,9 @@ export {
   type BpxSoundSequenceEntry,
 } from "./audio/SoundSequence";
 export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
-export { type BpxCanvasSnapshotId } from "./canvas_pixels/CanvasSnapshot";
+export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { type BpxColor, type BpxColorId } from "./color/Color";
 export { BpxCompositeColor } from "./color/CompositeColor";
-export { BpxMappingColor } from "./color/MappingColor";
 export { BpxSolidColor } from "./color/SolidColor";
 export { BpxTransparentColor } from "./color/TransparentColor";
 export { type BpxColorMapping } from "./draw_api/DrawApi";

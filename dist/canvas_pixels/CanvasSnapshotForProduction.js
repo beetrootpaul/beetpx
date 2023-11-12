@@ -16,7 +16,7 @@ export class CanvasSnapshotForProduction {
         _CanvasSnapshotForProduction_imageDataData.set(this, void 0);
         __classPrivateFieldSet(this, _CanvasSnapshotForProduction_imageDataData, imageDataData, "f");
     }
-    get(index) {
+    getColorAtIndex(index) {
         if (index >= __classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f").length / 4) {
             throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f").length / 4 - 1}`);
         }
