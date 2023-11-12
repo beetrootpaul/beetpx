@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawLine_instances, _DrawLine_canvas, _DrawLine_drawPixel;
 import { v_ } from "../misc/Vector2d";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 export class DrawLine {
     constructor(canvas) {
         _DrawLine_instances.add(this);
@@ -23,7 +23,7 @@ export class DrawLine {
     
     
     
-    draw(xy, wh, color, fillPattern = BpxFillPattern.primaryOnly) {
+    draw(xy, wh, color, pattern = BpxPattern.primaryOnly) {
         
         
         
@@ -42,7 +42,7 @@ export class DrawLine {
         const sn = (c1 === null || c1 === void 0 ? void 0 : c1.type) === "canvas_snapshot_mapping"
             ? __classPrivateFieldGet(this, _DrawLine_canvas, "f").getMostRecentSnapshot()
             : null;
-        const fp = fillPattern;
+        const fp = pattern;
         
         
         
@@ -73,11 +73,11 @@ export class DrawLine {
         }
     }
 }
-_DrawLine_canvas = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, fillPattern, snapshot) {
+_DrawLine_canvas = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, pattern, snapshot) {
     if (!__classPrivateFieldGet(this, _DrawLine_canvas, "f").canSetAt(x, y)) {
         return;
     }
-    if (fillPattern.hasPrimaryColorAt(x, y)) {
+    if (pattern.hasPrimaryColorAt(x, y)) {
         if (!c1) {
         }
         else if (c1.type === "rgb") {

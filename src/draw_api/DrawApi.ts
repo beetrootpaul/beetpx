@@ -16,7 +16,7 @@ import { DrawPixels } from "./DrawPixels";
 import { DrawRect } from "./DrawRect";
 import { DrawSprite } from "./DrawSprite";
 import { DrawText } from "./DrawText";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 import { BpxSprite } from "./Sprite";
 
 type DrawApiOptions = {
@@ -45,7 +45,7 @@ export class DrawApi {
 
   #cameraOffset: BpxVector2d = v_(0, 0);
 
-  #fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly;
+  #pattern: BpxPattern = BpxPattern.primaryOnly;
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
@@ -66,7 +66,7 @@ export class DrawApi {
     this.#text = new DrawText(options.canvas);
   }
 
-  // TODO: cover it with tests, e.g. make sure that fill pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
+  // TODO: cover it with tests, e.g. make sure that pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
   // TODO: consider returning the previous offset
   setCameraOffset(offset: BpxVector2d): void {
     this.#cameraOffset = offset;
@@ -80,10 +80,9 @@ export class DrawApi {
     this.#canvas.removeClippingRegion();
   }
 
-  // TODO: rename it? "fill" suggests it would apply to filled shapes only, but we apply it to contours as well
   // TODO: cover it with tests
-  setFillPattern(fillPattern: BpxFillPattern): void {
-    this.#fillPattern = fillPattern;
+  setPattern(pattern: BpxPattern): void {
+    this.#pattern = pattern;
   }
 
   setSpriteColorMapping(
@@ -99,11 +98,7 @@ export class DrawApi {
   }
 
   pixel(xy: BpxVector2d, color: BpxRgbColor): void {
-    this.#pixel.draw(
-      xy.sub(this.#cameraOffset),
-      color,
-      BpxFillPattern.primaryOnly,
-    );
+    this.#pixel.draw(xy.sub(this.#cameraOffset), color, BpxPattern.primaryOnly);
   }
 
   // bits = an array representing rows from top to bottom, where each array element
@@ -118,7 +113,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#line.draw(xy.sub(this.#cameraOffset), wh, color, this.#fillPattern);
+    this.#line.draw(xy.sub(this.#cameraOffset), wh, color, this.#pattern);
   }
 
   rect(
@@ -131,7 +126,7 @@ export class DrawApi {
       wh,
       color,
       false,
-      this.#fillPattern,
+      this.#pattern,
     );
   }
 
@@ -140,13 +135,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#rect.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      true,
-      this.#fillPattern,
-    );
+    this.#rect.draw(xy.sub(this.#cameraOffset), wh, color, true, this.#pattern);
   }
 
   ellipse(
@@ -159,7 +148,7 @@ export class DrawApi {
       wh,
       color,
       false,
-      this.#fillPattern,
+      this.#pattern,
     );
   }
 
@@ -173,11 +162,10 @@ export class DrawApi {
       wh,
       color,
       true,
-      this.#fillPattern,
+      this.#pattern,
     );
   }
 
-  // TODO: make sprite make use of fillPattern as well?
   sprite(
     sprite: BpxSprite,
     canvasXy: BpxVector2d,
@@ -191,7 +179,7 @@ export class DrawApi {
       canvasXy.sub(this.#cameraOffset),
       scaleXy,
       this.#spriteColorMapping,
-      this.#fillPattern,
+      this.#pattern,
     );
   }
 

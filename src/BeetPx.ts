@@ -160,8 +160,8 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.removeClippingRegion(...args);
   };
 
-  static setFillPattern: DrawApi["setFillPattern"] = (...args) => {
-    return this.#tryGetFramework().drawApi.setFillPattern(...args);
+  static setPattern: DrawApi["setPattern"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setPattern(...args);
   };
 
   static setSpriteColorMapping: DrawApi["setSpriteColorMapping"] = (

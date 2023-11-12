@@ -13,7 +13,7 @@ var _DrawText_canvas, _DrawText_sprite;
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 export class DrawText {
     constructor(canvas) {
         _DrawText_canvas.set(this, void 0);
@@ -43,7 +43,7 @@ export class DrawText {
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), v_1_1_, typeof colorMapping === "function"
                 ? colorMapping(charSprite)
-                : colorMapping, BpxFillPattern.primaryOnly);
+                : colorMapping, BpxPattern.primaryOnly);
         }
     }
 }

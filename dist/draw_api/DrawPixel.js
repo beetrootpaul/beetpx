@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawPixel_canvas;
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 export class DrawPixel {
     constructor(canvas) {
         _DrawPixel_canvas.set(this, void 0);
@@ -18,13 +18,12 @@ export class DrawPixel {
     }
     
     
-    
-    draw(xy, color, fillPattern = BpxFillPattern.primaryOnly) {
+    draw(xy, color, pattern = BpxPattern.primaryOnly) {
         xy = xy.round();
         if (!__classPrivateFieldGet(this, _DrawPixel_canvas, "f").canSetAt(xy.x, xy.y)) {
             return;
         }
-        if (fillPattern.hasPrimaryColorAt(xy.x, xy.y)) {
+        if (pattern.hasPrimaryColorAt(xy.x, xy.y)) {
             __classPrivateFieldGet(this, _DrawPixel_canvas, "f").set(color, xy.x, xy.y);
         }
     }

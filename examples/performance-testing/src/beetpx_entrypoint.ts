@@ -1,10 +1,10 @@
 import {
   BpxCanvasSnapshotColorMapping,
   BpxCharSprite,
-  BpxFillPattern,
   BpxFont,
   BpxFontId,
   BpxImageUrl,
+  BpxPattern,
   BpxRgbColor,
   BpxSpriteColorMapping,
   BpxVector2d,
@@ -259,7 +259,7 @@ function drawRenderFpsVisualization(): void {
 }
 
 function drawEllipses(): void {
-  b_.setFillPattern(BpxFillPattern.of(0x5b59));
+  b_.setPattern(BpxPattern.of(0x5b59));
   for (let ellipseIndex = 0; ellipseIndex < numberOfEllipses; ellipseIndex++) {
     const rComponent = ((30 * ellipseIndex) % 256)
       .toString(16)
@@ -273,7 +273,7 @@ function drawEllipses(): void {
       BpxRgbColor.fromCssHex(`#${rComponent}84${bComponent}`),
     );
   }
-  b_.setFillPattern(BpxFillPattern.primaryOnly);
+  b_.setPattern(BpxPattern.primaryOnly);
 }
 
 function drawSprites(): void {

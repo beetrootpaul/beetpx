@@ -7,7 +7,7 @@ export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMappin
 export { BpxCompositeColor } from "./color/CompositeColor";
 export { BpxRgbColor } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
-export { BpxFillPattern } from "./draw_api/FillPattern";
+export { BpxPattern } from "./draw_api/Pattern";
 export { BpxSprite } from "./draw_api/Sprite";
 export { BpxEasing } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";

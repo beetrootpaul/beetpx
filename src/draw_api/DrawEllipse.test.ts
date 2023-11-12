@@ -4,7 +4,7 @@ import { v_ } from "../misc/Vector2d";
 import { DrawEllipse } from "./DrawEllipse";
 import { TestCanvas } from "./TestCanvas";
 
-// TODO: tests for fill pattern
+// TODO: tests for pattern
 
 describe("DrawEllipse", () => {
   const c0 = BpxRgbColor.fromCssHex("#010203");

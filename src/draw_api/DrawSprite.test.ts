@@ -7,7 +7,7 @@ import { spr_ } from "./Sprite";
 import { TestCanvas } from "./TestCanvas";
 import { TestImage } from "./TestImage";
 
-// TODO: tests for fill pattern
+// TODO: tests for pattern
 
 describe("DrawSprite", () => {
   const ct = null;

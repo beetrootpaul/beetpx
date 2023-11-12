@@ -3,7 +3,7 @@ import { Canvas } from "../canvas_pixels/Canvas";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { ImageAsset } from "../misc/Assets";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 import { PreparedSprites } from "./PreparedSprites";
 import { BpxSprite } from "./Sprite";
 
@@ -28,7 +28,7 @@ export class DrawSprite {
     scaleXy: BpxVector2d = v_1_1_,
     colorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping,
     // TODO: test it
-    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
+    pattern: BpxPattern = BpxPattern.primaryOnly,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
 
@@ -97,7 +97,7 @@ export class DrawSprite {
             const canvasY = canvasYBase + yScaledStep;
 
             if (this.#canvas.canSetAt(canvasX, canvasY)) {
-              if (fillPattern.hasPrimaryColorAt(canvasX, canvasY)) {
+              if (pattern.hasPrimaryColorAt(canvasX, canvasY)) {
                 const color = preparedSprite.colors[spriteX]![spriteY];
                 if (color) {
                   const mappedColor = colorMapping.getMappedColor(color);

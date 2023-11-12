@@ -5,7 +5,7 @@ import { BpxCharSprite } from "../font/Font";
 import { FontAsset } from "../misc/Assets";
 import { BpxVector2d, v_1_1_ } from "../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 
 export class DrawText {
   readonly #canvas: Canvas;
@@ -55,7 +55,7 @@ export class DrawText {
         typeof colorMapping === "function"
           ? colorMapping(charSprite)
           : colorMapping,
-        BpxFillPattern.primaryOnly,
+        BpxPattern.primaryOnly,
       );
     }
   }

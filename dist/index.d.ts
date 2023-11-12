@@ -246,11 +246,11 @@ declare class BpxSpriteColorMapping {
     getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
 }
 
-declare class BpxFillPattern {
+declare class BpxPattern {
     #private;
-    static of(bits: number): BpxFillPattern;
-    static primaryOnly: BpxFillPattern;
-    static secondaryOnly: BpxFillPattern;
+    static of(bits: number): BpxPattern;
+    static primaryOnly: BpxPattern;
+    static secondaryOnly: BpxPattern;
     private constructor();
     hasPrimaryColorAt(x: number, y: number): boolean;
 }
@@ -409,7 +409,7 @@ declare class DrawApi {
     setCameraOffset(offset: BpxVector2d): void;
     setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
     removeClippingRegion(): void;
-    setFillPattern(fillPattern: BpxFillPattern): void;
+    setPattern(pattern: BpxPattern): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
     clearCanvas(color: BpxRgbColor): void;
     pixel(xy: BpxVector2d, color: BpxRgbColor): void;
@@ -529,7 +529,7 @@ declare class BeetPx {
     static setCameraOffset: DrawApi["setCameraOffset"];
     static setClippingRegion: DrawApi["setClippingRegion"];
     static removeClippingRegion: DrawApi["removeClippingRegion"];
-    static setFillPattern: DrawApi["setFillPattern"];
+    static setPattern: DrawApi["setPattern"];
     static setSpriteColorMapping: DrawApi["setSpriteColorMapping"];
     static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
@@ -589,4 +589,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFillPattern, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxCompositeColor, BpxEasing, BpxEasingFn, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxPattern, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };

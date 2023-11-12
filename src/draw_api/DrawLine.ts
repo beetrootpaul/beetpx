@@ -4,7 +4,7 @@ import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMappi
 import { BpxCompositeColor } from "../color/CompositeColor";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 
 export class DrawLine {
   readonly #canvas: Canvas;
@@ -13,9 +13,9 @@ export class DrawLine {
     this.#canvas = canvas;
   }
 
-  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor x pattern => secondary means no mapping?
   // TODO: tests for MappingColor
-  // TODO: tests for CompositeColor and fillPattern
+  // TODO: tests for CompositeColor and pattern
   // TODO: cover ClippingRegion with tests
 
   // Based on http://members.chello.at/easyfilter/bresenham.html
@@ -23,7 +23,7 @@ export class DrawLine {
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
-    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
+    pattern: BpxPattern = BpxPattern.primaryOnly,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
     //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
@@ -49,7 +49,7 @@ export class DrawLine {
         ? this.#canvas.getMostRecentSnapshot()
         : null;
 
-    const fp = fillPattern;
+    const fp = pattern;
 
     //
     // PREPARE
@@ -91,14 +91,14 @@ export class DrawLine {
     y: number,
     c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null,
     c2: BpxRgbColor | null,
-    fillPattern: BpxFillPattern,
+    pattern: BpxPattern,
     snapshot: CanvasSnapshot | null,
   ): void {
     if (!this.#canvas.canSetAt(x, y)) {
       return;
     }
 
-    if (fillPattern.hasPrimaryColorAt(x, y)) {
+    if (pattern.hasPrimaryColorAt(x, y)) {
       if (!c1) {
       } else if (c1.type === "rgb") {
         this.#canvas.set(c1, x, y);

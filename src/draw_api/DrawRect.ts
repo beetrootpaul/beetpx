@@ -4,7 +4,7 @@ import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMappi
 import { BpxCompositeColor } from "../color/CompositeColor";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 
 export class DrawRect {
   readonly #canvas: Canvas;
@@ -13,16 +13,16 @@ export class DrawRect {
     this.#canvas = canvas;
   }
 
-  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor x pattern => secondary means no mapping?
   // TODO: tests for MappingColor
-  // TODO: tests for CompositeColor and fillPattern
+  // TODO: tests for CompositeColor and pattern
   // TODO: cover ClippingRegion with tests
   draw(
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
     fill: boolean,
-    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
+    pattern: BpxPattern = BpxPattern.primaryOnly,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       xy.round(),
@@ -58,7 +58,7 @@ export class DrawRect {
         ? this.#canvas.getMostRecentSnapshot()
         : null;
 
-    const fp = fillPattern;
+    const fp = pattern;
 
     for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
       if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
@@ -77,14 +77,14 @@ export class DrawRect {
     y: number,
     c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null,
     c2: BpxRgbColor | null,
-    fillPattern: BpxFillPattern,
+    pattern: BpxPattern,
     snapshot: CanvasSnapshot | null,
   ): void {
     if (!this.#canvas.canSetAt(x, y)) {
       return;
     }
 
-    if (fillPattern.hasPrimaryColorAt(x, y)) {
+    if (pattern.hasPrimaryColorAt(x, y)) {
       if (!c1) {
       } else if (c1.type === "rgb") {
         this.#canvas.set(c1, x, y);

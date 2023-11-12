@@ -4,7 +4,7 @@ import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMappi
 import { BpxCompositeColor } from "../color/CompositeColor";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 
 export class DrawEllipse {
   readonly #canvas: Canvas;
@@ -13,9 +13,9 @@ export class DrawEllipse {
     this.#canvas = canvas;
   }
 
-  // TODO: tests for MappingColor x fillPattern => secondary means no mapping?
+  // TODO: tests for MappingColor x pattern => secondary means no mapping?
   // TODO: tests for MappingColor
-  // TODO: tests for CompositeColor and fillPattern
+  // TODO: tests for CompositeColor and pattern
   // TODO: cover ClippingRegion with tests
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
@@ -23,7 +23,7 @@ export class DrawEllipse {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxCompositeColor | BpxCanvasSnapshotColorMapping,
     fill: boolean,
-    fillPattern: BpxFillPattern = BpxFillPattern.primaryOnly,
+    pattern: BpxPattern = BpxPattern.primaryOnly,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       xy.round(),
@@ -59,7 +59,7 @@ export class DrawEllipse {
         ? this.#canvas.getMostRecentSnapshot()
         : null;
 
-    const fp = fillPattern;
+    const p = pattern;
 
     //
     // PREPARE
@@ -86,14 +86,14 @@ export class DrawEllipse {
       // DRAW THE CURRENT PIXEL IN EACH QUADRANT
       //
 
-      this.#drawPixel(right, bottom, c1, c2, fp, sn);
-      this.#drawPixel(left, bottom, c1, c2, fp, sn);
-      this.#drawPixel(left, top, c1, c2, fp, sn);
-      this.#drawPixel(right, top, c1, c2, fp, sn);
+      this.#drawPixel(right, bottom, c1, c2, p, sn);
+      this.#drawPixel(left, bottom, c1, c2, p, sn);
+      this.#drawPixel(left, top, c1, c2, p, sn);
+      this.#drawPixel(right, top, c1, c2, p, sn);
       if (fill) {
         for (let x = left + 1; x < right; ++x) {
-          this.#drawPixel(x, top, c1, c2, fp, sn);
-          this.#drawPixel(x, bottom, c1, c2, fp, sn);
+          this.#drawPixel(x, top, c1, c2, p, sn);
+          this.#drawPixel(x, bottom, c1, c2, p, sn);
         }
       }
 
@@ -124,13 +124,13 @@ export class DrawEllipse {
     //
 
     while (bottom - top <= b) {
-      // TODO: update the implementation below to honor fill pattern
+      // TODO: update the implementation below to honor pattern
 
-      this.#drawPixel(left - 1, bottom, c1, c2, fp, sn);
-      this.#drawPixel(right + 1, bottom, c1, c2, fp, sn);
+      this.#drawPixel(left - 1, bottom, c1, c2, p, sn);
+      this.#drawPixel(right + 1, bottom, c1, c2, p, sn);
       bottom += 1;
-      this.#drawPixel(left - 1, top, c1, c2, fp, sn);
-      this.#drawPixel(right + 1, top, c1, c2, fp, sn);
+      this.#drawPixel(left - 1, top, c1, c2, p, sn);
+      this.#drawPixel(right + 1, top, c1, c2, p, sn);
       top -= 1;
     }
   }
@@ -140,14 +140,14 @@ export class DrawEllipse {
     y: number,
     c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null,
     c2: BpxRgbColor | null,
-    fillPattern: BpxFillPattern,
+    pattern: BpxPattern,
     snapshot: CanvasSnapshot | null,
   ): void {
     if (!this.#canvas.canSetAt(x, y)) {
       return;
     }
 
-    if (fillPattern.hasPrimaryColorAt(x, y)) {
+    if (pattern.hasPrimaryColorAt(x, y)) {
       if (!c1) {
       } else if (c1.type === "rgb") {
         this.#canvas.set(c1, x, y);

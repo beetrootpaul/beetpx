@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawRect_instances, _DrawRect_canvas, _DrawRect_drawPixel;
 import { BpxVector2d } from "../misc/Vector2d";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 export class DrawRect {
     constructor(canvas) {
         _DrawRect_instances.add(this);
@@ -22,7 +22,7 @@ export class DrawRect {
     
     
     
-    draw(xy, wh, color, fill, fillPattern = BpxFillPattern.primaryOnly) {
+    draw(xy, wh, color, fill, pattern = BpxPattern.primaryOnly) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
@@ -38,7 +38,7 @@ export class DrawRect {
         const sn = (c1 === null || c1 === void 0 ? void 0 : c1.type) === "canvas_snapshot_mapping"
             ? __classPrivateFieldGet(this, _DrawRect_canvas, "f").getMostRecentSnapshot()
             : null;
-        const fp = fillPattern;
+        const fp = pattern;
         for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
             if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
                 for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
@@ -52,11 +52,11 @@ export class DrawRect {
         }
     }
 }
-_DrawRect_canvas = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, fillPattern, snapshot) {
+_DrawRect_canvas = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, pattern, snapshot) {
     if (!__classPrivateFieldGet(this, _DrawRect_canvas, "f").canSetAt(x, y)) {
         return;
     }
-    if (fillPattern.hasPrimaryColorAt(x, y)) {
+    if (pattern.hasPrimaryColorAt(x, y)) {
         if (!c1) {
         }
         else if (c1.type === "rgb") {

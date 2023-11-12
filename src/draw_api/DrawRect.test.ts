@@ -3,7 +3,7 @@ import { BpxCompositeColor } from "../color/CompositeColor";
 import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 import { DrawRect } from "./DrawRect";
-import { BpxFillPattern } from "./FillPattern";
+import { BpxPattern } from "./Pattern";
 import { TestCanvas } from "./TestCanvas";
 
 describe("DrawRect", () => {
@@ -222,7 +222,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with a single color", () => {
+    test("pattern: simple one, with a single color", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -233,7 +233,7 @@ describe("DrawRect", () => {
         v_(4, 4),
         c1,
         false,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -248,7 +248,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with two colors", () => {
+    test("pattern: simple one, with two colors", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -259,7 +259,7 @@ describe("DrawRect", () => {
         v_(4, 4),
         new BpxCompositeColor(c1, c2),
         false,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -274,7 +274,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: various 4x4 patterns", () => {
+    test("pattern: various 4x4 patterns", () => {
       // given
       const canvas = new TestCanvas(10, 10, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -285,7 +285,7 @@ describe("DrawRect", () => {
         v_(10, 10),
         new BpxCompositeColor(c4, c1),
         false,
-        BpxFillPattern.primaryOnly,
+        BpxPattern.primaryOnly,
       );
 
       // then
@@ -311,7 +311,7 @@ describe("DrawRect", () => {
         v_(6, 6),
         new BpxCompositeColor(c4, c2),
         false,
-        BpxFillPattern.secondaryOnly,
+        BpxPattern.secondaryOnly,
       );
 
       // then
@@ -337,7 +337,7 @@ describe("DrawRect", () => {
         v_(10, 10),
         new BpxCompositeColor(c3, ct),
         false,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -363,14 +363,14 @@ describe("DrawRect", () => {
         v_(10, 5),
         new BpxCompositeColor(c5, ct),
         false,
-        BpxFillPattern.of(0b0011_0011_0011_0011),
+        BpxPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
         v_(0, 5),
         v_(10, 5),
         new BpxCompositeColor(c5, c1),
         false,
-        BpxFillPattern.of(0b1100_1100_1100_1100),
+        BpxPattern.of(0b1100_1100_1100_1100),
       );
 
       // then
@@ -391,7 +391,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
+    test("pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
       // given
       const canvas = new TestCanvas(11, 11, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -402,7 +402,7 @@ describe("DrawRect", () => {
         v_(9, 9),
         new BpxCompositeColor(c1, ct),
         false,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -632,7 +632,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with a single color", () => {
+    test("pattern: simple one, with a single color", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -643,7 +643,7 @@ describe("DrawRect", () => {
         v_(4, 4),
         c1,
         true,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -658,7 +658,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: simple one, with two colors", () => {
+    test("pattern: simple one, with two colors", () => {
       // given
       const canvas = new TestCanvas(4, 4, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -669,7 +669,7 @@ describe("DrawRect", () => {
         v_(4, 4),
         new BpxCompositeColor(c1, c2),
         true,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -684,7 +684,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: various 4x4 patterns", () => {
+    test("pattern: various 4x4 patterns", () => {
       // given
       const canvas = new TestCanvas(10, 10, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -695,7 +695,7 @@ describe("DrawRect", () => {
         v_(10, 10),
         new BpxCompositeColor(c4, c1),
         true,
-        BpxFillPattern.primaryOnly,
+        BpxPattern.primaryOnly,
       );
 
       // then
@@ -721,7 +721,7 @@ describe("DrawRect", () => {
         v_(6, 6),
         new BpxCompositeColor(c4, c2),
         true,
-        BpxFillPattern.secondaryOnly,
+        BpxPattern.secondaryOnly,
       );
 
       // then
@@ -747,7 +747,7 @@ describe("DrawRect", () => {
         v_(10, 10),
         new BpxCompositeColor(c3, ct),
         true,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
@@ -773,14 +773,14 @@ describe("DrawRect", () => {
         v_(10, 5),
         new BpxCompositeColor(c5, ct),
         true,
-        BpxFillPattern.of(0b0011_0011_0011_0011),
+        BpxPattern.of(0b0011_0011_0011_0011),
       );
       rect.draw(
         v_(0, 5),
         v_(10, 5),
         new BpxCompositeColor(c5, c1),
         true,
-        BpxFillPattern.of(0b1100_1100_1100_1100),
+        BpxPattern.of(0b1100_1100_1100_1100),
       );
 
       // then
@@ -801,7 +801,7 @@ describe("DrawRect", () => {
       });
     });
 
-    test("fill pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
+    test("pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
       // given
       const canvas = new TestCanvas(11, 11, c0);
       const rect = new DrawRect(canvas.canvas);
@@ -812,7 +812,7 @@ describe("DrawRect", () => {
         v_(9, 9),
         new BpxCompositeColor(c1, ct),
         true,
-        BpxFillPattern.of(0b0000_0001_0011_0111),
+        BpxPattern.of(0b0000_0001_0011_0111),
       );
 
       // then
