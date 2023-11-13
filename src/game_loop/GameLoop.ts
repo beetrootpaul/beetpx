@@ -7,11 +7,13 @@ export type GameLoopCallbacks = {
 
 type GameLoopOptions = {
   desiredUpdateFps: number;
-  requestAnimationFrameFn: AnimationFrameProvider["requestAnimationFrame"];
+  rafFn: AnimationFrameProvider["requestAnimationFrame"];
   documentVisibilityStateProvider: { visibilityState: DocumentVisibilityState };
 };
 
 export class GameLoop {
+  static readonly renderFpsResultCap = 999;
+
   readonly #requestAnimationFrameFn: AnimationFrameProvider["requestAnimationFrame"];
   readonly #documentVisibilityStateProvider: {
     visibilityState: DocumentVisibilityState;
@@ -30,7 +32,7 @@ export class GameLoop {
   readonly #updateCallsLimit: number = 5;
 
   constructor(options: GameLoopOptions) {
-    this.#requestAnimationFrameFn = options.requestAnimationFrameFn;
+    this.#requestAnimationFrameFn = options.rafFn;
     this.#documentVisibilityStateProvider =
       options.documentVisibilityStateProvider;
 
@@ -67,14 +69,16 @@ export class GameLoop {
         this.#callbacks.updateFn();
         this.#accumulatedDeltaTimeMillis -= this.#expectedTimeStepMillis;
       } else {
+        this.#accumulatedDeltaTimeMillis = 0;
         Logger.warnBeetPx(
           `Reached the safety limit of ${this.#updateCallsLimit} update calls`,
         );
-        this.#accumulatedDeltaTimeMillis = 0;
       }
     }
 
-    const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, 999));
+    const renderFps = Math.floor(
+      Math.min(1000 / deltaTimeMillis, GameLoop.renderFpsResultCap),
+    );
     this.#callbacks.renderFn(renderFps);
 
     this.#requestAnimationFrameFn(this.#tick);

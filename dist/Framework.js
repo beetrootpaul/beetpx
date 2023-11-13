@@ -85,7 +85,7 @@ export class Framework {
         });
         __classPrivateFieldSet(this, _Framework_gameLoop, new GameLoop({
             desiredUpdateFps: options.desiredUpdateFps,
-            requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
+            rafFn: window.requestAnimationFrame.bind(window),
             documentVisibilityStateProvider: document,
         }), "f");
         this.storageApi = new StorageApi();

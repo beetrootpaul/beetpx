@@ -112,7 +112,7 @@ export class Framework {
 
     this.#gameLoop = new GameLoop({
       desiredUpdateFps: options.desiredUpdateFps,
-      requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
+      rafFn: window.requestAnimationFrame.bind(window),
       documentVisibilityStateProvider: document,
     });
 
