@@ -4,6 +4,16 @@ export function v_(x, y) {
     return new BpxVector2d(x, y);
 }
 export class BpxVector2d {
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static unitFromAngle(turnAngle) {
+        return new BpxVector2d(BpxUtils.trigCos(turnAngle), BpxUtils.trigSin(turnAngle));
+    }
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
     static min(xy1, xy2) {
         return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
     }
@@ -16,24 +26,12 @@ export class BpxVector2d {
     static lerp(xy1, xy2, t) {
         return new BpxVector2d(BpxUtils.lerp(xy1.x, xy2.x, t), BpxUtils.lerp(xy1.y, xy2.y, t));
     }
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    static unitFromAngle(turnAngle) {
-        return new BpxVector2d(BpxUtils.trigCos(turnAngle), BpxUtils.trigSin(turnAngle));
-    }
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
     asArray() {
         return [this.x, this.y];
     }
-    
     magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
-    
     sign() {
         return new BpxVector2d(Math.sign(this.x), Math.sign(this.y));
     }
@@ -85,8 +83,8 @@ export class BpxVector2d {
     }
     mod(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(this.x % otherOrValueOrX.x, this.y % otherOrValueOrX.y)
-            : new BpxVector2d(this.x % otherOrValueOrX, this.y % (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
+            ? new BpxVector2d(BpxUtils.mod(this.x, otherOrValueOrX.x), BpxUtils.mod(this.y, otherOrValueOrX.y))
+            : new BpxVector2d(BpxUtils.mod(this.x, otherOrValueOrX), BpxUtils.mod(this.y, maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
     }
     add(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"

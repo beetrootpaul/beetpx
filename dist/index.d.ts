@@ -24,15 +24,15 @@ declare function v_(x: number, y: number): BpxVector2d;
 declare class BpxVector2d implements PrintDebug {
     readonly x: number;
     readonly y: number;
-    static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
-    static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
-    static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
-    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
     /**
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static unitFromAngle(turnAngle: number): BpxVector2d;
     constructor(x: number, y: number);
+    static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
+    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
     asArray(): [number, number];
     magnitude(): number;
     sign(): BpxVector2d;
@@ -44,17 +44,25 @@ declare class BpxVector2d implements PrintDebug {
      * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     toAngle(): number;
+    /** equal to */
     eq(other: BpxVector2d): boolean;
     eq(value: number): boolean;
+    /** greater than */
     gt(other: BpxVector2d): boolean;
     gt(value: number): boolean;
+    /** greater than or equal */
     gte(other: BpxVector2d): boolean;
     gte(value: number): boolean;
+    /** less than */
     lt(other: BpxVector2d): boolean;
     lt(value: number): boolean;
+    /** less than or equal */
     lte(other: BpxVector2d): boolean;
     lte(value: number): boolean;
     clamp(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    /**
+     * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+     */
     mod(other: BpxVector2d): BpxVector2d;
     mod(value: number): BpxVector2d;
     mod(x: number, y: number): BpxVector2d;
@@ -93,6 +101,10 @@ declare class BpxUtils {
     static isDefined<Value>(value: Value | null | undefined): value is Value;
     static lerp(a: number, b: number, t: number): number;
     static measureText(text: string): BpxVector2d;
+    /**
+     * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+     */
+    static mod(value: number, modulus: number): number;
     static noop(): void;
     static offset4Directions(): BpxVector2d[];
     static offset8Directions(): BpxVector2d[];

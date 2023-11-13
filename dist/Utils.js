@@ -43,6 +43,12 @@ export class BpxUtils {
         }
         return size;
     }
+    /**
+     * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+     */
+    static mod(value, modulus) {
+        return ((value % modulus) + modulus) % modulus;
+    }
     static noop() { }
     
     static offset4Directions() {

@@ -8,6 +8,21 @@ export function v_(x: number, y: number): BpxVector2d {
 }
 
 export class BpxVector2d implements PrintDebug {
+  /**
+   * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+   */
+  static unitFromAngle(turnAngle: number): BpxVector2d {
+    return new BpxVector2d(
+      BpxUtils.trigCos(turnAngle),
+      BpxUtils.trigSin(turnAngle),
+    );
+  }
+
+  constructor(
+    readonly x: number,
+    readonly y: number,
+  ) {}
+
   static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
   }
@@ -30,31 +45,14 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
-  /**
-   * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-   */
-  static unitFromAngle(turnAngle: number): BpxVector2d {
-    return new BpxVector2d(
-      BpxUtils.trigCos(turnAngle),
-      BpxUtils.trigSin(turnAngle),
-    );
-  }
-
-  constructor(
-    readonly x: number,
-    readonly y: number,
-  ) {}
-
   asArray(): [number, number] {
     return [this.x, this.y];
   }
 
-  // TODO: cover with tests
   magnitude(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
-  // TODO: cover with tests
   sign(): BpxVector2d {
     return new BpxVector2d(Math.sign(this.x), Math.sign(this.y));
   }
@@ -66,9 +64,11 @@ export class BpxVector2d implements PrintDebug {
   floor(): BpxVector2d {
     return new BpxVector2d(Math.floor(this.x), Math.floor(this.y));
   }
+
   ceil(): BpxVector2d {
     return new BpxVector2d(Math.ceil(this.x), Math.ceil(this.y));
   }
+
   round(): BpxVector2d {
     return new BpxVector2d(Math.round(this.x), Math.round(this.y));
   }
@@ -80,6 +80,7 @@ export class BpxVector2d implements PrintDebug {
     return BpxUtils.trigAtan2(this.x, this.y);
   }
 
+  /** equal to */
   eq(other: BpxVector2d): boolean;
   eq(value: number): boolean;
   eq(otherOrValue: BpxVector2d | number): boolean {
@@ -88,6 +89,7 @@ export class BpxVector2d implements PrintDebug {
       : this.x === otherOrValue && this.y === otherOrValue;
   }
 
+  /** greater than */
   gt(other: BpxVector2d): boolean;
   gt(value: number): boolean;
   gt(otherOrValue: BpxVector2d | number): boolean {
@@ -96,6 +98,7 @@ export class BpxVector2d implements PrintDebug {
       : this.x > otherOrValue && this.y > otherOrValue;
   }
 
+  /** greater than or equal */
   gte(other: BpxVector2d): boolean;
   gte(value: number): boolean;
   gte(otherOrValue: BpxVector2d | number): boolean {
@@ -104,6 +107,7 @@ export class BpxVector2d implements PrintDebug {
       : this.x >= otherOrValue && this.y >= otherOrValue;
   }
 
+  /** less than */
   lt(other: BpxVector2d): boolean;
   lt(value: number): boolean;
   lt(otherOrValue: BpxVector2d | number): boolean {
@@ -112,6 +116,7 @@ export class BpxVector2d implements PrintDebug {
       : this.x < otherOrValue && this.y < otherOrValue;
   }
 
+  /** less than or equal */
   lte(other: BpxVector2d): boolean;
   lte(value: number): boolean;
   lte(otherOrValue: BpxVector2d | number): boolean {
@@ -127,15 +132,21 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
+  /**
+   * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+   */
   mod(other: BpxVector2d): BpxVector2d;
   mod(value: number): BpxVector2d;
   mod(x: number, y: number): BpxVector2d;
   mod(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
     return typeof otherOrValueOrX !== "number"
-      ? new BpxVector2d(this.x % otherOrValueOrX.x, this.y % otherOrValueOrX.y)
+      ? new BpxVector2d(
+          BpxUtils.mod(this.x, otherOrValueOrX.x),
+          BpxUtils.mod(this.y, otherOrValueOrX.y),
+        )
       : new BpxVector2d(
-          this.x % otherOrValueOrX,
-          this.y % (maybeY ?? otherOrValueOrX),
+          BpxUtils.mod(this.x, otherOrValueOrX),
+          BpxUtils.mod(this.y, maybeY ?? otherOrValueOrX),
         );
   }
 

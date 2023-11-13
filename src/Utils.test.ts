@@ -114,10 +114,15 @@ describe("Utils", () => {
   });
 
   test("#lerp", () => {
+    expect(BpxUtils.lerp(100, 200, -0.1)).toBe(90);
     expect(BpxUtils.lerp(100, 200, 0)).toBe(100);
     expect(BpxUtils.lerp(100, 200, 0.1)).toBe(110);
+    expect(BpxUtils.lerp(100, 200, 0.9)).toBe(190);
     expect(BpxUtils.lerp(100, 200, 1)).toBe(200);
     expect(BpxUtils.lerp(100, 200, 1.1)).toBe(210);
+
+    expect(BpxUtils.lerp(200, 100, 0)).toBe(200);
+    expect(BpxUtils.lerp(200, 100, 1)).toBe(100);
   });
 
   test("#measureText", () => {
@@ -156,6 +161,20 @@ describe("Utils", () => {
     expect(BpxUtils.measureText("...").asArray()).toEqual([102, 204]);
     expect(BpxUtils.measureText("###").asArray()).toEqual([3060, 4080]);
     expect(BpxUtils.measureText(".#.#").asArray()).toEqual([3032, 4044]);
+  });
+
+  test("#mod", () => {
+    expect(BpxUtils.mod(123.5, 1000)).toBe(123.5);
+    expect(BpxUtils.mod(1123.5, 1000)).toBe(123.5);
+    expect(BpxUtils.mod(123.5, 100)).toBe(23.5);
+    expect(BpxUtils.mod(123.5, 2)).toBe(1.5);
+    expect(BpxUtils.mod(123.5, 1)).toBe(0.5);
+
+    expect(BpxUtils.mod(-123.5, 1000)).toBe(876.5);
+    expect(BpxUtils.mod(-1123.5, 1000)).toBe(876.5);
+    expect(BpxUtils.mod(-123.5, 100)).toBe(76.5);
+    expect(BpxUtils.mod(-123.5, 2)).toBe(0.5);
+    expect(BpxUtils.mod(-123.5, 1)).toBe(0.5);
   });
 
   test(`#randomElementOf`, () => {
