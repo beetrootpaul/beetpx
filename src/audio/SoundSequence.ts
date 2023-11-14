@@ -1,4 +1,4 @@
-import { BpxSoundUrl } from "../misc/Assets";
+import { BpxSoundUrl } from "../assets/Assets";
 
 export type BpxSoundSequence = {
   intro?: BpxSoundSequenceEntry[];

@@ -14,16 +14,15 @@ import { BpxUtils } from "../Utils";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { Logger } from "../logger/Logger";
 import { v_, v_1_1_ } from "../misc/Vector2d";
-import { DrawClear } from "./DrawClear";
-import { DrawEllipse } from "./DrawEllipse";
-import { DrawLine } from "./DrawLine";
-import { DrawPixel } from "./DrawPixel";
-import { DrawPixels } from "./DrawPixels";
-import { DrawRect } from "./DrawRect";
-import { DrawSprite } from "./DrawSprite";
-import { DrawText } from "./DrawText";
 import { BpxPattern } from "./Pattern";
-
+import { DrawClear } from "./drawing/DrawClear";
+import { DrawEllipse } from "./drawing/DrawEllipse";
+import { DrawLine } from "./drawing/DrawLine";
+import { DrawPixel } from "./drawing/DrawPixel";
+import { DrawPixels } from "./drawing/DrawPixels";
+import { DrawRect } from "./drawing/DrawRect";
+import { DrawSprite } from "./drawing/DrawSprite";
+import { DrawText } from "./drawing/DrawText";
 
 
 export class DrawApi {
@@ -53,10 +52,8 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvas), "f");
         __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvas), "f");
     }
-    
-    
-    setCameraOffset(offset) {
-        __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset, "f");
+    clearCanvas(color) {
+        __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(color);
     }
     setClippingRegion(xy, wh) {
         __classPrivateFieldGet(this, _DrawApi_canvas, "f").setClippingRegion(xy, wh);
@@ -64,24 +61,19 @@ export class DrawApi {
     removeClippingRegion() {
         __classPrivateFieldGet(this, _DrawApi_canvas, "f").removeClippingRegion();
     }
-    
+    setCameraOffset(offset) {
+        const prevOffset = __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f");
+        __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset, "f");
+        return prevOffset;
+    }
     setPattern(pattern) {
+        const prevPattern = __classPrivateFieldGet(this, _DrawApi_pattern, "f");
         __classPrivateFieldSet(this, _DrawApi_pattern, pattern, "f");
-    }
-    setSpriteColorMapping(spriteColorMapping) {
-        const prevMapping = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f");
-        __classPrivateFieldSet(this, _DrawApi_spriteColorMapping, spriteColorMapping, "f");
-        return prevMapping;
-    }
-    clearCanvas(color) {
-        __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(color);
+        return prevPattern;
     }
     pixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, BpxPattern.primaryOnly);
     }
-    
-    
-    
     pixels(xy, color, bits) {
         __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color);
     }
@@ -99,6 +91,11 @@ export class DrawApi {
     }
     ellipseFilled(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, true, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+    }
+    setSpriteColorMapping(spriteColorMapping) {
+        const prevMapping = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f");
+        __classPrivateFieldSet(this, _DrawApi_spriteColorMapping, spriteColorMapping, "f");
+        return prevMapping;
     }
     sprite(sprite, canvasXy, 
     

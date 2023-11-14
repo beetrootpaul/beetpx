@@ -1,13 +1,14 @@
 // noinspection JSUnusedGlobalSymbols
 
 import { Framework, type FrameworkOptions } from "./Framework";
+import { AssetsToLoad } from "./assets/AssetLoader";
+import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
 import { Buttons } from "./game_input/buttons/Buttons";
 import { Logger } from "./logger/Logger";
-import { Assets, AssetsToLoad } from "./misc/Assets";
 import { FullScreen } from "./misc/FullScreen";
 import { StorageApi } from "./storage/StorageApi";
 
@@ -148,8 +149,8 @@ export class BeetPx {
   // Draw API
   //
 
-  static setCameraOffset: DrawApi["setCameraOffset"] = (...args) => {
-    return this.#tryGetFramework().drawApi.setCameraOffset(...args);
+  static clearCanvas: DrawApi["clearCanvas"] = (...args) => {
+    return this.#tryGetFramework().drawApi.clearCanvas(...args);
   };
 
   static setClippingRegion: DrawApi["setClippingRegion"] = (...args) => {
@@ -160,24 +161,31 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.removeClippingRegion(...args);
   };
 
+  /**
+   * @returns previous camera offset
+   */
+  static setCameraOffset: DrawApi["setCameraOffset"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setCameraOffset(...args);
+  };
+
+  /**
+   * @returns previous pattern
+   */
   static setPattern: DrawApi["setPattern"] = (...args) => {
     return this.#tryGetFramework().drawApi.setPattern(...args);
-  };
-
-  static setSpriteColorMapping: DrawApi["setSpriteColorMapping"] = (
-    ...args
-  ) => {
-    return this.#tryGetFramework().drawApi.setSpriteColorMapping(...args);
-  };
-
-  static clearCanvas: DrawApi["clearCanvas"] = (...args) => {
-    return this.#tryGetFramework().drawApi.clearCanvas(...args);
   };
 
   static pixel: DrawApi["pixel"] = (...args) => {
     return this.#tryGetFramework().drawApi.pixel(...args);
   };
 
+  /**
+   * @param {BpxVector2d} xy - sd
+   * @param {BpxRgbColor} color - sd
+   * @param {string[]} bits - an array representing rows from top to bottom,
+   *        where each array element is a text sequence of `0` and `1` to
+   *        represent drawn and skipped pixels from left to right.
+   */
   static pixels: DrawApi["pixels"] = (...args) => {
     return this.#tryGetFramework().drawApi.pixels(...args);
   };
@@ -200,6 +208,15 @@ export class BeetPx {
 
   static ellipseFilled: DrawApi["ellipseFilled"] = (...args) => {
     return this.#tryGetFramework().drawApi.ellipseFilled(...args);
+  };
+
+  /**
+   * @returns previous sprite color mapping
+   */
+  static setSpriteColorMapping: DrawApi["setSpriteColorMapping"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().drawApi.setSpriteColorMapping(...args);
   };
 
   static sprite: DrawApi["sprite"] = (...args) => {

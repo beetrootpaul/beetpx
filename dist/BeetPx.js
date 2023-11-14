@@ -111,8 +111,8 @@ BeetPx.__internal__capturedEvents = (...args) => {
 
 
 
-BeetPx.setCameraOffset = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setCameraOffset(...args);
+BeetPx.clearCanvas = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.clearCanvas(...args);
 };
 BeetPx.setClippingRegion = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setClippingRegion(...args);
@@ -120,18 +120,28 @@ BeetPx.setClippingRegion = (...args) => {
 BeetPx.removeClippingRegion = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.removeClippingRegion(...args);
 };
+/**
+ * @returns previous camera offset
+ */
+BeetPx.setCameraOffset = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setCameraOffset(...args);
+};
+/**
+ * @returns previous pattern
+ */
 BeetPx.setPattern = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setPattern(...args);
-};
-BeetPx.setSpriteColorMapping = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setSpriteColorMapping(...args);
-};
-BeetPx.clearCanvas = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.clearCanvas(...args);
 };
 BeetPx.pixel = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixel(...args);
 };
+/**
+ * @param {BpxVector2d} xy - sd
+ * @param {BpxRgbColor} color - sd
+ * @param {string[]} bits - an array representing rows from top to bottom,
+ *        where each array element is a text sequence of `0` and `1` to
+ *        represent drawn and skipped pixels from left to right.
+ */
 BeetPx.pixels = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixels(...args);
 };
@@ -149,6 +159,12 @@ BeetPx.ellipse = (...args) => {
 };
 BeetPx.ellipseFilled = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.ellipseFilled(...args);
+};
+/**
+ * @returns previous sprite color mapping
+ */
+BeetPx.setSpriteColorMapping = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setSpriteColorMapping(...args);
 };
 BeetPx.sprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);

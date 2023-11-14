@@ -1,5 +1,5 @@
+import { ImageAsset } from "../assets/Assets";
 import { BpxRgbColor } from "../color/RgbColor";
-import { ImageAsset } from "../misc/Assets";
 
 export class TestImage {
   readonly asset: ImageAsset;

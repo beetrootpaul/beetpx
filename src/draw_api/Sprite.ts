@@ -1,4 +1,4 @@
-import { BpxImageUrl } from "../misc/Assets";
+import { BpxImageUrl } from "../assets/Assets";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
 
 type SpriteCreationHelper = (

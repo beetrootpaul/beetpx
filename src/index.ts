@@ -24,6 +24,11 @@ window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
 window.BEETPX__VERSION = __BEETPX__VERSION__;
 
 export { BpxUtils } from "./Utils";
+export {
+  type BpxImageUrl,
+  type BpxJsonUrl,
+  type BpxSoundUrl,
+} from "./assets/Assets";
 export { type BpxAudioPlaybackId } from "./audio/AudioPlayback";
 export {
   type BpxSoundSequence,
@@ -41,11 +46,6 @@ export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
 export { type BpxGamepadType } from "./game_input/GameInputGamepad";
 export { type BpxButtonName } from "./game_input/buttons/Buttons";
-export {
-  type BpxImageUrl,
-  type BpxJsonUrl,
-  type BpxSoundUrl,
-} from "./misc/Assets";
 export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";
 export { BpxVector2d } from "./misc/Vector2d";

@@ -33,12 +33,12 @@ export class PreparedSprites {
             for (let spriteX = 0; spriteX < w; ++spriteX) {
                 const imgX = sprite.xy1.x + spriteX;
                 const imgIndex = (imgY * imgW + imgX) * imgChannels;
-                const color = imgChannels === 3
-                    ? new BpxRgbColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
-                    : imgBytes[imgIndex + 3] >= 0xff / 2
+                colors[spriteX][spriteY] =
+                    imgChannels === 3
                         ? new BpxRgbColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
-                        : null;
-                colors[spriteX][spriteY] = color;
+                        : imgBytes[imgIndex + 3] >= 0xff / 2
+                            ? new BpxRgbColor(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                            : null;
             }
         }
         const preparedSprite = {

@@ -3,6 +3,8 @@ import { u_ } from "../Utils";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSprite } from "./Sprite";
 
+// TODO: tests?
+
 export type PreparedSprite = {
   w: number;
   h: number;
@@ -47,7 +49,7 @@ export class PreparedSprites {
 
         const imgIndex = (imgY * imgW + imgX) * imgChannels;
 
-        const color: BpxRgbColor | null =
+        colors[spriteX]![spriteY] =
           imgChannels === 3
             ? new BpxRgbColor(
                 imgBytes[imgIndex]!,
@@ -61,8 +63,6 @@ export class PreparedSprites {
                 imgBytes[imgIndex + 2]!,
               )
             : null;
-
-        colors[spriteX]![spriteY] = color;
       }
     }
 

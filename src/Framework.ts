@@ -1,13 +1,15 @@
 import { BeetPx } from "./BeetPx";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { BpxUtils, u_ } from "./Utils";
+import { AssetLoader, AssetsToLoad } from "./assets/AssetLoader";
+import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
-import { Canvas } from "./canvas_pixels/Canvas";
-import { CanvasForProduction } from "./canvas_pixels/CanvasForProduction";
+import { Canvas } from "./canvas/Canvas";
+import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor, black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
@@ -15,7 +17,6 @@ import { GameInput } from "./game_input/GameInput";
 import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
-import { Assets, AssetsToLoad } from "./misc/Assets";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d, v_ } from "./misc/Vector2d";
@@ -51,6 +52,7 @@ export class Framework {
 
   readonly storageApi: StorageApi;
 
+  readonly #assetLoader: AssetLoader;
   readonly assets: Assets;
 
   readonly #canvas: Canvas;
@@ -120,7 +122,8 @@ export class Framework {
 
     const audioContext = new AudioContext();
 
-    this.assets = new Assets({
+    this.assets = new Assets();
+    this.#assetLoader = new AssetLoader(this.assets, {
       decodeAudioData: (arrayBuffer: ArrayBuffer) =>
         audioContext.decodeAudioData(arrayBuffer),
     });
@@ -166,7 +169,7 @@ export class Framework {
   }
 
   async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
-    await this.assets.loadAssets(assetsToLoad);
+    await this.#assetLoader.loadAssets(assetsToLoad);
 
     Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
 

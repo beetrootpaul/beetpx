@@ -131,8 +131,6 @@ declare class BpxUtils {
 }
 declare const u_: typeof BpxUtils;
 
-type BpxAudioPlaybackId = number;
-
 type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
 declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
 declare class BpxSprite {
@@ -155,29 +153,9 @@ interface BpxFont {
     spritesFor(text: string): BpxCharSprite[];
 }
 
-type AssetsToLoad = {
-    images: ImageAssetToLoad[];
-    fonts: FontAssetToLoad[];
-    sounds: SoundAssetToLoad[];
-    jsons: JsonAssetToLoad[];
-};
 type BpxImageUrl = string;
 type BpxSoundUrl = string;
 type BpxJsonUrl = string;
-type ImageAssetToLoad = {
-    url: BpxImageUrl;
-};
-type FontAssetToLoad = {
-    font: BpxFont;
-    imageTextColor: BpxRgbColor;
-    imageBgColor: BpxRgbColor;
-};
-type SoundAssetToLoad = {
-    url: BpxSoundUrl;
-};
-type JsonAssetToLoad = {
-    url: BpxJsonUrl;
-};
 type ImageAsset = {
     width: number;
     height: number;
@@ -198,19 +176,21 @@ type JsonAsset = {
 };
 declare class Assets {
     #private;
-    constructor(params: {
-        decodeAudioData: (arrayBuffer: ArrayBuffer) => Promise<AudioBuffer>;
-    });
-    loadAssets(assetsToLoad: AssetsToLoad): Promise<void>;
-    /** NOTE: call `loadAssets` before this one */
-    getImageAsset(urlOfAlreadyLoadedImage: BpxImageUrl): ImageAsset;
-    /** NOTE: call `loadAssets` before this one */
+    addImageAsset(imageUrl: BpxImageUrl, imageAsset: ImageAsset): void;
+    addFontAsset(fontId: BpxFontId, fontProps: {
+        font: BpxFont;
+        imageTextColor: BpxRgbColor;
+        imageBgColor: BpxRgbColor;
+    }): void;
+    addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: SoundAsset): void;
+    addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: JsonAsset): void;
+    getImageAsset(imageUrl: BpxImageUrl): ImageAsset;
     getFontAsset(fontId: BpxFontId): FontAsset;
-    /** NOTE: call `loadAssets` before this one */
-    getSoundAsset(urlOfAlreadyLoadedSound: BpxSoundUrl): SoundAsset;
-    /** NOTE: call `loadAssets` before this one */
-    getJsonAsset(urlOfAlreadyLoadedJson: BpxJsonUrl): JsonAsset;
+    getSoundAsset(soundUrl: BpxSoundUrl): SoundAsset;
+    getJsonAsset(jsonUrl: BpxJsonUrl): JsonAsset;
 }
+
+type BpxAudioPlaybackId = number;
 
 type BpxSoundSequence = {
     intro?: BpxSoundSequenceEntry[];
@@ -363,6 +343,27 @@ declare class BpxTimer {
     restart(): void;
 }
 
+type AssetsToLoad = {
+    images: ImageAssetToLoad[];
+    fonts: FontAssetToLoad[];
+    sounds: SoundAssetToLoad[];
+    jsons: JsonAssetToLoad[];
+};
+type ImageAssetToLoad = {
+    url: BpxImageUrl;
+};
+type FontAssetToLoad = {
+    font: BpxFont;
+    imageTextColor: BpxRgbColor;
+    imageBgColor: BpxRgbColor;
+};
+type SoundAssetToLoad = {
+    url: BpxSoundUrl;
+};
+type JsonAssetToLoad = {
+    url: BpxJsonUrl;
+};
+
 declare class AudioApi {
     #private;
     constructor(assets: Assets, audioContext: AudioContext);
@@ -419,12 +420,11 @@ type DrawApiOptions = {
 declare class DrawApi {
     #private;
     constructor(options: DrawApiOptions);
-    setCameraOffset(offset: BpxVector2d): void;
+    clearCanvas(color: BpxRgbColor): void;
     setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
     removeClippingRegion(): void;
-    setPattern(pattern: BpxPattern): void;
-    setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-    clearCanvas(color: BpxRgbColor): void;
+    setCameraOffset(offset: BpxVector2d): BpxVector2d;
+    setPattern(pattern: BpxPattern): BpxPattern;
     pixel(xy: BpxVector2d, color: BpxRgbColor): void;
     pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void;
     line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
@@ -432,6 +432,7 @@ declare class DrawApi {
     rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
     sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
     setFont(fontId: BpxFontId | null): void;
     getFont(): BpxFont | null;
@@ -539,19 +540,35 @@ declare class BeetPx {
     static mostRecentInputMethods: GameInput["mostRecentInputMethods"];
     static connectedGamepadTypes: GameInput["connectedGamepadTypes"];
     static __internal__capturedEvents: GameInput["__internal__capturedEvents"];
-    static setCameraOffset: DrawApi["setCameraOffset"];
+    static clearCanvas: DrawApi["clearCanvas"];
     static setClippingRegion: DrawApi["setClippingRegion"];
     static removeClippingRegion: DrawApi["removeClippingRegion"];
+    /**
+     * @returns previous camera offset
+     */
+    static setCameraOffset: DrawApi["setCameraOffset"];
+    /**
+     * @returns previous pattern
+     */
     static setPattern: DrawApi["setPattern"];
-    static setSpriteColorMapping: DrawApi["setSpriteColorMapping"];
-    static clearCanvas: DrawApi["clearCanvas"];
     static pixel: DrawApi["pixel"];
+    /**
+     * @param {BpxVector2d} xy - sd
+     * @param {BpxRgbColor} color - sd
+     * @param {string[]} bits - an array representing rows from top to bottom,
+     *        where each array element is a text sequence of `0` and `1` to
+     *        represent drawn and skipped pixels from left to right.
+     */
     static pixels: DrawApi["pixels"];
     static line: DrawApi["line"];
     static rect: DrawApi["rect"];
     static rectFilled: DrawApi["rectFilled"];
     static ellipse: DrawApi["ellipse"];
     static ellipseFilled: DrawApi["ellipseFilled"];
+    /**
+     * @returns previous sprite color mapping
+     */
+    static setSpriteColorMapping: DrawApi["setSpriteColorMapping"];
     static sprite: DrawApi["sprite"];
     static setFont: DrawApi["setFont"];
     static getFont: DrawApi["getFont"];

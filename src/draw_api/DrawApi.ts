@@ -1,30 +1,28 @@
 import { BpxUtils } from "../Utils";
-import { Canvas } from "../canvas_pixels/Canvas";
+import { Assets, FontAsset } from "../assets/Assets";
+import { Canvas } from "../canvas/Canvas";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
-import { Assets, FontAsset } from "../misc/Assets";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
-import { DrawClear } from "./DrawClear";
-import { DrawEllipse } from "./DrawEllipse";
-import { DrawLine } from "./DrawLine";
-import { DrawPixel } from "./DrawPixel";
-import { DrawPixels } from "./DrawPixels";
-import { DrawRect } from "./DrawRect";
-import { DrawSprite } from "./DrawSprite";
-import { DrawText } from "./DrawText";
 import { BpxPattern } from "./Pattern";
 import { BpxSprite } from "./Sprite";
+import { DrawClear } from "./drawing/DrawClear";
+import { DrawEllipse } from "./drawing/DrawEllipse";
+import { DrawLine } from "./drawing/DrawLine";
+import { DrawPixel } from "./drawing/DrawPixel";
+import { DrawPixels } from "./drawing/DrawPixels";
+import { DrawRect } from "./drawing/DrawRect";
+import { DrawSprite } from "./drawing/DrawSprite";
+import { DrawText } from "./drawing/DrawText";
 
 type DrawApiOptions = {
   canvas: Canvas;
   assets: Assets;
 };
-
-// TODO: rework DrawAPI to make it clear which modifiers (pattern, mapping, clip, etc.) affect which operations (line, rect, sprite, etc.)
 
 // TODO: tests for float rounding: different shapes and sprites drawn for same coords should be aligned visually, not off by 1.
 //       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
@@ -44,7 +42,6 @@ export class DrawApi {
   readonly #text: DrawText;
 
   #cameraOffset: BpxVector2d = v_(0, 0);
-
   #pattern: BpxPattern = BpxPattern.primaryOnly;
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
@@ -66,10 +63,8 @@ export class DrawApi {
     this.#text = new DrawText(options.canvas);
   }
 
-  // TODO: cover it with tests, e.g. make sure that pattern is applied on a canvas from its left-top in (0,0), no matter what the camera offset is
-  // TODO: consider returning the previous offset
-  setCameraOffset(offset: BpxVector2d): void {
-    this.#cameraOffset = offset;
+  clearCanvas(color: BpxRgbColor): void {
+    this.#clear.draw(color);
   }
 
   setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
@@ -80,30 +75,22 @@ export class DrawApi {
     this.#canvas.removeClippingRegion();
   }
 
-  // TODO: cover it with tests
-  setPattern(pattern: BpxPattern): void {
+  setCameraOffset(offset: BpxVector2d): BpxVector2d {
+    const prevOffset = this.#cameraOffset;
+    this.#cameraOffset = offset;
+    return prevOffset;
+  }
+
+  setPattern(pattern: BpxPattern): BpxPattern {
+    const prevPattern = this.#pattern;
     this.#pattern = pattern;
-  }
-
-  setSpriteColorMapping(
-    spriteColorMapping: BpxSpriteColorMapping,
-  ): BpxSpriteColorMapping {
-    const prevMapping = this.#spriteColorMapping;
-    this.#spriteColorMapping = spriteColorMapping;
-    return prevMapping;
-  }
-
-  clearCanvas(color: BpxRgbColor): void {
-    this.#clear.draw(color);
+    return prevPattern;
   }
 
   pixel(xy: BpxVector2d, color: BpxRgbColor): void {
     this.#pixel.draw(xy.sub(this.#cameraOffset), color, BpxPattern.primaryOnly);
   }
 
-  // bits = an array representing rows from top to bottom, where each array element
-  //        is a text sequence of `0` and `1` to represent drawn and skipped pixels
-  //        from left to right.
   pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void {
     this.#pixels.draw(xy.sub(this.#cameraOffset), bits, color);
   }
@@ -164,6 +151,14 @@ export class DrawApi {
       true,
       this.#pattern,
     );
+  }
+
+  setSpriteColorMapping(
+    spriteColorMapping: BpxSpriteColorMapping,
+  ): BpxSpriteColorMapping {
+    const prevMapping = this.#spriteColorMapping;
+    this.#spriteColorMapping = spriteColorMapping;
+    return prevMapping;
   }
 
   sprite(

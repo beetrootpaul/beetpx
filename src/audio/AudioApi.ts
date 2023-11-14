@@ -1,6 +1,6 @@
 import { HtmlTemplate } from "../HtmlTemplate";
+import { Assets, BpxSoundUrl } from "../assets/Assets";
 import { Logger } from "../logger/Logger";
-import { Assets, BpxSoundUrl } from "../misc/Assets";
 import { AudioHelpers } from "./AudioHelpers";
 import { AudioPlayback, type BpxAudioPlaybackId } from "./AudioPlayback";
 import { AudioPlaybackLooped } from "./AudioPlaybackLooped";

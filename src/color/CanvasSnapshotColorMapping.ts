@@ -1,4 +1,4 @@
-import { CanvasSnapshot } from "../canvas_pixels/CanvasSnapshot";
+import { CanvasSnapshot } from "../canvas/CanvasSnapshot";
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor } from "./RgbColor";
 
