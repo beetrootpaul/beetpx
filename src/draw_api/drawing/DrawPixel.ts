@@ -10,8 +10,6 @@ export class DrawPixel {
     this.#canvas = canvas;
   }
 
-  // TODO: tests for MappingColor
-  // TODO: cover ClippingRegion with tests
   draw(
     xy: BpxVector2d,
     color: BpxRgbColor,

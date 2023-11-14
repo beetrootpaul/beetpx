@@ -23,8 +23,6 @@ import { DrawPixels } from "./drawing/DrawPixels";
 import { DrawRect } from "./drawing/DrawRect";
 import { DrawSprite } from "./drawing/DrawSprite";
 import { DrawText } from "./drawing/DrawText";
-
-
 export class DrawApi {
     constructor(options) {
         _DrawApi_assets.set(this, void 0);
@@ -58,24 +56,28 @@ export class DrawApi {
     setClippingRegion(xy, wh) {
         __classPrivateFieldGet(this, _DrawApi_canvas, "f").setClippingRegion(xy, wh);
     }
+    
     removeClippingRegion() {
         __classPrivateFieldGet(this, _DrawApi_canvas, "f").removeClippingRegion();
     }
+    
+    
     setCameraOffset(offset) {
         const prevOffset = __classPrivateFieldGet(this, _DrawApi_cameraOffset, "f");
         __classPrivateFieldSet(this, _DrawApi_cameraOffset, offset, "f");
         return prevOffset;
     }
+    
     setPattern(pattern) {
         const prevPattern = __classPrivateFieldGet(this, _DrawApi_pattern, "f");
         __classPrivateFieldSet(this, _DrawApi_pattern, pattern, "f");
         return prevPattern;
     }
     pixel(xy, color) {
-        __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, BpxPattern.primaryOnly);
+        __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     pixels(xy, color, bits) {
-        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color);
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), bits, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     line(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), wh, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
@@ -105,14 +107,18 @@ export class DrawApi {
     }
     
     setFont(fontId) {
+        var _a, _b;
+        const prevFontId = (_b = (_a = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) === null || _a === void 0 ? void 0 : _a.font.id) !== null && _b !== void 0 ? _b : null;
         __classPrivateFieldSet(this, _DrawApi_fontAsset, fontId ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontId) : null, "f");
+        return prevFontId;
     }
     getFont() {
         var _a, _b;
         return (_b = (_a = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) === null || _a === void 0 ? void 0 : _a.font) !== null && _b !== void 0 ? _b : null;
     }
+    print(text, canvasXy, color, 
     
-    print(text, canvasXy, color, centerXy = [false, false], 
+    centerXy = [false, false], 
     
     scaleXy = v_1_1_) {
         if (centerXy[0] || centerXy[1]) {
@@ -120,7 +126,7 @@ export class DrawApi {
             canvasXy = canvasXy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
         }
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {
-            __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, scaleXy);
+            __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, canvasXy.sub(__classPrivateFieldGet(this, _DrawApi_cameraOffset, "f")), __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), color, scaleXy, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
         }
         else {
             Logger.infoBeetPx(`print: (${canvasXy.x},${canvasXy.y}) [${typeof color === "function" ? "computed" : color.cssHex}] ${text}`);

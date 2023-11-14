@@ -13,10 +13,6 @@ export class DrawEllipse {
     this.#canvas = canvas;
   }
 
-  // TODO: tests for MappingColor x pattern => secondary means no mapping?
-  // TODO: tests for MappingColor
-  // TODO: tests for CompositeColor and pattern
-  // TODO: cover ClippingRegion with tests
   // Based on http://members.chello.at/easyfilter/bresenham.html
   draw(
     xy: BpxVector2d,
@@ -124,8 +120,6 @@ export class DrawEllipse {
     //
 
     while (bottom - top <= b) {
-      // TODO: update the implementation below to honor pattern
-
       this.#drawPixel(left - 1, bottom, c1, c2, p, sn);
       this.#drawPixel(right + 1, bottom, c1, c2, p, sn);
       bottom += 1;

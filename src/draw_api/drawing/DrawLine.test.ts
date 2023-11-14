@@ -1,9 +1,10 @@
 import { describe, test } from "@jest/globals";
+import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMapping";
+import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { v_ } from "../../misc/Vector2d";
 import { drawingTestSetup } from "../DrawingTestSetup";
-
-// TODO: REWORK THESE
+import { BpxPattern } from "../Pattern";
 
 describe("DrawLine", () => {
   const ct = null;
@@ -275,6 +276,32 @@ describe("DrawLine", () => {
     });
   });
 
+  test("rounding", () => {
+    const dts = drawingTestSetup(13, 11, c0);
+
+    // These numbers are chosen in away which should test whether rounding
+    //   is performed before on initial values of xy and wh (which is *not*
+    //   what we want here) or rather on calculated xy1 and x2.
+    dts.drawApi.line(v_(1.6, 2.4), v_(9.6, 6.4), c1);
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - - - - - - -
+        - - - - - - - - - - - - -
+        - - # - - - - - - - - - -
+        - - - # - - - - - - - - -
+        - - - - # # - - - - - - -
+        - - - - - - # - - - - - -
+        - - - - - - - # - - - - -
+        - - - - - - - - # # - - -
+        - - - - - - - - - - # - -
+        - - - - - - - - - - - - -
+        - - - - - - - - - - - - -
+      `,
+    });
+  });
+
   test("drawing on very edges of a canvas", () => {
     const dts = drawingTestSetup(5, 5, c0);
 
@@ -388,6 +415,134 @@ describe("DrawLine", () => {
         - - -
         - # -
         - # -
+      `,
+    });
+  });
+
+  test("camera offset", () => {
+    const dts = drawingTestSetup(11, 9, c0);
+
+    dts.drawApi.setCameraOffset(v_(3, -1));
+    dts.drawApi.line(v_(1, 1), v_(9, 7), c1);
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        # # - - - - - - - - -
+        - - # - - - - - - - -
+        - - - # - - - - - - -
+        - - - - # # - - - - -
+        - - - - - - # - - - -
+      `,
+    });
+  });
+
+  test("pattern", () => {
+    const dts = drawingTestSetup(11, 9, c0);
+
+    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.line(v_(1, 1), v_(9, 7), new BpxPatternColors(c1, c2));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, "@": c2 },
+      expectedImageAsAscii: `
+        - - - - - - - - - - -
+        - # - - - - - - - - -
+        - - # - - - - - - - -
+        - - - # @ - - - - - -
+        - - - - - # - - - - -
+        - - - - - - @ - - - -
+        - - - - - - - # @ - -
+        - - - - - - - - - @ -
+        - - - - - - - - - - -
+      `,
+    });
+  });
+
+  test("camera offset + pattern", () => {
+    const dts = drawingTestSetup(11, 9, c0);
+
+    dts.drawApi.setCameraOffset(v_(3, -1));
+    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.line(v_(1, 1), v_(9, 7), new BpxPatternColors(c1, c2));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, "@": c2 },
+      expectedImageAsAscii: `
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        # # - - - - - - - - -
+        - - @ - - - - - - - -
+        - - - # - - - - - - -
+        - - - - @ @ - - - - -
+        - - - - - - @ - - - -
+      `,
+    });
+  });
+
+  test("canvas snapshot color mapping", () => {
+    const dts = drawingTestSetup(11, 9, c0);
+
+    dts.drawApi.rectFilled(v_(0, 2), v_(11, 2), c1);
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        # # # # # # # # # # #
+        # # # # # # # # # # #
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+      `,
+    });
+
+    dts.drawApi.takeCanvasSnapshot();
+
+    dts.drawApi.rectFilled(v_(0, 5), v_(11, 2), c1);
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+        # # # # # # # # # # #
+        # # # # # # # # # # #
+        - - - - - - - - - - -
+        # # # # # # # # # # #
+        # # # # # # # # # # #
+        - - - - - - - - - - -
+        - - - - - - - - - - -
+      `,
+    });
+
+    dts.drawApi.line(
+      v_(1, 1),
+      v_(9, 7),
+      new BpxCanvasSnapshotColorMapping((snapshotColor) =>
+        snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
+      ),
+    );
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, "/": c2, "%": c3 },
+      expectedImageAsAscii: `
+        - - - - - - - - - - -
+        - % - - - - - - - - -
+        # # / # # # # # # # #
+        # # # / / # # # # # #
+        - - - - - % - - - - -
+        # # # # # # % # # # #
+        # # # # # # # % % # #
+        - - - - - - - - - % -
+        - - - - - - - - - - -
       `,
     });
   });

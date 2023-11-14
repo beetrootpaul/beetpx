@@ -93,8 +93,7 @@ export class CanvasForTests extends Canvas {
 _CanvasForTests_length = new WeakMap(), _CanvasForTests_rgbValues = new WeakMap(), _CanvasForTests_minX = new WeakMap(), _CanvasForTests_minY = new WeakMap(), _CanvasForTests_maxX = new WeakMap(), _CanvasForTests_maxY = new WeakMap(), _CanvasForTests_instances = new WeakSet(), _CanvasForTests_asAscii = function _CanvasForTests_asAscii(colorToAscii) {
     var _a;
     let asciiImage = "";
-    this.takeSnapshot();
-    const snapshot = this.getMostRecentSnapshot();
+    const snapshot = new CanvasSnapshotForTests(__classPrivateFieldGet(this, _CanvasForTests_rgbValues, "f").slice());
     for (let y = 0; y < this.canvasSize.y; y += 1) {
         for (let x = 0; x < this.canvasSize.x; x += 1) {
             const index = y * this.canvasSize.x + x;

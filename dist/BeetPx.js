@@ -14,7 +14,6 @@ var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
 import { Framework } from "./Framework";
 import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
-
 export class BeetPx {
     
     

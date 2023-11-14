@@ -434,7 +434,7 @@ declare class DrawApi {
     ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
     sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
-    setFont(fontId: BpxFontId | null): void;
+    setFont(fontId: BpxFontId | null): BpxFontId | null;
     getFont(): BpxFont | null;
     print(text: string, canvasXy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), centerXy?: [boolean, boolean], scaleXy?: BpxVector2d): void;
     takeCanvasSnapshot(): void;

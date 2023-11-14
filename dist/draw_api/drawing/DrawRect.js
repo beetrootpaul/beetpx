@@ -18,10 +18,6 @@ export class DrawRect {
         _DrawRect_canvas.set(this, void 0);
         __classPrivateFieldSet(this, _DrawRect_canvas, canvas, "f");
     }
-    
-    
-    
-    
     draw(xy, wh, color, fill, pattern = BpxPattern.primaryOnly) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         

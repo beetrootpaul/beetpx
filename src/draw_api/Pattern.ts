@@ -1,4 +1,3 @@
-// TODO: use it, like, for every drawing API we have in this framework (including non-filled shapes, text, etc.).
 export class BpxPattern {
   // TODO: create a helper to generate Pattern from ASCII
   static of(bits: number): BpxPattern {
@@ -10,7 +9,7 @@ export class BpxPattern {
 
   readonly #bits: number;
 
-  // TODO: tests that bits do not have for example an accidental extra digit in its binary representation. It happened to me in tests and debugging was a hell
+  // TODO: tests if bits do not have for example an accidental extra digit in its binary representation. It happened to me in tests and debugging was a hell
   private constructor(bits: number) {
     this.#bits = bits;
   }

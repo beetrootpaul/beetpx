@@ -2,13 +2,13 @@ import { BpxUtils } from "../../Utils";
 import { ImageAsset } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { BpxVector2d, v_, v_1_1_ } from "../../misc/Vector2d";
+import { BpxVector2d, v_, v_0_0_, v_1_1_ } from "../../misc/Vector2d";
 import { BpxPattern } from "../Pattern";
 import { PreparedSprites } from "../PreparedSprites";
 import { BpxSprite } from "../Sprite";
 
 export class DrawSprite {
-  static readonly #preparedSprites: PreparedSprites = new PreparedSprites();
+  readonly #preparedSprites: PreparedSprites = new PreparedSprites();
 
   readonly #canvas: Canvas;
   readonly #options: { disableRounding?: boolean };
@@ -18,21 +18,16 @@ export class DrawSprite {
     this.#options = options;
   }
 
-  // TODO: cover clippingRegion with tests
   draw(
     sourceImageAsset: ImageAsset,
     sprite: BpxSprite,
     targetXy: BpxVector2d,
-    // TODO: test it
-    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
     scaleXy: BpxVector2d = v_1_1_,
     colorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping,
-    // TODO: test it
     pattern: BpxPattern = BpxPattern.primaryOnly,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-
-    scaleXy = scaleXy.floor();
+    scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
 
     const {
       width: imgW,
@@ -79,7 +74,7 @@ export class DrawSprite {
       return;
     }
 
-    const preparedSprite = DrawSprite.#preparedSprites.prepareOrGetFromCache(
+    const preparedSprite = this.#preparedSprites.prepareOrGetFromCache(
       sprite,
       imgBytes,
       imgW,

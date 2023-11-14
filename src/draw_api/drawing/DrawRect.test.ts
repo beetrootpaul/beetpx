@@ -1,11 +1,10 @@
 import { describe, test } from "@jest/globals";
+import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { v_ } from "../../misc/Vector2d";
 import { drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPattern } from "../Pattern";
-
-// TODO: REWORK THESE
 
 describe("DrawRect", () => {
   const ct = null;
@@ -107,6 +106,30 @@ describe("DrawRect", () => {
           - # - - # -
           - # # # # -
           - - - - - -
+        `,
+      });
+    });
+
+    test("rounding", () => {
+      const dts = drawingTestSetup(16, 9, c0);
+
+      // These numbers are chosen in away which should test whether rounding
+      //   is performed before on initial values of xy and wh (which is *not*
+      //   what we want here) or rather on calculated xy1 and x2.
+      dts.drawApi.rect(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - -
+          - - # # # # # # # # # # # # - -
+          - - # - - - - - - - - - - # - -
+          - - # - - - - - - - - - - # - -
+          - - # - - - - - - - - - - # - -
+          - - # # # # # # # # # # # # - -
+          - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - -
         `,
       });
     });
@@ -322,6 +345,102 @@ describe("DrawRect", () => {
         `,
       });
     });
+
+    test("camera offset", () => {
+      const dts = drawingTestSetup(14, 7, c0);
+
+      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.rect(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "@": c2 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          # # # # # # # # # # - - - - 
+          - - - - - - - - - # - - - - 
+          - - - - - - - - - # - - - - 
+          - - - - - - - - - # - - - - 
+        `,
+      });
+    });
+
+    test("camera offset + pattern", () => {
+      const dts = drawingTestSetup(14, 7, c0);
+
+      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.rect(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "@": c2 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          @ @ # # @ @ # # @ @ - - - - 
+          - - - - - - - - - # - - - - 
+          - - - - - - - - - # - - - - 
+          - - - - - - - - - @ - - - - 
+        `,
+      });
+    });
+
+    test("canvas snapshot color mapping", () => {
+      const dts = drawingTestSetup(14, 7, c0);
+
+      dts.drawApi.rectFilled(v_(0, 2), v_(14, 3), c1);
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+        `,
+      });
+
+      dts.drawApi.takeCanvasSnapshot();
+
+      dts.drawApi.rectFilled(v_(5, 0), v_(4, 7), c1);
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - # # # # - - - - -
+          - - - - - # # # # - - - - -
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          - - - - - # # # # - - - - -
+          - - - - - # # # # - - - - -
+        `,
+      });
+
+      dts.drawApi.rect(
+        v_(1, 1),
+        v_(12, 5),
+        new BpxCanvasSnapshotColorMapping((snapshotColor) =>
+          snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
+        ),
+      );
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "/": c2, "%": c3 },
+        expectedImageAsAscii: `
+          - - - - - # # # # - - - - -
+          - % % % % % % % % % % % % -
+          # / # # # # # # # # # # / #
+          # / # # # # # # # # # # / #
+          # / # # # # # # # # # # / #
+          - % % % % % % % % % % % % -
+          - - - - - # # # # - - - - -
+        `,
+      });
+    });
   });
 
   describe("filled", () => {
@@ -415,6 +534,30 @@ describe("DrawRect", () => {
           - # # # # -
           - # # # # -
           - - - - - -
+        `,
+      });
+    });
+
+    test("rounding", () => {
+      const dts = drawingTestSetup(16, 9, c0);
+
+      // These numbers are chosen in away which should test whether rounding
+      //   is performed before on initial values of xy and wh (which is *not*
+      //   what we want here) or rather on calculated xy1 and x2.
+      dts.drawApi.rectFilled(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - -
+          - - # # # # # # # # # # # # - -
+          - - # # # # # # # # # # # # - -
+          - - # # # # # # # # # # # # - -
+          - - # # # # # # # # # # # # - -
+          - - # # # # # # # # # # # # - -
+          - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - -
         `,
       });
     });
@@ -635,6 +778,102 @@ describe("DrawRect", () => {
           - # # # # # # # # # -
           - # # - # # # - # # -
           - - - - - - - - - - -
+        `,
+      });
+    });
+
+    test("camera offset", () => {
+      const dts = drawingTestSetup(14, 7, c0);
+
+      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "@": c2 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          # # # # # # # # # # - - - - 
+          # # # # # # # # # # - - - - 
+          # # # # # # # # # # - - - - 
+          # # # # # # # # # # - - - - 
+        `,
+      });
+    });
+
+    test("camera offset + pattern", () => {
+      const dts = drawingTestSetup(14, 7, c0);
+
+      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "@": c2 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          - - - - - - - - - - - - - - 
+          @ @ # # @ @ # # @ @ - - - - 
+          # # @ @ # # @ @ # # - - - - 
+          # # @ @ # # @ @ # # - - - - 
+          @ @ # # @ @ # # @ @ - - - - 
+        `,
+      });
+    });
+
+    test("canvas snapshot color mapping", () => {
+      const dts = drawingTestSetup(14, 7, c0);
+
+      dts.drawApi.rectFilled(v_(0, 2), v_(14, 3), c1);
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+        `,
+      });
+
+      dts.drawApi.takeCanvasSnapshot();
+
+      dts.drawApi.rectFilled(v_(5, 0), v_(4, 7), c1);
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - # # # # - - - - -
+          - - - - - # # # # - - - - -
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          # # # # # # # # # # # # # #
+          - - - - - # # # # - - - - -
+          - - - - - # # # # - - - - -
+        `,
+      });
+
+      dts.drawApi.rectFilled(
+        v_(1, 1),
+        v_(12, 5),
+        new BpxCanvasSnapshotColorMapping((snapshotColor) =>
+          snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
+        ),
+      );
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "/": c2, "%": c3 },
+        expectedImageAsAscii: `
+          - - - - - # # # # - - - - -
+          - % % % % % % % % % % % % -
+          # / / / / / / / / / / / / #
+          # / / / / / / / / / / / / #
+          # / / / / / / / / / / / / #
+          - % % % % % % % % % % % % -
+          - - - - - # # # # - - - - -
         `,
       });
     });

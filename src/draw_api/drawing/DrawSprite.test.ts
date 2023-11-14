@@ -3,11 +3,9 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { v_, v_1_1_ } from "../../misc/Vector2d";
 import { drawingTestSetup } from "../DrawingTestSetup";
+import { BpxPattern } from "../Pattern";
 import { spr_ } from "../Sprite";
 import { TestImage } from "../TestImage";
-
-// TODO: tests for pattern
-// TODO: REWORK THESE
 
 describe("DrawSprite", () => {
   const ct = null;
@@ -147,6 +145,155 @@ describe("DrawSprite", () => {
         - - % : -
         - - - - -
       `,
+    });
+  });
+
+  test("rounding", () => {
+    const dts = drawingTestSetup(5, 4, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      image: `
+        # : % =
+        # : = %
+        # % : =
+        # = : %
+      `,
+    });
+    const s = spr_(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    // These sprite numbers are chosen in away which should test whether
+    //   rounding is performed before on initial values of xy and wh (which
+    //   is *not* what we want here) or rather on calculated xy1 and x2.
+    dts.drawApi.sprite(s(0.6, 1.4, 2.6, 1.4), v_(2.49, 0.51));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      expectedImageAsAscii: `
+        - - - - -
+        - - : = -
+        - - % : -
+        - - - - -
+      `,
+    });
+  });
+
+  describe("scale", () => {
+    test("an integer positive scale", () => {
+      const dts = drawingTestSetup(9, 6, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        image: `
+        # : % =
+        # : = %
+        # % : =
+        # = : %
+      `,
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(3, 2));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        expectedImageAsAscii: `
+          - - - - - - - - -
+          - - : : : = = = -
+          - - : : : = = = -
+          - - % % % : : : -
+          - - % % % : : : -
+          - - - - - - - - -
+        `,
+      });
+    });
+
+    test("a negative scale: fallback to a scale of (0,0)", () => {
+      const dts = drawingTestSetup(9, 6, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        image: `
+        # : % =
+        # : = %
+        # % : =
+        # = : %
+      `,
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(-3, -2));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        expectedImageAsAscii: `
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+        `,
+      });
+    });
+
+    test("a non-integer scale: floor", () => {
+      const dts = drawingTestSetup(9, 6, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        image: `
+        # : % =
+        # : = %
+        # % : =
+        # = : %
+      `,
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(0.9, 0.9));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        expectedImageAsAscii: `
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+        `,
+      });
+
+      dts.drawApi.clearCanvas(c0);
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(1.9, 1.9));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        expectedImageAsAscii: `
+          - - - - - - - - -
+          - - : = - - - - -
+          - - % : - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+          - - - - - - - - -
+        `,
+      });
+
+      dts.drawApi.clearCanvas(c0);
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(3.9, 2.9));
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+        expectedImageAsAscii: `
+          - - - - - - - - -
+          - - : : : = = = -
+          - - : : : = = = -
+          - - % % % : : : -
+          - - % % % : : : -
+          - - - - - - - - -
+        `,
+      });
     });
   });
 
@@ -450,6 +597,109 @@ describe("DrawSprite", () => {
         - - - -
         ^ - - ^
         = - - =
+      `,
+    });
+  });
+
+  test("camera offset", () => {
+    const dts = drawingTestSetup(9, 8, c0);
+    const image = new TestImage({
+      withMapping: { "#": c1, ".": ct },
+      image: `
+        . . . # # # .
+        . # # # . . #
+        # # . # . # #
+        # # . # . # #
+        # . . # # # .
+        . # # # . . .
+      `,
+    });
+    const s = spr_(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.setCameraOffset(v_(3, -2));
+    dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - - -
+        - - - - - - - - -
+        - - - - - - - - -
+        - # # # - - - - -
+        # # - - # - - - -
+        - # - # # - - - -
+        - # - # # - - - -
+        - # # # - - - - -
+      `,
+    });
+  });
+
+  test("pattern", () => {
+    const dts = drawingTestSetup(9, 8, c0);
+    const image = new TestImage({
+      withMapping: { "#": c1, ".": ct },
+      image: `
+        . . . # # # .
+        . # # # . . #
+        # # . # . # #
+        # # . # . # #
+        # . . # # # .
+        . # # # . . .
+      `,
+    });
+    const s = spr_(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - - -
+        - - - - # # - - -
+        - - # # - - - # -
+        - - # - - - # # -
+        - # - - # - - - -
+        - # - - # # - - -
+        - - # # - - - - -
+        - - - - - - - - -
+      `,
+    });
+  });
+
+  test("camera offset + pattern", () => {
+    const dts = drawingTestSetup(9, 8, c0);
+    const image = new TestImage({
+      withMapping: { "#": c1, ".": ct },
+      image: `
+        . . . # # # .
+        . # # # . . #
+        # # . # . # #
+        # # . # . # #
+        # . . # # # .
+        . # # # . . .
+      `,
+    });
+    const s = spr_(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.setCameraOffset(v_(3, -2));
+    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - - -
+        - - - - - - - - -
+        - - - - - - - - -
+        - - # # - - - - -
+        # # - - # - - - -
+        - # - - # - - - -
+        - - - # - - - - -
+        - - # # - - - - -
       `,
     });
   });

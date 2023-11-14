@@ -12,8 +12,6 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { StorageApi } from "./storage/StorageApi";
 
-// TODO: re-check what are the names, how the entire API looks like
-
 export class BeetPx {
   static #framework: Framework;
 

@@ -16,8 +16,6 @@ export class DrawPixel {
         _DrawPixel_canvas.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixel_canvas, canvas, "f");
     }
-    
-    
     draw(xy, color, pattern = BpxPattern.primaryOnly) {
         xy = xy.round();
         if (!__classPrivateFieldGet(this, _DrawPixel_canvas, "f").canSetAt(xy.x, xy.y)) {

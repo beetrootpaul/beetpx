@@ -125,8 +125,7 @@ export class CanvasForTests extends Canvas {
   #asAscii(colorToAscii: Map<BpxRgbCssHex, string>): string {
     let asciiImage = "";
 
-    this.takeSnapshot();
-    const snapshot = this.getMostRecentSnapshot()!;
+    const snapshot = new CanvasSnapshotForTests(this.#rgbValues.slice());
     for (let y = 0; y < this.canvasSize.y; y += 1) {
       for (let x = 0; x < this.canvasSize.x; x += 1) {
         const index = y * this.canvasSize.x + x;

@@ -24,9 +24,6 @@ type DrawApiOptions = {
   assets: Assets;
 };
 
-// TODO: tests for float rounding: different shapes and sprites drawn for same coords should be aligned visually, not off by 1.
-//       It's especially about cases where we should round xy+wh instead of xy first and then wh separately.
-
 export class DrawApi {
   readonly #assets: Assets;
 
@@ -71,16 +68,20 @@ export class DrawApi {
     this.#canvas.setClippingRegion(xy, wh);
   }
 
+  // TODO: TEST IT
   removeClippingRegion(): void {
     this.#canvas.removeClippingRegion();
   }
 
+  // TODO: TEST returned value
+  // TODO: rename it to setCameraPosition, make it inverted
   setCameraOffset(offset: BpxVector2d): BpxVector2d {
     const prevOffset = this.#cameraOffset;
     this.#cameraOffset = offset;
     return prevOffset;
   }
 
+  // TODO: TEST returned value
   setPattern(pattern: BpxPattern): BpxPattern {
     const prevPattern = this.#pattern;
     this.#pattern = pattern;
@@ -88,11 +89,11 @@ export class DrawApi {
   }
 
   pixel(xy: BpxVector2d, color: BpxRgbColor): void {
-    this.#pixel.draw(xy.sub(this.#cameraOffset), color, BpxPattern.primaryOnly);
+    this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#pattern);
   }
 
   pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void {
-    this.#pixels.draw(xy.sub(this.#cameraOffset), bits, color);
+    this.#pixels.draw(xy.sub(this.#cameraOffset), bits, color, this.#pattern);
   }
 
   line(
@@ -164,7 +165,7 @@ export class DrawApi {
   sprite(
     sprite: BpxSprite,
     canvasXy: BpxVector2d,
-    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
+    // TODO: make it a named option
     scaleXy: BpxVector2d = v_1_1_,
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
@@ -178,22 +179,24 @@ export class DrawApi {
     );
   }
 
-  // TODO: cover it with tests
-  setFont(fontId: BpxFontId | null): void {
+  // TODO: TEST returned value
+  setFont(fontId: BpxFontId | null): BpxFontId | null {
+    const prevFontId = this.#fontAsset?.font.id ?? null;
     this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
+    return prevFontId;
   }
 
   getFont(): BpxFont | null {
     return this.#fontAsset?.font ?? null;
   }
 
-  // TODO: cover with tests
   print(
     text: string,
     canvasXy: BpxVector2d,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
+    // TODO: make it a named option
     centerXy: [boolean, boolean] = [false, false],
-    // TODO: how to express it has to be a non-negative integer? Or maybe it doesn't have to?
+    // TODO: make it a named option
     scaleXy: BpxVector2d = v_1_1_,
   ): void {
     if (centerXy[0] || centerXy[1]) {
@@ -210,6 +213,7 @@ export class DrawApi {
         this.#fontAsset,
         color,
         scaleXy,
+        this.#pattern,
       );
     } else {
       Logger.infoBeetPx(

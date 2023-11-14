@@ -19,10 +19,6 @@ export class DrawLine {
         __classPrivateFieldSet(this, _DrawLine_canvas, canvas, "f");
     }
     
-    
-    
-    
-    
     draw(xy, wh, color, pattern = BpxPattern.primaryOnly) {
         
         

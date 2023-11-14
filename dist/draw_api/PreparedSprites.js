@@ -45,9 +45,10 @@ export class PreparedSprites {
             w: sprite.size().x,
             h: sprite.size().y,
             colors: colors,
+            cacheHit: true,
         };
         __classPrivateFieldGet(this, _PreparedSprites_cache, "f").set(key, preparedSprite);
-        return preparedSprite;
+        return Object.assign(Object.assign({}, preparedSprite), { cacheHit: false });
     }
 }
 _PreparedSprites_cache = new WeakMap();

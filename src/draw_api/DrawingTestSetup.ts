@@ -3,7 +3,7 @@ import { CanvasForTests } from "../canvas/CanvasForTests";
 import { BpxRgbColor } from "../color/RgbColor";
 import { DrawApi } from "./DrawApi";
 
-type DrawingTestSetup = {
+export type DrawingTestSetup = {
   canvas: CanvasForTests;
   assets: Assets;
   drawApi: DrawApi;

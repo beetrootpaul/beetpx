@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawText_canvas, _DrawText_sprite;
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { v_1_1_ } from "../../misc/Vector2d";
+import { BpxVector2d, v_0_0_, v_1_1_ } from "../../misc/Vector2d";
 import { BpxPattern } from "../Pattern";
 import { DrawSprite } from "./DrawSprite";
 export class DrawText {
@@ -23,27 +23,20 @@ export class DrawText {
             disableRounding: true,
         }), "f");
     }
-    
-    
-    draw(text, canvasXy, fontAsset, color, 
-    
-    scaleXy = v_1_1_) {
+    draw(text, canvasXy, fontAsset, color, scaleXy = v_1_1_, pattern = BpxPattern.primaryOnly) {
         canvasXy = canvasXy.round();
+        scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const colorMapping = typeof color === "function"
-            ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => {
-                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
-                    ? color(charSprite)
-                    : null;
-            })
-            : new BpxSpriteColorMapping((spriteColor) => {
-                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
-                    ? color
-                    : null;
-            });
+            ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
+                ? color(charSprite)
+                : null)
+            : new BpxSpriteColorMapping((spriteColor) => (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
+                ? color
+                : null);
         for (const charSprite of fontAsset.font.spritesFor(text)) {
-            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText), v_1_1_, typeof colorMapping === "function"
+            __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(fontAsset.image, charSprite.sprite, canvasXy.add(charSprite.positionInText.mul(scaleXy)), scaleXy, typeof colorMapping === "function"
                 ? colorMapping(charSprite)
-                : colorMapping, BpxPattern.primaryOnly);
+                : colorMapping, pattern);
         }
     }
 }

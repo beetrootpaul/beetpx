@@ -3,12 +3,13 @@ import { u_ } from "../Utils";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSprite } from "./Sprite";
 
-// TODO: tests?
-
 export type PreparedSprite = {
   w: number;
   h: number;
   colors: (BpxRgbColor | null)[][];
+  // true  = it was taken from a cache
+  // false = miss, had to prepare a sprite
+  cacheHit: boolean;
 };
 
 export class PreparedSprites {
@@ -70,9 +71,10 @@ export class PreparedSprites {
       w: sprite.size().x,
       h: sprite.size().y,
       colors: colors,
+      cacheHit: true,
     };
     this.#cache.set(key, preparedSprite);
 
-    return preparedSprite;
+    return { ...preparedSprite, cacheHit: false };
   }
 }

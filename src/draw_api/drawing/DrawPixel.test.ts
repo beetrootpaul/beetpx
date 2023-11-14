@@ -2,8 +2,7 @@ import { describe, test } from "@jest/globals";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { v_ } from "../../misc/Vector2d";
 import { drawingTestSetup } from "../DrawingTestSetup";
-
-// TODO: REWORK THESE
+import { BpxPattern } from "../Pattern";
 
 describe("DrawPixel", () => {
   const c0 = BpxRgbColor.fromCssHex("#010203");
@@ -59,6 +58,90 @@ describe("DrawPixel", () => {
         - - -
         - - -
         - - -
+      `,
+    });
+  });
+
+  test("rounding", () => {
+    const dts = drawingTestSetup(3, 3, c0);
+
+    dts.drawApi.pixel(v_(1.49, 0.51), c1);
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - -
+        - # -
+        - - -
+      `,
+    });
+  });
+
+  test("camera offset", () => {
+    const dts = drawingTestSetup(5, 5, c0);
+
+    dts.drawApi.setCameraOffset(v_(2, -1));
+    dts.drawApi.pixel(v_(2, 2), c1);
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - -
+        - - - - -
+        - - - - -
+        # - - - -
+        - - - - -
+      `,
+    });
+  });
+
+  test("pattern", () => {
+    const dts = drawingTestSetup(8, 8, c0);
+
+    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    for (let x = 0; x < 8; x++) {
+      for (let y = 0; y < 8; y++) {
+        dts.drawApi.pixel(v_(x, y), c1);
+      }
+    }
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        # # - - # # - -
+        # # - - # # - -
+        - - # # - - # #
+        - - # # - - # #
+        # # - - # # - -
+        # # - - # # - -
+        - - # # - - # #
+        - - # # - - # #
+      `,
+    });
+  });
+
+  test("camera offset + pattern", () => {
+    const dts = drawingTestSetup(8, 8, c0);
+
+    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setCameraOffset(v_(2, -1));
+    for (let x = 0; x < 8; x++) {
+      for (let y = 0; y < 8; y++) {
+        dts.drawApi.pixel(v_(x, y), c1);
+      }
+    }
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+        - - - - - - - -
+        # # - - # # - -
+        - - # # - - - -
+        - - # # - - - -
+        # # - - # # - -
+        # # - - # # - -
+        - - # # - - - -
+        - - # # - - - -
       `,
     });
   });

@@ -19,10 +19,6 @@ export class DrawEllipse {
         __classPrivateFieldSet(this, _DrawEllipse_canvas, canvas, "f");
     }
     
-    
-    
-    
-    
     draw(xy, wh, color, fill, pattern = BpxPattern.primaryOnly) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         
@@ -91,7 +87,6 @@ export class DrawEllipse {
         
         
         while (bottom - top <= b) {
-            
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, bottom, c1, c2, p, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, bottom, c1, c2, p, sn);
             bottom += 1;

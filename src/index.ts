@@ -60,5 +60,3 @@ export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 
 // TODO: rework examples
-
-// TODO: re-check what do we export here
