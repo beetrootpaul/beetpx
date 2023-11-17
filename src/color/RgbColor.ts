@@ -40,6 +40,10 @@ export class BpxRgbColor {
   }
 }
 
+export function rgb_(r: number, g: number, b: number): BpxRgbColor {
+  return new BpxRgbColor(r, g, b);
+}
+
 export const black_ = BpxRgbColor.fromCssHex("#000000");
 export const white_ = BpxRgbColor.fromCssHex("#ffffff");
 export const red_ = BpxRgbColor.fromCssHex("#ff0000");

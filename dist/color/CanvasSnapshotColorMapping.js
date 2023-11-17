@@ -11,6 +11,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _BpxCanvasSnapshotColorMapping_mapping;
 export class BpxCanvasSnapshotColorMapping {
+    static of(mapping) {
+        return new BpxCanvasSnapshotColorMapping(mapping);
+    }
     constructor(mapping) {
         this.type = "canvas_snapshot_mapping";
         _BpxCanvasSnapshotColorMapping_mapping.set(this, void 0);

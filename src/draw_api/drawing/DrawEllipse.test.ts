@@ -448,7 +448,7 @@ describe("DrawEllipse", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.ellipse(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+      dts.drawApi.ellipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -468,7 +468,7 @@ describe("DrawEllipse", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
-      dts.drawApi.ellipse(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+      dts.drawApi.ellipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -489,7 +489,7 @@ describe("DrawEllipse", () => {
 
       dts.drawApi.setCameraXy(v_(3, -2));
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
-      dts.drawApi.ellipse(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+      dts.drawApi.ellipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -541,7 +541,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.ellipse(
         v_(1, 1),
         v_(12, 5),
-        new BpxCanvasSnapshotColorMapping((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );
@@ -1000,7 +1000,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.ellipseFilled(
         v_(1, 1),
         v_(12, 5),
-        new BpxPatternColors(c1, c2),
+        BpxPatternColors.of(c1, c2),
       );
 
       dts.canvas.expectToEqual({
@@ -1024,7 +1024,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.ellipseFilled(
         v_(1, 1),
         v_(12, 5),
-        new BpxPatternColors(c1, c2),
+        BpxPatternColors.of(c1, c2),
       );
 
       dts.canvas.expectToEqual({
@@ -1049,7 +1049,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.ellipseFilled(
         v_(1, 1),
         v_(12, 5),
-        new BpxPatternColors(c1, c2),
+        BpxPatternColors.of(c1, c2),
       );
 
       dts.canvas.expectToEqual({
@@ -1102,7 +1102,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.ellipseFilled(
         v_(1, 1),
         v_(12, 5),
-        new BpxCanvasSnapshotColorMapping((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );

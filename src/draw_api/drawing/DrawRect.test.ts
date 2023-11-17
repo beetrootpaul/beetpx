@@ -227,7 +227,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
       dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
-      dts.drawApi.rect(v_(0, 0), v_(4, 4), new BpxPatternColors(c1, c2));
+      dts.drawApi.rect(v_(0, 0), v_(4, 4), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2 },
@@ -244,7 +244,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(10, 10, c0);
 
       dts.drawApi.setPattern(BpxPattern.primaryOnly);
-      dts.drawApi.rect(v_(0, 0), v_(10, 10), new BpxPatternColors(c4, c1));
+      dts.drawApi.rect(v_(0, 0), v_(10, 10), BpxPatternColors.of(c4, c1));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -263,7 +263,7 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.setPattern(BpxPattern.secondaryOnly);
-      dts.drawApi.rect(v_(2, 2), v_(6, 6), new BpxPatternColors(c4, c2));
+      dts.drawApi.rect(v_(2, 2), v_(6, 6), BpxPatternColors.of(c4, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -282,7 +282,7 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
-      dts.drawApi.rect(v_(0, 0), v_(10, 10), new BpxPatternColors(c3, ct));
+      dts.drawApi.rect(v_(0, 0), v_(10, 10), BpxPatternColors.of(c3, ct));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -301,9 +301,9 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_0011_0011));
-      dts.drawApi.rect(v_(0, 0), v_(10, 5), new BpxPatternColors(c5, ct));
+      dts.drawApi.rect(v_(0, 0), v_(10, 5), BpxPatternColors.of(c5, ct));
       dts.drawApi.setPattern(BpxPattern.of(0b1100_1100_1100_1100));
-      dts.drawApi.rect(v_(0, 5), v_(10, 5), new BpxPatternColors(c5, c1));
+      dts.drawApi.rect(v_(0, 5), v_(10, 5), BpxPatternColors.of(c5, c1));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -326,7 +326,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(11, 11, c0);
 
       dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
-      dts.drawApi.rect(v_(1, 1), v_(9, 9), new BpxPatternColors(c1, ct));
+      dts.drawApi.rect(v_(1, 1), v_(9, 9), BpxPatternColors.of(c1, ct));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -350,7 +350,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.rect(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+      dts.drawApi.rect(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -371,7 +371,7 @@ describe("DrawRect", () => {
 
       dts.drawApi.setCameraXy(v_(3, -2));
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
-      dts.drawApi.rect(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+      dts.drawApi.rect(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -423,7 +423,7 @@ describe("DrawRect", () => {
       dts.drawApi.rect(
         v_(1, 1),
         v_(12, 5),
-        new BpxCanvasSnapshotColorMapping((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );
@@ -655,7 +655,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
       dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
-      dts.drawApi.rectFilled(v_(0, 0), v_(4, 4), new BpxPatternColors(c1, c2));
+      dts.drawApi.rectFilled(v_(0, 0), v_(4, 4), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2 },
@@ -672,11 +672,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(10, 10, c0);
 
       dts.drawApi.setPattern(BpxPattern.primaryOnly);
-      dts.drawApi.rectFilled(
-        v_(0, 0),
-        v_(10, 10),
-        new BpxPatternColors(c4, c1),
-      );
+      dts.drawApi.rectFilled(v_(0, 0), v_(10, 10), BpxPatternColors.of(c4, c1));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -695,7 +691,7 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.setPattern(BpxPattern.secondaryOnly);
-      dts.drawApi.rectFilled(v_(2, 2), v_(6, 6), new BpxPatternColors(c4, c2));
+      dts.drawApi.rectFilled(v_(2, 2), v_(6, 6), BpxPatternColors.of(c4, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -714,11 +710,7 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
-      dts.drawApi.rectFilled(
-        v_(0, 0),
-        v_(10, 10),
-        new BpxPatternColors(c3, ct),
-      );
+      dts.drawApi.rectFilled(v_(0, 0), v_(10, 10), BpxPatternColors.of(c3, ct));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -737,9 +729,9 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_0011_0011));
-      dts.drawApi.rectFilled(v_(0, 0), v_(10, 5), new BpxPatternColors(c5, ct));
+      dts.drawApi.rectFilled(v_(0, 0), v_(10, 5), BpxPatternColors.of(c5, ct));
       dts.drawApi.setPattern(BpxPattern.of(0b1100_1100_1100_1100));
-      dts.drawApi.rectFilled(v_(0, 5), v_(10, 5), new BpxPatternColors(c5, c1));
+      dts.drawApi.rectFilled(v_(0, 5), v_(10, 5), BpxPatternColors.of(c5, c1));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -762,7 +754,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(11, 11, c0);
 
       dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
-      dts.drawApi.rectFilled(v_(1, 1), v_(9, 9), new BpxPatternColors(c1, ct));
+      dts.drawApi.rectFilled(v_(1, 1), v_(9, 9), BpxPatternColors.of(c1, ct));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -786,7 +778,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+      dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -807,7 +799,7 @@ describe("DrawRect", () => {
 
       dts.drawApi.setCameraXy(v_(3, -2));
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
-      dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
+      dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -859,7 +851,7 @@ describe("DrawRect", () => {
       dts.drawApi.rectFilled(
         v_(1, 1),
         v_(12, 5),
-        new BpxCanvasSnapshotColorMapping((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );

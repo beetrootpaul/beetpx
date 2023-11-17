@@ -1,6 +1,6 @@
 import { type PngDataArray } from "fast-png";
 import { u_ } from "../Utils";
-import { BpxRgbColor } from "../color/RgbColor";
+import { BpxRgbColor, rgb_ } from "../color/RgbColor";
 import { BpxSprite } from "./Sprite";
 
 export type PreparedSprite = {
@@ -52,13 +52,13 @@ export class PreparedSprites {
 
         colors[spriteX]![spriteY] =
           imgChannels === 3
-            ? new BpxRgbColor(
+            ? rgb_(
                 imgBytes[imgIndex]!,
                 imgBytes[imgIndex + 1]!,
                 imgBytes[imgIndex + 2]!,
               )
             : imgBytes[imgIndex + 3]! >= 0xff / 2
-            ? new BpxRgbColor(
+            ? rgb_(
                 imgBytes[imgIndex]!,
                 imgBytes[imgIndex + 1]!,
                 imgBytes[imgIndex + 2]!,

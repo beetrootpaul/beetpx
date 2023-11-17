@@ -110,5 +110,5 @@ export class BpxVector2d {
         return `(${this.x},${this.y})`;
     }
 }
-export const v_0_0_ = new BpxVector2d(0, 0);
-export const v_1_1_ = new BpxVector2d(1, 1);
+export const v_0_0_ = v_(0, 0);
+export const v_1_1_ = v_(1, 1);

@@ -41,7 +41,7 @@ let logoPositionBase = v_0_0_;
 let numberOfEllipses = 4;
 let numberOfBigSprites = 4;
 
-const negative = new BpxCanvasSnapshotColorMapping((c) =>
+const negative = BpxCanvasSnapshotColorMapping.of((c) =>
   c ? new BpxRgbColor(0xff - c.r, 0xff - c.g, 0xff - c.b) : null,
 );
 

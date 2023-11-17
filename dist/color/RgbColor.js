@@ -20,6 +20,9 @@ export class BpxRgbColor {
         return new BpxRgbColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
     }
 }
+export function rgb_(r, g, b) {
+    return new BpxRgbColor(r, g, b);
+}
 export const black_ = BpxRgbColor.fromCssHex("#000000");
 export const white_ = BpxRgbColor.fromCssHex("#ffffff");
 export const red_ = BpxRgbColor.fromCssHex("#ff0000");

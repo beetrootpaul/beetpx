@@ -20,6 +20,9 @@ export class BpxSpriteColorMapping {
             return typeof mapped === "undefined" ? spriteColor : mapped;
         });
     }
+    static of(mapping) {
+        return new BpxSpriteColorMapping(mapping);
+    }
     constructor(mapping) {
         this.type = "sprite_mapping";
         _BpxSpriteColorMapping_mapping.set(this, void 0);

@@ -29,5 +29,5 @@ export class BpxPattern {
     }
 }
 _BpxPattern_bits = new WeakMap();
-BpxPattern.primaryOnly = new BpxPattern(0);
-BpxPattern.secondaryOnly = new BpxPattern(65535);
+BpxPattern.primaryOnly = BpxPattern.of(0);
+BpxPattern.secondaryOnly = BpxPattern.of(65535);

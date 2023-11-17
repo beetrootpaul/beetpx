@@ -215,7 +215,7 @@ describe("Vector2d", () => {
     });
 
     test("conversion back and forth", () => {
-      const v = new BpxVector2d(-123, -456);
+      const v = v_(-123, -456);
       expect(BpxVector2d.unitFromAngle(v.toAngle()).x).toBeCloseTo(
         v.x / v.magnitude(),
         14,

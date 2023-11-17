@@ -4,8 +4,8 @@ export class BpxPattern {
     return new BpxPattern(bits);
   }
 
-  static primaryOnly = new BpxPattern(0b0000_0000_0000_0000);
-  static secondaryOnly = new BpxPattern(0b1111_1111_1111_1111);
+  static primaryOnly = BpxPattern.of(0b0000_0000_0000_0000);
+  static secondaryOnly = BpxPattern.of(0b1111_1111_1111_1111);
 
   readonly #bits: number;
 

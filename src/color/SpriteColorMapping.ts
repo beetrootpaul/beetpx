@@ -16,6 +16,11 @@ export class BpxSpriteColorMapping {
       return typeof mapped === "undefined" ? spriteColor : mapped;
     });
   }
+
+  static of(mapping: BpxColorMapper): BpxSpriteColorMapping {
+    return new BpxSpriteColorMapping(mapping);
+  }
+
   readonly type = "sprite_mapping";
 
   readonly #mapping: BpxColorMapper;
