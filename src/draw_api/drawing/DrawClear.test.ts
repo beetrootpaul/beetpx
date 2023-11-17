@@ -39,10 +39,10 @@ describe("DrawClear", () => {
     });
   });
 
-  test("camera offset does not affect the canvas clearing", () => {
+  test("camera XY does not affect the canvas clearing", () => {
     const dts = drawingTestSetup(4, 3, c0);
 
-    dts.drawApi.setCameraOffset(v_(2, 2));
+    dts.drawApi.setCameraXy(v_(2, 2));
     dts.drawApi.clearCanvas(c1);
 
     dts.canvas.expectToEqual({

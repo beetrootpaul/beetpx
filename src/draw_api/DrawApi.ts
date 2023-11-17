@@ -38,7 +38,7 @@ export class DrawApi {
   readonly #sprite: DrawSprite;
   readonly #text: DrawText;
 
-  #cameraOffset: BpxVector2d = v_(0, 0);
+  cameraXy: BpxVector2d = v_(0, 0);
   #pattern: BpxPattern = BpxPattern.primaryOnly;
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
@@ -64,36 +64,35 @@ export class DrawApi {
     this.#clear.draw(color);
   }
 
-  setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void {
-    this.#canvas.setClippingRegion(xy, wh);
+  setClippingRegion(
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+  ): [BpxVector2d, BpxVector2d] {
+    return this.#canvas.setClippingRegion(xy, wh);
   }
 
-  // TODO: TEST IT
-  removeClippingRegion(): void {
-    this.#canvas.removeClippingRegion();
+  removeClippingRegion(): [BpxVector2d, BpxVector2d] {
+    return this.#canvas.removeClippingRegion();
   }
 
-  // TODO: TEST returned value
-  // TODO: rename it to setCameraPosition, make it inverted
-  setCameraOffset(offset: BpxVector2d): BpxVector2d {
-    const prevOffset = this.#cameraOffset;
-    this.#cameraOffset = offset;
-    return prevOffset;
+  setCameraXy(xy: BpxVector2d): BpxVector2d {
+    const prev = this.cameraXy;
+    this.cameraXy = xy;
+    return prev;
   }
 
-  // TODO: TEST returned value
   setPattern(pattern: BpxPattern): BpxPattern {
-    const prevPattern = this.#pattern;
+    const prev = this.#pattern;
     this.#pattern = pattern;
-    return prevPattern;
+    return prev;
   }
 
   pixel(xy: BpxVector2d, color: BpxRgbColor): void {
-    this.#pixel.draw(xy.sub(this.#cameraOffset), color, this.#pattern);
+    this.#pixel.draw(xy.sub(this.cameraXy), color, this.#pattern);
   }
 
   pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void {
-    this.#pixels.draw(xy.sub(this.#cameraOffset), bits, color, this.#pattern);
+    this.#pixels.draw(xy.sub(this.cameraXy), bits, color, this.#pattern);
   }
 
   line(
@@ -101,7 +100,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#line.draw(xy.sub(this.#cameraOffset), wh, color, this.#pattern);
+    this.#line.draw(xy.sub(this.cameraXy), wh, color, this.#pattern);
   }
 
   rect(
@@ -109,13 +108,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#rect.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      false,
-      this.#pattern,
-    );
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
   }
 
   rectFilled(
@@ -123,7 +116,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#rect.draw(xy.sub(this.#cameraOffset), wh, color, true, this.#pattern);
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, true, this.#pattern);
   }
 
   ellipse(
@@ -131,13 +124,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#ellipse.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      false,
-      this.#pattern,
-    );
+    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
   }
 
   ellipseFilled(
@@ -145,21 +132,15 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#ellipse.draw(
-      xy.sub(this.#cameraOffset),
-      wh,
-      color,
-      true,
-      this.#pattern,
-    );
+    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, true, this.#pattern);
   }
 
   setSpriteColorMapping(
     spriteColorMapping: BpxSpriteColorMapping,
   ): BpxSpriteColorMapping {
-    const prevMapping = this.#spriteColorMapping;
+    const prev = this.#spriteColorMapping;
     this.#spriteColorMapping = spriteColorMapping;
-    return prevMapping;
+    return prev;
   }
 
   sprite(
@@ -173,18 +154,17 @@ export class DrawApi {
     this.#sprite.draw(
       sourceImageAsset,
       sprite,
-      canvasXy.sub(this.#cameraOffset),
+      canvasXy.sub(this.cameraXy),
       opts.scaleXy ?? v_1_1_,
       this.#spriteColorMapping,
       this.#pattern,
     );
   }
 
-  // TODO: TEST returned value
   setFont(fontId: BpxFontId | null): BpxFontId | null {
-    const prevFontId = this.#fontAsset?.font.id ?? null;
+    const prev = this.#fontAsset?.font.id ?? null;
     this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
-    return prevFontId;
+    return prev;
   }
 
   getFont(): BpxFont | null {
@@ -211,7 +191,7 @@ export class DrawApi {
     if (this.#fontAsset) {
       this.#text.draw(
         text,
-        canvasXy.sub(this.#cameraOffset),
+        canvasXy.sub(this.cameraXy),
         this.#fontAsset,
         color,
         opts.scaleXy ?? v_1_1_,

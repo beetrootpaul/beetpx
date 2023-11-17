@@ -151,19 +151,27 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.clearCanvas(...args);
   };
 
+  /**
+   * @returns - previous clipping region in form of an array: [xy, wh]
+   */
   static setClippingRegion: DrawApi["setClippingRegion"] = (...args) => {
     return this.#tryGetFramework().drawApi.setClippingRegion(...args);
   };
 
+  /**
+   * @returns - previous clipping region in form of an array: [xy, wh]
+   */
   static removeClippingRegion: DrawApi["removeClippingRegion"] = (...args) => {
     return this.#tryGetFramework().drawApi.removeClippingRegion(...args);
   };
 
   /**
-   * @returns previous camera offset
+   * Sets a new XY (left-top corner) of a camera's viewport
+   *
+   * @returns previous camera XY
    */
-  static setCameraOffset: DrawApi["setCameraOffset"] = (...args) => {
-    return this.#tryGetFramework().drawApi.setCameraOffset(...args);
+  static setCameraXy: DrawApi["setCameraXy"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setCameraXy(...args);
   };
 
   /**

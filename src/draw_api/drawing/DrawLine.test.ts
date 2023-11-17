@@ -419,10 +419,10 @@ describe("DrawLine", () => {
     });
   });
 
-  test("camera offset", () => {
+  test("camera XY", () => {
     const dts = drawingTestSetup(11, 9, c0);
 
-    dts.drawApi.setCameraOffset(v_(3, -1));
+    dts.drawApi.setCameraXy(v_(3, -1));
     dts.drawApi.line(v_(1, 1), v_(9, 7), c1);
 
     dts.canvas.expectToEqual({
@@ -463,10 +463,10 @@ describe("DrawLine", () => {
     });
   });
 
-  test("camera offset + pattern", () => {
+  test("camera XY + pattern", () => {
     const dts = drawingTestSetup(11, 9, c0);
 
-    dts.drawApi.setCameraOffset(v_(3, -1));
+    dts.drawApi.setCameraXy(v_(3, -1));
     dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
     dts.drawApi.line(v_(1, 1), v_(9, 7), new BpxPatternColors(c1, c2));
 

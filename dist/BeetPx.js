@@ -113,17 +113,25 @@ BeetPx.__internal__capturedEvents = (...args) => {
 BeetPx.clearCanvas = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.clearCanvas(...args);
 };
+/**
+ * @returns - previous clipping region in form of an array: [xy, wh]
+ */
 BeetPx.setClippingRegion = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setClippingRegion(...args);
 };
+/**
+ * @returns - previous clipping region in form of an array: [xy, wh]
+ */
 BeetPx.removeClippingRegion = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.removeClippingRegion(...args);
 };
 /**
- * @returns previous camera offset
+ * Sets a new XY (left-top corner) of a camera's viewport
+ *
+ * @returns previous camera XY
  */
-BeetPx.setCameraOffset = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setCameraOffset(...args);
+BeetPx.setCameraXy = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setCameraXy(...args);
 };
 /**
  * @returns previous pattern

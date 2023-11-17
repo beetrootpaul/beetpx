@@ -346,10 +346,10 @@ describe("DrawRect", () => {
       });
     });
 
-    test("camera offset", () => {
+    test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.setCameraXy(v_(3, -2));
       dts.drawApi.rect(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
 
       dts.canvas.expectToEqual({
@@ -366,10 +366,10 @@ describe("DrawRect", () => {
       });
     });
 
-    test("camera offset + pattern", () => {
+    test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.setCameraXy(v_(3, -2));
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
       dts.drawApi.rect(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
 
@@ -782,10 +782,10 @@ describe("DrawRect", () => {
       });
     });
 
-    test("camera offset", () => {
+    test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.setCameraXy(v_(3, -2));
       dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
 
       dts.canvas.expectToEqual({
@@ -802,10 +802,10 @@ describe("DrawRect", () => {
       });
     });
 
-    test("camera offset + pattern", () => {
+    test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraOffset(v_(3, -2));
+      dts.drawApi.setCameraXy(v_(3, -2));
       dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
       dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), new BpxPatternColors(c1, c2));
 

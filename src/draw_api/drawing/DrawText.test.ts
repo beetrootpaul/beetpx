@@ -410,13 +410,13 @@ describe("DrawText", () => {
     });
   });
 
-  test("camera offset", () => {
+  test("camera XY", () => {
     dts = drawingTestSetup(14, 8, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
     dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
     dts.drawApi.setFont("test-font");
-    dts.drawApi.setCameraOffset(v_(2, -3));
+    dts.drawApi.setCameraXy(v_(2, -3));
     dts.drawApi.print("BPX", v_(1, 1), c1);
 
     dts.canvas.expectToEqual({
@@ -458,13 +458,13 @@ describe("DrawText", () => {
     });
   });
 
-  test("camera offset + pattern", () => {
+  test("camera XY + pattern", () => {
     dts = drawingTestSetup(14, 8, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
     dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
     dts.drawApi.setFont("test-font");
-    dts.drawApi.setCameraOffset(v_(2, -3));
+    dts.drawApi.setCameraXy(v_(2, -3));
     dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
     dts.drawApi.print("BPX", v_(1, 1), c1);
 

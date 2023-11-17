@@ -404,10 +404,16 @@ declare abstract class Canvas {
     #private;
     readonly canvasSize: BpxVector2d;
     protected constructor(canvasSize: BpxVector2d);
-    abstract setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
-    abstract removeClippingRegion(): void;
-    abstract canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
-    abstract canSetAt(x: number, y: number): boolean;
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
+    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [BpxVector2d, BpxVector2d];
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
+    removeClippingRegion(): [BpxVector2d, BpxVector2d];
+    canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
+    canSetAt(x: number, y: number): boolean;
     abstract set(color: BpxRgbColor, x: number, y: number): void;
     takeSnapshot(): void;
     getMostRecentSnapshot(): CanvasSnapshot | null;
@@ -422,11 +428,12 @@ type DrawApiOptions = {
 };
 declare class DrawApi {
     #private;
+    cameraXy: BpxVector2d;
     constructor(options: DrawApiOptions);
     clearCanvas(color: BpxRgbColor): void;
-    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): void;
-    removeClippingRegion(): void;
-    setCameraOffset(offset: BpxVector2d): BpxVector2d;
+    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [BpxVector2d, BpxVector2d];
+    removeClippingRegion(): [BpxVector2d, BpxVector2d];
+    setCameraXy(xy: BpxVector2d): BpxVector2d;
     setPattern(pattern: BpxPattern): BpxPattern;
     pixel(xy: BpxVector2d, color: BpxRgbColor): void;
     pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void;
@@ -549,12 +556,20 @@ declare class BeetPx {
     static connectedGamepadTypes: GameInput["connectedGamepadTypes"];
     static __internal__capturedEvents: GameInput["__internal__capturedEvents"];
     static clearCanvas: DrawApi["clearCanvas"];
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
     static setClippingRegion: DrawApi["setClippingRegion"];
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
     static removeClippingRegion: DrawApi["removeClippingRegion"];
     /**
-     * @returns previous camera offset
+     * Sets a new XY (left-top corner) of a camera's viewport
+     *
+     * @returns previous camera XY
      */
-    static setCameraOffset: DrawApi["setCameraOffset"];
+    static setCameraXy: DrawApi["setCameraXy"];
     /**
      * @returns previous pattern
      */

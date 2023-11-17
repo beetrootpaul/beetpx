@@ -601,7 +601,7 @@ describe("DrawSprite", () => {
     });
   });
 
-  test("camera offset", () => {
+  test("camera XY", () => {
     const dts = drawingTestSetup(9, 8, c0);
     const image = new TestImage({
       withMapping: { "#": c1, ".": ct },
@@ -617,7 +617,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.setCameraOffset(v_(3, -2));
+    dts.drawApi.setCameraXy(v_(3, -2));
     dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
 
     dts.canvas.expectToEqual({
@@ -669,7 +669,7 @@ describe("DrawSprite", () => {
     });
   });
 
-  test("camera offset + pattern", () => {
+  test("camera XY + pattern", () => {
     const dts = drawingTestSetup(9, 8, c0);
     const image = new TestImage({
       withMapping: { "#": c1, ".": ct },
@@ -685,7 +685,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.setCameraOffset(v_(3, -2));
+    dts.drawApi.setCameraXy(v_(3, -2));
     dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
     dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
 
