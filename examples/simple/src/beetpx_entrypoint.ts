@@ -77,7 +77,7 @@ b_.init(
     b_.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
-      logoScale,
+      { scaleXy: logoScale },
     );
     if (b_.debug) {
       b_.line(

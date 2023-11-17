@@ -174,7 +174,7 @@ describe("DrawText", () => {
       dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
       dts.drawApi.setFont("test-font");
-      dts.drawApi.print("BPX", v_(7, 4), c1, [false, false]);
+      dts.drawApi.print("BPX", v_(7, 4), c1, { centerXy: [false, false] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -200,7 +200,7 @@ describe("DrawText", () => {
       dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
       dts.drawApi.setFont("test-font");
-      dts.drawApi.print("BPX", v_(7, 4), c1, [true, false]);
+      dts.drawApi.print("BPX", v_(7, 4), c1, { centerXy: [true, false] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -226,7 +226,7 @@ describe("DrawText", () => {
       dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
       dts.drawApi.setFont("test-font");
-      dts.drawApi.print("BPX", v_(7, 4), c1, [false, true]);
+      dts.drawApi.print("BPX", v_(7, 4), c1, { centerXy: [false, true] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -252,7 +252,7 @@ describe("DrawText", () => {
       dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
       dts.drawApi.setFont("test-font");
-      dts.drawApi.print("BPX", v_(7, 4), c1, [true, true]);
+      dts.drawApi.print("BPX", v_(7, 4), c1, { centerXy: [true, true] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -305,7 +305,7 @@ describe("DrawText", () => {
       dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
       dts.drawApi.setFont("test-font");
-      dts.drawApi.print("BPX", v_(1, 1), c1, [false, false], v_(2, 2));
+      dts.drawApi.print("BPX", v_(1, 1), c1, { scaleXy: v_(2, 2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -334,7 +334,7 @@ describe("DrawText", () => {
       dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
       dts.drawApi.setFont("test-font");
-      dts.drawApi.print("BPX", v_(1, 1), c1, [false, false], v_(-3, -2));
+      dts.drawApi.print("BPX", v_(1, 1), c1, { scaleXy: v_(-3, -2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -357,7 +357,7 @@ describe("DrawText", () => {
       dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
       dts.drawApi.setFont("test-font");
-      dts.drawApi.print("BPX", v_(1, 1), c1, [false, false], v_(0.9, 0.9));
+      dts.drawApi.print("BPX", v_(1, 1), c1, { scaleXy: v_(0.9, 0.9) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -374,7 +374,7 @@ describe("DrawText", () => {
       });
 
       dts.drawApi.clearCanvas(c0);
-      dts.drawApi.print("BPX", v_(1, 1), c1, [false, false], v_(1.9, 1.9));
+      dts.drawApi.print("BPX", v_(1, 1), c1, { scaleXy: v_(1.9, 1.9) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -398,7 +398,7 @@ describe("DrawText", () => {
     dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
     dts.drawApi.setFont("test-font");
-    dts.drawApi.print("BPX", v_(-3, -2), c1, [false, false]);
+    dts.drawApi.print("BPX", v_(-3, -2), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },

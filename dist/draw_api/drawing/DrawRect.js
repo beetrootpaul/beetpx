@@ -11,14 +11,13 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawRect_instances, _DrawRect_canvas, _DrawRect_drawPixel;
 import { BpxVector2d } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
 export class DrawRect {
     constructor(canvas) {
         _DrawRect_instances.add(this);
         _DrawRect_canvas.set(this, void 0);
         __classPrivateFieldSet(this, _DrawRect_canvas, canvas, "f");
     }
-    draw(xy, wh, color, fill, pattern = BpxPattern.primaryOnly) {
+    draw(xy, wh, color, fill, pattern) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||

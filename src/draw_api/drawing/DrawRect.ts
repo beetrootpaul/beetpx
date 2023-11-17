@@ -18,7 +18,7 @@ export class DrawRect {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
     fill: boolean,
-    pattern: BpxPattern = BpxPattern.primaryOnly,
+    pattern: BpxPattern,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       xy.round(),

@@ -18,7 +18,7 @@ export class DrawLine {
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
-    pattern: BpxPattern = BpxPattern.primaryOnly,
+    pattern: BpxPattern,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
     //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other

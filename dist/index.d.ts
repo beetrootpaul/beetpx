@@ -108,7 +108,10 @@ declare class BpxUtils {
     static noop(): void;
     static offset4Directions(): BpxVector2d[];
     static offset8Directions(): BpxVector2d[];
-    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, centerXy?: [boolean, boolean]): void;
+    static printWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+    }): void;
     static randomElementOf<V>(array: V[]): V | undefined;
     static range(n: number): number[];
     /**
@@ -433,10 +436,15 @@ declare class DrawApi {
     ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-    sprite(sprite: BpxSprite, canvasXy: BpxVector2d, scaleXy?: BpxVector2d): void;
+    sprite(sprite: BpxSprite, canvasXy: BpxVector2d, opts?: {
+        scaleXy?: BpxVector2d;
+    }): void;
     setFont(fontId: BpxFontId | null): BpxFontId | null;
     getFont(): BpxFont | null;
-    print(text: string, canvasXy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), centerXy?: [boolean, boolean], scaleXy?: BpxVector2d): void;
+    print(text: string, canvasXy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+    }): void;
     takeCanvasSnapshot(): void;
 }
 

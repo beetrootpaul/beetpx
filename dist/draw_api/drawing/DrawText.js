@@ -11,8 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawText_canvas, _DrawText_sprite;
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { BpxVector2d, v_0_0_, v_1_1_ } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
+import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
 import { DrawSprite } from "./DrawSprite";
 export class DrawText {
     constructor(canvas) {
@@ -23,7 +22,7 @@ export class DrawText {
             disableRounding: true,
         }), "f");
     }
-    draw(text, canvasXy, fontAsset, color, scaleXy = v_1_1_, pattern = BpxPattern.primaryOnly) {
+    draw(text, canvasXy, fontAsset, color, scaleXy, pattern) {
         canvasXy = canvasXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const colorMapping = typeof color === "function"

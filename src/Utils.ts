@@ -90,12 +90,15 @@ export class BpxUtils {
     canvasXy1: BpxVector2d,
     textColor: BpxRgbColor,
     outlineColor: BpxRgbColor,
-    centerXy: [boolean, boolean] = [false, false],
+    opts: {
+      centerXy?: [boolean, boolean];
+      scaleXy?: BpxVector2d;
+    } = {},
   ): void {
     for (const offset of BpxUtils.offset8Directions()) {
-      BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
+      BeetPx.print(text, canvasXy1.add(offset), outlineColor, opts);
     }
-    BeetPx.print(text, canvasXy1, textColor, centerXy);
+    BeetPx.print(text, canvasXy1, textColor, opts);
   }
 
   static randomElementOf<V>(array: V[]): V | undefined {

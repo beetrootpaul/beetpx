@@ -11,9 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawSprite_preparedSprites, _DrawSprite_canvas, _DrawSprite_options;
 import { BpxUtils } from "../../Utils";
-import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { BpxVector2d, v_, v_0_0_, v_1_1_ } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
+import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
 import { PreparedSprites } from "../PreparedSprites";
 import { BpxSprite } from "../Sprite";
 export class DrawSprite {
@@ -24,7 +22,7 @@ export class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_canvas, canvas, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
     }
-    draw(sourceImageAsset, sprite, targetXy, scaleXy = v_1_1_, colorMapping = BpxSpriteColorMapping.noMapping, pattern = BpxPattern.primaryOnly) {
+    draw(sourceImageAsset, sprite, targetXy, scaleXy, colorMapping, pattern) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;

@@ -11,7 +11,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawLine_instances, _DrawLine_canvas, _DrawLine_drawPixel;
 import { v_ } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
 export class DrawLine {
     constructor(canvas) {
         _DrawLine_instances.add(this);
@@ -19,7 +18,7 @@ export class DrawLine {
         __classPrivateFieldSet(this, _DrawLine_canvas, canvas, "f");
     }
     
-    draw(xy, wh, color, pattern = BpxPattern.primaryOnly) {
+    draw(xy, wh, color, pattern) {
         
         
         

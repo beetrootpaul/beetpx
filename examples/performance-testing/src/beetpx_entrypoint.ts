@@ -313,7 +313,7 @@ function drawSprites(): void {
     b_.sprite(
       logoSprite,
       logoPositionBase.sub(calculateLogoPositionOffset(b_.frameNumber + i)),
-      v_(2, 3),
+      { scaleXy: v_(2, 3) },
     );
   }
   b_.setSpriteColorMapping(prevMapping);

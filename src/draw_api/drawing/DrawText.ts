@@ -3,7 +3,7 @@ import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxCharSprite } from "../../font/Font";
-import { BpxVector2d, v_0_0_, v_1_1_ } from "../../misc/Vector2d";
+import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
 import { BpxPattern } from "../Pattern";
 import { DrawSprite } from "./DrawSprite";
 
@@ -25,8 +25,8 @@ export class DrawText {
     canvasXy: BpxVector2d,
     fontAsset: FontAsset,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
-    scaleXy: BpxVector2d = v_1_1_,
-    pattern: BpxPattern = BpxPattern.primaryOnly,
+    scaleXy: BpxVector2d,
+    pattern: BpxPattern,
   ): void {
     canvasXy = canvasXy.round();
     scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);

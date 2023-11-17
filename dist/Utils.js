@@ -67,11 +67,11 @@ export class BpxUtils {
             v_(-1, 0),
         ];
     }
-    static printWithOutline(text, canvasXy1, textColor, outlineColor, centerXy = [false, false]) {
+    static printWithOutline(text, canvasXy1, textColor, outlineColor, opts = {}) {
         for (const offset of BpxUtils.offset8Directions()) {
-            BeetPx.print(text, canvasXy1.add(offset), outlineColor, centerXy);
+            BeetPx.print(text, canvasXy1.add(offset), outlineColor, opts);
         }
-        BeetPx.print(text, canvasXy1, textColor, centerXy);
+        BeetPx.print(text, canvasXy1, textColor, opts);
     }
     static randomElementOf(array) {
         if (array.length <= 0)

@@ -14,7 +14,7 @@ export class DrawPixels {
     xy: BpxVector2d,
     bits: string[],
     color: BpxRgbColor,
-    pattern: BpxPattern = BpxPattern.primaryOnly,
+    pattern: BpxPattern,
   ): void {
     xy = xy.round();
 

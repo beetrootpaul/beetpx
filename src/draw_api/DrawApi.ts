@@ -165,15 +165,16 @@ export class DrawApi {
   sprite(
     sprite: BpxSprite,
     canvasXy: BpxVector2d,
-    // TODO: make it a named option
-    scaleXy: BpxVector2d = v_1_1_,
+    opts: {
+      scaleXy?: BpxVector2d;
+    } = {},
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sourceImageAsset,
       sprite,
       canvasXy.sub(this.#cameraOffset),
-      scaleXy,
+      opts.scaleXy ?? v_1_1_,
       this.#spriteColorMapping,
       this.#pattern,
     );
@@ -194,11 +195,12 @@ export class DrawApi {
     text: string,
     canvasXy: BpxVector2d,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
-    // TODO: make it a named option
-    centerXy: [boolean, boolean] = [false, false],
-    // TODO: make it a named option
-    scaleXy: BpxVector2d = v_1_1_,
+    opts: {
+      centerXy?: [boolean, boolean];
+      scaleXy?: BpxVector2d;
+    } = {},
   ): void {
+    const centerXy = opts.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
       const size = BpxUtils.measureText(text);
       canvasXy = canvasXy.sub(
@@ -212,7 +214,7 @@ export class DrawApi {
         canvasXy.sub(this.#cameraOffset),
         this.#fontAsset,
         color,
-        scaleXy,
+        opts.scaleXy ?? v_1_1_,
         this.#pattern,
       );
     } else {

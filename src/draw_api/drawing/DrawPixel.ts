@@ -10,11 +10,7 @@ export class DrawPixel {
     this.#canvas = canvas;
   }
 
-  draw(
-    xy: BpxVector2d,
-    color: BpxRgbColor,
-    pattern: BpxPattern = BpxPattern.primaryOnly,
-  ): void {
+  draw(xy: BpxVector2d, color: BpxRgbColor, pattern: BpxPattern): void {
     xy = xy.round();
 
     if (!this.#canvas.canSetAt(xy.x, xy.y)) {

@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { v_, v_1_1_ } from "../../misc/Vector2d";
+import { v_ } from "../../misc/Vector2d";
 import { drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPattern } from "../Pattern";
 import { spr_ } from "../Sprite";
@@ -193,7 +193,7 @@ describe("DrawSprite", () => {
       const s = spr_(image.uniqueUrl);
       dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(3, 2));
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(3, 2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -222,7 +222,7 @@ describe("DrawSprite", () => {
       const s = spr_(image.uniqueUrl);
       dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(-3, -2));
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(-3, -2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -251,7 +251,7 @@ describe("DrawSprite", () => {
       const s = spr_(image.uniqueUrl);
       dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(0.9, 0.9));
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(0.9, 0.9) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -266,7 +266,7 @@ describe("DrawSprite", () => {
       });
 
       dts.drawApi.clearCanvas(c0);
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(1.9, 1.9));
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(1.9, 1.9) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -281,7 +281,7 @@ describe("DrawSprite", () => {
       });
 
       dts.drawApi.clearCanvas(c0);
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), v_(3.9, 2.9));
+      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(3.9, 2.9) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -588,7 +588,7 @@ describe("DrawSprite", () => {
         [c3, ct],
       ]),
     );
-    dts.drawApi.sprite(s(0, 0, 4, 4), v_(0, 0), v_1_1_);
+    dts.drawApi.sprite(s(0, 0, 4, 4), v_(0, 0));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
