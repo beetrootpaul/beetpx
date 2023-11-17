@@ -18,7 +18,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_assetLoader, _Framework_canvas, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame;
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_assetLoader, _Framework_canvas, _Framework_isStarted, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame;
 import { BeetPx } from "./BeetPx";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { BpxUtils, u_ } from "./Utils";
@@ -56,6 +56,7 @@ export class Framework {
         _Framework_gameLoop.set(this, void 0);
         _Framework_assetLoader.set(this, void 0);
         _Framework_canvas.set(this, void 0);
+        _Framework_isStarted.set(this, false);
         _Framework_onStarted.set(this, void 0);
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
@@ -145,9 +146,13 @@ export class Framework {
         (_b = __classPrivateFieldGet(this, _Framework_onStarted, "f")) === null || _b === void 0 ? void 0 : _b.call(this);
     }
 }
-_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_assetLoader = new WeakMap(), _Framework_canvas = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
+_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_assetLoader = new WeakMap(), _Framework_canvas = new WeakMap(), _Framework_isStarted = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = function _Framework_startGame() {
     var _b;
     return __awaiter(this, void 0, void 0, function* () {
+        if (__classPrivateFieldGet(this, _Framework_isStarted, "f")) {
+            throw Error("Tried to start a game, but it is already started");
+        }
+        __classPrivateFieldSet(this, _Framework_isStarted, true, "f");
         if (BEETPX__IS_PROD) {
             
             

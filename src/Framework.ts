@@ -29,7 +29,7 @@ export type FrameworkOptions = {
 };
 
 export type OnAssetsLoaded = {
-  startGame: () => void;
+  startGame: () => Promise<void>;
 };
 
 export class Framework {
@@ -57,6 +57,8 @@ export class Framework {
 
   readonly #canvas: Canvas;
   readonly drawApi: DrawApi;
+
+  #isStarted: boolean = false;
 
   #onStarted?: () => void;
   #onUpdate?: () => void;
@@ -200,8 +202,12 @@ export class Framework {
     this.#onStarted?.();
   }
 
-  // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
   async #startGame(): Promise<void> {
+    if (this.#isStarted) {
+      throw Error("Tried to start a game, but it is already started");
+    }
+    this.#isStarted = true;
+
     if (BEETPX__IS_PROD) {
       // A popup which prevents user from accidentally closing the browser tab during gameplay.
       // Implementation notes:

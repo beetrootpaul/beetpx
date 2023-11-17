@@ -88,5 +88,11 @@ b_.init(
     }
   });
 
-  startGame();
+  startGame()
+    .then(() => {
+      console.log("Game started");
+    })
+    .catch((err) => {
+      console.error("Encountered an error when called startGame():", err);
+    });
 });

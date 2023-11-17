@@ -472,7 +472,7 @@ type FrameworkOptions = {
     debugFeatures: boolean;
 };
 type OnAssetsLoaded = {
-    startGame: () => void;
+    startGame: () => Promise<void>;
 };
 declare class Framework {
     #private;
