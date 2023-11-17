@@ -467,7 +467,14 @@ describe("DrawEllipse", () => {
     test("pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          --##
+          --##
+        `),
+      );
       dts.drawApi.ellipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
@@ -488,7 +495,14 @@ describe("DrawEllipse", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          --##
+          --##
+        `),
+      );
       dts.drawApi.ellipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
@@ -1020,7 +1034,14 @@ describe("DrawEllipse", () => {
     test("pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          --##
+          --##
+        `),
+      );
       dts.drawApi.ellipseFilled(
         v_(1, 1),
         v_(12, 5),
@@ -1045,7 +1066,14 @@ describe("DrawEllipse", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          --##
+          --##
+        `),
+      );
       dts.drawApi.ellipseFilled(
         v_(1, 1),
         v_(12, 5),

@@ -98,7 +98,14 @@ describe("DrawPixel", () => {
   test("pattern", () => {
     const dts = drawingTestSetup(8, 8, c0);
 
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     for (let x = 0; x < 8; x++) {
       for (let y = 0; y < 8; y++) {
         dts.drawApi.pixel(v_(x, y), c1);
@@ -123,7 +130,14 @@ describe("DrawPixel", () => {
   test("camera XY + pattern", () => {
     const dts = drawingTestSetup(8, 8, c0);
 
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.setCameraXy(v_(2, -1));
     for (let x = 0; x < 8; x++) {
       for (let y = 0; y < 8; y++) {

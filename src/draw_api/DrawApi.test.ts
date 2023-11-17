@@ -265,7 +265,14 @@ describe("DrawApi", () => {
       `,
     });
 
-    let prev = dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    let prev = dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.clearCanvas(c0);
     dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
 

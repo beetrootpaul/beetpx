@@ -209,7 +209,14 @@ describe("DrawRect", () => {
     test("pattern: simple one, with a single color", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          ###-
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rect(v_(0, 0), v_(4, 4), c1);
 
       dts.canvas.expectToEqual({
@@ -226,7 +233,14 @@ describe("DrawRect", () => {
     test("pattern: simple one, with two colors", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          #---
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rect(v_(0, 0), v_(4, 4), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
@@ -281,7 +295,14 @@ describe("DrawRect", () => {
         `,
       });
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          ###-
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rect(v_(0, 0), v_(10, 10), BpxPatternColors.of(c3, ct));
 
       dts.canvas.expectToEqual({
@@ -300,9 +321,23 @@ describe("DrawRect", () => {
         `,
       });
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_0011_0011));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          ##--
+          ##--
+        `),
+      );
       dts.drawApi.rect(v_(0, 0), v_(10, 5), BpxPatternColors.of(c5, ct));
-      dts.drawApi.setPattern(BpxPattern.of(0b1100_1100_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          --##
+          --##
+          --##
+          --##
+        `),
+      );
       dts.drawApi.rect(v_(0, 5), v_(10, 5), BpxPatternColors.of(c5, c1));
 
       dts.canvas.expectToEqual({
@@ -325,7 +360,14 @@ describe("DrawRect", () => {
     test("pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
       const dts = drawingTestSetup(11, 11, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          ###-
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rect(v_(1, 1), v_(9, 9), BpxPatternColors.of(c1, ct));
 
       dts.canvas.expectToEqual({
@@ -370,7 +412,14 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          --##
+          --##
+        `),
+      );
       dts.drawApi.rect(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
@@ -637,7 +686,14 @@ describe("DrawRect", () => {
     test("pattern: simple one, with a single color", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          ###-
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rectFilled(v_(0, 0), v_(4, 4), c1);
 
       dts.canvas.expectToEqual({
@@ -654,7 +710,14 @@ describe("DrawRect", () => {
     test("pattern: simple one, with two colors", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          ###-
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rectFilled(v_(0, 0), v_(4, 4), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
@@ -709,7 +772,14 @@ describe("DrawRect", () => {
         `,
       });
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          ###-
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rectFilled(v_(0, 0), v_(10, 10), BpxPatternColors.of(c3, ct));
 
       dts.canvas.expectToEqual({
@@ -728,9 +798,23 @@ describe("DrawRect", () => {
         `,
       });
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_0011_0011));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          ##--
+          ##--
+        `),
+      );
       dts.drawApi.rectFilled(v_(0, 0), v_(10, 5), BpxPatternColors.of(c5, ct));
-      dts.drawApi.setPattern(BpxPattern.of(0b1100_1100_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          --##
+          --##
+          --##
+          --##
+        `),
+      );
       dts.drawApi.rectFilled(v_(0, 5), v_(10, 5), BpxPatternColors.of(c5, c1));
 
       dts.canvas.expectToEqual({
@@ -753,7 +837,14 @@ describe("DrawRect", () => {
     test("pattern: 4x4 pattern is aligned with canvas' top-left corner", () => {
       const dts = drawingTestSetup(11, 11, c0);
 
-      dts.drawApi.setPattern(BpxPattern.of(0b0000_0001_0011_0111));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ####
+          ###-
+          ##--
+          #---
+        `),
+      );
       dts.drawApi.rectFilled(v_(1, 1), v_(9, 9), BpxPatternColors.of(c1, ct));
 
       dts.canvas.expectToEqual({
@@ -798,7 +889,14 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
       dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+      dts.drawApi.setPattern(
+        BpxPattern.from(`
+          ##--
+          ##--
+          --##
+          --##
+        `),
+      );
       dts.drawApi.rectFilled(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({

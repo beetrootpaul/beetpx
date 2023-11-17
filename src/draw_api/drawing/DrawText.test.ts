@@ -440,7 +440,14 @@ describe("DrawText", () => {
     dts.assets.addFontAsset(fontProps.font.id, fontProps);
 
     dts.drawApi.setFont("test-font");
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.print("BPX", v_(1, 1), c1);
 
     dts.canvas.expectToEqual({
@@ -465,7 +472,14 @@ describe("DrawText", () => {
 
     dts.drawApi.setFont("test-font");
     dts.drawApi.setCameraXy(v_(2, -3));
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.print("BPX", v_(1, 1), c1);
 
     dts.canvas.expectToEqual({

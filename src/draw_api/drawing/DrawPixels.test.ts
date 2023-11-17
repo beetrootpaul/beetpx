@@ -192,7 +192,14 @@ describe("DrawPixels", () => {
   test("pattern", () => {
     const dts = drawingTestSetup(6, 6, c0);
 
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.pixels(v_(1, 1), c1, ["####", "####", "####", "####"]);
 
     dts.canvas.expectToEqual({
@@ -212,7 +219,14 @@ describe("DrawPixels", () => {
     const dts = drawingTestSetup(6, 6, c0);
 
     dts.drawApi.setCameraXy(v_(3, -2));
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.pixels(v_(1, 1), c1, ["####", "####", "####", "####"]);
 
     dts.canvas.expectToEqual({

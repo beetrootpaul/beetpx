@@ -444,7 +444,14 @@ describe("DrawLine", () => {
   test("pattern", () => {
     const dts = drawingTestSetup(11, 9, c0);
 
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.line(v_(1, 1), v_(9, 7), BpxPatternColors.of(c1, c2));
 
     dts.canvas.expectToEqual({
@@ -467,7 +474,14 @@ describe("DrawLine", () => {
     const dts = drawingTestSetup(11, 9, c0);
 
     dts.drawApi.setCameraXy(v_(3, -1));
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.line(v_(1, 1), v_(9, 7), BpxPatternColors.of(c1, c2));
 
     dts.canvas.expectToEqual({

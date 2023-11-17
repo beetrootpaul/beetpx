@@ -58,7 +58,7 @@ describe("DrawClear", () => {
   test("pattern does not affect the canvas clearing", () => {
     const dts = drawingTestSetup(4, 3, c0);
 
-    dts.drawApi.setPattern(BpxPattern.of(0b1010_0101_1010_0101));
+    dts.drawApi.setPattern(BpxPattern.of(0b0101_1010_0101_1010));
     dts.drawApi.clearCanvas(c1);
 
     dts.canvas.expectToEqual({

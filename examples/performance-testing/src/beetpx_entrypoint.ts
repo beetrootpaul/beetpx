@@ -265,7 +265,14 @@ function drawRenderFpsVisualization(): void {
 }
 
 function drawEllipses(): void {
-  b_.setPattern(BpxPattern.of(0x5b59));
+  b_.setPattern(
+    BpxPattern.from(`
+      #-#-
+      -#--
+      #-#-
+      -##-
+    `),
+  );
   for (let ellipseIndex = 0; ellipseIndex < numberOfEllipses; ellipseIndex++) {
     const rComponent = ((30 * ellipseIndex) % 256)
       .toString(16)

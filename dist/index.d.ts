@@ -248,6 +248,12 @@ declare class BpxSpriteColorMapping {
 
 declare class BpxPattern {
     #private;
+    /**
+     * Creates a BpxPattern from a visual representation of 4 columns and 4 rows
+     *   (designated by new lines) where `#` and `-` stand for a primary and
+     *   a secondary color.
+     */
+    static from(ascii: string): BpxPattern;
     static of(bits: number): BpxPattern;
     static primaryOnly: BpxPattern;
     static secondaryOnly: BpxPattern;

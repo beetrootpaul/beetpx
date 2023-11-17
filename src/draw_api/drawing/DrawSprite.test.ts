@@ -651,7 +651,14 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
 
     dts.canvas.expectToEqual({
@@ -686,7 +693,14 @@ describe("DrawSprite", () => {
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
     dts.drawApi.setCameraXy(v_(3, -2));
-    dts.drawApi.setPattern(BpxPattern.of(0b0011_0011_1100_1100));
+    dts.drawApi.setPattern(
+      BpxPattern.from(`
+        ##--
+        ##--
+        --##
+        --##
+      `),
+    );
     dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
 
     dts.canvas.expectToEqual({
