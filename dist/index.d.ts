@@ -251,7 +251,7 @@ declare class BpxPattern {
     /**
      * Creates a BpxPattern from a visual representation of 4 columns and 4 rows
      *   (designated by new lines) where `#` and `-` stand for a primary and
-     *   a secondary color.
+     *   a secondary color. Whitespaces are ignored.
      */
     static from(ascii: string): BpxPattern;
     static of(bits: number): BpxPattern;
@@ -446,7 +446,7 @@ declare class DrawApi {
     setCameraXy(xy: BpxVector2d): BpxVector2d;
     setPattern(pattern: BpxPattern): BpxPattern;
     pixel(xy: BpxVector2d, color: BpxRgbColor): void;
-    pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void;
+    pixels(xy: BpxVector2d, color: BpxRgbColor, ascii: string): void;
     line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
@@ -591,6 +591,11 @@ declare class BeetPx {
      * @param {string[]} bits - an array representing rows from top to bottom,
      *        where each array element is a text sequence of `0` and `1` to
      *        represent drawn and skipped pixels from left to right.
+     */
+    /**
+     * Draws pixels based on a visual 2d representation in form of rows
+     *   (designated by new lines) where `#` and `-` stand for a colored
+     *   pixel and a lack of a pixel. Whitespaces are ignored.
      */
     static pixels: DrawApi["pixels"];
     static line: DrawApi["line"];

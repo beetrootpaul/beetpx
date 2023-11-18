@@ -15,11 +15,21 @@ export class DrawPixels {
         _DrawPixels_canvas.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixels_canvas, canvas, "f");
     }
-    draw(xy, bits, color, pattern) {
+    draw(xy, ascii, color, pattern) {
         xy = xy.round();
-        for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {
-            for (let bitsX = 0; bitsX < bits[bitsY].length; bitsX += 1) {
-                if (bits[bitsY][bitsX] !== "#") {
+        const asciiRows = ascii
+            .split("\n")
+            .map((row) => row.replace(/\s/g, ""))
+            .filter((row) => row.length > 0);
+        for (const row of asciiRows) {
+            const indexOfUnexpectedChar = row.search(/[^#-]/);
+            if (indexOfUnexpectedChar >= 0) {
+                throw Error(`DrawPixels.draw: Unexpected character found: "${row[indexOfUnexpectedChar]}"`);
+            }
+        }
+        for (let bitsY = 0; bitsY < asciiRows.length; bitsY += 1) {
+            for (let bitsX = 0; bitsX < asciiRows[bitsY].length; bitsX += 1) {
+                if (asciiRows[bitsY][bitsX] !== "#") {
                     continue;
                 }
                 const x = xy.x + bitsX;

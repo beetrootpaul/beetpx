@@ -290,15 +290,19 @@ function drawEllipses(): void {
 }
 
 function drawSprites(): void {
-  b_.pixels(v_(1, -2), BpxRgbColor.fromCssHex("#00ffff"), [
-    "####",
-    "####",
-    "####",
-    "################################",
-    "####",
-    "####",
-    "_##_",
-  ]);
+  b_.pixels(
+    v_(1, -2),
+    BpxRgbColor.fromCssHex("#00ffff"),
+    `
+      ####
+      ####
+      ####
+      ################################
+      ####
+      ####
+      -##-
+    `,
+  );
   b_.line(
     v_0_0_,
     logoPositionBase.add(calculateLogoPositionOffset(1.5 * fps)),

@@ -14,7 +14,7 @@ export class BpxPattern {
     /**
      * Creates a BpxPattern from a visual representation of 4 columns and 4 rows
      *   (designated by new lines) where `#` and `-` stand for a primary and
-     *   a secondary color.
+     *   a secondary color. Whitespaces are ignored.
      */
     static from(ascii) {
         ascii = ascii.replace(/\s/g, "");

@@ -72,9 +72,8 @@ export class DrawApi {
     pixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(this.cameraXy), color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    
-    pixels(xy, color, bits) {
-        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(this.cameraXy), bits, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+    pixels(xy, color, ascii) {
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(xy.sub(this.cameraXy), ascii, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     line(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(this.cameraXy), wh, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));

@@ -192,6 +192,11 @@ export class BeetPx {
    *        where each array element is a text sequence of `0` and `1` to
    *        represent drawn and skipped pixels from left to right.
    */
+  /**
+   * Draws pixels based on a visual 2d representation in form of rows
+   *   (designated by new lines) where `#` and `-` stand for a colored
+   *   pixel and a lack of a pixel. Whitespaces are ignored.
+   */
   static pixels: DrawApi["pixels"] = (...args) => {
     return this.#tryGetFramework().drawApi.pixels(...args);
   };

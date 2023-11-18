@@ -12,15 +12,28 @@ export class DrawPixels {
 
   draw(
     xy: BpxVector2d,
-    bits: string[],
+    ascii: string,
     color: BpxRgbColor,
     pattern: BpxPattern,
   ): void {
     xy = xy.round();
+    const asciiRows = ascii
+      .split("\n")
+      .map((row) => row.replace(/\s/g, ""))
+      .filter((row) => row.length > 0);
 
-    for (let bitsY = 0; bitsY < bits.length; bitsY += 1) {
-      for (let bitsX = 0; bitsX < bits[bitsY]!.length; bitsX += 1) {
-        if (bits[bitsY]![bitsX] !== "#") {
+    for (const row of asciiRows) {
+      const indexOfUnexpectedChar = row.search(/[^#-]/);
+      if (indexOfUnexpectedChar >= 0) {
+        throw Error(
+          `DrawPixels.draw: Unexpected character found: "${row[indexOfUnexpectedChar]}"`,
+        );
+      }
+    }
+
+    for (let bitsY = 0; bitsY < asciiRows.length; bitsY += 1) {
+      for (let bitsX = 0; bitsX < asciiRows[bitsY]!.length; bitsX += 1) {
+        if (asciiRows[bitsY]![bitsX] !== "#") {
           continue;
         }
 

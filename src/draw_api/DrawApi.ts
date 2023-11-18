@@ -91,9 +91,8 @@ export class DrawApi {
     this.#pixel.draw(xy.sub(this.cameraXy), color, this.#pattern);
   }
 
-  // TODO: change bits to a single string with newlines
-  pixels(xy: BpxVector2d, color: BpxRgbColor, bits: string[]): void {
-    this.#pixels.draw(xy.sub(this.cameraXy), bits, color, this.#pattern);
+  pixels(xy: BpxVector2d, color: BpxRgbColor, ascii: string): void {
+    this.#pixels.draw(xy.sub(this.cameraXy), ascii, color, this.#pattern);
   }
 
   line(
