@@ -55,7 +55,8 @@ class Font1 implements BpxFont {
       {
         positionInText: v_0_0_,
         char: "a",
-        sprite: spr_("logo.png")(0, 0, 12, 8),
+        type: "image",
+        spriteXyWh: [v_(0, 0), v_(12, 8)],
       },
     ];
   }
@@ -70,7 +71,8 @@ class Font2 implements BpxFont {
       {
         positionInText: v_0_0_,
         char: "a",
-        sprite: spr_("logo.png")(14, 0, 2, 16),
+        type: "image",
+        spriteXyWh: [v_(14, 0), v_(2, 16)],
       },
     ];
   }
@@ -292,8 +294,6 @@ function drawEllipses(): void {
 
 function drawSprites(): void {
   b_.pixels(
-    v_(1, -2),
-    BpxRgbColor.fromCssHex("#00ffff"),
     BpxPixels.from(`
       ####
       ####
@@ -303,6 +303,8 @@ function drawSprites(): void {
       ####
       -##-
     `),
+    v_(1, -2),
+    BpxRgbColor.fromCssHex("#00ffff"),
   );
   b_.line(
     v_0_0_,

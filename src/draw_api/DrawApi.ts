@@ -92,8 +92,21 @@ export class DrawApi {
     this.#pixel.draw(xy.sub(this.cameraXy), color, this.#pattern);
   }
 
-  pixels(xy: BpxVector2d, color: BpxRgbColor, pixels: BpxPixels): void {
-    this.#pixels.draw(xy.sub(this.cameraXy), pixels, color, this.#pattern);
+  pixels(
+    pixels: BpxPixels,
+    xy: BpxVector2d,
+    color: BpxRgbColor,
+    opts: {
+      scaleXy?: BpxVector2d;
+    } = {},
+  ): void {
+    this.#pixels.draw(
+      pixels,
+      xy.sub(this.cameraXy),
+      color,
+      opts.scaleXy ?? v_1_1_,
+      this.#pattern,
+    );
   }
 
   line(
@@ -146,16 +159,16 @@ export class DrawApi {
 
   sprite(
     sprite: BpxSprite,
-    canvasXy: BpxVector2d,
+    xy: BpxVector2d,
     opts: {
       scaleXy?: BpxVector2d;
     } = {},
   ): void {
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
-      sourceImageAsset,
       sprite,
-      canvasXy.sub(this.cameraXy),
+      sourceImageAsset,
+      xy.sub(this.cameraXy),
       opts.scaleXy ?? v_1_1_,
       this.#spriteColorMapping,
       this.#pattern,
@@ -174,7 +187,7 @@ export class DrawApi {
 
   print(
     text: string,
-    canvasXy: BpxVector2d,
+    xy: BpxVector2d,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
     opts: {
       centerXy?: [boolean, boolean];
@@ -184,23 +197,20 @@ export class DrawApi {
     const centerXy = opts.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
       const size = BpxUtils.measureText(text);
-      canvasXy = canvasXy.sub(
-        centerXy[0] ? size.x / 2 : 0,
-        centerXy[1] ? size.y / 2 : 0,
-      );
+      xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
     }
     if (this.#fontAsset) {
       this.#text.draw(
         text,
-        canvasXy.sub(this.cameraXy),
         this.#fontAsset,
+        xy.sub(this.cameraXy),
         color,
         opts.scaleXy ?? v_1_1_,
         this.#pattern,
       );
     } else {
       Logger.infoBeetPx(
-        `print: (${canvasXy.x},${canvasXy.y}) [${
+        `print: (${xy.x},${xy.y}) [${
           typeof color === "function" ? "computed" : color.cssHex
         }] ${text}`,
       );

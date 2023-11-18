@@ -37,10 +37,12 @@ export class AssetLoader {
                     imageBgColor,
                 });
             });
-            const uniqueImageUrls = new Set([
-                ...assetsToLoad.images.map(({ url }) => url),
-                ...assetsToLoad.fonts.map(({ font }) => font.imageUrl),
-            ]);
+            const uniqueImageUrls = new Set(assetsToLoad.images.map(({ url }) => url));
+            for (const { font } of assetsToLoad.fonts) {
+                if (font.imageUrl != null) {
+                    uniqueImageUrls.add(font.imageUrl);
+                }
+            }
             yield Promise.all([
                 ...Array.from(uniqueImageUrls).map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadImage).call(this, url)),
                 ...assetsToLoad.sounds.map(({ url }) => __awaiter(this, void 0, void 0, function* () { return __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadSound).call(this, url); })),

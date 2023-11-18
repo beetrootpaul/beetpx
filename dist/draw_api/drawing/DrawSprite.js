@@ -22,7 +22,7 @@ export class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_canvas, canvas, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
     }
-    draw(sourceImageAsset, sprite, targetXy, scaleXy, colorMapping, pattern) {
+    draw(sprite, sourceImageAsset, targetXy, scaleXy, colorMapping, pattern) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
@@ -39,8 +39,8 @@ export class DrawSprite {
             const canvasYBase = targetXy.y + spriteY * scaleXy.y;
             for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
                 const canvasXBase = targetXy.x + spriteX * scaleXy.x;
-                for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {
-                    for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
+                for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
+                    for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {
                         const canvasX = canvasXBase + xScaledStep;
                         const canvasY = canvasYBase + yScaledStep;
                         if (__classPrivateFieldGet(this, _DrawSprite_canvas, "f").canSetAt(canvasX, canvasY)) {

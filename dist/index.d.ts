@@ -135,25 +135,27 @@ declare class BpxUtils {
 }
 declare const u_: typeof BpxUtils;
 
-type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
-declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
-declare class BpxSprite {
-    imageUrl: BpxImageUrl;
-    xy1: BpxVector2d;
-    xy2: BpxVector2d;
-    constructor(imageUrl: BpxImageUrl, xy1: BpxVector2d, xy2: BpxVector2d);
-    size(): BpxVector2d;
+declare class BpxPixels {
+    static from(ascii: string): BpxPixels;
+    readonly asciiRows: string[];
+    readonly wh: BpxVector2d;
+    constructor(ascii: string);
 }
 
 type BpxCharSprite = {
-    positionInText: BpxVector2d;
-    sprite: BpxSprite;
     char: string;
-};
+    positionInText: BpxVector2d;
+} & ({
+    type: "image";
+    spriteXyWh: [BpxVector2d, BpxVector2d];
+} | {
+    type: "pixels";
+    pixels: BpxPixels;
+});
 type BpxFontId = string;
 interface BpxFont {
     readonly id: BpxFontId;
-    readonly imageUrl: BpxImageUrl;
+    readonly imageUrl: BpxImageUrl | null;
     spritesFor(text: string): BpxCharSprite[];
 }
 
@@ -168,7 +170,7 @@ type ImageAsset = {
 };
 type FontAsset = {
     font: BpxFont;
-    image: ImageAsset;
+    image: ImageAsset | null;
     imageTextColor: BpxRgbColor;
     imageBgColor: BpxRgbColor;
 };
@@ -261,11 +263,14 @@ declare class BpxPattern {
     hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
-declare class BpxPixels {
-    static from(ascii: string): BpxPixels;
-    readonly asciiRows: string[];
-    readonly wh: BpxVector2d;
-    constructor(ascii: string);
+type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
+declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
+declare class BpxSprite {
+    imageUrl: BpxImageUrl;
+    xy1: BpxVector2d;
+    xy2: BpxVector2d;
+    constructor(imageUrl: BpxImageUrl, xy1: BpxVector2d, xy2: BpxVector2d);
+    size(): BpxVector2d;
 }
 
 declare class Button {
@@ -453,19 +458,21 @@ declare class DrawApi {
     setCameraXy(xy: BpxVector2d): BpxVector2d;
     setPattern(pattern: BpxPattern): BpxPattern;
     pixel(xy: BpxVector2d, color: BpxRgbColor): void;
-    pixels(xy: BpxVector2d, color: BpxRgbColor, pixels: BpxPixels): void;
+    pixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+        scaleXy?: BpxVector2d;
+    }): void;
     line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-    sprite(sprite: BpxSprite, canvasXy: BpxVector2d, opts?: {
+    sprite(sprite: BpxSprite, xy: BpxVector2d, opts?: {
         scaleXy?: BpxVector2d;
     }): void;
     setFont(fontId: BpxFontId | null): BpxFontId | null;
     getFont(): BpxFont | null;
-    print(text: string, canvasXy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), opts?: {
+    print(text: string, xy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;

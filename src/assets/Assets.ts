@@ -16,7 +16,7 @@ export type ImageAsset = {
 
 export type FontAsset = {
   font: BpxFont;
-  image: ImageAsset;
+  image: ImageAsset | null;
   imageTextColor: BpxRgbColor;
   imageBgColor: BpxRgbColor;
 };
@@ -77,7 +77,7 @@ export class Assets {
       );
     return {
       font,
-      image: this.getImageAsset(font.imageUrl),
+      image: font.imageUrl ? this.getImageAsset(font.imageUrl) : null,
       imageTextColor,
       imageBgColor,
     };

@@ -39,7 +39,9 @@ export class BpxUtils {
         const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
         let size = v_0_0_;
         for (const charSprite of charSprites) {
-            size = BpxVector2d.max(size, charSprite.positionInText.add(charSprite.sprite.size()));
+            size = BpxVector2d.max(size, charSprite.positionInText.add(charSprite.type === "image"
+                ? charSprite.spriteXyWh[1]
+                : charSprite.pixels.wh));
         }
         return size;
     }

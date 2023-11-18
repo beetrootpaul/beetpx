@@ -1,9 +1,9 @@
 import { describe, expect, jest, test } from "@jest/globals";
 import { BeetPx } from "./BeetPx";
 import { BpxUtils } from "./Utils";
-import { spr_ } from "./draw_api/Sprite";
+import { BpxPixels } from "./draw_api/Pixels";
 import { BpxCharSprite, BpxFont } from "./font/Font";
-import { v_0_0_ } from "./misc/Vector2d";
+import { v_, v_0_0_ } from "./misc/Vector2d";
 
 describe("Utils", () => {
   [
@@ -137,18 +137,21 @@ describe("Utils", () => {
             for (let i = 0; i < text.length; i += 1) {
               if (text[i] === ".") {
                 sprites.push({
-                  positionInText,
-                  sprite: spr_(this.imageUrl)(0, 0, 100, 200),
                   char: ".",
+                  positionInText,
+                  type: "pixels",
+                  // pixels of a size 1x2
+                  pixels: BpxPixels.from("-\n#"),
                 });
-                positionInText = positionInText.add(1, 2);
+                positionInText = positionInText.add(100, 200);
               } else if (text[i] === "#") {
                 sprites.push({
-                  positionInText,
-                  sprite: spr_(this.imageUrl)(0, 0, 3000, 4000),
                   char: "#",
+                  positionInText,
+                  type: "image",
+                  spriteXyWh: [v_(50_000, 60_000), v_(30, 40)],
                 });
-                positionInText = positionInText.add(30, 40);
+                positionInText = positionInText.add(3_000, 4_000);
               }
             }
             return sprites;
@@ -156,11 +159,11 @@ describe("Utils", () => {
         })(),
     );
 
-    expect(BpxUtils.measureText(".").asArray()).toEqual([100, 200]);
-    expect(BpxUtils.measureText("#").asArray()).toEqual([3000, 4000]);
-    expect(BpxUtils.measureText("...").asArray()).toEqual([102, 204]);
-    expect(BpxUtils.measureText("###").asArray()).toEqual([3060, 4080]);
-    expect(BpxUtils.measureText(".#.#").asArray()).toEqual([3032, 4044]);
+    expect(BpxUtils.measureText(".").asArray()).toEqual([1, 2]);
+    expect(BpxUtils.measureText("#").asArray()).toEqual([30, 40]);
+    expect(BpxUtils.measureText("...").asArray()).toEqual([201, 402]);
+    expect(BpxUtils.measureText("###").asArray()).toEqual([6_030, 8_040]);
+    expect(BpxUtils.measureText(".#.#.#").asArray()).toEqual([6_330, 8_640]);
   });
 
   test("#mod", () => {

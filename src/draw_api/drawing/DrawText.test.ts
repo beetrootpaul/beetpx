@@ -6,7 +6,7 @@ import { BpxCharSprite, BpxFont, BpxFontId } from "../../font/Font";
 import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
 import { DrawingTestSetup, drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPattern } from "../Pattern";
-import { spr_ } from "../Sprite";
+import { BpxPixels } from "../Pixels";
 import { TestImage } from "../TestImage";
 
 describe("DrawText", () => {
@@ -20,18 +20,27 @@ describe("DrawText", () => {
   const fontImage = new TestImage({
     withMapping: { _: cFontBg, X: cFontFg },
     image: `
-        X X _ _ _ _ _ _ _ _ X X X
-        X _ X _ X X _ X _ X X X X
-        X X X _ X _ X X _ X X X X
-        X _ _ X X X _ _ X _ X X X
-        X _ _ X X _ _ X _ X X X X
-        X X X _ X _ _ X _ X _ _ _
+        X X _ _ X X X _ _ _ 
+        X _ X _ X X X X _ X 
+        X X X _ X X X X _ X 
+        X _ _ X X X X _ X _ 
+        X _ _ X X X X X _ X 
+        X X X _ X X X X _ X 
       `,
   });
-  const spriteB = spr_(fontImage.uniqueUrl)(0, 0, 4, 6);
-  const spriteP = spr_(fontImage.uniqueUrl)(4, 0, 3, 6);
-  const spriteX = spr_(fontImage.uniqueUrl)(7, 0, 3, 6);
-  const spriteUnknown = spr_(fontImage.uniqueUrl)(10, 0, 3, 5);
+  const spriteB: [BpxVector2d, BpxVector2d] = [v_(0, 0), v_(4, 6)];
+  const spriteP: BpxPixels = BpxPixels.from(`
+    ---
+    ##-
+    #-#
+    ##-
+    #--
+    #--
+  `);
+  const spriteX: [BpxVector2d, BpxVector2d] = [v_(7, 0), v_(3, 6)];
+  const spriteUnknown: [BpxVector2d, BpxVector2d] = [v_(4, 0), v_(3, 6)];
+
+  // TODO: TESTS FOR DEFAULT FONT
 
   class TestFont implements BpxFont {
     readonly id: BpxFontId = "test-font";
@@ -40,7 +49,7 @@ describe("DrawText", () => {
     gapBetweenChars: BpxVector2d = v_0_0_;
 
     spritesFor(text: string): BpxCharSprite[] {
-      const charSprites: BpxCharSprite[] = [];
+      const sprites: BpxCharSprite[] = [];
       let positionInText = v_0_0_;
       for (let i = 0; i < text.length; i += 1) {
         const char = text[i]!;
@@ -52,12 +61,18 @@ describe("DrawText", () => {
             : char === "X"
             ? spriteX
             : spriteUnknown;
-        charSprites.push({ positionInText, sprite, char });
+        sprites.push({
+          char,
+          positionInText,
+          ...(sprite instanceof BpxPixels
+            ? { type: "pixels", pixels: sprite }
+            : { type: "image", spriteXyWh: sprite }),
+        });
         positionInText = positionInText
-          .add(sprite.size().x, 0)
+          .add(sprite instanceof BpxPixels ? sprite.wh.x : sprite[1].x, 0)
           .add(this.gapBetweenChars);
       }
-      return charSprites;
+      return sprites;
     }
   }
 
@@ -496,6 +511,4 @@ describe("DrawText", () => {
       `,
     });
   });
-
-  // TODO: pixels? default initial font?
 });

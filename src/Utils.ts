@@ -51,7 +51,11 @@ export class BpxUtils {
     for (const charSprite of charSprites) {
       size = BpxVector2d.max(
         size,
-        charSprite.positionInText.add(charSprite.sprite.size()),
+        charSprite.positionInText.add(
+          charSprite.type === "image"
+            ? charSprite.spriteXyWh[1]
+            : charSprite.pixels.wh,
+        ),
       );
     }
     return size;

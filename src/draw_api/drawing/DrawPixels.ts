@@ -1,35 +1,46 @@
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { BpxVector2d } from "../../misc/Vector2d";
+import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
 import { BpxPattern } from "../Pattern";
 import { BpxPixels } from "../Pixels";
 
 export class DrawPixels {
   readonly #canvas: Canvas;
+  readonly #options: { disableRounding?: boolean };
 
-  constructor(canvas: Canvas) {
+  constructor(canvas: Canvas, options: { disableRounding?: boolean } = {}) {
     this.#canvas = canvas;
+    this.#options = options;
   }
 
   draw(
-    xy: BpxVector2d,
     pixels: BpxPixels,
+    targetXy: BpxVector2d,
     color: BpxRgbColor,
+    scaleXy: BpxVector2d,
     pattern: BpxPattern,
   ): void {
-    xy = xy.round();
+    targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
+    scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
 
     for (let bitsY = 0; bitsY < pixels.asciiRows.length; bitsY += 1) {
+      const yBase = targetXy.y + bitsY * scaleXy.y;
       for (let bitsX = 0; bitsX < pixels.asciiRows[bitsY]!.length; bitsX += 1) {
+        const xBase = targetXy.x + bitsX * scaleXy.x;
+
         if (pixels.asciiRows[bitsY]![bitsX] !== "#") {
           continue;
         }
 
-        const x = xy.x + bitsX;
-        const y = xy.y + bitsY;
-        if (pattern.hasPrimaryColorAt(x, y)) {
-          if (this.#canvas.canSetAt(x, y)) {
-            this.#canvas.set(color, x, y);
+        for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
+          for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {
+            const y = yBase + yScaledStep;
+            const x = xBase + xScaledStep;
+            if (pattern.hasPrimaryColorAt(x, y)) {
+              if (this.#canvas.canSetAt(x, y)) {
+                this.#canvas.set(color, x, y);
+              }
+            }
           }
         }
       }

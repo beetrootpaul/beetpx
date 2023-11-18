@@ -1,20 +1,27 @@
 import { BpxImageUrl } from "../assets/Assets";
-import { BpxSprite } from "../draw_api/Sprite";
+import { BpxPixels } from "../draw_api/Pixels";
 import { BpxVector2d } from "../misc/Vector2d";
 
-// TODO: allow pixels instead of images + provide user with a default font
+// TODO: provide a user with a default font
 
 export type BpxCharSprite = {
-  positionInText: BpxVector2d;
-  sprite: BpxSprite;
   char: string;
-};
+  positionInText: BpxVector2d;
+} & (
+  | {
+      type: "image";
+      spriteXyWh: [BpxVector2d, BpxVector2d];
+    }
+  | {
+      type: "pixels";
+      pixels: BpxPixels;
+    }
+);
 
 export type BpxFontId = string;
 
 export interface BpxFont {
   readonly id: BpxFontId;
-  // TODO: an API design issue: you have to specify imageUrl, but then you still can use another image in `BpxCharSprite.sprite`s
-  readonly imageUrl: BpxImageUrl;
+  readonly imageUrl: BpxImageUrl | null;
   spritesFor(text: string): BpxCharSprite[];
 }

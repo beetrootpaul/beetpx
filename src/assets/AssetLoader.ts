@@ -51,10 +51,12 @@ export class AssetLoader {
       });
     });
 
-    const uniqueImageUrls = new Set([
-      ...assetsToLoad.images.map(({ url }) => url),
-      ...assetsToLoad.fonts.map(({ font }) => font.imageUrl),
-    ]);
+    const uniqueImageUrls = new Set(assetsToLoad.images.map(({ url }) => url));
+    for (const { font } of assetsToLoad.fonts) {
+      if (font.imageUrl != null) {
+        uniqueImageUrls.add(font.imageUrl);
+      }
+    }
 
     await Promise.all([
       ...Array.from(uniqueImageUrls).map((url) => this.#loadImage(url)),

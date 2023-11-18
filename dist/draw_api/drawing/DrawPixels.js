@@ -9,28 +9,38 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawPixels_canvas;
+var _DrawPixels_canvas, _DrawPixels_options;
+import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
 export class DrawPixels {
-    constructor(canvas) {
+    constructor(canvas, options = {}) {
         _DrawPixels_canvas.set(this, void 0);
+        _DrawPixels_options.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixels_canvas, canvas, "f");
+        __classPrivateFieldSet(this, _DrawPixels_options, options, "f");
     }
-    draw(xy, pixels, color, pattern) {
-        xy = xy.round();
+    draw(pixels, targetXy, color, scaleXy, pattern) {
+        targetXy = __classPrivateFieldGet(this, _DrawPixels_options, "f").disableRounding ? targetXy : targetXy.round();
+        scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         for (let bitsY = 0; bitsY < pixels.asciiRows.length; bitsY += 1) {
+            const yBase = targetXy.y + bitsY * scaleXy.y;
             for (let bitsX = 0; bitsX < pixels.asciiRows[bitsY].length; bitsX += 1) {
+                const xBase = targetXy.x + bitsX * scaleXy.x;
                 if (pixels.asciiRows[bitsY][bitsX] !== "#") {
                     continue;
                 }
-                const x = xy.x + bitsX;
-                const y = xy.y + bitsY;
-                if (pattern.hasPrimaryColorAt(x, y)) {
-                    if (__classPrivateFieldGet(this, _DrawPixels_canvas, "f").canSetAt(x, y)) {
-                        __classPrivateFieldGet(this, _DrawPixels_canvas, "f").set(color, x, y);
+                for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
+                    for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {
+                        const y = yBase + yScaledStep;
+                        const x = xBase + xScaledStep;
+                        if (pattern.hasPrimaryColorAt(x, y)) {
+                            if (__classPrivateFieldGet(this, _DrawPixels_canvas, "f").canSetAt(x, y)) {
+                                __classPrivateFieldGet(this, _DrawPixels_canvas, "f").set(color, x, y);
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
-_DrawPixels_canvas = new WeakMap();
+_DrawPixels_canvas = new WeakMap(), _DrawPixels_options = new WeakMap();
