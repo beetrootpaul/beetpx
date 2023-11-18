@@ -5,6 +5,7 @@ import {
   BpxFontId,
   BpxImageUrl,
   BpxPattern,
+  BpxPixels,
   BpxRgbColor,
   BpxSpriteColorMapping,
   BpxVector2d,
@@ -293,7 +294,7 @@ function drawSprites(): void {
   b_.pixels(
     v_(1, -2),
     BpxRgbColor.fromCssHex("#00ffff"),
-    `
+    BpxPixels.from(`
       ####
       ####
       ####
@@ -301,7 +302,7 @@ function drawSprites(): void {
       ####
       ####
       -##-
-    `,
+    `),
   );
   b_.line(
     v_0_0_,

@@ -261,6 +261,13 @@ declare class BpxPattern {
     hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
+declare class BpxPixels {
+    static from(ascii: string): BpxPixels;
+    readonly asciiRows: string[];
+    readonly wh: BpxVector2d;
+    constructor(ascii: string);
+}
+
 declare class Button {
     #private;
     static get repeatingFramesStart(): number;
@@ -446,7 +453,7 @@ declare class DrawApi {
     setCameraXy(xy: BpxVector2d): BpxVector2d;
     setPattern(pattern: BpxPattern): BpxPattern;
     pixel(xy: BpxVector2d, color: BpxRgbColor): void;
-    pixels(xy: BpxVector2d, color: BpxRgbColor, ascii: string): void;
+    pixels(xy: BpxVector2d, color: BpxRgbColor, pixels: BpxPixels): void;
     line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
@@ -657,4 +664,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxEasing, BpxEasingFn, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxPattern, BpxPatternColors, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxEasing, BpxEasingFn, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxPattern, BpxPatternColors, BpxPixels, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };

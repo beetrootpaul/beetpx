@@ -8,6 +8,7 @@ export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxPattern } from "./draw_api/Pattern";
+export { BpxPixels } from "./draw_api/Pixels";
 export { BpxSprite } from "./draw_api/Sprite";
 export { BpxEasing } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";

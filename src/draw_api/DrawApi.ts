@@ -9,6 +9,7 @@ import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxPattern } from "./Pattern";
+import { BpxPixels } from "./Pixels";
 import { BpxSprite } from "./Sprite";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
@@ -91,8 +92,8 @@ export class DrawApi {
     this.#pixel.draw(xy.sub(this.cameraXy), color, this.#pattern);
   }
 
-  pixels(xy: BpxVector2d, color: BpxRgbColor, ascii: string): void {
-    this.#pixels.draw(xy.sub(this.cameraXy), ascii, color, this.#pattern);
+  pixels(xy: BpxVector2d, color: BpxRgbColor, pixels: BpxPixels): void {
+    this.#pixels.draw(xy.sub(this.cameraXy), pixels, color, this.#pattern);
   }
 
   line(

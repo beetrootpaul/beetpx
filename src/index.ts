@@ -41,6 +41,7 @@ export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxPattern } from "./draw_api/Pattern";
+export { BpxPixels } from "./draw_api/Pixels";
 export { BpxSprite } from "./draw_api/Sprite";
 export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
