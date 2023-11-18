@@ -1,6 +1,6 @@
 import { describe, expect, jest, test } from "@jest/globals";
 import { BeetPx } from "./BeetPx";
-import { BpxUtils } from "./Utils";
+import { BpxUtils, u_ } from "./Utils";
 import { BpxPixels } from "./draw_api/Pixels";
 import { BpxCharSprite, BpxFont } from "./font/Font";
 import { v_, v_0_0_ } from "./misc/Vector2d";
@@ -135,23 +135,56 @@ describe("Utils", () => {
             const sprites: BpxCharSprite[] = [];
             let positionInText = v_0_0_;
             for (let i = 0; i < text.length; i += 1) {
+              //
+              // data for test assertions where chars are tiny and jumps are huge
+              //
               if (text[i] === ".") {
                 sprites.push({
                   char: ".",
                   positionInText,
                   type: "pixels",
-                  // pixels of a size 1x2
+                  // pixels of a size 1 x 2
                   pixels: BpxPixels.from("-\n#"),
                 });
-                positionInText = positionInText.add(100, 200);
-              } else if (text[i] === "#") {
+                positionInText = positionInText.add(100, -200);
+              }
+              if (text[i] === "o") {
                 sprites.push({
-                  char: "#",
+                  char: "o",
                   positionInText,
                   type: "image",
                   spriteXyWh: [v_(50_000, 60_000), v_(30, 40)],
                 });
-                positionInText = positionInText.add(3_000, 4_000);
+                positionInText = positionInText.add(-3_000, 4_000);
+              }
+              //
+              // data for test assertions where chars are huge and jumps are tiny
+              //
+              if (text[i] === "x") {
+                sprites.push({
+                  char: "x",
+                  positionInText,
+                  type: "pixels",
+                  // pixels of a size 100 x 200
+                  pixels: BpxPixels.from(
+                    u_
+                      .range(200)
+                      .map(
+                        (_) => "-".repeat(25) + "#".repeat(50) + "-".repeat(25),
+                      )
+                      .join("\n"),
+                  ),
+                });
+                positionInText = positionInText.add(1, -2);
+              }
+              if (text[i] === "#") {
+                sprites.push({
+                  char: "#",
+                  positionInText,
+                  type: "image",
+                  spriteXyWh: [v_(50_000, 60_000), v_(3_000, 4_000)],
+                });
+                positionInText = positionInText.add(-30, 40);
               }
             }
             return sprites;
@@ -159,11 +192,53 @@ describe("Utils", () => {
         })(),
     );
 
-    expect(BpxUtils.measureText(".").asArray()).toEqual([1, 2]);
-    expect(BpxUtils.measureText("#").asArray()).toEqual([30, 40]);
-    expect(BpxUtils.measureText("...").asArray()).toEqual([201, 402]);
-    expect(BpxUtils.measureText("###").asArray()).toEqual([6_030, 8_040]);
-    expect(BpxUtils.measureText(".#.#.#").asArray()).toEqual([6_330, 8_640]);
+    //
+    // assertions where chars are tiny and jumps are huge
+    //
+    expect(BpxUtils.measureText(".").map((v) => v.asArray())).toEqual([
+      [0, 0],
+      [1, 2],
+    ]);
+    expect(BpxUtils.measureText("o").map((v) => v.asArray())).toEqual([
+      [0, 0],
+      [30, 40],
+    ]);
+    expect(BpxUtils.measureText("...").map((v) => v.asArray())).toEqual([
+      [0, -400],
+      [201, 402],
+    ]);
+    expect(BpxUtils.measureText("ooo").map((v) => v.asArray())).toEqual([
+      [-6_000, 0],
+      [6_030, 8_040],
+    ]);
+    expect(BpxUtils.measureText(".o.o.o").map((v) => v.asArray())).toEqual([
+      [-5_800, -200],
+      [5_930, 7_802],
+    ]);
+
+    //
+    // assertions where chars are huge and jumps are tiny
+    //
+    expect(BpxUtils.measureText("x").map((v) => v.asArray())).toEqual([
+      [0, 0],
+      [100, 200],
+    ]);
+    expect(BpxUtils.measureText("#").map((v) => v.asArray())).toEqual([
+      [0, 0],
+      [3_000, 4_000],
+    ]);
+    expect(BpxUtils.measureText("xxx").map((v) => v.asArray())).toEqual([
+      [0, -4],
+      [102, 204],
+    ]);
+    expect(BpxUtils.measureText("###").map((v) => v.asArray())).toEqual([
+      [-60, 0],
+      [3_060, 4_080],
+    ]);
+    expect(BpxUtils.measureText("x#x#x#").map((v) => v.asArray())).toEqual([
+      [-58, -2],
+      [3_059, 4_076],
+    ]);
   });
 
   test("#mod", () => {

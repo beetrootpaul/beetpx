@@ -87,16 +87,8 @@ b_.init(
   {
     images: [{ url: "logo.png" }, { url: "pico-8-font.png" }],
     fonts: [
-      {
-        font: new Font1(),
-        imageBgColor: logoOuterColor,
-        imageTextColor: logoInnerColor,
-      },
-      {
-        font: new Font2(),
-        imageBgColor: logoInnerColor,
-        imageTextColor: logoOuterColor,
-      },
+      { font: new Font1(), spriteTextColor: logoInnerColor },
+      { font: new Font2(), spriteTextColor: logoOuterColor },
     ],
     sounds: [{ url: "music_base.wav" }, { url: "music_melody.wav" }],
     jsons: [],
@@ -164,12 +156,12 @@ b_.init(
     b_.takeCanvasSnapshot();
 
     b_.setFont("f1");
-    const s1 = u_.measureText("111");
+    const [_, s1] = u_.measureText("111");
     b_.print("111", v_(1, 8), BpxRgbColor.fromCssHex("#ff00ff"));
     b_.print("111", v_(1 + s1.x + 1, 8), BpxRgbColor.fromCssHex("#ff00ff"));
     b_.print("111", v_(1, 8 + s1.y + 1), BpxRgbColor.fromCssHex("#ff00ff"));
     b_.setFont("f2");
-    const s2 = u_.measureText("222");
+    const [__, s2] = u_.measureText("222");
     b_.print(
       "222",
       v_(1 + s1.x + 1 + s1.x + 1, 8),

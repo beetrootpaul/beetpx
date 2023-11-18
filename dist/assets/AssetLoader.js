@@ -30,11 +30,10 @@ export class AssetLoader {
     }
     loadAssets(assetsToLoad) {
         return __awaiter(this, void 0, void 0, function* () {
-            assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {
+            assetsToLoad.fonts.forEach(({ font, spriteTextColor }) => {
                 __classPrivateFieldGet(this, _AssetLoader_assets, "f").addFontAsset(font.id, {
                     font,
-                    imageTextColor,
-                    imageBgColor,
+                    spriteTextColor,
                 });
             });
             const uniqueImageUrls = new Set(assetsToLoad.images.map(({ url }) => url));

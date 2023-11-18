@@ -1,8 +1,17 @@
-import { b_, BpxRgbColor, spr_, v_, v_0_0_ } from "../../../src";
+import {
+  b_,
+  BpxFontSaint11Minimal4,
+  BpxRgbColor,
+  spr_,
+  u_,
+  v_,
+  v_0_0_,
+  v_1_1_,
+} from "../../../src";
 
 b_.init(
   {
-    gameCanvasSize: "128x128",
+    gameCanvasSize: "64x64",
     desiredUpdateFps: 30,
     debugFeatures: !BEETPX__IS_PROD,
   },
@@ -17,12 +26,7 @@ b_.init(
 
   const velocity = 2;
 
-  const logoScale = v_(2, 2);
-
-  const logoPositionBaseDefault = v_(
-    (128 - 16 * logoScale.x) / 2,
-    (128 - 16 * logoScale.y) / 2,
-  );
+  const logoPositionBaseDefault = v_((64 - 16) / 2, (64 - 16) / 2);
   let logoPositionBase = v_0_0_;
   let logoPositionOffset = v_0_0_;
 
@@ -38,6 +42,8 @@ b_.init(
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = v_0_0_;
+
+    b_.setFont(BpxFontSaint11Minimal4.id);
   });
 
   b_.setOnUpdate(() => {
@@ -74,11 +80,40 @@ b_.init(
 
   b_.setOnDraw(() => {
     b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
+
     b_.sprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
-      { scaleXy: logoScale },
     );
+
+    const textLines = [
+      `.:!? '" */+-`,
+      "01234 56789",
+      "%$()[]{}<>",
+      "ABCDE FGHIJ KLM",
+      "NOPQR STUVW XYZ",
+      `abcde fghij klm`,
+      `nopqr stuvw xyz`,
+    ];
+    const textXy = v_(1, 64 - 5 * textLines.length);
+    let textWh = v_0_0_;
+    let textRealXy = textXy;
+    textLines.forEach((text, i) => {
+      const [xyOffset, wh] = u_.measureText(text);
+      if (i === 0) {
+        textRealXy = textXy.add(xyOffset);
+      }
+      textWh = v_(Math.max(textWh.x, wh.x), textWh.y + (i > 0 ? 1 : 0) + wh.y);
+    });
+    b_.rect(
+      textRealXy.sub(v_1_1_),
+      textWh.add(2),
+      BpxRgbColor.fromCssHex("#83769c"),
+    );
+    textLines.forEach((text, i) => {
+      b_.print(text, textXy.add(0, 5 * i), BpxRgbColor.fromCssHex("#c2c3c7"));
+    });
+
     if (b_.debug) {
       b_.line(
         v_(0, 0),

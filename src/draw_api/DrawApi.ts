@@ -196,7 +196,7 @@ export class DrawApi {
   ): void {
     const centerXy = opts.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
-      const size = BpxUtils.measureText(text);
+      const [_, size] = BpxUtils.measureText(text);
       xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
     }
     if (this.#fontAsset) {

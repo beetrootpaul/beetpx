@@ -10,6 +10,8 @@ export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxPattern } from "./draw_api/Pattern";
 export { BpxPixels } from "./draw_api/Pixels";
 export { BpxSprite } from "./draw_api/Sprite";
+export { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
+export { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 export { BpxEasing } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";
 export { BpxVector2d } from "./misc/Vector2d";

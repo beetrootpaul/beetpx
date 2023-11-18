@@ -32,12 +32,18 @@ export class DrawText {
         canvasXy = canvasXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const colorMapping = typeof color === "function"
-            ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
-                ? color(charSprite)
-                : null)
-            : new BpxSpriteColorMapping((spriteColor) => (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === fontAsset.imageTextColor.cssHex
-                ? color
-                : null);
+            ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => {
+                var _a;
+                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === ((_a = fontAsset.spriteTextColor) === null || _a === void 0 ? void 0 : _a.cssHex)
+                    ? color(charSprite)
+                    : null;
+            })
+            : new BpxSpriteColorMapping((spriteColor) => {
+                var _a;
+                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === ((_a = fontAsset.spriteTextColor) === null || _a === void 0 ? void 0 : _a.cssHex)
+                    ? color
+                    : null;
+            });
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             const xy = canvasXy.add(charSprite.positionInText.mul(scaleXy));
             if (charSprite.type === "image") {

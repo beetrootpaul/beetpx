@@ -101,7 +101,15 @@ declare class BpxUtils {
     static identity<Param>(param: Param): Param;
     static isDefined<Value>(value: Value | null | undefined): value is Value;
     static lerp(a: number, b: number, t: number): number;
-    static measureText(text: string): BpxVector2d;
+    /**
+     * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,
+     *          where XY represents an offset from the initial top-left
+     *          corner where printing of the text would start. For example
+     *          imagine a font in which there are some chars higher by 1px
+     *          than standard height of other characters. In such case
+     *          returned XY would be (0,-1).
+     */
+    static measureText(text: string): [BpxVector2d, BpxVector2d];
     /**
      * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
      */
@@ -171,8 +179,7 @@ type ImageAsset = {
 type FontAsset = {
     font: BpxFont;
     image: ImageAsset | null;
-    imageTextColor: BpxRgbColor;
-    imageBgColor: BpxRgbColor;
+    spriteTextColor: BpxRgbColor | null;
 };
 type SoundAsset = {
     audioBuffer: AudioBuffer;
@@ -185,8 +192,7 @@ declare class Assets {
     addImageAsset(imageUrl: BpxImageUrl, imageAsset: ImageAsset): void;
     addFontAsset(fontId: BpxFontId, fontProps: {
         font: BpxFont;
-        imageTextColor: BpxRgbColor;
-        imageBgColor: BpxRgbColor;
+        spriteTextColor: BpxRgbColor | null;
     }): void;
     addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: SoundAsset): void;
     addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: JsonAsset): void;
@@ -271,6 +277,46 @@ declare class BpxSprite {
     xy2: BpxVector2d;
     constructor(imageUrl: BpxImageUrl, xy1: BpxVector2d, xy2: BpxVector2d);
     size(): BpxVector2d;
+}
+
+/**
+ * A free to use font created by saint11 and distributed on https://saint11.org/blog/fonts/
+ *
+ * Note: only a subset of characters is implemented here:
+ *   . : ! ? ' " * / + -
+ *   0 1 2 3 4 5 6 7 8 9
+ *   % $ ( ) [ ] { } < >
+ *   A B C D E F G H I J K L M
+ *   N O P Q R S T U V W X Y Z
+ *   a b c d e f g h i j k l m
+ *   n o p q r s t u v w x y z
+ */
+declare class BpxFontSaint11Minimal4 implements BpxFont {
+    #private;
+    static id: BpxFontId;
+    readonly id: BpxFontId;
+    readonly imageUrl: BpxImageUrl | null;
+    spritesFor(text: string): BpxCharSprite[];
+}
+
+/**
+ * A free to use font created by saint11 and distributed on https://saint11.org/blog/fonts/
+ *
+ * Note: only a subset of characters is implemented here:
+ *   . : ! ? ' " * / + -
+ *   0 1 2 3 4 5 6 7 8 9
+ *   % $ ( ) [ ] { } < >
+ *   A B C D E F G H I J K L M
+ *   N O P Q R S T U V W X Y Z
+ *   a b c d e f g h i j k l m
+ *   n o p q r s t u v w x y z
+ */
+declare class BpxFontSaint11Minimal5 implements BpxFont {
+    #private;
+    static id: BpxFontId;
+    readonly id: BpxFontId;
+    readonly imageUrl: BpxImageUrl | null;
+    spritesFor(text: string): BpxCharSprite[];
 }
 
 declare class Button {
@@ -379,8 +425,7 @@ type ImageAssetToLoad = {
 };
 type FontAssetToLoad = {
     font: BpxFont;
-    imageTextColor: BpxRgbColor;
-    imageBgColor: BpxRgbColor;
+    spriteTextColor: BpxRgbColor | null;
 };
 type SoundAssetToLoad = {
     url: BpxSoundUrl;
@@ -671,4 +716,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxEasing, BpxEasingFn, BpxFont, BpxFontId, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxPattern, BpxPatternColors, BpxPixels, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, BpxAudioPlaybackId, BpxBrowserType, BpxButtonName, BpxCanvasSnapshotColorMapping, BpxCharSprite, BpxColorMapper, BpxEasing, BpxEasingFn, BpxFont, BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, BpxGameInputEvent, BpxGamepadType, BpxImageUrl, BpxJsonUrl, BpxPattern, BpxPatternColors, BpxPixels, BpxRgbColor, BpxRgbCssHex, BpxSoundSequence, BpxSoundSequenceEntry, BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };

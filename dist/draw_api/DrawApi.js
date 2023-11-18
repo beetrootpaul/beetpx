@@ -115,7 +115,7 @@ export class DrawApi {
         var _a, _b;
         const centerXy = (_a = opts.centerXy) !== null && _a !== void 0 ? _a : [false, false];
         if (centerXy[0] || centerXy[1]) {
-            const size = BpxUtils.measureText(text);
+            const [_, size] = BpxUtils.measureText(text);
             xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
         }
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {

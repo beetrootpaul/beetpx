@@ -16,8 +16,7 @@ type ImageAssetToLoad = {
 
 type FontAssetToLoad = {
   font: BpxFont;
-  imageTextColor: BpxRgbColor;
-  imageBgColor: BpxRgbColor;
+  spriteTextColor: BpxRgbColor | null;
 };
 
 type SoundAssetToLoad = {
@@ -43,11 +42,10 @@ export class AssetLoader {
   }
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
-    assetsToLoad.fonts.forEach(({ font, imageTextColor, imageBgColor }) => {
+    assetsToLoad.fonts.forEach(({ font, spriteTextColor }) => {
       this.#assets.addFontAsset(font.id, {
         font,
-        imageTextColor,
-        imageBgColor,
+        spriteTextColor,
       });
     });
 

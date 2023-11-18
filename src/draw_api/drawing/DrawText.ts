@@ -41,12 +41,12 @@ export class DrawText {
       typeof color === "function"
         ? (charSprite: BpxCharSprite) =>
             new BpxSpriteColorMapping((spriteColor) =>
-              spriteColor?.cssHex === fontAsset.imageTextColor.cssHex
+              spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
                 ? color(charSprite)
                 : null,
             )
         : new BpxSpriteColorMapping((spriteColor) =>
-            spriteColor?.cssHex === fontAsset.imageTextColor.cssHex
+            spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
               ? color
               : null,
           );

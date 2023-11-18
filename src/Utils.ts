@@ -44,13 +44,24 @@ export class BpxUtils {
     return a + (b - a) * t;
   }
 
-  static measureText(text: string): BpxVector2d {
+  /**
+   * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,
+   *          where XY represents an offset from the initial top-left
+   *          corner where printing of the text would start. For example
+   *          imagine a font in which there are some chars higher by 1px
+   *          than standard height of other characters. In such case
+   *          returned XY would be (0,-1).
+   */
+  static measureText(text: string): [BpxVector2d, BpxVector2d] {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
 
-    let size = v_0_0_;
+    let minXy = v_0_0_;
+    let maxXy = v_0_0_;
+
     for (const charSprite of charSprites) {
-      size = BpxVector2d.max(
-        size,
+      minXy = BpxVector2d.min(minXy, charSprite.positionInText);
+      maxXy = BpxVector2d.max(
+        maxXy,
         charSprite.positionInText.add(
           charSprite.type === "image"
             ? charSprite.spriteXyWh[1]
@@ -58,7 +69,8 @@ export class BpxUtils {
         ),
       );
     }
-    return size;
+
+    return [minXy, maxXy.sub(minXy)];
   }
 
   /**

@@ -17,8 +17,7 @@ export type ImageAsset = {
 export type FontAsset = {
   font: BpxFont;
   image: ImageAsset | null;
-  imageTextColor: BpxRgbColor;
-  imageBgColor: BpxRgbColor;
+  spriteTextColor: BpxRgbColor | null;
 };
 
 export type SoundAsset = {
@@ -33,7 +32,10 @@ export class Assets {
   #images: Map<BpxImageUrl, ImageAsset> = new Map();
   #fonts: Map<
     BpxFontId,
-    { font: BpxFont; imageTextColor: BpxRgbColor; imageBgColor: BpxRgbColor }
+    {
+      font: BpxFont;
+      spriteTextColor: BpxRgbColor | null;
+    }
   > = new Map();
   #sounds: Map<BpxSoundUrl, SoundAsset> = new Map();
   #jsons: Map<BpxJsonUrl, JsonAsset> = new Map();
@@ -46,8 +48,7 @@ export class Assets {
     fontId: BpxFontId,
     fontProps: {
       font: BpxFont;
-      imageTextColor: BpxRgbColor;
-      imageBgColor: BpxRgbColor;
+      spriteTextColor: BpxRgbColor | null;
     },
   ): void {
     this.#fonts.set(fontId, fontProps);
@@ -70,7 +71,7 @@ export class Assets {
   }
 
   getFontAsset(fontId: BpxFontId): FontAsset {
-    const { font, imageTextColor, imageBgColor } =
+    const { font, spriteTextColor } =
       this.#fonts.get(fontId) ??
       BpxUtils.throwError(
         `Assets: font descriptor is missing for font ID "${fontId}"`,
@@ -78,8 +79,7 @@ export class Assets {
     return {
       font,
       image: font.imageUrl ? this.getImageAsset(font.imageUrl) : null,
-      imageTextColor,
-      imageBgColor,
+      spriteTextColor,
     };
   }
 

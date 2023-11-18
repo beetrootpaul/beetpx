@@ -43,6 +43,8 @@ export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxPattern } from "./draw_api/Pattern";
 export { BpxPixels } from "./draw_api/Pixels";
 export { BpxSprite } from "./draw_api/Sprite";
+export { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
+export { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
 export { type BpxGamepadType } from "./game_input/GameInputGamepad";

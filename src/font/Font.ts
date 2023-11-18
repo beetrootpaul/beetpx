@@ -2,8 +2,6 @@ import { BpxImageUrl } from "../assets/Assets";
 import { BpxPixels } from "../draw_api/Pixels";
 import { BpxVector2d } from "../misc/Vector2d";
 
-// TODO: provide a user with a default font
-
 export type BpxCharSprite = {
   char: string;
   positionInText: BpxVector2d;

@@ -33,12 +33,11 @@ export class Assets {
     }
     getFontAsset(fontId) {
         var _a;
-        const { font, imageTextColor, imageBgColor } = (_a = __classPrivateFieldGet(this, _Assets_fonts, "f").get(fontId)) !== null && _a !== void 0 ? _a : BpxUtils.throwError(`Assets: font descriptor is missing for font ID "${fontId}"`);
+        const { font, spriteTextColor } = (_a = __classPrivateFieldGet(this, _Assets_fonts, "f").get(fontId)) !== null && _a !== void 0 ? _a : BpxUtils.throwError(`Assets: font descriptor is missing for font ID "${fontId}"`);
         return {
             font,
             image: font.imageUrl ? this.getImageAsset(font.imageUrl) : null,
-            imageTextColor,
-            imageBgColor,
+            spriteTextColor,
         };
     }
     getSoundAsset(soundUrl) {

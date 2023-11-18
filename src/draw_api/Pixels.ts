@@ -1,4 +1,4 @@
-import { BpxVector2d, v_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
 
 export class BpxPixels {
   static from(ascii: string): BpxPixels {
@@ -25,6 +25,6 @@ export class BpxPixels {
       }
       w = Math.max(w, row.length);
     }
-    this.wh = v_(w, this.asciiRows.length);
+    this.wh = new BpxVector2d(w, this.asciiRows.length);
   }
 }

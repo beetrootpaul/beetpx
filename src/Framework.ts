@@ -13,6 +13,8 @@ import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor, black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
+import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
+import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 import { GameInput } from "./game_input/GameInput";
 import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -171,6 +173,14 @@ export class Framework {
   }
 
   async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
+    assetsToLoad.fonts.push({
+      font: new BpxFontSaint11Minimal4(),
+      spriteTextColor: null,
+    });
+    assetsToLoad.fonts.push({
+      font: new BpxFontSaint11Minimal5(),
+      spriteTextColor: null,
+    });
     await this.#assetLoader.loadAssets(assetsToLoad);
 
     Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);

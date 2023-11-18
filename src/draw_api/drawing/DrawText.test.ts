@@ -40,8 +40,6 @@ describe("DrawText", () => {
   const spriteX: [BpxVector2d, BpxVector2d] = [v_(7, 0), v_(3, 6)];
   const spriteUnknown: [BpxVector2d, BpxVector2d] = [v_(4, 0), v_(3, 6)];
 
-  // TODO: TESTS FOR DEFAULT FONT
-
   class TestFont implements BpxFont {
     readonly id: BpxFontId = "test-font";
     readonly imageUrl: BpxImageUrl = fontImage.uniqueUrl;
@@ -78,8 +76,7 @@ describe("DrawText", () => {
 
   const fontProps = {
     font: new TestFont(),
-    imageBgColor: cFontBg,
-    imageTextColor: cFontFg,
+    spriteTextColor: cFontFg,
   };
 
   let dts: DrawingTestSetup;
