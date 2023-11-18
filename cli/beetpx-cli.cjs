@@ -14,6 +14,15 @@ const yargsBuilderHtmlTitle = {
   },
 };
 
+const yargsBuilderHtmlIcon = {
+  htmlIcon: {
+    type: "string",
+    describe: `A path to a PNG file to use as <link rel="icon"> in a generated HTML page`,
+    demandOption: false,
+    requiresArg: true,
+  },
+};
+
 const yargsBuilderOpen = {
   open: {
     type: "boolean",
@@ -30,19 +39,34 @@ const argv = require("yargs")
     ["dev", "$0"],
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
     {
-      // TODO: allow own favicon and check for its existence
       ...yargsBuilderHtmlTitle,
+      ...yargsBuilderHtmlIcon,
       ...yargsBuilderOpen,
     },
   )
   .command("build", "Builds a production-ready bundle with the game.", {
     ...yargsBuilderHtmlTitle,
+    ...yargsBuilderHtmlIcon,
   })
   .command("preview", "Starts a production-ready bundle of the game.")
   .command(
     "zip",
     "Generates a ZIP file with a previously built production-ready bundle and static assets in it. Ready to be uploaded to e.g. itch.io.",
   )
+  .check((argv, options) => {
+    const { htmlIcon } = argv;
+    if (!htmlIcon) {
+      return true;
+    }
+    if (htmlIcon.toLowerCase().endsWith(".png")) {
+      return true;
+    }
+    throw Error(
+      `htmlIcon has to be a PNG file, but its file extension suggest another type format: "${path.basename(
+        htmlIcon,
+      )}"`,
+    );
+  })
   .alias({
     h: "help",
   })
@@ -65,6 +89,9 @@ const beetPxHtmlTemplatesInDir = path.resolve(
   beetPxCodebaseDir,
   "html_templates",
 );
+
+const defaultHtmlIcon = path.resolve(beetPxHtmlTemplatesInDir, "icon.png");
+
 const beetPxAdditionalPublicAssetsOutDir = path.resolve(
   gameCodebaseDir,
   "public",
@@ -94,11 +121,13 @@ if (!fs.existsSync(tsEntrypoint)) {
 if (argv._.includes("dev") || argv._.length <= 0) {
   runDevCommand({
     htmlTitle: argv.htmlTitle ?? "BeetPx game",
+    htmlIconFile: argv.htmlIcon ?? defaultHtmlIcon,
     open: argv.open ?? false,
   });
 } else if (argv._.includes("build")) {
   runBuildCommand({
     htmlTitle: argv.htmlTitle ?? "BeetPx game",
+    htmlIconFile: argv.htmlIcon ?? defaultHtmlIcon,
   });
 } else if (argv._.includes("preview")) {
   runPreviewCommand();
@@ -128,7 +157,7 @@ function WatchPublicDir() {
 }
 
 function runDevCommand(params) {
-  const { htmlTitle, open } = params;
+  const { htmlTitle, htmlIconFile, open } = params;
 
   generateHtmlFile({
     inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
@@ -137,6 +166,7 @@ function runDevCommand(params) {
       gameHtmlTemplate.replace(".template", ""),
     ),
     htmlTitle: htmlTitle,
+    htmlIconFile: htmlIconFile,
   });
 
   copyBeetPxAdditionalAssets({
@@ -192,7 +222,7 @@ function runDevCommand(params) {
 }
 
 function runBuildCommand(params) {
-  const htmlTitle = params.htmlTitle;
+  const { htmlTitle, htmlIconFile } = params;
 
   generateHtmlFile({
     inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
@@ -201,6 +231,7 @@ function runBuildCommand(params) {
       gameHtmlTemplate.replace(".template", ""),
     ),
     htmlTitle: htmlTitle,
+    htmlIconFile: htmlIconFile,
   });
 
   copyBeetPxAdditionalAssets({
@@ -308,7 +339,7 @@ function runZipCommand() {
 }
 
 function generateHtmlFile(params) {
-  const { inputFile, outputFile, htmlTitle } = params;
+  const { inputFile, outputFile, htmlTitle, htmlIconFile } = params;
 
   let content = fs.readFileSync(inputFile, { encoding: "utf8" });
 
@@ -323,6 +354,12 @@ function generateHtmlFile(params) {
   const htmlTitleSlot = "__HTML_TITLE__";
   while (content.indexOf(htmlTitleSlot) >= 0) {
     content = content.replace(htmlTitleSlot, htmlTitle);
+  }
+
+  const htmlIconBase64 = fs.readFileSync(htmlIconFile, "base64");
+  const htmlIconSlot = "__HTML_ICON_BASE64__";
+  while (content.indexOf(htmlIconSlot) >= 0) {
+    content = content.replace(htmlIconSlot, htmlIconBase64);
   }
 
   fs.writeFileSync(outputFile, content, { encoding: "utf8" });

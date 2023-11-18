@@ -5,8 +5,8 @@
   "author": "Beetroot Paul",
   "license": "MIT",
   "scripts": {
-    "start": "beetpx dev --open --htmlTitle \"[dev] Input Tester | BeetPx example\"",
-    "build": "beetpx build --htmlTitle \"Input Tester | BeetPx example\"",
+    "start": "beetpx dev --open --htmlTitle \"[dev] Input Tester | BeetPx example\" --htmlIcon html_icon_dev.png",
+    "build": "beetpx build --htmlTitle \"Input Tester | BeetPx example\" --htmlIcon html_icon_prod.png",
     "prod": "npm run build && beetpx preview",
     "zip": "npm run build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/",
