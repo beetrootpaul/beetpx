@@ -50,15 +50,17 @@
     "precompile": "rimraf ./.dist/* ./dist/*",
     "compile": "tsc --project tsconfig.compile.json",
     "compile:watch": "tsc --project tsconfig.compile.json --watch",
-    "postcompile": "rollup --config ./rollup.config.ts --configPlugin typescript",
+    "postcompile": "node ./scripts/removeJsCommentFromDist.cjs && rollup --config ./rollup.config.ts --configPlugin typescript",
     "docs:generate": "typedoc --entryPoints src/index.ts --out ./docs/ --includeVersion --plugin @zamiell/typedoc-plugin-not-exported",
-    "docs": "npx open-cli ./docs/index.html"
+    "docs": "open-cli ./docs/index.html"
   },
   "dependencies": {
     "audio-buffer-utils": "5.1.2",
     "cross-zip": "4.0.0",
     "fast-png": "6.2.0",
     "jquery": "3.7.0",
+    "remove-html-comments": "1.0.2",
+    "strip-comments": "2.0.1",
     "vite": "4.5.0",
     "yargs": "17.7.2"
   },
@@ -66,8 +68,11 @@
     "@jest/globals": "29.6.1",
     "@rollup/plugin-typescript": "11.1.2",
     "@zamiell/typedoc-plugin-not-exported": "0.2.0",
+    "glob": "10.3.10",
     "husky": "8.0.3",
     "jest": "29.6.2",
+    "jest-environment-jsdom": "29.7.0",
+    "open-cli": "7.2.0",
     "prettier": "3.0.0",
     "prettier-plugin-organize-imports": "3.2.3",
     "rimraf": "5.0.1",

@@ -1,23 +1,72 @@
 #!/usr/bin/env node
 
-// TODO: prevent CLI from running inside this repo or, in general, add some safety nets against messing up with files
-
 const path = require("path");
 const fs = require("fs");
+const removeHtmlComments = require("remove-html-comments");
+const removeCssComments = require("strip-comments");
 
+const yargsBuilderHtmlTitle = {
+  htmlTitle: {
+    type: "string",
+    describe: "A title to use in <title> tag of a generated HTML page",
+    demandOption: false,
+    requiresArg: true,
+  },
+};
+
+const yargsBuilderHtmlIcon = {
+  htmlIcon: {
+    type: "string",
+    describe: `A path to a PNG file to use as <link rel="icon"> in a generated HTML page`,
+    demandOption: false,
+    requiresArg: true,
+  },
+};
+
+const yargsBuilderOpen = {
+  open: {
+    type: "boolean",
+    describe: "Automatically open the game in a browser",
+    demandOption: false,
+  },
+};
+
+// yargs docs: https://yargs.js.org/docs/
 const argv = require("yargs")
   .strict()
   .scriptName("beetpx")
   .command(
     ["dev", "$0"],
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
+    {
+      ...yargsBuilderHtmlTitle,
+      ...yargsBuilderHtmlIcon,
+      ...yargsBuilderOpen,
+    },
   )
-  .command("build", "Builds a production-ready bundle with the game.")
+  .command("build", "Builds a production-ready bundle with the game.", {
+    ...yargsBuilderHtmlTitle,
+    ...yargsBuilderHtmlIcon,
+  })
   .command("preview", "Starts a production-ready bundle of the game.")
   .command(
     "zip",
     "Generates a ZIP file with a previously built production-ready bundle and static assets in it. Ready to be uploaded to e.g. itch.io.",
   )
+  .check((argv, options) => {
+    const { htmlIcon } = argv;
+    if (!htmlIcon) {
+      return true;
+    }
+    if (htmlIcon.toLowerCase().endsWith(".png")) {
+      return true;
+    }
+    throw Error(
+      `htmlIcon has to be a PNG file, but its file extension suggest another type format: "${path.basename(
+        htmlIcon,
+      )}"`,
+    );
+  })
   .alias({
     h: "help",
   })
@@ -28,12 +77,21 @@ const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
 
+const tsEntrypoint = path.resolve(
+  gameCodebaseDir,
+  "src",
+  "beetpx_entrypoint.ts",
+);
+
 const gameHtmlTemplate = "index.template.html";
 
 const beetPxHtmlTemplatesInDir = path.resolve(
   beetPxCodebaseDir,
   "html_templates",
 );
+
+const defaultHtmlIcon = path.resolve(beetPxHtmlTemplatesInDir, "icon.png");
+
 const beetPxAdditionalPublicAssetsOutDir = path.resolve(
   gameCodebaseDir,
   "public",
@@ -53,16 +111,29 @@ if (typeof beetPxVersion !== "string" || beetPxVersion.length <= 0) {
   throw Error('Unable to read "version" from "package.json"');
 }
 
-if (argv._.includes("dev")) {
-  runDevCommand();
+if (!fs.existsSync(tsEntrypoint)) {
+  console.error(
+    `Could not find required BeetPx entrypoint TypeScript file: "${tsEntrypoint}"`,
+  );
+  process.exit(1);
+}
+
+if (argv._.includes("dev") || argv._.length <= 0) {
+  runDevCommand({
+    htmlTitle: argv.htmlTitle ?? "BeetPx game",
+    htmlIconFile: argv.htmlIcon ?? defaultHtmlIcon,
+    open: argv.open ?? false,
+  });
 } else if (argv._.includes("build")) {
-  runBuildCommand();
+  runBuildCommand({
+    htmlTitle: argv.htmlTitle ?? "BeetPx game",
+    htmlIconFile: argv.htmlIcon ?? defaultHtmlIcon,
+  });
 } else if (argv._.includes("preview")) {
   runPreviewCommand();
 } else if (argv._.includes("zip")) {
   runZipCommand();
 } else {
-  // TODO: make yargs error on invalid command
   throw Error("This code should not be reached :-)");
 }
 
@@ -85,38 +156,26 @@ function WatchPublicDir() {
   };
 }
 
-function runDevCommand() {
-  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
-    recursive: true,
+function runDevCommand(params) {
+  const { htmlTitle, htmlIconFile, open } = params;
+
+  generateHtmlFile({
+    inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    outputFile: path.resolve(
+      gameCodebaseDir,
+      gameHtmlTemplate.replace(".template", ""),
+    ),
+    htmlTitle: htmlTitle,
+    htmlIconFile: htmlIconFile,
   });
 
-  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
-  fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
-    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
-  );
+  copyBeetPxAdditionalAssets({
+    inputDir: beetPxHtmlTemplatesInDir,
+    outputDir: beetPxAdditionalPublicAssetsOutDir,
+  });
 
-  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
-    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  }
-  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  [
-    "edge_tl.png",
-    "edge_t.png",
-    "edge_tr.png",
-    "edge_l.png",
-    "edge_r.png",
-    "edge_bl.png",
-    "edge_b.png",
-    "edge_br.png",
-    "gui.png",
-    "loading.gif",
-    "start.png",
-  ].forEach((pngAsset) => {
-    fs.copyFileSync(
-      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
-      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
-    );
+  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
+    recursive: true,
   });
 
   // Vite docs:
@@ -137,7 +196,7 @@ function runDevCommand() {
       //   and the latter does not work there.
       base: "./",
       server: {
-        open: gameHtmlTemplate.replace(".template", ""),
+        open: open ? gameHtmlTemplate.replace(".template", "") : false,
         hmr: true,
         watch: {
           interval: 500,
@@ -162,38 +221,26 @@ function runDevCommand() {
     });
 }
 
-function runBuildCommand() {
-  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
-    recursive: true,
+function runBuildCommand(params) {
+  const { htmlTitle, htmlIconFile } = params;
+
+  generateHtmlFile({
+    inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
+    outputFile: path.resolve(
+      gameCodebaseDir,
+      gameHtmlTemplate.replace(".template", ""),
+    ),
+    htmlTitle: htmlTitle,
+    htmlIconFile: htmlIconFile,
   });
 
-  // TODO: Find a way to put HTML files inside `.beetpx/` and still make everything work OK. Maybe some server middleware for route resolution?
-  fs.copyFileSync(
-    path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
-    path.resolve(gameCodebaseDir, gameHtmlTemplate.replace(".template", "")),
-  );
+  copyBeetPxAdditionalAssets({
+    inputDir: beetPxHtmlTemplatesInDir,
+    outputDir: beetPxAdditionalPublicAssetsOutDir,
+  });
 
-  if (fs.existsSync(beetPxAdditionalPublicAssetsOutDir)) {
-    fs.rmdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  }
-  fs.mkdirSync(beetPxAdditionalPublicAssetsOutDir, { recursive: true });
-  [
-    "edge_tl.png",
-    "edge_t.png",
-    "edge_tr.png",
-    "edge_l.png",
-    "edge_r.png",
-    "edge_bl.png",
-    "edge_b.png",
-    "edge_br.png",
-    "gui.png",
-    "loading.gif",
-    "start.png",
-  ].forEach((pngAsset) => {
-    fs.copyFileSync(
-      path.resolve(beetPxHtmlTemplatesInDir, pngAsset),
-      path.resolve(beetPxAdditionalPublicAssetsOutDir, pngAsset),
-    );
+  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
+    recursive: true,
   });
 
   // Vite docs:
@@ -258,7 +305,6 @@ function runPreviewCommand() {
 }
 
 function runZipCommand() {
-  // TODO: throw error if "build" was not invoked before or rather there are no files to zip
   fs.mkdirSync(path.resolve(gameCodebaseDir, distZipDir), {
     recursive: true,
   });
@@ -290,4 +336,59 @@ function runZipCommand() {
       outputZip,
     )} (${sizePart})`,
   );
+}
+
+function generateHtmlFile(params) {
+  const { inputFile, outputFile, htmlTitle, htmlIconFile } = params;
+
+  let content = fs.readFileSync(inputFile, { encoding: "utf8" });
+
+  content = removeHtmlComments(content).data;
+  content = removeCssComments(content, {
+    line: true,
+    block: true,
+    keepProtected: false,
+    preserveNewlines: true,
+  });
+
+  const htmlTitleSlot = "__HTML_TITLE__";
+  while (content.indexOf(htmlTitleSlot) >= 0) {
+    content = content.replace(htmlTitleSlot, htmlTitle);
+  }
+
+  const htmlIconBase64 = fs.readFileSync(htmlIconFile, "base64");
+  const htmlIconSlot = "__HTML_ICON_BASE64__";
+  while (content.indexOf(htmlIconSlot) >= 0) {
+    content = content.replace(htmlIconSlot, htmlIconBase64);
+  }
+
+  fs.writeFileSync(outputFile, content, { encoding: "utf8" });
+}
+
+function copyBeetPxAdditionalAssets(params) {
+  const { inputDir, outputDir } = params;
+
+  if (fs.existsSync(outputDir)) {
+    fs.rmdirSync(outputDir, { recursive: true });
+  }
+
+  fs.mkdirSync(outputDir, { recursive: true });
+  [
+    "edge_tl.png",
+    "edge_t.png",
+    "edge_tr.png",
+    "edge_l.png",
+    "edge_r.png",
+    "edge_bl.png",
+    "edge_b.png",
+    "edge_br.png",
+    "gui.png",
+    "loading.gif",
+    "start.png",
+  ].forEach((pngAsset) => {
+    fs.copyFileSync(
+      path.resolve(inputDir, pngAsset),
+      path.resolve(outputDir, pngAsset),
+    );
+  });
 }

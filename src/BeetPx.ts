@@ -1,13 +1,15 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { Assets, AssetsToLoad } from "./Assets";
+import { Framework, type FrameworkOptions } from "./Framework";
+import { AssetsToLoad } from "./assets/AssetLoader";
+import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { Framework, type FrameworkOptions } from "./Framework";
-import { Buttons } from "./game_input/Buttons";
 import { GameInput } from "./game_input/GameInput";
+import { Buttons } from "./game_input/buttons/Buttons";
 import { Logger } from "./logger/Logger";
+import { FullScreen } from "./misc/FullScreen";
 import { StorageApi } from "./storage/StorageApi";
 
 export class BeetPx {
@@ -39,6 +41,8 @@ export class BeetPx {
    * Number of frames processed since game started.
    * It gets reset to 0 when `BeetPx.restart()` is called.
    * It counts update calls, not draw calls.
+   *
+   * @return number
    */
   static get frameNumber(): Framework["frameNumber"] {
     return this.#tryGetFramework().frameNumber;
@@ -96,6 +100,13 @@ export class BeetPx {
     return this.#tryGetFramework().gameInput.gameButtons.isPressed(...args);
   };
 
+  static areDirectionsPressedAsVector: Buttons["areDirectionsPressedAsVector"] =
+    (...args) => {
+      return this.#tryGetFramework().gameInput.gameButtons.areDirectionsPressedAsVector(
+        ...args,
+      );
+    };
+
   static setRepeating: Buttons["setRepeating"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.setRepeating(...args);
   };
@@ -136,34 +147,56 @@ export class BeetPx {
   // Draw API
   //
 
-  static setCameraOffset: DrawApi["setCameraOffset"] = (...args) => {
-    return this.#tryGetFramework().drawApi.setCameraOffset(...args);
+  static clearCanvas: DrawApi["clearCanvas"] = (...args) => {
+    return this.#tryGetFramework().drawApi.clearCanvas(...args);
   };
 
+  /**
+   * @returns - previous clipping region in form of an array: [xy, wh]
+   */
   static setClippingRegion: DrawApi["setClippingRegion"] = (...args) => {
     return this.#tryGetFramework().drawApi.setClippingRegion(...args);
   };
 
+  /**
+   * @returns - previous clipping region in form of an array: [xy, wh]
+   */
   static removeClippingRegion: DrawApi["removeClippingRegion"] = (...args) => {
     return this.#tryGetFramework().drawApi.removeClippingRegion(...args);
   };
 
-  static setFillPattern: DrawApi["setFillPattern"] = (...args) => {
-    return this.#tryGetFramework().drawApi.setFillPattern(...args);
+  /**
+   * Sets a new XY (left-top corner) of a camera's viewport
+   *
+   * @returns previous camera XY
+   */
+  static setCameraXy: DrawApi["setCameraXy"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setCameraXy(...args);
   };
 
-  static mapSpriteColors: DrawApi["mapSpriteColors"] = (...args) => {
-    return this.#tryGetFramework().drawApi.mapSpriteColors(...args);
-  };
-
-  static clearCanvas: DrawApi["clearCanvas"] = (...args) => {
-    return this.#tryGetFramework().drawApi.clearCanvas(...args);
+  /**
+   * @returns previous pattern
+   */
+  static setPattern: DrawApi["setPattern"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setPattern(...args);
   };
 
   static pixel: DrawApi["pixel"] = (...args) => {
     return this.#tryGetFramework().drawApi.pixel(...args);
   };
 
+  /**
+   * @param {BpxVector2d} xy - sd
+   * @param {BpxRgbColor} color - sd
+   * @param {string[]} bits - an array representing rows from top to bottom,
+   *        where each array element is a text sequence of `0` and `1` to
+   *        represent drawn and skipped pixels from left to right.
+   */
+  /**
+   * Draws pixels based on a visual 2d representation in form of rows
+   *   (designated by new lines) where `#` and `-` stand for a colored
+   *   pixel and a lack of a pixel. Whitespaces are ignored.
+   */
   static pixels: DrawApi["pixels"] = (...args) => {
     return this.#tryGetFramework().drawApi.pixels(...args);
   };
@@ -186,6 +219,15 @@ export class BeetPx {
 
   static ellipseFilled: DrawApi["ellipseFilled"] = (...args) => {
     return this.#tryGetFramework().drawApi.ellipseFilled(...args);
+  };
+
+  /**
+   * @returns previous sprite color mapping
+   */
+  static setSpriteColorMapping: DrawApi["setSpriteColorMapping"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().drawApi.setSpriteColorMapping(...args);
   };
 
   static sprite: DrawApi["sprite"] = (...args) => {
@@ -270,6 +312,24 @@ export class BeetPx {
     ...args
   ) => {
     return this.#tryGetFramework().audioApi.__internal__globalGainNode(...args);
+  };
+
+  //
+  // Full Screen
+  //
+
+  static isFullScreenSupported: FullScreen["isFullScreenSupported"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().fullScreen.isFullScreenSupported(...args);
+  };
+
+  static isInFullScreen: FullScreen["isInFullScreen"] = (...args) => {
+    return this.#tryGetFramework().fullScreen.isInFullScreen(...args);
+  };
+
+  static toggleFullScreen: FullScreen["toggleFullScreen"] = (...args) => {
+    return this.#tryGetFramework().fullScreen.toggleFullScreen(...args);
   };
 
   //

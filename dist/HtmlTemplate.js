@@ -5,6 +5,11 @@ export class HtmlTemplate {
     static addStartedClass() {
         document.body.classList.add("started");
     }
+    static showError(errorMessage) {
+        document.body.classList.add("error");
+        document.getElementById("screen_error__message").innerText =
+            String(errorMessage);
+    }
     static updateMutedClass(isMuted) {
         document.body.classList[isMuted ? "add" : "remove"]("muted");
     }

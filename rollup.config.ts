@@ -4,9 +4,9 @@ import { dts as pluginDts } from "rollup-plugin-dts";
 //   Why? In order to eliminate `export` statements that are needed between multiple `.d.ts`
 //   file, but not needed for a final public API of this BeetPx framework.
 //   In other words, we want framework users to
-//     import { BpxSolidColor } from "@beetpx/beetpx";
+//     import { BpxRgbColor } from "@beetpx/beetpx";
 //   but not
-//     import { SolidColor } from "@beetpx/beetpx/dist/Color";
+//     import { BpxRgbColor } from "@beetpx/beetpx/dist/color/RgbColor";
 //   .
 const config = [
   {
@@ -18,7 +18,7 @@ const config = [
         //   dts plugin from typechecking test files inside `src/`, while
         //   they should not bother it at all (because `./.dist/index.d.ts`
         //   is the input, and not `./src/index.ts`).
-        // But still, let's provide the plugin with the the correct
+        // But still, let's provide the plugin with the correct
         //   tsconfig and not the default one.
         tsconfig: "tsconfig.compile.json",
       }),

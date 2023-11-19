@@ -1,4 +1,3 @@
-import { BpxSolidColor } from "../Color";
 export class TestImage {
     constructor(params) {
         const asciiImage = params.image;
@@ -27,14 +26,12 @@ export class TestImage {
                 "/" +
                 normalizedAsciiImage +
                 ".png";
-        // TODO: REMOVE
-        console.log(this.uniqueUrl);
         for (let i = 0; i < this.asset.width * this.asset.height; i += 1) {
             const color = asciiToColor[normalizedAsciiImage[i]];
-            if (!color) {
+            if (typeof color === "undefined") {
                 throw Error(`TestImage: Missing color mapping for "${normalizedAsciiImage[i]}"`);
             }
-            else if (color instanceof BpxSolidColor) {
+            else if (color) {
                 this.asset.rgba8bitData[4 * i] = color.r;
                 this.asset.rgba8bitData[4 * i + 1] = color.g;
                 this.asset.rgba8bitData[4 * i + 2] = color.b;

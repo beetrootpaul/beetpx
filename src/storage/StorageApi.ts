@@ -1,4 +1,4 @@
-type PersistedStateValueContraints = Record<
+type PersistedStateValueConstraints = Record<
   string,
   string | number | boolean | null
 >;
@@ -6,18 +6,17 @@ type PersistedStateValueContraints = Record<
 export class StorageApi {
   static readonly #key: string = "game_stored_state";
 
-  savePersistedState<PersistedStateValue extends PersistedStateValueContraints>(
-    value: PersistedStateValue,
-  ): void {
+  savePersistedState<
+    PersistedStateValue extends PersistedStateValueConstraints,
+  >(value: PersistedStateValue): void {
     window.localStorage.setItem(
       StorageApi.#key,
       JSON.stringify(value, null, 2),
     );
   }
 
-  // TODO: use zod or some other popular lib and validate value's shape here
   loadPersistedState<
-    PersistedStateValue extends PersistedStateValueContraints,
+    PersistedStateValue extends PersistedStateValueConstraints,
   >(): PersistedStateValue | null {
     const maybeValue: string | null = window.localStorage.getItem(
       StorageApi.#key,

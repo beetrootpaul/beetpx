@@ -1,5 +1,5 @@
-import { Assets, BpxSoundUrl } from "../Assets";
 import { HtmlTemplate } from "../HtmlTemplate";
+import { Assets, BpxSoundUrl } from "../assets/Assets";
 import { Logger } from "../logger/Logger";
 import { AudioHelpers } from "./AudioHelpers";
 import { AudioPlayback, type BpxAudioPlaybackId } from "./AudioPlayback";
@@ -155,7 +155,6 @@ export class AudioApi {
     return playback.id;
   }
 
-  // TODO: make it visible somewhere in the GUI whether audio is muted or not
   isAudioMuted(): boolean {
     return this.#isMuted;
   }

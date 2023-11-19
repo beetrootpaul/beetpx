@@ -1,13 +1,13 @@
-import { b_, BpxSolidColor, spr_, u_, v_, v_0_0_ } from "../../../src";
-import { BpxGamepadType } from "../../../src/game_input/GamepadGameInput";
+import { b_, BpxRgbColor, spr_, u_, v_, v_0_0_ } from "../../../src";
+import { BpxGamepadType } from "../../../src/game_input/GameInputGamepad";
 import { GamepadTypeDetector } from "../../../src/game_input/GamepadTypeDetector";
 
 const spr = spr_("spritesheet.png");
 
-const orange = BpxSolidColor.fromRgbCssHex("#ffa300");
-const blue = BpxSolidColor.fromRgbCssHex("#29adff");
-const lime = BpxSolidColor.fromRgbCssHex("#00e436");
-const pink = BpxSolidColor.fromRgbCssHex("#ff77a8");
+const orange = BpxRgbColor.fromCssHex("#ffa300");
+const blue = BpxRgbColor.fromCssHex("#29adff");
+const lime = BpxRgbColor.fromCssHex("#00e436");
+const pink = BpxRgbColor.fromCssHex("#ff77a8");
 
 export class DebugView {
   private readonly gamepadsN = 3;

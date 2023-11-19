@@ -1,39 +1,37 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _GameInput_specializedGameInputs, _GameInput_gamepadGameInput, _GameInput_eventsCapturesInLastUpdate, _GameInput_mostRecentInputMethods;
+var _GameInput_eventsCapturesInLastUpdate, _GameInput_mostRecentInputMethods;
 import { HtmlTemplate } from "../HtmlTemplate";
-import { Button } from "./Button";
-import { Buttons } from "./Buttons";
-import { GamepadGameInput } from "./GamepadGameInput";
-import { KeyboardGameInput } from "./KeyboardGameInput";
-import { MouseGameInput } from "./MouseGameInput";
-import { TouchGameInput } from "./TouchGameInput";
+import { Button } from "./buttons/Button";
+import { Buttons } from "./buttons/Buttons";
+import { GameInputGamepad } from "./GameInputGamepad";
+import { GameInputKeyboard } from "./GameInputKeyboard";
+import { GameInputMouse } from "./GameInputMouse";
+import { GameInputTouch } from "./GameInputTouch";
 export class GameInput {
     constructor(params) {
-        _GameInput_specializedGameInputs.set(this, void 0);
-        _GameInput_gamepadGameInput.set(this, void 0);
         _GameInput_eventsCapturesInLastUpdate.set(this, new Set());
         _GameInput_mostRecentInputMethods.set(this, new Set());
-        __classPrivateFieldSet(this, _GameInput_gamepadGameInput, new GamepadGameInput({
+        this.gameInputGamepad = new GameInputGamepad({
             browserType: params.browserType,
-        }), "f");
-        __classPrivateFieldSet(this, _GameInput_specializedGameInputs, [
-            new MouseGameInput(),
-            new KeyboardGameInput({
+        });
+        this.gameInputsSpecialized = [
+            new GameInputMouse(),
+            new GameInputKeyboard({
                 enableDebugInputs: params.enableDebugInputs,
             }),
-            new TouchGameInput(),
-            __classPrivateFieldGet(this, _GameInput_gamepadGameInput, "f"),
-        ], "f");
+            new GameInputTouch(),
+            this.gameInputGamepad,
+        ];
         this.gameButtons = new Buttons();
         this.buttonFullScreen = new Button();
         this.buttonMuteUnmute = new Button();
@@ -42,7 +40,7 @@ export class GameInput {
         this.buttonFrameByFrameStep = new Button();
     }
     startListening() {
-        for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
+        for (const sgi of this.gameInputsSpecialized) {
             sgi.startListening();
         }
     }
@@ -52,10 +50,10 @@ export class GameInput {
     update(params) {
         __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").clear();
         const events = new Set();
-        for (const sgi of __classPrivateFieldGet(this, _GameInput_specializedGameInputs, "f")) {
+        for (const sgi of this.gameInputsSpecialized) {
             if (sgi.update(events)) {
-                // We do not care here if there were many input methods active at once,
-                //   since usually it will be just one method.
+                
+                
                 __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").add(sgi.inputMethod);
             }
         }
@@ -85,10 +83,10 @@ export class GameInput {
         return __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f");
     }
     connectedGamepadTypes() {
-        return __classPrivateFieldGet(this, _GameInput_gamepadGameInput, "f").connectedGamepadTypes();
+        return this.gameInputGamepad.connectedGamepadTypes();
     }
     __internal__capturedEvents() {
         return __classPrivateFieldGet(this, _GameInput_eventsCapturesInLastUpdate, "f");
     }
 }
-_GameInput_specializedGameInputs = new WeakMap(), _GameInput_gamepadGameInput = new WeakMap(), _GameInput_eventsCapturesInLastUpdate = new WeakMap(), _GameInput_mostRecentInputMethods = new WeakMap();
+_GameInput_eventsCapturesInLastUpdate = new WeakMap(), _GameInput_mostRecentInputMethods = new WeakMap();

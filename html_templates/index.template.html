@@ -13,15 +13,10 @@
       rel="icon"
       type="image/png"
       sizes="80x80"
-      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAVdJREFUeJzt3MFNw0AQQFFAdMCRymiCrjlSQyiAPVh5o7Uh/x2jCIevlQd7Y55vnx+3pwfy9vX7te/3+9/34h/psRUQFRAVEL2uXlydQP8z+X1bgaiAqICogKiAqICogKiAqIBoeSXyF61uNR3VlciJCogKiAqItgyR6RP80T2M6c+y0gpEBUQFRAVE40Pk6gNj+hitQFRAVEBUQERDZPqveiGDQLQCUQFRAVEB0eEhsmNgHD2GXGGstCdyogKiAqICosNDZMctpOnPMn3clVYgKiAqICogGt8T2TEw5NZVeyIXU0BUQFRAtOXbWdN7E2dd2ay0AlEBUQFRAdGWPZHpfzWyet9ZT9m3AlEBUQFRAdFpDxtO31Y6SysQFRAVEBUQ0RCRE/yOZzh2aAWiAqICogKi8W9nTf+8Kw2MlVYgKiAqICogWg6RKz1EeHWtQFRAVEBUQPQDHRdHQWx83G0AAAAASUVORK5CYII="
+      href="data:image/png;base64,__HTML_ICON_BASE64__"
     />
 
-    <!-- TODO: start button to initiate sounds!  -->
-
-    <!-- TODO: mouse GUI all aspect ratios  -->
-
-    <!-- TODO: Allow a game title injection as build script params -->
-    <title>BeetPx game</title>
+    <title>__HTML_TITLE__</title>
 
     <!--
     Keep styles embedded in HTML here, because external CSS file is loaded by Vite in a way which can make GUI flicker.
@@ -90,7 +85,7 @@
         display: none;
       }
 
-      #screen_start_game__spinner {
+      #screen_loading__spinner {
         grid-area: spinner;
 
         /* Remove standard visual aspects of a button */
@@ -104,7 +99,6 @@
         background-repeat: no-repeat;
       }
 
-      /* TODO: Polish this screen */
       #screen_start_game {
         position: absolute;
         top: 0;
@@ -139,6 +133,42 @@
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
+      }
+
+      #screen_error {
+        display: none;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+
+        background-color: var(--gui-bg-color);
+      }
+
+      .error #screen_error {
+        display: block;
+      }
+
+      #screen_error__message {
+        --margin: 16px;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(100vw - 2 * var(--margin));
+        height: calc(100vh - 2 * var(--margin));
+
+        margin: var(--margin);
+        border-radius: 8px;
+        border: 1px solid #ff004d;
+        background-color: #000000;
+        padding: 16px;
+
+        color: #c2c3c7;
+        font-size: 16px;
+        white-space: pre-wrap;
       }
 
       #game_display {
@@ -441,8 +471,6 @@
           background-position-x: calc(var(--scs) * -15);
         }
       }
-
-      /* TODO: polish mute + (optional)full layout on desktop both variants */
 
       /*
        * MOUSE GUI – portrait
@@ -813,8 +841,13 @@
       <button id="screen_start_game__button" tabindex="0"></button>
     </div>
 
+    <!-- Has to be placed after #screen_start_game in order to be visible on top  -->
     <div id="screen_loading">
-      <div id="screen_start_game__spinner"></div>
+      <div id="screen_loading__spinner"></div>
+    </div>
+
+    <div id="screen_error">
+      <pre id="screen_error__message"></pre>
     </div>
   </body>
 

@@ -46,5 +46,5 @@ export class AudioPlayback {
     }
 }
 _AudioPlayback_audioContext = new WeakMap(), _AudioPlayback_gainNode = new WeakMap();
-// start from 1 to avoid a case when someone checks for ID being truthy and gets `false`, because of value `0`
+
 AudioPlayback.nextPlaybackId = 1;

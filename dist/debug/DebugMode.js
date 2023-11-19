@@ -24,4 +24,3 @@ export class DebugMode {
 }
 _a = DebugMode;
 _DebugMode_enabled = { value: false };
-// TODO: consider `private _abc` notation instead of `#abc`

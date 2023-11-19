@@ -1,4 +1,4 @@
-// noinspection JSUnusedGlobalSymbols
+
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,21 +11,21 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
-import { DebugMode } from "./debug/DebugMode";
 import { Framework } from "./Framework";
+import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
 export class BeetPx {
-    //
-    // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
-    //
+    
+    
+    
     static init(frameworkOptions, assetsToLoad) {
         Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
         __classPrivateFieldSet(this, _a, new Framework(frameworkOptions), "f", _BeetPx_framework);
         return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).init(assetsToLoad);
     }
-    //
-    // field-like getters, the ones meant to be used
-    //
+    
+    
+    
     static get debug() {
         return DebugMode.enabled;
     }
@@ -33,6 +33,8 @@ export class BeetPx {
      * Number of frames processed since game started.
      * It gets reset to 0 when `BeetPx.restart()` is called.
      * It counts update calls, not draw calls.
+     *
+     * @return number
      */
     static get frameNumber() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frameNumber;
@@ -48,9 +50,9 @@ _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {
     return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework);
 };
 _BeetPx_framework = { value: void 0 };
-//
-// lifecycle methods
-//
+
+
+
 BeetPx.setOnStarted = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).setOnStarted(...args);
 };
@@ -63,9 +65,9 @@ BeetPx.setOnDraw = (...args) => {
 BeetPx.restart = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).restart(...args);
 };
-//
-// Logger
-//
+
+
+
 BeetPx.logDebug = (...args) => {
     return Logger.debug(...args);
 };
@@ -78,11 +80,14 @@ BeetPx.logWarn = (...args) => {
 BeetPx.logError = (...args) => {
     return Logger.error(...args);
 };
-//
-// Game Input & Buttons
-//
+
+
+
 BeetPx.isPressed = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.isPressed(...args);
+};
+BeetPx.areDirectionsPressedAsVector = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.areDirectionsPressedAsVector(...args);
 };
 BeetPx.setRepeating = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.setRepeating(...args);
@@ -102,30 +107,53 @@ BeetPx.connectedGamepadTypes = (...args) => {
 BeetPx.__internal__capturedEvents = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.__internal__capturedEvents(...args);
 };
-//
-// Draw API
-//
-BeetPx.setCameraOffset = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setCameraOffset(...args);
+
+
+
+BeetPx.clearCanvas = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.clearCanvas(...args);
 };
+/**
+ * @returns - previous clipping region in form of an array: [xy, wh]
+ */
 BeetPx.setClippingRegion = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setClippingRegion(...args);
 };
+/**
+ * @returns - previous clipping region in form of an array: [xy, wh]
+ */
 BeetPx.removeClippingRegion = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.removeClippingRegion(...args);
 };
-BeetPx.setFillPattern = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFillPattern(...args);
+/**
+ * Sets a new XY (left-top corner) of a camera's viewport
+ *
+ * @returns previous camera XY
+ */
+BeetPx.setCameraXy = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setCameraXy(...args);
 };
-BeetPx.mapSpriteColors = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.mapSpriteColors(...args);
-};
-BeetPx.clearCanvas = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.clearCanvas(...args);
+/**
+ * @returns previous pattern
+ */
+BeetPx.setPattern = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setPattern(...args);
 };
 BeetPx.pixel = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixel(...args);
 };
+/**
+ * @param {BpxVector2d} xy - sd
+ * @param {BpxRgbColor} color - sd
+ * @param {string[]} bits - an array representing rows from top to bottom,
+ *        where each array element is a text sequence of `0` and `1` to
+ *        represent drawn and skipped pixels from left to right.
+ */
+/**
+ * Draws pixels based on a visual 2d representation in form of rows
+ *   (designated by new lines) where `#` and `-` stand for a colored
+ *   pixel and a lack of a pixel. Whitespaces are ignored.
+ */
 BeetPx.pixels = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixels(...args);
 };
@@ -144,6 +172,12 @@ BeetPx.ellipse = (...args) => {
 BeetPx.ellipseFilled = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.ellipseFilled(...args);
 };
+/**
+ * @returns previous sprite color mapping
+ */
+BeetPx.setSpriteColorMapping = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setSpriteColorMapping(...args);
+};
 BeetPx.sprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);
 };
@@ -159,9 +193,9 @@ BeetPx.print = (...args) => {
 BeetPx.takeCanvasSnapshot = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.takeCanvasSnapshot(...args);
 };
-//
-// Audio API
-//
+
+
+
 BeetPx.playSoundOnce = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundOnce(...args);
 };
@@ -204,9 +238,21 @@ BeetPx.__internal__audioContext = (...args) => {
 BeetPx.__internal__globalGainNode = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.__internal__globalGainNode(...args);
 };
-//
-// Storage API
-//
+
+
+
+BeetPx.isFullScreenSupported = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).fullScreen.isFullScreenSupported(...args);
+};
+BeetPx.isInFullScreen = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).fullScreen.isInFullScreen(...args);
+};
+BeetPx.toggleFullScreen = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).fullScreen.toggleFullScreen(...args);
+};
+
+
+
 BeetPx.savePersistedState = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.savePersistedState(...args);
 };
@@ -216,9 +262,9 @@ BeetPx.loadPersistedState = (...args) => {
 BeetPx.clearPersistedState = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).storageApi.clearPersistedState(...args);
 };
-//
-// Direct access to loaded assets
-//
+
+
+
 BeetPx.getImageAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getImageAsset(...args);
 };
@@ -231,9 +277,9 @@ BeetPx.getSoundAsset = (...args) => {
 BeetPx.getJsonAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getJsonAsset(...args);
 };
-//
-// other
-//
+
+
+
 BeetPx.detectedBrowserType = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).detectedBrowserType(...args);
 };

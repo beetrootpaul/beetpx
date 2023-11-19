@@ -1,21 +1,21 @@
 import {
   b_,
-  BpxSolidColor,
+  BpxRgbColor,
+  BpxSpriteColorMapping,
   spr_,
-  transparent_,
   v_,
   v_0_0_,
 } from "../../../src";
 
 const spr = spr_("spritesheet.png");
 
-const lime = BpxSolidColor.fromRgbCssHex("#a8e72e");
-const pink = BpxSolidColor.fromRgbCssHex("#ff77a8");
-const yellow = BpxSolidColor.fromRgbCssHex("#f3ef7d");
-const darkGreen = BpxSolidColor.fromRgbCssHex("#125359");
-const darkBlue = BpxSolidColor.fromRgbCssHex("#1d2b53");
-const lightGrey = BpxSolidColor.fromRgbCssHex("#c2c3c7");
-const darkGrey = BpxSolidColor.fromRgbCssHex("#83769c");
+const lime = BpxRgbColor.fromCssHex("#a8e72e");
+const pink = BpxRgbColor.fromCssHex("#ff77a8");
+const yellow = BpxRgbColor.fromCssHex("#f3ef7d");
+const darkGreen = BpxRgbColor.fromCssHex("#125359");
+const darkBlue = BpxRgbColor.fromCssHex("#1d2b53");
+const lightGrey = BpxRgbColor.fromCssHex("#c2c3c7");
+const darkGrey = BpxRgbColor.fromCssHex("#83769c");
 
 export class StandardView {
   // ps = pressed sprite
@@ -42,8 +42,9 @@ export class StandardView {
     g_b: spr(144, 24, 5, 6),
     g_x: spr(152, 24, 5, 6),
     //
-    k_esc: spr(128, 32, 13, 6),
     k_p: spr(144, 32, 5, 6),
+    k_esc: spr(128, 32, 13, 6),
+    k_enter: spr(149, 30, 8, 10),
     //
     k_m: spr(128, 40, 5, 6),
     k_f: spr(136, 40, 5, 6),
@@ -132,12 +133,11 @@ export class StandardView {
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
 
     // background: keyboard vs gamepad
-    let prevMapping = b_.mapSpriteColors([
-      {
-        from: this.highlightKeyboard ? pink : yellow,
-        to: this.highlightKeyboard ? darkGreen : darkBlue,
-      },
-    ]);
+    let prevMapping = b_.setSpriteColorMapping(
+      this.highlightKeyboard
+        ? BpxSpriteColorMapping.from([[pink, darkGreen]])
+        : BpxSpriteColorMapping.from([[yellow, darkBlue]]),
+    );
     b_.setClippingRegion(v_(0, 0), v_(128, 3));
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(126, 0), v_(126, 128));
@@ -148,18 +148,22 @@ export class StandardView {
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(64, 77), v_(64, 6));
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
-    b_.mapSpriteColors(prevMapping);
-    prevMapping = b_.mapSpriteColors([{ from: lightGrey, to: darkGrey }]);
+    b_.setSpriteColorMapping(prevMapping);
+    prevMapping = b_.setSpriteColorMapping(
+      BpxSpriteColorMapping.from([[lightGrey, darkGrey]]),
+    );
     b_.setClippingRegion(
       this.highlightKeyboard ? v_(110, 3) : v_(3, 3),
       v_(15, 11),
     );
     b_.sprite(spr(0, 0, 128, 128), v_0_0_);
     b_.removeClippingRegion();
-    b_.mapSpriteColors(prevMapping);
+    b_.setSpriteColorMapping(prevMapping);
 
     // pressed buttons
-    prevMapping = b_.mapSpriteColors([{ from: lime, to: transparent_ }]);
+    prevMapping = b_.setSpriteColorMapping(
+      BpxSpriteColorMapping.from([[lime, null]]),
+    );
     if (ip.up) {
       b_.sprite(ps.k_w, v_(21, 17));
       b_.sprite(ps.k_up, v_(47, 17));
@@ -217,8 +221,9 @@ export class StandardView {
       b_.sprite(ps.g_dualsense_square, v_(111, 51));
     }
     if (ip.menu) {
-      b_.sprite(ps.k_esc, v_(17, 65));
-      b_.sprite(ps.k_p, v_(37, 65));
+      b_.sprite(ps.k_p, v_(6, 65));
+      b_.sprite(ps.k_esc, v_(16, 65));
+      b_.sprite(ps.k_enter, v_(34, 61));
       b_.sprite(ps.g_xbox_menu, v_(84, 65));
       b_.sprite(ps.g_ps_menu, v_(100, 65));
     }
@@ -237,6 +242,6 @@ export class StandardView {
     if (ip.frameByFrameStep) {
       b_.sprite(ps.k_period, v_(118, 118));
     }
-    b_.mapSpriteColors(prevMapping);
+    b_.setSpriteColorMapping(prevMapping);
   }
 }

@@ -1,4 +1,4 @@
-import { BpxGamepadType } from "./GamepadGameInput";
+import { BpxGamepadType } from "./GameInputGamepad";
 
 export class GamepadTypeDetector {
   static detect(gamepad: Gamepad): BpxGamepadType {

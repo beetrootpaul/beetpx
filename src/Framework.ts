@@ -1,38 +1,40 @@
-import { Assets, AssetsToLoad } from "./Assets";
 import { BeetPx } from "./BeetPx";
-import { BpxSolidColor, black_ } from "./Color";
-import { FullScreen } from "./FullScreen";
 import { HtmlTemplate } from "./HtmlTemplate";
-import { Loading } from "./Loading";
 import { BpxUtils, u_ } from "./Utils";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { AssetLoader, AssetsToLoad } from "./assets/AssetLoader";
+import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
+import { Canvas } from "./canvas/Canvas";
+import { CanvasForProduction } from "./canvas/CanvasForProduction";
+import { BpxRgbColor, black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { CanvasPixels } from "./draw_api/canvas_pixels/CanvasPixels";
-import { CanvasPixelsForProduction } from "./draw_api/canvas_pixels/CanvasPixelsForProduction";
+import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
+import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 import { GameInput } from "./game_input/GameInput";
+import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
+import { FullScreen } from "./misc/FullScreen";
+import { Loading } from "./misc/Loading";
+import { BpxVector2d, v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128" | "256x256";
-  // TODO: validation it is really one of these two values
   desiredUpdateFps: 30 | 60;
   debugFeatures: boolean;
 };
 
 export type OnAssetsLoaded = {
-  startGame: () => void;
+  startGame: () => Promise<void>;
 };
 
 export class Framework {
-  // TODO: Move debug responsibility to a separate class
   static readonly #storageDebugDisabledKey = "framework__debug_disabled";
   static readonly #storageDebugDisabledTrue = "yes";
 
@@ -41,21 +43,24 @@ export class Framework {
   readonly #browserType: BpxBrowserType;
 
   readonly #gameCanvasSize: BpxVector2d;
-  readonly #htmlCanvasBackground: BpxSolidColor =
-    BpxSolidColor.fromRgbCssHex("#000000");
+  readonly #htmlCanvasBackground: BpxRgbColor =
+    BpxRgbColor.fromCssHex("#000000");
 
   readonly #loading: Loading;
   readonly gameInput: GameInput;
   readonly #gameLoop: GameLoop;
   readonly audioApi: AudioApi;
-  readonly #fullScreen: FullScreen;
+  readonly fullScreen: FullScreen;
 
   readonly storageApi: StorageApi;
 
+  readonly #assetLoader: AssetLoader;
   readonly assets: Assets;
 
-  readonly #canvasPixels: CanvasPixels;
+  readonly #canvas: Canvas;
   readonly drawApi: DrawApi;
+
+  #isStarted: boolean = false;
 
   #onStarted?: () => void;
   #onUpdate?: () => void;
@@ -76,12 +81,41 @@ export class Framework {
   }
 
   constructor(options: FrameworkOptions) {
+    window.addEventListener("error", (event) => {
+      HtmlTemplate.showError(event.message);
+      // Pause music. But do it after other operations, since there
+      //   might be some new unexpected an error thrown here.
+      this.audioApi
+        ?.__internal__audioContext()
+        .suspend()
+        .then(() => {});
+      // returning `true` here means the error is already handled by us
+      return true;
+    });
+    window.addEventListener("unhandledrejection", (event) => {
+      HtmlTemplate.showError(event.reason);
+      // Pause music. But do it after other operations, since there
+      //   might be some new unexpected an error thrown here.
+      this.audioApi
+        ?.__internal__audioContext()
+        .suspend()
+        .then(() => {});
+    });
+
     DebugMode.enabled = options.debugFeatures
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue
       : false;
 
     Logger.debugBeetPx("Framework options:", options);
+
+    if (options.desiredUpdateFps !== 30 && options.desiredUpdateFps !== 60) {
+      BpxUtils.throwError(
+        `Unsupported desiredUpdateFps: ${options.desiredUpdateFps}`,
+      );
+    }
+
+    Button.setRepeatingParamsFor(options.desiredUpdateFps);
 
     this.#frameByFrame = false;
 
@@ -105,7 +139,7 @@ export class Framework {
 
     this.#gameLoop = new GameLoop({
       desiredUpdateFps: options.desiredUpdateFps,
-      requestAnimationFrameFn: window.requestAnimationFrame.bind(window),
+      rafFn: window.requestAnimationFrame.bind(window),
       documentVisibilityStateProvider: document,
     });
 
@@ -113,7 +147,8 @@ export class Framework {
 
     const audioContext = new AudioContext();
 
-    this.assets = new Assets({
+    this.assets = new Assets();
+    this.#assetLoader = new AssetLoader(this.assets, {
       decodeAudioData: (arrayBuffer: ArrayBuffer) =>
         audioContext.decodeAudioData(arrayBuffer),
     });
@@ -132,7 +167,7 @@ export class Framework {
       },
     });
 
-    this.#fullScreen = FullScreen.create();
+    this.fullScreen = FullScreen.create();
 
     const htmlCanvas =
       document.querySelector<HTMLCanvasElement>(
@@ -142,14 +177,14 @@ export class Framework {
         `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
       );
 
-    this.#canvasPixels = new CanvasPixelsForProduction(
+    this.#canvas = new CanvasForProduction(
       this.#gameCanvasSize,
       htmlCanvas,
       this.#htmlCanvasBackground,
     );
 
     this.drawApi = new DrawApi({
-      canvasPixels: this.#canvasPixels,
+      canvas: this.#canvas,
       assets: this.assets,
     });
   }
@@ -159,7 +194,15 @@ export class Framework {
   }
 
   async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
-    await this.assets.loadAssets(assetsToLoad);
+    assetsToLoad.fonts.push({
+      font: new BpxFontSaint11Minimal4(),
+      spriteTextColor: null,
+    });
+    assetsToLoad.fonts.push({
+      font: new BpxFontSaint11Minimal5(),
+      spriteTextColor: null,
+    });
+    await this.#assetLoader.loadAssets(assetsToLoad);
 
     Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
 
@@ -190,8 +233,12 @@ export class Framework {
     this.#onStarted?.();
   }
 
-  // TODO: How to prevent an error of calling startGame twice? What would happen if called twice?
   async #startGame(): Promise<void> {
+    if (this.#isStarted) {
+      throw Error("Tried to start a game, but it is already started");
+    }
+    this.#isStarted = true;
+
     if (BEETPX__IS_PROD) {
       // A popup which prevents user from accidentally closing the browser tab during gameplay.
       // Implementation notes:
@@ -207,11 +254,6 @@ export class Framework {
       });
     }
 
-    this.#canvasPixels.onWindowResize();
-    window.addEventListener("resize", (_event) => {
-      this.#canvasPixels.onWindowResize();
-    });
-
     this.#frameNumber = 0;
 
     await this.#loading.showStartScreen();
@@ -223,7 +265,7 @@ export class Framework {
     this.#gameLoop.start({
       updateFn: () => {
         if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
-          this.#fullScreen.toggle();
+          this.fullScreen.toggleFullScreen();
         }
         if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
           if (this.audioApi.isAudioMuted()) {
@@ -242,8 +284,6 @@ export class Framework {
               Framework.#storageDebugDisabledTrue,
             );
           }
-          // TODO: BRING IT BACK
-          // this.#redrawDebugMargin();
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
           this.#frameByFrame = !this.#frameByFrame;
@@ -287,7 +327,7 @@ export class Framework {
 
         this.#onDraw?.();
 
-        this.#canvasPixels.render();
+        this.#canvas.render();
       },
     });
   }

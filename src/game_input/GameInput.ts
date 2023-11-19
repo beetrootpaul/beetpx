@@ -1,12 +1,12 @@
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
 import { HtmlTemplate } from "../HtmlTemplate";
-import { Button } from "./Button";
-import { Buttons } from "./Buttons";
-import { BpxGamepadType, GamepadGameInput } from "./GamepadGameInput";
-import { KeyboardGameInput } from "./KeyboardGameInput";
-import { MouseGameInput } from "./MouseGameInput";
-import { SpecializedGameInput } from "./SpecializedGameInput";
-import { TouchGameInput } from "./TouchGameInput";
+import { Button } from "./buttons/Button";
+import { Buttons } from "./buttons/Buttons";
+import { BpxGamepadType, GameInputGamepad } from "./GameInputGamepad";
+import { GameInputKeyboard } from "./GameInputKeyboard";
+import { GameInputMouse } from "./GameInputMouse";
+import { GameInputSpecialized } from "./GameInputSpecialized";
+import { GameInputTouch } from "./GameInputTouch";
 
 export type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 
@@ -26,8 +26,8 @@ export type BpxGameInputEvent =
   | "frame_by_frame_step";
 
 export class GameInput {
-  readonly #specializedGameInputs: SpecializedGameInput[];
-  readonly #gamepadGameInput: GamepadGameInput;
+  readonly gameInputsSpecialized: GameInputSpecialized[];
+  readonly gameInputGamepad: GameInputGamepad;
 
   readonly gameButtons: Buttons;
 
@@ -45,16 +45,16 @@ export class GameInput {
     enableDebugInputs: boolean;
     browserType: BpxBrowserType;
   }) {
-    this.#gamepadGameInput = new GamepadGameInput({
+    this.gameInputGamepad = new GameInputGamepad({
       browserType: params.browserType,
     });
-    this.#specializedGameInputs = [
-      new MouseGameInput(),
-      new KeyboardGameInput({
+    this.gameInputsSpecialized = [
+      new GameInputMouse(),
+      new GameInputKeyboard({
         enableDebugInputs: params.enableDebugInputs,
       }),
-      new TouchGameInput(),
-      this.#gamepadGameInput,
+      new GameInputTouch(),
+      this.gameInputGamepad,
     ];
 
     this.gameButtons = new Buttons();
@@ -67,7 +67,7 @@ export class GameInput {
   }
 
   startListening(): void {
-    for (const sgi of this.#specializedGameInputs) {
+    for (const sgi of this.gameInputsSpecialized) {
       sgi.startListening();
     }
   }
@@ -79,7 +79,7 @@ export class GameInput {
     this.#mostRecentInputMethods.clear();
 
     const events = new Set<BpxGameInputEvent>();
-    for (const sgi of this.#specializedGameInputs) {
+    for (const sgi of this.gameInputsSpecialized) {
       if (sgi.update(events)) {
         // We do not care here if there were many input methods active at once,
         //   since usually it will be just one method.
@@ -119,7 +119,7 @@ export class GameInput {
   }
 
   connectedGamepadTypes(): Set<BpxGamepadType> {
-    return this.#gamepadGameInput.connectedGamepadTypes();
+    return this.gameInputGamepad.connectedGamepadTypes();
   }
 
   __internal__capturedEvents(): Set<BpxGameInputEvent> {

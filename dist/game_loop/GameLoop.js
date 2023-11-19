@@ -24,7 +24,7 @@ export class GameLoop {
         _GameLoop_accumulatedDeltaTimeMillis.set(this, 0);
         _GameLoop_updateCallsCounter.set(this, 0);
         _GameLoop_updateCallsLimit.set(this, 5);
-        // Keep this function as an arrow one in order to avoid issues with `this`.
+        
         _GameLoop_tick.set(this, (currentTimeMillis) => {
             var _a;
             if (__classPrivateFieldGet(this, _GameLoop_documentVisibilityStateProvider, "f").visibilityState === "hidden") {
@@ -43,15 +43,15 @@ export class GameLoop {
                     __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, __classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f") - __classPrivateFieldGet(this, _GameLoop_expectedTimeStepMillis, "f"), "f");
                 }
                 else {
-                    Logger.warnBeetPx(`Reached the safety limit of ${__classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")} update calls`);
                     __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, 0, "f");
+                    Logger.warnBeetPx(`Reached the safety limit of ${__classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")} update calls`);
                 }
             }
-            const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, 999));
+            const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, GameLoop.renderFpsResultCap));
             __classPrivateFieldGet(this, _GameLoop_callbacks, "f").renderFn(renderFps);
             __classPrivateFieldGet(this, _GameLoop_requestAnimationFrameFn, "f").call(this, __classPrivateFieldGet(this, _GameLoop_tick, "f"));
         });
-        __classPrivateFieldSet(this, _GameLoop_requestAnimationFrameFn, options.requestAnimationFrameFn, "f");
+        __classPrivateFieldSet(this, _GameLoop_requestAnimationFrameFn, options.rafFn, "f");
         __classPrivateFieldSet(this, _GameLoop_documentVisibilityStateProvider, options.documentVisibilityStateProvider, "f");
         __classPrivateFieldSet(this, _GameLoop_expectedTimeStepMillis, 1000 / options.desiredUpdateFps, "f");
     }
@@ -64,3 +64,4 @@ export class GameLoop {
     }
 }
 _GameLoop_requestAnimationFrameFn = new WeakMap(), _GameLoop_documentVisibilityStateProvider = new WeakMap(), _GameLoop_callbacks = new WeakMap(), _GameLoop_expectedTimeStepMillis = new WeakMap(), _GameLoop_previousTimeMillis = new WeakMap(), _GameLoop_accumulatedDeltaTimeMillis = new WeakMap(), _GameLoop_updateCallsCounter = new WeakMap(), _GameLoop_updateCallsLimit = new WeakMap(), _GameLoop_tick = new WeakMap();
+GameLoop.renderFpsResultCap = 999;
