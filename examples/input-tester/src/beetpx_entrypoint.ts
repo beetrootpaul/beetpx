@@ -21,7 +21,7 @@ b_.init(
     sounds: [{ url: "music_base.flac" }],
     jsons: [],
   },
-).then(({ startGame }) => {
+).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     standardView = new StandardView();
     debugView = new DebugView();
@@ -60,11 +60,5 @@ b_.init(
     }
   });
 
-  startGame()
-    .then(() => {
-      console.log("Game started");
-    })
-    .catch((err) => {
-      console.error("Encountered an error when called startGame():", err);
-    });
+  await startGame();
 });

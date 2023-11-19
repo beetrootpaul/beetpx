@@ -21,7 +21,7 @@ b_.init(
     sounds: [{ url: "music_base.flac" }, { url: "music_melody.flac" }],
     jsons: [],
   },
-).then(({ startGame }) => {
+).then(async ({ startGame }) => {
   let melodyPlaybackId: number = -1;
 
   const velocity = 2;
@@ -123,11 +123,5 @@ b_.init(
     }
   });
 
-  startGame()
-    .then(() => {
-      console.log("Game started");
-    })
-    .catch((err) => {
-      console.error("Encountered an error when called startGame():", err);
-    });
+  await startGame();
 });

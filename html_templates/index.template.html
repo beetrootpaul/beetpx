@@ -85,7 +85,7 @@
         display: none;
       }
 
-      #screen_start_game__spinner {
+      #screen_loading__spinner {
         grid-area: spinner;
 
         /* Remove standard visual aspects of a button */
@@ -133,6 +133,42 @@
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
+      }
+
+      #screen_error {
+        display: none;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+
+        background-color: var(--gui-bg-color);
+      }
+
+      .error #screen_error {
+        display: block;
+      }
+
+      #screen_error__message {
+        --margin: 16px;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(100vw - 2 * var(--margin));
+        height: calc(100vh - 2 * var(--margin));
+
+        margin: var(--margin);
+        border-radius: 8px;
+        border: 1px solid #ff004d;
+        background-color: #000000;
+        padding: 16px;
+
+        color: #c2c3c7;
+        font-size: 16px;
+        white-space: pre-wrap;
       }
 
       #game_display {
@@ -805,8 +841,13 @@
       <button id="screen_start_game__button" tabindex="0"></button>
     </div>
 
+    <!-- Has to be placed after #screen_start_game in order to be visible on top  -->
     <div id="screen_loading">
-      <div id="screen_start_game__spinner"></div>
+      <div id="screen_loading__spinner"></div>
+    </div>
+
+    <div id="screen_error">
+      <pre id="screen_error__message"></pre>
     </div>
   </body>
 

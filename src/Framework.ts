@@ -81,6 +81,27 @@ export class Framework {
   }
 
   constructor(options: FrameworkOptions) {
+    window.addEventListener("error", (event) => {
+      HtmlTemplate.showError(event.message);
+      // Pause music. But do it after other operations, since there
+      //   might be some new unexpected an error thrown here.
+      this.audioApi
+        ?.__internal__audioContext()
+        .suspend()
+        .then(() => {});
+      // returning `true` here means the error is already handled by us
+      return true;
+    });
+    window.addEventListener("unhandledrejection", (event) => {
+      HtmlTemplate.showError(event.reason);
+      // Pause music. But do it after other operations, since there
+      //   might be some new unexpected an error thrown here.
+      this.audioApi
+        ?.__internal__audioContext()
+        .suspend()
+        .then(() => {});
+    });
+
     DebugMode.enabled = options.debugFeatures
       ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
         Framework.#storageDebugDisabledTrue

@@ -93,7 +93,7 @@ b_.init(
     sounds: [{ url: "music_base.wav" }, { url: "music_melody.wav" }],
     jsons: [],
   },
-).then(({ startGame }) => {
+).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     b_.playSoundLooped("music_base.wav");
     b_.playSoundLooped("music_melody.wav");
@@ -208,13 +208,7 @@ b_.init(
       renderFpsVisualization.history.length;
   });
 
-  startGame()
-    .then(() => {
-      console.log("Game started");
-    })
-    .catch((err) => {
-      console.error("Encountered an error when called startGame():", err);
-    });
+  await startGame();
 });
 
 function drawUpdateCallsVisualization(): void {

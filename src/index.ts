@@ -63,3 +63,5 @@ export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 
 // TODO: rework examples
+
+// TODO: error screen when failed to load some assets or if any error was thrown

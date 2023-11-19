@@ -66,6 +66,22 @@ export class Framework {
         _Framework_renderFps.set(this, 1);
         
         _Framework_alreadyResumedAudioContext.set(this, false);
+        window.addEventListener("error", (event) => {
+            var _b;
+            HtmlTemplate.showError(event.message);
+            
+            
+            (_b = this.audioApi) === null || _b === void 0 ? void 0 : _b.__internal__audioContext().suspend().then(() => { });
+            
+            return true;
+        });
+        window.addEventListener("unhandledrejection", (event) => {
+            var _b;
+            HtmlTemplate.showError(event.reason);
+            
+            
+            (_b = this.audioApi) === null || _b === void 0 ? void 0 : _b.__internal__audioContext().suspend().then(() => { });
+        });
         DebugMode.enabled = options.debugFeatures
             ? window.localStorage.getItem(__classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledKey)) !==
                 __classPrivateFieldGet(Framework, _a, "f", _Framework_storageDebugDisabledTrue)

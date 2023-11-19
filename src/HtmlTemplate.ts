@@ -29,6 +29,12 @@ export class HtmlTemplate {
     document.body.classList.add("started");
   }
 
+  static showError(errorMessage: any): void {
+    document.body.classList.add("error");
+    document.getElementById("screen_error__message")!.innerText =
+      String(errorMessage);
+  }
+
   static updateMutedClass(isMuted: boolean): void {
     document.body.classList[isMuted ? "add" : "remove"]("muted");
   }
