@@ -41,13 +41,13 @@
       }
 
       html {
-        width: 100vw;
-        height: 100vh;
+        width: 100dvw;
+        height: 100dvh;
       }
 
       body {
-        width: 100vw;
-        height: 100vh;
+        width: 100dvw;
+        height: 100dvh;
         overflow: hidden;
 
         font-family: monospace;
@@ -67,8 +67,8 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100dvw;
+        height: 100dvh;
 
         background-color: var(--loading-bg-color);
 
@@ -103,8 +103,8 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100dvw;
+        height: 100dvh;
 
         background-color: var(--loading-bg-color);
 
@@ -141,8 +141,8 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100dvw;
+        height: 100dvh;
 
         background-color: var(--gui-bg-color);
       }
@@ -157,8 +157,8 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: calc(100vw - 2 * var(--margin));
-        height: calc(100vh - 2 * var(--margin));
+        width: calc(100dvw - 2 * var(--margin));
+        height: calc(100dvh - 2 * var(--margin));
 
         margin: var(--margin);
         border-radius: 8px;
@@ -172,8 +172,8 @@
       }
 
       #game_display {
-        width: 100vw;
-        height: 100vh;
+        width: 100dvw;
+        height: 100dvh;
 
         /*
         We need this bg color to be set on the element which is zoomed in when in a full
@@ -477,7 +477,7 @@
        */
       :root {
         /* "scs" = Sprite Cell Size (16x16 px)*/
-        --scs: 10vw;
+        --scs: 10dvw;
       }
 
       #game_display {
@@ -490,12 +490,12 @@
           "e__l    .    .    .    .    .    . e__r"
           "e__l    .    .    .    .    .    . e__r"
           "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-        grid-template-columns: 5vw 5vw 1fr 10vw 5vw 5vw 5vw 5vw;
-        grid-template-rows: 5vw 10vw 10vw 1fr 90vw 1fr 20vw 5vw;
+        grid-template-columns: 5dvw 5dvw 1fr 10dvw 5dvw 5dvw 5dvw 5dvw;
+        grid-template-rows: 5dvw 10dvw 10dvw 1fr 90dvw 1fr 20dvw 5dvw;
       }
 
       #game_canvas {
-        border-width: 1vw;
+        border-width: 1dvw;
       }
 
       /*
@@ -503,7 +503,7 @@
        */
       @media (min-aspect-ratio: 250/360) {
         :root {
-          --scs: 10vw;
+          --scs: 10dvw;
         }
 
         #game_display {
@@ -515,12 +515,12 @@
             "e__l    .    . full    . b_mu b_mu e__r"
             "e__l    .    .    .    . i_mu i_mu e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5vw 5vw 1fr 10vw 5vw 5vw 5vw 5vw;
-          grid-template-rows: 5vw 1fr 90vw 5vw 10vw 10vw 5vw;
+          grid-template-columns: 5dvw 5dvw 1fr 10dvw 5dvw 5dvw 5dvw 5dvw;
+          grid-template-rows: 5dvw 1fr 90dvw 5dvw 10dvw 10dvw 5dvw;
         }
 
         #game_canvas {
-          border-width: 1vw;
+          border-width: 1dvw;
         }
       }
 
@@ -529,7 +529,7 @@
        */
       @media (min-aspect-ratio: 250/310) {
         :root {
-          --scs: 8vw;
+          --scs: 8dvw;
         }
 
         #game_display {
@@ -540,12 +540,12 @@
             "e__l    .    . full    . b_mu b_mu e__r"
             "e__l    .    .    .    . i_mu i_mu e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4vw 4vw 1fr 8vw 4vw 4vw 4vw 4vw;
-          grid-template-rows: 4vw 92vw 1fr 8vw 4vw 4vw;
+          grid-template-columns: 4dvw 4dvw 1fr 8dvw 4dvw 4dvw 4dvw 4dvw;
+          grid-template-rows: 4dvw 92dvw 1fr 8dvw 4dvw 4dvw;
         }
 
         #game_canvas {
-          border-width: 1vw;
+          border-width: 1dvw;
         }
       }
 
@@ -554,7 +554,7 @@
        */
       @media (min-aspect-ratio: 250/290) {
         :root {
-          --scs: 6vw;
+          --scs: 6dvw;
         }
 
         #game_display {
@@ -565,12 +565,12 @@
             "e__l    .    .    . canv    .    .    . e__r"
             "e__l    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 3vw 3vw 3vw 3vw 76vw 3vw 3vw 3vw 3vw;
-          grid-template-rows: 3vw 6vw 6vw 64vw 1fr 3vw;
+          grid-template-columns: 3dvw 3dvw 3dvw 3dvw 76dvw 3dvw 3dvw 3dvw 3dvw;
+          grid-template-rows: 3dvw 6dvw 6dvw 64dvw 1fr 3dvw;
         }
 
         #game_canvas {
-          border-width: 1vw;
+          border-width: 1dvw;
         }
       }
 
@@ -579,7 +579,7 @@
        */
       @media (min-aspect-ratio: 250/210) {
         :root {
-          --scs: 8vh;
+          --scs: 8dvh;
         }
 
         #game_display {
@@ -590,12 +590,12 @@
             "e__l    .    .    . canv    .    .    . e__r"
             "e__l    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4vh 4vh 8vh 1fr 80vh 1fr 8vh 4vh 4vh;
-          grid-template-rows: 4vh 8vh 8vh 64vh 1fr 4vh;
+          grid-template-columns: 4dvh 4dvh 8dvh 1fr 80dvh 1fr 8dvh 4dvh 4dvh;
+          grid-template-rows: 4dvh 8dvh 8dvh 64dvh 1fr 4dvh;
         }
 
         #game_canvas {
-          border-width: 1vh;
+          border-width: 1dvh;
         }
       }
 
@@ -604,7 +604,7 @@
        */
       @media (min-aspect-ratio: 250/170) {
         :root {
-          --scs: 10vh;
+          --scs: 10dvh;
         }
 
         #game_display {
@@ -614,12 +614,12 @@
             "e__l    .    . i_mu    . canv    .    .    .    . e__r"
             "e__l    .    .    .    . canv    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5vh 5vh 1fr 10vh 5vh 90vh 5vh 10vh 1fr 5vh 5vh;
-          grid-template-rows: 5vh 10vh 10vh 1fr 5vh;
+          grid-template-columns: 5dvh 5dvh 1fr 10dvh 5dvh 90dvh 5dvh 10dvh 1fr 5dvh 5dvh;
+          grid-template-rows: 5dvh 10dvh 10dvh 1fr 5dvh;
         }
 
         #game_canvas {
-          border-width: 1vh;
+          border-width: 1dvh;
         }
       }
 
@@ -628,7 +628,7 @@
        */
       @media (pointer: coarse) {
         :root {
-          --scs: 10vw;
+          --scs: 10dvw;
         }
 
         #game_display {
@@ -644,12 +644,12 @@
             "e__l d_dl d_dl d_d_ d_dr    . b_mu    . bt_a bt_a bt_a    .    . e__r"
             "e__l    .    .    .    .    . i_mu    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5vw 5vw 5vw 10vw 10vw 12vw 10vw 8vw 2vw 8vw 10vw 5vw 5vw 5vw;
-          grid-template-rows: 5vw 92vw 1fr 10vw 4vw 6vw 4vw 6vw 10vw 2fr 5vw;
+          grid-template-columns: 5dvw 5dvw 5dvw 10dvw 10dvw 12dvw 10dvw 8dvw 2dvw 8dvw 10dvw 5dvw 5dvw 5dvw;
+          grid-template-rows: 5dvw 92dvw 1fr 10dvw 4dvw 6dvw 4dvw 6dvw 10dvw 2fr 5dvw;
         }
 
         #game_canvas {
-          border-width: 1vw;
+          border-width: 1dvw;
         }
       }
 
@@ -658,7 +658,7 @@
        */
       @media (pointer: coarse) and (min-aspect-ratio: 250/370) {
         :root {
-          --scs: 8vw;
+          --scs: 8dvw;
         }
 
         #game_display {
@@ -671,12 +671,12 @@
             "e__l d_dl d_dl d_d_ d_dr    .    .    . b_mu    . bt_a    .    . e__r"
             "e__l    .    .    .    .    .    .    . i_mu    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4vw 4vw 4vw 8vw 8vw 3fr 8vw 4vw 8vw 8vw 16vw 12vw 4vw 4vw;
-          grid-template-rows: 4vw 92vw 4vw 8vw 8vw 8vw 1fr 4vw;
+          grid-template-columns: 4dvw 4dvw 4dvw 8dvw 8dvw 3fr 8dvw 4dvw 8dvw 8dvw 16dvw 12dvw 4dvw 4dvw;
+          grid-template-rows: 4dvw 92dvw 4dvw 8dvw 8dvw 8dvw 1fr 4dvw;
         }
 
         #game_canvas {
-          border-width: 1vw;
+          border-width: 1dvw;
         }
       }
 
@@ -685,7 +685,7 @@
        */
       @media (pointer: coarse) and (min-aspect-ratio: 250/330) {
         :root {
-          --scs: 6vh;
+          --scs: 6dvh;
         }
 
         #game_display {
@@ -701,12 +701,12 @@
             "e__l    .    . d_dl d_d_ d_dr    . b_mu    . bt_a bt_a    .    .    . e__r"
             "e__l    .    .     .   .    .    . i_mu    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 3vh 3vh 1fr 6vh 6vh 6vh 12vh 6vh 6vh 6vh 6vh 6vh 1fr 3vh 3vh;
-          grid-template-rows: 3vh 60vh 1fr 6vh 3vh 3vh 3vh 3vh 6vh 1fr 3vh;
+          grid-template-columns: 3dvh 3dvh 1fr 6dvh 6dvh 6dvh 12dvh 6dvh 6dvh 6dvh 6dvh 6dvh 1fr 3dvh 3dvh;
+          grid-template-rows: 3dvh 60dvh 1fr 6dvh 3dvh 3dvh 3dvh 3dvh 6dvh 1fr 3dvh;
         }
 
         #game_canvas {
-          border-width: 1vh;
+          border-width: 1dvh;
         }
       }
 
@@ -715,7 +715,7 @@
        */
       @media (pointer: coarse) and (min-aspect-ratio: 250/250) {
         :root {
-          --scs: 6vh;
+          --scs: 6dvh;
         }
 
         #game_display {
@@ -732,12 +732,12 @@
             "e__l    .    . d_dl d_d_ d_d_ d_dr    .    . bt_a bt_a    .    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 3vh 3vh 1fr 6vh 2vh 4vh 6vh 37vh 8vh 4vh 8vh 4vh 2vh 6vh 1fr 3vh 3vh;
-          grid-template-rows: 3vh 3vh 6vh 6vh 6vh 50vh 2vh 6vh 6vh 6vh 1fr 3vh;
+          grid-template-columns: 3dvh 3dvh 1fr 6dvh 2dvh 4dvh 6dvh 37dvh 8dvh 4dvh 8dvh 4dvh 2dvh 6dvh 1fr 3dvh 3dvh;
+          grid-template-rows: 3dvh 3dvh 6dvh 6dvh 6dvh 50dvh 2dvh 6dvh 6dvh 6dvh 1fr 3dvh;
         }
 
         #game_canvas {
-          border-width: 1vh;
+          border-width: 1dvh;
         }
       }
 
@@ -746,7 +746,7 @@
        */
       @media (pointer: coarse) and (min-aspect-ratio: 250/180) {
         :root {
-          --scs: 10vh;
+          --scs: 10dvh;
         }
 
         #game_display {
@@ -764,12 +764,12 @@
             "e__l    .    . d_dl d_d_ d_dr    .    .    . bt_a bt_a    .    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5vh 5vh 1fr 10vh 10vh 10vh 1fr 58vh 1fr 10vh 10vh 10vh 1fr 5vh 5vh;
-          grid-template-rows: 5vh 5vh 10vh 10vh 10vh 8vh 10vh 5vh 5vh 10vh 10vh 1fr 5vh;
+          grid-template-columns: 5dvh 5dvh 1fr 10dvh 10dvh 10dvh 1fr 58dvh 1fr 10dvh 10dvh 10dvh 1fr 5dvh 5dvh;
+          grid-template-rows: 5dvh 5dvh 10dvh 10dvh 10dvh 8dvh 10dvh 5dvh 5dvh 10dvh 10dvh 1fr 5dvh;
         }
 
         #game_canvas {
-          border-width: 1vh;
+          border-width: 1dvh;
         }
       }
 
@@ -778,7 +778,7 @@
        */
       @media (pointer: coarse) and (min-aspect-ratio: 250/130) {
         :root {
-          --scs: 12vh;
+          --scs: 12dvh;
         }
 
         #game_display {
@@ -794,12 +794,12 @@
             "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 6vh 6vh 1fr 12vh 12vh 12vh 3vh 3fr 88vh 3fr 12vh 3vh 9vh 3vh 12vh 1fr 6vh 6vh;
-          grid-template-rows: 6vh 6vh 12vh 12vh 4vh 12vh 12vh 12vh 12vh 6vh 6vh;
+          grid-template-columns: 6dvh 6dvh 1fr 12dvh 12dvh 12dvh 3dvh 3fr 88dvh 3fr 12dvh 3dvh 9dvh 3dvh 12dvh 1fr 6dvh 6dvh;
+          grid-template-rows: 6dvh 6dvh 12dvh 12dvh 4dvh 12dvh 12dvh 12dvh 12dvh 6dvh 6dvh;
         }
 
         #game_canvas {
-          border-width: 1vh;
+          border-width: 1dvh;
         }
       }
     </style>
