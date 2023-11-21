@@ -35,7 +35,7 @@ to open it in your default browser. In case of any issues, the website which is 
 
 ## Development Setup
 
-This projects is developed on [Node.js 16.20](https://nodejs.org/docs/latest-v16.x/api/index.html).
+This projects is developed on [Node.js 18](https://nodejs.org/docs/latest-v18.x/api/index.html).
 
 You might find it helpful to use
 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) in order to make sure you use the same Node.js version as
