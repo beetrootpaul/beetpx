@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,13 +10,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AudioPlaybackOnce_sourceNode;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AudioPlaybackOnce = void 0;
-const AudioPlayback_1 = require("./AudioPlayback");
-class AudioPlaybackOnce extends AudioPlayback_1.AudioPlayback {
+import { AudioPlayback } from "./AudioPlayback";
+export class AudioPlaybackOnce extends AudioPlayback {
     constructor(soundUrl, params) {
         super(params.audioContext, params.target, params.muteOnStart);
-        this.id = AudioPlayback_1.AudioPlayback.nextPlaybackId++;
+        this.id = AudioPlayback.nextPlaybackId++;
         this.type = "once";
         _AudioPlaybackOnce_sourceNode.set(this, void 0);
         __classPrivateFieldSet(this, _AudioPlaybackOnce_sourceNode, this.createSourceNode(), "f");
@@ -34,5 +31,4 @@ class AudioPlaybackOnce extends AudioPlayback_1.AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlaybackOnce_sourceNode, "f").stop();
     }
 }
-exports.AudioPlaybackOnce = AudioPlaybackOnce;
 _AudioPlaybackOnce_sourceNode = new WeakMap();

@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.blue_ = exports.green_ = exports.red_ = exports.white_ = exports.black_ = exports.rgb_ = exports.BpxRgbColor = void 0;
-class BpxRgbColor {
+export class BpxRgbColor {
     constructor(r, g, b) {
         this.type = "rgb";
         if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
@@ -23,13 +20,11 @@ class BpxRgbColor {
         return new BpxRgbColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
     }
 }
-exports.BpxRgbColor = BpxRgbColor;
-function rgb_(r, g, b) {
+export function rgb_(r, g, b) {
     return new BpxRgbColor(r, g, b);
 }
-exports.rgb_ = rgb_;
-exports.black_ = BpxRgbColor.fromCssHex("#000000");
-exports.white_ = BpxRgbColor.fromCssHex("#ffffff");
-exports.red_ = BpxRgbColor.fromCssHex("#ff0000");
-exports.green_ = BpxRgbColor.fromCssHex("#00ff00");
-exports.blue_ = BpxRgbColor.fromCssHex("#0000ff");
+export const black_ = BpxRgbColor.fromCssHex("#000000");
+export const white_ = BpxRgbColor.fromCssHex("#ffffff");
+export const red_ = BpxRgbColor.fromCssHex("#ff0000");
+export const green_ = BpxRgbColor.fromCssHex("#00ff00");
+export const blue_ = BpxRgbColor.fromCssHex("#0000ff");

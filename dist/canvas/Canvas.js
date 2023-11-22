@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,10 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _Canvas_minX, _Canvas_minY, _Canvas_maxX, _Canvas_maxY, _Canvas_snapshot;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Canvas = void 0;
-const Vector2d_1 = require("../misc/Vector2d");
-class Canvas {
+import { BpxVector2d, v_, v_0_0_ } from "../misc/Vector2d";
+export class Canvas {
     constructor(canvasSize) {
         _Canvas_minX.set(this, void 0);
         _Canvas_minY.set(this, void 0);
@@ -32,10 +29,10 @@ class Canvas {
      */
     setClippingRegion(xy, wh) {
         const prev = [
-            (0, Vector2d_1.v_)(__classPrivateFieldGet(this, _Canvas_minX, "f"), __classPrivateFieldGet(this, _Canvas_minY, "f")),
-            (0, Vector2d_1.v_)(__classPrivateFieldGet(this, _Canvas_maxX, "f") - __classPrivateFieldGet(this, _Canvas_minX, "f") + 1, __classPrivateFieldGet(this, _Canvas_maxY, "f") - __classPrivateFieldGet(this, _Canvas_minY, "f") + 1),
+            v_(__classPrivateFieldGet(this, _Canvas_minX, "f"), __classPrivateFieldGet(this, _Canvas_minY, "f")),
+            v_(__classPrivateFieldGet(this, _Canvas_maxX, "f") - __classPrivateFieldGet(this, _Canvas_minX, "f") + 1, __classPrivateFieldGet(this, _Canvas_maxY, "f") - __classPrivateFieldGet(this, _Canvas_minY, "f") + 1),
         ];
-        const [xyMinInclusive, xyMaxExclusive] = Vector2d_1.BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         __classPrivateFieldSet(this, _Canvas_minX, xyMinInclusive.x, "f");
         __classPrivateFieldSet(this, _Canvas_minY, xyMinInclusive.y, "f");
         __classPrivateFieldSet(this, _Canvas_maxX, xyMaxExclusive.x - 1, "f");
@@ -46,7 +43,7 @@ class Canvas {
      * @returns - previous clipping region in form of an array: [xy, wh]
      */
     removeClippingRegion() {
-        return this.setClippingRegion(Vector2d_1.v_0_0_, this.canvasSize);
+        return this.setClippingRegion(v_0_0_, this.canvasSize);
     }
     canSetAny(xMin, yMin, xMax, yMax) {
         return (xMax >= __classPrivateFieldGet(this, _Canvas_minX, "f") &&
@@ -68,5 +65,4 @@ class Canvas {
         this.doRender();
     }
 }
-exports.Canvas = Canvas;
 _Canvas_minX = new WeakMap(), _Canvas_minY = new WeakMap(), _Canvas_maxX = new WeakMap(), _Canvas_maxY = new WeakMap(), _Canvas_snapshot = new WeakMap();

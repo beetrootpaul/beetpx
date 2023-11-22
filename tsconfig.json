@@ -12,8 +12,8 @@
     "verbatimModuleSyntax": false,
     "moduleDetection": "force",
 
-    "moduleResolution": "nodenext",
-    "module": "NodeNext",
+    "moduleResolution": "bundler",
+    "module": "ES2020",
 
     "isolatedModules": true,
     "noEmit": true,

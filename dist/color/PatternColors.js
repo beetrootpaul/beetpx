@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BpxPatternColors = void 0;
-class BpxPatternColors {
+export class BpxPatternColors {
     static of(primary, secondary) {
         return new BpxPatternColors(primary, secondary);
     }
@@ -11,4 +8,3 @@ class BpxPatternColors {
         this.type = "pattern";
     }
 }
-exports.BpxPatternColors = BpxPatternColors;

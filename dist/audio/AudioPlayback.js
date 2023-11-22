@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,11 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AudioPlayback_audioContext, _AudioPlayback_gainNode;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AudioPlayback = void 0;
-const Logger_1 = require("../logger/Logger");
-const AudioHelpers_1 = require("./AudioHelpers");
-class AudioPlayback {
+import { Logger } from "../logger/Logger";
+import { AudioHelpers } from "./AudioHelpers";
+export class AudioPlayback {
     constructor(audioContext, target, muteOnStart) {
         _AudioPlayback_audioContext.set(this, void 0);
         _AudioPlayback_gainNode.set(this, void 0);
@@ -25,16 +22,16 @@ class AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").connect(target);
     }
     mute(fadeOutMillis) {
-        Logger_1.Logger.debugBeetPx(`AudioPlayback.mute (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`);
-        AudioHelpers_1.AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis);
+        Logger.debugBeetPx(`AudioPlayback.mute (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`);
+        AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis);
     }
     unmute(fadeInMillis) {
-        Logger_1.Logger.debugBeetPx(`AudioPlayback.unmute (id: ${this.id}, type: ${this.type}, fadeInMillis: ${fadeInMillis})`);
-        AudioHelpers_1.AudioHelpers.unmuteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeInMillis);
+        Logger.debugBeetPx(`AudioPlayback.unmute (id: ${this.id}, type: ${this.type}, fadeInMillis: ${fadeInMillis})`);
+        AudioHelpers.unmuteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeInMillis);
     }
     stop(fadeOutMillis) {
-        Logger_1.Logger.debugBeetPx(`AudioPlayback.stop (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`);
-        AudioHelpers_1.AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis, () => {
+        Logger.debugBeetPx(`AudioPlayback.stop (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`);
+        AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis, () => {
             this.stopAllNodes();
         });
     }
@@ -48,7 +45,6 @@ class AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").disconnect();
     }
 }
-exports.AudioPlayback = AudioPlayback;
 _AudioPlayback_audioContext = new WeakMap(), _AudioPlayback_gainNode = new WeakMap();
 
 AudioPlayback.nextPlaybackId = 1;

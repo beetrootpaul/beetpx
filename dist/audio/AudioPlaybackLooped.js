@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,13 +10,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AudioPlaybackLooped_sourceNode;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AudioPlaybackLooped = void 0;
-const AudioPlayback_1 = require("./AudioPlayback");
-class AudioPlaybackLooped extends AudioPlayback_1.AudioPlayback {
+import { AudioPlayback } from "./AudioPlayback";
+export class AudioPlaybackLooped extends AudioPlayback {
     constructor(soundUrl, params) {
         super(params.audioContext, params.target, params.muteOnStart);
-        this.id = AudioPlayback_1.AudioPlayback.nextPlaybackId++;
+        this.id = AudioPlayback.nextPlaybackId++;
         this.type = "looped";
         _AudioPlaybackLooped_sourceNode.set(this, void 0);
         __classPrivateFieldSet(this, _AudioPlaybackLooped_sourceNode, this.createSourceNode(), "f");
@@ -35,5 +32,4 @@ class AudioPlaybackLooped extends AudioPlayback_1.AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").stop();
     }
 }
-exports.AudioPlaybackLooped = AudioPlaybackLooped;
 _AudioPlaybackLooped_sourceNode = new WeakMap();

@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,10 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasSnapshotForProduction_imageDataData;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CanvasSnapshotForProduction = void 0;
-const RgbColor_1 = require("../color/RgbColor");
-class CanvasSnapshotForProduction {
+import { rgb_ } from "../color/RgbColor";
+export class CanvasSnapshotForProduction {
     constructor(imageDataData) {
         _CanvasSnapshotForProduction_imageDataData.set(this, void 0);
         __classPrivateFieldSet(this, _CanvasSnapshotForProduction_imageDataData, imageDataData, "f");
@@ -24,8 +21,7 @@ class CanvasSnapshotForProduction {
             throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f").length / 4 - 1}`);
         }
         const dataIndex = index * 4;
-        return (0, RgbColor_1.rgb_)(__classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f")[dataIndex], __classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f")[dataIndex + 1], __classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f")[dataIndex + 2]);
+        return rgb_(__classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f")[dataIndex], __classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f")[dataIndex + 1], __classPrivateFieldGet(this, _CanvasSnapshotForProduction_imageDataData, "f")[dataIndex + 2]);
     }
 }
-exports.CanvasSnapshotForProduction = CanvasSnapshotForProduction;
 _CanvasSnapshotForProduction_imageDataData = new WeakMap();

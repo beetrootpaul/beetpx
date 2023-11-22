@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,10 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _AssetLoader_instances, _AssetLoader_assets, _AssetLoader_decodeAudioData, _AssetLoader_loadImage, _AssetLoader_loadSound, _AssetLoader_loadJson, _AssetLoader_is2xx;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.AssetLoader = void 0;
-const fast_png_1 = require("fast-png");
-class AssetLoader {
+import { decode as fastPngDecode } from "fast-png";
+export class AssetLoader {
     constructor(assets, params) {
         _AssetLoader_instances.add(this);
         _AssetLoader_assets.set(this, void 0);
@@ -42,7 +39,6 @@ class AssetLoader {
         ]);
     }
 }
-exports.AssetLoader = AssetLoader;
 _AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(), _AssetLoader_instances = new WeakSet(), _AssetLoader_loadImage = async function _AssetLoader_loadImage(url) {
     if (!url.toLowerCase().endsWith(".png")) {
         throw Error(`Assets: only PNG image files are supported. The file which doesn't seem to be PNG: "${url}"`);
@@ -76,7 +72,7 @@ _AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(
     
     
     
-    const decodedPng = (0, fast_png_1.decode)(arrayBuffer);
+    const decodedPng = fastPngDecode(arrayBuffer);
     if (decodedPng.channels !== 3 && decodedPng.channels !== 4) {
         throw Error(`Assets: only PNG image files with 3 or 4 channels are supported. The file which seems to have ${decodedPng.channels} channels instead: "${url}"`);
     }

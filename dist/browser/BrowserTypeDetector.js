@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BrowserTypeDetector = void 0;
-class BrowserTypeDetector {
+export class BrowserTypeDetector {
     static detect(userAgent) {
         const ua = userAgent?.toLowerCase() ?? "";
         if (ua.includes("firefox")) {
@@ -16,4 +13,3 @@ class BrowserTypeDetector {
         return "other";
     }
 }
-exports.BrowserTypeDetector = BrowserTypeDetector;

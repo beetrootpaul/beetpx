@@ -1,15 +1,12 @@
-"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _PreparedSprites_cache;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PreparedSprites = void 0;
-const Utils_1 = require("../Utils");
-const RgbColor_1 = require("../color/RgbColor");
-class PreparedSprites {
+import { u_ } from "../Utils";
+import { rgb_ } from "../color/RgbColor";
+export class PreparedSprites {
     constructor() {
         _PreparedSprites_cache.set(this, new Map());
     }
@@ -28,9 +25,9 @@ class PreparedSprites {
         }
         const w = sprite.size().x;
         const h = sprite.size().y;
-        const colors = Utils_1.u_
+        const colors = u_
             .range(w)
-            .map(() => Utils_1.u_.range(h).map(() => null));
+            .map(() => u_.range(h).map(() => null));
         for (let spriteY = 0; spriteY < h; ++spriteY) {
             const imgY = sprite.xy1.y + spriteY;
             for (let spriteX = 0; spriteX < w; ++spriteX) {
@@ -38,9 +35,9 @@ class PreparedSprites {
                 const imgIndex = (imgY * imgW + imgX) * imgChannels;
                 colors[spriteX][spriteY] =
                     imgChannels === 3
-                        ? (0, RgbColor_1.rgb_)(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                        ? rgb_(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                         : imgBytes[imgIndex + 3] >= 0xff / 2
-                            ? (0, RgbColor_1.rgb_)(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                            ? rgb_(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                             : null;
             }
         }
@@ -54,5 +51,4 @@ class PreparedSprites {
         return { ...preparedSprite, cacheHit: false };
     }
 }
-exports.PreparedSprites = PreparedSprites;
 _PreparedSprites_cache = new WeakMap();

@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GamepadTypeDetector = void 0;
-class GamepadTypeDetector {
+export class GamepadTypeDetector {
     static detect(gamepad) {
         const id = gamepad.id.toLowerCase();
         if (id.includes("dualsense"))
@@ -17,4 +14,3 @@ class GamepadTypeDetector {
         return "other";
     }
 }
-exports.GamepadTypeDetector = GamepadTypeDetector;

@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,27 +10,25 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _GameInputGamepad_instances, _GameInputGamepad_browserType, _GameInputGamepad_mappings, _GameInputGamepad_mappingFor;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GameInputGamepad = exports.supportedGamepadTypes = void 0;
-const Utils_1 = require("../Utils");
-const GamepadTypeDetector_1 = require("./GamepadTypeDetector");
-const GamepadMappingFallback_1 = require("./gamepad_mapping/GamepadMappingFallback");
-const GamepadMappingFirefoxDualSenseOther_1 = require("./gamepad_mapping/GamepadMappingFirefoxDualSenseOther");
-const GamepadMappingFirefoxDualSenseWindows_1 = require("./gamepad_mapping/GamepadMappingFirefoxDualSenseWindows");
-const GamepadMappingFirefoxFallback_1 = require("./gamepad_mapping/GamepadMappingFirefoxFallback");
-const GamepadMappingStandard_1 = require("./gamepad_mapping/GamepadMappingStandard");
-exports.supportedGamepadTypes = ["xbox", "dualsense", "other"];
-class GameInputGamepad {
+import { u_ } from "../Utils";
+import { GamepadTypeDetector } from "./GamepadTypeDetector";
+import { GamepadMappingFallback } from "./gamepad_mapping/GamepadMappingFallback";
+import { GamepadMappingFirefoxDualSenseOther } from "./gamepad_mapping/GamepadMappingFirefoxDualSenseOther";
+import { GamepadMappingFirefoxDualSenseWindows } from "./gamepad_mapping/GamepadMappingFirefoxDualSenseWindows";
+import { GamepadMappingFirefoxFallback } from "./gamepad_mapping/GamepadMappingFirefoxFallback";
+import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
+export const supportedGamepadTypes = ["xbox", "dualsense", "other"];
+export class GameInputGamepad {
     constructor(params) {
         _GameInputGamepad_instances.add(this);
         this.inputMethod = "gamepad";
         _GameInputGamepad_browserType.set(this, void 0);
         _GameInputGamepad_mappings.set(this, {
-            standard: new GamepadMappingStandard_1.GamepadMappingStandard(),
-            firefoxDualSenseWindows: new GamepadMappingFirefoxDualSenseWindows_1.GamepadMappingFirefoxDualSenseWindows(),
-            firefoxDualSenseOther: new GamepadMappingFirefoxDualSenseOther_1.GamepadMappingFirefoxDualSenseOther(),
-            firefoxOther: new GamepadMappingFirefoxFallback_1.GamepadMappingFirefoxFallback(),
-            other: new GamepadMappingFallback_1.GamepadMappingFallback(),
+            standard: new GamepadMappingStandard(),
+            firefoxDualSenseWindows: new GamepadMappingFirefoxDualSenseWindows(),
+            firefoxDualSenseOther: new GamepadMappingFirefoxDualSenseOther(),
+            firefoxOther: new GamepadMappingFirefoxFallback(),
+            other: new GamepadMappingFallback(),
         });
         __classPrivateFieldSet(this, _GameInputGamepad_browserType, params.browserType, "f");
     }
@@ -65,15 +62,14 @@ class GameInputGamepad {
     connectedGamepadTypes() {
         return new Set(navigator
             .getGamepads()
-            .filter(Utils_1.u_.isDefined)
-            .map((gamepad) => GamepadTypeDetector_1.GamepadTypeDetector.detect(gamepad)));
+            .filter(u_.isDefined)
+            .map((gamepad) => GamepadTypeDetector.detect(gamepad)));
     }
 }
-exports.GameInputGamepad = GameInputGamepad;
 _GameInputGamepad_browserType = new WeakMap(), _GameInputGamepad_mappings = new WeakMap(), _GameInputGamepad_instances = new WeakSet(), _GameInputGamepad_mappingFor = function _GameInputGamepad_mappingFor(gamepad) {
     if (__classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ||
         __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_other") {
-        if (GamepadTypeDetector_1.GamepadTypeDetector.detect(gamepad) === "dualsense") {
+        if (GamepadTypeDetector.detect(gamepad) === "dualsense") {
             return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows"
                 ? __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxDualSenseWindows
                 : __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxDualSenseOther;

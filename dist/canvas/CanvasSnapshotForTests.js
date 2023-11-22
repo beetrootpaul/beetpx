@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,10 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasSnapshotForTests_rgbValues;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.CanvasSnapshotForTests = void 0;
-const RgbColor_1 = require("../color/RgbColor");
-class CanvasSnapshotForTests {
+import { rgb_ } from "../color/RgbColor";
+export class CanvasSnapshotForTests {
     constructor(rgbValues) {
         _CanvasSnapshotForTests_rgbValues.set(this, void 0);
         __classPrivateFieldSet(this, _CanvasSnapshotForTests_rgbValues, rgbValues, "f");
@@ -24,8 +21,7 @@ class CanvasSnapshotForTests {
             throw Error(`index out of bounds: index = ${index}, max allowed index = ${__classPrivateFieldGet(this, _CanvasSnapshotForTests_rgbValues, "f").length - 1}`);
         }
         const value = __classPrivateFieldGet(this, _CanvasSnapshotForTests_rgbValues, "f")[index];
-        return (0, RgbColor_1.rgb_)((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
+        return rgb_((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
     }
 }
-exports.CanvasSnapshotForTests = CanvasSnapshotForTests;
 _CanvasSnapshotForTests_rgbValues = new WeakMap();

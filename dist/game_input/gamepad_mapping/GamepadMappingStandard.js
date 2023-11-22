@@ -1,18 +1,15 @@
-"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _GamepadMappingStandard_stickAxisThreshold;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GamepadMappingStandard = void 0;
 
 /**
  * Used for the Standard mapping, as described on https:
  *   and indicated by `Gamepad.mapping === "standard"`.
  */
-class GamepadMappingStandard {
+export class GamepadMappingStandard {
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
@@ -57,6 +54,5 @@ class GamepadMappingStandard {
         }
     }
 }
-exports.GamepadMappingStandard = GamepadMappingStandard;
 _a = GamepadMappingStandard;
 _GamepadMappingStandard_stickAxisThreshold = { value: 0.6 };

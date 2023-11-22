@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,10 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _GameLoop_requestAnimationFrameFn, _GameLoop_documentVisibilityStateProvider, _GameLoop_callbacks, _GameLoop_expectedTimeStepMillis, _GameLoop_previousTimeMillis, _GameLoop_accumulatedDeltaTimeMillis, _GameLoop_updateCallsCounter, _GameLoop_updateCallsLimit, _GameLoop_tick;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GameLoop = void 0;
-const Logger_1 = require("../logger/Logger");
-class GameLoop {
+import { Logger } from "../logger/Logger";
+export class GameLoop {
     constructor(options) {
         _GameLoop_requestAnimationFrameFn.set(this, void 0);
         _GameLoop_documentVisibilityStateProvider.set(this, void 0);
@@ -46,7 +43,7 @@ class GameLoop {
                 }
                 else {
                     __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, 0, "f");
-                    Logger_1.Logger.warnBeetPx(`Reached the safety limit of ${__classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")} update calls`);
+                    Logger.warnBeetPx(`Reached the safety limit of ${__classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")} update calls`);
                 }
             }
             const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, _a.renderFpsResultCap));
@@ -65,6 +62,5 @@ class GameLoop {
         __classPrivateFieldGet(this, _GameLoop_requestAnimationFrameFn, "f").call(this, __classPrivateFieldGet(this, _GameLoop_tick, "f"));
     }
 }
-exports.GameLoop = GameLoop;
 _a = GameLoop, _GameLoop_requestAnimationFrameFn = new WeakMap(), _GameLoop_documentVisibilityStateProvider = new WeakMap(), _GameLoop_callbacks = new WeakMap(), _GameLoop_expectedTimeStepMillis = new WeakMap(), _GameLoop_previousTimeMillis = new WeakMap(), _GameLoop_accumulatedDeltaTimeMillis = new WeakMap(), _GameLoop_updateCallsCounter = new WeakMap(), _GameLoop_updateCallsLimit = new WeakMap(), _GameLoop_tick = new WeakMap();
 GameLoop.renderFpsResultCap = 999;

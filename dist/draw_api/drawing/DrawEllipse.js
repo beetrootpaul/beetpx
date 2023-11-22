@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,10 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawEllipse_instances, _DrawEllipse_canvas, _DrawEllipse_drawPixel;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DrawEllipse = void 0;
-const Vector2d_1 = require("../../misc/Vector2d");
-class DrawEllipse {
+import { BpxVector2d } from "../../misc/Vector2d";
+export class DrawEllipse {
     constructor(canvas) {
         _DrawEllipse_instances.add(this);
         _DrawEllipse_canvas.set(this, void 0);
@@ -22,7 +19,7 @@ class DrawEllipse {
     }
     
     draw(xy, wh, color, fill, pattern) {
-        const [xyMinInclusive, xyMaxExclusive] = Vector2d_1.BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
             xyMaxExclusive.y - xyMinInclusive.y <= 0) {
@@ -98,7 +95,6 @@ class DrawEllipse {
         }
     }
 }
-exports.DrawEllipse = DrawEllipse;
 _DrawEllipse_canvas = new WeakMap(), _DrawEllipse_instances = new WeakSet(), _DrawEllipse_drawPixel = function _DrawEllipse_drawPixel(x, y, c1, c2, pattern, snapshot) {
     if (!__classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canSetAt(x, y)) {
         return;

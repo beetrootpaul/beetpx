@@ -1,14 +1,11 @@
-"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _GameInputTouch_instances, _a, _GameInputTouch_bitMasks, _GameInputTouch_config, _GameInputTouch_ongoingTouches, _GameInputTouch_handleTouchEvent, _GameInputTouch_isAnyElementTouched;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GameInputTouch = void 0;
-const HtmlTemplate_1 = require("../HtmlTemplate");
-class GameInputTouch {
+import { HtmlTemplate } from "../HtmlTemplate";
+export class GameInputTouch {
     constructor() {
         _GameInputTouch_instances.add(this);
         this.inputMethod = "touch";
@@ -17,91 +14,91 @@ class GameInputTouch {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).up | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).left,
                 events: ["button_up", "button_left"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsUpLeft,
+                selector: HtmlTemplate.selectors.controlsUpLeft,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).up,
                 events: ["button_up"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsUp,
+                selector: HtmlTemplate.selectors.controlsUp,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).up | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).right,
                 events: ["button_up", "button_right"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsUpRight,
+                selector: HtmlTemplate.selectors.controlsUpRight,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).left,
                 events: ["button_left"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsLeft,
+                selector: HtmlTemplate.selectors.controlsLeft,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).right,
                 events: ["button_right"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsRight,
+                selector: HtmlTemplate.selectors.controlsRight,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).down | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).left,
                 events: ["button_down", "button_left"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsDownLeft,
+                selector: HtmlTemplate.selectors.controlsDownLeft,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).down,
                 events: ["button_down"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsDown,
+                selector: HtmlTemplate.selectors.controlsDown,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).down | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).right,
                 events: ["button_down", "button_right"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsDownRight,
+                selector: HtmlTemplate.selectors.controlsDownRight,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).a,
                 events: ["button_a"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsA,
+                selector: HtmlTemplate.selectors.controlsA,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).b,
                 events: ["button_b"],
                 requiresStart: false,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsB,
+                selector: HtmlTemplate.selectors.controlsB,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).menu,
                 events: ["button_menu"],
                 requiresStart: true,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsMenu,
+                selector: HtmlTemplate.selectors.controlsMenu,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).muteUnmute,
                 events: ["mute_unmute_toggle"],
                 requiresStart: true,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsMuteToggle,
+                selector: HtmlTemplate.selectors.controlsMuteToggle,
                 elements: [],
             },
             {
                 bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).fullScreen,
                 events: ["full_screen"],
                 requiresStart: true,
-                selector: HtmlTemplate_1.HtmlTemplate.selectors.controlsFullScreen,
+                selector: HtmlTemplate.selectors.controlsFullScreen,
                 elements: [],
             },
         ]);
@@ -141,7 +138,6 @@ class GameInputTouch {
         return anythingAdded;
     }
 }
-exports.GameInputTouch = GameInputTouch;
 _a = GameInputTouch, _GameInputTouch_config = new WeakMap(), _GameInputTouch_ongoingTouches = new WeakMap(), _GameInputTouch_instances = new WeakSet(), _GameInputTouch_handleTouchEvent = function _GameInputTouch_handleTouchEvent(touchEvent) {
     
     

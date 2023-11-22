@@ -1,4 +1,3 @@
-"use strict";
 
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
@@ -12,25 +11,23 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BeetPx_framework, _BeetPx_tryGetFramework;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.b_ = exports.BeetPx = void 0;
-const Framework_1 = require("./Framework");
-const DebugMode_1 = require("./debug/DebugMode");
-const Logger_1 = require("./logger/Logger");
-class BeetPx {
+import { Framework } from "./Framework";
+import { DebugMode } from "./debug/DebugMode";
+import { Logger } from "./logger/Logger";
+export class BeetPx {
     
     
     
     static init(frameworkOptions, assetsToLoad) {
-        Logger_1.Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
-        __classPrivateFieldSet(this, _a, new Framework_1.Framework(frameworkOptions), "f", _BeetPx_framework);
+        Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
+        __classPrivateFieldSet(this, _a, new Framework(frameworkOptions), "f", _BeetPx_framework);
         return __classPrivateFieldGet(this, _a, "f", _BeetPx_framework).init(assetsToLoad);
     }
     
     
     
     static get debug() {
-        return DebugMode_1.DebugMode.enabled;
+        return DebugMode.enabled;
     }
     /**
      * Number of frames processed since game started.
@@ -46,7 +43,6 @@ class BeetPx {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).renderFps;
     }
 }
-exports.BeetPx = BeetPx;
 _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {
     if (!__classPrivateFieldGet(this, _a, "f", _BeetPx_framework)) {
         throw Error(`Tried to access BeetPx API without calling BeetPx.init(…) first.`);
@@ -73,16 +69,16 @@ BeetPx.restart = (...args) => {
 
 
 BeetPx.logDebug = (...args) => {
-    return Logger_1.Logger.debug(...args);
+    return Logger.debug(...args);
 };
 BeetPx.logInfo = (...args) => {
-    return Logger_1.Logger.info(...args);
+    return Logger.info(...args);
 };
 BeetPx.logWarn = (...args) => {
-    return Logger_1.Logger.warn(...args);
+    return Logger.warn(...args);
 };
 BeetPx.logError = (...args) => {
-    return Logger_1.Logger.error(...args);
+    return Logger.error(...args);
 };
 
 
@@ -287,4 +283,4 @@ BeetPx.getJsonAsset = (...args) => {
 BeetPx.detectedBrowserType = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).detectedBrowserType(...args);
 };
-exports.b_ = BeetPx;
+export const b_ = BeetPx;

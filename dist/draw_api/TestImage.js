@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TestImage = void 0;
-class TestImage {
+export class TestImage {
     constructor(params) {
         const asciiImage = params.image;
         const asciiToColor = params.withMapping;
@@ -49,4 +46,3 @@ class TestImage {
         }
     }
 }
-exports.TestImage = TestImage;

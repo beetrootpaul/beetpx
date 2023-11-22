@@ -1,14 +1,11 @@
-"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxFontSaint11Minimal4_unknownCharSprite, _BpxFontSaint11Minimal4_sprites;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.BpxFontSaint11Minimal4 = void 0;
-const Pixels_1 = require("../draw_api/Pixels");
-const Vector2d_1 = require("../misc/Vector2d");
+import { BpxPixels } from "../draw_api/Pixels";
+import { v_0_0_ } from "../misc/Vector2d";
 /**
  * A free to use font created by saint11 and distributed on https:
  *
@@ -21,356 +18,356 @@ const Vector2d_1 = require("../misc/Vector2d");
  *   a b c d e f g h i j k l m
  *   n o p q r s t u v w x y z
  */
-class BpxFontSaint11Minimal4 {
+export class BpxFontSaint11Minimal4 {
     constructor() {
-        _BpxFontSaint11Minimal4_unknownCharSprite.set(this, Pixels_1.BpxPixels.from(`
+        _BpxFontSaint11Minimal4_unknownCharSprite.set(this, BpxPixels.from(`
     ###
     ###
     ###
     ###
   `));
         _BpxFontSaint11Minimal4_sprites.set(this, {
-            " ": Pixels_1.BpxPixels.from(`
+            " ": BpxPixels.from(`
       ----
       ----
       ----
       ----
     `),
-            ".": Pixels_1.BpxPixels.from(`
+            ".": BpxPixels.from(`
       -
       -
       -
       #
     `),
-            ":": Pixels_1.BpxPixels.from(`
+            ":": BpxPixels.from(`
       #
       -
       -
       #
     `),
-            "!": Pixels_1.BpxPixels.from(`
+            "!": BpxPixels.from(`
       #
       #
       #
       -
       #
     `),
-            "?": Pixels_1.BpxPixels.from(`
+            "?": BpxPixels.from(`
       -#-
       #-#
       --#
       -#-
       -#-
     `),
-            "'": Pixels_1.BpxPixels.from(`
+            "'": BpxPixels.from(`
       #
       #
       -
       -
       -
     `),
-            '"': Pixels_1.BpxPixels.from(`
+            '"': BpxPixels.from(`
       #-#
       #-#
       ---
       ---
       ---
     `),
-            "*": Pixels_1.BpxPixels.from(`
+            "*": BpxPixels.from(`
       #-#
       -#-
       #-#
       ---
     `),
-            "/": Pixels_1.BpxPixels.from(`
+            "/": BpxPixels.from(`
       --#
       -#-
       -#-
       #--
     `),
-            "+": Pixels_1.BpxPixels.from(`
+            "+": BpxPixels.from(`
       ---
       -#-
       ###
       -#-
     `),
-            "-": Pixels_1.BpxPixels.from(`
+            "-": BpxPixels.from(`
       ---
       ---
       ###
       ---
     `),
-            0: Pixels_1.BpxPixels.from(`
+            0: BpxPixels.from(`
       -#-
       #-#
       #-#
       -#-
     `),
-            1: Pixels_1.BpxPixels.from(`
+            1: BpxPixels.from(`
       -#-
       ##-
       -#-
       -#-
     `),
-            2: Pixels_1.BpxPixels.from(`
+            2: BpxPixels.from(`
       ##-
       -##
       #--
       ###
     `),
-            3: Pixels_1.BpxPixels.from(`
+            3: BpxPixels.from(`
       ###
       -##
       --#
       ###
     `),
-            4: Pixels_1.BpxPixels.from(`
+            4: BpxPixels.from(`
       #-#
       #-#
       ###
       --#
     `),
-            5: Pixels_1.BpxPixels.from(`
+            5: BpxPixels.from(`
       ###
       ##-
       --#
       ##-
     `),
-            6: Pixels_1.BpxPixels.from(`
+            6: BpxPixels.from(`
       -#-
       #--
       ###
       -#-
     `),
-            7: Pixels_1.BpxPixels.from(`
+            7: BpxPixels.from(`
       ###
       --#
       -#-
       #--
     `),
-            8: Pixels_1.BpxPixels.from(`
+            8: BpxPixels.from(`
       ###
       -#-
       #-#
       -#-
     `),
-            9: Pixels_1.BpxPixels.from(`
+            9: BpxPixels.from(`
       ###
       ###
       --#
       ##-
     `),
-            "%": Pixels_1.BpxPixels.from(`
+            "%": BpxPixels.from(`
       #--#
       --#-
       -#--
       #--#
     `),
-            $: Pixels_1.BpxPixels.from(`
+            $: BpxPixels.from(`
       -##
       ##-
       -##
       ##-
     `),
-            "(": Pixels_1.BpxPixels.from(`
+            "(": BpxPixels.from(`
       -#
       #-
       #-
       -#
     `),
-            ")": Pixels_1.BpxPixels.from(`
+            ")": BpxPixels.from(`
       #-
       -#
       -#
       #-
     `),
-            "[": Pixels_1.BpxPixels.from(`
+            "[": BpxPixels.from(`
       ##
       #-
       #-
       ##
     `),
-            "]": Pixels_1.BpxPixels.from(`
+            "]": BpxPixels.from(`
       ##
       -#
       -#
       ##
     `),
-            "{": Pixels_1.BpxPixels.from(`
+            "{": BpxPixels.from(`
       -#
       ##
       ##
       -#
     `),
-            "}": Pixels_1.BpxPixels.from(`
+            "}": BpxPixels.from(`
       #-
       ##
       ##
       #-
     `),
-            "<": Pixels_1.BpxPixels.from(`
+            "<": BpxPixels.from(`
       ---
       -##
       #--
       -##
     `),
-            ">": Pixels_1.BpxPixels.from(`
+            ">": BpxPixels.from(`
       ##-
       --#
       ##-
       ---
     `),
-            a: Pixels_1.BpxPixels.from(`
+            a: BpxPixels.from(`
       ##-
       #-#
       ###
       #-#
     `),
-            b: Pixels_1.BpxPixels.from(`
+            b: BpxPixels.from(`
       #--
       ##-
       #-#
       ###
     `),
-            c: Pixels_1.BpxPixels.from(`
+            c: BpxPixels.from(`
       -##
       #--
       #--
       -##
     `),
-            d: Pixels_1.BpxPixels.from(`
+            d: BpxPixels.from(`
       ##-
       #-#
       #-#
       ##-
     `),
-            e: Pixels_1.BpxPixels.from(`
+            e: BpxPixels.from(`
       ###
       ##-
       #--
       ###
     `),
-            f: Pixels_1.BpxPixels.from(`
+            f: BpxPixels.from(`
       ###
       #--
       ##-
       #--
     `),
-            g: Pixels_1.BpxPixels.from(`
+            g: BpxPixels.from(`
       -##
       #--
       #-#
       -##
     `),
-            h: Pixels_1.BpxPixels.from(`
+            h: BpxPixels.from(`
       #--
       ##-
       #-#
       #-#
     `),
-            i: Pixels_1.BpxPixels.from(`
+            i: BpxPixels.from(`
       #
       #
       #
       #
     `),
-            j: Pixels_1.BpxPixels.from(`
+            j: BpxPixels.from(`
       ##
       -#
       -#
       #-
     `),
-            k: Pixels_1.BpxPixels.from(`
+            k: BpxPixels.from(`
       #-#
       ##-
       #-#
       #-#
     `),
-            l: Pixels_1.BpxPixels.from(`
+            l: BpxPixels.from(`
       #-
       #-
       #-
       ##
     `),
-            m: Pixels_1.BpxPixels.from(`
+            m: BpxPixels.from(`
       #-#
       ###
       #-#
       #-#
     `),
-            n: Pixels_1.BpxPixels.from(`
+            n: BpxPixels.from(`
       ##-
       #-#
       #-#
       #-#
     `),
-            o: Pixels_1.BpxPixels.from(`
+            o: BpxPixels.from(`
       -##
       #-#
       #-#
       ##-
     `),
-            p: Pixels_1.BpxPixels.from(`
+            p: BpxPixels.from(`
       ###
       #-#
       ##-
       #--
     `),
-            q: Pixels_1.BpxPixels.from(`
+            q: BpxPixels.from(`
       -#-
       #-#
       ###
       -#-
     `),
-            r: Pixels_1.BpxPixels.from(`
+            r: BpxPixels.from(`
       ##-
       #-#
       ##-
       #-#
     `),
-            s: Pixels_1.BpxPixels.from(`
+            s: BpxPixels.from(`
       -##
       ##-
       --#
       ##-
     `),
-            t: Pixels_1.BpxPixels.from(`
+            t: BpxPixels.from(`
       ###
       -#-
       -#-
       -#-
     `),
-            u: Pixels_1.BpxPixels.from(`
+            u: BpxPixels.from(`
       #-#
       #-#
       #-#
       ##-
     `),
-            v: Pixels_1.BpxPixels.from(`
+            v: BpxPixels.from(`
       #-#
       #-#
       #-#
       -#-
     `),
-            w: Pixels_1.BpxPixels.from(`
+            w: BpxPixels.from(`
       #-#
       #-#
       ###
       #-#
     `),
-            x: Pixels_1.BpxPixels.from(`
+            x: BpxPixels.from(`
       #-#
       -#-
       #-#
       #-#
     `),
-            y: Pixels_1.BpxPixels.from(`
+            y: BpxPixels.from(`
       #-#
       #-#
       -#-
       -#-
     `),
-            z: Pixels_1.BpxPixels.from(`
+            z: BpxPixels.from(`
       ###
       -#-
       #--
@@ -382,7 +379,7 @@ class BpxFontSaint11Minimal4 {
     }
     spritesFor(text) {
         const charSprites = [];
-        let positionInText = Vector2d_1.v_0_0_;
+        let positionInText = v_0_0_;
         for (let i = 0; i < text.length; i += 1) {
             let char = text[i].toLowerCase();
             let sprite = __classPrivateFieldGet(this, _BpxFontSaint11Minimal4_sprites, "f")[char] ?? __classPrivateFieldGet(this, _BpxFontSaint11Minimal4_unknownCharSprite, "f");
@@ -404,6 +401,5 @@ class BpxFontSaint11Minimal4 {
         return charSprites;
     }
 }
-exports.BpxFontSaint11Minimal4 = BpxFontSaint11Minimal4;
 _BpxFontSaint11Minimal4_unknownCharSprite = new WeakMap(), _BpxFontSaint11Minimal4_sprites = new WeakMap();
 BpxFontSaint11Minimal4.id = "__internal__saint11_Minimal4";

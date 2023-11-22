@@ -1,17 +1,14 @@
-"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _GamepadMappingFallback_stickAxisThreshold;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.GamepadMappingFallback = void 0;
 /**
  * A mapping which tries to map all the available buttons just in case
  *   any of them will work for the user. Based on the Standard mapping.
  */
-class GamepadMappingFallback {
+export class GamepadMappingFallback {
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
@@ -65,6 +62,5 @@ class GamepadMappingFallback {
         }
     }
 }
-exports.GamepadMappingFallback = GamepadMappingFallback;
 _a = GamepadMappingFallback;
 _GamepadMappingFallback_stickAxisThreshold = { value: 0.6 };

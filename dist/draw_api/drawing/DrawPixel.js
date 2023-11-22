@@ -1,4 +1,3 @@
-"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -11,9 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawPixel_canvas;
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DrawPixel = void 0;
-class DrawPixel {
+export class DrawPixel {
     constructor(canvas) {
         _DrawPixel_canvas.set(this, void 0);
         __classPrivateFieldSet(this, _DrawPixel_canvas, canvas, "f");
@@ -28,5 +25,4 @@ class DrawPixel {
         }
     }
 }
-exports.DrawPixel = DrawPixel;
 _DrawPixel_canvas = new WeakMap();
