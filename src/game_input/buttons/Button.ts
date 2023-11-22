@@ -18,14 +18,14 @@ export class Button {
       updateFps === 30
         ? 15
         : updateFps === 60
-        ? 30
-        : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
+          ? 30
+          : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
     Button.#repeatingFramesInterval =
       updateFps === 30
         ? 4
         : updateFps === 60
-        ? 8
-        : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
+          ? 8
+          : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
   }
 
   #isPressed = false;

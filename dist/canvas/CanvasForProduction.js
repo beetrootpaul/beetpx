@@ -16,7 +16,6 @@ import { Canvas } from "./Canvas";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
 export class CanvasForProduction extends Canvas {
     constructor(canvasSize, htmlCanvas, htmlCanvasBackground) {
-        var _a, _b;
         super(canvasSize);
         _CanvasForProduction_instances.add(this);
         _CanvasForProduction_length.set(this, void 0);
@@ -27,22 +26,23 @@ export class CanvasForProduction extends Canvas {
         __classPrivateFieldSet(this, _CanvasForProduction_length, canvasSize.x * canvasSize.y, "f");
         __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvas, htmlCanvas, "f");
         __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").style.backgroundColor = htmlCanvasBackground.cssHex;
-        __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvasContext, (_a = __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").getContext("2d", {
+        __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvasContext, __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").getContext("2d", {
             colorSpace: "srgb",
             
             alpha: true,
-        })) !== null && _a !== void 0 ? _a : u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
+        }) ?? u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
         __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
         const offscreenCanvas = document
             .createElement("canvas")
             .transferControlToOffscreen();
         offscreenCanvas.width = canvasSize.x;
         offscreenCanvas.height = canvasSize.y;
-        __classPrivateFieldSet(this, _CanvasForProduction_offscreenContext, (_b = offscreenCanvas.getContext("2d", {
+        __classPrivateFieldSet(this, _CanvasForProduction_offscreenContext, offscreenCanvas.getContext("2d", {
             colorSpace: "srgb",
             
             alpha: false,
-        })) !== null && _b !== void 0 ? _b : u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
+        }) ??
+            u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
         __classPrivateFieldSet(this, _CanvasForProduction_offscreenImageData, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.height, { colorSpace: "srgb" }), "f");
         __classPrivateFieldGet(this, _CanvasForProduction_instances, "m", _CanvasForProduction_initializeAsNonTransparent).call(this);
     }

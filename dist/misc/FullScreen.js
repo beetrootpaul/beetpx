@@ -14,10 +14,10 @@ import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 export class FullScreen {
     isFullScreenSupported() {
-        return __classPrivateFieldGet(FullScreen, _a, "f", _FullScreen_isFullScreenSupported);
+        return __classPrivateFieldGet(_a, _a, "f", _FullScreen_isFullScreenSupported);
     }
     static create() {
-        return __classPrivateFieldGet(FullScreen, _a, "f", _FullScreen_isFullScreenSupported)
+        return __classPrivateFieldGet(_a, _a, "f", _FullScreen_isFullScreenSupported)
             ? new FullScreenSupported()
             : new FullScreenNoop();
     }
@@ -42,7 +42,6 @@ class FullScreenNoop extends FullScreen {
 
 class FullScreenSupported extends FullScreen {
     constructor() {
-        var _b, _c, _d, _e;
         super();
         _FullScreenSupported_instances.add(this);
         _FullScreenSupported_fullScreenSubject.set(this, void 0);
@@ -53,9 +52,11 @@ class FullScreenSupported extends FullScreen {
             throw Error(`Was unable to find a full screen subject by selector '${HtmlTemplate.selectors.fullScreenSubject}'`);
         }
         __classPrivateFieldSet(this, _FullScreenSupported_fullScreenSubject, fullScreenSubject, "f");
-        const nativeRequestFullscreen = (_c = (_b = __classPrivateFieldGet(this, _FullScreenSupported_fullScreenSubject, "f").requestFullscreen) !== null && _b !== void 0 ? _b : __classPrivateFieldGet(this, _FullScreenSupported_fullScreenSubject, "f").webkitRequestFullscreen) !== null && _c !== void 0 ? _c : (() => { });
+        const nativeRequestFullscreen = __classPrivateFieldGet(this, _FullScreenSupported_fullScreenSubject, "f").requestFullscreen ??
+            __classPrivateFieldGet(this, _FullScreenSupported_fullScreenSubject, "f").webkitRequestFullscreen ??
+            (() => { });
         __classPrivateFieldSet(this, _FullScreenSupported_nativeRequestFullscreen, nativeRequestFullscreen.bind(__classPrivateFieldGet(this, _FullScreenSupported_fullScreenSubject, "f")), "f");
-        const nativeExitFullscreen = (_e = (_d = document.exitFullscreen) !== null && _d !== void 0 ? _d : document.webkitExitFullscreen) !== null && _e !== void 0 ? _e : (() => { });
+        const nativeExitFullscreen = document.exitFullscreen ?? document.webkitExitFullscreen ?? (() => { });
         __classPrivateFieldSet(this, _FullScreenSupported_nativeExitFullscreen, nativeExitFullscreen.bind(document), "f");
     }
     isInFullScreen() {

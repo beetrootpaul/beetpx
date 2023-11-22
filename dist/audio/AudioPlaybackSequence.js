@@ -15,14 +15,13 @@ import { u_ } from "../Utils";
 import { AudioPlayback } from "./AudioPlayback";
 export class AudioPlaybackSequence extends AudioPlayback {
     constructor(soundSequence, params) {
-        var _a, _b;
         super(params.audioContext, params.target, params.muteOnStart);
         _AudioPlaybackSequence_instances.add(this);
         this.id = AudioPlayback.nextPlaybackId++;
         this.type = "sequence";
         _AudioPlaybackSequence_sourceNode.set(this, void 0);
-        const introSequence = (_a = soundSequence.intro) !== null && _a !== void 0 ? _a : [];
-        const loopSequence = (_b = soundSequence.loop) !== null && _b !== void 0 ? _b : [];
+        const introSequence = soundSequence.intro ?? [];
+        const loopSequence = soundSequence.loop ?? [];
         if (introSequence.length + loopSequence.length <= 0) {
             throw Error("Cannot play an empty sound sequence");
         }

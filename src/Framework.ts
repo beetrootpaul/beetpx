@@ -125,12 +125,12 @@ export class Framework {
       options.gameCanvasSize === "64x64"
         ? v_(64, 64)
         : options.gameCanvasSize === "128x128"
-        ? v_(128, 128)
-        : options.gameCanvasSize === "256x256"
-        ? v_(256, 256)
-        : BpxUtils.throwError(
-            `Unsupported canvas size: "${options.gameCanvasSize}"`,
-          );
+          ? v_(128, 128)
+          : options.gameCanvasSize === "256x256"
+            ? v_(256, 256)
+            : BpxUtils.throwError(
+                `Unsupported canvas size: "${options.gameCanvasSize}"`,
+              );
 
     this.gameInput = new GameInput({
       enableDebugInputs: options.debugFeatures,

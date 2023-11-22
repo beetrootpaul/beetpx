@@ -378,12 +378,11 @@ export class BpxFontSaint11Minimal4 {
         this.imageUrl = null;
     }
     spritesFor(text) {
-        var _a;
         const charSprites = [];
         let positionInText = v_0_0_;
         for (let i = 0; i < text.length; i += 1) {
             let char = text[i].toLowerCase();
-            let sprite = (_a = __classPrivateFieldGet(this, _BpxFontSaint11Minimal4_sprites, "f")[char]) !== null && _a !== void 0 ? _a : __classPrivateFieldGet(this, _BpxFontSaint11Minimal4_unknownCharSprite, "f");
+            let sprite = __classPrivateFieldGet(this, _BpxFontSaint11Minimal4_sprites, "f")[char] ?? __classPrivateFieldGet(this, _BpxFontSaint11Minimal4_unknownCharSprite, "f");
             if (sprite.wh.y > 4) {
                 positionInText = positionInText.sub(0, 1);
             }

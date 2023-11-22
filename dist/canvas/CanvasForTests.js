@@ -61,14 +61,13 @@ export class CanvasForTests extends Canvas {
     }
 }
 _CanvasForTests_length = new WeakMap(), _CanvasForTests_rgbValues = new WeakMap(), _CanvasForTests_instances = new WeakSet(), _CanvasForTests_asAscii = function _CanvasForTests_asAscii(colorToAscii) {
-    var _a;
     let asciiImage = "";
     const snapshot = new CanvasSnapshotForTests(__classPrivateFieldGet(this, _CanvasForTests_rgbValues, "f").slice());
     for (let y = 0; y < this.canvasSize.y; y += 1) {
         for (let x = 0; x < this.canvasSize.x; x += 1) {
             const index = y * this.canvasSize.x + x;
             const color = snapshot.getColorAtIndex(index);
-            asciiImage += (_a = colorToAscii.get(color.cssHex)) !== null && _a !== void 0 ? _a : "?";
+            asciiImage += colorToAscii.get(color.cssHex) ?? "?";
         }
         asciiImage += "\n";
     }

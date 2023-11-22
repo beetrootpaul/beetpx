@@ -614,12 +614,11 @@ export class BpxFontSaint11Minimal5 {
         this.imageUrl = null;
     }
     spritesFor(text) {
-        var _a;
         const charSprites = [];
         let positionInText = v_0_0_;
         for (let i = 0; i < text.length; i += 1) {
             let char = text[i];
-            let sprite = (_a = __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_sprites, "f")[char]) !== null && _a !== void 0 ? _a : __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_unknownCharSprite, "f");
+            let sprite = __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_sprites, "f")[char] ?? __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_unknownCharSprite, "f");
             charSprites.push({
                 char,
                 positionInText,

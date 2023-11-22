@@ -11,91 +11,91 @@ export class GameInputTouch {
         this.inputMethod = "touch";
         _GameInputTouch_config.set(this, [
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).up | __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).left,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).up | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).left,
                 events: ["button_up", "button_left"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsUpLeft,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).up,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).up,
                 events: ["button_up"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsUp,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).up | __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).right,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).up | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).right,
                 events: ["button_up", "button_right"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsUpRight,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).left,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).left,
                 events: ["button_left"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsLeft,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).right,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).right,
                 events: ["button_right"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsRight,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).down | __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).left,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).down | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).left,
                 events: ["button_down", "button_left"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsDownLeft,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).down,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).down,
                 events: ["button_down"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsDown,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).down | __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).right,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).down | __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).right,
                 events: ["button_down", "button_right"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsDownRight,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).a,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).a,
                 events: ["button_a"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsA,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).b,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).b,
                 events: ["button_b"],
                 requiresStart: false,
                 selector: HtmlTemplate.selectors.controlsB,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).menu,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).menu,
                 events: ["button_menu"],
                 requiresStart: true,
                 selector: HtmlTemplate.selectors.controlsMenu,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).muteUnmute,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).muteUnmute,
                 events: ["mute_unmute_toggle"],
                 requiresStart: true,
                 selector: HtmlTemplate.selectors.controlsMuteToggle,
                 elements: [],
             },
             {
-                bitMask: __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).fullScreen,
+                bitMask: __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).fullScreen,
                 events: ["full_screen"],
                 requiresStart: true,
                 selector: HtmlTemplate.selectors.controlsFullScreen,
@@ -131,8 +131,8 @@ export class GameInputTouch {
             
             
             
-            if (ongoingEvents & __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).fullScreen) {
-                __classPrivateFieldGet(this, _GameInputTouch_ongoingTouches, "f").set(touchIdentifier, ongoingEvents & ~__classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).fullScreen);
+            if (ongoingEvents & __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).fullScreen) {
+                __classPrivateFieldGet(this, _GameInputTouch_ongoingTouches, "f").set(touchIdentifier, ongoingEvents & ~__classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).fullScreen);
             }
         }
         return anythingAdded;
@@ -173,15 +173,15 @@ _a = GameInputTouch, _GameInputTouch_config = new WeakMap(), _GameInputTouch_ong
         const bcr = el.getBoundingClientRect();
         if (touch.clientX >=
             bcr.left -
-                (bitMask & __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).left ? bcr.width : 0) &&
+                (bitMask & __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).left ? bcr.width : 0) &&
             touch.clientX <=
                 bcr.right +
-                    (bitMask & __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).right ? bcr.width : 0) &&
+                    (bitMask & __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).right ? bcr.width : 0) &&
             touch.clientY >=
-                bcr.top - (bitMask & __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).up ? bcr.height : 0) &&
+                bcr.top - (bitMask & __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).up ? bcr.height : 0) &&
             touch.clientY <=
                 bcr.bottom +
-                    (bitMask & __classPrivateFieldGet(GameInputTouch, _a, "f", _GameInputTouch_bitMasks).down ? bcr.height : 0)) {
+                    (bitMask & __classPrivateFieldGet(_a, _a, "f", _GameInputTouch_bitMasks).down ? bcr.height : 0)) {
             return true;
         }
     }

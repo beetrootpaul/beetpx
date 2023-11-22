@@ -55,10 +55,10 @@ describe("DrawText", () => {
           char === "B"
             ? spriteB
             : char === "P"
-            ? spriteP
-            : char === "X"
-            ? spriteX
-            : spriteUnknown;
+              ? spriteP
+              : char === "X"
+                ? spriteX
+                : spriteUnknown;
         sprites.push({
           char,
           positionInText,

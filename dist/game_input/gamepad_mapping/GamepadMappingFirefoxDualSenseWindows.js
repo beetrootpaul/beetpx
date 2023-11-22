@@ -26,19 +26,19 @@ export class GamepadMappingFirefoxDualSenseWindows {
             case 0: 
             case 2: 
                 return axisValue >
-                    __classPrivateFieldGet(GamepadMappingFirefoxDualSenseWindows, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
+                    __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
                     ? ["button_right"]
                     : axisValue <
-                        -__classPrivateFieldGet(GamepadMappingFirefoxDualSenseWindows, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
+                        -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
                         ? ["button_left"]
                         : [];
             case 1: 
             case 5: 
                 return axisValue >
-                    __classPrivateFieldGet(GamepadMappingFirefoxDualSenseWindows, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
+                    __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
                     ? ["button_down"]
                     : axisValue <
-                        -__classPrivateFieldGet(GamepadMappingFirefoxDualSenseWindows, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
+                        -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)
                         ? ["button_up"]
                         : [];
             default:

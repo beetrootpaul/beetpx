@@ -102,9 +102,8 @@ b_.init(
   });
 
   b_.setOnUpdate(() => {
-    updateCallsVisualization.history[
-      updateCallsVisualization.historyIndex
-    ] += 1;
+    updateCallsVisualization.history[updateCallsVisualization.historyIndex] +=
+      1;
 
     console.group("UPDATE");
     b_.logDebug(`frame: ${b_.frameNumber}`);
@@ -246,8 +245,8 @@ function drawRenderFpsVisualization(): void {
         columnIndex === renderFpsVisualization.historyIndex
           ? BpxRgbColor.fromCssHex("#ffffff")
           : barIndex % 3 === 2
-          ? BpxRgbColor.fromCssHex("#ff4444")
-          : BpxRgbColor.fromCssHex("#ff8888"),
+            ? BpxRgbColor.fromCssHex("#ff4444")
+            : BpxRgbColor.fromCssHex("#ff8888"),
       );
     }
   }
