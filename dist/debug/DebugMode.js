@@ -19,7 +19,7 @@ export class DebugMode {
     static set enabled(value) {
         __classPrivateFieldSet(this, _a, value, "f", _DebugMode_enabled);
         Logger.infoBeetPx(`Debug flag set to: ${__classPrivateFieldGet(this, _a, "f", _DebugMode_enabled)}`);
-        HtmlTemplate.updateDebugClass(DebugMode.enabled);
+        HtmlTemplate.updateDebugClass(_a.enabled);
     }
 }
 _a = DebugMode;

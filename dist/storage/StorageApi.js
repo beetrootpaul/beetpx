@@ -6,14 +6,14 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _a, _StorageApi_key;
 export class StorageApi {
     savePersistedState(value) {
-        window.localStorage.setItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key), JSON.stringify(value, null, 2));
+        window.localStorage.setItem(__classPrivateFieldGet(_a, _a, "f", _StorageApi_key), JSON.stringify(value, null, 2));
     }
     loadPersistedState() {
-        const maybeValue = window.localStorage.getItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key));
+        const maybeValue = window.localStorage.getItem(__classPrivateFieldGet(_a, _a, "f", _StorageApi_key));
         return maybeValue ? JSON.parse(maybeValue) : null;
     }
     clearPersistedState() {
-        window.localStorage.removeItem(__classPrivateFieldGet(StorageApi, _a, "f", _StorageApi_key));
+        window.localStorage.removeItem(__classPrivateFieldGet(_a, _a, "f", _StorageApi_key));
     }
 }
 _a = StorageApi;

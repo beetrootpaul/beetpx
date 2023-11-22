@@ -14,9 +14,6 @@
     "typecheck:watch": "tsc --watch"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "file:../../",
-    "prettier": "3.0.0",
-    "prettier-plugin-organize-imports": "3.2.3",
-    "typescript": "5.1.6"
+    "@beetpx/beetpx": "file:../../"
   }
 }

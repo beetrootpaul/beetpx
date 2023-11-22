@@ -43,8 +43,7 @@ export class BpxUtils {
      *          returned XY would be (0,-1).
      */
     static measureText(text) {
-        var _a, _b;
-        const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
+        const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
         let minXy = v_0_0_;
         let maxXy = v_0_0_;
         for (const charSprite of charSprites) {

@@ -5,6 +5,7 @@
     "declaration": true,
     "outDir": "./dist",
     "declarationDir": "./.dist/",
+    "sourceMap": true,
     "removeComments": false
   },
   "exclude": [

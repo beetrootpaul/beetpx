@@ -75,18 +75,18 @@ export class GamepadMappingFirefoxDualSenseWindows implements GamepadMapping {
           GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold
           ? ["button_right"]
           : axisValue <
-            -GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold
-          ? ["button_left"]
-          : [];
+              -GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold
+            ? ["button_left"]
+            : [];
       case 1: // left stick, vertical
       case 5: // right stick, vertical
         return axisValue >
           GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold
           ? ["button_down"]
           : axisValue <
-            -GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold
-          ? ["button_up"]
-          : [];
+              -GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold
+            ? ["button_up"]
+            : [];
       default:
         return [];
     }

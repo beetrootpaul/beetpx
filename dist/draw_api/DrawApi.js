@@ -73,8 +73,7 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(this.cameraXy), color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     pixels(pixels, xy, color, opts = {}) {
-        var _a;
-        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, (_a = opts.scaleXy) !== null && _a !== void 0 ? _a : v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     line(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(this.cameraXy), wh, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
@@ -97,29 +96,25 @@ export class DrawApi {
         return prev;
     }
     sprite(sprite, xy, opts = {}) {
-        var _a;
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
-        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite, sourceImageAsset, xy.sub(this.cameraXy), (_a = opts.scaleXy) !== null && _a !== void 0 ? _a : v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite, sourceImageAsset, xy.sub(this.cameraXy), opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     setFont(fontId) {
-        var _a, _b;
-        const prev = (_b = (_a = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) === null || _a === void 0 ? void 0 : _a.font.id) !== null && _b !== void 0 ? _b : null;
+        const prev = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")?.font.id ?? null;
         __classPrivateFieldSet(this, _DrawApi_fontAsset, fontId ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontId) : null, "f");
         return prev;
     }
     getFont() {
-        var _a, _b;
-        return (_b = (_a = __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) === null || _a === void 0 ? void 0 : _a.font) !== null && _b !== void 0 ? _b : null;
+        return __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")?.font ?? null;
     }
     print(text, xy, color, opts = {}) {
-        var _a, _b;
-        const centerXy = (_a = opts.centerXy) !== null && _a !== void 0 ? _a : [false, false];
+        const centerXy = opts.centerXy ?? [false, false];
         if (centerXy[0] || centerXy[1]) {
             const [_, size] = BpxUtils.measureText(text);
             xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
         }
         if (__classPrivateFieldGet(this, _DrawApi_fontAsset, "f")) {
-            __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), xy.sub(this.cameraXy), color, (_b = opts.scaleXy) !== null && _b !== void 0 ? _b : v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+            __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_fontAsset, "f"), xy.sub(this.cameraXy), color, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
         }
         else {
             Logger.infoBeetPx(`print: (${xy.x},${xy.y}) [${typeof color === "function" ? "computed" : color.cssHex}] ${text}`);

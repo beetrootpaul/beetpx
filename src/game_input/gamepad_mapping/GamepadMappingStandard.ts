@@ -266,15 +266,15 @@ export class GamepadMappingStandard implements GamepadMapping {
         return axisValue > GamepadMappingStandard.#stickAxisThreshold
           ? ["button_right"]
           : axisValue < -GamepadMappingStandard.#stickAxisThreshold
-          ? ["button_left"]
-          : [];
+            ? ["button_left"]
+            : [];
       case 1: // left stick, vertical
       case 3: // right stick, vertical
         return axisValue > GamepadMappingStandard.#stickAxisThreshold
           ? ["button_down"]
           : axisValue < -GamepadMappingStandard.#stickAxisThreshold
-          ? ["button_up"]
-          : [];
+            ? ["button_up"]
+            : [];
       default:
         return [];
     }

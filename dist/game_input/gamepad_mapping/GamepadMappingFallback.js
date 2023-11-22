@@ -45,16 +45,16 @@ export class GamepadMappingFallback {
         switch (axisIndex) {
             case 0:
             case 2:
-                return axisValue > __classPrivateFieldGet(GamepadMappingFallback, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
                     ? ["button_right"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingFallback, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
                         ? ["button_left"]
                         : [];
             case 1:
             case 3:
-                return axisValue > __classPrivateFieldGet(GamepadMappingFallback, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
                     ? ["button_down"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingFallback, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFallback_stickAxisThreshold)
                         ? ["button_up"]
                         : [];
             default:

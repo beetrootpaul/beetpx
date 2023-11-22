@@ -30,7 +30,7 @@ export class DrawRect {
         }
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = (c1 === null || c1 === void 0 ? void 0 : c1.type) === "canvas_snapshot_mapping"
+        const sn = c1?.type === "canvas_snapshot_mapping"
             ? __classPrivateFieldGet(this, _DrawRect_canvas, "f").getMostRecentSnapshot()
             : null;
         const fp = pattern;

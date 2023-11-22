@@ -133,16 +133,16 @@ export class GamepadMappingFirefoxDualSenseOther implements GamepadMapping {
           GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
           ? ["button_right"]
           : axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
-          ? ["button_left"]
-          : [];
+            ? ["button_left"]
+            : [];
       case 1: // left stick, vertical
       case 3: // right stick, vertical
         return axisValue >
           GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
           ? ["button_down"]
           : axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
-          ? ["button_up"]
-          : [];
+            ? ["button_up"]
+            : [];
       default:
         return [];
     }

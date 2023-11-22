@@ -48,7 +48,7 @@ export class PreparedSprites {
             cacheHit: true,
         };
         __classPrivateFieldGet(this, _PreparedSprites_cache, "f").set(key, preparedSprite);
-        return Object.assign(Object.assign({}, preparedSprite), { cacheHit: false });
+        return { ...preparedSprite, cacheHit: false };
     }
 }
 _PreparedSprites_cache = new WeakMap();
