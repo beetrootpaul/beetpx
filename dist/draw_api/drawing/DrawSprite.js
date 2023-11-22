@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,13 +11,15 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawSprite_preparedSprites, _DrawSprite_canvas, _DrawSprite_options;
-import { BpxUtils } from "../../Utils";
-import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
-import { PreparedSprites } from "../PreparedSprites";
-import { BpxSprite } from "../Sprite";
-export class DrawSprite {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DrawSprite = void 0;
+const Utils_1 = require("../../Utils");
+const Vector2d_1 = require("../../misc/Vector2d");
+const PreparedSprites_1 = require("../PreparedSprites");
+const Sprite_1 = require("../Sprite");
+class DrawSprite {
     constructor(canvas, options = {}) {
-        _DrawSprite_preparedSprites.set(this, new PreparedSprites());
+        _DrawSprite_preparedSprites.set(this, new PreparedSprites_1.PreparedSprites());
         _DrawSprite_canvas.set(this, void 0);
         _DrawSprite_options.set(this, void 0);
         __classPrivateFieldSet(this, _DrawSprite_canvas, canvas, "f");
@@ -24,12 +27,12 @@ export class DrawSprite {
     }
     draw(sprite, sourceImageAsset, targetXy, scaleXy, colorMapping, pattern) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
-        scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+        scaleXy = Vector2d_1.BpxVector2d.max(scaleXy.floor(), Vector2d_1.v_0_0_);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
         
-        sprite = new BpxSprite(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
+        sprite = new Sprite_1.BpxSprite(sprite.imageUrl, (0, Vector2d_1.v_)(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), (0, Vector2d_1.v_)(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
         
-        sprite = new BpxSprite(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
+        sprite = new Sprite_1.BpxSprite(sprite.imageUrl, (0, Vector2d_1.v_)(Utils_1.BpxUtils.clamp(0, sprite.xy1.x, imgW), Utils_1.BpxUtils.clamp(0, sprite.xy1.y, imgH)), (0, Vector2d_1.v_)(Utils_1.BpxUtils.clamp(0, sprite.xy2.x, imgW), Utils_1.BpxUtils.clamp(0, sprite.xy2.y, imgH)));
         
         if (!__classPrivateFieldGet(this, _DrawSprite_canvas, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
             return;
@@ -60,4 +63,5 @@ export class DrawSprite {
         }
     }
 }
+exports.DrawSprite = DrawSprite;
 _DrawSprite_preparedSprites = new WeakMap(), _DrawSprite_canvas = new WeakMap(), _DrawSprite_options = new WeakMap();

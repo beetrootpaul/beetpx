@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -10,17 +11,19 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Buttons_left, _Buttons_right, _Buttons_up, _Buttons_down, _Buttons_a, _Buttons_b, _Buttons_menu, _Buttons_repeatingLeft, _Buttons_repeatingRight, _Buttons_repeatingUp, _Buttons_repeatingDown, _Buttons_repeatingA, _Buttons_repeatingB, _Buttons_repeatingMenu;
-import { v_ } from "../../misc/Vector2d";
-import { Button } from "./Button";
-export class Buttons {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Buttons = void 0;
+const Vector2d_1 = require("../../misc/Vector2d");
+const Button_1 = require("./Button");
+class Buttons {
     constructor() {
-        _Buttons_left.set(this, new Button());
-        _Buttons_right.set(this, new Button());
-        _Buttons_up.set(this, new Button());
-        _Buttons_down.set(this, new Button());
-        _Buttons_a.set(this, new Button());
-        _Buttons_b.set(this, new Button());
-        _Buttons_menu.set(this, new Button());
+        _Buttons_left.set(this, new Button_1.Button());
+        _Buttons_right.set(this, new Button_1.Button());
+        _Buttons_up.set(this, new Button_1.Button());
+        _Buttons_down.set(this, new Button_1.Button());
+        _Buttons_a.set(this, new Button_1.Button());
+        _Buttons_b.set(this, new Button_1.Button());
+        _Buttons_menu.set(this, new Button_1.Button());
         _Buttons_repeatingLeft.set(this, true);
         _Buttons_repeatingRight.set(this, true);
         _Buttons_repeatingUp.set(this, true);
@@ -57,7 +60,7 @@ export class Buttons {
         }
     }
     areDirectionsPressedAsVector() {
-        return v_((__classPrivateFieldGet(this, _Buttons_left, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_right, "f").isPressed ? 1 : 0), (__classPrivateFieldGet(this, _Buttons_up, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_down, "f").isPressed ? 1 : 0));
+        return (0, Vector2d_1.v_)((__classPrivateFieldGet(this, _Buttons_left, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_right, "f").isPressed ? 1 : 0), (__classPrivateFieldGet(this, _Buttons_up, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_down, "f").isPressed ? 1 : 0));
     }
     setRepeating(button, repeating) {
         switch (button) {
@@ -130,4 +133,5 @@ export class Buttons {
         }
     }
 }
+exports.Buttons = Buttons;
 _Buttons_left = new WeakMap(), _Buttons_right = new WeakMap(), _Buttons_up = new WeakMap(), _Buttons_down = new WeakMap(), _Buttons_a = new WeakMap(), _Buttons_b = new WeakMap(), _Buttons_menu = new WeakMap(), _Buttons_repeatingLeft = new WeakMap(), _Buttons_repeatingRight = new WeakMap(), _Buttons_repeatingUp = new WeakMap(), _Buttons_repeatingDown = new WeakMap(), _Buttons_repeatingA = new WeakMap(), _Buttons_repeatingB = new WeakMap(), _Buttons_repeatingMenu = new WeakMap();

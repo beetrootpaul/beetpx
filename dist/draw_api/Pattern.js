@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,7 +11,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxPattern_bits;
-export class BpxPattern {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BpxPattern = void 0;
+class BpxPattern {
     /**
      * Creates a BpxPattern from a visual representation of 4 columns and 4 rows
      *   (designated by new lines) where `#` and `-` stand for a primary and
@@ -50,6 +53,7 @@ export class BpxPattern {
         return Boolean(__classPrivateFieldGet(this, _BpxPattern_bits, "f") & (1 << bitPosition));
     }
 }
+exports.BpxPattern = BpxPattern;
 _BpxPattern_bits = new WeakMap();
 BpxPattern.primaryOnly = BpxPattern.of(65535);
 BpxPattern.secondaryOnly = BpxPattern.of(0);

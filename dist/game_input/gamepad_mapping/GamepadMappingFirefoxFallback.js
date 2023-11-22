@@ -1,9 +1,12 @@
+"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _GamepadMappingFirefoxFallback_stickAxisThreshold;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GamepadMappingFirefoxFallback = void 0;
 
 /**
  * Here we use Xbox as a default one for all other gamepad types in Firefox,
@@ -11,7 +14,7 @@ var _a, _GamepadMappingFirefoxFallback_stickAxisThreshold;
  *   DualSense would work for DualShock as well, therefore better assume
  *   there will be more cases of Xbox controller not detected as such.
  */
-export class GamepadMappingFirefoxFallback {
+class GamepadMappingFirefoxFallback {
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
@@ -48,16 +51,16 @@ export class GamepadMappingFirefoxFallback {
         switch (axisIndex) {
             case 0: 
             case 2: 
-                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                     ? ["button_right"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                         ? ["button_left"]
                         : [];
             case 1: 
             case 3: 
-                return axisValue > __classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
+                return axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                     ? ["button_down"]
-                    : axisValue < -__classPrivateFieldGet(GamepadMappingFirefoxFallback, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
+                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxFallback_stickAxisThreshold)
                         ? ["button_up"]
                         : [];
             default:
@@ -65,5 +68,6 @@ export class GamepadMappingFirefoxFallback {
         }
     }
 }
+exports.GamepadMappingFirefoxFallback = GamepadMappingFirefoxFallback;
 _a = GamepadMappingFirefoxFallback;
 _GamepadMappingFirefoxFallback_stickAxisThreshold = { value: 0.6 };

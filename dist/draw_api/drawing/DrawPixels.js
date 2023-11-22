@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,8 +11,10 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawPixels_canvas, _DrawPixels_options;
-import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
-export class DrawPixels {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DrawPixels = void 0;
+const Vector2d_1 = require("../../misc/Vector2d");
+class DrawPixels {
     constructor(canvas, options = {}) {
         _DrawPixels_canvas.set(this, void 0);
         _DrawPixels_options.set(this, void 0);
@@ -20,7 +23,7 @@ export class DrawPixels {
     }
     draw(pixels, targetXy, color, scaleXy, pattern) {
         targetXy = __classPrivateFieldGet(this, _DrawPixels_options, "f").disableRounding ? targetXy : targetXy.round();
-        scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+        scaleXy = Vector2d_1.BpxVector2d.max(scaleXy.floor(), Vector2d_1.v_0_0_);
         for (let bitsY = 0; bitsY < pixels.asciiRows.length; bitsY += 1) {
             const yBase = targetXy.y + bitsY * scaleXy.y;
             for (let bitsX = 0; bitsX < pixels.asciiRows[bitsY].length; bitsX += 1) {
@@ -43,4 +46,5 @@ export class DrawPixels {
         }
     }
 }
+exports.DrawPixels = DrawPixels;
 _DrawPixels_canvas = new WeakMap(), _DrawPixels_options = new WeakMap();

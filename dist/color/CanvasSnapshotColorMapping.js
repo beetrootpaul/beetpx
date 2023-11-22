@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,7 +11,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxCanvasSnapshotColorMapping_mapping;
-export class BpxCanvasSnapshotColorMapping {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BpxCanvasSnapshotColorMapping = void 0;
+class BpxCanvasSnapshotColorMapping {
     static of(mapping) {
         return new BpxCanvasSnapshotColorMapping(mapping);
     }
@@ -23,4 +26,5 @@ export class BpxCanvasSnapshotColorMapping {
         return snapshot ? __classPrivateFieldGet(this, _BpxCanvasSnapshotColorMapping_mapping, "f").call(this, snapshot.getColorAtIndex(index)) : null;
     }
 }
+exports.BpxCanvasSnapshotColorMapping = BpxCanvasSnapshotColorMapping;
 _BpxCanvasSnapshotColorMapping_mapping = new WeakMap();

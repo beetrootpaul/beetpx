@@ -1,5 +1,8 @@
-import { BpxVector2d } from "../misc/Vector2d";
-export class BpxPixels {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BpxPixels = void 0;
+const Vector2d_1 = require("../misc/Vector2d");
+class BpxPixels {
     static from(ascii) {
         return new BpxPixels(ascii);
     }
@@ -16,6 +19,7 @@ export class BpxPixels {
             }
             w = Math.max(w, row.length);
         }
-        this.wh = new BpxVector2d(w, this.asciiRows.length);
+        this.wh = new Vector2d_1.BpxVector2d(w, this.asciiRows.length);
     }
 }
+exports.BpxPixels = BpxPixels;

@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,7 +11,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _LocalStorage_keyPrefix;
-export class LocalStorage {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.LocalStorage = void 0;
+class LocalStorage {
     constructor(keyPrefix) {
         _LocalStorage_keyPrefix.set(this, void 0);
         __classPrivateFieldSet(this, _LocalStorage_keyPrefix, keyPrefix, "f");
@@ -23,4 +26,5 @@ export class LocalStorage {
         return maybeValue ? JSON.parse(maybeValue) : null;
     }
 }
+exports.LocalStorage = LocalStorage;
 _LocalStorage_keyPrefix = new WeakMap();

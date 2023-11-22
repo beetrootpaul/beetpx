@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,40 +11,36 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawText_canvas, _DrawText_sprite, _DrawText_pixels;
-import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
-import { spr_ } from "../Sprite";
-import { DrawPixels } from "./DrawPixels";
-import { DrawSprite } from "./DrawSprite";
-export class DrawText {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DrawText = void 0;
+const SpriteColorMapping_1 = require("../../color/SpriteColorMapping");
+const Vector2d_1 = require("../../misc/Vector2d");
+const Sprite_1 = require("../Sprite");
+const DrawPixels_1 = require("./DrawPixels");
+const DrawSprite_1 = require("./DrawSprite");
+class DrawText {
     constructor(canvas) {
         _DrawText_canvas.set(this, void 0);
         _DrawText_sprite.set(this, void 0);
         _DrawText_pixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawText_canvas, canvas, "f");
-        __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite(__classPrivateFieldGet(this, _DrawText_canvas, "f"), {
+        __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite_1.DrawSprite(__classPrivateFieldGet(this, _DrawText_canvas, "f"), {
             disableRounding: true,
         }), "f");
-        __classPrivateFieldSet(this, _DrawText_pixels, new DrawPixels(__classPrivateFieldGet(this, _DrawText_canvas, "f"), {
+        __classPrivateFieldSet(this, _DrawText_pixels, new DrawPixels_1.DrawPixels(__classPrivateFieldGet(this, _DrawText_canvas, "f"), {
             disableRounding: true,
         }), "f");
     }
     draw(text, fontAsset, canvasXy, color, scaleXy, pattern) {
         canvasXy = canvasXy.round();
-        scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+        scaleXy = Vector2d_1.BpxVector2d.max(scaleXy.floor(), Vector2d_1.v_0_0_);
         const colorMapping = typeof color === "function"
-            ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => {
-                var _a;
-                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === ((_a = fontAsset.spriteTextColor) === null || _a === void 0 ? void 0 : _a.cssHex)
-                    ? color(charSprite)
-                    : null;
-            })
-            : new BpxSpriteColorMapping((spriteColor) => {
-                var _a;
-                return (spriteColor === null || spriteColor === void 0 ? void 0 : spriteColor.cssHex) === ((_a = fontAsset.spriteTextColor) === null || _a === void 0 ? void 0 : _a.cssHex)
-                    ? color
-                    : null;
-            });
+            ? (charSprite) => new SpriteColorMapping_1.BpxSpriteColorMapping((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
+                ? color(charSprite)
+                : null)
+            : new SpriteColorMapping_1.BpxSpriteColorMapping((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
+                ? color
+                : null);
         for (const charSprite of fontAsset.font.spritesFor(text)) {
             const xy = canvasXy.add(charSprite.positionInText.mul(scaleXy));
             if (charSprite.type === "image") {
@@ -53,7 +50,7 @@ export class DrawText {
                 if (fontAsset.image == null) {
                     throw Error(`There is no image loaded for a font "${fontAsset.font.id}", which uses image sprites`);
                 }
-                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(spr_(fontAsset.font.imageUrl)(charSprite.spriteXyWh[0].x, charSprite.spriteXyWh[0].y, charSprite.spriteXyWh[1].x, charSprite.spriteXyWh[1].y), fontAsset.image, xy, scaleXy, typeof colorMapping === "function"
+                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw((0, Sprite_1.spr_)(fontAsset.font.imageUrl)(charSprite.spriteXyWh[0].x, charSprite.spriteXyWh[0].y, charSprite.spriteXyWh[1].x, charSprite.spriteXyWh[1].y), fontAsset.image, xy, scaleXy, typeof colorMapping === "function"
                     ? colorMapping(charSprite)
                     : colorMapping, pattern);
             }
@@ -63,4 +60,5 @@ export class DrawText {
         }
     }
 }
+exports.DrawText = DrawText;
 _DrawText_canvas = new WeakMap(), _DrawText_sprite = new WeakMap(), _DrawText_pixels = new WeakMap();

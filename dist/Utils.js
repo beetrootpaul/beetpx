@@ -1,6 +1,9 @@
-import { BeetPx } from "./BeetPx";
-import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
-export class BpxUtils {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.u_ = exports.BpxUtils = void 0;
+const BeetPx_1 = require("./BeetPx");
+const Vector2d_1 = require("./misc/Vector2d");
+class BpxUtils {
     /**
      * This function is meant to be used in a last branch of `if - else if - … - else`
      *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
@@ -15,7 +18,7 @@ export class BpxUtils {
         throw Error(`Somehow reached the unreachable code ¯\\_(ツ)_/¯`);
     }
     static booleanChangingEveryNthFrame(n) {
-        return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
+        return n > 0 ? BeetPx_1.BeetPx.frameNumber % (n * 2) < n : true;
     }
     
     
@@ -43,13 +46,12 @@ export class BpxUtils {
      *          returned XY would be (0,-1).
      */
     static measureText(text) {
-        var _a, _b;
-        const charSprites = (_b = (_a = BeetPx.getFont()) === null || _a === void 0 ? void 0 : _a.spritesFor(text)) !== null && _b !== void 0 ? _b : [];
-        let minXy = v_0_0_;
-        let maxXy = v_0_0_;
+        const charSprites = BeetPx_1.BeetPx.getFont()?.spritesFor(text) ?? [];
+        let minXy = Vector2d_1.v_0_0_;
+        let maxXy = Vector2d_1.v_0_0_;
         for (const charSprite of charSprites) {
-            minXy = BpxVector2d.min(minXy, charSprite.positionInText);
-            maxXy = BpxVector2d.max(maxXy, charSprite.positionInText.add(charSprite.type === "image"
+            minXy = Vector2d_1.BpxVector2d.min(minXy, charSprite.positionInText);
+            maxXy = Vector2d_1.BpxVector2d.max(maxXy, charSprite.positionInText.add(charSprite.type === "image"
                 ? charSprite.spriteXyWh[1]
                 : charSprite.pixels.wh));
         }
@@ -64,26 +66,26 @@ export class BpxUtils {
     static noop() { }
     
     static offset4Directions() {
-        return [v_(-1, -1), v_(1, -1), v_(1, 1), v_(-1, 1)];
+        return [(0, Vector2d_1.v_)(-1, -1), (0, Vector2d_1.v_)(1, -1), (0, Vector2d_1.v_)(1, 1), (0, Vector2d_1.v_)(-1, 1)];
     }
     
     static offset8Directions() {
         return [
-            v_(-1, -1),
-            v_(0, -1),
-            v_(1, -1),
-            v_(1, 0),
-            v_(1, 1),
-            v_(0, 1),
-            v_(-1, 1),
-            v_(-1, 0),
+            (0, Vector2d_1.v_)(-1, -1),
+            (0, Vector2d_1.v_)(0, -1),
+            (0, Vector2d_1.v_)(1, -1),
+            (0, Vector2d_1.v_)(1, 0),
+            (0, Vector2d_1.v_)(1, 1),
+            (0, Vector2d_1.v_)(0, 1),
+            (0, Vector2d_1.v_)(-1, 1),
+            (0, Vector2d_1.v_)(-1, 0),
         ];
     }
     static printWithOutline(text, canvasXy1, textColor, outlineColor, opts = {}) {
         for (const offset of BpxUtils.offset8Directions()) {
-            BeetPx.print(text, canvasXy1.add(offset), outlineColor, opts);
+            BeetPx_1.BeetPx.print(text, canvasXy1.add(offset), outlineColor, opts);
         }
-        BeetPx.print(text, canvasXy1, textColor, opts);
+        BeetPx_1.BeetPx.print(text, canvasXy1, textColor, opts);
     }
     static randomElementOf(array) {
         if (array.length <= 0)
@@ -123,4 +125,5 @@ export class BpxUtils {
         });
     }
 }
-export const u_ = BpxUtils;
+exports.BpxUtils = BpxUtils;
+exports.u_ = BpxUtils;

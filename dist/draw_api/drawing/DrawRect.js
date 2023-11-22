@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,15 +11,17 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawRect_instances, _DrawRect_canvas, _DrawRect_drawPixel;
-import { BpxVector2d } from "../../misc/Vector2d";
-export class DrawRect {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DrawRect = void 0;
+const Vector2d_1 = require("../../misc/Vector2d");
+class DrawRect {
     constructor(canvas) {
         _DrawRect_instances.add(this);
         _DrawRect_canvas.set(this, void 0);
         __classPrivateFieldSet(this, _DrawRect_canvas, canvas, "f");
     }
     draw(xy, wh, color, fill, pattern) {
-        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+        const [xyMinInclusive, xyMaxExclusive] = Vector2d_1.BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
             xyMaxExclusive.y - xyMinInclusive.y <= 0) {
@@ -30,7 +33,7 @@ export class DrawRect {
         }
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = (c1 === null || c1 === void 0 ? void 0 : c1.type) === "canvas_snapshot_mapping"
+        const sn = c1?.type === "canvas_snapshot_mapping"
             ? __classPrivateFieldGet(this, _DrawRect_canvas, "f").getMostRecentSnapshot()
             : null;
         const fp = pattern;
@@ -47,6 +50,7 @@ export class DrawRect {
         }
     }
 }
+exports.DrawRect = DrawRect;
 _DrawRect_canvas = new WeakMap(), _DrawRect_instances = new WeakSet(), _DrawRect_drawPixel = function _DrawRect_drawPixel(x, y, c1, c2, pattern, snapshot) {
     if (!__classPrivateFieldGet(this, _DrawRect_canvas, "f").canSetAt(x, y)) {
         return;

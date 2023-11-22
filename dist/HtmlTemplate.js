@@ -1,4 +1,7 @@
-export class HtmlTemplate {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.HtmlTemplate = void 0;
+class HtmlTemplate {
     static addLoadedClass() {
         document.body.classList.add("loaded");
     }
@@ -28,6 +31,7 @@ export class HtmlTemplate {
         document.body.classList[isPressed.fullscreen ? "add" : "remove"]("pressed_fullscreen");
     }
 }
+exports.HtmlTemplate = HtmlTemplate;
 HtmlTemplate.selectors = {
     fullScreenSubject: "body",
     canvas: "#game_canvas",

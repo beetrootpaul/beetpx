@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,8 +11,10 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawLine_instances, _DrawLine_canvas, _DrawLine_drawPixel;
-import { v_ } from "../../misc/Vector2d";
-export class DrawLine {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DrawLine = void 0;
+const Vector2d_1 = require("../../misc/Vector2d");
+class DrawLine {
     constructor(canvas) {
         _DrawLine_instances.add(this);
         _DrawLine_canvas.set(this, void 0);
@@ -34,14 +37,14 @@ export class DrawLine {
         const whSub1 = wh.sub(wh.sign());
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = (c1 === null || c1 === void 0 ? void 0 : c1.type) === "canvas_snapshot_mapping"
+        const sn = c1?.type === "canvas_snapshot_mapping"
             ? __classPrivateFieldGet(this, _DrawLine_canvas, "f").getMostRecentSnapshot()
             : null;
         const fp = pattern;
         
         
         
-        let dXy = whSub1.abs().mul(v_(1, -1));
+        let dXy = whSub1.abs().mul((0, Vector2d_1.v_)(1, -1));
         let currentXy = xyStart;
         const targetXy = xyStart.add(whSub1);
         const step = whSub1.sign();
@@ -58,16 +61,17 @@ export class DrawLine {
             
             const errBeforeStep = err;
             if (2 * errBeforeStep >= dXy.y) {
-                currentXy = currentXy.add(v_(step.x, 0));
+                currentXy = currentXy.add((0, Vector2d_1.v_)(step.x, 0));
                 err += dXy.y;
             }
             if (2 * errBeforeStep <= dXy.x) {
-                currentXy = currentXy.add(v_(0, step.y));
+                currentXy = currentXy.add((0, Vector2d_1.v_)(0, step.y));
                 err += dXy.x;
             }
         }
     }
 }
+exports.DrawLine = DrawLine;
 _DrawLine_canvas = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, pattern, snapshot) {
     if (!__classPrivateFieldGet(this, _DrawLine_canvas, "f").canSetAt(x, y)) {
         return;

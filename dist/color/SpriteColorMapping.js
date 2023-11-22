@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,7 +11,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxSpriteColorMapping_mapping;
-export class BpxSpriteColorMapping {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BpxSpriteColorMapping = void 0;
+class BpxSpriteColorMapping {
     static from(colorMappingEntries) {
         const map = new Map(colorMappingEntries.map(([from, to]) => [from.cssHex, to]));
         return new BpxSpriteColorMapping((spriteColor) => {
@@ -32,5 +35,6 @@ export class BpxSpriteColorMapping {
         return __classPrivateFieldGet(this, _BpxSpriteColorMapping_mapping, "f").call(this, spriteColor);
     }
 }
+exports.BpxSpriteColorMapping = BpxSpriteColorMapping;
 _BpxSpriteColorMapping_mapping = new WeakMap();
 BpxSpriteColorMapping.noMapping = new BpxSpriteColorMapping((c) => c);

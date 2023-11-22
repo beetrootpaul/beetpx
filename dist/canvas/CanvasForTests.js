@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,19 +11,21 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasForTests_instances, _CanvasForTests_length, _CanvasForTests_rgbValues, _CanvasForTests_asAscii;
-import { expect } from "@jest/globals";
-import { u_ } from "../Utils";
-import { v_ } from "../misc/Vector2d";
-import { Canvas } from "./Canvas";
-import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";
-export class CanvasForTests extends Canvas {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CanvasForTests = void 0;
+const globals_1 = require("@jest/globals");
+const Utils_1 = require("../Utils");
+const Vector2d_1 = require("../misc/Vector2d");
+const Canvas_1 = require("./Canvas");
+const CanvasSnapshotForTests_1 = require("./CanvasSnapshotForTests");
+class CanvasForTests extends Canvas_1.Canvas {
     constructor(width, height, initialColor) {
-        super(v_(width, height));
+        super((0, Vector2d_1.v_)(width, height));
         _CanvasForTests_instances.add(this);
         _CanvasForTests_length.set(this, void 0);
         _CanvasForTests_rgbValues.set(this, void 0);
         __classPrivateFieldSet(this, _CanvasForTests_length, width * height, "f");
-        __classPrivateFieldSet(this, _CanvasForTests_rgbValues, u_
+        __classPrivateFieldSet(this, _CanvasForTests_rgbValues, Utils_1.u_
             .range(__classPrivateFieldGet(this, _CanvasForTests_length, "f"))
             .map(() => (initialColor.r << 16) + (initialColor.g << 8) + initialColor.b), "f");
     }
@@ -37,7 +40,7 @@ export class CanvasForTests extends Canvas {
         __classPrivateFieldGet(this, _CanvasForTests_rgbValues, "f")[index] = (color.r << 16) + (color.g << 8) + color.b;
     }
     newSnapshot() {
-        return new CanvasSnapshotForTests(__classPrivateFieldGet(this, _CanvasForTests_rgbValues, "f").slice());
+        return new CanvasSnapshotForTests_1.CanvasSnapshotForTests(__classPrivateFieldGet(this, _CanvasForTests_rgbValues, "f").slice());
     }
     doRender() { }
     expectToEqual(params) {
@@ -57,18 +60,18 @@ export class CanvasForTests extends Canvas {
             .join(" "))
             .filter((line) => line.length > 0)
             .join("\n") + "\n";
-        expect(actualAscii).toEqual(expectedAscii);
+        (0, globals_1.expect)(actualAscii).toEqual(expectedAscii);
     }
 }
+exports.CanvasForTests = CanvasForTests;
 _CanvasForTests_length = new WeakMap(), _CanvasForTests_rgbValues = new WeakMap(), _CanvasForTests_instances = new WeakSet(), _CanvasForTests_asAscii = function _CanvasForTests_asAscii(colorToAscii) {
-    var _a;
     let asciiImage = "";
-    const snapshot = new CanvasSnapshotForTests(__classPrivateFieldGet(this, _CanvasForTests_rgbValues, "f").slice());
+    const snapshot = new CanvasSnapshotForTests_1.CanvasSnapshotForTests(__classPrivateFieldGet(this, _CanvasForTests_rgbValues, "f").slice());
     for (let y = 0; y < this.canvasSize.y; y += 1) {
         for (let x = 0; x < this.canvasSize.x; x += 1) {
             const index = y * this.canvasSize.x + x;
             const color = snapshot.getColorAtIndex(index);
-            asciiImage += (_a = colorToAscii.get(color.cssHex)) !== null && _a !== void 0 ? _a : "?";
+            asciiImage += colorToAscii.get(color.cssHex) ?? "?";
         }
         asciiImage += "\n";
     }

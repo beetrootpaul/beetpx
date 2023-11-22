@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
@@ -10,34 +11,36 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _GameInput_eventsCapturesInLastUpdate, _GameInput_mostRecentInputMethods;
-import { HtmlTemplate } from "../HtmlTemplate";
-import { Button } from "./buttons/Button";
-import { Buttons } from "./buttons/Buttons";
-import { GameInputGamepad } from "./GameInputGamepad";
-import { GameInputKeyboard } from "./GameInputKeyboard";
-import { GameInputMouse } from "./GameInputMouse";
-import { GameInputTouch } from "./GameInputTouch";
-export class GameInput {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameInput = void 0;
+const HtmlTemplate_1 = require("../HtmlTemplate");
+const Button_1 = require("./buttons/Button");
+const Buttons_1 = require("./buttons/Buttons");
+const GameInputGamepad_1 = require("./GameInputGamepad");
+const GameInputKeyboard_1 = require("./GameInputKeyboard");
+const GameInputMouse_1 = require("./GameInputMouse");
+const GameInputTouch_1 = require("./GameInputTouch");
+class GameInput {
     constructor(params) {
         _GameInput_eventsCapturesInLastUpdate.set(this, new Set());
         _GameInput_mostRecentInputMethods.set(this, new Set());
-        this.gameInputGamepad = new GameInputGamepad({
+        this.gameInputGamepad = new GameInputGamepad_1.GameInputGamepad({
             browserType: params.browserType,
         });
         this.gameInputsSpecialized = [
-            new GameInputMouse(),
-            new GameInputKeyboard({
+            new GameInputMouse_1.GameInputMouse(),
+            new GameInputKeyboard_1.GameInputKeyboard({
                 enableDebugInputs: params.enableDebugInputs,
             }),
-            new GameInputTouch(),
+            new GameInputTouch_1.GameInputTouch(),
             this.gameInputGamepad,
         ];
-        this.gameButtons = new Buttons();
-        this.buttonFullScreen = new Button();
-        this.buttonMuteUnmute = new Button();
-        this.buttonDebugToggle = new Button();
-        this.buttonFrameByFrameToggle = new Button();
-        this.buttonFrameByFrameStep = new Button();
+        this.gameButtons = new Buttons_1.Buttons();
+        this.buttonFullScreen = new Button_1.Button();
+        this.buttonMuteUnmute = new Button_1.Button();
+        this.buttonDebugToggle = new Button_1.Button();
+        this.buttonFrameByFrameToggle = new Button_1.Button();
+        this.buttonFrameByFrameStep = new Button_1.Button();
     }
     startListening() {
         for (const sgi of this.gameInputsSpecialized) {
@@ -66,7 +69,7 @@ export class GameInput {
         this.buttonDebugToggle.update(events.has("debug_toggle"));
         this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
         this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
-        HtmlTemplate.updatePressedClasses({
+        HtmlTemplate_1.HtmlTemplate.updatePressedClasses({
             up: this.gameButtons.isPressed("up"),
             down: this.gameButtons.isPressed("down"),
             left: this.gameButtons.isPressed("left"),
@@ -89,4 +92,5 @@ export class GameInput {
         return __classPrivateFieldGet(this, _GameInput_eventsCapturesInLastUpdate, "f");
     }
 }
+exports.GameInput = GameInput;
 _GameInput_eventsCapturesInLastUpdate = new WeakMap(), _GameInput_mostRecentInputMethods = new WeakMap();

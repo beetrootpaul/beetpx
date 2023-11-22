@@ -1,14 +1,18 @@
+"use strict";
 
-import { BpxUtils } from "../Utils";
-export function v_(x, y) {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.v_1_1_ = exports.v_0_0_ = exports.BpxVector2d = exports.v_ = void 0;
+const Utils_1 = require("../Utils");
+function v_(x, y) {
     return new BpxVector2d(x, y);
 }
-export class BpxVector2d {
+exports.v_ = v_;
+class BpxVector2d {
     /**
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static unitFromAngle(turnAngle) {
-        return new BpxVector2d(BpxUtils.trigCos(turnAngle), BpxUtils.trigSin(turnAngle));
+        return new BpxVector2d(Utils_1.BpxUtils.trigCos(turnAngle), Utils_1.BpxUtils.trigSin(turnAngle));
     }
     constructor(x, y) {
         this.x = x;
@@ -24,7 +28,7 @@ export class BpxVector2d {
         return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
     }
     static lerp(xy1, xy2, t) {
-        return new BpxVector2d(BpxUtils.lerp(xy1.x, xy2.x, t), BpxUtils.lerp(xy1.y, xy2.y, t));
+        return new BpxVector2d(Utils_1.BpxUtils.lerp(xy1.x, xy2.x, t), Utils_1.BpxUtils.lerp(xy1.y, xy2.y, t));
     }
     asArray() {
         return [this.x, this.y];
@@ -51,7 +55,7 @@ export class BpxVector2d {
      * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     toAngle() {
-        return BpxUtils.trigAtan2(this.x, this.y);
+        return Utils_1.BpxUtils.trigAtan2(this.x, this.y);
     }
     eq(otherOrValue) {
         return typeof otherOrValue !== "number"
@@ -79,36 +83,37 @@ export class BpxVector2d {
             : this.x <= otherOrValue && this.y <= otherOrValue;
     }
     clamp(xy1, xy2) {
-        return new BpxVector2d(BpxUtils.clamp(xy1.x, this.x, xy2.x), BpxUtils.clamp(xy1.y, this.y, xy2.y));
+        return new BpxVector2d(Utils_1.BpxUtils.clamp(xy1.x, this.x, xy2.x), Utils_1.BpxUtils.clamp(xy1.y, this.y, xy2.y));
     }
     mod(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(BpxUtils.mod(this.x, otherOrValueOrX.x), BpxUtils.mod(this.y, otherOrValueOrX.y))
-            : new BpxVector2d(BpxUtils.mod(this.x, otherOrValueOrX), BpxUtils.mod(this.y, maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
+            ? new BpxVector2d(Utils_1.BpxUtils.mod(this.x, otherOrValueOrX.x), Utils_1.BpxUtils.mod(this.y, otherOrValueOrX.y))
+            : new BpxVector2d(Utils_1.BpxUtils.mod(this.x, otherOrValueOrX), Utils_1.BpxUtils.mod(this.y, maybeY ?? otherOrValueOrX));
     }
     add(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new BpxVector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
-            : new BpxVector2d(this.x + otherOrValueOrX, this.y + (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
+            : new BpxVector2d(this.x + otherOrValueOrX, this.y + (maybeY ?? otherOrValueOrX));
     }
     sub(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new BpxVector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
-            : new BpxVector2d(this.x - otherOrValueOrX, this.y - (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
+            : new BpxVector2d(this.x - otherOrValueOrX, this.y - (maybeY ?? otherOrValueOrX));
     }
     mul(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new BpxVector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
-            : new BpxVector2d(this.x * otherOrValueOrX, this.y * (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
+            : new BpxVector2d(this.x * otherOrValueOrX, this.y * (maybeY ?? otherOrValueOrX));
     }
     div(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
             ? new BpxVector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
-            : new BpxVector2d(this.x / otherOrValueOrX, this.y / (maybeY !== null && maybeY !== void 0 ? maybeY : otherOrValueOrX));
+            : new BpxVector2d(this.x / otherOrValueOrX, this.y / (maybeY ?? otherOrValueOrX));
     }
     __printDebug() {
         return `(${this.x},${this.y})`;
     }
 }
-export const v_0_0_ = v_(0, 0);
-export const v_1_1_ = v_(1, 1);
+exports.BpxVector2d = BpxVector2d;
+exports.v_0_0_ = v_(0, 0);
+exports.v_1_1_ = v_(1, 1);

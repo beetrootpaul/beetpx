@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -10,13 +11,14 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasForProduction_instances, _CanvasForProduction_length, _CanvasForProduction_htmlCanvas, _CanvasForProduction_htmlCanvasContext, _CanvasForProduction_offscreenContext, _CanvasForProduction_offscreenImageData, _CanvasForProduction_initializeAsNonTransparent;
-import { v_ } from "../misc/Vector2d";
-import { u_ } from "../Utils";
-import { Canvas } from "./Canvas";
-import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
-export class CanvasForProduction extends Canvas {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CanvasForProduction = void 0;
+const Vector2d_1 = require("../misc/Vector2d");
+const Utils_1 = require("../Utils");
+const Canvas_1 = require("./Canvas");
+const CanvasSnapshotForProduction_1 = require("./CanvasSnapshotForProduction");
+class CanvasForProduction extends Canvas_1.Canvas {
     constructor(canvasSize, htmlCanvas, htmlCanvasBackground) {
-        var _a, _b;
         super(canvasSize);
         _CanvasForProduction_instances.add(this);
         _CanvasForProduction_length.set(this, void 0);
@@ -27,22 +29,23 @@ export class CanvasForProduction extends Canvas {
         __classPrivateFieldSet(this, _CanvasForProduction_length, canvasSize.x * canvasSize.y, "f");
         __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvas, htmlCanvas, "f");
         __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").style.backgroundColor = htmlCanvasBackground.cssHex;
-        __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvasContext, (_a = __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").getContext("2d", {
+        __classPrivateFieldSet(this, _CanvasForProduction_htmlCanvasContext, __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").getContext("2d", {
             colorSpace: "srgb",
             
             alpha: true,
-        })) !== null && _a !== void 0 ? _a : u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
+        }) ?? Utils_1.u_.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
         __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
         const offscreenCanvas = document
             .createElement("canvas")
             .transferControlToOffscreen();
         offscreenCanvas.width = canvasSize.x;
         offscreenCanvas.height = canvasSize.y;
-        __classPrivateFieldSet(this, _CanvasForProduction_offscreenContext, (_b = offscreenCanvas.getContext("2d", {
+        __classPrivateFieldSet(this, _CanvasForProduction_offscreenContext, offscreenCanvas.getContext("2d", {
             colorSpace: "srgb",
             
             alpha: false,
-        })) !== null && _b !== void 0 ? _b : u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
+        }) ??
+            Utils_1.u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
         __classPrivateFieldSet(this, _CanvasForProduction_offscreenImageData, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.height, { colorSpace: "srgb" }), "f");
         __classPrivateFieldGet(this, _CanvasForProduction_instances, "m", _CanvasForProduction_initializeAsNonTransparent).call(this);
     }
@@ -60,11 +63,11 @@ export class CanvasForProduction extends Canvas {
         __classPrivateFieldGet(this, _CanvasForProduction_offscreenImageData, "f").data[dataIndex + 2] = color.b;
     }
     newSnapshot() {
-        return new CanvasSnapshotForProduction(__classPrivateFieldGet(this, _CanvasForProduction_offscreenImageData, "f").data.slice());
+        return new CanvasSnapshotForProduction_1.CanvasSnapshotForProduction(__classPrivateFieldGet(this, _CanvasForProduction_offscreenImageData, "f").data.slice());
     }
     doRender() {
         __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _CanvasForProduction_offscreenImageData, "f"), 0, 0);
-        const htmlCanvasSize = v_(__classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").height);
+        const htmlCanvasSize = (0, Vector2d_1.v_)(__classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").height);
         const scaleToFill = Math.max(1, Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y));
         const centeringOffset = htmlCanvasSize
             .sub(this.canvasSize.mul(scaleToFill))
@@ -73,6 +76,7 @@ export class CanvasForProduction extends Canvas {
         __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvasContext, "f").drawImage(__classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas, 0, 0, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.height, centeringOffset.x, centeringOffset.y, scaleToFill * this.canvasSize.x, scaleToFill * this.canvasSize.y);
     }
 }
+exports.CanvasForProduction = CanvasForProduction;
 _CanvasForProduction_length = new WeakMap(), _CanvasForProduction_htmlCanvas = new WeakMap(), _CanvasForProduction_htmlCanvasContext = new WeakMap(), _CanvasForProduction_offscreenContext = new WeakMap(), _CanvasForProduction_offscreenImageData = new WeakMap(), _CanvasForProduction_instances = new WeakSet(), _CanvasForProduction_initializeAsNonTransparent = function _CanvasForProduction_initializeAsNonTransparent() {
     for (let i = 3; i < __classPrivateFieldGet(this, _CanvasForProduction_offscreenImageData, "f").data.length; i += 4) {
         __classPrivateFieldGet(this, _CanvasForProduction_offscreenImageData, "f").data[i] = 0xff;

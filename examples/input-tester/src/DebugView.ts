@@ -96,8 +96,8 @@ export class DebugView {
           this.buttons[i]![gamepad.index] = gamepad.buttons[i]?.pressed
             ? "pressed"
             : gamepad.buttons[i]?.touched
-            ? "touched"
-            : null;
+              ? "touched"
+              : null;
         });
         u_.range(this.axesN).forEach((i) => {
           this.axes[i]![gamepad.index] = gamepad.axes[i] ?? null;
@@ -159,8 +159,8 @@ export class DebugView {
               (gamepadType === "xbox"
                 ? 0
                 : gamepadType === "dualsense"
-                ? 10
-                : 20),
+                  ? 10
+                  : 20),
             61 + gamepadIndex * 3,
           ),
           v_(3, 3),
@@ -178,12 +178,12 @@ export class DebugView {
           (browserType === "chromium"
             ? 0
             : browserType === "safari"
-            ? 10
-            : browserType === "firefox_windows"
-            ? 20
-            : browserType === "firefox_other"
-            ? 30
-            : 40),
+              ? 10
+              : browserType === "firefox_windows"
+                ? 20
+                : browserType === "firefox_other"
+                  ? 30
+                  : 40),
       ),
       v_(3, 3),
       pink,

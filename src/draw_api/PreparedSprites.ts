@@ -58,12 +58,12 @@ export class PreparedSprites {
                 imgBytes[imgIndex + 2]!,
               )
             : imgBytes[imgIndex + 3]! >= 0xff / 2
-            ? rgb_(
-                imgBytes[imgIndex]!,
-                imgBytes[imgIndex + 1]!,
-                imgBytes[imgIndex + 2]!,
-              )
-            : null;
+              ? rgb_(
+                  imgBytes[imgIndex]!,
+                  imgBytes[imgIndex + 1]!,
+                  imgBytes[imgIndex + 2]!,
+                )
+              : null;
       }
     }
 

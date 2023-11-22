@@ -1,3 +1,4 @@
+"use strict";
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
@@ -9,9 +10,11 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _GameLoop_requestAnimationFrameFn, _GameLoop_documentVisibilityStateProvider, _GameLoop_callbacks, _GameLoop_expectedTimeStepMillis, _GameLoop_previousTimeMillis, _GameLoop_accumulatedDeltaTimeMillis, _GameLoop_updateCallsCounter, _GameLoop_updateCallsLimit, _GameLoop_tick;
-import { Logger } from "../logger/Logger";
-export class GameLoop {
+var _a, _GameLoop_requestAnimationFrameFn, _GameLoop_documentVisibilityStateProvider, _GameLoop_callbacks, _GameLoop_expectedTimeStepMillis, _GameLoop_previousTimeMillis, _GameLoop_accumulatedDeltaTimeMillis, _GameLoop_updateCallsCounter, _GameLoop_updateCallsLimit, _GameLoop_tick;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameLoop = void 0;
+const Logger_1 = require("../logger/Logger");
+class GameLoop {
     constructor(options) {
         _GameLoop_requestAnimationFrameFn.set(this, void 0);
         _GameLoop_documentVisibilityStateProvider.set(this, void 0);
@@ -26,13 +29,12 @@ export class GameLoop {
         _GameLoop_updateCallsLimit.set(this, 5);
         
         _GameLoop_tick.set(this, (currentTimeMillis) => {
-            var _a;
             if (__classPrivateFieldGet(this, _GameLoop_documentVisibilityStateProvider, "f").visibilityState === "hidden") {
                 __classPrivateFieldSet(this, _GameLoop_previousTimeMillis, currentTimeMillis, "f");
                 __classPrivateFieldGet(this, _GameLoop_requestAnimationFrameFn, "f").call(this, __classPrivateFieldGet(this, _GameLoop_tick, "f"));
                 return;
             }
-            const deltaTimeMillis = currentTimeMillis - ((_a = __classPrivateFieldGet(this, _GameLoop_previousTimeMillis, "f")) !== null && _a !== void 0 ? _a : currentTimeMillis);
+            const deltaTimeMillis = currentTimeMillis - (__classPrivateFieldGet(this, _GameLoop_previousTimeMillis, "f") ?? currentTimeMillis);
             __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, __classPrivateFieldGet(this, _GameLoop_accumulatedDeltaTimeMillis, "f") + deltaTimeMillis, "f");
             __classPrivateFieldSet(this, _GameLoop_previousTimeMillis, currentTimeMillis, "f");
             __classPrivateFieldSet(this, _GameLoop_updateCallsCounter, 0, "f");
@@ -44,10 +46,10 @@ export class GameLoop {
                 }
                 else {
                     __classPrivateFieldSet(this, _GameLoop_accumulatedDeltaTimeMillis, 0, "f");
-                    Logger.warnBeetPx(`Reached the safety limit of ${__classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")} update calls`);
+                    Logger_1.Logger.warnBeetPx(`Reached the safety limit of ${__classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")} update calls`);
                 }
             }
-            const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, GameLoop.renderFpsResultCap));
+            const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, _a.renderFpsResultCap));
             __classPrivateFieldGet(this, _GameLoop_callbacks, "f").renderFn(renderFps);
             __classPrivateFieldGet(this, _GameLoop_requestAnimationFrameFn, "f").call(this, __classPrivateFieldGet(this, _GameLoop_tick, "f"));
         });
@@ -63,5 +65,6 @@ export class GameLoop {
         __classPrivateFieldGet(this, _GameLoop_requestAnimationFrameFn, "f").call(this, __classPrivateFieldGet(this, _GameLoop_tick, "f"));
     }
 }
-_GameLoop_requestAnimationFrameFn = new WeakMap(), _GameLoop_documentVisibilityStateProvider = new WeakMap(), _GameLoop_callbacks = new WeakMap(), _GameLoop_expectedTimeStepMillis = new WeakMap(), _GameLoop_previousTimeMillis = new WeakMap(), _GameLoop_accumulatedDeltaTimeMillis = new WeakMap(), _GameLoop_updateCallsCounter = new WeakMap(), _GameLoop_updateCallsLimit = new WeakMap(), _GameLoop_tick = new WeakMap();
+exports.GameLoop = GameLoop;
+_a = GameLoop, _GameLoop_requestAnimationFrameFn = new WeakMap(), _GameLoop_documentVisibilityStateProvider = new WeakMap(), _GameLoop_callbacks = new WeakMap(), _GameLoop_expectedTimeStepMillis = new WeakMap(), _GameLoop_previousTimeMillis = new WeakMap(), _GameLoop_accumulatedDeltaTimeMillis = new WeakMap(), _GameLoop_updateCallsCounter = new WeakMap(), _GameLoop_updateCallsLimit = new WeakMap(), _GameLoop_tick = new WeakMap();
 GameLoop.renderFpsResultCap = 999;
