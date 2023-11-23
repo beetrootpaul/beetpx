@@ -31,7 +31,8 @@ For a nicely formatted list of API exposed by BeetPx run:
 npm run docs
 ```
 
-to open it in your default browser. In case of any issues, the website which is supposed to open is located under [docs/index.html](./docs/index.html)
+to open it in your default browser. In case of any issues, the website which is supposed to open is located
+under [docs/index.html](./docs/index.html)
 
 ## Development Setup
 
@@ -44,4 +45,5 @@ which is specified in [.nvmrc](.nvmrc).
 ## Random Notes
 
 - Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast paced games.
-- It's good to avoid `.forEach`, `.reduce` and similar functions and use classic `for` loops instead. The former tend to have significantly worse performance due to an extra function call in each iteration.
+- It's good to avoid `.forEach`, `.reduce` and similar functions and use classic `for` loops instead. The former tend to
+  have significantly worse performance due to an extra function call in each iteration.
