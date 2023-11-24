@@ -26,6 +26,22 @@ export class BpxVector2d {
     static lerp(xy1, xy2, t) {
         return new BpxVector2d(BpxUtils.lerp(xy1.x, xy2.x, t), BpxUtils.lerp(xy1.y, xy2.y, t));
     }
+    get [Symbol.toStringTag]() {
+        return "BpxVector2d";
+    }
+    [Symbol.toPrimitive](hint) {
+        switch (hint) {
+            case "default":
+            case "string":
+                return `(${this.x},${this.y})`;
+            case "number":
+                return NaN;
+        }
+    }
+    *[Symbol.iterator]() {
+        yield this.x;
+        yield this.y;
+    }
     asArray() {
         return [this.x, this.y];
     }

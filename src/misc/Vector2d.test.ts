@@ -2,6 +2,32 @@ import { describe, expect, test } from "@jest/globals";
 import { BpxVector2d, v_ } from "./Vector2d";
 
 describe("Vector2d", () => {
+  test("Symbol.toStringTag", () => {
+    const v = v_(12.345, -6789);
+
+    expect(v.toString()).toEqual("[object BpxVector2d]");
+  });
+
+  test("Symbol.toPrimitive", () => {
+    const v = v_(12.345, -6789);
+
+    // [Symbol.toPrimitive"] called with a hint "default"
+    expect("some text " + v).toEqual("some text (12.345,-6789)");
+
+    // [Symbol.toPrimitive"] called with a hint "string"
+    expect(`${v}`).toEqual("(12.345,-6789)");
+    expect(String(v)).toEqual("(12.345,-6789)");
+
+    // [Symbol.toPrimitive"] called with a hint "number"
+    expect(+v).toEqual(NaN);
+  });
+
+  test("Symbol.iterator", () => {
+    const v = v_(12.345, -6789);
+
+    expect([...v]).toEqual([12.345, -6789]);
+  });
+
   describe("basics", () => {
     test("#min", () => {
       expect(BpxVector2d.min(v_(111, 999), v_(888, 222)).asArray()).toEqual([
@@ -57,6 +83,10 @@ describe("Vector2d", () => {
       expect(
         BpxVector2d.lerp(v_(200, -400), v_(100, -300), 1.1).round().asArray(),
       ).toEqual([90, -290]);
+    });
+
+    test("#asArray", () => {
+      expect(v_(12.345, -6789).asArray()).toEqual([12.345, -6789]);
     });
 
     test("#magnitude", () => {

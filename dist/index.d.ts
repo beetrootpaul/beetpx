@@ -34,6 +34,9 @@ declare class BpxVector2d implements PrintDebug {
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
     static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
+    get [Symbol.toStringTag](): string;
+    [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number;
+    [Symbol.iterator](): Generator<number>;
     asArray(): [number, number];
     magnitude(): number;
     sign(): BpxVector2d;
