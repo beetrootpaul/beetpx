@@ -45,6 +45,25 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
+  get [Symbol.toStringTag]() {
+    return "BpxVector2d";
+  }
+
+  [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number {
+    switch (hint) {
+      case "default":
+      case "string":
+        return `(${this.x},${this.y})`;
+      case "number":
+        return NaN;
+    }
+  }
+
+  *[Symbol.iterator](): Generator<number> {
+    yield this.x;
+    yield this.y;
+  }
+
   asArray(): [number, number] {
     return [this.x, this.y];
   }
