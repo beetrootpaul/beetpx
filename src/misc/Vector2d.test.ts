@@ -88,10 +88,25 @@ describe("Vector2d", () => {
       expect(v_(12.34, 0).magnitude()).toEqual(12.34);
       expect(v_(3, 4).magnitude()).toEqual(5);
 
-      expect(v_(1, 1).magnitude()).toBeCloseTo(1.41, 2);
-      expect(v_(-1, 1).magnitude()).toBeCloseTo(1.41, 2);
-      expect(v_(1, -1).magnitude()).toBeCloseTo(1.41, 2);
-      expect(v_(-1, -1).magnitude()).toBeCloseTo(1.41, 2);
+      expect(v_(1, 1).magnitude()).toEqual(Math.sqrt(2));
+      expect(v_(-1, 1).magnitude()).toEqual(Math.sqrt(2));
+      expect(v_(1, -1).magnitude()).toEqual(Math.sqrt(2));
+      expect(v_(-1, -1).magnitude()).toEqual(Math.sqrt(2));
+    });
+
+    test("#normalize", () => {
+      expect(v_(0, 12.34).normalize()).toEqual(v_(0, 1));
+      expect(v_(12.34, 0).normalize()).toEqual(v_(1, 0));
+      expect(v_(3, 4).normalize()).toEqual(v_(3 / 5, 4 / 5));
+
+      expect(v_(1, 1).normalize().x).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(1, 1).normalize().y).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(-1, 1).normalize().x).toBeCloseTo(-Math.sqrt(2) / 2, 15);
+      expect(v_(-1, 1).normalize().y).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(1, -1).normalize().x).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(1, -1).normalize().y).toBeCloseTo(-Math.sqrt(2) / 2, 15);
+      expect(v_(-1, -1).normalize().x).toBeCloseTo(-Math.sqrt(2) / 2, 15);
+      expect(v_(-1, -1).normalize().y).toBeCloseTo(-Math.sqrt(2) / 2, 15);
     });
 
     test("#sign", () => {

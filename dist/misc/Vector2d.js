@@ -48,6 +48,10 @@ export class BpxVector2d {
     magnitude() {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
+    normalize() {
+        const m = this.magnitude();
+        return new BpxVector2d(this.x / m, this.y / m);
+    }
     sign() {
         return new BpxVector2d(Math.sign(this.x), Math.sign(this.y));
     }

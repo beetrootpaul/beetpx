@@ -39,6 +39,7 @@ declare class BpxVector2d implements PrintDebug {
     [Symbol.iterator](): Generator<number>;
     asArray(): [number, number];
     magnitude(): number;
+    normalize(): BpxVector2d;
     sign(): BpxVector2d;
     abs(): BpxVector2d;
     floor(): BpxVector2d;
