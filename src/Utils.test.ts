@@ -195,49 +195,28 @@ describe("Utils", () => {
     //
     // assertions where chars are tiny and jumps are huge
     //
-    expect(BpxUtils.measureText(".").map((v) => v.asArray())).toEqual([
-      [0, 0],
-      [1, 2],
+    expect(BpxUtils.measureText(".")).toEqual([v_(0, 0), v_(1, 2)]);
+    expect(BpxUtils.measureText("o")).toEqual([v_(0, 0), v_(30, 40)]);
+    expect(BpxUtils.measureText("...")).toEqual([v_(0, -400), v_(201, 402)]);
+    expect(BpxUtils.measureText("ooo")).toEqual([
+      v_(-6_000, 0),
+      v_(6_030, 8_040),
     ]);
-    expect(BpxUtils.measureText("o").map((v) => v.asArray())).toEqual([
-      [0, 0],
-      [30, 40],
-    ]);
-    expect(BpxUtils.measureText("...").map((v) => v.asArray())).toEqual([
-      [0, -400],
-      [201, 402],
-    ]);
-    expect(BpxUtils.measureText("ooo").map((v) => v.asArray())).toEqual([
-      [-6_000, 0],
-      [6_030, 8_040],
-    ]);
-    expect(BpxUtils.measureText(".o.o.o").map((v) => v.asArray())).toEqual([
-      [-5_800, -200],
-      [5_930, 7_802],
+    expect(BpxUtils.measureText(".o.o.o")).toEqual([
+      v_(-5_800, -200),
+      v_(5_930, 7_802),
     ]);
 
     //
     // assertions where chars are huge and jumps are tiny
     //
-    expect(BpxUtils.measureText("x").map((v) => v.asArray())).toEqual([
-      [0, 0],
-      [100, 200],
-    ]);
-    expect(BpxUtils.measureText("#").map((v) => v.asArray())).toEqual([
-      [0, 0],
-      [3_000, 4_000],
-    ]);
-    expect(BpxUtils.measureText("xxx").map((v) => v.asArray())).toEqual([
-      [0, -4],
-      [102, 204],
-    ]);
-    expect(BpxUtils.measureText("###").map((v) => v.asArray())).toEqual([
-      [-60, 0],
-      [3_060, 4_080],
-    ]);
-    expect(BpxUtils.measureText("x#x#x#").map((v) => v.asArray())).toEqual([
-      [-58, -2],
-      [3_059, 4_076],
+    expect(BpxUtils.measureText("x")).toEqual([v_(0, 0), v_(100, 200)]);
+    expect(BpxUtils.measureText("#")).toEqual([v_(0, 0), v_(3_000, 4_000)]);
+    expect(BpxUtils.measureText("xxx")).toEqual([v_(0, -4), v_(102, 204)]);
+    expect(BpxUtils.measureText("###")).toEqual([v_(-60, 0), v_(3_060, 4_080)]);
+    expect(BpxUtils.measureText("x#x#x#")).toEqual([
+      v_(-58, -2),
+      v_(3_059, 4_076),
     ]);
   });
 

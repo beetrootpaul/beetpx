@@ -72,6 +72,11 @@ export class BpxVector2d implements PrintDebug {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
+  normalize(): BpxVector2d {
+    const m = this.magnitude();
+    return new BpxVector2d(this.x / m, this.y / m);
+  }
+
   sign(): BpxVector2d {
     return new BpxVector2d(Math.sign(this.x), Math.sign(this.y));
   }

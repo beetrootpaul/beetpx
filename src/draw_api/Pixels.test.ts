@@ -1,4 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
+import { v_ } from "../misc/Vector2d";
 import { BpxPixels } from "./Pixels";
 
 describe("Pixels", () => {
@@ -72,6 +73,6 @@ describe("Pixels", () => {
       ----------##
       #
     `);
-    expect(pixels.wh.asArray()).toEqual([16, 8]);
+    expect(pixels.wh).toEqual(v_(16, 8));
   });
 });

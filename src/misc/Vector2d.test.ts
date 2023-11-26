@@ -2,6 +2,12 @@ import { describe, expect, test } from "@jest/globals";
 import { BpxVector2d, v_ } from "./Vector2d";
 
 describe("Vector2d", () => {
+  test("equality checks in Jest tests", () => {
+    expect(v_(12.345, -6789)).toEqual(v_(12.345, -6789));
+    expect(v_(12.345, -6789)).not.toEqual(v_(12.3456, -6789));
+    expect(v_(12.345, -6789)).not.toEqual(v_(12.345, -7789));
+  });
+
   test("Symbol.toStringTag", () => {
     const v = v_(12.345, -6789);
 
@@ -30,59 +36,47 @@ describe("Vector2d", () => {
 
   describe("basics", () => {
     test("#min", () => {
-      expect(BpxVector2d.min(v_(111, 999), v_(888, 222)).asArray()).toEqual([
-        111, 222,
-      ]);
-      expect(BpxVector2d.min(v_(-111, -999), v_(-888, -222)).asArray()).toEqual(
-        [-888, -999],
+      expect(BpxVector2d.min(v_(111, 999), v_(888, 222))).toEqual(v_(111, 222));
+      expect(BpxVector2d.min(v_(-111, -999), v_(-888, -222))).toEqual(
+        v_(-888, -999),
       );
     });
 
     test("#max", () => {
-      expect(BpxVector2d.max(v_(111, 999), v_(888, 222)).asArray()).toEqual([
-        888, 999,
-      ]);
-      expect(BpxVector2d.max(v_(-111, -999), v_(-888, -222)).asArray()).toEqual(
-        [-111, -222],
+      expect(BpxVector2d.max(v_(111, 999), v_(888, 222))).toEqual(v_(888, 999));
+      expect(BpxVector2d.max(v_(-111, -999), v_(-888, -222))).toEqual(
+        v_(-111, -222),
       );
     });
 
     test("#minMax", () => {
       expect(
-        BpxVector2d.minMax(v_(111, 999), v_(888, 222)).map((v) => v.asArray()),
-      ).toEqual([
-        [111, 222],
-        [888, 999],
-      ]);
+        BpxVector2d.minMax(v_(111, 999), v_(888, 222)).map((v) => v),
+      ).toEqual([v_(111, 222), v_(888, 999)]);
       expect(
-        BpxVector2d.minMax(v_(-111, -999), v_(-888, -222)).map((v) =>
-          v.asArray(),
-        ),
-      ).toEqual([
-        [-888, -999],
-        [-111, -222],
-      ]);
+        BpxVector2d.minMax(v_(-111, -999), v_(-888, -222)).map((v) => v),
+      ).toEqual([v_(-888, -999), v_(-111, -222)]);
     });
 
     test("#lerp", () => {
       expect(
-        BpxVector2d.lerp(v_(200, -400), v_(100, -300), -0.1).round().asArray(),
-      ).toEqual([210, -410]);
+        BpxVector2d.lerp(v_(200, -400), v_(100, -300), -0.1).round(),
+      ).toEqual(v_(210, -410));
+      expect(BpxVector2d.lerp(v_(200, -400), v_(100, -300), 0).round()).toEqual(
+        v_(200, -400),
+      );
       expect(
-        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 0).round().asArray(),
-      ).toEqual([200, -400]);
+        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 0.1).round(),
+      ).toEqual(v_(190, -390));
       expect(
-        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 0.1).round().asArray(),
-      ).toEqual([190, -390]);
+        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 0.9).round(),
+      ).toEqual(v_(110, -310));
+      expect(BpxVector2d.lerp(v_(200, -400), v_(100, -300), 1).round()).toEqual(
+        v_(100, -300),
+      );
       expect(
-        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 0.9).round().asArray(),
-      ).toEqual([110, -310]);
-      expect(
-        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 1).round().asArray(),
-      ).toEqual([100, -300]);
-      expect(
-        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 1.1).round().asArray(),
-      ).toEqual([90, -290]);
+        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 1.1).round(),
+      ).toEqual(v_(90, -290));
     });
 
     test("#asArray", () => {
@@ -94,46 +88,61 @@ describe("Vector2d", () => {
       expect(v_(12.34, 0).magnitude()).toEqual(12.34);
       expect(v_(3, 4).magnitude()).toEqual(5);
 
-      expect(v_(1, 1).magnitude()).toBeCloseTo(1.41, 2);
-      expect(v_(-1, 1).magnitude()).toBeCloseTo(1.41, 2);
-      expect(v_(1, -1).magnitude()).toBeCloseTo(1.41, 2);
-      expect(v_(-1, -1).magnitude()).toBeCloseTo(1.41, 2);
+      expect(v_(1, 1).magnitude()).toEqual(Math.sqrt(2));
+      expect(v_(-1, 1).magnitude()).toEqual(Math.sqrt(2));
+      expect(v_(1, -1).magnitude()).toEqual(Math.sqrt(2));
+      expect(v_(-1, -1).magnitude()).toEqual(Math.sqrt(2));
+    });
+
+    test("#normalize", () => {
+      expect(v_(0, 12.34).normalize()).toEqual(v_(0, 1));
+      expect(v_(12.34, 0).normalize()).toEqual(v_(1, 0));
+      expect(v_(3, 4).normalize()).toEqual(v_(3 / 5, 4 / 5));
+
+      expect(v_(1, 1).normalize().x).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(1, 1).normalize().y).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(-1, 1).normalize().x).toBeCloseTo(-Math.sqrt(2) / 2, 15);
+      expect(v_(-1, 1).normalize().y).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(1, -1).normalize().x).toBeCloseTo(Math.sqrt(2) / 2, 15);
+      expect(v_(1, -1).normalize().y).toBeCloseTo(-Math.sqrt(2) / 2, 15);
+      expect(v_(-1, -1).normalize().x).toBeCloseTo(-Math.sqrt(2) / 2, 15);
+      expect(v_(-1, -1).normalize().y).toBeCloseTo(-Math.sqrt(2) / 2, 15);
     });
 
     test("#sign", () => {
-      expect(v_(12.34, -12.34).sign().asArray()).toEqual([1, -1]);
-      expect(v_(-12.34, 12.34).sign().asArray()).toEqual([-1, 1]);
-      expect(v_(0, 0).sign().asArray()).toEqual([0, 0]);
+      expect(v_(12.34, -12.34).sign()).toEqual(v_(1, -1));
+      expect(v_(-12.34, 12.34).sign()).toEqual(v_(-1, 1));
+      expect(v_(0, 0).sign()).toEqual(v_(0, 0));
     });
 
     test("#abs", () => {
-      expect(v_(12.34, -12.34).abs().asArray()).toEqual([12.34, 12.34]);
-      expect(v_(-12.34, 12.34).abs().asArray()).toEqual([12.34, 12.34]);
-      expect(v_(0, 0).abs().asArray()).toEqual([0, 0]);
+      expect(v_(12.34, -12.34).abs()).toEqual(v_(12.34, 12.34));
+      expect(v_(-12.34, 12.34).abs()).toEqual(v_(12.34, 12.34));
+      expect(v_(0, 0).abs()).toEqual(v_(0, 0));
     });
 
     test("#floor", () => {
-      expect(v_(10, 20).floor().asArray()).toEqual([10, 20]);
-      expect(v_(10.1, 20.9).floor().asArray()).toEqual([10, 20]);
-      expect(v_(-10, -20).floor().asArray()).toEqual([-10, -20]);
-      expect(v_(-10.1, -20.9).floor().asArray()).toEqual([-11, -21]);
-      expect(v_(0, 0).floor().asArray()).toEqual([0, 0]);
+      expect(v_(10, 20).floor()).toEqual(v_(10, 20));
+      expect(v_(10.1, 20.9).floor()).toEqual(v_(10, 20));
+      expect(v_(-10, -20).floor()).toEqual(v_(-10, -20));
+      expect(v_(-10.1, -20.9).floor()).toEqual(v_(-11, -21));
+      expect(v_(0, 0).floor()).toEqual(v_(0, 0));
     });
 
     test("#ceil", () => {
-      expect(v_(10, 20).ceil().asArray()).toEqual([10, 20]);
-      expect(v_(10.1, 20.9).ceil().asArray()).toEqual([11, 21]);
-      expect(v_(-10, -20).ceil().asArray()).toEqual([-10, -20]);
-      expect(v_(-10.1, -20.9).ceil().asArray()).toEqual([-10, -20]);
-      expect(v_(0, 0).ceil().asArray()).toEqual([0, 0]);
+      expect(v_(10, 20).ceil()).toEqual(v_(10, 20));
+      expect(v_(10.1, 20.9).ceil()).toEqual(v_(11, 21));
+      expect(v_(-10, -20).ceil()).toEqual(v_(-10, -20));
+      expect(v_(-10.1, -20.9).ceil()).toEqual(v_(-10, -20));
+      expect(v_(0, 0).ceil()).toEqual(v_(0, 0));
     });
 
     test("#round", () => {
-      expect(v_(10, 20).round().asArray()).toEqual([10, 20]);
-      expect(v_(10.1, 20.9).round().asArray()).toEqual([10, 21]);
-      expect(v_(-10, -20).round().asArray()).toEqual([-10, -20]);
-      expect(v_(-10.1, -20.9).round().asArray()).toEqual([-10, -21]);
-      expect(v_(0, 0).round().asArray()).toEqual([0, 0]);
+      expect(v_(10, 20).round()).toEqual(v_(10, 20));
+      expect(v_(10.1, 20.9).round()).toEqual(v_(10, 21));
+      expect(v_(-10, -20).round()).toEqual(v_(-10, -20));
+      expect(v_(-10.1, -20.9).round()).toEqual(v_(-10, -21));
+      expect(v_(0, 0).round()).toEqual(v_(0, 0));
     });
 
     test("#eq", () => {
@@ -174,40 +183,40 @@ describe("Vector2d", () => {
     });
 
     test("#clamp", () => {
-      expect(v_(20, -1.2).clamp(v_(10, -1.3), v_(30, -1.1)).asArray()).toEqual([
-        20, -1.2,
-      ]);
-      expect(v_(9, -1.4).clamp(v_(10, -1.3), v_(30, -1.1)).asArray()).toEqual([
-        10, -1.3,
-      ]);
-      expect(v_(31, -1.0).clamp(v_(19, -1.3), v_(30, -1.1)).asArray()).toEqual([
-        30, -1.1,
-      ]);
+      expect(v_(20, -1.2).clamp(v_(10, -1.3), v_(30, -1.1))).toEqual(
+        v_(20, -1.2),
+      );
+      expect(v_(9, -1.4).clamp(v_(10, -1.3), v_(30, -1.1))).toEqual(
+        v_(10, -1.3),
+      );
+      expect(v_(31, -1.0).clamp(v_(19, -1.3), v_(30, -1.1))).toEqual(
+        v_(30, -1.1),
+      );
     });
 
     test("#mod", () => {
-      expect(v_(123.5, -123.5).mod(100).asArray()).toEqual([23.5, 76.5]);
-      expect(v_(123.5, -123.5).mod(10, 2).asArray()).toEqual([3.5, 0.5]);
+      expect(v_(123.5, -123.5).mod(100)).toEqual(v_(23.5, 76.5));
+      expect(v_(123.5, -123.5).mod(10, 2)).toEqual(v_(3.5, 0.5));
     });
 
     test("#add", () => {
-      expect(v_(11, -222).add(123).asArray()).toEqual([134, -99]);
-      expect(v_(11, -222).add(-1, -22).asArray()).toEqual([10, -244]);
+      expect(v_(11, -222).add(123)).toEqual(v_(134, -99));
+      expect(v_(11, -222).add(-1, -22)).toEqual(v_(10, -244));
     });
 
     test("#sub", () => {
-      expect(v_(11, -222).sub(123).asArray()).toEqual([-112, -345]);
-      expect(v_(11, -222).sub(-1, -22).asArray()).toEqual([12, -200]);
+      expect(v_(11, -222).sub(123)).toEqual(v_(-112, -345));
+      expect(v_(11, -222).sub(-1, -22)).toEqual(v_(12, -200));
     });
 
     test("#mul", () => {
-      expect(v_(11, -222).mul(3).asArray()).toEqual([33, -666]);
-      expect(v_(11, -222).mul(-2, -4).asArray()).toEqual([-22, 888]);
+      expect(v_(11, -222).mul(3)).toEqual(v_(33, -666));
+      expect(v_(11, -222).mul(-2, -4)).toEqual(v_(-22, 888));
     });
 
     test("#div", () => {
-      expect(v_(22, -33).div(11).asArray()).toEqual([2, -3]);
-      expect(v_(22, -33).div(-11, 11).asArray()).toEqual([-2, -3]);
+      expect(v_(22, -33).div(11)).toEqual(v_(2, -3));
+      expect(v_(22, -33).div(-11, 11)).toEqual(v_(-2, -3));
     });
   });
 
