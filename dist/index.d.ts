@@ -355,7 +355,7 @@ interface GameInputSpecialized {
     update(eventsCollector: Set<BpxGameInputEvent>): boolean;
 }
 
-declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "other"];
+declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "8bitdo", "other"];
 type BpxGamepadType = (typeof supportedGamepadTypes)[number];
 declare class GameInputGamepad implements GameInputSpecialized {
     #private;
