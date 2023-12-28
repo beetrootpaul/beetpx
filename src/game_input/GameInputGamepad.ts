@@ -1,16 +1,25 @@
-import { u_ } from "../Utils";
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
+import { u_ } from "../Utils";
 import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { GameInputSpecialized } from "./GameInputSpecialized";
-import { GamepadTypeDetector } from "./GamepadTypeDetector";
 import { GamepadMapping } from "./gamepad_mapping/GamepadMapping";
+import { GamepadMapping8BitDo } from "./gamepad_mapping/GamepadMapping8BitDo";
 import { GamepadMappingFallback } from "./gamepad_mapping/GamepadMappingFallback";
+import { GamepadMappingFirefox8BitDoOther } from "./gamepad_mapping/GamepadMappingFirefox8BitDoOther";
+import { GamepadMappingFirefox8BitDoWindows } from "./gamepad_mapping/GamepadMappingFirefox8BitDoWindows";
 import { GamepadMappingFirefoxDualSenseOther } from "./gamepad_mapping/GamepadMappingFirefoxDualSenseOther";
 import { GamepadMappingFirefoxDualSenseWindows } from "./gamepad_mapping/GamepadMappingFirefoxDualSenseWindows";
 import { GamepadMappingFirefoxFallback } from "./gamepad_mapping/GamepadMappingFirefoxFallback";
+import { GamepadMappingSafari8BitDo } from "./gamepad_mapping/GamepadMappingSafari8BitDo";
 import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
+import { GamepadTypeDetector } from "./GamepadTypeDetector";
 
-export const supportedGamepadTypes = ["xbox", "dualsense", "other"] as const;
+export const supportedGamepadTypes = [
+  "xbox",
+  "dualsense",
+  "8bitdo",
+  "other",
+] as const;
 
 export type BpxGamepadType = (typeof supportedGamepadTypes)[number];
 
@@ -23,7 +32,11 @@ export class GameInputGamepad implements GameInputSpecialized {
     standard: new GamepadMappingStandard(),
     firefoxDualSenseWindows: new GamepadMappingFirefoxDualSenseWindows(),
     firefoxDualSenseOther: new GamepadMappingFirefoxDualSenseOther(),
+    firefox8bitdoWindows: new GamepadMappingFirefox8BitDoWindows(),
+    firefox8bitdoOther: new GamepadMappingFirefox8BitDoOther(),
     firefoxOther: new GamepadMappingFirefoxFallback(),
+    safari8bitdo: new GamepadMappingSafari8BitDo(),
+    "8bitdo": new GamepadMapping8BitDo(),
     other: new GamepadMappingFallback(),
   };
 
@@ -81,18 +94,31 @@ export class GameInputGamepad implements GameInputSpecialized {
   }
 
   #mappingFor(gamepad: Gamepad): GamepadMapping {
+    const gamepadType = GamepadTypeDetector.detect(gamepad);
+
     if (
       this.#browserType === "firefox_windows" ||
       this.#browserType === "firefox_other"
     ) {
-      if (GamepadTypeDetector.detect(gamepad) === "dualsense") {
+      if (gamepadType === "dualsense") {
         return this.#browserType === "firefox_windows"
           ? this.#mappings.firefoxDualSenseWindows
           : this.#mappings.firefoxDualSenseOther;
+      } else if (gamepadType === "8bitdo") {
+        return this.#browserType === "firefox_windows"
+          ? this.#mappings.firefox8bitdoWindows
+          : this.#mappings.firefox8bitdoOther;
       } else {
         return this.#mappings.firefoxOther;
       }
     }
+
+    if (gamepadType === "8bitdo") {
+      return this.#browserType === "safari"
+        ? this.#mappings.safari8bitdo
+        : this.#mappings["8bitdo"];
+    }
+
     // We cannot check `mapping` before checking if it is Firefox, because
     //   Firefox claims the `mapping` of Xbox One controller is `"standard"`,
     //   while it is not…

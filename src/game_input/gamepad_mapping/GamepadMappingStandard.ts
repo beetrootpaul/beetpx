@@ -33,7 +33,6 @@ buttons:
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
 
-
 env:
   macOS Ventura 13.5.2 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Engine Version 118.0.5993.88
   macOS Ventura 13.5.2 (Apple M1 Max), Brave 1.59.122 Chromium: 118.0.5993.96 (Official Build) (arm64)
@@ -105,7 +104,7 @@ buttons:
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
 
- env:
+env:
   macOS Ventura 13.5.2 (Apple M1 Max), Safari 16.6 (18615.3.12.11.2)
 gamepad:
   DualSense
@@ -140,7 +139,7 @@ buttons:
   - R2                      -> -
   - dpad -> -
 
- env:
+env:
   macOS Ventura 13.5.2 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Engine Version 118.0.5993.88
   macOS Ventura 13.5.2 (Apple M1 Max), Brave 1.59.122 Chromium: 118.0.5993.96 (Official Build) (arm64)
   macOS Ventura 13.5.2 (Apple M1 Max), Chrome 118.0.5993.88 (Official Build) (arm64)
@@ -181,7 +180,7 @@ buttons:
   - dpad -> -
   - dpad -> -
 
- env:
+env:
   Windows 10 Home 22H2 (Intel Core i7-3517U), Brave 1.59.120 Chromium: 118.0.5993.88 (Official Build) (64-bit)
   Windows 10 Home 22H2 (Intel Core i7-3517U), Chrome 118.0.5993.89 (Official Build) (64-bit)
   Windows 10 Home 22H2 (Intel Core i7-3517U), Edge 118.0.2088.57 (Official build) (64-bit)
