@@ -414,6 +414,7 @@ declare class BpxTimer {
     get framesLeft(): number;
     get progress(): number;
     get hasFinished(): boolean;
+    get hasJustFinished(): boolean;
     update(): void;
     restart(): void;
 }
