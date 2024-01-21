@@ -16,21 +16,24 @@ export function timer_(frames) {
 export class BpxTimer {
     constructor(params) {
         _BpxTimer_frames.set(this, void 0);
-        _BpxTimer_t.set(this, void 0);
+        _BpxTimer_t.set(this, 0);
         __classPrivateFieldSet(this, _BpxTimer_frames, Math.floor(params.frames), "f");
-        __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_frames, "f")), "f");
+        this.restart();
     }
     get framesLeft() {
-        return __classPrivateFieldGet(this, _BpxTimer_t, "f");
+        return Math.max(0, __classPrivateFieldGet(this, _BpxTimer_t, "f"));
     }
     get progress() {
-        return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0 ? 1 - __classPrivateFieldGet(this, _BpxTimer_t, "f") / __classPrivateFieldGet(this, _BpxTimer_frames, "f") : 1;
+        return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0 ? 1 - this.framesLeft / __classPrivateFieldGet(this, _BpxTimer_frames, "f") : 1;
     }
     get hasFinished() {
-        return __classPrivateFieldGet(this, _BpxTimer_t, "f") <= 0 || __classPrivateFieldGet(this, _BpxTimer_frames, "f") <= 0;
+        return __classPrivateFieldGet(this, _BpxTimer_t, "f") <= 0;
+    }
+    get hasJustFinished() {
+        return __classPrivateFieldGet(this, _BpxTimer_t, "f") == 0;
     }
     update() {
-        __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_t, "f") - 1), "f");
+        __classPrivateFieldSet(this, _BpxTimer_t, Math.max(-1, __classPrivateFieldGet(this, _BpxTimer_t, "f") - 1), "f");
     }
     restart() {
         __classPrivateFieldSet(this, _BpxTimer_t, Math.max(0, __classPrivateFieldGet(this, _BpxTimer_frames, "f")), "f");

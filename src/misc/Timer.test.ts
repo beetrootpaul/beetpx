@@ -229,4 +229,109 @@ describe("Timer", () => {
       expect(timer.hasFinished).toBe(true);
     });
   });
+
+  describe("#hasJustFinished", () => {
+    test("for a 0 frames long timer", () => {
+      const timer = timer_(0);
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.restart();
+
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
+    test("for a 1 frame long timer", () => {
+      const timer = timer_(1);
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.restart();
+
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
+    test("for a 2 frames long timer", () => {
+      const timer = timer_(2);
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.restart();
+
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
+    test("for a many frames long timer", () => {
+      const timer = timer_(100);
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      BpxUtils.range(96).forEach(() => {
+        timer.update();
+      });
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.restart();
+
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
+    test("for a negative amount of frames", () => {
+      const timer = timer_(-1);
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.restart();
+
+      expect(timer.hasJustFinished).toBe(true);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+      timer.update();
+      expect(timer.hasJustFinished).toBe(false);
+    });
+  });
 });
