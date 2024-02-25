@@ -44,12 +44,12 @@ export class BeetPx {
    *
    * @return number
    */
-  static get frameNumber(): Framework["frameNumber"] {
-    return this.#tryGetFramework().frameNumber;
+  static get frame(): Framework["frame"] {
+    return this.#tryGetFramework().frame;
   }
 
-  static get renderFps(): Framework["renderFps"] {
-    return this.#tryGetFramework().renderFps;
+  static get renderingFps(): Framework["renderingFps"] {
+    return this.#tryGetFramework().renderingFps;
   }
 
   //
@@ -96,52 +96,50 @@ export class BeetPx {
   // Game Input & Buttons
   //
 
-  static isPressed: Buttons["isPressed"] = (...args) => {
-    return this.#tryGetFramework().gameInput.gameButtons.isPressed(...args);
-  };
-
-  static areDirectionsPressedAsVector: Buttons["areDirectionsPressedAsVector"] =
-    (...args) => {
-      return this.#tryGetFramework().gameInput.gameButtons.areDirectionsPressedAsVector(
-        ...args,
-      );
-    };
-
-  static setRepeating: Buttons["setRepeating"] = (...args) => {
-    return this.#tryGetFramework().gameInput.gameButtons.setRepeating(...args);
-  };
-
-  static wasJustPressed: Buttons["wasJustPressed"] = (...args) => {
+  static wasButtonJustPressed: Buttons["wasJustPressed"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.wasJustPressed(
       ...args,
     );
   };
 
-  static wasJustReleased: Buttons["wasJustReleased"] = (...args) => {
+  static wasButtonJustReleased: Buttons["wasJustReleased"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.wasJustReleased(
       ...args,
     );
   };
 
-  static mostRecentInputMethods: GameInput["mostRecentInputMethods"] = (
-    ...args
-  ) => {
-    return this.#tryGetFramework().gameInput.mostRecentInputMethods(...args);
+  static isButtonPressed: Buttons["isPressed"] = (...args) => {
+    return this.#tryGetFramework().gameInput.gameButtons.isPressed(...args);
   };
 
-  static connectedGamepadTypes: GameInput["connectedGamepadTypes"] = (
-    ...args
-  ) => {
-    return this.#tryGetFramework().gameInput.connectedGamepadTypes(...args);
-  };
-
-  static __internal__capturedEvents: GameInput["__internal__capturedEvents"] = (
-    ...args
-  ) => {
-    return this.#tryGetFramework().gameInput.__internal__capturedEvents(
+  static getPressedDirection: Buttons["getPressedDirection"] = (...args) => {
+    return this.#tryGetFramework().gameInput.gameButtons.getPressedDirection(
       ...args,
     );
   };
+
+  static setButtonRepeating: Buttons["setRepeating"] = (...args) => {
+    return this.#tryGetFramework().gameInput.gameButtons.setRepeating(...args);
+  };
+
+  static getRecentInputMethods: GameInput["getRecentInputMethods"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().gameInput.getRecentInputMethods(...args);
+  };
+
+  static getConnectedGamepadTypes: GameInput["getConnectedGamepadTypes"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().gameInput.getConnectedGamepadTypes(...args);
+  };
+
+  static getEventsCapturedInLastUpdate: GameInput["getEventsCapturedInLastUpdate"] =
+    (...args) => {
+      return this.#tryGetFramework().gameInput.getEventsCapturedInLastUpdate(
+        ...args,
+      );
+    };
 
   //
   // Draw API
@@ -177,12 +175,12 @@ export class BeetPx {
   /**
    * @returns previous pattern
    */
-  static setPattern: DrawApi["setPattern"] = (...args) => {
-    return this.#tryGetFramework().drawApi.setPattern(...args);
+  static setDrawingPattern: DrawApi["setDrawingPattern"] = (...args) => {
+    return this.#tryGetFramework().drawApi.setDrawingPattern(...args);
   };
 
-  static pixel: DrawApi["pixel"] = (...args) => {
-    return this.#tryGetFramework().drawApi.pixel(...args);
+  static drawPixel: DrawApi["drawPixel"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawPixel(...args);
   };
 
   /**
@@ -197,28 +195,28 @@ export class BeetPx {
    *   (designated by new lines) where `#` and `-` stand for a colored
    *   pixel and a lack of a pixel. Whitespaces are ignored.
    */
-  static pixels: DrawApi["pixels"] = (...args) => {
-    return this.#tryGetFramework().drawApi.pixels(...args);
+  static drawPixels: DrawApi["drawPixels"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawPixels(...args);
   };
 
-  static line: DrawApi["line"] = (...args) => {
-    return this.#tryGetFramework().drawApi.line(...args);
+  static drawLine: DrawApi["drawLine"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawLine(...args);
   };
 
-  static rect: DrawApi["rect"] = (...args) => {
-    return this.#tryGetFramework().drawApi.rect(...args);
+  static drawRect: DrawApi["drawRect"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawRect(...args);
   };
 
-  static rectFilled: DrawApi["rectFilled"] = (...args) => {
-    return this.#tryGetFramework().drawApi.rectFilled(...args);
+  static drawRectFilled: DrawApi["drawRectFilled"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawRectFilled(...args);
   };
 
-  static ellipse: DrawApi["ellipse"] = (...args) => {
-    return this.#tryGetFramework().drawApi.ellipse(...args);
+  static drawEllipse: DrawApi["drawEllipse"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawEllipse(...args);
   };
 
-  static ellipseFilled: DrawApi["ellipseFilled"] = (...args) => {
-    return this.#tryGetFramework().drawApi.ellipseFilled(...args);
+  static drawEllipseFilled: DrawApi["drawEllipseFilled"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawEllipseFilled(...args);
   };
 
   /**
@@ -230,8 +228,8 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.setSpriteColorMapping(...args);
   };
 
-  static sprite: DrawApi["sprite"] = (...args) => {
-    return this.#tryGetFramework().drawApi.sprite(...args);
+  static drawSprite: DrawApi["drawSprite"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawSprite(...args);
   };
 
   static setFont: DrawApi["setFont"] = (...args) => {
@@ -242,8 +240,8 @@ export class BeetPx {
     return this.#tryGetFramework().drawApi.getFont(...args);
   };
 
-  static print: DrawApi["print"] = (...args) => {
-    return this.#tryGetFramework().drawApi.print(...args);
+  static drawText: DrawApi["drawText"] = (...args) => {
+    return this.#tryGetFramework().drawApi.drawText(...args);
   };
 
   static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"] = (...args) => {
@@ -253,18 +251,6 @@ export class BeetPx {
   //
   // Audio API
   //
-
-  static playSoundOnce: AudioApi["playSoundOnce"] = (...args) => {
-    return this.#tryGetFramework().audioApi.playSoundOnce(...args);
-  };
-
-  static playSoundLooped: AudioApi["playSoundLooped"] = (...args) => {
-    return this.#tryGetFramework().audioApi.playSoundLooped(...args);
-  };
-
-  static playSoundSequence: AudioApi["playSoundSequence"] = (...args) => {
-    return this.#tryGetFramework().audioApi.playSoundSequence(...args);
-  };
 
   static isAudioMuted: AudioApi["isAudioMuted"] = (...args) => {
     return this.#tryGetFramework().audioApi.isAudioMuted(...args);
@@ -278,14 +264,6 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.unmuteAudio(...args);
   };
 
-  static mutePlayback: AudioApi["mutePlayback"] = (...args) => {
-    return this.#tryGetFramework().audioApi.mutePlayback(...args);
-  };
-
-  static unmutePlayback: AudioApi["unmutePlayback"] = (...args) => {
-    return this.#tryGetFramework().audioApi.unmutePlayback(...args);
-  };
-
   static pauseAudio: AudioApi["pauseAudio"] = (...args) => {
     return this.#tryGetFramework().audioApi.pauseAudio(...args);
   };
@@ -294,24 +272,38 @@ export class BeetPx {
     return this.#tryGetFramework().audioApi.resumeAudio(...args);
   };
 
-  static stopAllPlaybacks: AudioApi["stopAllPlaybacks"] = (...args) => {
-    return this.#tryGetFramework().audioApi.stopAllPlaybacks(...args);
+  static startPlayback: AudioApi["startPlayback"] = (...args) => {
+    return this.#tryGetFramework().audioApi.startPlayback(...args);
+  };
+
+  static startPlaybackLooped: AudioApi["startPlaybackLooped"] = (...args) => {
+    return this.#tryGetFramework().audioApi.startPlaybackLooped(...args);
+  };
+
+  static startPlaybackSequence: AudioApi["startPlaybackSequence"] = (
+    ...args
+  ) => {
+    return this.#tryGetFramework().audioApi.startPlaybackSequence(...args);
+  };
+
+  static mutePlayback: AudioApi["mutePlayback"] = (...args) => {
+    return this.#tryGetFramework().audioApi.mutePlayback(...args);
+  };
+
+  static unmutePlayback: AudioApi["unmutePlayback"] = (...args) => {
+    return this.#tryGetFramework().audioApi.unmutePlayback(...args);
   };
 
   static stopPlayback: AudioApi["stopPlayback"] = (...args) => {
     return this.#tryGetFramework().audioApi.stopPlayback(...args);
   };
 
-  static __internal__audioContext: AudioApi["__internal__audioContext"] = (
-    ...args
-  ) => {
-    return this.#tryGetFramework().audioApi.__internal__audioContext(...args);
+  static stopAllPlaybacks: AudioApi["stopAllPlaybacks"] = (...args) => {
+    return this.#tryGetFramework().audioApi.stopAllPlaybacks(...args);
   };
 
-  static __internal__globalGainNode: AudioApi["__internal__globalGainNode"] = (
-    ...args
-  ) => {
-    return this.#tryGetFramework().audioApi.__internal__globalGainNode(...args);
+  static getAudioContext: AudioApi["getAudioContext"] = (...args) => {
+    return this.#tryGetFramework().audioApi.getAudioContext(...args);
   };
 
   //
@@ -372,6 +364,7 @@ export class BeetPx {
   // other
   //
 
+  // TODO: make it a field?
   static detectedBrowserType: Framework["detectedBrowserType"] = (...args) => {
     return this.#tryGetFramework().detectedBrowserType(...args);
   };

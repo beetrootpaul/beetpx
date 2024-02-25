@@ -4,7 +4,7 @@ import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMa
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../Pattern";
 
 export class DrawEllipse {
   readonly #canvas: Canvas;
@@ -19,7 +19,7 @@ export class DrawEllipse {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
     fill: boolean,
-    pattern: BpxPattern,
+    pattern: BpxDrawingPattern,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       xy.round(),
@@ -134,7 +134,7 @@ export class DrawEllipse {
     y: number,
     c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null,
     c2: BpxRgbColor | null,
-    pattern: BpxPattern,
+    pattern: BpxDrawingPattern,
     snapshot: CanvasSnapshot | null,
   ): void {
     if (!this.#canvas.canSetAt(x, y)) {

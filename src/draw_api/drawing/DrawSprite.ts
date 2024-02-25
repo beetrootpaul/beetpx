@@ -1,9 +1,9 @@
-import { BpxUtils } from "../../Utils";
 import { ImageAsset } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
+import { BpxUtils } from "../../Utils";
+import { BpxDrawingPattern } from "../Pattern";
 import { PreparedSprites } from "../PreparedSprites";
 import { BpxSprite } from "../Sprite";
 
@@ -24,7 +24,7 @@ export class DrawSprite {
     targetXy: BpxVector2d,
     scaleXy: BpxVector2d,
     colorMapping: BpxSpriteColorMapping,
-    pattern: BpxPattern,
+    pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
     scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
@@ -37,7 +37,7 @@ export class DrawSprite {
     } = sourceImageAsset;
 
     // make sure xy1 is top-left and xy2 is bottom right
-    sprite = new BpxSprite(
+    sprite = BpxSprite.of(
       sprite.imageUrl,
       v_(
         Math.min(sprite.xy1.x, sprite.xy2.x),
@@ -50,7 +50,7 @@ export class DrawSprite {
     );
 
     // clip sprite by image edges
-    sprite = new BpxSprite(
+    sprite = BpxSprite.of(
       sprite.imageUrl,
       v_(
         BpxUtils.clamp(0, sprite.xy1.x, imgW),

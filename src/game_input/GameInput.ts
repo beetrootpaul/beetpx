@@ -37,7 +37,7 @@ export class GameInput {
   readonly buttonFrameByFrameToggle: Button;
   readonly buttonFrameByFrameStep: Button;
 
-  #eventsCapturesInLastUpdate: Set<BpxGameInputEvent> = new Set();
+  #eventsCapturedInLastUpdate: Set<BpxGameInputEvent> = new Set();
 
   #mostRecentInputMethods: Set<GameInputMethod> = new Set();
 
@@ -87,7 +87,7 @@ export class GameInput {
       }
     }
 
-    this.#eventsCapturesInLastUpdate = events;
+    this.#eventsCapturedInLastUpdate = events;
 
     if (!params.skipGameButtons) {
       this.gameButtons.update(events);
@@ -114,15 +114,15 @@ export class GameInput {
     return events.size > 0;
   }
 
-  mostRecentInputMethods(): Set<GameInputMethod> {
+  getRecentInputMethods(): Set<GameInputMethod> {
     return this.#mostRecentInputMethods;
   }
 
-  connectedGamepadTypes(): Set<BpxGamepadType> {
+  getConnectedGamepadTypes(): Set<BpxGamepadType> {
     return this.gameInputGamepad.connectedGamepadTypes();
   }
 
-  __internal__capturedEvents(): Set<BpxGameInputEvent> {
-    return this.#eventsCapturesInLastUpdate;
+  getEventsCapturedInLastUpdate(): Set<BpxGameInputEvent> {
+    return this.#eventsCapturedInLastUpdate;
   }
 }

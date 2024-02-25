@@ -56,7 +56,7 @@ export class Buttons {
                 return __classPrivateFieldGet(this, _Buttons_menu, "f").isPressed;
         }
     }
-    areDirectionsPressedAsVector() {
+    getPressedDirection() {
         return v_((__classPrivateFieldGet(this, _Buttons_left, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_right, "f").isPressed ? 1 : 0), (__classPrivateFieldGet(this, _Buttons_up, "f").isPressed ? -1 : 0) + (__classPrivateFieldGet(this, _Buttons_down, "f").isPressed ? 1 : 0));
     }
     setRepeating(button, repeating) {

@@ -58,7 +58,7 @@ export class Buttons {
     }
   }
 
-  areDirectionsPressedAsVector(): BpxVector2d {
+  getPressedDirection(): BpxVector2d {
     return v_(
       (this.#left.isPressed ? -1 : 0) + (this.#right.isPressed ? 1 : 0),
       (this.#up.isPressed ? -1 : 0) + (this.#down.isPressed ? 1 : 0),

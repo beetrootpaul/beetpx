@@ -37,8 +37,10 @@ b_.init(
     isMelodyMuted = true;
     isMusicPaused = false;
 
-    b_.playSoundLooped("music_base.flac");
-    melodyPlaybackId = b_.playSoundLooped("music_melody.flac", isMelodyMuted);
+    b_.startPlaybackLooped("music_base.flac");
+    melodyPlaybackId = b_.startPlaybackLooped("music_melody.flac", {
+      muteOnStart: isMelodyMuted,
+    });
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = v_0_0_;
@@ -47,7 +49,7 @@ b_.init(
   });
 
   b_.setOnUpdate(() => {
-    if (b_.wasJustPressed("a")) {
+    if (b_.wasButtonJustPressed("a")) {
       if (isMelodyMuted) {
         b_.unmutePlayback(melodyPlaybackId, { fadeInMillis: 500 });
       } else {
@@ -55,7 +57,7 @@ b_.init(
       }
       isMelodyMuted = !isMelodyMuted;
     }
-    if (b_.wasJustPressed("b")) {
+    if (b_.wasButtonJustPressed("b")) {
       if (isMusicPaused) {
         b_.resumeAudio();
       } else {
@@ -65,15 +67,15 @@ b_.init(
     }
 
     logoPositionBase = logoPositionBase.add(
-      b_.areDirectionsPressedAsVector().mul(velocity),
+      b_.getPressedDirection().mul(velocity),
     );
 
     logoPositionOffset = v_(
-      Math.cos((b_.frameNumber / 30) * Math.PI),
-      Math.sin((b_.frameNumber / 30) * Math.PI),
+      Math.cos((b_.frame / 30) * Math.PI),
+      Math.sin((b_.frame / 30) * Math.PI),
     ).mul(10);
 
-    if (b_.wasJustPressed("menu")) {
+    if (b_.wasButtonJustPressed("menu")) {
       b_.restart();
     }
   });
@@ -81,7 +83,7 @@ b_.init(
   b_.setOnDraw(() => {
     b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
 
-    b_.sprite(
+    b_.drawSprite(
       spr_("logo.png")(0, 0, 16, 16),
       logoPositionBase.add(logoPositionOffset),
     );
@@ -105,17 +107,21 @@ b_.init(
       }
       textWh = v_(Math.max(textWh.x, wh.x), textWh.y + (i > 0 ? 1 : 0) + wh.y);
     });
-    b_.rect(
+    b_.drawRect(
       textRealXy.sub(v_1_1_),
       textWh.add(2),
       BpxRgbColor.fromCssHex("#83769c"),
     );
     textLines.forEach((text, i) => {
-      b_.print(text, textXy.add(0, 5 * i), BpxRgbColor.fromCssHex("#c2c3c7"));
+      b_.drawText(
+        text,
+        textXy.add(0, 5 * i),
+        BpxRgbColor.fromCssHex("#c2c3c7"),
+      );
     });
 
     if (b_.debug) {
-      b_.line(
+      b_.drawLine(
         v_(0, 0),
         logoPositionBase.add(logoPositionOffset),
         BpxRgbColor.fromCssHex("#ff0000"),

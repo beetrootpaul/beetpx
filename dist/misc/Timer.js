@@ -11,9 +11,12 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _BpxTimer_frames, _BpxTimer_t;
 export function timer_(frames) {
-    return new BpxTimer({ frames });
+    return BpxTimer.for({ frames });
 }
 export class BpxTimer {
+    static for(params) {
+        return new BpxTimer(params);
+    }
     constructor(params) {
         _BpxTimer_frames.set(this, void 0);
         _BpxTimer_t.set(this, 0);

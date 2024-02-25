@@ -10,7 +10,7 @@ export class BpxPatternColors {
 
   readonly type = "pattern";
 
-  constructor(
+  private constructor(
     readonly primary: BpxRgbColor | null,
     readonly secondary: BpxRgbColor | null,
   ) {}

@@ -1,6 +1,13 @@
-import { b_, BpxRgbColor, spr_, u_, v_, v_0_0_ } from "../../../src";
-import { BpxGamepadType } from "../../../src/game_input/GameInputGamepad";
-import { GamepadTypeDetector } from "../../../src/game_input/GamepadTypeDetector";
+import {
+  b_,
+  BpxGamepadType,
+  BpxGamepadTypeDetector,
+  BpxRgbColor,
+  spr_,
+  u_,
+  v_,
+  v_0_0_,
+} from "../../../src";
 
 const spr = spr_("spritesheet.png");
 
@@ -59,7 +66,7 @@ export class DebugView {
     window.addEventListener("gamepadconnected", (gamepadEvent) => {
       if (gamepadEvent.gamepad.index < this.gamepadsN) {
         this.gamepadTypes[gamepadEvent.gamepad.index] =
-          GamepadTypeDetector.detect(gamepadEvent.gamepad);
+          BpxGamepadTypeDetector.detect(gamepadEvent.gamepad);
       }
       console.table({
         table: "GAMEPAD EVENT",
@@ -108,13 +115,13 @@ export class DebugView {
 
   draw() {
     // background
-    b_.sprite(spr(160, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(160, 0, 128, 128), v_0_0_);
 
     // buttons
     this.buttons.forEach((buttonXGamepads, buttonIndex) => {
       buttonXGamepads.forEach((button, gamepadIndex) => {
         if (button === "pressed") {
-          b_.rectFilled(
+          b_.drawRectFilled(
             v_(
               17 + (buttonIndex % 10) * 10,
               12 + Math.floor(buttonIndex / 10) * 20 + gamepadIndex * 3,
@@ -123,7 +130,7 @@ export class DebugView {
             gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
           );
         } else if (button === "touched") {
-          b_.ellipseFilled(
+          b_.drawEllipseFilled(
             v_(
               17 + (buttonIndex % 10) * 10,
               12 + Math.floor(buttonIndex / 10) * 20 + gamepadIndex * 3,
@@ -140,7 +147,7 @@ export class DebugView {
       axisXGamepad.forEach((axis, gamepadIndex) => {
         if (axis != null) {
           const offset = 20 * axis;
-          b_.rectFilled(
+          b_.drawRectFilled(
             v_(48 + offset, 51 + axisIndex * 11 + gamepadIndex * 3),
             v_(3, 3),
             gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
@@ -153,7 +160,7 @@ export class DebugView {
     u_.range(this.gamepadsN).forEach((gamepadIndex) => {
       const gamepadType = this.gamepadTypes[gamepadIndex];
       if (gamepadType) {
-        b_.rectFilled(
+        b_.drawRectFilled(
           v_(
             97 +
               (gamepadType === "xbox"
@@ -171,7 +178,7 @@ export class DebugView {
 
     // browser type
     const browserType = b_.detectedBrowserType();
-    b_.rectFilled(
+    b_.drawRectFilled(
       v_(
         117,
         78 +

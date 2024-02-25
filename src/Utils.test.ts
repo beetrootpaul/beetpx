@@ -29,53 +29,45 @@ describe("Utils", () => {
   });
 
   test("#booleanChangingEveryNthFrame", () => {
-    BpxUtils.range(10).forEach((frameNumber) => {
-      jest
-        .spyOn(BeetPx, "frameNumber", "get")
-        .mockImplementation(() => frameNumber);
+    BpxUtils.range(10).forEach((frame) => {
+      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(true);
     });
-    BpxUtils.range(10).forEach((frameNumber) => {
-      jest
-        .spyOn(BeetPx, "frameNumber", "get")
-        .mockImplementation(() => 10 + frameNumber);
+    BpxUtils.range(10).forEach((frame) => {
+      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 10 + frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(false);
     });
-    BpxUtils.range(10).forEach((frameNumber) => {
-      jest
-        .spyOn(BeetPx, "frameNumber", "get")
-        .mockImplementation(() => 20 + frameNumber);
+    BpxUtils.range(10).forEach((frame) => {
+      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 20 + frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(true);
     });
-    BpxUtils.range(10).forEach((frameNumber) => {
-      jest
-        .spyOn(BeetPx, "frameNumber", "get")
-        .mockImplementation(() => 30 + frameNumber);
+    BpxUtils.range(10).forEach((frame) => {
+      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 30 + frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(false);
     });
 
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 0);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 0);
     expect(BpxUtils.booleanChangingEveryNthFrame(1)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(2)).toBe(true);
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 1);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 1);
     expect(BpxUtils.booleanChangingEveryNthFrame(1)).toBe(false);
     expect(BpxUtils.booleanChangingEveryNthFrame(2)).toBe(true);
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 2);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 2);
     expect(BpxUtils.booleanChangingEveryNthFrame(1)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(2)).toBe(false);
 
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 0);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 0);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(true);
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 1);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 1);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(false);
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 2);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 2);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(true);
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 3);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 3);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(true);
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 4);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 4);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(false);
 
-    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 987);
+    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 987);
     expect(BpxUtils.booleanChangingEveryNthFrame(0)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(-0.123)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(-123)).toBe(true);

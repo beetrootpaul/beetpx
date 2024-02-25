@@ -32,10 +32,10 @@ export class DrawText {
         canvasXy = canvasXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const colorMapping = typeof color === "function"
-            ? (charSprite) => new BpxSpriteColorMapping((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
+            ? (charSprite) => BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
                 ? color(charSprite)
                 : null)
-            : new BpxSpriteColorMapping((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
+            : BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
                 ? color
                 : null);
         for (const charSprite of fontAsset.font.spritesFor(text)) {

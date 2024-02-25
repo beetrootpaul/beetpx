@@ -1,4 +1,4 @@
-export class GamepadTypeDetector {
+export class BpxGamepadTypeDetector {
     static detect(gamepad) {
         const id = gamepad.id.toLowerCase();
         if (id.includes("dualsense"))

@@ -1,7 +1,7 @@
 
 import { BpxUtils } from "../Utils";
 export function v_(x, y) {
-    return new BpxVector2d(x, y);
+    return BpxVector2d.of(x, y);
 }
 export class BpxVector2d {
     /**
@@ -9,6 +9,9 @@ export class BpxVector2d {
      */
     static unitFromAngle(turnAngle) {
         return new BpxVector2d(BpxUtils.trigCos(turnAngle), BpxUtils.trigSin(turnAngle));
+    }
+    static of(x, y) {
+        return new BpxVector2d(x, y);
     }
     constructor(x, y) {
         this.x = x;

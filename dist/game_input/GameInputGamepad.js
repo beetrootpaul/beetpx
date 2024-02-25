@@ -20,7 +20,7 @@ import { GamepadMappingFirefoxDualSenseWindows } from "./gamepad_mapping/Gamepad
 import { GamepadMappingFirefoxFallback } from "./gamepad_mapping/GamepadMappingFirefoxFallback";
 import { GamepadMappingSafari8BitDo } from "./gamepad_mapping/GamepadMappingSafari8BitDo";
 import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
-import { GamepadTypeDetector } from "./GamepadTypeDetector";
+import { BpxGamepadTypeDetector } from "./GamepadTypeDetector";
 export const supportedGamepadTypes = [
     "xbox",
     "dualsense",
@@ -76,11 +76,11 @@ export class GameInputGamepad {
         return new Set(navigator
             .getGamepads()
             .filter(u_.isDefined)
-            .map((gamepad) => GamepadTypeDetector.detect(gamepad)));
+            .map((gamepad) => BpxGamepadTypeDetector.detect(gamepad)));
     }
 }
 _GameInputGamepad_browserType = new WeakMap(), _GameInputGamepad_mappings = new WeakMap(), _GameInputGamepad_instances = new WeakSet(), _GameInputGamepad_mappingFor = function _GameInputGamepad_mappingFor(gamepad) {
-    const gamepadType = GamepadTypeDetector.detect(gamepad);
+    const gamepadType = BpxGamepadTypeDetector.detect(gamepad);
     if (__classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ||
         __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_other") {
         if (gamepadType === "dualsense") {

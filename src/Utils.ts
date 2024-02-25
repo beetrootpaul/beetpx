@@ -20,7 +20,7 @@ export class BpxUtils {
   }
 
   static booleanChangingEveryNthFrame(n: number): boolean {
-    return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
+    return n > 0 ? BeetPx.frame % (n * 2) < n : true;
   }
 
   // Returns the middle number. Example usage: `clamp(min, value, max)`
@@ -101,7 +101,7 @@ export class BpxUtils {
     ];
   }
 
-  static printWithOutline(
+  static drawTextWithOutline(
     text: string,
     canvasXy1: BpxVector2d,
     textColor: BpxRgbColor,
@@ -112,9 +112,9 @@ export class BpxUtils {
     } = {},
   ): void {
     for (const offset of BpxUtils.offset8Directions()) {
-      BeetPx.print(text, canvasXy1.add(offset), outlineColor, opts);
+      BeetPx.drawText(text, canvasXy1.add(offset), outlineColor, opts);
     }
-    BeetPx.print(text, canvasXy1, textColor, opts);
+    BeetPx.drawText(text, canvasXy1, textColor, opts);
   }
 
   static randomElementOf<V>(array: V[]): V | undefined {

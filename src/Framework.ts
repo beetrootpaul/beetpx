@@ -66,18 +66,18 @@ export class Framework {
   #onUpdate?: () => void;
   #onDraw?: () => void;
 
-  #frameNumber: number = 0;
-  #renderFps: number = 1;
+  #currentFrame: number = 0;
+  #renderingFps: number = 1;
 
   // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
   #alreadyResumedAudioContext: boolean = false;
 
-  get frameNumber(): number {
-    return this.#frameNumber;
+  get frame(): number {
+    return this.#currentFrame;
   }
 
-  get renderFps(): number {
-    return this.#renderFps;
+  get renderingFps(): number {
+    return this.#renderingFps;
   }
 
   constructor(options: FrameworkOptions) {
@@ -86,7 +86,7 @@ export class Framework {
       // Pause music. But do it after other operations, since there
       //   might be some new unexpected an error thrown here.
       this.audioApi
-        ?.__internal__audioContext()
+        ?.getAudioContext()
         .suspend()
         .then(() => {});
       // returning `true` here means the error is already handled by us
@@ -97,7 +97,7 @@ export class Framework {
       // Pause music. But do it after other operations, since there
       //   might be some new unexpected an error thrown here.
       this.audioApi
-        ?.__internal__audioContext()
+        ?.getAudioContext()
         .suspend()
         .then(() => {});
     });
@@ -224,7 +224,7 @@ export class Framework {
   }
 
   restart() {
-    this.#frameNumber = 0;
+    this.#currentFrame = 0;
 
     this.audioApi.restart();
 
@@ -254,7 +254,7 @@ export class Framework {
       });
     }
 
-    this.#frameNumber = 0;
+    this.#currentFrame = 0;
 
     await this.#loading.showStartScreen();
 
@@ -310,20 +310,20 @@ export class Framework {
         if (shouldUpdate) {
           if (this.#frameByFrame) {
             Logger.infoBeetPx(
-              `Running onUpdate for frame: ${this.#frameNumber}`,
+              `Running onUpdate for frame: ${this.#currentFrame}`,
             );
           }
 
           this.#onUpdate?.();
 
-          this.#frameNumber =
-            this.#frameNumber >= Number.MAX_SAFE_INTEGER
+          this.#currentFrame =
+            this.#currentFrame >= Number.MAX_SAFE_INTEGER
               ? 0
-              : this.#frameNumber + 1;
+              : this.#currentFrame + 1;
         }
       },
-      renderFn: (renderFps) => {
-        this.#renderFps = renderFps;
+      renderFn: (renderingFps) => {
+        this.#renderingFps = renderingFps;
 
         this.#onDraw?.();
 

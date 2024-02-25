@@ -30,7 +30,7 @@ b_.init(
     prevDebugToggleState = false;
     nextDebugToggleState = false;
 
-    b_.playSoundLooped("music_base.flac");
+    b_.startPlaybackLooped("music_base.flac");
   });
 
   b_.setOnUpdate(() => {
@@ -46,7 +46,9 @@ b_.init(
     // If not for that, we could just use `b_.debug` as a condition for
     //   which view to update/draw.
     prevDebugToggleState = nextDebugToggleState;
-    nextDebugToggleState = b_.__internal__capturedEvents().has("debug_toggle");
+    nextDebugToggleState = b_
+      .getEventsCapturedInLastUpdate()
+      .has("debug_toggle");
     if (prevDebugToggleState && !nextDebugToggleState) {
       showDebug = !showDebug;
     }

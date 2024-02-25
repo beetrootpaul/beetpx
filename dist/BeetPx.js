@@ -36,11 +36,11 @@ export class BeetPx {
      *
      * @return number
      */
-    static get frameNumber() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frameNumber;
+    static get frame() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frame;
     }
-    static get renderFps() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).renderFps;
+    static get renderingFps() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).renderingFps;
     }
 }
 _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {
@@ -83,29 +83,29 @@ BeetPx.logError = (...args) => {
 
 
 
-BeetPx.isPressed = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.isPressed(...args);
-};
-BeetPx.areDirectionsPressedAsVector = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.areDirectionsPressedAsVector(...args);
-};
-BeetPx.setRepeating = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.setRepeating(...args);
-};
-BeetPx.wasJustPressed = (...args) => {
+BeetPx.wasButtonJustPressed = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustPressed(...args);
 };
-BeetPx.wasJustReleased = (...args) => {
+BeetPx.wasButtonJustReleased = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.wasJustReleased(...args);
 };
-BeetPx.mostRecentInputMethods = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.mostRecentInputMethods(...args);
+BeetPx.isButtonPressed = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.isPressed(...args);
 };
-BeetPx.connectedGamepadTypes = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.connectedGamepadTypes(...args);
+BeetPx.getPressedDirection = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.getPressedDirection(...args);
 };
-BeetPx.__internal__capturedEvents = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.__internal__capturedEvents(...args);
+BeetPx.setButtonRepeating = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.gameButtons.setRepeating(...args);
+};
+BeetPx.getRecentInputMethods = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.getRecentInputMethods(...args);
+};
+BeetPx.getConnectedGamepadTypes = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.getConnectedGamepadTypes(...args);
+};
+BeetPx.getEventsCapturedInLastUpdate = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).gameInput.getEventsCapturedInLastUpdate(...args);
 };
 
 
@@ -136,11 +136,11 @@ BeetPx.setCameraXy = (...args) => {
 /**
  * @returns previous pattern
  */
-BeetPx.setPattern = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setPattern(...args);
+BeetPx.setDrawingPattern = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setDrawingPattern(...args);
 };
-BeetPx.pixel = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixel(...args);
+BeetPx.drawPixel = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawPixel(...args);
 };
 /**
  * @param {BpxVector2d} xy - sd
@@ -154,23 +154,23 @@ BeetPx.pixel = (...args) => {
  *   (designated by new lines) where `#` and `-` stand for a colored
  *   pixel and a lack of a pixel. Whitespaces are ignored.
  */
-BeetPx.pixels = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.pixels(...args);
+BeetPx.drawPixels = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawPixels(...args);
 };
-BeetPx.line = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.line(...args);
+BeetPx.drawLine = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawLine(...args);
 };
-BeetPx.rect = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.rect(...args);
+BeetPx.drawRect = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawRect(...args);
 };
-BeetPx.rectFilled = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.rectFilled(...args);
+BeetPx.drawRectFilled = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawRectFilled(...args);
 };
-BeetPx.ellipse = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.ellipse(...args);
+BeetPx.drawEllipse = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawEllipse(...args);
 };
-BeetPx.ellipseFilled = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.ellipseFilled(...args);
+BeetPx.drawEllipseFilled = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawEllipseFilled(...args);
 };
 /**
  * @returns previous sprite color mapping
@@ -178,8 +178,8 @@ BeetPx.ellipseFilled = (...args) => {
 BeetPx.setSpriteColorMapping = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setSpriteColorMapping(...args);
 };
-BeetPx.sprite = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.sprite(...args);
+BeetPx.drawSprite = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawSprite(...args);
 };
 BeetPx.setFont = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.setFont(...args);
@@ -187,8 +187,8 @@ BeetPx.setFont = (...args) => {
 BeetPx.getFont = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.getFont(...args);
 };
-BeetPx.print = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.print(...args);
+BeetPx.drawText = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.drawText(...args);
 };
 BeetPx.takeCanvasSnapshot = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).drawApi.takeCanvasSnapshot(...args);
@@ -196,15 +196,6 @@ BeetPx.takeCanvasSnapshot = (...args) => {
 
 
 
-BeetPx.playSoundOnce = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundOnce(...args);
-};
-BeetPx.playSoundLooped = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundLooped(...args);
-};
-BeetPx.playSoundSequence = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.playSoundSequence(...args);
-};
 BeetPx.isAudioMuted = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.isAudioMuted(...args);
 };
@@ -214,29 +205,35 @@ BeetPx.muteAudio = (...args) => {
 BeetPx.unmuteAudio = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmuteAudio(...args);
 };
-BeetPx.mutePlayback = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.mutePlayback(...args);
-};
-BeetPx.unmutePlayback = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmutePlayback(...args);
-};
 BeetPx.pauseAudio = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.pauseAudio(...args);
 };
 BeetPx.resumeAudio = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.resumeAudio(...args);
 };
-BeetPx.stopAllPlaybacks = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllPlaybacks(...args);
+BeetPx.startPlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.startPlayback(...args);
+};
+BeetPx.startPlaybackLooped = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.startPlaybackLooped(...args);
+};
+BeetPx.startPlaybackSequence = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.startPlaybackSequence(...args);
+};
+BeetPx.mutePlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.mutePlayback(...args);
+};
+BeetPx.unmutePlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.unmutePlayback(...args);
 };
 BeetPx.stopPlayback = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopPlayback(...args);
 };
-BeetPx.__internal__audioContext = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.__internal__audioContext(...args);
+BeetPx.stopAllPlaybacks = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.stopAllPlaybacks(...args);
 };
-BeetPx.__internal__globalGainNode = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.__internal__globalGainNode(...args);
+BeetPx.getAudioContext = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).audioApi.getAudioContext(...args);
 };
 
 
@@ -277,6 +274,7 @@ BeetPx.getSoundAsset = (...args) => {
 BeetPx.getJsonAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getJsonAsset(...args);
 };
+
 
 
 

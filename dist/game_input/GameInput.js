@@ -9,7 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _GameInput_eventsCapturesInLastUpdate, _GameInput_mostRecentInputMethods;
+var _GameInput_eventsCapturedInLastUpdate, _GameInput_mostRecentInputMethods;
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Button } from "./buttons/Button";
 import { Buttons } from "./buttons/Buttons";
@@ -19,7 +19,7 @@ import { GameInputMouse } from "./GameInputMouse";
 import { GameInputTouch } from "./GameInputTouch";
 export class GameInput {
     constructor(params) {
-        _GameInput_eventsCapturesInLastUpdate.set(this, new Set());
+        _GameInput_eventsCapturedInLastUpdate.set(this, new Set());
         _GameInput_mostRecentInputMethods.set(this, new Set());
         this.gameInputGamepad = new GameInputGamepad({
             browserType: params.browserType,
@@ -57,7 +57,7 @@ export class GameInput {
                 __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").add(sgi.inputMethod);
             }
         }
-        __classPrivateFieldSet(this, _GameInput_eventsCapturesInLastUpdate, events, "f");
+        __classPrivateFieldSet(this, _GameInput_eventsCapturedInLastUpdate, events, "f");
         if (!params.skipGameButtons) {
             this.gameButtons.update(events);
         }
@@ -79,14 +79,14 @@ export class GameInput {
         });
         return events.size > 0;
     }
-    mostRecentInputMethods() {
+    getRecentInputMethods() {
         return __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f");
     }
-    connectedGamepadTypes() {
+    getConnectedGamepadTypes() {
         return this.gameInputGamepad.connectedGamepadTypes();
     }
-    __internal__capturedEvents() {
-        return __classPrivateFieldGet(this, _GameInput_eventsCapturesInLastUpdate, "f");
+    getEventsCapturedInLastUpdate() {
+        return __classPrivateFieldGet(this, _GameInput_eventsCapturedInLastUpdate, "f");
     }
 }
-_GameInput_eventsCapturesInLastUpdate = new WeakMap(), _GameInput_mostRecentInputMethods = new WeakMap();
+_GameInput_eventsCapturedInLastUpdate = new WeakMap(), _GameInput_mostRecentInputMethods = new WeakMap();

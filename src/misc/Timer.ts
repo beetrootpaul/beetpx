@@ -1,13 +1,17 @@
 export function timer_(frames: number): BpxTimer {
-  return new BpxTimer({ frames });
+  return BpxTimer.for({ frames });
 }
 
 export class BpxTimer {
+  static for(params: { frames: number }): BpxTimer {
+    return new BpxTimer(params);
+  }
+
   readonly #frames: number;
 
   #t: number = 0;
 
-  constructor(params: { frames: number }) {
+  private constructor(params: { frames: number }) {
     this.#frames = Math.floor(params.frames);
     this.restart();
   }

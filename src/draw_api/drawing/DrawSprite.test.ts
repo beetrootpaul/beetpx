@@ -3,7 +3,7 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { v_ } from "../../misc/Vector2d";
 import { drawingTestSetup } from "../DrawingTestSetup";
-import { BpxPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../Pattern";
 import { spr_ } from "../Sprite";
 import { TestImage } from "../TestImage";
 
@@ -27,7 +27,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(0, 0, 1, 1), v_(1, 1));
+    dts.drawApi.drawSprite(s(0, 0, 1, 1), v_(1, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -52,7 +52,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(0, 0, 5, 3), v_(3, 2));
+    dts.drawApi.drawSprite(s(0, 0, 5, 3), v_(3, 2));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -81,7 +81,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1));
+    dts.drawApi.drawSprite(s(1, 1, 2, 2), v_(2, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -108,7 +108,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(1, 1, 0, 0), v_(2, 1));
+    dts.drawApi.drawSprite(s(1, 1, 0, 0), v_(2, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -135,7 +135,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(3, 3, -2, -2), v_(2, 1));
+    dts.drawApi.drawSprite(s(3, 3, -2, -2), v_(2, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -165,7 +165,7 @@ describe("DrawSprite", () => {
     // These sprite numbers are chosen in away which should test whether
     //   rounding is performed before on initial values of xy and wh (which
     //   is *not* what we want here) or rather on calculated xy1 and x2.
-    dts.drawApi.sprite(s(0.6, 1.4, 2.6, 1.4), v_(2.49, 0.51));
+    dts.drawApi.drawSprite(s(0.6, 1.4, 2.6, 1.4), v_(2.49, 0.51));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -193,7 +193,7 @@ describe("DrawSprite", () => {
       const s = spr_(image.uniqueUrl);
       dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(3, 2) });
+      dts.drawApi.drawSprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(3, 2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -222,7 +222,7 @@ describe("DrawSprite", () => {
       const s = spr_(image.uniqueUrl);
       dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(-3, -2) });
+      dts.drawApi.drawSprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(-3, -2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -251,7 +251,9 @@ describe("DrawSprite", () => {
       const s = spr_(image.uniqueUrl);
       dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(0.9, 0.9) });
+      dts.drawApi.drawSprite(s(1, 1, 2, 2), v_(2, 1), {
+        scaleXy: v_(0.9, 0.9),
+      });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -266,7 +268,9 @@ describe("DrawSprite", () => {
       });
 
       dts.drawApi.clearCanvas(c0);
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(1.9, 1.9) });
+      dts.drawApi.drawSprite(s(1, 1, 2, 2), v_(2, 1), {
+        scaleXy: v_(1.9, 1.9),
+      });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -281,7 +285,9 @@ describe("DrawSprite", () => {
       });
 
       dts.drawApi.clearCanvas(c0);
-      dts.drawApi.sprite(s(1, 1, 2, 2), v_(2, 1), { scaleXy: v_(3.9, 2.9) });
+      dts.drawApi.drawSprite(s(1, 1, 2, 2), v_(2, 1), {
+        scaleXy: v_(3.9, 2.9),
+      });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -311,7 +317,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(-2, 1, 4, 2), v_(3, 3));
+    dts.drawApi.drawSprite(s(-2, 1, 4, 2), v_(3, 3));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -342,7 +348,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(2, 1, 4, 2), v_(3, 3));
+    dts.drawApi.drawSprite(s(2, 1, 4, 2), v_(3, 3));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -373,7 +379,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(1, -2, 2, 4), v_(3, 3));
+    dts.drawApi.drawSprite(s(1, -2, 2, 4), v_(3, 3));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -404,7 +410,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(1, 2, 2, 4), v_(3, 3));
+    dts.drawApi.drawSprite(s(1, 2, 2, 4), v_(3, 3));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -435,7 +441,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(0, 0, 4, 4), v_(-2, 1));
+    dts.drawApi.drawSprite(s(0, 0, 4, 4), v_(-2, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -464,7 +470,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(0, 0, 4, 4), v_(4, 1));
+    dts.drawApi.drawSprite(s(0, 0, 4, 4), v_(4, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -493,7 +499,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(0, 0, 4, 4), v_(1, -2));
+    dts.drawApi.drawSprite(s(0, 0, 4, 4), v_(1, -2));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -522,7 +528,7 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(0, 0, 4, 4), v_(1, 4));
+    dts.drawApi.drawSprite(s(0, 0, 4, 4), v_(1, 4));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -551,10 +557,10 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.sprite(s(0, 0, 4, 4), v_(0, 0));
-    dts.drawApi.sprite(s(4, 0, 4, 4), v_(0, 0));
-    dts.drawApi.sprite(s(8, 0, 4, 4), v_(0, 0));
-    dts.drawApi.sprite(s(12, 0, 4, 4), v_(0, 0));
+    dts.drawApi.drawSprite(s(0, 0, 4, 4), v_(0, 0));
+    dts.drawApi.drawSprite(s(4, 0, 4, 4), v_(0, 0));
+    dts.drawApi.drawSprite(s(8, 0, 4, 4), v_(0, 0));
+    dts.drawApi.drawSprite(s(12, 0, 4, 4), v_(0, 0));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -588,7 +594,7 @@ describe("DrawSprite", () => {
         [c3, ct],
       ]),
     );
-    dts.drawApi.sprite(s(0, 0, 4, 4), v_(0, 0));
+    dts.drawApi.drawSprite(s(0, 0, 4, 4), v_(0, 0));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -618,7 +624,7 @@ describe("DrawSprite", () => {
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
     dts.drawApi.setCameraXy(v_(3, -2));
-    dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
+    dts.drawApi.drawSprite(s(0, 0, 7, 6), v_(1, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -651,15 +657,15 @@ describe("DrawSprite", () => {
     const s = spr_(image.uniqueUrl);
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.setPattern(
-      BpxPattern.from(`
+    dts.drawApi.setDrawingPattern(
+      BpxDrawingPattern.from(`
         ##--
         ##--
         --##
         --##
       `),
     );
-    dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
+    dts.drawApi.drawSprite(s(0, 0, 7, 6), v_(1, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -693,15 +699,15 @@ describe("DrawSprite", () => {
     dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
     dts.drawApi.setCameraXy(v_(3, -2));
-    dts.drawApi.setPattern(
-      BpxPattern.from(`
+    dts.drawApi.setDrawingPattern(
+      BpxDrawingPattern.from(`
         ##--
         ##--
         --##
         --##
       `),
     );
-    dts.drawApi.sprite(s(0, 0, 7, 6), v_(1, 1));
+    dts.drawApi.drawSprite(s(0, 0, 7, 6), v_(1, 1));
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },

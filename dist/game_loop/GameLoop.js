@@ -46,8 +46,8 @@ export class GameLoop {
                     Logger.warnBeetPx(`Reached the safety limit of ${__classPrivateFieldGet(this, _GameLoop_updateCallsLimit, "f")} update calls`);
                 }
             }
-            const renderFps = Math.floor(Math.min(1000 / deltaTimeMillis, _a.renderFpsResultCap));
-            __classPrivateFieldGet(this, _GameLoop_callbacks, "f").renderFn(renderFps);
+            const renderingFps = Math.floor(Math.min(1000 / deltaTimeMillis, _a.renderFpsResultCap));
+            __classPrivateFieldGet(this, _GameLoop_callbacks, "f").renderFn(renderingFps);
             __classPrivateFieldGet(this, _GameLoop_requestAnimationFrameFn, "f").call(this, __classPrivateFieldGet(this, _GameLoop_tick, "f"));
         });
         __classPrivateFieldSet(this, _GameLoop_requestAnimationFrameFn, options.rafFn, "f");

@@ -11,7 +11,7 @@ export class BpxCanvasSnapshotColorMapping {
 
   readonly #mapping: BpxColorMapper;
 
-  constructor(mapping: BpxColorMapper) {
+  private constructor(mapping: BpxColorMapper) {
     this.#mapping = mapping;
   }
 

@@ -1,4 +1,3 @@
-import { BpxUtils } from "../Utils";
 import { Assets, FontAsset } from "../assets/Assets";
 import { Canvas } from "../canvas/Canvas";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
@@ -8,9 +7,7 @@ import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
-import { BpxPattern } from "./Pattern";
-import { BpxPixels } from "./Pixels";
-import { BpxSprite } from "./Sprite";
+import { BpxUtils } from "../Utils";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
 import { DrawLine } from "./drawing/DrawLine";
@@ -19,6 +16,9 @@ import { DrawPixels } from "./drawing/DrawPixels";
 import { DrawRect } from "./drawing/DrawRect";
 import { DrawSprite } from "./drawing/DrawSprite";
 import { DrawText } from "./drawing/DrawText";
+import { BpxDrawingPattern } from "./Pattern";
+import { BpxPixels } from "./Pixels";
+import { BpxSprite } from "./Sprite";
 
 type DrawApiOptions = {
   canvas: Canvas;
@@ -40,7 +40,7 @@ export class DrawApi {
   readonly #text: DrawText;
 
   cameraXy: BpxVector2d = v_(0, 0);
-  #pattern: BpxPattern = BpxPattern.primaryOnly;
+  #pattern: BpxDrawingPattern = BpxDrawingPattern.primaryOnly;
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
@@ -82,17 +82,17 @@ export class DrawApi {
     return prev;
   }
 
-  setPattern(pattern: BpxPattern): BpxPattern {
+  setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern {
     const prev = this.#pattern;
     this.#pattern = pattern;
     return prev;
   }
 
-  pixel(xy: BpxVector2d, color: BpxRgbColor): void {
+  drawPixel(xy: BpxVector2d, color: BpxRgbColor): void {
     this.#pixel.draw(xy.sub(this.cameraXy), color, this.#pattern);
   }
 
-  pixels(
+  drawPixels(
     pixels: BpxPixels,
     xy: BpxVector2d,
     color: BpxRgbColor,
@@ -109,7 +109,7 @@ export class DrawApi {
     );
   }
 
-  line(
+  drawLine(
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
@@ -117,7 +117,7 @@ export class DrawApi {
     this.#line.draw(xy.sub(this.cameraXy), wh, color, this.#pattern);
   }
 
-  rect(
+  drawRect(
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
@@ -125,7 +125,7 @@ export class DrawApi {
     this.#rect.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
   }
 
-  rectFilled(
+  drawRectFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
@@ -133,7 +133,7 @@ export class DrawApi {
     this.#rect.draw(xy.sub(this.cameraXy), wh, color, true, this.#pattern);
   }
 
-  ellipse(
+  drawEllipse(
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
@@ -141,7 +141,7 @@ export class DrawApi {
     this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
   }
 
-  ellipseFilled(
+  drawEllipseFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
@@ -157,7 +157,7 @@ export class DrawApi {
     return prev;
   }
 
-  sprite(
+  drawSprite(
     sprite: BpxSprite,
     xy: BpxVector2d,
     opts: {
@@ -185,7 +185,7 @@ export class DrawApi {
     return this.#fontAsset?.font ?? null;
   }
 
-  print(
+  drawText(
     text: string,
     xy: BpxVector2d,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),

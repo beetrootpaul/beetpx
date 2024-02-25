@@ -1,7 +1,7 @@
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../Pattern";
 import { BpxPixels } from "../Pixels";
 
 export class DrawPixels {
@@ -18,7 +18,7 @@ export class DrawPixels {
     targetXy: BpxVector2d,
     color: BpxRgbColor,
     scaleXy: BpxVector2d,
-    pattern: BpxPattern,
+    pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
     scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
