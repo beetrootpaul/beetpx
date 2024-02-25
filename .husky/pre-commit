@@ -4,7 +4,8 @@
 git_branch="$(git rev-parse --abbrev-ref HEAD)"
 
 # Assumption for all `if [ "$branch" = "main" ]` blocks:
-#   we develop on branches other than `main` and we create new versions on `main`
+#   - we develop on branches other than `main`
+#   - we release new versions on `main`
 
 if [ "$git_branch" = "main" ]; then
   # If version got bumped in package.json, update the version in package-lock.json as well
@@ -17,8 +18,12 @@ npm run format
 # Make sure types are OK
 npm run typecheck
 
-# Make sure tests didn't break due to most recent changes
-npm test
+if [ "$git_branch" = "main" ]; then
+  # Make sure tests didn't break due to most recent changes.
+  # We do this on a `main` branch only in order to allow broken tests
+  #   while development is in progress.
+  npm test
+fi
 
 # Perform similar steps for example projects
 cd ./examples/input-tester
