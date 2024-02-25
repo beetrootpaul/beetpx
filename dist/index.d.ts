@@ -472,6 +472,12 @@ declare class AudioApi {
     __internal__globalGainNode(): GainNode;
 }
 
+declare class DebugMode {
+    #private;
+    static get enabled(): boolean;
+    static set enabled(value: boolean);
+}
+
 declare abstract class Canvas {
     #private;
     readonly canvasSize: BpxVector2d;
@@ -580,12 +586,6 @@ declare class Framework {
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
     restart(): void;
-}
-
-declare class DebugMode {
-    #private;
-    static get enabled(): boolean;
-    static set enabled(value: boolean);
 }
 
 declare class Logger {

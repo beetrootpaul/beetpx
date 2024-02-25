@@ -1,28 +1,28 @@
-import { BeetPx } from "./BeetPx";
-import { HtmlTemplate } from "./HtmlTemplate";
-import { BpxUtils, u_ } from "./Utils";
 import { AssetLoader, AssetsToLoad } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { BeetPx } from "./BeetPx";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, black_ } from "./color/RgbColor";
+import { black_, BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
 import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
-import { GameInput } from "./game_input/GameInput";
 import { Button } from "./game_input/buttons/Button";
+import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
+import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d, v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxUtils, u_ } from "./Utils";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128" | "256x256";

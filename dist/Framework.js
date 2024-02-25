@@ -10,27 +10,27 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_assetLoader, _Framework_canvas, _Framework_isStarted, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame;
-import { BeetPx } from "./BeetPx";
-import { HtmlTemplate } from "./HtmlTemplate";
-import { BpxUtils, u_ } from "./Utils";
 import { AssetLoader } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { BeetPx } from "./BeetPx";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, black_ } from "./color/RgbColor";
+import { black_, BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
 import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
-import { GameInput } from "./game_input/GameInput";
 import { Button } from "./game_input/buttons/Button";
+import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
+import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxUtils, u_ } from "./Utils";
 export class Framework {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
