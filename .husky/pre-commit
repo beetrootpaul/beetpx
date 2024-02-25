@@ -25,10 +25,6 @@ cd ./examples/input-tester
 npm run format
 npm run typecheck
 cd ../../
-cd ./examples/performance-testing
-npm run format
-npm run typecheck
-cd ../../
 cd ./examples/simple
 npm run format
 npm run typecheck
