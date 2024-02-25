@@ -2,6 +2,6 @@
 
 ```
 npm install
-npm run typecheck
+npm run tsc
 npm start
 ```

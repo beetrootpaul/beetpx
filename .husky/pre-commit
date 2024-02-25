@@ -15,25 +15,22 @@ fi
 # Make sure everything is formatted as desired
 npm run format
 
-# Make sure types are OK
-npm run typecheck
-
 if [ "$git_branch" = "main" ]; then
-  # Make sure tests didn't break due to most recent changes.
-  # We do this on a `main` branch only in order to allow broken tests
-  #   while development is in progress.
+  # Make sure TypeScript types and Jest tests didn't break due to most recent changes.
+  # We do this on a `main` branch only in order to allow broken tests while development
+  #   is in progress.
   npm test
-fi
 
-# Perform similar steps for example projects
-cd ./examples/input-tester
-npm run format
-npm run typecheck
-cd ../../
-cd ./examples/simple
-npm run format
-npm run typecheck
-cd ../../
+  # Check example projects
+  cd ./examples/input-tester
+  npm run format
+  npm run tsc
+  cd ../../
+  cd ./examples/simple
+  npm run format
+  npm run tsc
+  cd ../../
+fi
 
 # Generate up-to-date JS and .d.ts files out of the TypeScript source.
 #   Thanks to this command being run on every commit, users can refer to

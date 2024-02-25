@@ -10,8 +10,8 @@
     "prod": "npm run build && beetpx preview",
     "zip": "npm run build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/",
-    "typecheck": "tsc",
-    "typecheck:watch": "tsc --watch"
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch"
   },
   "devDependencies": {
     "@beetpx/beetpx": "file:../../"
