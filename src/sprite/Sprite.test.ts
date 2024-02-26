@@ -21,6 +21,15 @@ describe("Sprite", () => {
     expect(sprite.size).toEqual(v_(1, 20));
   });
 
+  test("rounding", () => {
+    // given
+    const sprite = spr_("any.image.url")(1.4, -20.6, 300.2, -4000.8);
+
+    // expect
+    expect(sprite.xy).toEqual(v_(300, -4021));
+    expect(sprite.size).toEqual(v_(2, 20));
+  });
+
   test("clipping", () => {
     // given
     const originalSprite = spr_("any.image.url")(10, 200, 3000, 40000);

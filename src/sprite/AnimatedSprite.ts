@@ -43,13 +43,12 @@ export class BpxAnimatedSprite {
     xys: [x: number, y: number][],
   ) {
     this.imageUrl = imageUrl;
-    this.size = v_(w, h).round();
+    this.size = v_(w, h).abs().round();
     this.#sprites = xys.map(([x, y]) => BpxSprite.from(imageUrl, w, h, x, y));
 
     this.restart();
   }
 
-  // TODO: tests
   get current(): BpxSprite {
     const frame = BpxUtils.mod(
       (this.#pausedFrameNumber ?? BeetPx.frameNumber) - this.#frameNumberOffset,
@@ -58,7 +57,6 @@ export class BpxAnimatedSprite {
     return this.#sprites[frame]!;
   }
 
-  // TODO: tests
   pause(): void {
     if (this.#pausedFrameNumber) {
       return;
@@ -66,7 +64,6 @@ export class BpxAnimatedSprite {
     this.#pausedFrameNumber = BeetPx.frameNumber;
   }
 
-  // TODO: tests
   resume(): void {
     if (!this.#pausedFrameNumber) {
       return;
@@ -78,7 +75,6 @@ export class BpxAnimatedSprite {
     this.#pausedFrameNumber = null;
   }
 
-  // TODO: tests
   restart(): void {
     this.#frameNumberOffset = BpxUtils.mod(
       BeetPx.frameNumber,

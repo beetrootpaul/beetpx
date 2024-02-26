@@ -29,23 +29,20 @@ export class BpxAnimatedSprite {
         _BpxAnimatedSprite_frameNumberOffset.set(this, 0);
         _BpxAnimatedSprite_pausedFrameNumber.set(this, null);
         this.imageUrl = imageUrl;
-        this.size = v_(w, h).round();
+        this.size = v_(w, h).abs().round();
         __classPrivateFieldSet(this, _BpxAnimatedSprite_sprites, xys.map(([x, y]) => BpxSprite.from(imageUrl, w, h, x, y)), "f");
         this.restart();
     }
-    
     get current() {
         const frame = BpxUtils.mod((__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f") ?? BeetPx.frameNumber) - __classPrivateFieldGet(this, _BpxAnimatedSprite_frameNumberOffset, "f"), __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length);
         return __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f")[frame];
     }
-    
     pause() {
         if (__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f")) {
             return;
         }
         __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrameNumber, BeetPx.frameNumber, "f");
     }
-    
     resume() {
         if (!__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f")) {
             return;
@@ -53,7 +50,6 @@ export class BpxAnimatedSprite {
         __classPrivateFieldSet(this, _BpxAnimatedSprite_frameNumberOffset, __classPrivateFieldGet(this, _BpxAnimatedSprite_frameNumberOffset, "f") + BpxUtils.mod(BeetPx.frameNumber - __classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f"), __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length), "f");
         __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrameNumber, null, "f");
     }
-    
     restart() {
         __classPrivateFieldSet(this, _BpxAnimatedSprite_frameNumberOffset, BpxUtils.mod(BeetPx.frameNumber, __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length), "f");
         __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrameNumber, null, "f");
