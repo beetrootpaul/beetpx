@@ -9,10 +9,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _BpxAnimatedSprite_sprites, _BpxAnimatedSprite_offsetFrame, _BpxAnimatedSprite_pausedFrame;
-import { BeetPx } from "../BeetPx";
+var _BpxAnimatedSprite_sprites, _BpxAnimatedSprite_loop;
+import { timer_ } from "../misc/Timer";
 import { v_ } from "../misc/Vector2d";
-import { BpxUtils } from "../Utils";
 import { BpxSprite } from "./Sprite";
 export function aspr_(imageUrl) {
     return (w, h, xys) => {
@@ -27,33 +26,23 @@ export class BpxAnimatedSprite {
     constructor(params) {
         this.type = "animated";
         _BpxAnimatedSprite_sprites.set(this, void 0);
-        _BpxAnimatedSprite_offsetFrame.set(this, 0);
-        _BpxAnimatedSprite_pausedFrame.set(this, null);
+        _BpxAnimatedSprite_loop.set(this, void 0);
         this.imageUrl = params.imageUrl;
         this.size = v_(params.w, params.h).abs().round();
         __classPrivateFieldSet(this, _BpxAnimatedSprite_sprites, params.xys.map(([x, y]) => BpxSprite.from(params.imageUrl, params.w, params.h, x, y)), "f");
-        this.restart();
+        __classPrivateFieldSet(this, _BpxAnimatedSprite_loop, timer_(__classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length, { loop: true }), "f");
     }
     get current() {
-        const frame = BpxUtils.mod((__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrame, "f") ?? BeetPx.frameNumber) - __classPrivateFieldGet(this, _BpxAnimatedSprite_offsetFrame, "f"), __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length);
-        return __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f")[frame];
+        return __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f")[__classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").t];
     }
     pause() {
-        if (__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrame, "f")) {
-            return;
-        }
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrame, BeetPx.frameNumber, "f");
+        __classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").pause();
     }
     resume() {
-        if (!__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrame, "f")) {
-            return;
-        }
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_offsetFrame, __classPrivateFieldGet(this, _BpxAnimatedSprite_offsetFrame, "f") + BpxUtils.mod(BeetPx.frameNumber - __classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrame, "f"), __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length), "f");
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrame, null, "f");
+        __classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").resume();
     }
     restart() {
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_offsetFrame, BpxUtils.mod(BeetPx.frameNumber, __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length), "f");
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrame, null, "f");
+        __classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").restart();
     }
 }
-_BpxAnimatedSprite_sprites = new WeakMap(), _BpxAnimatedSprite_offsetFrame = new WeakMap(), _BpxAnimatedSprite_pausedFrame = new WeakMap();
+_BpxAnimatedSprite_sprites = new WeakMap(), _BpxAnimatedSprite_loop = new WeakMap();
