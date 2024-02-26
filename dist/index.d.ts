@@ -164,7 +164,7 @@ type BpxCharSprite = {
     positionInText: BpxVector2d;
 } & ({
     type: "image";
-    spriteXyWh: [BpxVector2d, BpxVector2d];
+    spriteXyWh: [xy: BpxVector2d, wh: BpxVector2d];
 } | {
     type: "pixels";
     pixels: BpxPixels;
@@ -276,17 +276,6 @@ declare class BpxDrawingPattern {
     static secondaryOnly: BpxDrawingPattern;
     private constructor();
     hasPrimaryColorAt(x: number, y: number): boolean;
-}
-
-type SpriteCreationHelper = (x1: number, y1: number, w: number, h: number) => BpxSprite;
-declare function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper;
-declare class BpxSprite {
-    static of(imageUrl: BpxImageUrl, xy1: BpxVector2d, xy2: BpxVector2d): BpxSprite;
-    imageUrl: BpxImageUrl;
-    xy1: BpxVector2d;
-    xy2: BpxVector2d;
-    private constructor();
-    size(): BpxVector2d;
 }
 
 /**
@@ -428,6 +417,18 @@ declare class BpxTimer {
     get hasJustFinished(): boolean;
     update(): void;
     restart(): void;
+}
+
+type ImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
+declare function spr_(imageUrl: BpxImageUrl): ImageBoundSpriteFactory;
+declare class BpxSprite {
+    static from(imageUrl: BpxImageUrl, w: number, h: number, x: number, y: number): BpxSprite;
+    readonly type = "static";
+    readonly imageUrl: BpxImageUrl;
+    readonly size: BpxVector2d;
+    readonly xy: BpxVector2d;
+    private constructor();
+    clipBy(xy1: BpxVector2d, xy2: BpxVector2d): BpxSprite;
 }
 
 type AssetsToLoad = {

@@ -8,7 +8,7 @@ export type BpxCharSprite = {
 } & (
   | {
       type: "image";
-      spriteXyWh: [BpxVector2d, BpxVector2d];
+      spriteXyWh: [xy: BpxVector2d, wh: BpxVector2d];
     }
   | {
       type: "pixels";

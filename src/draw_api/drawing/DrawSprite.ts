@@ -2,10 +2,9 @@ import { ImageAsset } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
-import { BpxUtils } from "../../Utils";
+import { BpxSprite } from "../../sprite/Sprite";
 import { BpxDrawingPattern } from "../Pattern";
 import { PreparedSprites } from "../PreparedSprites";
-import { BpxSprite } from "../Sprite";
 
 export class DrawSprite {
   readonly #preparedSprites: PreparedSprites = new PreparedSprites();
@@ -36,39 +35,15 @@ export class DrawSprite {
       rgba8bitData: imgBytes,
     } = sourceImageAsset;
 
-    // make sure xy1 is top-left and xy2 is bottom right
-    sprite = BpxSprite.of(
-      sprite.imageUrl,
-      v_(
-        Math.min(sprite.xy1.x, sprite.xy2.x),
-        Math.min(sprite.xy1.y, sprite.xy2.y),
-      ),
-      v_(
-        Math.max(sprite.xy1.x, sprite.xy2.x),
-        Math.max(sprite.xy1.y, sprite.xy2.y),
-      ),
-    );
-
-    // clip sprite by image edges
-    sprite = BpxSprite.of(
-      sprite.imageUrl,
-      v_(
-        BpxUtils.clamp(0, sprite.xy1.x, imgW),
-        BpxUtils.clamp(0, sprite.xy1.y, imgH),
-      ),
-      v_(
-        BpxUtils.clamp(0, sprite.xy2.x, imgW),
-        BpxUtils.clamp(0, sprite.xy2.y, imgH),
-      ),
-    );
+    sprite = sprite.clipBy(v_0_0_, v_(imgW, imgH));
 
     // avoid all computations if the whole sprite is outside the canvas
     if (
       !this.#canvas.canSetAny(
         targetXy.x,
         targetXy.y,
-        targetXy.x + sprite.size().x * scaleXy.x - 1,
-        targetXy.y + sprite.size().y * scaleXy.y - 1,
+        targetXy.x + sprite.size.x * scaleXy.x - 1,
+        targetXy.y + sprite.size.y * scaleXy.y - 1,
       )
     ) {
       return;

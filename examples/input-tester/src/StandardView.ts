@@ -22,63 +22,63 @@ export class StandardView {
   // k_ = keyboard
   // g_ = gamepad
   private readonly ps = {
-    k_w: spr(128, 0, 5, 6),
-    k_s: spr(136, 0, 5, 6),
-    k_up: spr(144, 0, 5, 6),
-    k_down: spr(152, 0, 5, 6),
+    k_w: spr(5, 6, 128, 0),
+    k_s: spr(5, 6, 136, 0),
+    k_up: spr(5, 6, 144, 0),
+    k_down: spr(5, 6, 152, 0),
     //
-    k_a: spr(128, 8, 5, 6),
-    k_d: spr(136, 8, 5, 6),
-    k_left: spr(144, 8, 5, 6),
-    k_right: spr(152, 8, 5, 6),
+    k_a: spr(5, 6, 128, 8),
+    k_d: spr(5, 6, 136, 8),
+    k_left: spr(5, 6, 144, 8),
+    k_right: spr(5, 6, 152, 8),
     //
-    k_c: spr(128, 16, 5, 6),
-    k_j: spr(136, 16, 5, 6),
-    g_a: spr(144, 16, 5, 6),
-    g_y: spr(152, 16, 5, 6),
+    k_c: spr(5, 6, 128, 16),
+    k_j: spr(5, 6, 136, 16),
+    g_a: spr(5, 6, 144, 16),
+    g_y: spr(5, 6, 152, 16),
     //
-    k_x: spr(128, 24, 5, 6),
-    k_k: spr(136, 24, 5, 6),
-    g_b: spr(144, 24, 5, 6),
-    g_x: spr(152, 24, 5, 6),
+    k_x: spr(5, 6, 128, 24),
+    k_k: spr(5, 6, 136, 24),
+    g_b: spr(5, 6, 144, 24),
+    g_x: spr(5, 6, 152, 24),
     //
-    k_p: spr(144, 32, 5, 6),
-    k_esc: spr(128, 32, 13, 6),
-    k_enter: spr(149, 30, 8, 10),
+    k_p: spr(5, 6, 144, 32),
+    k_esc: spr(13, 6, 128, 32),
+    k_enter: spr(8, 10, 149, 30),
     //
-    k_m: spr(128, 40, 5, 6),
-    k_f: spr(136, 40, 5, 6),
-    k_semicolon: spr(152, 40, 5, 6),
+    k_m: spr(5, 6, 128, 40),
+    k_f: spr(5, 6, 136, 40),
+    k_semicolon: spr(5, 6, 152, 40),
     //
-    g_dualsense_cross: spr(128, 48, 5, 6),
-    g_dualsense_triangle: spr(136, 48, 5, 6),
-    g_xbox_menu: spr(144, 48, 5, 6),
-    k_coma: spr(152, 48, 5, 6),
+    g_dualsense_cross: spr(5, 6, 128, 48),
+    g_dualsense_triangle: spr(5, 6, 136, 48),
+    g_xbox_menu: spr(5, 6, 144, 48),
+    k_coma: spr(5, 6, 152, 48),
     //
-    g_dualsense_circle: spr(128, 56, 5, 6),
-    g_dualsense_square: spr(136, 56, 5, 6),
-    g_ps_menu: spr(144, 56, 5, 6),
-    k_period: spr(152, 56, 5, 6),
+    g_dualsense_circle: spr(5, 6, 128, 56),
+    g_dualsense_square: spr(5, 6, 136, 56),
+    g_ps_menu: spr(5, 6, 144, 56),
+    k_period: spr(5, 6, 152, 56),
     //
-    g_dpad_left: spr(128, 64, 15, 16),
-    g_dpad_right: spr(144, 64, 15, 16),
-    g_dpad_up: spr(128, 80, 15, 16),
-    g_dpad_down: spr(144, 80, 15, 16),
+    g_dpad_left: spr(15, 16, 128, 64),
+    g_dpad_right: spr(15, 16, 144, 64),
+    g_dpad_up: spr(15, 16, 128, 80),
+    g_dpad_down: spr(15, 16, 144, 80),
     //
-    g_dpad_up_left: spr(128, 96, 15, 16),
-    g_dpad_up_right: spr(144, 96, 15, 16),
-    g_dpad_down_left: spr(128, 112, 15, 16),
-    g_dpad_down_right: spr(144, 112, 15, 16),
+    g_dpad_up_left: spr(15, 16, 128, 96),
+    g_dpad_up_right: spr(15, 16, 144, 96),
+    g_dpad_down_left: spr(15, 16, 128, 112),
+    g_dpad_down_right: spr(15, 16, 144, 112),
     //
-    g_stick_left: spr(288, 0, 13, 14),
-    g_stick_right: spr(304, 0, 13, 14),
-    g_stick_up: spr(288, 16, 13, 14),
-    g_stick_down: spr(304, 16, 13, 14),
+    g_stick_left: spr(13, 14, 288, 0),
+    g_stick_right: spr(13, 14, 304, 0),
+    g_stick_up: spr(13, 14, 288, 16),
+    g_stick_down: spr(13, 14, 304, 16),
     //
-    g_stick_up_left: spr(288, 32, 13, 14),
-    g_stick_up_right: spr(304, 32, 13, 14),
-    g_stick_down_left: spr(288, 48, 13, 14),
-    g_stick_down_right: spr(304, 48, 13, 14),
+    g_stick_up_left: spr(13, 14, 288, 32),
+    g_stick_up_right: spr(13, 14, 304, 32),
+    g_stick_down_left: spr(13, 14, 288, 48),
+    g_stick_down_right: spr(13, 14, 304, 48),
   };
 
   // ip = is pressed
@@ -127,7 +127,7 @@ export class StandardView {
     const { ip, ps } = this;
 
     // background: base
-    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
 
     // background: keyboard vs gamepad
     let prevMapping = b_.setSpriteColorMapping(
@@ -136,15 +136,15 @@ export class StandardView {
         : BpxSpriteColorMapping.from([[yellow, darkBlue]]),
     );
     b_.setClippingRegion(v_(0, 0), v_(128, 3));
-    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
     b_.setClippingRegion(v_(126, 0), v_(126, 128));
-    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
     b_.setClippingRegion(v_(0, 126), v_(128, 128));
-    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
     b_.setClippingRegion(v_(0, 0), v_(2, 128));
-    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
     b_.setClippingRegion(v_(64, 77), v_(64, 6));
-    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
     b_.setSpriteColorMapping(prevMapping);
     prevMapping = b_.setSpriteColorMapping(
       BpxSpriteColorMapping.from([[lightGrey, darkGrey]]),
@@ -153,7 +153,7 @@ export class StandardView {
       this.highlightKeyboard ? v_(110, 3) : v_(3, 3),
       v_(15, 11),
     );
-    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
     b_.removeClippingRegion();
     b_.setSpriteColorMapping(prevMapping);
 

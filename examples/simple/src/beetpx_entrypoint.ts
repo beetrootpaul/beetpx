@@ -84,7 +84,7 @@ b_.init(
     b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
 
     b_.drawSprite(
-      spr_("logo.png")(0, 0, 16, 16),
+      spr_("logo.png")(16, 16, 0, 0),
       logoPositionBase.add(logoPositionOffset),
     );
 

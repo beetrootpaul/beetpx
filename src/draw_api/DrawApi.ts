@@ -7,6 +7,7 @@ import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
+import { BpxSprite } from "../sprite/Sprite";
 import { BpxUtils } from "../Utils";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
@@ -18,7 +19,6 @@ import { DrawSprite } from "./drawing/DrawSprite";
 import { DrawText } from "./drawing/DrawText";
 import { BpxDrawingPattern } from "./Pattern";
 import { BpxPixels } from "./Pixels";
-import { BpxSprite } from "./Sprite";
 
 type DrawApiOptions = {
   canvas: Canvas;
@@ -161,6 +161,9 @@ export class DrawApi {
     sprite: BpxSprite,
     xy: BpxVector2d,
     opts: {
+      // TODO: use it
+      // TODO: test it
+      // centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
     } = {},
   ): void {
