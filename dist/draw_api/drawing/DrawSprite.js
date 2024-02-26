@@ -11,9 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawSprite_preparedSprites, _DrawSprite_canvas, _DrawSprite_options;
 import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
-import { BpxUtils } from "../../Utils";
 import { PreparedSprites } from "../PreparedSprites";
-import { BpxSprite } from "../Sprite";
 export class DrawSprite {
     constructor(canvas, options = {}) {
         _DrawSprite_preparedSprites.set(this, new PreparedSprites());
@@ -26,12 +24,9 @@ export class DrawSprite {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
+        sprite = sprite.clipBy(v_0_0_, v_(imgW, imgH));
         
-        sprite = BpxSprite.of(sprite.imageUrl, v_(Math.min(sprite.xy1.x, sprite.xy2.x), Math.min(sprite.xy1.y, sprite.xy2.y)), v_(Math.max(sprite.xy1.x, sprite.xy2.x), Math.max(sprite.xy1.y, sprite.xy2.y)));
-        
-        sprite = BpxSprite.of(sprite.imageUrl, v_(BpxUtils.clamp(0, sprite.xy1.x, imgW), BpxUtils.clamp(0, sprite.xy1.y, imgH)), v_(BpxUtils.clamp(0, sprite.xy2.x, imgW), BpxUtils.clamp(0, sprite.xy2.y, imgH)));
-        
-        if (!__classPrivateFieldGet(this, _DrawSprite_canvas, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size().x * scaleXy.x - 1, targetXy.y + sprite.size().y * scaleXy.y - 1)) {
+        if (!__classPrivateFieldGet(this, _DrawSprite_canvas, "f").canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size.x * scaleXy.x - 1, targetXy.y + sprite.size.y * scaleXy.y - 1)) {
             return;
         }
         const preparedSprite = __classPrivateFieldGet(this, _DrawSprite_preparedSprites, "f").prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels);

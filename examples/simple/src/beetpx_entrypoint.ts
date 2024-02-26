@@ -26,7 +26,7 @@ b_.init(
 
   const velocity = 2;
 
-  const logoPositionBaseDefault = v_((64 - 16) / 2, (64 - 16) / 2);
+  const logoPositionBaseDefault = v_(64 / 2, 64 / 2);
   let logoPositionBase = v_0_0_;
   let logoPositionOffset = v_0_0_;
 
@@ -71,8 +71,8 @@ b_.init(
     );
 
     logoPositionOffset = v_(
-      Math.cos((b_.frame / 30) * Math.PI),
-      Math.sin((b_.frame / 30) * Math.PI),
+      Math.cos((b_.frameNumber / 30) * Math.PI),
+      Math.sin((b_.frameNumber / 30) * Math.PI),
     ).mul(10);
 
     if (b_.wasButtonJustPressed("menu")) {
@@ -84,11 +84,12 @@ b_.init(
     b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
 
     b_.drawSprite(
-      spr_("logo.png")(0, 0, 16, 16),
+      spr_("logo.png")(16, 16, 0, 0),
       logoPositionBase.add(logoPositionOffset),
+      { centerXy: [true, true] },
     );
 
-    const textLines = [
+    const textLines: string[] = [
       `.:!? '" */+-`,
       "01234 56789",
       "%$()[]{}<>",

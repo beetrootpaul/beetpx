@@ -42,7 +42,6 @@ export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxDrawingPattern } from "./draw_api/Pattern";
 export { BpxPixels } from "./draw_api/Pixels";
-export { BpxSprite } from "./draw_api/Sprite";
 export { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
 export { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
@@ -53,6 +52,8 @@ export { type BpxButtonName } from "./game_input/buttons/Buttons";
 export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";
 export { BpxVector2d } from "./misc/Vector2d";
+export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
+export { BpxSprite } from "./sprite/Sprite";
 
 export { BeetPx } from "./BeetPx";
 
@@ -69,8 +70,7 @@ export {
   white_,
   yellow_,
 } from "./color/RgbColor";
-export { spr_ } from "./draw_api/Sprite";
 export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
-
-// TODO: rework examples
+export { aspr_ } from "./sprite/AnimatedSprite";
+export { spr_ } from "./sprite/Sprite";

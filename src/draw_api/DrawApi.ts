@@ -7,6 +7,8 @@ import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
+import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
+import { BpxSprite } from "../sprite/Sprite";
 import { BpxUtils } from "../Utils";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
@@ -18,7 +20,6 @@ import { DrawSprite } from "./drawing/DrawSprite";
 import { DrawText } from "./drawing/DrawText";
 import { BpxDrawingPattern } from "./Pattern";
 import { BpxPixels } from "./Pixels";
-import { BpxSprite } from "./Sprite";
 
 type DrawApiOptions = {
   canvas: Canvas;
@@ -158,15 +159,24 @@ export class DrawApi {
   }
 
   drawSprite(
-    sprite: BpxSprite,
+    sprite: BpxSprite | BpxAnimatedSprite,
     xy: BpxVector2d,
     opts: {
+      centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
     } = {},
   ): void {
+    const centerXy = opts.centerXy ?? [false, false];
+    if (centerXy[0] || centerXy[1]) {
+      xy = xy.sub(
+        centerXy[0] ? sprite.size.x / 2 : 0,
+        centerXy[1] ? sprite.size.y / 2 : 0,
+      );
+    }
+
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
-      sprite,
+      sprite.type === "static" ? sprite : sprite.current,
       sourceImageAsset,
       xy.sub(this.cameraXy),
       opts.scaleXy ?? v_1_1_,

@@ -36,8 +36,8 @@ export class BeetPx {
      *
      * @return number
      */
-    static get frame() {
-        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frame;
+    static get frameNumber() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).frameNumber;
     }
     static get renderingFps() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).renderingFps;

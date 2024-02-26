@@ -20,7 +20,7 @@ export class BpxUtils {
   }
 
   static booleanChangingEveryNthFrame(n: number): boolean {
-    return n > 0 ? BeetPx.frame % (n * 2) < n : true;
+    return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
   }
 
   // Returns the middle number. Example usage: `clamp(min, value, max)`
@@ -117,13 +117,26 @@ export class BpxUtils {
     BeetPx.drawText(text, canvasXy1, textColor, opts);
   }
 
-  static randomElementOf<V>(array: V[]): V | undefined {
+  static randomElementOf<TElement>(array: TElement[]): TElement | undefined {
     if (array.length <= 0) return undefined;
     return array[Math.floor(Math.random() * array.length)];
   }
 
   static range(n: number): number[] {
     return Array.from({ length: n }, (_element, index) => index);
+  }
+
+  static repeatEachElement<TElement>(
+    times: number,
+    array: TElement[],
+  ): TElement[] {
+    times = times > 0 ? Math.round(times) : 0;
+
+    const newArray: TElement[] = new Array(times * array.length);
+    for (let i = 0; i < newArray.length; i++) {
+      newArray[i] = array[Math.floor(i / times)]!;
+    }
+    return newArray;
   }
 
   /**

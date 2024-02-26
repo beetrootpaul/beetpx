@@ -15,7 +15,7 @@ export class BpxUtils {
         throw Error(`Somehow reached the unreachable code ¯\\_(ツ)_/¯`);
     }
     static booleanChangingEveryNthFrame(n) {
-        return n > 0 ? BeetPx.frame % (n * 2) < n : true;
+        return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
     }
     
     
@@ -91,6 +91,14 @@ export class BpxUtils {
     }
     static range(n) {
         return Array.from({ length: n }, (_element, index) => index);
+    }
+    static repeatEachElement(times, array) {
+        times = times > 0 ? Math.round(times) : 0;
+        const newArray = new Array(times * array.length);
+        for (let i = 0; i < newArray.length; i++) {
+            newArray[i] = array[Math.floor(i / times)];
+        }
+        return newArray;
     }
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
