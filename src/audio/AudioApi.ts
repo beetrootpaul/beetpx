@@ -118,7 +118,6 @@ export class AudioApi {
     return playback.id;
   }
 
-  // TODO: merge with startPlayback
   startPlaybackLooped(
     soundUrl: BpxSoundUrl,
     opts?: {
@@ -146,7 +145,6 @@ export class AudioApi {
     return playback.id;
   }
 
-  // TODO: merge with startPlayback
   startPlaybackSequence(
     soundSequence: BpxSoundSequence,
     opts?: {

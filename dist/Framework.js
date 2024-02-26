@@ -38,6 +38,9 @@ export class Framework {
     get renderingFps() {
         return __classPrivateFieldGet(this, _Framework_renderingFps, "f");
     }
+    get detectedBrowserType() {
+        return __classPrivateFieldGet(this, _Framework_browserType, "f");
+    }
     constructor(options) {
         _Framework_instances.add(this);
         _Framework_frameByFrame.set(this, void 0);
@@ -129,9 +132,6 @@ export class Framework {
             canvas: __classPrivateFieldGet(this, _Framework_canvas, "f"),
             assets: this.assets,
         });
-    }
-    detectedBrowserType() {
-        return __classPrivateFieldGet(this, _Framework_browserType, "f");
     }
     async init(assetsToLoad) {
         assetsToLoad.fonts.push({

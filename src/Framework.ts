@@ -80,6 +80,10 @@ export class Framework {
     return this.#renderingFps;
   }
 
+  get detectedBrowserType(): BpxBrowserType {
+    return this.#browserType;
+  }
+
   constructor(options: FrameworkOptions) {
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
@@ -187,10 +191,6 @@ export class Framework {
       canvas: this.#canvas,
       assets: this.assets,
     });
-  }
-
-  detectedBrowserType(): BpxBrowserType {
-    return this.#browserType;
   }
 
   async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {

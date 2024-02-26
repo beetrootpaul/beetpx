@@ -30,7 +30,7 @@ export class BeetPx {
   }
 
   //
-  // field-like getters, the ones meant to be used
+  // field-like getters
   //
 
   static get debug(): typeof DebugMode.enabled {
@@ -50,6 +50,10 @@ export class BeetPx {
 
   static get renderingFps(): Framework["renderingFps"] {
     return this.#tryGetFramework().renderingFps;
+  }
+
+  static get detectedBrowserType(): Framework["detectedBrowserType"] {
+    return this.#tryGetFramework().detectedBrowserType;
   }
 
   //
@@ -358,15 +362,6 @@ export class BeetPx {
 
   static getJsonAsset: Assets["getJsonAsset"] = (...args) => {
     return this.#tryGetFramework().assets.getJsonAsset(...args);
-  };
-
-  //
-  // other
-  //
-
-  // TODO: make it a field?
-  static detectedBrowserType: Framework["detectedBrowserType"] = (...args) => {
-    return this.#tryGetFramework().detectedBrowserType(...args);
   };
 
   //

@@ -596,8 +596,8 @@ declare class Framework {
     readonly drawApi: DrawApi;
     get frame(): number;
     get renderingFps(): number;
+    get detectedBrowserType(): BpxBrowserType;
     constructor(options: FrameworkOptions);
-    detectedBrowserType(): BpxBrowserType;
     init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
@@ -630,6 +630,7 @@ declare class BeetPx {
      */
     static get frame(): Framework["frame"];
     static get renderingFps(): Framework["renderingFps"];
+    static get detectedBrowserType(): Framework["detectedBrowserType"];
     static setOnStarted: Framework["setOnStarted"];
     static setOnUpdate: Framework["setOnUpdate"];
     static setOnDraw: Framework["setOnDraw"];
@@ -716,7 +717,6 @@ declare class BeetPx {
     static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];
     static getJsonAsset: Assets["getJsonAsset"];
-    static detectedBrowserType: Framework["detectedBrowserType"];
 }
 declare const b_: typeof BeetPx;
 

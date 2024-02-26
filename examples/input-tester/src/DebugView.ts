@@ -177,18 +177,17 @@ export class DebugView {
     });
 
     // browser type
-    const browserType = b_.detectedBrowserType();
     b_.drawRectFilled(
       v_(
         117,
         78 +
-          (browserType === "chromium"
+          (b_.detectedBrowserType === "chromium"
             ? 0
-            : browserType === "safari"
+            : b_.detectedBrowserType === "safari"
               ? 10
-              : browserType === "firefox_windows"
+              : b_.detectedBrowserType === "firefox_windows"
                 ? 20
-                : browserType === "firefox_other"
+                : b_.detectedBrowserType === "firefox_other"
                   ? 30
                   : 40),
       ),

@@ -42,6 +42,9 @@ export class BeetPx {
     static get renderingFps() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).renderingFps;
     }
+    static get detectedBrowserType() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetFramework).call(this).detectedBrowserType;
+    }
 }
 _a = BeetPx, _BeetPx_tryGetFramework = function _BeetPx_tryGetFramework() {
     if (!__classPrivateFieldGet(this, _a, "f", _BeetPx_framework)) {
@@ -273,12 +276,5 @@ BeetPx.getSoundAsset = (...args) => {
 };
 BeetPx.getJsonAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).assets.getJsonAsset(...args);
-};
-
-
-
-
-BeetPx.detectedBrowserType = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetFramework).call(_a).detectedBrowserType(...args);
 };
 export const b_ = BeetPx;

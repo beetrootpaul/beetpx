@@ -87,7 +87,6 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f").set(playback.id, playback);
         return playback.id;
     }
-    
     startPlaybackLooped(soundUrl, opts) {
         opts ?? (opts = {});
         opts.muteOnStart ?? (opts.muteOnStart = true);
@@ -104,7 +103,6 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f").set(playback.id, playback);
         return playback.id;
     }
-    
     startPlaybackSequence(soundSequence, opts) {
         opts ?? (opts = {});
         opts.muteOnStart ?? (opts.muteOnStart = true);
