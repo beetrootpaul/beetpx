@@ -224,6 +224,11 @@ describe("Utils", () => {
     expect(BpxUtils.mod(-123.5, 100)).toBe(76.5);
     expect(BpxUtils.mod(-123.5, 2)).toBe(0.5);
     expect(BpxUtils.mod(-123.5, 1)).toBe(0.5);
+
+    expect(BpxUtils.mod(123.5, 0)).toBe(0);
+
+    expect(BpxUtils.mod(123.5, -1)).toBe(-0.5);
+    expect(BpxUtils.mod(123.5, -2)).toBe(-0.5);
   });
 
   test(`#randomElementOf`, () => {

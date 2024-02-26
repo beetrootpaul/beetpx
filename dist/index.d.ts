@@ -330,16 +330,16 @@ declare class Button {
     update(isPressed: boolean): void;
 }
 
-type BpxButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
-declare class Buttons {
+type BpxGameButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
+declare class GameButtons {
     #private;
     update(events: Set<BpxGameInputEvent>): void;
-    isPressed(button: BpxButtonName): boolean;
+    isPressed(button: BpxGameButtonName): boolean;
     getPressedDirection(): BpxVector2d;
-    setRepeating(button: BpxButtonName, repeating: boolean): void;
+    setRepeating(button: BpxGameButtonName, repeating: boolean): void;
     wasAnyJustPressed(): boolean;
-    wasJustPressed(button: BpxButtonName): boolean;
-    wasJustReleased(button: BpxButtonName): boolean;
+    wasJustPressed(button: BpxGameButtonName): boolean;
+    wasJustReleased(button: BpxGameButtonName): boolean;
 }
 
 interface GameInputSpecialized {
@@ -370,7 +370,7 @@ declare class GameInput {
     #private;
     readonly gameInputsSpecialized: GameInputSpecialized[];
     readonly gameInputGamepad: GameInputGamepad;
-    readonly gameButtons: Buttons;
+    readonly gameButtons: GameButtons;
     readonly buttonFullScreen: Button;
     readonly buttonMuteUnmute: Button;
     readonly buttonDebugToggle: Button;
@@ -405,18 +405,23 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-declare function timer_(frames: number): BpxTimer;
+declare function timer_(frames: number, opts?: {
+    loop?: boolean;
+}): BpxTimer;
 declare class BpxTimer {
     #private;
     static for(params: {
         frames: number;
+        loop: boolean;
     }): BpxTimer;
     private constructor();
+    get t(): number;
     get framesLeft(): number;
     get progress(): number;
     get hasFinished(): boolean;
     get hasJustFinished(): boolean;
-    update(): void;
+    pause(): void;
+    resume(): void;
     restart(): void;
 }
 
@@ -657,11 +662,11 @@ declare class BeetPx {
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;
     static logError: typeof Logger.error;
-    static wasButtonJustPressed: Buttons["wasJustPressed"];
-    static wasButtonJustReleased: Buttons["wasJustReleased"];
-    static isButtonPressed: Buttons["isPressed"];
-    static getPressedDirection: Buttons["getPressedDirection"];
-    static setButtonRepeating: Buttons["setRepeating"];
+    static wasButtonJustPressed: GameButtons["wasJustPressed"];
+    static wasButtonJustReleased: GameButtons["wasJustReleased"];
+    static isButtonPressed: GameButtons["isPressed"];
+    static getPressedDirection: GameButtons["getPressedDirection"];
+    static setButtonRepeating: GameButtons["setRepeating"];
     static getRecentInputMethods: GameInput["getRecentInputMethods"];
     static getConnectedGamepadTypes: GameInput["getConnectedGamepadTypes"];
     static getEventsCapturedInLastUpdate: GameInput["getEventsCapturedInLastUpdate"];
@@ -755,4 +760,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, type BpxButtonName, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageUrl, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };
+export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageUrl, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };

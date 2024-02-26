@@ -6,7 +6,7 @@ import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Framework, type FrameworkOptions } from "./Framework";
-import { Buttons } from "./game_input/buttons/Buttons";
+import { GameButtons } from "./game_input/buttons/GameButtons";
 import { GameInput } from "./game_input/GameInput";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
@@ -100,29 +100,31 @@ export class BeetPx {
   // Game Input & Buttons
   //
 
-  static wasButtonJustPressed: Buttons["wasJustPressed"] = (...args) => {
+  static wasButtonJustPressed: GameButtons["wasJustPressed"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.wasJustPressed(
       ...args,
     );
   };
 
-  static wasButtonJustReleased: Buttons["wasJustReleased"] = (...args) => {
+  static wasButtonJustReleased: GameButtons["wasJustReleased"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.wasJustReleased(
       ...args,
     );
   };
 
-  static isButtonPressed: Buttons["isPressed"] = (...args) => {
+  static isButtonPressed: GameButtons["isPressed"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.isPressed(...args);
   };
 
-  static getPressedDirection: Buttons["getPressedDirection"] = (...args) => {
+  static getPressedDirection: GameButtons["getPressedDirection"] = (
+    ...args
+  ) => {
     return this.#tryGetFramework().gameInput.gameButtons.getPressedDirection(
       ...args,
     );
   };
 
-  static setButtonRepeating: Buttons["setRepeating"] = (...args) => {
+  static setButtonRepeating: GameButtons["setRepeating"] = (...args) => {
     return this.#tryGetFramework().gameInput.gameButtons.setRepeating(...args);
   };
 

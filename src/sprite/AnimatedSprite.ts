@@ -16,6 +16,7 @@ export function aspr_(imageUrl: BpxImageUrl): ImageBoundAnimatedSpriteFactory {
   };
 }
 
+// TODO: use looped timer instead of own calculations
 export class BpxAnimatedSprite {
   static from(
     imageUrl: BpxImageUrl,
@@ -23,7 +24,7 @@ export class BpxAnimatedSprite {
     h: number,
     xys: [x: number, y: number][],
   ): BpxAnimatedSprite {
-    return new BpxAnimatedSprite(imageUrl, w, h, xys);
+    return new BpxAnimatedSprite({ imageUrl, w, h, xys });
   }
 
   readonly type = "animated";
@@ -33,53 +34,51 @@ export class BpxAnimatedSprite {
 
   readonly #sprites: BpxSprite[];
 
-  #frameNumberOffset: number = 0;
-  #pausedFrameNumber: number | null = null;
+  #offsetFrame: number = 0;
+  #pausedFrame: number | null = null;
 
-  private constructor(
-    imageUrl: BpxImageUrl,
-    w: number,
-    h: number,
-    xys: [x: number, y: number][],
-  ) {
-    this.imageUrl = imageUrl;
-    this.size = v_(w, h).abs().round();
-    this.#sprites = xys.map(([x, y]) => BpxSprite.from(imageUrl, w, h, x, y));
-
+  private constructor(params: {
+    imageUrl: BpxImageUrl;
+    w: number;
+    h: number;
+    xys: [x: number, y: number][];
+  }) {
+    this.imageUrl = params.imageUrl;
+    this.size = v_(params.w, params.h).abs().round();
+    this.#sprites = params.xys.map(([x, y]) =>
+      BpxSprite.from(params.imageUrl, params.w, params.h, x, y),
+    );
     this.restart();
   }
 
   get current(): BpxSprite {
     const frame = BpxUtils.mod(
-      (this.#pausedFrameNumber ?? BeetPx.frameNumber) - this.#frameNumberOffset,
+      (this.#pausedFrame ?? BeetPx.frameNumber) - this.#offsetFrame,
       this.#sprites.length,
     );
     return this.#sprites[frame]!;
   }
 
   pause(): void {
-    if (this.#pausedFrameNumber) {
+    if (this.#pausedFrame) {
       return;
     }
-    this.#pausedFrameNumber = BeetPx.frameNumber;
+    this.#pausedFrame = BeetPx.frameNumber;
   }
 
   resume(): void {
-    if (!this.#pausedFrameNumber) {
+    if (!this.#pausedFrame) {
       return;
     }
-    this.#frameNumberOffset += BpxUtils.mod(
-      BeetPx.frameNumber - this.#pausedFrameNumber,
+    this.#offsetFrame += BpxUtils.mod(
+      BeetPx.frameNumber - this.#pausedFrame,
       this.#sprites.length,
     );
-    this.#pausedFrameNumber = null;
+    this.#pausedFrame = null;
   }
 
   restart(): void {
-    this.#frameNumberOffset = BpxUtils.mod(
-      BeetPx.frameNumber,
-      this.#sprites.length,
-    );
-    this.#pausedFrameNumber = null;
+    this.#offsetFrame = BpxUtils.mod(BeetPx.frameNumber, this.#sprites.length);
+    this.#pausedFrame = null;
   }
 }

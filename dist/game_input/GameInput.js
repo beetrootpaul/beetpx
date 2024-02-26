@@ -12,7 +12,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 var _GameInput_eventsCapturedInLastUpdate, _GameInput_mostRecentInputMethods;
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Button } from "./buttons/Button";
-import { Buttons } from "./buttons/Buttons";
+import { GameButtons } from "./buttons/GameButtons";
 import { GameInputGamepad } from "./GameInputGamepad";
 import { GameInputKeyboard } from "./GameInputKeyboard";
 import { GameInputMouse } from "./GameInputMouse";
@@ -32,7 +32,7 @@ export class GameInput {
             new GameInputTouch(),
             this.gameInputGamepad,
         ];
-        this.gameButtons = new Buttons();
+        this.gameButtons = new GameButtons();
         this.buttonFullScreen = new Button();
         this.buttonMuteUnmute = new Button();
         this.buttonDebugToggle = new Button();
