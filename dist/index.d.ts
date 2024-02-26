@@ -17,6 +17,9 @@ declare const white_: BpxRgbColor;
 declare const red_: BpxRgbColor;
 declare const green_: BpxRgbColor;
 declare const blue_: BpxRgbColor;
+declare const yellow_: BpxRgbColor;
+declare const cyan_: BpxRgbColor;
+declare const magenta_: BpxRgbColor;
 
 interface PrintDebug {
     __printDebug(): string;
@@ -734,4 +737,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, type BpxAudioPlaybackId, type BpxBrowserType, type BpxButtonName, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageUrl, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, green_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_ };
+export { BeetPx, type BpxAudioPlaybackId, type BpxBrowserType, type BpxButtonName, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageUrl, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };

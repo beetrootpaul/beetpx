@@ -31,3 +31,6 @@ export const white_ = BpxRgbColor.fromCssHex("#ffffff");
 export const red_ = BpxRgbColor.fromCssHex("#ff0000");
 export const green_ = BpxRgbColor.fromCssHex("#00ff00");
 export const blue_ = BpxRgbColor.fromCssHex("#0000ff");
+export const yellow_ = BpxRgbColor.fromCssHex("#ffff00");
+export const cyan_ = BpxRgbColor.fromCssHex("#00ffff");
+export const magenta_ = BpxRgbColor.fromCssHex("#ff00ff");

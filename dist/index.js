@@ -19,7 +19,7 @@ export { BpxVector2d } from "./misc/Vector2d";
 export { BeetPx } from "./BeetPx";
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
-export { black_, blue_, green_, red_, rgb_, white_ } from "./color/RgbColor";
+export { black_, blue_, cyan_, green_, magenta_, red_, rgb_, white_, yellow_, } from "./color/RgbColor";
 export { spr_ } from "./draw_api/Sprite";
 export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
