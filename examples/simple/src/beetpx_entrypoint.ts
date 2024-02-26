@@ -1,8 +1,9 @@
 import {
+  aspr_,
   b_,
   BpxFontSaint11Minimal4,
   BpxRgbColor,
-  spr_,
+  BpxUtils,
   u_,
   v_,
   v_0_0_,
@@ -26,7 +27,7 @@ b_.init(
 
   const velocity = 2;
 
-  const logoPositionBaseDefault = v_((64 - 16) / 2, (64 - 16) / 2);
+  const logoPositionBaseDefault = v_(64 / 2, 64 / 2);
   let logoPositionBase = v_0_0_;
   let logoPositionOffset = v_0_0_;
 
@@ -48,16 +49,33 @@ b_.init(
     b_.setFont(BpxFontSaint11Minimal4.id);
   });
 
+  // TODO: time scale
+  // TODO: REMOVE
+  const anim = aspr_("logo.png")(
+    16,
+    16,
+    BpxUtils.repeatEachElement(
+      1.6,
+      BpxUtils.range(16).map((x) => [x, 0]),
+    ),
+  );
+
   b_.setOnUpdate(() => {
     if (b_.wasButtonJustPressed("a")) {
       if (isMelodyMuted) {
         b_.unmutePlayback(melodyPlaybackId, { fadeInMillis: 500 });
+        // TODO: REMOVE
+        // anim.resume();
       } else {
         b_.mutePlayback(melodyPlaybackId, { fadeOutMillis: 500 });
+        // TODO: REMOVE
+        // anim.pause();
       }
       isMelodyMuted = !isMelodyMuted;
     }
     if (b_.wasButtonJustPressed("b")) {
+      // TODO: REMOVE
+      // anim.restart();
       if (isMusicPaused) {
         b_.resumeAudio();
       } else {
@@ -70,10 +88,10 @@ b_.init(
       b_.getPressedDirection().mul(velocity),
     );
 
-    logoPositionOffset = v_(
-      Math.cos((b_.frame / 30) * Math.PI),
-      Math.sin((b_.frame / 30) * Math.PI),
-    ).mul(10);
+    // logoPositionOffset = v_(
+    //   Math.cos((b_.frame / 30) * Math.PI),
+    //   Math.sin((b_.frame / 30) * Math.PI),
+    // ).mul(10);
 
     if (b_.wasButtonJustPressed("menu")) {
       b_.restart();
@@ -83,19 +101,23 @@ b_.init(
   b_.setOnDraw(() => {
     b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
 
-    b_.drawSprite(
-      spr_("logo.png")(16, 16, 0, 0),
-      logoPositionBase.add(logoPositionOffset),
-    );
+    // TODO: REVERT
+    // b_.drawSprite(
+    // spr_("logo.png")(16, 16, 0, 0),
+    // logoPositionBase.add(logoPositionOffset),
+    // );
+    b_.drawSprite(anim, logoPositionBase.add(logoPositionOffset), {
+      centerXy: [true, true],
+    });
 
-    const textLines = [
-      `.:!? '" */+-`,
-      "01234 56789",
-      "%$()[]{}<>",
-      "ABCDE FGHIJ KLM",
-      "NOPQR STUVW XYZ",
-      `abcde fghij klm`,
-      `nopqr stuvw xyz`,
+    const textLines: string[] = [
+      // `.:!? '" */+-`,
+      // "01234 56789",
+      // "%$()[]{}<>",
+      // "ABCDE FGHIJ KLM",
+      // "NOPQR STUVW XYZ",
+      // `abcde fghij klm`,
+      // `nopqr stuvw xyz`,
     ];
     const textXy = v_(1, 64 - 5 * textLines.length);
     let textWh = v_0_0_;

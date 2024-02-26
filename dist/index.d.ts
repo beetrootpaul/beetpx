@@ -130,7 +130,8 @@ declare class BpxUtils {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
-    static randomElementOf<V>(array: V[]): V | undefined;
+    static randomElementOf<TElement>(array: TElement[]): TElement | undefined;
+    static repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
     static range(n: number): number[];
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
@@ -431,6 +432,18 @@ declare class BpxSprite {
     clipBy(xy1: BpxVector2d, xy2: BpxVector2d): BpxSprite;
 }
 
+type ImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][]) => BpxAnimatedSprite;
+declare function aspr_(imageUrl: BpxImageUrl): ImageBoundAnimatedSpriteFactory;
+declare class BpxAnimatedSprite {
+    #private;
+    static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][]): BpxAnimatedSprite;
+    readonly type = "animated";
+    readonly imageUrl: BpxImageUrl;
+    readonly size: BpxVector2d;
+    private constructor();
+    get current(): BpxSprite;
+}
+
 type AssetsToLoad = {
     images: ImageAssetToLoad[];
     fonts: FontAssetToLoad[];
@@ -541,7 +554,7 @@ declare class DrawApi {
     drawEllipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawEllipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-    drawSprite(sprite: BpxSprite, xy: BpxVector2d, opts?: {
+    drawSprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
@@ -596,7 +609,7 @@ declare class Framework {
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
-    get frame(): number;
+    get frameNumber(): number;
     get renderingFps(): number;
     get detectedBrowserType(): BpxBrowserType;
     constructor(options: FrameworkOptions);
@@ -630,7 +643,7 @@ declare class BeetPx {
      *
      * @return number
      */
-    static get frame(): Framework["frame"];
+    static get frameNumber(): Framework["frameNumber"];
     static get renderingFps(): Framework["renderingFps"];
     static get detectedBrowserType(): Framework["detectedBrowserType"];
     static setOnStarted: Framework["setOnStarted"];
@@ -739,4 +752,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, type BpxAudioPlaybackId, type BpxBrowserType, type BpxButtonName, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageUrl, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };
+export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, type BpxButtonName, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageUrl, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };

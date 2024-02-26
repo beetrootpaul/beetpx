@@ -66,14 +66,14 @@ export class Framework {
   #onUpdate?: () => void;
   #onDraw?: () => void;
 
-  #currentFrame: number = 0;
+  #currentFrameNumber: number = 0;
   #renderingFps: number = 1;
 
   // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
   #alreadyResumedAudioContext: boolean = false;
 
-  get frame(): number {
-    return this.#currentFrame;
+  get frameNumber(): number {
+    return this.#currentFrameNumber;
   }
 
   get renderingFps(): number {
@@ -224,7 +224,7 @@ export class Framework {
   }
 
   restart() {
-    this.#currentFrame = 0;
+    this.#currentFrameNumber = 0;
 
     this.audioApi.restart();
 
@@ -254,7 +254,7 @@ export class Framework {
       });
     }
 
-    this.#currentFrame = 0;
+    this.#currentFrameNumber = 0;
 
     await this.#loading.showStartScreen();
 
@@ -310,16 +310,16 @@ export class Framework {
         if (shouldUpdate) {
           if (this.#frameByFrame) {
             Logger.infoBeetPx(
-              `Running onUpdate for frame: ${this.#currentFrame}`,
+              `Running onUpdate for frame: ${this.#currentFrameNumber}`,
             );
           }
 
           this.#onUpdate?.();
 
-          this.#currentFrame =
-            this.#currentFrame >= Number.MAX_SAFE_INTEGER
+          this.#currentFrameNumber =
+            this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER
               ? 0
-              : this.#currentFrame + 1;
+              : this.#currentFrameNumber + 1;
         }
       },
       renderFn: (renderingFps) => {

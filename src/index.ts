@@ -52,6 +52,7 @@ export { type BpxButtonName } from "./game_input/buttons/Buttons";
 export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";
 export { BpxVector2d } from "./misc/Vector2d";
+export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
 export { BpxSprite } from "./sprite/Sprite";
 
 export { BeetPx } from "./BeetPx";
@@ -71,4 +72,5 @@ export {
 } from "./color/RgbColor";
 export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
+export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";

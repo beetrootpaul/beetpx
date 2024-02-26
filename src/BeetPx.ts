@@ -44,8 +44,8 @@ export class BeetPx {
    *
    * @return number
    */
-  static get frame(): Framework["frame"] {
-    return this.#tryGetFramework().frame;
+  static get frameNumber(): Framework["frameNumber"] {
+    return this.#tryGetFramework().frameNumber;
   }
 
   static get renderingFps(): Framework["renderingFps"] {
