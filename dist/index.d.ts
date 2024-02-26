@@ -131,8 +131,8 @@ declare class BpxUtils {
         scaleXy?: BpxVector2d;
     }): void;
     static randomElementOf<TElement>(array: TElement[]): TElement | undefined;
-    static repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
     static range(n: number): number[];
+    static repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
      */
@@ -442,6 +442,9 @@ declare class BpxAnimatedSprite {
     readonly size: BpxVector2d;
     private constructor();
     get current(): BpxSprite;
+    pause(): void;
+    resume(): void;
+    restart(): void;
 }
 
 type AssetsToLoad = {

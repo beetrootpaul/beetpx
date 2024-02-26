@@ -89,17 +89,16 @@ export class BpxUtils {
             return undefined;
         return array[Math.floor(Math.random() * array.length)];
     }
-    
+    static range(n) {
+        return Array.from({ length: n }, (_element, index) => index);
+    }
     static repeatEachElement(times, array) {
-        times = Math.round(times);
+        times = times > 0 ? Math.round(times) : 0;
         const newArray = new Array(times * array.length);
         for (let i = 0; i < newArray.length; i++) {
             newArray[i] = array[Math.floor(i / times)];
         }
         return newArray;
-    }
-    static range(n) {
-        return Array.from({ length: n }, (_element, index) => index);
     }
     /**
      * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.

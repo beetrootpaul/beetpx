@@ -9,9 +9,10 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _BpxAnimatedSprite_sprites;
+var _BpxAnimatedSprite_sprites, _BpxAnimatedSprite_frameNumberOffset, _BpxAnimatedSprite_pausedFrameNumber;
 import { BeetPx } from "../BeetPx";
 import { v_ } from "../misc/Vector2d";
+import { BpxUtils } from "../Utils";
 import { BpxSprite } from "./Sprite";
 export function aspr_(imageUrl) {
     return (w, h, xys) => {
@@ -25,14 +26,37 @@ export class BpxAnimatedSprite {
     constructor(imageUrl, w, h, xys) {
         this.type = "animated";
         _BpxAnimatedSprite_sprites.set(this, void 0);
+        _BpxAnimatedSprite_frameNumberOffset.set(this, 0);
+        _BpxAnimatedSprite_pausedFrameNumber.set(this, null);
         this.imageUrl = imageUrl;
         this.size = v_(w, h).round();
         __classPrivateFieldSet(this, _BpxAnimatedSprite_sprites, xys.map(([x, y]) => BpxSprite.from(imageUrl, w, h, x, y)), "f");
+        this.restart();
     }
     
     get current() {
-        const frame = BeetPx.frameNumber % __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length;
+        const frame = BpxUtils.mod((__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f") ?? BeetPx.frameNumber) - __classPrivateFieldGet(this, _BpxAnimatedSprite_frameNumberOffset, "f"), __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length);
         return __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f")[frame];
     }
+    
+    pause() {
+        if (__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f")) {
+            return;
+        }
+        __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrameNumber, BeetPx.frameNumber, "f");
+    }
+    
+    resume() {
+        if (!__classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f")) {
+            return;
+        }
+        __classPrivateFieldSet(this, _BpxAnimatedSprite_frameNumberOffset, __classPrivateFieldGet(this, _BpxAnimatedSprite_frameNumberOffset, "f") + BpxUtils.mod(BeetPx.frameNumber - __classPrivateFieldGet(this, _BpxAnimatedSprite_pausedFrameNumber, "f"), __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length), "f");
+        __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrameNumber, null, "f");
+    }
+    
+    restart() {
+        __classPrivateFieldSet(this, _BpxAnimatedSprite_frameNumberOffset, BpxUtils.mod(BeetPx.frameNumber, __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length), "f");
+        __classPrivateFieldSet(this, _BpxAnimatedSprite_pausedFrameNumber, null, "f");
+    }
 }
-_BpxAnimatedSprite_sprites = new WeakMap();
+_BpxAnimatedSprite_sprites = new WeakMap(), _BpxAnimatedSprite_frameNumberOffset = new WeakMap(), _BpxAnimatedSprite_pausedFrameNumber = new WeakMap();

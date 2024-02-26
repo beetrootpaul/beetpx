@@ -30,44 +30,50 @@ describe("Utils", () => {
 
   test("#booleanChangingEveryNthFrame", () => {
     BpxUtils.range(10).forEach((frame) => {
-      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => frame);
+      jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(true);
     });
     BpxUtils.range(10).forEach((frame) => {
-      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 10 + frame);
+      jest
+        .spyOn(BeetPx, "frameNumber", "get")
+        .mockImplementation(() => 10 + frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(false);
     });
     BpxUtils.range(10).forEach((frame) => {
-      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 20 + frame);
+      jest
+        .spyOn(BeetPx, "frameNumber", "get")
+        .mockImplementation(() => 20 + frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(true);
     });
     BpxUtils.range(10).forEach((frame) => {
-      jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 30 + frame);
+      jest
+        .spyOn(BeetPx, "frameNumber", "get")
+        .mockImplementation(() => 30 + frame);
       expect(BpxUtils.booleanChangingEveryNthFrame(10)).toBe(false);
     });
 
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 0);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 0);
     expect(BpxUtils.booleanChangingEveryNthFrame(1)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(2)).toBe(true);
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 1);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 1);
     expect(BpxUtils.booleanChangingEveryNthFrame(1)).toBe(false);
     expect(BpxUtils.booleanChangingEveryNthFrame(2)).toBe(true);
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 2);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 2);
     expect(BpxUtils.booleanChangingEveryNthFrame(1)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(2)).toBe(false);
 
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 0);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 0);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(true);
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 1);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 1);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(false);
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 2);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 2);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(true);
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 3);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 3);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(true);
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 4);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 4);
     expect(BpxUtils.booleanChangingEveryNthFrame(0.7)).toBe(false);
 
-    jest.spyOn(BeetPx, "frame", "get").mockImplementation(() => 987);
+    jest.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => 987);
     expect(BpxUtils.booleanChangingEveryNthFrame(0)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(-0.123)).toBe(true);
     expect(BpxUtils.booleanChangingEveryNthFrame(-123)).toBe(true);
@@ -266,6 +272,34 @@ describe("Utils", () => {
     expect(BpxUtils.range(1)).toEqual([0]);
     expect(BpxUtils.range(2)).toEqual([0, 1]);
     expect(BpxUtils.range(10)).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  });
+
+  test("#repeatEachElement", () => {
+    expect(BpxUtils.repeatEachElement(1, [3, 2, 1])).toEqual([3, 2, 1]);
+    expect(BpxUtils.repeatEachElement(2, [3, 2, 1])).toEqual([
+      3, 3, 2, 2, 1, 1,
+    ]);
+    expect(BpxUtils.repeatEachElement(3, [3, 2, 1])).toEqual([
+      3, 3, 3, 2, 2, 2, 1, 1, 1,
+    ]);
+
+    expect(BpxUtils.repeatEachElement(2, [3, 3, 2, 1, 1])).toEqual([
+      3, 3, 3, 3, 2, 2, 1, 1, 1, 1,
+    ]);
+
+    expect(BpxUtils.repeatEachElement(0, [3, 2, 1])).toEqual([]);
+    expect(BpxUtils.repeatEachElement(-1, [3, 2, 1])).toEqual([]);
+    expect(BpxUtils.repeatEachElement(-1.1, [3, 2, 1])).toEqual([]);
+    expect(BpxUtils.repeatEachElement(-99.99, [3, 2, 1])).toEqual([]);
+
+    expect(BpxUtils.repeatEachElement(0.4, [3, 2, 1])).toEqual([]);
+    expect(BpxUtils.repeatEachElement(0.6, [3, 2, 1])).toEqual([3, 2, 1]);
+    expect(BpxUtils.repeatEachElement(2.4, [3, 2, 1])).toEqual([
+      3, 3, 2, 2, 1, 1,
+    ]);
+    expect(BpxUtils.repeatEachElement(2.6, [3, 2, 1])).toEqual([
+      3, 3, 3, 2, 2, 2, 1, 1, 1,
+    ]);
   });
 
   test("#trigAtan2", () => {

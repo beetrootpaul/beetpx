@@ -1,6 +1,7 @@
 import { BpxImageUrl } from "../assets/Assets";
 import { BeetPx } from "../BeetPx";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
+import { BpxUtils } from "../Utils";
 import { BpxSprite } from "./Sprite";
 
 type ImageBoundAnimatedSpriteFactory = (
@@ -32,6 +33,9 @@ export class BpxAnimatedSprite {
 
   readonly #sprites: BpxSprite[];
 
+  #frameNumberOffset: number = 0;
+  #pausedFrameNumber: number | null = null;
+
   private constructor(
     imageUrl: BpxImageUrl,
     w: number,
@@ -41,11 +45,45 @@ export class BpxAnimatedSprite {
     this.imageUrl = imageUrl;
     this.size = v_(w, h).round();
     this.#sprites = xys.map(([x, y]) => BpxSprite.from(imageUrl, w, h, x, y));
+
+    this.restart();
   }
 
   // TODO: tests
   get current(): BpxSprite {
-    const frame = BeetPx.frameNumber % this.#sprites.length;
+    const frame = BpxUtils.mod(
+      (this.#pausedFrameNumber ?? BeetPx.frameNumber) - this.#frameNumberOffset,
+      this.#sprites.length,
+    );
     return this.#sprites[frame]!;
+  }
+
+  // TODO: tests
+  pause(): void {
+    if (this.#pausedFrameNumber) {
+      return;
+    }
+    this.#pausedFrameNumber = BeetPx.frameNumber;
+  }
+
+  // TODO: tests
+  resume(): void {
+    if (!this.#pausedFrameNumber) {
+      return;
+    }
+    this.#frameNumberOffset += BpxUtils.mod(
+      BeetPx.frameNumber - this.#pausedFrameNumber,
+      this.#sprites.length,
+    );
+    this.#pausedFrameNumber = null;
+  }
+
+  // TODO: tests
+  restart(): void {
+    this.#frameNumberOffset = BpxUtils.mod(
+      BeetPx.frameNumber,
+      this.#sprites.length,
+    );
+    this.#pausedFrameNumber = null;
   }
 }
