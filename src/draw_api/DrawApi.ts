@@ -161,12 +161,18 @@ export class DrawApi {
     sprite: BpxSprite,
     xy: BpxVector2d,
     opts: {
-      // TODO: use it
-      // TODO: test it
-      // centerXy?: [boolean, boolean];
+      centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
     } = {},
   ): void {
+    const centerXy = opts.centerXy ?? [false, false];
+    if (centerXy[0] || centerXy[1]) {
+      xy = xy.sub(
+        centerXy[0] ? sprite.size.x / 2 : 0,
+        centerXy[1] ? sprite.size.y / 2 : 0,
+      );
+    }
+
     const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
     this.#sprite.draw(
       sprite,

@@ -542,6 +542,7 @@ declare class DrawApi {
     drawEllipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
     drawSprite(sprite: BpxSprite, xy: BpxVector2d, opts?: {
+        centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
     setFont(fontId: BpxFontId | null): BpxFontId | null;
