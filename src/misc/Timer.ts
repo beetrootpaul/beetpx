@@ -1,42 +1,79 @@
-export function timer_(frames: number): BpxTimer {
-  return BpxTimer.for({ frames });
+import { BeetPx } from "../BeetPx";
+import { BpxUtils } from "../Utils";
+
+export function timer_(frames: number, opts?: { loop?: boolean }): BpxTimer {
+  return BpxTimer.for({
+    frames,
+    loop: opts?.loop ?? false,
+  });
 }
 
 export class BpxTimer {
-  static for(params: { frames: number }): BpxTimer {
+  static for(params: { frames: number; loop: boolean }): BpxTimer {
     return new BpxTimer(params);
   }
 
   readonly #frames: number;
+  readonly #loop: boolean;
 
-  #t: number = 0;
+  #offsetFrame: number = 0;
+  #pausedFrame: number | null = null;
 
-  private constructor(params: { frames: number }) {
-    this.#frames = Math.floor(params.frames);
+  private constructor(params: { frames: number; loop: boolean }) {
+    this.#frames = Math.max(0, Math.round(params.frames));
+    this.#loop = params.loop;
     this.restart();
   }
 
+  get #tRaw(): number {
+    return (this.#pausedFrame ?? BeetPx.frameNumber) - this.#offsetFrame;
+  }
+
+  get t(): number {
+    return this.#loop
+      ? BpxUtils.mod(this.#tRaw, this.#frames)
+      : BpxUtils.clamp(0, this.#tRaw, this.#frames);
+  }
+
   get framesLeft(): number {
-    return Math.max(0, this.#t);
+    return this.#frames - this.t;
   }
 
   get progress(): number {
-    return this.#frames > 0 ? 1 - this.framesLeft / this.#frames : 1;
+    return this.#frames > 0 ? this.t / this.#frames : 1;
   }
 
   get hasFinished(): boolean {
-    return this.#t <= 0;
+    return this.#loop ? false : this.#tRaw >= this.#frames;
   }
 
   get hasJustFinished(): boolean {
-    return this.#t == 0;
+    return this.#frames > 0
+      ? this.#loop
+        ? this.#tRaw > 0 && this.t === 0
+        : this.#tRaw === this.#frames
+      : this.#loop
+        ? true
+        : this.#tRaw === 0;
   }
 
-  update(): void {
-    this.#t = Math.max(-1, this.#t - 1);
+  pause(): void {
+    if (this.#pausedFrame) {
+      return;
+    }
+    this.#pausedFrame = BeetPx.frameNumber;
+  }
+
+  resume(): void {
+    if (!this.#pausedFrame) {
+      return;
+    }
+    this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
+    this.#pausedFrame = null;
   }
 
   restart(): void {
-    this.#t = Math.max(0, this.#frames);
+    this.#offsetFrame = BeetPx.frameNumber;
+    this.#pausedFrame = null;
   }
 }

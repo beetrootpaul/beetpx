@@ -1,7 +1,7 @@
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Button } from "./buttons/Button";
-import { Buttons } from "./buttons/Buttons";
+import { GameButtons } from "./buttons/GameButtons";
 import { BpxGamepadType, GameInputGamepad } from "./GameInputGamepad";
 import { GameInputKeyboard } from "./GameInputKeyboard";
 import { GameInputMouse } from "./GameInputMouse";
@@ -29,7 +29,7 @@ export class GameInput {
   readonly gameInputsSpecialized: GameInputSpecialized[];
   readonly gameInputGamepad: GameInputGamepad;
 
-  readonly gameButtons: Buttons;
+  readonly gameButtons: GameButtons;
 
   readonly buttonFullScreen: Button;
   readonly buttonMuteUnmute: Button;
@@ -57,7 +57,7 @@ export class GameInput {
       this.gameInputGamepad,
     ];
 
-    this.gameButtons = new Buttons();
+    this.gameButtons = new GameButtons();
 
     this.buttonFullScreen = new Button();
     this.buttonMuteUnmute = new Button();

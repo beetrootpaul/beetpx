@@ -1,4 +1,4 @@
-import { BpxTimer } from "../../misc/Timer";
+import { BpxTimer, timer_ } from "../../misc/Timer";
 import { BpxUtils } from "../../Utils";
 
 export class Button {
@@ -40,37 +40,31 @@ export class Button {
   wasJustPressed(repeating: boolean): boolean {
     return (
       (this.#wasJustToggled && this.#isPressed) ||
-      (repeating && !!this.#repeatingTimer?.hasFinished)
+      (repeating && !!this.#repeatingTimer?.hasJustFinished)
     );
   }
 
   wasJustReleased(repeating: boolean): boolean {
     return (
       (this.#wasJustToggled && !this.#isPressed) ||
-      (repeating && !!this.#repeatingTimer?.hasFinished)
+      (repeating && !!this.#repeatingTimer?.hasJustFinished)
     );
   }
 
   update(isPressed: boolean): void {
-    this.#wasJustToggled = this.#isPressed !== isPressed;
-    this.#isPressed = isPressed;
-
-    if (isPressed && this.#repeatingTimer?.hasFinished) {
-      this.#repeatingTimer = BpxTimer.for({
-        frames: Button.repeatingFramesInterval,
-      });
-    }
-
-    this.#repeatingTimer?.update();
-
-    if (isPressed && this.#wasJustToggled) {
-      this.#repeatingTimer = BpxTimer.for({
-        frames: Button.repeatingFramesStart,
-      });
-    }
-
-    if (!isPressed && this.#repeatingTimer) {
+    if (isPressed) {
+      if (this.#wasJustToggled) {
+        this.#repeatingTimer = timer_(Button.repeatingFramesStart);
+      } else if (this.#repeatingTimer?.hasFinished) {
+        this.#repeatingTimer = timer_(Button.repeatingFramesInterval, {
+          loop: true,
+        });
+      }
+    } else {
       this.#repeatingTimer = null;
     }
+
+    this.#wasJustToggled = this.#isPressed !== isPressed;
+    this.#isPressed = isPressed;
   }
 }

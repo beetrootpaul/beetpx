@@ -3,7 +3,7 @@ import { v_ } from "../misc/Vector2d";
 import { spr_ } from "./Sprite";
 
 describe("Sprite", () => {
-  test("spr_", () => {
+  test("construction", () => {
     // given
     const sprite = spr_("any.image.url")(1, 20, 300, 4000);
 

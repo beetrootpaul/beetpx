@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _a, _Button_repeatingFramesStart, _Button_repeatingFramesInterval, _Button_isPressed, _Button_wasJustToggled, _Button_repeatingTimer;
-import { BpxTimer } from "../../misc/Timer";
+import { timer_ } from "../../misc/Timer";
 import { BpxUtils } from "../../Utils";
 export class Button {
     constructor() {
@@ -41,29 +41,28 @@ export class Button {
     }
     wasJustPressed(repeating) {
         return ((__classPrivateFieldGet(this, _Button_wasJustToggled, "f") && __classPrivateFieldGet(this, _Button_isPressed, "f")) ||
-            (repeating && !!__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasFinished));
+            (repeating && !!__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasJustFinished));
     }
     wasJustReleased(repeating) {
         return ((__classPrivateFieldGet(this, _Button_wasJustToggled, "f") && !__classPrivateFieldGet(this, _Button_isPressed, "f")) ||
-            (repeating && !!__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasFinished));
+            (repeating && !!__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasJustFinished));
     }
     update(isPressed) {
-        __classPrivateFieldSet(this, _Button_wasJustToggled, __classPrivateFieldGet(this, _Button_isPressed, "f") !== isPressed, "f");
-        __classPrivateFieldSet(this, _Button_isPressed, isPressed, "f");
-        if (isPressed && __classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasFinished) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, BpxTimer.for({
-                frames: _a.repeatingFramesInterval,
-            }), "f");
+        if (isPressed) {
+            if (__classPrivateFieldGet(this, _Button_wasJustToggled, "f")) {
+                __classPrivateFieldSet(this, _Button_repeatingTimer, timer_(_a.repeatingFramesStart), "f");
+            }
+            else if (__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasFinished) {
+                __classPrivateFieldSet(this, _Button_repeatingTimer, timer_(_a.repeatingFramesInterval, {
+                    loop: true,
+                }), "f");
+            }
         }
-        __classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.update();
-        if (isPressed && __classPrivateFieldGet(this, _Button_wasJustToggled, "f")) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, BpxTimer.for({
-                frames: _a.repeatingFramesStart,
-            }), "f");
-        }
-        if (!isPressed && __classPrivateFieldGet(this, _Button_repeatingTimer, "f")) {
+        else {
             __classPrivateFieldSet(this, _Button_repeatingTimer, null, "f");
         }
+        __classPrivateFieldSet(this, _Button_wasJustToggled, __classPrivateFieldGet(this, _Button_isPressed, "f") !== isPressed, "f");
+        __classPrivateFieldSet(this, _Button_isPressed, isPressed, "f");
     }
 }
 _a = Button, _Button_isPressed = new WeakMap(), _Button_wasJustToggled = new WeakMap(), _Button_repeatingTimer = new WeakMap();

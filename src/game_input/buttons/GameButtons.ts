@@ -2,7 +2,7 @@ import { BpxVector2d, v_ } from "../../misc/Vector2d";
 import { BpxGameInputEvent } from "../GameInput";
 import { Button } from "./Button";
 
-export type BpxButtonName =
+export type BpxGameButtonName =
   | "left"
   | "right"
   | "up"
@@ -11,7 +11,7 @@ export type BpxButtonName =
   | "b"
   | "menu";
 
-export class Buttons {
+export class GameButtons {
   readonly #left: Button = new Button();
   readonly #right: Button = new Button();
   readonly #up: Button = new Button();
@@ -39,7 +39,7 @@ export class Buttons {
     this.#menu.update(events.has("button_menu"));
   }
 
-  isPressed(button: BpxButtonName): boolean {
+  isPressed(button: BpxGameButtonName): boolean {
     switch (button) {
       case "left":
         return this.#left.isPressed;
@@ -65,7 +65,7 @@ export class Buttons {
     );
   }
 
-  setRepeating(button: BpxButtonName, repeating: boolean): void {
+  setRepeating(button: BpxGameButtonName, repeating: boolean): void {
     switch (button) {
       case "left":
         this.#repeatingLeft = repeating;
@@ -103,7 +103,7 @@ export class Buttons {
     );
   }
 
-  wasJustPressed(button: BpxButtonName): boolean {
+  wasJustPressed(button: BpxGameButtonName): boolean {
     switch (button) {
       case "left":
         return this.#left.wasJustPressed(this.#repeatingLeft);
@@ -122,7 +122,7 @@ export class Buttons {
     }
   }
 
-  wasJustReleased(button: BpxButtonName): boolean {
+  wasJustReleased(button: BpxGameButtonName): boolean {
     switch (button) {
       case "left":
         return this.#left.wasJustReleased(this.#repeatingLeft);

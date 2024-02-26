@@ -48,7 +48,7 @@ export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
 export { type BpxGamepadType } from "./game_input/GameInputGamepad";
 export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
-export { type BpxButtonName } from "./game_input/buttons/Buttons";
+export { type BpxGameButtonName } from "./game_input/buttons/GameButtons";
 export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
 export { BpxTimer } from "./misc/Timer";
 export { BpxVector2d } from "./misc/Vector2d";
