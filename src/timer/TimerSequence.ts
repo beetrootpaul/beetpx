@@ -1,4 +1,5 @@
-import { BpxTimer, timer_ } from "./Timer";
+import { BeetPx } from "../BeetPx";
+import { BpxTimer } from "./Timer";
 
 export function timerSeq_<TPhase extends string>(params: {
   intro?: Array<[phase: TPhase, frames: number]>;
@@ -18,11 +19,10 @@ export class BpxTimerSequence<TPhase extends string> {
     return new BpxTimerSequence(params);
   }
 
-  // TODO: ???
-  // readonly #phases: Array<{ name: TPhase; frames: number; timer: BpxTimer }>;
-  // readonly #framesTotal: number;
-  // readonly #loop: boolean;
-  // #current: number;
+  readonly #phases: Array<{ name: TPhase; frames: number; timer: BpxTimer }>;
+  readonly #frames: number;
+
+  readonly #offsetFrame: number = 0;
 
   private constructor(params: {
     // TODO: test
@@ -30,17 +30,17 @@ export class BpxTimerSequence<TPhase extends string> {
     // TODO: test
     loop: Array<[phase: TPhase, frames: number]>;
   }) {
-    // TODO: ???
-    //   this.#phases = Object.entries<number>(params.phases).map(
-    //     ([phase, frames]) => ({
-    //       name: phase as TPhase,
-    //       frames: frames,
-    //       timer: new BpxTimer({ frames, loop: false }),
-    //     }),
-    //   );
-    //   this.#framesTotal = this.#phases.reduce((acc, p) => acc + p.frames, 0);
-    //   this.#loop = params.loop;
-    //   this.#current = 0;
+    // TODO: rounding? clamping?
+
+    this.#phases = params.intro.map((entry) => ({
+      name: entry[0],
+      frames: entry[1],
+      timer: BpxTimer.for({ frames: entry[1], loop: false }),
+    }));
+    this.#frames = this.#phases.reduce((acc, p) => acc + p.frames, 0);
+
+    // TODO: move to restart?
+    this.#offsetFrame = BeetPx.frameNumber;
   }
 
   // TODO: test
@@ -57,52 +57,94 @@ export class BpxTimerSequence<TPhase extends string> {
 
   // TODO: test
   get phaseTimer(): BpxTimer {
+    let tmp = this.t;
+    let idx = 0;
+
     // TODO: ???
-    return timer_(8);
+    // while (idx < this.#phases.length && tmp > this.#phases[idx]!.frames) {
+    while (tmp > this.#phases[idx]!.frames) {
+      tmp -= this.#phases[idx]!.frames;
+      idx += 1;
+    }
+
+    return this.#phases[idx]!.timer;
   }
 
   // TODO: test
   get t(): number {
+    return BeetPx.frameNumber - this.#offsetFrame;
+
     // TODO: ???
-    return 0;
+    // return this.#loop
+    //   ? BpxUtils.mod(this.#tRaw, this.#frames)
+    //   : BpxUtils.clamp(0, this.#tRaw, this.#frames);
+    // TODO: tRaw ???
+    // return (this.#pausedFrame ?? BeetPx.frameNumber) - this.#offsetFrame;
   }
 
   // TODO: test
   get framesLeft(): number {
-    // TODO: ???
-    return 10;
+    return this.#frames - this.t;
   }
 
   // TODO: test
   get progress(): number {
+    return this.t / this.#frames;
+
     // TODO: ???
-    return 0;
+    // return this.#frames > 0 ? this.t / this.#frames : 1;
   }
 
   // TODO: test
   get hasFinished(): boolean {
     // TODO: ???
     return false;
+
+    // TODO: ???
+    // return return this.#loop ? false : this.#tRaw >= this.#frames;
   }
 
   // TODO: test
   get hasJustFinished(): boolean {
     // TODO: ???
     return false;
+
+    // TODO: ???
+    // return this.#frames > 0
+    //   ? this.#loop
+    //     ? this.#tRaw > 0 && this.t === 0
+    //     : this.#tRaw === this.#frames
+    //   : this.#loop
+    //     ? true
+    //     : this.#tRaw === 0;
   }
 
   // TODO: test
   pause(): void {
     // TODO: ???
+    // TODO: ???
+    // if (this.#pausedFrame) {
+    //   return;
+    // }
+    // this.#pausedFrame = BeetPx.frameNumber;
   }
 
   // TODO: test
   resume(): void {
     // TODO: ???
+    // TODO: ???
+    // if (!this.#pausedFrame) {
+    //   return;
+    // }
+    // this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
+    // this.#pausedFrame = null;
   }
 
   // TODO: test
   restart(): void {
     // TODO: ???
+    // TODO: ???
+    // this.#offsetFrame = BeetPx.frameNumber;
+    // this.#pausedFrame = null;
   }
 }
