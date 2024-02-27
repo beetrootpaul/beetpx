@@ -1,6 +1,6 @@
 import { BpxImageUrl } from "../assets/Assets";
-import { BpxTimer, timer_ } from "../misc/Timer";
 import { BpxVector2d, v_ } from "../misc/Vector2d";
+import { BpxTimer, timer_ } from "../timer/Timer";
 import { BpxSprite } from "./Sprite";
 
 type ImageBoundAnimatedSpriteFactory = (

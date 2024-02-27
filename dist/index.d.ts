@@ -405,26 +405,6 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-declare function timer_(frames: number, opts?: {
-    loop?: boolean;
-}): BpxTimer;
-declare class BpxTimer {
-    #private;
-    static for(params: {
-        frames: number;
-        loop: boolean;
-    }): BpxTimer;
-    private constructor();
-    get t(): number;
-    get framesLeft(): number;
-    get progress(): number;
-    get hasFinished(): boolean;
-    get hasJustFinished(): boolean;
-    pause(): void;
-    resume(): void;
-    restart(): void;
-}
-
 type ImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
 declare function spr_(imageUrl: BpxImageUrl): ImageBoundSpriteFactory;
 declare class BpxSprite {
@@ -447,6 +427,26 @@ declare class BpxAnimatedSprite {
     readonly size: BpxVector2d;
     private constructor();
     get current(): BpxSprite;
+    pause(): void;
+    resume(): void;
+    restart(): void;
+}
+
+declare function timer_(frames: number, opts?: {
+    loop?: boolean;
+}): BpxTimer;
+declare class BpxTimer {
+    #private;
+    static for(params: {
+        frames: number;
+        loop: boolean;
+    }): BpxTimer;
+    private constructor();
+    get t(): number;
+    get framesLeft(): number;
+    get progress(): number;
+    get hasFinished(): boolean;
+    get hasJustFinished(): boolean;
     pause(): void;
     resume(): void;
     restart(): void;
