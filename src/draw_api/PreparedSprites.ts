@@ -1,7 +1,7 @@
 import { type PngDataArray } from "fast-png";
 import { u_ } from "../Utils";
 import { BpxRgbColor, rgb_ } from "../color/RgbColor";
-import { BpxSprite } from "./Sprite";
+import { BpxSprite } from "../sprite/Sprite";
 
 export type PreparedSprite = {
   w: number;
@@ -24,29 +24,29 @@ export class PreparedSprites {
     const key =
       sprite.imageUrl +
       "::" +
-      sprite.xy1.x.toString() +
+      sprite.xy.x.toString() +
       ":" +
-      sprite.xy1.y.toString() +
+      sprite.xy.y.toString() +
       ":" +
-      sprite.xy2.x.toString() +
+      sprite.size.x.toString() +
       ":" +
-      sprite.xy2.y.toString();
+      sprite.size.y.toString();
 
     if (this.#cache.has(key)) {
       return this.#cache.get(key)!;
     }
 
-    const w = sprite.size().x;
-    const h = sprite.size().y;
+    const w = sprite.size.x;
+    const h = sprite.size.y;
 
     const colors: (BpxRgbColor | null)[][] = u_
       .range(w)
       .map(() => u_.range(h).map(() => null));
 
     for (let spriteY = 0; spriteY < h; ++spriteY) {
-      const imgY = sprite.xy1.y + spriteY;
+      const imgY = sprite.xy.y + spriteY;
       for (let spriteX = 0; spriteX < w; ++spriteX) {
-        const imgX = sprite.xy1.x + spriteX;
+        const imgX = sprite.xy.x + spriteX;
 
         const imgIndex = (imgY * imgW + imgX) * imgChannels;
 
@@ -68,8 +68,8 @@ export class PreparedSprites {
     }
 
     const preparedSprite: PreparedSprite = {
-      w: sprite.size().x,
-      h: sprite.size().y,
+      w: sprite.size.x,
+      h: sprite.size.y,
       colors: colors,
       cacheHit: true,
     };

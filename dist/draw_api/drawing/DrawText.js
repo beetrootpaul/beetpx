@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawText_canvas, _DrawText_sprite, _DrawText_pixels;
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
-import { spr_ } from "../Sprite";
+import { spr_ } from "../../sprite/Sprite";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
 export class DrawText {
@@ -47,7 +47,7 @@ export class DrawText {
                 if (fontAsset.image == null) {
                     throw Error(`There is no image loaded for a font "${fontAsset.font.id}", which uses image sprites`);
                 }
-                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(spr_(fontAsset.font.imageUrl)(charSprite.spriteXyWh[0].x, charSprite.spriteXyWh[0].y, charSprite.spriteXyWh[1].x, charSprite.spriteXyWh[1].y), fontAsset.image, xy, scaleXy, typeof colorMapping === "function"
+                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(spr_(fontAsset.font.imageUrl)(charSprite.spriteXyWh[1].x, charSprite.spriteXyWh[1].y, charSprite.spriteXyWh[0].x, charSprite.spriteXyWh[0].y), fontAsset.image, xy, scaleXy, typeof colorMapping === "function"
                     ? colorMapping(charSprite)
                     : colorMapping, pattern);
             }

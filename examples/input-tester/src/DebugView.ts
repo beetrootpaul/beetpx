@@ -9,8 +9,6 @@ import {
   v_0_0_,
 } from "../../../src";
 
-const spr = spr_("spritesheet.png");
-
 const orange = BpxRgbColor.fromCssHex("#ffa300");
 const blue = BpxRgbColor.fromCssHex("#29adff");
 const lime = BpxRgbColor.fromCssHex("#00e436");
@@ -115,7 +113,7 @@ export class DebugView {
 
   draw() {
     // background
-    b_.drawSprite(spr(160, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr_("spritesheet.png")(128, 128, 160, 0), v_0_0_);
 
     // buttons
     this.buttons.forEach((buttonXGamepads, buttonIndex) => {

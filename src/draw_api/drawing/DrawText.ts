@@ -4,8 +4,8 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxCharSprite } from "../../font/Font";
 import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
+import { spr_ } from "../../sprite/Sprite";
 import { BpxDrawingPattern } from "../Pattern";
-import { spr_ } from "../Sprite";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
 
@@ -66,10 +66,10 @@ export class DrawText {
         }
         this.#sprite.draw(
           spr_(fontAsset.font.imageUrl)(
-            charSprite.spriteXyWh[0].x,
-            charSprite.spriteXyWh[0].y,
             charSprite.spriteXyWh[1].x,
             charSprite.spriteXyWh[1].y,
+            charSprite.spriteXyWh[0].x,
+            charSprite.spriteXyWh[0].y,
           ),
           fontAsset.image,
           xy,
