@@ -51,13 +51,13 @@ export class Button {
         __classPrivateFieldSet(this, _Button_wasJustToggled, __classPrivateFieldGet(this, _Button_isPressed, "f") !== isPressed, "f");
         __classPrivateFieldSet(this, _Button_isPressed, isPressed, "f");
         if (isPressed && __classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasFinished) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, new BpxTimer({
+            __classPrivateFieldSet(this, _Button_repeatingTimer, BpxTimer.for({
                 frames: _a.repeatingFramesInterval,
             }), "f");
         }
         __classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.update();
         if (isPressed && __classPrivateFieldGet(this, _Button_wasJustToggled, "f")) {
-            __classPrivateFieldSet(this, _Button_repeatingTimer, new BpxTimer({
+            __classPrivateFieldSet(this, _Button_repeatingTimer, BpxTimer.for({
                 frames: _a.repeatingFramesStart,
             }), "f");
         }

@@ -1,5 +1,5 @@
-import { HtmlTemplate } from "../HtmlTemplate";
 import { Assets, BpxSoundUrl } from "../assets/Assets";
+import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 import { AudioHelpers } from "./AudioHelpers";
 import { AudioPlayback, type BpxAudioPlaybackId } from "./AudioPlayback";
@@ -91,17 +91,24 @@ export class AudioApi {
       });
   }
 
-  playSoundOnce(
+  startPlayback(
     soundUrl: BpxSoundUrl,
-    muteOnStart: boolean = false,
+    opts?: {
+      muteOnStart?: boolean;
+    },
   ): BpxAudioPlaybackId {
-    Logger.debugBeetPx(`AudioApi.playSoundOnce (muteOnStart: ${muteOnStart})`);
+    opts ??= {};
+    opts.muteOnStart ??= true;
+
+    Logger.debugBeetPx(
+      `AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`,
+    );
 
     const playback = new AudioPlaybackOnce(soundUrl, {
       assets: this.#assets,
       audioContext: this.#audioContext,
       target: this.#pauseFadeNode,
-      muteOnStart,
+      muteOnStart: opts.muteOnStart,
       onEnded: () => {
         this.#playbacks.delete(playback.id);
       },
@@ -111,19 +118,24 @@ export class AudioApi {
     return playback.id;
   }
 
-  playSoundLooped(
+  startPlaybackLooped(
     soundUrl: BpxSoundUrl,
-    muteOnStart: boolean = false,
+    opts?: {
+      muteOnStart?: boolean;
+    },
   ): BpxAudioPlaybackId {
+    opts ??= {};
+    opts.muteOnStart ??= true;
+
     Logger.debugBeetPx(
-      `AudioApi.playSoundLooped (muteOnStart: ${muteOnStart})`,
+      `AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`,
     );
 
     const playback = new AudioPlaybackLooped(soundUrl, {
       assets: this.#assets,
       audioContext: this.#audioContext,
       target: this.#pauseFadeNode,
-      muteOnStart,
+      muteOnStart: opts.muteOnStart,
       onEnded: () => {
         this.#playbacks.delete(playback.id);
       },
@@ -133,19 +145,24 @@ export class AudioApi {
     return playback.id;
   }
 
-  playSoundSequence(
+  startPlaybackSequence(
     soundSequence: BpxSoundSequence,
-    muteOnStart: boolean = false,
+    opts?: {
+      muteOnStart?: boolean;
+    },
   ): BpxAudioPlaybackId {
+    opts ??= {};
+    opts.muteOnStart ??= true;
+
     Logger.debugBeetPx(
-      `AudioApi.playSoundSequence (muteOnStart: ${muteOnStart})`,
+      `AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`,
     );
 
     const playback = new AudioPlaybackSequence(soundSequence, {
       assets: this.#assets,
       audioContext: this.#audioContext,
       target: this.#pauseFadeNode,
-      muteOnStart,
+      muteOnStart: opts.muteOnStart,
       onEnded: () => {
         this.#playbacks.delete(playback.id);
       },
@@ -320,11 +337,11 @@ export class AudioApi {
     }
   }
 
-  __internal__audioContext(): AudioContext {
+  getAudioContext(): AudioContext {
     return this.#audioContext;
   }
 
-  __internal__globalGainNode(): GainNode {
+  getGlobalGainNode(): GainNode {
     return this.#globalGainNode;
   }
 }

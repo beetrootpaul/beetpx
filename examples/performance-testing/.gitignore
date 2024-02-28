@@ -1,8 +1,0 @@
-# BeetPx: generated and temporary files
-/.beetpx/
-/dist/
-/index.html
-/public/.beetpx/
-
-# Node.js: dependencies
-/node_modules/

@@ -9,6 +9,7 @@
     "removeComments": false
   },
   "exclude": [
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "src/**/*.type_test.ts"
   ]
 }

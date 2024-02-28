@@ -102,26 +102,23 @@ export class StandardView {
   update(): void {
     const { ip } = this;
 
-    ip.up = b_.__internal__capturedEvents().has("button_up");
-    ip.down = b_.__internal__capturedEvents().has("button_down");
-    ip.left = b_.__internal__capturedEvents().has("button_left");
-    ip.right = b_.__internal__capturedEvents().has("button_right");
-    ip.a = b_.__internal__capturedEvents().has("button_a");
-    ip.b = b_.__internal__capturedEvents().has("button_b");
-    ip.menu = b_.__internal__capturedEvents().has("button_menu");
-    ip.muteUnmute = b_.__internal__capturedEvents().has("mute_unmute_toggle");
-    ip.fullScreen = b_.__internal__capturedEvents().has("full_screen");
-    ip.debugToggle = b_.__internal__capturedEvents().has("debug_toggle");
-    ip.frameByFrameToggle = b_
-      .__internal__capturedEvents()
-      .has("frame_by_frame_toggle");
-    ip.frameByFrameStep = b_
-      .__internal__capturedEvents()
-      .has("frame_by_frame_step");
+    const events = b_.getEventsCapturedInLastUpdate();
+    ip.up = events.has("button_up");
+    ip.down = events.has("button_down");
+    ip.left = events.has("button_left");
+    ip.right = events.has("button_right");
+    ip.a = events.has("button_a");
+    ip.b = events.has("button_b");
+    ip.menu = events.has("button_menu");
+    ip.muteUnmute = events.has("mute_unmute_toggle");
+    ip.fullScreen = events.has("full_screen");
+    ip.debugToggle = events.has("debug_toggle");
+    ip.frameByFrameToggle = events.has("frame_by_frame_toggle");
+    ip.frameByFrameStep = events.has("frame_by_frame_step");
 
-    if (b_.mostRecentInputMethods().has("keyboard")) {
+    if (b_.getRecentInputMethods().has("keyboard")) {
       this.highlightKeyboard = true;
-    } else if (b_.mostRecentInputMethods().has("gamepad")) {
+    } else if (b_.getRecentInputMethods().has("gamepad")) {
       this.highlightKeyboard = false;
     }
   }
@@ -130,7 +127,7 @@ export class StandardView {
     const { ip, ps } = this;
 
     // background: base
-    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
 
     // background: keyboard vs gamepad
     let prevMapping = b_.setSpriteColorMapping(
@@ -139,15 +136,15 @@ export class StandardView {
         : BpxSpriteColorMapping.from([[yellow, darkBlue]]),
     );
     b_.setClippingRegion(v_(0, 0), v_(128, 3));
-    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(126, 0), v_(126, 128));
-    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(0, 126), v_(128, 128));
-    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(0, 0), v_(2, 128));
-    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setClippingRegion(v_(64, 77), v_(64, 6));
-    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
     b_.setSpriteColorMapping(prevMapping);
     prevMapping = b_.setSpriteColorMapping(
       BpxSpriteColorMapping.from([[lightGrey, darkGrey]]),
@@ -156,7 +153,7 @@ export class StandardView {
       this.highlightKeyboard ? v_(110, 3) : v_(3, 3),
       v_(15, 11),
     );
-    b_.sprite(spr(0, 0, 128, 128), v_0_0_);
+    b_.drawSprite(spr(0, 0, 128, 128), v_0_0_);
     b_.removeClippingRegion();
     b_.setSpriteColorMapping(prevMapping);
 
@@ -165,82 +162,82 @@ export class StandardView {
       BpxSpriteColorMapping.from([[lime, null]]),
     );
     if (ip.up) {
-      b_.sprite(ps.k_w, v_(21, 17));
-      b_.sprite(ps.k_up, v_(47, 17));
-      b_.sprite(ps.g_dpad_up, v_(74, 16));
-      b_.sprite(ps.g_stick_up, v_(97, 16));
+      b_.drawSprite(ps.k_w, v_(21, 17));
+      b_.drawSprite(ps.k_up, v_(47, 17));
+      b_.drawSprite(ps.g_dpad_up, v_(74, 16));
+      b_.drawSprite(ps.g_stick_up, v_(97, 16));
     }
     if (ip.down) {
-      b_.sprite(ps.k_s, v_(22, 24));
-      b_.sprite(ps.k_down, v_(47, 24));
-      b_.sprite(ps.g_dpad_down, v_(74, 16));
-      b_.sprite(ps.g_stick_down, v_(97, 16));
+      b_.drawSprite(ps.k_s, v_(22, 24));
+      b_.drawSprite(ps.k_down, v_(47, 24));
+      b_.drawSprite(ps.g_dpad_down, v_(74, 16));
+      b_.drawSprite(ps.g_stick_down, v_(97, 16));
     }
     if (ip.left) {
-      b_.sprite(ps.k_a, v_(15, 24));
-      b_.sprite(ps.k_left, v_(40, 24));
-      b_.sprite(ps.g_dpad_left, v_(74, 16));
-      b_.sprite(ps.g_stick_left, v_(97, 16));
+      b_.drawSprite(ps.k_a, v_(15, 24));
+      b_.drawSprite(ps.k_left, v_(40, 24));
+      b_.drawSprite(ps.g_dpad_left, v_(74, 16));
+      b_.drawSprite(ps.g_stick_left, v_(97, 16));
     }
     if (ip.right) {
-      b_.sprite(ps.k_d, v_(29, 24));
-      b_.sprite(ps.k_right, v_(54, 24));
-      b_.sprite(ps.g_dpad_right, v_(74, 16));
-      b_.sprite(ps.g_stick_right, v_(97, 16));
+      b_.drawSprite(ps.k_d, v_(29, 24));
+      b_.drawSprite(ps.k_right, v_(54, 24));
+      b_.drawSprite(ps.g_dpad_right, v_(74, 16));
+      b_.drawSprite(ps.g_stick_right, v_(97, 16));
     }
     if (ip.up && ip.left) {
-      b_.sprite(ps.g_dpad_up_left, v_(74, 16));
-      b_.sprite(ps.g_stick_up_left, v_(97, 16));
+      b_.drawSprite(ps.g_dpad_up_left, v_(74, 16));
+      b_.drawSprite(ps.g_stick_up_left, v_(97, 16));
     }
     if (ip.up && ip.right) {
-      b_.sprite(ps.g_dpad_up_right, v_(74, 16));
-      b_.sprite(ps.g_stick_up_right, v_(97, 16));
+      b_.drawSprite(ps.g_dpad_up_right, v_(74, 16));
+      b_.drawSprite(ps.g_stick_up_right, v_(97, 16));
     }
     if (ip.down && ip.left) {
-      b_.sprite(ps.g_dpad_down_left, v_(74, 16));
-      b_.sprite(ps.g_stick_down_left, v_(97, 16));
+      b_.drawSprite(ps.g_dpad_down_left, v_(74, 16));
+      b_.drawSprite(ps.g_stick_down_left, v_(97, 16));
     }
     if (ip.down && ip.right) {
-      b_.sprite(ps.g_dpad_down_right, v_(74, 16));
-      b_.sprite(ps.g_stick_down_right, v_(97, 16));
+      b_.drawSprite(ps.g_dpad_down_right, v_(74, 16));
+      b_.drawSprite(ps.g_stick_down_right, v_(97, 16));
     }
     if (ip.a) {
-      b_.sprite(ps.k_c, v_(37, 40));
-      b_.sprite(ps.k_j, v_(49, 40));
-      b_.sprite(ps.g_a, v_(73, 40));
-      b_.sprite(ps.g_y, v_(84, 40));
-      b_.sprite(ps.g_dualsense_cross, v_(100, 40));
-      b_.sprite(ps.g_dualsense_triangle, v_(111, 40));
+      b_.drawSprite(ps.k_c, v_(37, 40));
+      b_.drawSprite(ps.k_j, v_(49, 40));
+      b_.drawSprite(ps.g_a, v_(73, 40));
+      b_.drawSprite(ps.g_y, v_(84, 40));
+      b_.drawSprite(ps.g_dualsense_cross, v_(100, 40));
+      b_.drawSprite(ps.g_dualsense_triangle, v_(111, 40));
     }
     if (ip.b) {
-      b_.sprite(ps.k_x, v_(37, 51));
-      b_.sprite(ps.k_k, v_(49, 51));
-      b_.sprite(ps.g_b, v_(73, 51));
-      b_.sprite(ps.g_x, v_(84, 51));
-      b_.sprite(ps.g_dualsense_circle, v_(100, 51));
-      b_.sprite(ps.g_dualsense_square, v_(111, 51));
+      b_.drawSprite(ps.k_x, v_(37, 51));
+      b_.drawSprite(ps.k_k, v_(49, 51));
+      b_.drawSprite(ps.g_b, v_(73, 51));
+      b_.drawSprite(ps.g_x, v_(84, 51));
+      b_.drawSprite(ps.g_dualsense_circle, v_(100, 51));
+      b_.drawSprite(ps.g_dualsense_square, v_(111, 51));
     }
     if (ip.menu) {
-      b_.sprite(ps.k_p, v_(6, 65));
-      b_.sprite(ps.k_esc, v_(16, 65));
-      b_.sprite(ps.k_enter, v_(34, 61));
-      b_.sprite(ps.g_xbox_menu, v_(84, 65));
-      b_.sprite(ps.g_ps_menu, v_(100, 65));
+      b_.drawSprite(ps.k_p, v_(6, 65));
+      b_.drawSprite(ps.k_esc, v_(16, 65));
+      b_.drawSprite(ps.k_enter, v_(34, 61));
+      b_.drawSprite(ps.g_xbox_menu, v_(84, 65));
+      b_.drawSprite(ps.g_ps_menu, v_(100, 65));
     }
     if (ip.muteUnmute) {
-      b_.sprite(ps.k_m, v_(5, 85));
+      b_.drawSprite(ps.k_m, v_(5, 85));
     }
     if (ip.fullScreen) {
-      b_.sprite(ps.k_f, v_(5, 95));
+      b_.drawSprite(ps.k_f, v_(5, 95));
     }
     if (ip.debugToggle) {
-      b_.sprite(ps.k_semicolon, v_(118, 100));
+      b_.drawSprite(ps.k_semicolon, v_(118, 100));
     }
     if (ip.frameByFrameToggle) {
-      b_.sprite(ps.k_coma, v_(118, 110));
+      b_.drawSprite(ps.k_coma, v_(118, 110));
     }
     if (ip.frameByFrameStep) {
-      b_.sprite(ps.k_period, v_(118, 118));
+      b_.drawSprite(ps.k_period, v_(118, 118));
     }
     b_.setSpriteColorMapping(prevMapping);
   }

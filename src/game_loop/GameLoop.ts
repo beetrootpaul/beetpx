@@ -2,7 +2,7 @@ import { Logger } from "../logger/Logger";
 
 export type GameLoopCallbacks = {
   updateFn: () => void;
-  renderFn: (renderFps: number) => void;
+  renderFn: (renderingFps: number) => void;
 };
 
 type GameLoopOptions = {
@@ -76,10 +76,10 @@ export class GameLoop {
       }
     }
 
-    const renderFps = Math.floor(
+    const renderingFps = Math.floor(
       Math.min(1000 / deltaTimeMillis, GameLoop.renderFpsResultCap),
     );
-    this.#callbacks.renderFn(renderFps);
+    this.#callbacks.renderFn(renderingFps);
 
     this.#requestAnimationFrameFn(this.#tick);
   };

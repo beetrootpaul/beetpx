@@ -12,7 +12,7 @@ import { GamepadMappingFirefoxDualSenseWindows } from "./gamepad_mapping/Gamepad
 import { GamepadMappingFirefoxFallback } from "./gamepad_mapping/GamepadMappingFirefoxFallback";
 import { GamepadMappingSafari8BitDo } from "./gamepad_mapping/GamepadMappingSafari8BitDo";
 import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
-import { GamepadTypeDetector } from "./GamepadTypeDetector";
+import { BpxGamepadTypeDetector } from "./GamepadTypeDetector";
 
 export const supportedGamepadTypes = [
   "xbox",
@@ -89,12 +89,12 @@ export class GameInputGamepad implements GameInputSpecialized {
       navigator
         .getGamepads()
         .filter(u_.isDefined)
-        .map((gamepad) => GamepadTypeDetector.detect(gamepad)),
+        .map((gamepad) => BpxGamepadTypeDetector.detect(gamepad)),
     );
   }
 
   #mappingFor(gamepad: Gamepad): GamepadMapping {
-    const gamepadType = GamepadTypeDetector.detect(gamepad);
+    const gamepadType = BpxGamepadTypeDetector.detect(gamepad);
 
     if (
       this.#browserType === "firefox_windows" ||

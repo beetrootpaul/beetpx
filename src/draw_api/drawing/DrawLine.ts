@@ -4,7 +4,7 @@ import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMa
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d, v_ } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../Pattern";
 
 export class DrawLine {
   readonly #canvas: Canvas;
@@ -18,7 +18,7 @@ export class DrawLine {
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
-    pattern: BpxPattern,
+    pattern: BpxDrawingPattern,
   ): void {
     // When drawing a line, the order of drawing does matter. This is why we
     //   do not speak about xy1 (left-top) and xy2 (right-bottom) as in other
@@ -86,7 +86,7 @@ export class DrawLine {
     y: number,
     c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null,
     c2: BpxRgbColor | null,
-    pattern: BpxPattern,
+    pattern: BpxDrawingPattern,
     snapshot: CanvasSnapshot | null,
   ): void {
     if (!this.#canvas.canSetAt(x, y)) {

@@ -9,7 +9,7 @@ export class BpxPixels {
 
   readonly wh: BpxVector2d;
 
-  constructor(ascii: string) {
+  private constructor(ascii: string) {
     this.asciiRows = ascii
       .split("\n")
       .map((row) => row.replace(/\s/g, ""))
@@ -25,6 +25,6 @@ export class BpxPixels {
       }
       w = Math.max(w, row.length);
     }
-    this.wh = new BpxVector2d(w, this.asciiRows.length);
+    this.wh = BpxVector2d.of(w, this.asciiRows.length);
   }
 }

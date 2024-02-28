@@ -25,7 +25,7 @@ export class BpxSpriteColorMapping {
 
   readonly #mapping: BpxColorMapper;
 
-  constructor(mapping: BpxColorMapper) {
+  private constructor(mapping: BpxColorMapper) {
     this.#mapping = mapping;
   }
 

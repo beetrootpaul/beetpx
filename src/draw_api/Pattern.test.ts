@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { BpxPattern } from "./Pattern";
+import { BpxDrawingPattern } from "./Pattern";
 
 describe("Pattern", () => {
   [
@@ -13,13 +13,16 @@ describe("Pattern", () => {
     { bits: 0b1111_1111_1111_1111, ascii: "####\n####\n####\n####" },
   ].forEach(({ bits, ascii }) => {
     test(`from ascii (case: ${ascii})`, () => {
-      expectPatternsToBeSame(BpxPattern.of(bits), BpxPattern.from(ascii));
+      expectPatternsToBeSame(
+        BpxDrawingPattern.of(bits),
+        BpxDrawingPattern.from(ascii),
+      );
     });
   });
 
   test("#hasPrimaryColorAt", () => {
     // given
-    const pattern = BpxPattern.from(`
+    const pattern = BpxDrawingPattern.from(`
       #-#-
       --##
       #-#-
@@ -58,53 +61,58 @@ describe("Pattern", () => {
   });
 
   test("bits validation", () => {
-    expect(() => BpxPattern.of(0b1_1111_1111_1111_1111)).toThrow();
-    expect(() => BpxPattern.of(-0b0000_0000_0000_0001)).toThrow();
+    expect(() => BpxDrawingPattern.of(0b1_1111_1111_1111_1111)).toThrow();
+    expect(() => BpxDrawingPattern.of(-0b0000_0000_0000_0001)).toThrow();
   });
 
   test("ascii parsing", () => {
     // empty
-    expect(() => BpxPattern.from("")).toThrow();
-    expect(() => BpxPattern.from("              ")).toThrow();
-    expect(() => BpxPattern.from("  \n  \n  \n  ")).toThrow();
+    expect(() => BpxDrawingPattern.from("")).toThrow();
+    expect(() => BpxDrawingPattern.from("              ")).toThrow();
+    expect(() => BpxDrawingPattern.from("  \n  \n  \n  ")).toThrow();
     // wrong amount of rows
-    expect(() => BpxPattern.from("####\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n####\n####\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n####\n####")).toThrow();
+    expect(() =>
+      BpxDrawingPattern.from("####\n####\n####\n####\n####"),
+    ).toThrow();
     // wrong amount of columns
-    expect(() => BpxPattern.from("###\n####\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n###\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n####\n###\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n####\n####\n###")).toThrow();
-    expect(() => BpxPattern.from("#####\n####\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n#####\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n####\n#####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n####\n####\n#####")).toThrow();
+    expect(() => BpxDrawingPattern.from("###\n####\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n###\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n####\n###\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n####\n####\n###")).toThrow();
+    expect(() => BpxDrawingPattern.from("#####\n####\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n#####\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n####\n#####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n####\n####\n#####")).toThrow();
     // unexpected characters
-    expect(() => BpxPattern.from("####\n###_#\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n###+#\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n###|#\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n###0#\n####\n####")).toThrow();
-    expect(() => BpxPattern.from("####\n###1#\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n###_#\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n###+#\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n###|#\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n###0#\n####\n####")).toThrow();
+    expect(() => BpxDrawingPattern.from("####\n###1#\n####\n####")).toThrow();
 
     // a very sparse notation
     expectPatternsToBeSame(
-      BpxPattern.from(
+      BpxDrawingPattern.from(
         "      \n      \n    -  -- #  \n\n\n\n    -- #  # \n -##   # \n    \n  \n ##     ##    \n    \n\n   ",
       ),
-      BpxPattern.from("---#\n--##\n-###\n####"),
+      BpxDrawingPattern.from("---#\n--##\n-###\n####"),
     );
 
     // unexpected characters
     expectPatternsToBeSame(
-      BpxPattern.from(
+      BpxDrawingPattern.from(
         "      \n      \n    -  -- #  \n\n\n\n    -- #  # \n -##   # \n    \n  \n ##     ##    \n    \n\n   ",
       ),
-      BpxPattern.from("---#\n--##\n-###\n####"),
+      BpxDrawingPattern.from("---#\n--##\n-###\n####"),
     );
   });
 });
 
-function expectPatternsToBeSame(pattern1: BpxPattern, pattern2: BpxPattern) {
+function expectPatternsToBeSame(
+  pattern1: BpxDrawingPattern,
+  pattern2: BpxDrawingPattern,
+) {
   for (let y = 0; y < 4; ++y) {
     for (let x = 0; x < 4; ++x) {
       expect(pattern1.hasPrimaryColorAt(x, y)).toEqual(

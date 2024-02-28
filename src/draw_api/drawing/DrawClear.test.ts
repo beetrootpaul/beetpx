@@ -2,7 +2,7 @@ import { describe, test } from "@jest/globals";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { v_ } from "../../misc/Vector2d";
 import { drawingTestSetup } from "../DrawingTestSetup";
-import { BpxPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../Pattern";
 
 describe("DrawClear", () => {
   const c0 = BpxRgbColor.fromCssHex("#010203");
@@ -58,7 +58,7 @@ describe("DrawClear", () => {
   test("pattern does not affect the canvas clearing", () => {
     const dts = drawingTestSetup(4, 3, c0);
 
-    dts.drawApi.setPattern(BpxPattern.of(0b0101_1010_0101_1010));
+    dts.drawApi.setDrawingPattern(BpxDrawingPattern.of(0b0101_1010_0101_1010));
     dts.drawApi.clearCanvas(c1);
 
     dts.canvas.expectToEqual({

@@ -1,10 +1,10 @@
-export class BpxPattern {
+export class BpxDrawingPattern {
   /**
-   * Creates a BpxPattern from a visual representation of 4 columns and 4 rows
+   * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
    *   (designated by new lines) where `#` and `-` stand for a primary and
    *   a secondary color. Whitespaces are ignored.
    */
-  static from(ascii: string): BpxPattern {
+  static from(ascii: string): BpxDrawingPattern {
     ascii = ascii.replace(/\s/g, "");
     const indexOfUnexpectedChar = ascii.search(/[^#-]/);
     if (indexOfUnexpectedChar >= 0) {
@@ -26,15 +26,15 @@ export class BpxPattern {
       }
     }
 
-    return new BpxPattern(bits);
+    return new BpxDrawingPattern(bits);
   }
 
-  static of(bits: number): BpxPattern {
-    return new BpxPattern(bits);
+  static of(bits: number): BpxDrawingPattern {
+    return new BpxDrawingPattern(bits);
   }
 
-  static primaryOnly = BpxPattern.of(0b1111_1111_1111_1111);
-  static secondaryOnly = BpxPattern.of(0b0000_0000_0000_0000);
+  static primaryOnly = BpxDrawingPattern.of(0b1111_1111_1111_1111);
+  static secondaryOnly = BpxDrawingPattern.of(0b0000_0000_0000_0000);
 
   readonly #bits: number;
 

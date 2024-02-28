@@ -56,7 +56,7 @@ export class Button {
     this.#isPressed = isPressed;
 
     if (isPressed && this.#repeatingTimer?.hasFinished) {
-      this.#repeatingTimer = new BpxTimer({
+      this.#repeatingTimer = BpxTimer.for({
         frames: Button.repeatingFramesInterval,
       });
     }
@@ -64,7 +64,7 @@ export class Button {
     this.#repeatingTimer?.update();
 
     if (isPressed && this.#wasJustToggled) {
-      this.#repeatingTimer = new BpxTimer({
+      this.#repeatingTimer = BpxTimer.for({
         frames: Button.repeatingFramesStart,
       });
     }

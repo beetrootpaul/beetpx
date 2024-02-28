@@ -15,7 +15,7 @@ export class BpxUtils {
         throw Error(`Somehow reached the unreachable code ¯\\_(ツ)_/¯`);
     }
     static booleanChangingEveryNthFrame(n) {
-        return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
+        return n > 0 ? BeetPx.frame % (n * 2) < n : true;
     }
     
     
@@ -78,11 +78,11 @@ export class BpxUtils {
             v_(-1, 0),
         ];
     }
-    static printWithOutline(text, canvasXy1, textColor, outlineColor, opts = {}) {
+    static drawTextWithOutline(text, canvasXy1, textColor, outlineColor, opts = {}) {
         for (const offset of BpxUtils.offset8Directions()) {
-            BeetPx.print(text, canvasXy1.add(offset), outlineColor, opts);
+            BeetPx.drawText(text, canvasXy1.add(offset), outlineColor, opts);
         }
-        BeetPx.print(text, canvasXy1, textColor, opts);
+        BeetPx.drawText(text, canvasXy1, textColor, opts);
     }
     static randomElementOf(array) {
         if (array.length <= 0)

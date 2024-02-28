@@ -2,7 +2,7 @@ import { describe, test } from "@jest/globals";
 import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../misc/Vector2d";
 import { drawingTestSetup } from "./DrawingTestSetup";
-import { BpxPattern } from "./Pattern";
+import { BpxDrawingPattern } from "./Pattern";
 
 // Most of the DrawApi is tested in specialized tests for e.g. ellipse,
 //   sprite, etc. Here we cover only some other, common bits.
@@ -13,7 +13,7 @@ describe("DrawApi", () => {
   test("clipping region", () => {
     const dts = drawingTestSetup(27, 15, c0);
 
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -38,7 +38,7 @@ describe("DrawApi", () => {
 
     let prev = dts.drawApi.setClippingRegion(v_(3, 2), v_(21, 11));
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -63,7 +63,7 @@ describe("DrawApi", () => {
 
     prev = dts.drawApi.setClippingRegion(prev[0], prev[1]);
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -88,7 +88,7 @@ describe("DrawApi", () => {
 
     dts.drawApi.setClippingRegion(prev[0], prev[1]);
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -113,7 +113,7 @@ describe("DrawApi", () => {
 
     prev = dts.drawApi.removeClippingRegion();
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -138,7 +138,7 @@ describe("DrawApi", () => {
 
     prev = dts.drawApi.setClippingRegion(prev[0], prev[1]);
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -165,7 +165,7 @@ describe("DrawApi", () => {
   test("camera XY", () => {
     const dts = drawingTestSetup(27, 15, c0);
 
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -190,7 +190,7 @@ describe("DrawApi", () => {
 
     let prev = dts.drawApi.setCameraXy(v_(3, -2));
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -215,7 +215,7 @@ describe("DrawApi", () => {
 
     dts.drawApi.setCameraXy(prev);
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -242,7 +242,7 @@ describe("DrawApi", () => {
   test("pattern", () => {
     const dts = drawingTestSetup(27, 15, c0);
 
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -265,8 +265,8 @@ describe("DrawApi", () => {
       `,
     });
 
-    let prev = dts.drawApi.setPattern(
-      BpxPattern.from(`
+    let prev = dts.drawApi.setDrawingPattern(
+      BpxDrawingPattern.from(`
         ##--
         ##--
         --##
@@ -274,7 +274,7 @@ describe("DrawApi", () => {
       `),
     );
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -297,9 +297,9 @@ describe("DrawApi", () => {
       `,
     });
 
-    dts.drawApi.setPattern(prev);
+    dts.drawApi.setDrawingPattern(prev);
     dts.drawApi.clearCanvas(c0);
-    dts.drawApi.ellipseFilled(v_(1, 1), v_(25, 13), c1);
+    dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },

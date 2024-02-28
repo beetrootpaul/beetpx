@@ -9,34 +9,37 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_assetLoader, _Framework_canvas, _Framework_isStarted, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_frameNumber, _Framework_renderFps, _Framework_alreadyResumedAudioContext, _Framework_startGame;
-import { BeetPx } from "./BeetPx";
-import { HtmlTemplate } from "./HtmlTemplate";
-import { BpxUtils, u_ } from "./Utils";
+var _Framework_instances, _a, _Framework_storageDebugDisabledKey, _Framework_storageDebugDisabledTrue, _Framework_frameByFrame, _Framework_browserType, _Framework_gameCanvasSize, _Framework_htmlCanvasBackground, _Framework_loading, _Framework_gameLoop, _Framework_assetLoader, _Framework_canvas, _Framework_isStarted, _Framework_onStarted, _Framework_onUpdate, _Framework_onDraw, _Framework_currentFrame, _Framework_renderingFps, _Framework_alreadyResumedAudioContext, _Framework_startGame;
 import { AssetLoader } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { BeetPx } from "./BeetPx";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, black_ } from "./color/RgbColor";
+import { black_, BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
 import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
-import { GameInput } from "./game_input/GameInput";
 import { Button } from "./game_input/buttons/Button";
+import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
+import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxUtils, u_ } from "./Utils";
 export class Framework {
-    get frameNumber() {
-        return __classPrivateFieldGet(this, _Framework_frameNumber, "f");
+    get frame() {
+        return __classPrivateFieldGet(this, _Framework_currentFrame, "f");
     }
-    get renderFps() {
-        return __classPrivateFieldGet(this, _Framework_renderFps, "f");
+    get renderingFps() {
+        return __classPrivateFieldGet(this, _Framework_renderingFps, "f");
+    }
+    get detectedBrowserType() {
+        return __classPrivateFieldGet(this, _Framework_browserType, "f");
     }
     constructor(options) {
         _Framework_instances.add(this);
@@ -52,8 +55,8 @@ export class Framework {
         _Framework_onStarted.set(this, void 0);
         _Framework_onUpdate.set(this, void 0);
         _Framework_onDraw.set(this, void 0);
-        _Framework_frameNumber.set(this, 0);
-        _Framework_renderFps.set(this, 1);
+        _Framework_currentFrame.set(this, 0);
+        _Framework_renderingFps.set(this, 1);
         
         _Framework_alreadyResumedAudioContext.set(this, false);
         window.addEventListener("error", (event) => {
@@ -61,7 +64,7 @@ export class Framework {
             
             
             this.audioApi
-                ?.__internal__audioContext()
+                ?.getAudioContext()
                 .suspend()
                 .then(() => { });
             
@@ -72,7 +75,7 @@ export class Framework {
             
             
             this.audioApi
-                ?.__internal__audioContext()
+                ?.getAudioContext()
                 .suspend()
                 .then(() => { });
         });
@@ -130,9 +133,6 @@ export class Framework {
             assets: this.assets,
         });
     }
-    detectedBrowserType() {
-        return __classPrivateFieldGet(this, _Framework_browserType, "f");
-    }
     async init(assetsToLoad) {
         assetsToLoad.fonts.push({
             font: new BpxFontSaint11Minimal4(),
@@ -158,13 +158,13 @@ export class Framework {
         __classPrivateFieldSet(this, _Framework_onDraw, onDraw, "f");
     }
     restart() {
-        __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
+        __classPrivateFieldSet(this, _Framework_currentFrame, 0, "f");
         this.audioApi.restart();
         BeetPx.clearCanvas(black_);
         __classPrivateFieldGet(this, _Framework_onStarted, "f")?.call(this);
     }
 }
-_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_assetLoader = new WeakMap(), _Framework_canvas = new WeakMap(), _Framework_isStarted = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_frameNumber = new WeakMap(), _Framework_renderFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = async function _Framework_startGame() {
+_a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType = new WeakMap(), _Framework_gameCanvasSize = new WeakMap(), _Framework_htmlCanvasBackground = new WeakMap(), _Framework_loading = new WeakMap(), _Framework_gameLoop = new WeakMap(), _Framework_assetLoader = new WeakMap(), _Framework_canvas = new WeakMap(), _Framework_isStarted = new WeakMap(), _Framework_onStarted = new WeakMap(), _Framework_onUpdate = new WeakMap(), _Framework_onDraw = new WeakMap(), _Framework_currentFrame = new WeakMap(), _Framework_renderingFps = new WeakMap(), _Framework_alreadyResumedAudioContext = new WeakMap(), _Framework_instances = new WeakSet(), _Framework_startGame = async function _Framework_startGame() {
     if (__classPrivateFieldGet(this, _Framework_isStarted, "f")) {
         throw Error("Tried to start a game, but it is already started");
     }
@@ -183,7 +183,7 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
             return "";
         });
     }
-    __classPrivateFieldSet(this, _Framework_frameNumber, 0, "f");
+    __classPrivateFieldSet(this, _Framework_currentFrame, 0, "f");
     await __classPrivateFieldGet(this, _Framework_loading, "f").showStartScreen();
     __classPrivateFieldGet(this, _Framework_onStarted, "f")?.call(this);
     this.gameInput.startListening();
@@ -229,16 +229,16 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
             }
             if (shouldUpdate) {
                 if (__classPrivateFieldGet(this, _Framework_frameByFrame, "f")) {
-                    Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_frameNumber, "f")}`);
+                    Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Framework_currentFrame, "f")}`);
                 }
                 __classPrivateFieldGet(this, _Framework_onUpdate, "f")?.call(this);
-                __classPrivateFieldSet(this, _Framework_frameNumber, __classPrivateFieldGet(this, _Framework_frameNumber, "f") >= Number.MAX_SAFE_INTEGER
+                __classPrivateFieldSet(this, _Framework_currentFrame, __classPrivateFieldGet(this, _Framework_currentFrame, "f") >= Number.MAX_SAFE_INTEGER
                     ? 0
-                    : __classPrivateFieldGet(this, _Framework_frameNumber, "f") + 1, "f");
+                    : __classPrivateFieldGet(this, _Framework_currentFrame, "f") + 1, "f");
             }
         },
-        renderFn: (renderFps) => {
-            __classPrivateFieldSet(this, _Framework_renderFps, renderFps, "f");
+        renderFn: (renderingFps) => {
+            __classPrivateFieldSet(this, _Framework_renderingFps, renderingFps, "f");
             __classPrivateFieldGet(this, _Framework_onDraw, "f")?.call(this);
             __classPrivateFieldGet(this, _Framework_canvas, "f").render();
         },

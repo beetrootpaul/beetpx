@@ -4,7 +4,7 @@ import { PrintDebug } from "../debug/PrintDebug";
 import { BpxUtils } from "../Utils";
 
 export function v_(x: number, y: number): BpxVector2d {
-  return new BpxVector2d(x, y);
+  return BpxVector2d.of(x, y);
 }
 
 export class BpxVector2d implements PrintDebug {
@@ -18,7 +18,11 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
-  constructor(
+  static of(x: number, y: number): BpxVector2d {
+    return new BpxVector2d(x, y);
+  }
+
+  private constructor(
     readonly x: number,
     readonly y: number,
   ) {}

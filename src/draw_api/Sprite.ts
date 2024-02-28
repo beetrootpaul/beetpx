@@ -11,16 +11,28 @@ type SpriteCreationHelper = (
 export function spr_(imageUrl: BpxImageUrl): SpriteCreationHelper {
   return (x1: number, y1: number, w: number, h: number) => {
     const xy1 = v_(x1, y1);
-    return new BpxSprite(imageUrl, xy1, xy1.add(v_(w, h)));
+    return BpxSprite.of(imageUrl, xy1, xy1.add(v_(w, h)));
   };
 }
 
 export class BpxSprite {
+  static of(
+    imageUrl: BpxImageUrl,
+    xy1: BpxVector2d,
+    xy2: BpxVector2d,
+  ): BpxSprite {
+    return new BpxSprite(imageUrl, xy1, xy2);
+  }
+
   imageUrl: BpxImageUrl;
   xy1: BpxVector2d;
   xy2: BpxVector2d;
 
-  constructor(imageUrl: BpxImageUrl, xy1: BpxVector2d, xy2: BpxVector2d) {
+  private constructor(
+    imageUrl: BpxImageUrl,
+    xy1: BpxVector2d,
+    xy2: BpxVector2d,
+  ) {
     this.imageUrl = imageUrl;
     this.xy1 = xy1.round();
     this.xy2 = xy2.round();

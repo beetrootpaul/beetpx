@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { GamepadTypeDetector } from "./GamepadTypeDetector";
+import { BpxGamepadTypeDetector } from "./GamepadTypeDetector";
 
 describe("GamepadTypeDetector", () => {
   [
@@ -23,7 +23,7 @@ describe("GamepadTypeDetector", () => {
     "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
   ].forEach((id) => {
     test(`Xbox (id = "${id}")`, () => {
-      expect(GamepadTypeDetector.detect(gamepad(id))).toEqual("xbox");
+      expect(BpxGamepadTypeDetector.detect(gamepad(id))).toEqual("xbox");
     });
   });
 
@@ -49,7 +49,7 @@ describe("GamepadTypeDetector", () => {
     "054c-0ce6-Wireless Controller",
   ].forEach((id) => {
     test(`DualSense (id = "${id}")`, () => {
-      expect(GamepadTypeDetector.detect(gamepad(id))).toEqual("dualsense");
+      expect(BpxGamepadTypeDetector.detect(gamepad(id))).toEqual("dualsense");
     });
   });
 
@@ -75,14 +75,14 @@ describe("GamepadTypeDetector", () => {
     "2dc8-5112-Bluetooth Wireless Controller   ",
   ].forEach((id) => {
     test(`8BitDo (id = "${id}")`, () => {
-      expect(GamepadTypeDetector.detect(gamepad(id))).toEqual("8bitdo");
+      expect(BpxGamepadTypeDetector.detect(gamepad(id))).toEqual("8bitdo");
     });
   });
 
   test("other", () => {
-    expect(GamepadTypeDetector.detect(gamepad("anything unexpected"))).toEqual(
-      "other",
-    );
+    expect(
+      BpxGamepadTypeDetector.detect(gamepad("anything unexpected")),
+    ).toEqual("other");
   });
 });
 

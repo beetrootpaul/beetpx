@@ -10,11 +10,10 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawApi_assets, _DrawApi_canvas, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_pattern, _DrawApi_spriteColorMapping, _DrawApi_fontAsset;
-import { BpxUtils } from "../Utils";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { Logger } from "../logger/Logger";
 import { v_, v_1_1_ } from "../misc/Vector2d";
-import { BpxPattern } from "./Pattern";
+import { BpxUtils } from "../Utils";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
 import { DrawLine } from "./drawing/DrawLine";
@@ -23,6 +22,7 @@ import { DrawPixels } from "./drawing/DrawPixels";
 import { DrawRect } from "./drawing/DrawRect";
 import { DrawSprite } from "./drawing/DrawSprite";
 import { DrawText } from "./drawing/DrawText";
+import { BpxDrawingPattern } from "./Pattern";
 export class DrawApi {
     constructor(options) {
         _DrawApi_assets.set(this, void 0);
@@ -36,7 +36,7 @@ export class DrawApi {
         _DrawApi_sprite.set(this, void 0);
         _DrawApi_text.set(this, void 0);
         this.cameraXy = v_(0, 0);
-        _DrawApi_pattern.set(this, BpxPattern.primaryOnly);
+        _DrawApi_pattern.set(this, BpxDrawingPattern.primaryOnly);
         _DrawApi_spriteColorMapping.set(this, BpxSpriteColorMapping.noMapping);
         _DrawApi_fontAsset.set(this, null);
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
@@ -64,30 +64,30 @@ export class DrawApi {
         this.cameraXy = xy;
         return prev;
     }
-    setPattern(pattern) {
+    setDrawingPattern(pattern) {
         const prev = __classPrivateFieldGet(this, _DrawApi_pattern, "f");
         __classPrivateFieldSet(this, _DrawApi_pattern, pattern, "f");
         return prev;
     }
-    pixel(xy, color) {
+    drawPixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(this.cameraXy), color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    pixels(pixels, xy, color, opts = {}) {
+    drawPixels(pixels, xy, color, opts = {}) {
         __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    line(xy, wh, color) {
+    drawLine(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(this.cameraXy), wh, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    rect(xy, wh, color) {
+    drawRect(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, false, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    rectFilled(xy, wh, color) {
+    drawRectFilled(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, true, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    ellipse(xy, wh, color) {
+    drawEllipse(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, false, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    ellipseFilled(xy, wh, color) {
+    drawEllipseFilled(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, true, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     setSpriteColorMapping(spriteColorMapping) {
@@ -95,7 +95,7 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_spriteColorMapping, spriteColorMapping, "f");
         return prev;
     }
-    sprite(sprite, xy, opts = {}) {
+    drawSprite(sprite, xy, opts = {}) {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite, sourceImageAsset, xy.sub(this.cameraXy), opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
@@ -107,7 +107,7 @@ export class DrawApi {
     getFont() {
         return __classPrivateFieldGet(this, _DrawApi_fontAsset, "f")?.font ?? null;
     }
-    print(text, xy, color, opts = {}) {
+    drawText(text, xy, color, opts = {}) {
         const centerXy = opts.centerXy ?? [false, false];
         if (centerXy[0] || centerXy[1]) {
             const [_, size] = BpxUtils.measureText(text);

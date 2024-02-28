@@ -71,13 +71,15 @@ export class AudioApi {
             return false;
         });
     }
-    playSoundOnce(soundUrl, muteOnStart = false) {
-        Logger.debugBeetPx(`AudioApi.playSoundOnce (muteOnStart: ${muteOnStart})`);
+    startPlayback(soundUrl, opts) {
+        opts ?? (opts = {});
+        opts.muteOnStart ?? (opts.muteOnStart = true);
+        Logger.debugBeetPx(`AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackOnce(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
             audioContext: __classPrivateFieldGet(this, _AudioApi_audioContext, "f"),
             target: __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f"),
-            muteOnStart,
+            muteOnStart: opts.muteOnStart,
             onEnded: () => {
                 __classPrivateFieldGet(this, _AudioApi_playbacks, "f").delete(playback.id);
             },
@@ -85,13 +87,15 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f").set(playback.id, playback);
         return playback.id;
     }
-    playSoundLooped(soundUrl, muteOnStart = false) {
-        Logger.debugBeetPx(`AudioApi.playSoundLooped (muteOnStart: ${muteOnStart})`);
+    startPlaybackLooped(soundUrl, opts) {
+        opts ?? (opts = {});
+        opts.muteOnStart ?? (opts.muteOnStart = true);
+        Logger.debugBeetPx(`AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackLooped(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
             audioContext: __classPrivateFieldGet(this, _AudioApi_audioContext, "f"),
             target: __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f"),
-            muteOnStart,
+            muteOnStart: opts.muteOnStart,
             onEnded: () => {
                 __classPrivateFieldGet(this, _AudioApi_playbacks, "f").delete(playback.id);
             },
@@ -99,13 +103,15 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f").set(playback.id, playback);
         return playback.id;
     }
-    playSoundSequence(soundSequence, muteOnStart = false) {
-        Logger.debugBeetPx(`AudioApi.playSoundSequence (muteOnStart: ${muteOnStart})`);
+    startPlaybackSequence(soundSequence, opts) {
+        opts ?? (opts = {});
+        opts.muteOnStart ?? (opts.muteOnStart = true);
+        Logger.debugBeetPx(`AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackSequence(soundSequence, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
             audioContext: __classPrivateFieldGet(this, _AudioApi_audioContext, "f"),
             target: __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f"),
-            muteOnStart,
+            muteOnStart: opts.muteOnStart,
             onEnded: () => {
                 __classPrivateFieldGet(this, _AudioApi_playbacks, "f").delete(playback.id);
             },
@@ -195,10 +201,10 @@ export class AudioApi {
             ? 0
             : opts.fadeOutMillis ?? __classPrivateFieldGet(_a, _a, "f", _AudioApi_muteUnmuteDefaultFadeMillis));
     }
-    __internal__audioContext() {
+    getAudioContext() {
         return __classPrivateFieldGet(this, _AudioApi_audioContext, "f");
     }
-    __internal__globalGainNode() {
+    getGlobalGainNode() {
         return __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f");
     }
 }

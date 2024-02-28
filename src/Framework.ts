@@ -1,28 +1,28 @@
-import { BeetPx } from "./BeetPx";
-import { HtmlTemplate } from "./HtmlTemplate";
-import { BpxUtils, u_ } from "./Utils";
 import { AssetLoader, AssetsToLoad } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { BeetPx } from "./BeetPx";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, black_ } from "./color/RgbColor";
+import { black_, BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
 import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
-import { GameInput } from "./game_input/GameInput";
 import { Button } from "./game_input/buttons/Button";
+import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
+import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d, v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxUtils, u_ } from "./Utils";
 
 export type FrameworkOptions = {
   gameCanvasSize: "64x64" | "128x128" | "256x256";
@@ -66,18 +66,22 @@ export class Framework {
   #onUpdate?: () => void;
   #onDraw?: () => void;
 
-  #frameNumber: number = 0;
-  #renderFps: number = 1;
+  #currentFrame: number = 0;
+  #renderingFps: number = 1;
 
   // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
   #alreadyResumedAudioContext: boolean = false;
 
-  get frameNumber(): number {
-    return this.#frameNumber;
+  get frame(): number {
+    return this.#currentFrame;
   }
 
-  get renderFps(): number {
-    return this.#renderFps;
+  get renderingFps(): number {
+    return this.#renderingFps;
+  }
+
+  get detectedBrowserType(): BpxBrowserType {
+    return this.#browserType;
   }
 
   constructor(options: FrameworkOptions) {
@@ -86,7 +90,7 @@ export class Framework {
       // Pause music. But do it after other operations, since there
       //   might be some new unexpected an error thrown here.
       this.audioApi
-        ?.__internal__audioContext()
+        ?.getAudioContext()
         .suspend()
         .then(() => {});
       // returning `true` here means the error is already handled by us
@@ -97,7 +101,7 @@ export class Framework {
       // Pause music. But do it after other operations, since there
       //   might be some new unexpected an error thrown here.
       this.audioApi
-        ?.__internal__audioContext()
+        ?.getAudioContext()
         .suspend()
         .then(() => {});
     });
@@ -189,10 +193,6 @@ export class Framework {
     });
   }
 
-  detectedBrowserType(): BpxBrowserType {
-    return this.#browserType;
-  }
-
   async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
     assetsToLoad.fonts.push({
       font: new BpxFontSaint11Minimal4(),
@@ -224,7 +224,7 @@ export class Framework {
   }
 
   restart() {
-    this.#frameNumber = 0;
+    this.#currentFrame = 0;
 
     this.audioApi.restart();
 
@@ -254,7 +254,7 @@ export class Framework {
       });
     }
 
-    this.#frameNumber = 0;
+    this.#currentFrame = 0;
 
     await this.#loading.showStartScreen();
 
@@ -310,20 +310,20 @@ export class Framework {
         if (shouldUpdate) {
           if (this.#frameByFrame) {
             Logger.infoBeetPx(
-              `Running onUpdate for frame: ${this.#frameNumber}`,
+              `Running onUpdate for frame: ${this.#currentFrame}`,
             );
           }
 
           this.#onUpdate?.();
 
-          this.#frameNumber =
-            this.#frameNumber >= Number.MAX_SAFE_INTEGER
+          this.#currentFrame =
+            this.#currentFrame >= Number.MAX_SAFE_INTEGER
               ? 0
-              : this.#frameNumber + 1;
+              : this.#currentFrame + 1;
         }
       },
-      renderFn: (renderFps) => {
-        this.#renderFps = renderFps;
+      renderFn: (renderingFps) => {
+        this.#renderingFps = renderingFps;
 
         this.#onDraw?.();
 

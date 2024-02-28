@@ -4,7 +4,7 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxCharSprite } from "../../font/Font";
 import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
-import { BpxPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../Pattern";
 import { spr_ } from "../Sprite";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
@@ -32,7 +32,7 @@ export class DrawText {
     canvasXy: BpxVector2d,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
     scaleXy: BpxVector2d,
-    pattern: BpxPattern,
+    pattern: BpxDrawingPattern,
   ): void {
     canvasXy = canvasXy.round();
     scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
@@ -40,12 +40,12 @@ export class DrawText {
     const colorMapping =
       typeof color === "function"
         ? (charSprite: BpxCharSprite) =>
-            new BpxSpriteColorMapping((spriteColor) =>
+            BpxSpriteColorMapping.of((spriteColor) =>
               spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
                 ? color(charSprite)
                 : null,
             )
-        : new BpxSpriteColorMapping((spriteColor) =>
+        : BpxSpriteColorMapping.of((spriteColor) =>
             spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
               ? color
               : null,
