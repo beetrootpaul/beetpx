@@ -369,6 +369,37 @@ describe("Timer", () => {
       expect(timer.hasJustFinished).toBe(false);
     });
 
+    test("already paused timer", () => {
+      const timer = timer_(5, { pause: true });
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.resume();
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
     test("restart", () => {
       const timer = timer_(5);
 
@@ -876,6 +907,45 @@ describe("Timer", () => {
       expect(timer.hasJustFinished).toBe(true);
 
       incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
+    test("already paused timer", () => {
+      const timer = timer_(5, { loop: true, pause: true });
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.resume();
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      u_.range(5).forEach(() => {
+        incrementFrameNumber();
+      });
       expect(timer.t).toBe(1);
       expect(timer.progress).toBe(0.2);
       expect(timer.framesLeft).toBe(4);

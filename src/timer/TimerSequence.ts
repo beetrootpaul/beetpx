@@ -1,22 +1,37 @@
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
 
-export function timerSeq_<TPhase extends string>(params: {
-  intro?: Array<[phase: TPhase, frames: number]>;
-  loop?: Array<[phase: TPhase, frames: number]>;
-}): BpxTimerSequence<TPhase> {
-  return BpxTimerSequence.of<TPhase>({
-    intro: params.intro ?? [],
-    loop: params.loop ?? [],
-  });
+export function timerSeq_<TPhase extends string>(
+  params: {
+    intro?: Array<[phase: TPhase, frames: number]>;
+    loop?: Array<[phase: TPhase, frames: number]>;
+  },
+  opts?: {
+    pause?: boolean;
+  },
+): BpxTimerSequence<TPhase> {
+  return BpxTimerSequence.of<TPhase>(
+    {
+      intro: params.intro ?? [],
+      loop: params.loop ?? [],
+    },
+    {
+      pause: opts?.pause ?? false,
+    },
+  );
 }
 
 export class BpxTimerSequence<TPhase extends string> {
-  static of<TPhase extends string>(params: {
-    intro: Array<[phase: TPhase, frames: number]>;
-    loop: Array<[phase: TPhase, frames: number]>;
-  }): BpxTimerSequence<TPhase> {
-    return new BpxTimerSequence(params);
+  static of<TPhase extends string>(
+    params: {
+      intro: Array<[phase: TPhase, frames: number]>;
+      loop: Array<[phase: TPhase, frames: number]>;
+    },
+    opts: {
+      pause: boolean;
+    },
+  ): BpxTimerSequence<TPhase> {
+    return new BpxTimerSequence(params, opts);
   }
 
   readonly #phases: Array<{ name: TPhase; frames: number; timer: BpxTimer }>;
@@ -24,18 +39,24 @@ export class BpxTimerSequence<TPhase extends string> {
 
   readonly #offsetFrame: number = 0;
 
-  private constructor(params: {
-    // TODO: test
-    intro: Array<[phase: TPhase, frames: number]>;
-    // TODO: test
-    loop: Array<[phase: TPhase, frames: number]>;
-  }) {
+  private constructor(
+    params: {
+      // TODO: test
+      intro: Array<[phase: TPhase, frames: number]>;
+      // TODO: test
+      loop: Array<[phase: TPhase, frames: number]>;
+    },
+    opts: {
+      // TODO: implement it + test
+      pause: boolean;
+    },
+  ) {
     // TODO: rounding? clamping?
 
     this.#phases = params.intro.map((entry) => ({
       name: entry[0],
       frames: entry[1],
-      timer: BpxTimer.for({ frames: entry[1], loop: false }),
+      timer: BpxTimer.for({ frames: entry[1], loop: false, pause: false }),
     }));
     this.#frames = this.#phases.reduce((acc, p) => acc + p.frames, 0);
 

@@ -1,15 +1,23 @@
 import { BeetPx } from "../BeetPx";
 import { BpxUtils } from "../Utils";
 
-export function timer_(frames: number, opts?: { loop?: boolean }): BpxTimer {
+export function timer_(
+  frames: number,
+  opts?: { loop?: boolean; pause?: boolean },
+): BpxTimer {
   return BpxTimer.for({
     frames,
     loop: opts?.loop ?? false,
+    pause: opts?.pause ?? false,
   });
 }
 
 export class BpxTimer {
-  static for(params: { frames: number; loop: boolean }): BpxTimer {
+  static for(params: {
+    frames: number;
+    loop: boolean;
+    pause: boolean;
+  }): BpxTimer {
     return new BpxTimer(params);
   }
 
@@ -19,10 +27,19 @@ export class BpxTimer {
   #offsetFrame: number = 0;
   #pausedFrame: number | null = null;
 
-  private constructor(params: { frames: number; loop: boolean }) {
+  private constructor(params: {
+    frames: number;
+    loop: boolean;
+    pause: boolean;
+  }) {
     this.#frames = Math.max(0, Math.round(params.frames));
     this.#loop = params.loop;
+
     this.restart();
+
+    if (params.pause) {
+      this.pause();
+    }
   }
 
   get #tRaw(): number {

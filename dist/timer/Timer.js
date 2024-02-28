@@ -16,6 +16,7 @@ export function timer_(frames, opts) {
     return BpxTimer.for({
         frames,
         loop: opts?.loop ?? false,
+        pause: opts?.pause ?? false,
     });
 }
 export class BpxTimer {
@@ -31,6 +32,9 @@ export class BpxTimer {
         __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(params.frames)), "f");
         __classPrivateFieldSet(this, _BpxTimer_loop, params.loop, "f");
         this.restart();
+        if (params.pause) {
+            this.pause();
+        }
     }
     get t() {
         return __classPrivateFieldGet(this, _BpxTimer_loop, "f")

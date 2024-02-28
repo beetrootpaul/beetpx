@@ -434,12 +434,14 @@ declare class BpxAnimatedSprite {
 
 declare function timer_(frames: number, opts?: {
     loop?: boolean;
+    pause?: boolean;
 }): BpxTimer;
 declare class BpxTimer {
     #private;
     static for(params: {
         frames: number;
         loop: boolean;
+        pause: boolean;
     }): BpxTimer;
     private constructor();
     get t(): number;

@@ -6,16 +6,19 @@ import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
 //
 
 {
-  const ts = BpxTimerSequence.of({
-    intro: [
-      ["aaa", 111],
-      ["bbb", 222],
-    ],
-    loop: [
-      ["ccc", 333],
-      ["ddd", 444],
-    ],
-  });
+  const ts = BpxTimerSequence.of(
+    {
+      intro: [
+        ["aaa", 111],
+        ["bbb", 222],
+      ],
+      loop: [
+        ["ccc", 333],
+        ["ddd", 444],
+      ],
+    },
+    { pause: false },
+  );
 
   switch (ts.phase) {
     case "aaa":
