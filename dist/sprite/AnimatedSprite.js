@@ -18,7 +18,6 @@ export function aspr_(imageUrl) {
         return BpxAnimatedSprite.from(imageUrl, w, h, xys);
     };
 }
-
 export class BpxAnimatedSprite {
     static from(imageUrl, w, h, xys) {
         return new BpxAnimatedSprite({ imageUrl, w, h, xys });
