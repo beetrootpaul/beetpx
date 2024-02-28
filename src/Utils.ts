@@ -77,7 +77,7 @@ export class BpxUtils {
    * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
    */
   static mod(value: number, modulus: number): number {
-    return ((value % modulus) + modulus) % modulus;
+    return modulus === 0 ? 0 : ((value % modulus) + modulus) % modulus;
   }
 
   static noop(): void {}

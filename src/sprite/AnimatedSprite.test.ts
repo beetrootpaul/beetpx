@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { BeetPx } from "../BeetPx";
-import { BpxUtils } from "../Utils";
+import { u_ } from "../Utils";
 import { v_ } from "../misc/Vector2d";
 import { aspr_ } from "./AnimatedSprite";
 
@@ -9,10 +9,10 @@ describe("AnimatedSprite", () => {
     jest
       .spyOn(BeetPx, "frameNumber", "get")
       .mockImplementation(() => stubbedFrameNumber);
+    nextFrameNumberWillBe(501);
   });
 
-  test("aspr_", () => {
-    nextFrameNumberWillBe(501);
+  test("construction", () => {
     const sprite = aspr_("any.image.url")(90, 91, [
       [1, 10],
       [2, 20],
@@ -29,7 +29,6 @@ describe("AnimatedSprite", () => {
   });
 
   test("normalization", () => {
-    nextFrameNumberWillBe(501);
     const sprite = aspr_("any.image.url")(-90, -91, [
       [-1, -10],
       [-2, -20],
@@ -52,7 +51,6 @@ describe("AnimatedSprite", () => {
   });
 
   test("an uninterrupted animation", () => {
-    nextFrameNumberWillBe(501);
     const xys: [number, number][] = [
       [1, 10],
       [2, 20],
@@ -67,26 +65,56 @@ describe("AnimatedSprite", () => {
     incrementFrameNumber();
     expect(sprite.current.xy).toEqual(v_(1, 10));
 
-    BpxUtils.range(xys.length).forEach(() => {
+    u_.range(xys.length).forEach(() => {
       incrementFrameNumber();
     });
+    expect(sprite.current.xy).toEqual(v_(1, 10));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual(v_(2, 20));
+  });
+
+  test("when time moves backward", () => {
+    nextFrameNumberWillBe(501);
+    const xys: [number, number][] = [
+      [1, 10],
+      [2, 20],
+      [3, 30],
+    ];
+    const sprite = aspr_("any.image.url")(90, 91, xys);
+    expect(sprite.current.xy).toEqual(v_(1, 10));
+    incrementFrameNumber();
+    incrementFrameNumber();
+    incrementFrameNumber();
     expect(sprite.current.xy).toEqual(v_(1, 10));
 
     nextFrameNumberWillBe(503);
     expect(sprite.current.xy).toEqual(v_(3, 30));
 
     nextFrameNumberWillBe(502);
-    const sameSpriteCreatedAtDifferentMoment = aspr_("any.image.url")(90, 91, [
-      [1, 10],
-      [2, 20],
-      [3, 30],
-    ]);
-    expect(sameSpriteCreatedAtDifferentMoment.current.xy).toEqual(v_(1, 10));
     expect(sprite.current.xy).toEqual(v_(2, 20));
   });
 
+  test("two animations started at different moments", () => {
+    const xys: [number, number][] = [
+      [1, 10],
+      [2, 20],
+      [3, 30],
+    ];
+    const sprite1 = aspr_("any.image.url")(90, 91, xys);
+    expect(sprite1.current.xy).toEqual(v_(1, 10));
+
+    incrementFrameNumber();
+    expect(sprite1.current.xy).toEqual(v_(2, 20));
+
+    const sprite2 = aspr_("any.image.url")(90, 91, xys);
+    expect(sprite2.current.xy).toEqual(v_(1, 10));
+
+    incrementFrameNumber();
+    expect(sprite1.current.xy).toEqual(v_(3, 30));
+    expect(sprite2.current.xy).toEqual(v_(2, 20));
+  });
+
   test("pause/resume", () => {
-    nextFrameNumberWillBe(501);
     const xys: [number, number][] = [
       [1, 10],
       [2, 20],
@@ -138,7 +166,7 @@ describe("AnimatedSprite", () => {
     expect(sprite.current.xy).toEqual(v_(2, 20));
     incrementFrameNumber();
     expect(sprite.current.xy).toEqual(v_(3, 30));
-    BpxUtils.range(xys.length).forEach(() => {
+    u_.range(xys.length).forEach(() => {
       incrementFrameNumber();
     });
     expect(sprite.current.xy).toEqual(v_(3, 30));
@@ -151,7 +179,6 @@ describe("AnimatedSprite", () => {
   });
 
   test("pause more than once", () => {
-    nextFrameNumberWillBe(501);
     const xys: [number, number][] = [
       [1, 10],
       [2, 20],
@@ -188,7 +215,6 @@ describe("AnimatedSprite", () => {
   });
 
   test("resume more than once", () => {
-    nextFrameNumberWillBe(501);
     const xys: [number, number][] = [
       [1, 10],
       [2, 20],
@@ -225,7 +251,6 @@ describe("AnimatedSprite", () => {
   });
 
   test("resume without pausing first", () => {
-    nextFrameNumberWillBe(501);
     const xys: [number, number][] = [
       [1, 10],
       [2, 20],
@@ -244,7 +269,6 @@ describe("AnimatedSprite", () => {
   });
 
   test("restart", () => {
-    nextFrameNumberWillBe(501);
     const xys: [number, number][] = [
       [1, 10],
       [2, 20],
@@ -273,7 +297,6 @@ describe("AnimatedSprite", () => {
   });
 
   test("restart of a paused animation makes it no longer paused", () => {
-    nextFrameNumberWillBe(501);
     const xys: [number, number][] = [
       [1, 10],
       [2, 20],
