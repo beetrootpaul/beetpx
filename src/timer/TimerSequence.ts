@@ -1,16 +1,16 @@
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
 
-export function timerSeq_<TPhase extends string>(
+export function timerSeq_<TPhaseName extends string>(
   params: {
-    intro?: Array<[phase: TPhase, frames: number]>;
-    loop?: Array<[phase: TPhase, frames: number]>;
+    intro?: Array<[phase: TPhaseName, frames: number]>;
+    loop?: Array<[phase: TPhaseName, frames: number]>;
   },
   opts?: {
     pause?: boolean;
   },
-): BpxTimerSequence<TPhase> {
-  return BpxTimerSequence.of<TPhase>(
+): BpxTimerSequence<TPhaseName> {
+  return BpxTimerSequence.of<TPhaseName>(
     {
       intro: params.intro ?? [],
       loop: params.loop ?? [],
@@ -21,30 +21,49 @@ export function timerSeq_<TPhase extends string>(
   );
 }
 
-export class BpxTimerSequence<TPhase extends string> {
-  static of<TPhase extends string>(
+type Phase<TPhaseName extends string> = {
+  name: TPhaseName;
+  frames: number;
+  timer: BpxTimer;
+};
+
+type Now<TPhaseName extends string> = {
+  offsetCurr: number;
+  offsetNext: number;
+  phase: TPhaseName;
+  recentlyFinished: TPhaseName | null;
+};
+
+export class BpxTimerSequence<TPhaseName extends string> {
+  static of<TPhaseName extends string>(
     params: {
-      intro: Array<[phase: TPhase, frames: number]>;
-      loop: Array<[phase: TPhase, frames: number]>;
+      intro: Array<[phase: TPhaseName, frames: number]>;
+      loop: Array<[phase: TPhaseName, frames: number]>;
     },
     opts: {
       pause: boolean;
     },
-  ): BpxTimerSequence<TPhase> {
+  ): BpxTimerSequence<TPhaseName> {
     return new BpxTimerSequence(params, opts);
   }
 
-  readonly #phases: Array<{ name: TPhase; frames: number; timer: BpxTimer }>;
-  readonly #frames: number;
+  readonly #framesOverall: number;
+  readonly #globalTimer: BpxTimer;
+
+  readonly #phases: Phase<TPhaseName>[];
 
   readonly #offsetFrame: number = 0;
+
+  #recentlyComputedNow:
+    | { frameNumber: number; value: Now<TPhaseName> }
+    | undefined;
 
   private constructor(
     params: {
       // TODO: test
-      intro: Array<[phase: TPhase, frames: number]>;
+      intro: Array<[phase: TPhaseName, frames: number]>;
       // TODO: test
-      loop: Array<[phase: TPhase, frames: number]>;
+      loop: Array<[phase: TPhaseName, frames: number]>;
     },
     opts: {
       // TODO: implement it + test
@@ -58,114 +77,154 @@ export class BpxTimerSequence<TPhase extends string> {
       frames: entry[1],
       timer: BpxTimer.for({ frames: entry[1], loop: false, pause: false }),
     }));
-    this.#frames = this.#phases.reduce((acc, p) => acc + p.frames, 0);
+    this.#framesOverall = this.#phases.reduce((acc, p) => acc + p.frames, 0);
+    this.#globalTimer = BpxTimer.for({
+      frames: this.#framesOverall,
+      loop: false,
+      pause: false,
+    });
 
     // TODO: move to restart?
     this.#offsetFrame = BeetPx.frameNumber;
   }
 
-  // TODO: test
-  get justFinishedPhase(): TPhase | null {
-    // TODO: ???
-    return null;
-  }
-
-  // TODO: test
-  get phase(): TPhase {
-    // TODO: ???
-    return "aaa" as TPhase;
-  }
-
-  // TODO: test
-  get phaseTimer(): BpxTimer {
-    let tmp = this.t;
-    let idx = 0;
-
-    // TODO: ???
-    // while (idx < this.#phases.length && tmp > this.#phases[idx]!.frames) {
-    while (tmp > this.#phases[idx]!.frames) {
-      tmp -= this.#phases[idx]!.frames;
-      idx += 1;
+  get #now(): Now<TPhaseName> {
+    if (this.#recentlyComputedNow?.frameNumber === BeetPx.frameNumber) {
+      return this.#recentlyComputedNow.value;
     }
 
-    return this.#phases[idx]!.timer;
+    let offset = this.#offsetFrame;
+    let i = 0;
+    let prev: Phase<TPhaseName> | undefined;
+    let curr: Phase<TPhaseName> | undefined;
+
+    while (i < this.#phases.length) {
+      prev = this.#phases[i - 1];
+      curr = this.#phases[i];
+
+      if (!curr) {
+        break;
+      }
+
+      if (offset + curr.frames > BeetPx.frameNumber) {
+        return {
+          // prev: this.#phases[i - 1]!.name,
+          // curr: curr.name,
+          phase: curr.name,
+          offsetCurr: offset,
+          offsetNext: offset + curr.frames,
+          recentlyFinished: prev?.name ?? null,
+        };
+      }
+
+      offset += curr.frames;
+      i += 1;
+    }
+
+    if (curr) {
+      offset -= curr.frames;
+    }
+
+    return {
+      // TODO: get rid of "!"
+      phase: curr!.name,
+      offsetCurr: offset,
+      // TODO: get rid of "!"
+      offsetNext: offset + curr!.frames,
+      recentlyFinished: curr?.name ?? null,
+    };
   }
 
-  // TODO: test
+  get justFinishedPhase(): TPhaseName | null {
+    return this.#tRaw === 0 || this.#tRaw === this.#frames
+      ? this.#now.recentlyFinished
+      : null;
+  }
+
+  get currentPhase(): TPhaseName {
+    return this.#now.phase;
+  }
+
+  get #frames(): number {
+    const ctx = this.#now;
+    return ctx.offsetNext - ctx.offsetCurr;
+  }
+
+  get #tRaw(): number {
+    return BeetPx.frameNumber - this.#now.offsetCurr;
+  }
+
   get t(): number {
-    return BeetPx.frameNumber - this.#offsetFrame;
-
-    // TODO: ???
-    // return this.#loop
-    //   ? BpxUtils.mod(this.#tRaw, this.#frames)
-    //   : BpxUtils.clamp(0, this.#tRaw, this.#frames);
-    // TODO: tRaw ???
-    // return (this.#pausedFrame ?? BeetPx.frameNumber) - this.#offsetFrame;
+    // TODO: clamp this on the bottom as well
+    return Math.min(BeetPx.frameNumber - this.#now.offsetCurr, this.#frames);
   }
 
-  // TODO: test
+  get progress(): number {
+    const f = this.#frames;
+    return this.t / f;
+  }
+
   get framesLeft(): number {
     return this.#frames - this.t;
   }
 
-  // TODO: test
-  get progress(): number {
-    return this.t / this.#frames;
+  get tOverall(): number {
+    // TODO: clamp this on the bottom as well
+    return Math.min(
+      BeetPx.frameNumber - this.#offsetFrame,
+      this.#framesOverall,
+    );
 
     // TODO: ???
-    // return this.#frames > 0 ? this.t / this.#frames : 1;
+    // return this.#loop
+    //   ? BpxUtils.mod(this.#tRaw, this.#getFrames)
+    //   : BpxUtils.clamp(0, this.#tRaw, this.#getFrames);
+    // TODO: tRaw ???
+    // return (this.#pausedFrame ?? BeetPx.frameNumber) - this.#offsetFrame;
+  }
+
+  get framesLeftOverall(): number {
+    return this.#globalTimer.framesLeft;
+  }
+
+  get progressOverall(): number {
+    return this.#globalTimer.progress;
+  }
+
+  get hasFinishedOverall(): boolean {
+    return this.#globalTimer.hasFinished;
+  }
+
+  get hasJustFinishedOverall(): boolean {
+    return this.#globalTimer.hasJustFinished;
   }
 
   // TODO: test
-  get hasFinished(): boolean {
-    // TODO: ???
-    return false;
-
-    // TODO: ???
-    // return return this.#loop ? false : this.#tRaw >= this.#frames;
-  }
-
-  // TODO: test
-  get hasJustFinished(): boolean {
-    // TODO: ???
-    return false;
-
-    // TODO: ???
-    // return this.#frames > 0
-    //   ? this.#loop
-    //     ? this.#tRaw > 0 && this.t === 0
-    //     : this.#tRaw === this.#frames
-    //   : this.#loop
-    //     ? true
-    //     : this.#tRaw === 0;
-  }
+  // pause(): void {
+  // TODO: ???
+  // TODO: ???
+  // if (this.#pausedFrame) {
+  //   return;
+  // }
+  // this.#pausedFrame = BeetPx.frameNumber;
+  // }
 
   // TODO: test
-  pause(): void {
-    // TODO: ???
-    // TODO: ???
-    // if (this.#pausedFrame) {
-    //   return;
-    // }
-    // this.#pausedFrame = BeetPx.frameNumber;
-  }
+  // resume(): void {
+  // TODO: ???
+  // TODO: ???
+  // if (!this.#pausedFrame) {
+  //   return;
+  // }
+  // this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
+  // this.#pausedFrame = null;
+  // }
 
   // TODO: test
-  resume(): void {
-    // TODO: ???
-    // TODO: ???
-    // if (!this.#pausedFrame) {
-    //   return;
-    // }
-    // this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
-    // this.#pausedFrame = null;
-  }
-
-  // TODO: test
-  restart(): void {
-    // TODO: ???
-    // TODO: ???
-    // this.#offsetFrame = BeetPx.frameNumber;
-    // this.#pausedFrame = null;
-  }
+  // restart(): void {
+  // TODO: ???
+  // TODO: ???
+  // this.#offsetFrame = BeetPx.frameNumber;
+  // this.#pausedFrame = null;
+  // }
 }

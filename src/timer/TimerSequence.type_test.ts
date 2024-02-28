@@ -20,7 +20,7 @@ import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
     { pause: false },
   );
 
-  switch (ts.phase) {
+  switch (ts.currentPhase) {
     case "aaa":
       break;
     case "bbb":
@@ -53,7 +53,7 @@ import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
     ],
   });
 
-  switch (ts.phase) {
+  switch (ts.currentPhase) {
     case "aaa":
       break;
     case "bbb":
@@ -82,7 +82,7 @@ import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
     ],
   });
 
-  switch (ts.phase) {
+  switch (ts.currentPhase) {
     case "aaa":
       break;
     case "bbb":
@@ -113,7 +113,7 @@ import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
     ],
   });
 
-  switch (ts.phase) {
+  switch (ts.currentPhase) {
     case "aaa":
       break;
     case "bbb":
