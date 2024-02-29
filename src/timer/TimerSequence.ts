@@ -1,4 +1,5 @@
 import { BeetPx } from "../BeetPx";
+import { BpxUtils } from "../Utils";
 import { BpxTimer } from "./Timer";
 
 export function timerSeq_<TPhaseName extends string>(
@@ -55,6 +56,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   readonly #globalTimer: BpxTimer;
 
   readonly #phases: Phase<TPhaseName>[];
+  readonly #loop: boolean;
 
   readonly #offsetFrame: number = 0;
 
@@ -76,15 +78,19 @@ export class BpxTimerSequence<TPhaseName extends string> {
   ) {
     // TODO: rounding? clamping?
 
-    this.#phases = params.intro.map((entry) => ({
+    this.#phases = [...params.intro, ...params.loop].map((entry) => ({
       name: entry[0],
       frames: entry[1],
       timer: BpxTimer.for({ frames: entry[1], loop: false, pause: false }),
     }));
+
+    this.#loop = params.loop.length > 0;
+
     this.#framesOverall = this.#phases.reduce((acc, p) => acc + p.frames, 0);
+
     this.#globalTimer = BpxTimer.for({
       frames: this.#framesOverall,
-      loop: false,
+      loop: this.#loop,
       pause: false,
     });
 
@@ -99,25 +105,39 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
     let offset = this.#offsetFrame;
     let i = 0;
-    let prev: Phase<TPhaseName> | undefined;
-    let curr: Phase<TPhaseName> | undefined;
+    let prev: Phase<TPhaseName> | undefined = undefined;
+    let curr: Phase<TPhaseName> | undefined = undefined;
 
     while (i < this.#phases.length) {
-      prev = this.#phases[i - 1];
+      prev =
+        i > 0
+          ? this.#phases[i - 1]
+          : this.#loop
+            ? this.#phases[this.#phases.length - 1]
+            : undefined;
       curr = this.#phases[i];
 
       if (!curr) {
         break;
       }
 
-      if (offset + curr.frames > BeetPx.frameNumber) {
+      if (
+        this.#loop
+          ? curr.frames >
+            BpxUtils.mod(BeetPx.frameNumber - offset, this.#framesOverall)
+          : curr.frames > BeetPx.frameNumber - offset
+      ) {
         return {
-          // prev: this.#phases[i - 1]!.name,
-          // curr: curr.name,
           phase: curr.name,
           offsetCurr: offset,
           offsetNext: offset + curr.frames,
           recentlyFinished: prev?.name ?? null,
+          // TODO: REMOVE
+          // @ts-ignore
+          prev: prev,
+          // TODO: REMOVE
+          // @ts-ignore
+          i: i,
         };
       }
 
@@ -136,13 +156,30 @@ export class BpxTimerSequence<TPhaseName extends string> {
       // TODO: get rid of "!"
       offsetNext: offset + curr!.frames,
       recentlyFinished: curr?.name ?? null,
+      // TODO: REMOVE
+      // @ts-ignore
+      prev2: prev,
     };
   }
 
+  // TODO: REMOVE
+  get tmpTRaw() {
+    return this.#tRaw;
+  }
+
+  // TODO: REMOVE
+  get tmpNow() {
+    return this.#now;
+  }
+
   get justFinishedPhase(): TPhaseName | null {
-    return this.#tRaw === 0 || this.#tRaw === this.#frames
-      ? this.#now.recentlyFinished
-      : null;
+    return this.#loop
+      ? this.t === 0
+        ? this.#now.recentlyFinished
+        : null
+      : this.#tRaw === 0 || this.#tRaw === this.#frames
+        ? this.#now.recentlyFinished
+        : null;
   }
 
   get currentPhase(): TPhaseName {
@@ -160,7 +197,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   get t(): number {
     // TODO: clamp this on the bottom as well
-    return Math.min(BeetPx.frameNumber - this.#now.offsetCurr, this.#frames);
+    return this.#loop
+      ? BpxUtils.mod(this.tmpTRaw, this.#framesOverall)
+      : Math.min(this.#tRaw, this.#frames);
   }
 
   get progress(): number {
@@ -172,12 +211,15 @@ export class BpxTimerSequence<TPhaseName extends string> {
     return this.#frames - this.t;
   }
 
+  get #tOverallRaw(): number {
+    return BeetPx.frameNumber - this.#offsetFrame;
+  }
+
   get tOverall(): number {
-    // TODO: clamp this on the bottom as well
-    return Math.min(
-      BeetPx.frameNumber - this.#offsetFrame,
-      this.#framesOverall,
-    );
+    return this.#loop
+      ? BpxUtils.mod(this.#tOverallRaw, this.#framesOverall)
+      : // TODO: clamp this on the bottom as well
+        Math.min(this.#tOverallRaw, this.#framesOverall);
 
     // TODO: ???
     // return this.#loop
