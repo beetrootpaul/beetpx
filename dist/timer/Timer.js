@@ -48,7 +48,7 @@ export class BpxTimer {
         return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0 ? this.t / __classPrivateFieldGet(this, _BpxTimer_frames, "f") : 1;
     }
     get hasFinished() {
-        return __classPrivateFieldGet(this, _BpxTimer_loop, "f") ? false : __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= __classPrivateFieldGet(this, _BpxTimer_frames, "f");
+        return __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= __classPrivateFieldGet(this, _BpxTimer_frames, "f");
     }
     get hasJustFinished() {
         return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0

@@ -61,7 +61,7 @@ export class BpxTimer {
   }
 
   get hasFinished(): boolean {
-    return this.#loop ? false : this.#tRaw >= this.#frames;
+    return this.#tRaw >= this.#frames;
   }
 
   get hasJustFinished(): boolean {
