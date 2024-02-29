@@ -54,6 +54,7 @@ export class BpxUtils {
         }
         return [minXy, maxXy.sub(minXy)];
     }
+    
     /**
      * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
      */

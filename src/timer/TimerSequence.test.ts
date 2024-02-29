@@ -784,6 +784,11 @@ describe("TimerSequence", () => {
       expect(seq.hasFinishedOverall).toBe(true);
       expect(seq.hasJustFinishedOverall).toBe(true);
 
+      // TODO: REMOVE
+      expect(seq.t).toBe(0);
+      expect(seq.currentPhase).toBe("ddd");
+      expect(seq.tmpNow).toBe("adaaasdasdasd");
+
       expect(seq.justFinishedPhase).toBe("fff");
 
       expect(seq.currentPhase).toBe("ddd");
@@ -894,6 +899,11 @@ describe("TimerSequence", () => {
       expect(seq.framesLeftOverall).toBe(framesDdd + framesEee + framesFff);
       expect(seq.hasFinishedOverall).toBe(true);
       expect(seq.hasJustFinishedOverall).toBe(true);
+
+      // TODO: REMOVE
+      expect(seq.t).toBe(0);
+      expect(seq.currentPhase).toBe("ddd");
+      expect(seq.tmpNow).toBe("adaaasdasdasd");
 
       expect(seq.justFinishedPhase).toBe("fff");
 

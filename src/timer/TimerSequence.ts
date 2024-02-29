@@ -169,13 +169,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       prev = curr;
       curr = this.#loopPhases[i];
       if (!curr) break;
-      if (
-        curr.frames >
-        BpxUtils.mod(
-          BeetPx.frameNumber - offset,
-          this.#introFrames + this.#loopFrames,
-        )
-      ) {
+      if (curr.frames > BeetPx.frameNumber - offset) {
         return {
           phase: curr.name,
           offsetCurr: offset,
@@ -187,6 +181,32 @@ export class BpxTimerSequence<TPhaseName extends string> {
           // TODO: REMOVE
           // @ts-ignore
           prev2: prev,
+        };
+      }
+      offset += curr.frames;
+      i += 1;
+    }
+
+    i = 0;
+    while (i < this.#loopPhases.length) {
+      prev = curr;
+      curr = this.#loopPhases[i];
+      if (!curr) break;
+      if (
+        curr.frames >
+        BpxUtils.mod(BeetPx.frameNumber - offset, this.#loopFrames)
+      ) {
+        return {
+          phase: curr.name,
+          offsetCurr: offset,
+          offsetNext: offset + curr.frames,
+          recentlyFinished: prev?.name ?? null,
+          // TODO: REMOVE
+          // @ts-ignore
+          curr2: curr,
+          // TODO: REMOVE
+          // @ts-ignore
+          prev3: prev,
         };
       }
       offset += curr.frames;
@@ -209,7 +229,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       curr3: curr,
       // TODO: REMOVE
       // @ts-ignore
-      prev3: prev,
+      prev4: prev,
     };
   }
 
@@ -248,7 +268,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   get t(): number {
     return this.#loopTimer
-      ? BpxUtils.mod(this.tmpTRaw, this.#introFrames + this.#loopFrames)
+      ? this.#tOverallRaw < this.#introFrames + this.#loopFrames
+        ? BpxUtils.mod(this.#tRaw, this.#introFrames + this.#loopFrames)
+        : BpxUtils.mod(this.#tRaw - this.#introFrames, this.#loopFrames)
       : Math.min(this.#tRaw, this.#frames);
   }
 
@@ -266,10 +288,11 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   get tOverall(): number {
-    return this.#loopPhases.length > 0
-      ? BpxUtils.mod(this.#tOverallRaw, this.#introFrames + this.#loopFrames)
-      : // TODO: clamp this on the bottom as well
-        Math.min(this.#tOverallRaw, this.#introFrames);
+    return this.#loopTimer
+      ? this.#tOverallRaw < this.#introFrames + this.#loopFrames
+        ? this.#tOverallRaw
+        : BpxUtils.mod(this.#tOverallRaw - this.#introFrames, this.#loopFrames)
+      : Math.min(this.#tOverallRaw, this.#introFrames);
   }
 
   get framesLeftOverall(): number {
