@@ -3,6 +3,8 @@ import { BeetPx } from "../BeetPx";
 import { u_ } from "../Utils";
 import { timer_ } from "./Timer";
 
+// TODO: copy assertion style from BpxTimerSequence
+
 describe("Timer", () => {
   beforeEach(() => {
     jest

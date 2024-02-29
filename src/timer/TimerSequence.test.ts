@@ -1,9 +1,63 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { BeetPx } from "../BeetPx";
 import { u_ } from "../Utils";
-import { timerSeq_ } from "./TimerSequence";
+import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
 
-describe("TimerSequence", () => {
+let stubbedFrameNumber = 1;
+
+function incrementFrameNumber(): void {
+  stubbedFrameNumber += 1;
+}
+
+function nextFrameNumberWillBe(frameNumber: number): void {
+  stubbedFrameNumber = frameNumber;
+}
+
+// The reasoning behind such test setup:
+//   - keep expected values together in tests, since they are highly co-related
+//   - assert them separately over the whole test scenario, since it makes debugging
+//     easier and allows to focus on implementation of a single property
+describe.each([
+  "tOverall",
+  "progressOverall",
+  "framesLeftOverall",
+  "hasFinishedOverall",
+  "hasJustFinishedOverall",
+  "justFinishedPhase",
+  "currentPhase",
+  "t",
+  "progress",
+  "framesLeft",
+])(`TimerSequence (tested property: %s)`, (testedProperty) => {
+  // pft = pick a field from a timer
+  function pft<TPhaseName extends string>(
+    timer: BpxTimerSequence<TPhaseName>,
+  ): any {
+    return {
+      // @ts-ignore
+      [testedProperty]: timer[testedProperty],
+    };
+  }
+
+  // pfe = pick a field from expected values
+  function pfe<TPhaseName extends string>(expectedValues: {
+    tOverall: number;
+    progressOverall: number;
+    framesLeftOverall: number;
+    hasFinishedOverall: boolean;
+    hasJustFinishedOverall: boolean;
+    justFinishedPhase: TPhaseName | null;
+    currentPhase: TPhaseName;
+    t: number;
+    progress: number;
+    framesLeft: number;
+  }): any {
+    return {
+      // @ts-ignore
+      [testedProperty]: expectedValues[testedProperty],
+    };
+  }
+
   beforeEach(() => {
     jest
       .spyOn(BeetPx, "frameNumber", "get")
@@ -28,144 +82,154 @@ describe("TimerSequence", () => {
         ],
       });
 
-      expect(seq.tOverall).toBe(0);
-      expect(seq.progressOverall).toBe(0);
-      expect(seq.framesLeftOverall).toBe(framesAaa + framesBbb + framesCcc);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe(null);
-
-      expect(seq.currentPhase).toBe("aaa");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesAaa);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: 0,
+          progressOverall: 0,
+          framesLeftOverall: framesAaa + framesBbb + framesCcc,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: null,
+          currentPhase: "aaa",
+          t: 0,
+          progress: 0,
+          framesLeft: framesAaa,
+        }),
+      );
 
       u_.range(framesAaa - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(t);
-        expect(seq.progressOverall).toBe(
-          t / (framesAaa + framesBbb + framesCcc),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesAaa + framesBbb + framesCcc - t,
-        );
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
+        incrementFrameNumber();
 
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("aaa");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesAaa);
-        expect(seq.framesLeft).toBe(framesAaa - t);
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: t,
+            progressOverall: t / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa + framesBbb + framesCcc - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: t,
+            progress: t / framesAaa,
+            framesLeft: framesAaa - t,
+          }),
+        );
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesAaa);
-      expect(seq.progressOverall).toBe(
-        framesAaa / (framesAaa + framesBbb + framesCcc),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa,
+          progressOverall: framesAaa / (framesAaa + framesBbb + framesCcc),
+          framesLeftOverall: framesBbb + framesCcc,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "aaa",
+          currentPhase: "bbb",
+          t: 0,
+          progress: 0,
+          framesLeft: framesBbb,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesBbb + framesCcc);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("aaa");
-
-      expect(seq.currentPhase).toBe("bbb");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesBbb);
 
       u_.range(framesBbb - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesAaa + t);
-        expect(seq.progressOverall).toBe(
-          (framesAaa + t) / (framesAaa + framesBbb + framesCcc),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesAaa + t,
+            progressOverall:
+              (framesAaa + t) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: t,
+            progress: t / framesBbb,
+            framesLeft: framesBbb - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesBbb + framesCcc - t);
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("bbb");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesBbb);
-        expect(seq.framesLeft).toBe(framesBbb - t);
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesAaa + framesBbb);
-      expect(seq.progressOverall).toBe(
-        (framesAaa + framesBbb) / (framesAaa + framesBbb + framesCcc),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa + framesBbb,
+          progressOverall:
+            (framesAaa + framesBbb) / (framesAaa + framesBbb + framesCcc),
+          framesLeftOverall: framesCcc,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "bbb",
+          currentPhase: "ccc",
+          t: 0,
+          progress: 0,
+          framesLeft: framesCcc,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesCcc);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("bbb");
-
-      expect(seq.currentPhase).toBe("ccc");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesCcc);
 
       u_.range(framesCcc - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesAaa + framesBbb + t);
-        expect(seq.progressOverall).toBe(
-          (framesAaa + framesBbb + t) / (framesAaa + framesBbb + framesCcc),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesAaa + framesBbb + t,
+            progressOverall:
+              (framesAaa + framesBbb + t) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesCcc - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ccc",
+            t: t,
+            progress: t / framesCcc,
+            framesLeft: framesCcc - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesCcc - t);
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("ccc");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesCcc);
-        expect(seq.framesLeft).toBe(framesCcc - t);
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesAaa + framesBbb + framesCcc);
-      expect(seq.progressOverall).toBe(1);
-      expect(seq.framesLeftOverall).toBe(0);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(true);
-
-      expect(seq.justFinishedPhase).toBe("ccc");
-
-      expect(seq.currentPhase).toBe("ccc");
-      expect(seq.t).toBe(framesCcc);
-      expect(seq.progress).toBe(1);
-      expect(seq.framesLeft).toBe(0);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa + framesBbb + framesCcc,
+          progressOverall: 1,
+          framesLeftOverall: 0,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: true,
+          justFinishedPhase: "ccc",
+          currentPhase: "ccc",
+          t: framesCcc,
+          progress: 1,
+          framesLeft: 0,
+        }),
+      );
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesAaa + framesBbb + framesCcc);
-      expect(seq.progressOverall).toBe(1);
-      expect(seq.framesLeftOverall).toBe(0);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe(null);
-
-      expect(seq.currentPhase).toBe("ccc");
-      expect(seq.t).toBe(framesCcc);
-      expect(seq.progress).toBe(1);
-      expect(seq.framesLeft).toBe(0);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa + framesBbb + framesCcc,
+          progressOverall: 1,
+          framesLeftOverall: 0,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: null,
+          currentPhase: "ccc",
+          t: framesCcc,
+          progress: 1,
+          framesLeft: 0,
+        }),
+      );
     });
   });
 
@@ -190,113 +254,119 @@ describe("TimerSequence", () => {
       // 1st loop iteration
       //
 
-      expect(seq.tOverall).toBe(0);
-      expect(seq.progressOverall).toBe(0);
-      expect(seq.framesLeftOverall).toBe(framesDdd + framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe(null);
-
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesDdd);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: 0,
+          progressOverall: 0,
+          framesLeftOverall: framesDdd + framesEee + framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: null,
+          currentPhase: "ddd",
+          t: 0,
+          progress: 0,
+          framesLeft: framesDdd,
+        }),
+      );
 
       u_.range(framesDdd - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(t);
-        expect(seq.progressOverall).toBe(
-          t / (framesDdd + framesEee + framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesDdd + framesEee + framesFff - t,
-        );
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
+        incrementFrameNumber();
 
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("ddd");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesDdd);
-        expect(seq.framesLeft).toBe(framesDdd - t);
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: t,
+            progressOverall: t / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd + framesEee + framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: t,
+            progress: t / framesDdd,
+            framesLeft: framesDdd - t,
+          }),
+        );
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesDdd);
-      expect(seq.progressOverall).toBe(
-        framesDdd / (framesDdd + framesEee + framesFff),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesDdd,
+          progressOverall: framesDdd / (framesDdd + framesEee + framesFff),
+          framesLeftOverall: framesEee + framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "ddd",
+          currentPhase: "eee",
+          t: 0,
+          progress: 0,
+          framesLeft: framesEee,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("ddd");
-
-      expect(seq.currentPhase).toBe("eee");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesEee);
 
       u_.range(framesEee - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesDdd + t);
-        expect(seq.progressOverall).toBe(
-          (framesDdd + t) / (framesDdd + framesEee + framesFff),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesDdd + t,
+            progressOverall:
+              (framesDdd + t) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: t,
+            progress: t / framesEee,
+            framesLeft: framesEee - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesEee + framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("eee");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesEee);
-        expect(seq.framesLeft).toBe(framesEee - t);
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesDdd + framesEee);
-      expect(seq.progressOverall).toBe(
-        (framesDdd + framesEee) / (framesDdd + framesEee + framesFff),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesDdd + framesEee,
+          progressOverall:
+            (framesDdd + framesEee) / (framesDdd + framesEee + framesFff),
+          framesLeftOverall: framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "eee",
+          currentPhase: "fff",
+          t: 0,
+          progress: 0,
+          framesLeft: framesFff,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesFff);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("eee");
-
-      expect(seq.currentPhase).toBe("fff");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesFff);
 
       u_.range(framesFff - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesDdd + framesEee + t);
-        expect(seq.progressOverall).toBe(
-          (framesDdd + framesEee + t) / (framesDdd + framesEee + framesFff),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesDdd + framesEee + t,
+            progressOverall:
+              (framesDdd + framesEee + t) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "fff",
+            t: t,
+            progress: t / framesFff,
+            framesLeft: framesFff - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("fff");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesFff);
-        expect(seq.framesLeft).toBe(framesFff - t);
       });
 
       //
@@ -304,129 +374,137 @@ describe("TimerSequence", () => {
       //
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(0);
-      expect(seq.progressOverall).toBe(0);
-      expect(seq.framesLeftOverall).toBe(framesDdd + framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(true);
-
-      expect(seq.justFinishedPhase).toBe("fff");
-
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesDdd);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: 0,
+          progressOverall: 0,
+          framesLeftOverall: framesDdd + framesEee + framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: true,
+          justFinishedPhase: "fff",
+          currentPhase: "ddd",
+          t: 0,
+          progress: 0,
+          framesLeft: framesDdd,
+        }),
+      );
 
       u_.range(framesDdd - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(t);
-        expect(seq.progressOverall).toBe(
-          t / (framesDdd + framesEee + framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesDdd + framesEee + framesFff - t,
-        );
-        expect(seq.hasFinishedOverall).toBe(true);
-        expect(seq.hasJustFinishedOverall).toBe(false);
+        incrementFrameNumber();
 
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("ddd");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesDdd);
-        expect(seq.framesLeft).toBe(framesDdd - t);
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: t,
+            progressOverall: t / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd + framesEee + framesFff - t,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: t,
+            progress: t / framesDdd,
+            framesLeft: framesDdd - t,
+          }),
+        );
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesDdd);
-      expect(seq.progressOverall).toBe(
-        framesDdd / (framesDdd + framesEee + framesFff),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesDdd,
+          progressOverall: framesDdd / (framesDdd + framesEee + framesFff),
+          framesLeftOverall: framesEee + framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "ddd",
+          currentPhase: "eee",
+          t: 0,
+          progress: 0,
+          framesLeft: framesEee,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("ddd");
-
-      expect(seq.currentPhase).toBe("eee");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesEee);
 
       u_.range(framesEee - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesDdd + t);
-        expect(seq.progressOverall).toBe(
-          (framesDdd + t) / (framesDdd + framesEee + framesFff),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesDdd + t,
+            progressOverall:
+              (framesDdd + t) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - t,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: t,
+            progress: t / framesEee,
+            framesLeft: framesEee - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesEee + framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(true);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("eee");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesEee);
-        expect(seq.framesLeft).toBe(framesEee - t);
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesDdd + framesEee);
-      expect(seq.progressOverall).toBe(
-        (framesDdd + framesEee) / (framesDdd + framesEee + framesFff),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesDdd + framesEee,
+          progressOverall:
+            (framesDdd + framesEee) / (framesDdd + framesEee + framesFff),
+          framesLeftOverall: framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "eee",
+          currentPhase: "fff",
+          t: 0,
+          progress: 0,
+          framesLeft: framesFff,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("eee");
-
-      expect(seq.currentPhase).toBe("fff");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesFff);
 
       u_.range(framesFff - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesDdd + framesEee + t);
-        expect(seq.progressOverall).toBe(
-          (framesDdd + framesEee + t) / (framesDdd + framesEee + framesFff),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesDdd + framesEee + t,
+            progressOverall:
+              (framesDdd + framesEee + t) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesFff - t,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "fff",
+            t: t,
+            progress: t / framesFff,
+            framesLeft: framesFff - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(true);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("fff");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesFff);
-        expect(seq.framesLeft).toBe(framesFff - t);
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(0);
-      expect(seq.progressOverall).toBe(0);
-      expect(seq.framesLeftOverall).toBe(framesDdd + framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(true);
-
-      expect(seq.justFinishedPhase).toBe("fff");
-
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesDdd);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: 0,
+          progressOverall: 0,
+          framesLeftOverall: framesDdd + framesEee + framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: true,
+          justFinishedPhase: "fff",
+          currentPhase: "ddd",
+          t: 0,
+          progress: 0,
+          framesLeft: framesDdd,
+        }),
+      );
     });
   });
 
@@ -460,159 +538,167 @@ describe("TimerSequence", () => {
       // intro
       //
 
-      expect(seq.tOverall).toBe(0);
-      expect(seq.progressOverall).toBe(0);
-      expect(seq.framesLeftOverall).toBe(
-        framesAaa + framesBbb + framesCcc + framesDdd + framesEee + framesFff,
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: 0,
+          progressOverall: 0,
+          framesLeftOverall:
+            framesAaa +
+            framesBbb +
+            framesCcc +
+            framesDdd +
+            framesEee +
+            framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: null,
+          currentPhase: "aaa",
+          t: 0,
+          progress: 0,
+          framesLeft: framesAaa,
+        }),
       );
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe(null);
-
-      expect(seq.currentPhase).toBe("aaa");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesAaa);
 
       u_.range(framesAaa - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(t);
-        expect(seq.progressOverall).toBe(
-          t /
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: t,
+            progressOverall:
+              t /
+              (framesAaa +
+                framesBbb +
+                framesCcc +
+                framesDdd +
+                framesEee +
+                framesFff),
+            framesLeftOverall:
+              framesAaa +
+              framesBbb +
+              framesCcc +
+              framesDdd +
+              framesEee +
+              framesFff -
+              t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: t,
+            progress: t / framesAaa,
+            framesLeft: framesAaa - t,
+          }),
+        );
+      });
+
+      incrementFrameNumber();
+
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa,
+          progressOverall:
+            framesAaa /
             (framesAaa +
               framesBbb +
               framesCcc +
               framesDdd +
               framesEee +
               framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesAaa +
-            framesBbb +
-            framesCcc +
-            framesDdd +
-            framesEee +
-            framesFff -
-            t,
-        );
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("aaa");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesAaa);
-        expect(seq.framesLeft).toBe(framesAaa - t);
-      });
-
-      incrementFrameNumber();
-
-      expect(seq.tOverall).toBe(framesAaa);
-      expect(seq.progressOverall).toBe(
-        framesAaa /
-          (framesAaa +
-            framesBbb +
-            framesCcc +
-            framesDdd +
-            framesEee +
-            framesFff),
+          framesLeftOverall:
+            framesBbb + framesCcc + framesDdd + framesEee + framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "aaa",
+          currentPhase: "bbb",
+          t: 0,
+          progress: 0,
+          framesLeft: framesBbb,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(
-        framesBbb + framesCcc + framesDdd + framesEee + framesFff,
-      );
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("aaa");
-
-      expect(seq.currentPhase).toBe("bbb");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesBbb);
 
       u_.range(framesBbb - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesAaa + t);
-        expect(seq.progressOverall).toBe(
-          (framesAaa + t) /
-            (framesAaa +
-              framesBbb +
-              framesCcc +
-              framesDdd +
-              framesEee +
-              framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesBbb + framesCcc + framesDdd + framesEee + framesFff - t,
-        );
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
+        incrementFrameNumber();
 
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("bbb");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesBbb);
-        expect(seq.framesLeft).toBe(framesBbb - t);
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesAaa + t,
+            progressOverall:
+              (framesAaa + t) /
+              (framesAaa +
+                framesBbb +
+                framesCcc +
+                framesDdd +
+                framesEee +
+                framesFff),
+            framesLeftOverall:
+              framesBbb + framesCcc + framesDdd + framesEee + framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: t,
+            progress: t / framesBbb,
+            framesLeft: framesBbb - t,
+          }),
+        );
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesAaa + framesBbb);
-      expect(seq.progressOverall).toBe(
-        (framesAaa + framesBbb) /
-          (framesAaa +
-            framesBbb +
-            framesCcc +
-            framesDdd +
-            framesEee +
-            framesFff),
-      );
-      expect(seq.framesLeftOverall).toBe(
-        framesCcc + framesDdd + framesEee + framesFff,
-      );
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("bbb");
-
-      expect(seq.currentPhase).toBe("ccc");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesCcc);
-
-      u_.range(framesCcc - 1).forEach((i) => {
-        incrementFrameNumber();
-        const t = i + 1;
-
-        expect(seq.tOverall).toBe(framesAaa + framesBbb + t);
-        expect(seq.progressOverall).toBe(
-          (framesAaa + framesBbb + t) /
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa + framesBbb,
+          progressOverall:
+            (framesAaa + framesBbb) /
             (framesAaa +
               framesBbb +
               framesCcc +
               framesDdd +
               framesEee +
               framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesCcc + framesDdd + framesEee + framesFff - t,
-        );
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
+          framesLeftOverall: framesCcc + framesDdd + framesEee + framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "bbb",
+          currentPhase: "ccc",
+          t: 0,
+          progress: 0,
+          framesLeft: framesCcc,
+        }),
+      );
 
-        expect(seq.justFinishedPhase).toBe(null);
+      u_.range(framesCcc - 1).forEach((i) => {
+        const t = i + 1;
 
-        expect(seq.currentPhase).toBe("ccc");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesCcc);
-        expect(seq.framesLeft).toBe(framesCcc - t);
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesAaa + framesBbb + t,
+            progressOverall:
+              (framesAaa + framesBbb + t) /
+              (framesAaa +
+                framesBbb +
+                framesCcc +
+                framesDdd +
+                framesEee +
+                framesFff),
+            framesLeftOverall:
+              framesCcc + framesDdd + framesEee + framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ccc",
+            t: t,
+            progress: t / framesCcc,
+            framesLeft: framesCcc - t,
+          }),
+        );
       });
 
       //
@@ -620,157 +706,159 @@ describe("TimerSequence", () => {
       //
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesAaa + framesBbb + framesCcc);
-      expect(seq.progressOverall).toBe(
-        (framesAaa + framesBbb + framesCcc) /
-          (framesAaa +
-            framesBbb +
-            framesCcc +
-            framesDdd +
-            framesEee +
-            framesFff),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa + framesBbb + framesCcc,
+          progressOverall:
+            (framesAaa + framesBbb + framesCcc) /
+            (framesAaa +
+              framesBbb +
+              framesCcc +
+              framesDdd +
+              framesEee +
+              framesFff),
+          framesLeftOverall: framesDdd + framesEee + framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "ccc",
+          currentPhase: "ddd",
+          t: 0,
+          progress: 0,
+          framesLeft: framesDdd,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesDdd + framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("ccc");
-
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesDdd);
 
       u_.range(framesDdd - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesAaa + framesBbb + framesCcc + t);
-        expect(seq.progressOverall).toBe(
-          (framesAaa + framesBbb + framesCcc + t) /
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesAaa + framesBbb + framesCcc + t,
+            progressOverall:
+              (framesAaa + framesBbb + framesCcc + t) /
+              (framesAaa +
+                framesBbb +
+                framesCcc +
+                framesDdd +
+                framesEee +
+                framesFff),
+            framesLeftOverall: framesDdd + framesEee + framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: t,
+            progress: t / framesDdd,
+            framesLeft: framesDdd - t,
+          }),
+        );
+      });
+
+      incrementFrameNumber();
+
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa + framesBbb + framesCcc + framesDdd,
+          progressOverall:
+            (framesAaa + framesBbb + framesCcc + framesDdd) /
             (framesAaa +
               framesBbb +
               framesCcc +
               framesDdd +
               framesEee +
               framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesDdd + framesEee + framesFff - t,
-        );
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("ddd");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesDdd);
-        expect(seq.framesLeft).toBe(framesDdd - t);
-      });
-
-      incrementFrameNumber();
-
-      expect(seq.tOverall).toBe(framesAaa + framesBbb + framesCcc + framesDdd);
-      expect(seq.progressOverall).toBe(
-        (framesAaa + framesBbb + framesCcc + framesDdd) /
-          (framesAaa +
-            framesBbb +
-            framesCcc +
-            framesDdd +
-            framesEee +
-            framesFff),
+          framesLeftOverall: framesEee + framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "ddd",
+          currentPhase: "eee",
+          t: 0,
+          progress: 0,
+          framesLeft: framesEee,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("ddd");
-
-      expect(seq.currentPhase).toBe("eee");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesEee);
 
       u_.range(framesEee - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(
-          framesAaa + framesBbb + framesCcc + framesDdd + t,
-        );
-        expect(seq.progressOverall).toBe(
-          (framesAaa + framesBbb + framesCcc + framesDdd + t) /
-            (framesAaa +
-              framesBbb +
-              framesCcc +
-              framesDdd +
-              framesEee +
-              framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(framesEee + framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
+        incrementFrameNumber();
 
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("eee");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesEee);
-        expect(seq.framesLeft).toBe(framesEee - t);
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesAaa + framesBbb + framesCcc + framesDdd + t,
+            progressOverall:
+              (framesAaa + framesBbb + framesCcc + framesDdd + t) /
+              (framesAaa +
+                framesBbb +
+                framesCcc +
+                framesDdd +
+                framesEee +
+                framesFff),
+            framesLeftOverall: framesEee + framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: t,
+            progress: t / framesEee,
+            framesLeft: framesEee - t,
+          }),
+        );
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(
-        framesAaa + framesBbb + framesCcc + framesDdd + framesEee,
-      );
-      expect(seq.progressOverall).toBe(
-        (framesAaa + framesBbb + framesCcc + framesDdd + framesEee) /
-          (framesAaa +
-            framesBbb +
-            framesCcc +
-            framesDdd +
-            framesEee +
-            framesFff),
-      );
-      expect(seq.framesLeftOverall).toBe(framesFff);
-      expect(seq.hasFinishedOverall).toBe(false);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("eee");
-
-      expect(seq.currentPhase).toBe("fff");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesFff);
-
-      u_.range(framesFff - 1).forEach((i) => {
-        incrementFrameNumber();
-        const t = i + 1;
-
-        expect(seq.tOverall).toBe(
-          framesAaa + framesBbb + framesCcc + framesDdd + framesEee + t,
-        );
-        expect(seq.progressOverall).toBe(
-          (framesAaa + framesBbb + framesCcc + framesDdd + framesEee + t) /
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesAaa + framesBbb + framesCcc + framesDdd + framesEee,
+          progressOverall:
+            (framesAaa + framesBbb + framesCcc + framesDdd + framesEee) /
             (framesAaa +
               framesBbb +
               framesCcc +
               framesDdd +
               framesEee +
               framesFff),
+          framesLeftOverall: framesFff,
+          hasFinishedOverall: false,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "eee",
+          currentPhase: "fff",
+          t: 0,
+          progress: 0,
+          framesLeft: framesFff,
+        }),
+      );
+
+      u_.range(framesFff - 1).forEach((i) => {
+        const t = i + 1;
+
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall:
+              framesAaa + framesBbb + framesCcc + framesDdd + framesEee + t,
+            progressOverall:
+              (framesAaa + framesBbb + framesCcc + framesDdd + framesEee + t) /
+              (framesAaa +
+                framesBbb +
+                framesCcc +
+                framesDdd +
+                framesEee +
+                framesFff),
+            framesLeftOverall: framesFff - t,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "fff",
+            t: t,
+            progress: t / framesFff,
+            framesLeft: framesFff - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(false);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("fff");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesFff);
-        expect(seq.framesLeft).toBe(framesFff - t);
       });
 
       //
@@ -778,152 +866,137 @@ describe("TimerSequence", () => {
       //
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(0);
-      expect(seq.progressOverall).toBe(0);
-      expect(seq.framesLeftOverall).toBe(framesDdd + framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(true);
-
-      // TODO: REMOVE
-      expect(seq.t).toBe(0);
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.tmpNow).toBe("adaaasdasdasd");
-
-      expect(seq.justFinishedPhase).toBe("fff");
-
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesDdd);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: 0,
+          progressOverall: 0,
+          framesLeftOverall: framesDdd + framesEee + framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: true,
+          justFinishedPhase: "fff",
+          currentPhase: "ddd",
+          t: 0,
+          progress: 0,
+          framesLeft: framesDdd,
+        }),
+      );
 
       u_.range(framesDdd - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(t);
-        expect(seq.progressOverall).toBe(
-          t / (framesDdd + framesEee + framesFff),
-        );
-        expect(seq.framesLeftOverall).toBe(
-          framesDdd + framesEee + framesFff - t,
-        );
-        expect(seq.hasFinishedOverall).toBe(true);
-        expect(seq.hasJustFinishedOverall).toBe(false);
+        incrementFrameNumber();
 
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("ddd");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesDdd);
-        expect(seq.framesLeft).toBe(framesDdd - t);
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: t,
+            progressOverall: t / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd + framesEee + framesFff - t,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: t,
+            progress: t / framesDdd,
+            framesLeft: framesDdd - t,
+          }),
+        );
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesDdd);
-      expect(seq.progressOverall).toBe(
-        framesDdd / (framesDdd + framesEee + framesFff),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesDdd,
+          progressOverall: framesDdd / (framesDdd + framesEee + framesFff),
+          framesLeftOverall: framesEee + framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "ddd",
+          currentPhase: "eee",
+          t: 0,
+          progress: 0,
+          framesLeft: framesEee,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("ddd");
-
-      expect(seq.currentPhase).toBe("eee");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesEee);
 
       u_.range(framesEee - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesDdd + t);
-        expect(seq.progressOverall).toBe(
-          (framesDdd + t) / (framesDdd + framesEee + framesFff),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesDdd + t,
+            progressOverall:
+              (framesDdd + t) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - t,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: t,
+            progress: t / framesEee,
+            framesLeft: framesEee - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesEee + framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(true);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("eee");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesEee);
-        expect(seq.framesLeft).toBe(framesEee - t);
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(framesDdd + framesEee);
-      expect(seq.progressOverall).toBe(
-        (framesDdd + framesEee) / (framesDdd + framesEee + framesFff),
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: framesDdd + framesEee,
+          progressOverall:
+            (framesDdd + framesEee) / (framesDdd + framesEee + framesFff),
+          framesLeftOverall: framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: false,
+          justFinishedPhase: "eee",
+          currentPhase: "fff",
+          t: 0,
+          progress: 0,
+          framesLeft: framesFff,
+        }),
       );
-      expect(seq.framesLeftOverall).toBe(framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(false);
-
-      expect(seq.justFinishedPhase).toBe("eee");
-
-      expect(seq.currentPhase).toBe("fff");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesFff);
 
       u_.range(framesFff - 1).forEach((i) => {
-        incrementFrameNumber();
         const t = i + 1;
 
-        expect(seq.tOverall).toBe(framesDdd + framesEee + t);
-        expect(seq.progressOverall).toBe(
-          (framesDdd + framesEee + t) / (framesDdd + framesEee + framesFff),
+        incrementFrameNumber();
+
+        expect(pft(seq)).toEqual(
+          pfe({
+            tOverall: framesDdd + framesEee + t,
+            progressOverall:
+              (framesDdd + framesEee + t) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesFff - t,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "fff",
+            t: t,
+            progress: t / framesFff,
+            framesLeft: framesFff - t,
+          }),
         );
-        expect(seq.framesLeftOverall).toBe(framesFff - t);
-        expect(seq.hasFinishedOverall).toBe(true);
-        expect(seq.hasJustFinishedOverall).toBe(false);
-
-        expect(seq.justFinishedPhase).toBe(null);
-
-        expect(seq.currentPhase).toBe("fff");
-        expect(seq.t).toBe(t);
-        expect(seq.progress).toBe(t / framesFff);
-        expect(seq.framesLeft).toBe(framesFff - t);
       });
 
       incrementFrameNumber();
 
-      expect(seq.tOverall).toBe(0);
-      expect(seq.progressOverall).toBe(0);
-      expect(seq.framesLeftOverall).toBe(framesDdd + framesEee + framesFff);
-      expect(seq.hasFinishedOverall).toBe(true);
-      expect(seq.hasJustFinishedOverall).toBe(true);
-
-      // TODO: REMOVE
-      expect(seq.t).toBe(0);
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.tmpNow).toBe("adaaasdasdasd");
-
-      expect(seq.justFinishedPhase).toBe("fff");
-
-      expect(seq.currentPhase).toBe("ddd");
-      expect(seq.t).toBe(0);
-      expect(seq.progress).toBe(0);
-      expect(seq.framesLeft).toBe(framesDdd);
+      expect(pft(seq)).toEqual(
+        pfe({
+          tOverall: 0,
+          progressOverall: 0,
+          framesLeftOverall: framesDdd + framesEee + framesFff,
+          hasFinishedOverall: true,
+          hasJustFinishedOverall: true,
+          justFinishedPhase: "fff",
+          currentPhase: "ddd",
+          t: 0,
+          progress: 0,
+          framesLeft: framesDdd,
+        }),
+      );
     });
   });
-
-  // TODO: test intro+loop
-  // TODO: test global pause/resume/restart + phase pause/resume/restart
 });
-
-let stubbedFrameNumber = 1;
-
-function incrementFrameNumber(): void {
-  stubbedFrameNumber += 1;
-}
-
-function nextFrameNumberWillBe(frameNumber: number): void {
-  stubbedFrameNumber = frameNumber;
-}
