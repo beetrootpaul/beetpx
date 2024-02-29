@@ -19,6 +19,10 @@ describe("TimerSequence", () => {
       ],
     });
 
+    //
+    // t = 0, phase "aaa"
+    //
+
     expect(seq.tOverall).toBe(0);
     expect(seq.progressOverall).toBe(0);
     expect(seq.framesLeftOverall).toBe(10);
@@ -33,6 +37,10 @@ describe("TimerSequence", () => {
     expect(seq.framesLeft).toBe(4);
 
     incrementFrameNumber();
+
+    //
+    // t = 1, phase "aaa"
+    //
 
     expect(seq.tOverall).toBe(1);
     expect(seq.progressOverall).toBe(0.1);
@@ -49,6 +57,10 @@ describe("TimerSequence", () => {
 
     incrementFrameNumber();
 
+    //
+    // t = 2, phase "aaa"
+    //
+
     expect(seq.tOverall).toBe(2);
     expect(seq.progressOverall).toBe(0.2);
     expect(seq.framesLeftOverall).toBe(8);
@@ -63,6 +75,10 @@ describe("TimerSequence", () => {
     expect(seq.framesLeft).toBe(2);
 
     incrementFrameNumber();
+
+    //
+    // t = 3, phase "aaa"
+    //
 
     expect(seq.tOverall).toBe(3);
     expect(seq.progressOverall).toBe(0.3);
@@ -79,6 +95,10 @@ describe("TimerSequence", () => {
 
     incrementFrameNumber();
 
+    //
+    // t = 4, phase "bbb"
+    //
+
     expect(seq.tOverall).toBe(4);
     expect(seq.progressOverall).toBe(0.4);
     expect(seq.framesLeftOverall).toBe(6);
@@ -93,6 +113,10 @@ describe("TimerSequence", () => {
     expect(seq.framesLeft).toBe(2);
 
     incrementFrameNumber();
+
+    //
+    // t = 5, phase "bbb"
+    //
 
     expect(seq.tOverall).toBe(5);
     expect(seq.progressOverall).toBe(0.5);
@@ -109,6 +133,10 @@ describe("TimerSequence", () => {
 
     incrementFrameNumber();
 
+    //
+    // t = 6, phase "ccc"
+    //
+
     expect(seq.tOverall).toBe(6);
     expect(seq.progressOverall).toBe(0.6);
     expect(seq.framesLeftOverall).toBe(4);
@@ -123,6 +151,10 @@ describe("TimerSequence", () => {
     expect(seq.framesLeft).toBe(4);
 
     incrementFrameNumber();
+
+    //
+    // t = 7, phase "ccc"
+    //
 
     expect(seq.tOverall).toBe(7);
     expect(seq.progressOverall).toBe(0.7);
@@ -139,6 +171,10 @@ describe("TimerSequence", () => {
 
     incrementFrameNumber();
 
+    //
+    // t = 8, phase "ccc"
+    //
+
     expect(seq.tOverall).toBe(8);
     expect(seq.progressOverall).toBe(0.8);
     expect(seq.framesLeftOverall).toBe(2);
@@ -153,6 +189,10 @@ describe("TimerSequence", () => {
     expect(seq.framesLeft).toBe(2);
 
     incrementFrameNumber();
+
+    //
+    // t = 9, phase "ccc"
+    //
 
     expect(seq.tOverall).toBe(9);
     expect(seq.progressOverall).toBe(0.9);
@@ -169,6 +209,10 @@ describe("TimerSequence", () => {
 
     incrementFrameNumber();
 
+    //
+    // t = 10, phase "ccc"
+    //
+
     expect(seq.tOverall).toBe(10);
     expect(seq.progressOverall).toBe(1);
     expect(seq.framesLeftOverall).toBe(0);
@@ -184,6 +228,10 @@ describe("TimerSequence", () => {
 
     incrementFrameNumber();
 
+    //
+    // t = 11 (after it has finished)
+    //
+
     expect(seq.tOverall).toBe(10);
     expect(seq.progressOverall).toBe(1);
     expect(seq.framesLeftOverall).toBe(0);
@@ -198,7 +246,243 @@ describe("TimerSequence", () => {
     expect(seq.framesLeft).toBe(0);
   });
 
-  // TODO: test loop
+  test("iterates over phases (loop only)", () => {
+    const seq = timerSeq_({
+      intro: [
+        ["aaa", 4],
+        ["bbb", 2],
+        ["ccc", 4],
+      ],
+    });
+
+    //
+    // t = 0, first loop iteration, phase "aaa"
+    //
+
+    expect(seq.tOverall).toBe(0);
+    expect(seq.progressOverall).toBe(0);
+    expect(seq.framesLeftOverall).toBe(10);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("aaa");
+    expect(seq.t).toBe(0);
+    expect(seq.progress).toBe(0);
+    expect(seq.framesLeft).toBe(4);
+
+    incrementFrameNumber();
+
+    //
+    // t = 1, first loop iteration, phase "aaa"
+    //
+
+    expect(seq.tOverall).toBe(1);
+    expect(seq.progressOverall).toBe(0.1);
+    expect(seq.framesLeftOverall).toBe(9);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("aaa");
+    expect(seq.t).toBe(1);
+    expect(seq.progress).toBe(0.25);
+    expect(seq.framesLeft).toBe(3);
+
+    incrementFrameNumber();
+
+    //
+    // t = 2, first loop iteration, phase "aaa"
+    //
+
+    expect(seq.tOverall).toBe(2);
+    expect(seq.progressOverall).toBe(0.2);
+    expect(seq.framesLeftOverall).toBe(8);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("aaa");
+    expect(seq.t).toBe(2);
+    expect(seq.progress).toBe(0.5);
+    expect(seq.framesLeft).toBe(2);
+
+    incrementFrameNumber();
+
+    //
+    // t = 3, first loop iteration, phase "aaa"
+    //
+
+    expect(seq.tOverall).toBe(3);
+    expect(seq.progressOverall).toBe(0.3);
+    expect(seq.framesLeftOverall).toBe(7);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("aaa");
+    expect(seq.t).toBe(3);
+    expect(seq.progress).toBe(0.75);
+    expect(seq.framesLeft).toBe(1);
+
+    incrementFrameNumber();
+
+    //
+    // t = 4, first loop iteration, phase "bbb"
+    //
+
+    expect(seq.tOverall).toBe(4);
+    expect(seq.progressOverall).toBe(0.4);
+    expect(seq.framesLeftOverall).toBe(6);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe("aaa");
+    //
+    expect(seq.currentPhase).toBe("bbb");
+    expect(seq.t).toBe(0);
+    expect(seq.progress).toBe(0);
+    expect(seq.framesLeft).toBe(2);
+
+    incrementFrameNumber();
+
+    //
+    // t = 5, first loop iteration, phase "bbb"
+    //
+
+    expect(seq.tOverall).toBe(5);
+    expect(seq.progressOverall).toBe(0.5);
+    expect(seq.framesLeftOverall).toBe(5);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("bbb");
+    expect(seq.t).toBe(1);
+    expect(seq.progress).toBe(0.5);
+    expect(seq.framesLeft).toBe(1);
+
+    incrementFrameNumber();
+
+    //
+    // t = 6, first loop iteration, phase "ccc"
+    //
+
+    expect(seq.tOverall).toBe(6);
+    expect(seq.progressOverall).toBe(0.6);
+    expect(seq.framesLeftOverall).toBe(4);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe("bbb");
+    //
+    expect(seq.currentPhase).toBe("ccc");
+    expect(seq.t).toBe(0);
+    expect(seq.progress).toBe(0);
+    expect(seq.framesLeft).toBe(4);
+
+    incrementFrameNumber();
+
+    //
+    // t = 7, first loop iteration, phase "ccc"
+    //
+
+    expect(seq.tOverall).toBe(7);
+    expect(seq.progressOverall).toBe(0.7);
+    expect(seq.framesLeftOverall).toBe(3);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("ccc");
+    expect(seq.t).toBe(1);
+    expect(seq.progress).toBe(0.25);
+    expect(seq.framesLeft).toBe(3);
+
+    incrementFrameNumber();
+
+    //
+    // t = 8, first loop iteration, phase "ccc"
+    //
+
+    expect(seq.tOverall).toBe(8);
+    expect(seq.progressOverall).toBe(0.8);
+    expect(seq.framesLeftOverall).toBe(2);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("ccc");
+    expect(seq.t).toBe(2);
+    expect(seq.progress).toBe(0.5);
+    expect(seq.framesLeft).toBe(2);
+
+    incrementFrameNumber();
+
+    //
+    // t = 9, first loop iteration, phase "ccc"
+    //
+
+    expect(seq.tOverall).toBe(9);
+    expect(seq.progressOverall).toBe(0.9);
+    expect(seq.framesLeftOverall).toBe(1);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("ccc");
+    expect(seq.t).toBe(3);
+    expect(seq.progress).toBe(0.75);
+    expect(seq.framesLeft).toBe(1);
+
+    incrementFrameNumber();
+
+    //
+    // And now, from the beginning:
+    // t = 10, second loop iteration, phase "aaa"
+    //
+
+    expect(seq.tOverall).toBe(0);
+    expect(seq.progressOverall).toBe(0);
+    expect(seq.framesLeftOverall).toBe(10);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("aaa");
+    expect(seq.t).toBe(0);
+    expect(seq.progress).toBe(0);
+    expect(seq.framesLeft).toBe(4);
+
+    incrementFrameNumber();
+
+    //
+    // t = 11, second loop iteration, phase "aaa"
+    //
+
+    expect(seq.tOverall).toBe(1);
+    expect(seq.progressOverall).toBe(0.1);
+    expect(seq.framesLeftOverall).toBe(9);
+    expect(seq.hasFinishedOverall).toBe(false);
+    expect(seq.hasJustFinishedOverall).toBe(false);
+    //
+    expect(seq.justFinishedPhase).toBe(null);
+    //
+    expect(seq.currentPhase).toBe("aaa");
+    expect(seq.t).toBe(1);
+    expect(seq.progress).toBe(0.25);
+    expect(seq.framesLeft).toBe(3);
+  });
+
   // TODO: test intro+loop
   // TODO: test global pause/resume/restart + phase pause/resume/restart
 });

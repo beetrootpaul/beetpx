@@ -34,6 +34,10 @@ type Now<TPhaseName extends string> = {
   recentlyFinished: TPhaseName | null;
 };
 
+// TODO: tests for negative or 0-length frames
+// TODO: tests for nothing defined
+// TODO: tests for time moving backwards / before the timer's start
+
 export class BpxTimerSequence<TPhaseName extends string> {
   static of<TPhaseName extends string>(
     params: {
