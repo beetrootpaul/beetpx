@@ -174,7 +174,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   get justFinishedPhase(): TPhaseName | null {
     return this.#loop
-      ? this.t === 0
+      ? this.#tOverallRaw > 0 && this.t === 0
         ? this.#now.recentlyFinished
         : null
       : this.#tRaw === 0 || this.#tRaw === this.#frames

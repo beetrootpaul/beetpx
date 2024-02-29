@@ -291,10 +291,6 @@ describe("TimerSequence", () => {
     expect(seq.hasFinishedOverall).toBe(true);
     expect(seq.hasJustFinishedOverall).toBe(true);
 
-    // TODO: REMOVE
-    expect(seq.tmpTRaw).toBe(160);
-    // TODO: REMOVE
-    expect(seq.tmpNow).toBe(160);
     expect(seq.justFinishedPhase).toBe("ccc");
 
     expect(seq.currentPhase).toBe("aaa");

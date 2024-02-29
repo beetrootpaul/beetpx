@@ -62,7 +62,7 @@ export class BpxTimerSequence {
     }
     get justFinishedPhase() {
         return __classPrivateFieldGet(this, _BpxTimerSequence_loop, "f")
-            ? this.t === 0
+            ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_tOverallRaw_get) > 0 && this.t === 0
                 ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinished
                 : null
             : __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_tRaw_get) === 0 || __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_tRaw_get) === __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_frames_get)
