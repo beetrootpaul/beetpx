@@ -55,11 +55,14 @@ export class BpxTimerSequence<TPhaseName extends string> {
     return new BpxTimerSequence(params, opts);
   }
 
-  readonly #framesOverall: number;
-  readonly #globalTimer: BpxTimer;
+  readonly #introFrames: number;
+  readonly #loopFrames: number;
 
-  readonly #phases: Phase<TPhaseName>[];
-  readonly #loop: boolean;
+  readonly #firstIterationTimer: BpxTimer;
+  readonly #loopTimer: BpxTimer | null;
+
+  readonly #introPhases: Phase<TPhaseName>[];
+  readonly #loopPhases: Phase<TPhaseName>[];
 
   readonly #offsetFrame: number = 0;
 
@@ -83,7 +86,17 @@ export class BpxTimerSequence<TPhaseName extends string> {
   ) {
     // TODO: rounding? clamping?
 
-    this.#phases = [...params.intro, ...params.loop].map((entry) => ({
+    this.#introPhases = params.intro.map((entry) => ({
+      name: entry[0],
+      frames: entry[1],
+      timer: BpxTimer.for({
+        frames: entry[1],
+        loop: false,
+        pause: false,
+        delayFrames: 0,
+      }),
+    }));
+    this.#loopPhases = params.loop.map((entry) => ({
       name: entry[0],
       frames: entry[1],
       timer: BpxTimer.for({
@@ -94,18 +107,25 @@ export class BpxTimerSequence<TPhaseName extends string> {
       }),
     }));
 
-    this.#loop = params.loop.length > 0;
+    this.#introFrames = this.#introPhases.reduce((acc, p) => acc + p.frames, 0);
+    this.#loopFrames = this.#loopPhases.reduce((acc, p) => acc + p.frames, 0);
 
-    this.#framesOverall = this.#phases.reduce((acc, p) => acc + p.frames, 0);
-
-    this.#globalTimer = BpxTimer.for({
-      frames: this.#framesOverall,
-      loop: this.#loop,
+    this.#firstIterationTimer = BpxTimer.for({
+      frames: this.#introFrames + this.#loopFrames,
+      loop: false,
       pause: false,
       delayFrames: 0,
     });
+    this.#loopTimer =
+      this.#loopPhases.length > 0
+        ? BpxTimer.for({
+            frames: this.#loopFrames,
+            loop: true,
+            pause: false,
+            delayFrames: this.#introFrames + this.#loopFrames,
+          })
+        : null;
 
-    // TODO: move to restart?
     this.#offsetFrame = BeetPx.frameNumber;
   }
 
@@ -115,28 +135,46 @@ export class BpxTimerSequence<TPhaseName extends string> {
     }
 
     let offset = this.#offsetFrame;
-    let i = 0;
     let prev: Phase<TPhaseName> | undefined = undefined;
-    let curr: Phase<TPhaseName> | undefined = undefined;
+    let curr: Phase<TPhaseName> | undefined =
+      this.#loopPhases.length > 0
+        ? this.#loopPhases[this.#loopPhases.length - 1]
+        : undefined;
 
-    while (i < this.#phases.length) {
-      prev =
-        i > 0
-          ? this.#phases[i - 1]
-          : this.#loop
-            ? this.#phases[this.#phases.length - 1]
-            : undefined;
-      curr = this.#phases[i];
-
-      if (!curr) {
-        break;
+    let i = 0;
+    while (i < this.#introPhases.length) {
+      prev = curr;
+      curr = this.#introPhases[i];
+      if (!curr) break;
+      if (curr.frames > BeetPx.frameNumber - offset) {
+        return {
+          phase: curr.name,
+          offsetCurr: offset,
+          offsetNext: offset + curr.frames,
+          recentlyFinished: prev?.name ?? null,
+          // TODO: REMOVE
+          // @ts-ignore
+          curr1: curr,
+          // TODO: REMOVE
+          // @ts-ignore
+          prev1: prev,
+        };
       }
+      offset += curr.frames;
+      i += 1;
+    }
 
+    i = 0;
+    while (i < this.#loopPhases.length) {
+      prev = curr;
+      curr = this.#loopPhases[i];
+      if (!curr) break;
       if (
-        this.#loop
-          ? curr.frames >
-            BpxUtils.mod(BeetPx.frameNumber - offset, this.#framesOverall)
-          : curr.frames > BeetPx.frameNumber - offset
+        curr.frames >
+        BpxUtils.mod(
+          BeetPx.frameNumber - offset,
+          this.#introFrames + this.#loopFrames,
+        )
       ) {
         return {
           phase: curr.name,
@@ -145,13 +183,12 @@ export class BpxTimerSequence<TPhaseName extends string> {
           recentlyFinished: prev?.name ?? null,
           // TODO: REMOVE
           // @ts-ignore
-          prev: prev,
+          curr2: curr,
           // TODO: REMOVE
           // @ts-ignore
-          i: i,
+          prev2: prev,
         };
       }
-
       offset += curr.frames;
       i += 1;
     }
@@ -169,7 +206,10 @@ export class BpxTimerSequence<TPhaseName extends string> {
       recentlyFinished: curr?.name ?? null,
       // TODO: REMOVE
       // @ts-ignore
-      prev2: prev,
+      curr3: curr,
+      // TODO: REMOVE
+      // @ts-ignore
+      prev3: prev,
     };
   }
 
@@ -184,7 +224,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   get justFinishedPhase(): TPhaseName | null {
-    return this.#loop
+    return this.#loopTimer
       ? this.#tOverallRaw > 0 && this.t === 0
         ? this.#now.recentlyFinished
         : null
@@ -207,9 +247,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   get t(): number {
-    // TODO: clamp this on the bottom as well
-    return this.#loop
-      ? BpxUtils.mod(this.tmpTRaw, this.#framesOverall)
+    return this.#loopTimer
+      ? BpxUtils.mod(this.tmpTRaw, this.#introFrames + this.#loopFrames)
       : Math.min(this.#tRaw, this.#frames);
   }
 
@@ -227,33 +266,37 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   get tOverall(): number {
-    return this.#loop
-      ? BpxUtils.mod(this.#tOverallRaw, this.#framesOverall)
+    return this.#loopPhases.length > 0
+      ? BpxUtils.mod(this.#tOverallRaw, this.#introFrames + this.#loopFrames)
       : // TODO: clamp this on the bottom as well
-        Math.min(this.#tOverallRaw, this.#framesOverall);
-
-    // TODO: ???
-    // return this.#loop
-    //   ? BpxUtils.mod(this.#tRaw, this.#getFrames)
-    //   : BpxUtils.clamp(0, this.#tRaw, this.#getFrames);
-    // TODO: tRaw ???
-    // return (this.#pausedFrame ?? BeetPx.frameNumber) - this.#offsetFrame;
+        Math.min(this.#tOverallRaw, this.#introFrames);
   }
 
   get framesLeftOverall(): number {
-    return this.#globalTimer.framesLeft;
+    return this.#loopTimer
+      ? this.#firstIterationTimer.hasFinished
+        ? this.#loopTimer.framesLeft
+        : this.#firstIterationTimer.framesLeft
+      : this.#firstIterationTimer.framesLeft;
   }
 
   get progressOverall(): number {
-    return this.#globalTimer.progress;
+    return this.#loopTimer
+      ? this.#firstIterationTimer.hasFinished
+        ? this.#loopTimer.progress
+        : this.#firstIterationTimer.progress
+      : this.#firstIterationTimer.progress;
   }
 
   get hasFinishedOverall(): boolean {
-    return this.#globalTimer.hasFinished;
+    return this.#firstIterationTimer.hasFinished;
   }
 
   get hasJustFinishedOverall(): boolean {
-    return this.#globalTimer.hasJustFinished;
+    return (
+      this.#firstIterationTimer.hasJustFinished ||
+      (this.#loopTimer?.hasJustFinished ?? false)
+    );
   }
 
   // TODO: test
