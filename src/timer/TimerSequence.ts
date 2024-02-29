@@ -9,6 +9,7 @@ export function timerSeq_<TPhaseName extends string>(
   },
   opts?: {
     pause?: boolean;
+    delayFrames?: number;
   },
 ): BpxTimerSequence<TPhaseName> {
   return BpxTimerSequence.of<TPhaseName>(
@@ -18,6 +19,7 @@ export function timerSeq_<TPhaseName extends string>(
     },
     {
       pause: opts?.pause ?? false,
+      delayFrames: opts?.delayFrames ?? 0,
     },
   );
 }
@@ -47,6 +49,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
     },
     opts: {
       pause: boolean;
+      delayFrames: number;
     },
   ): BpxTimerSequence<TPhaseName> {
     return new BpxTimerSequence(params, opts);
@@ -74,6 +77,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
     opts: {
       // TODO: implement it + test
       pause: boolean;
+      // TODO: implement it + test
+      delayFrames: number;
     },
   ) {
     // TODO: rounding? clamping?
@@ -81,7 +86,12 @@ export class BpxTimerSequence<TPhaseName extends string> {
     this.#phases = [...params.intro, ...params.loop].map((entry) => ({
       name: entry[0],
       frames: entry[1],
-      timer: BpxTimer.for({ frames: entry[1], loop: false, pause: false }),
+      timer: BpxTimer.for({
+        frames: entry[1],
+        loop: false,
+        pause: false,
+        delayFrames: 0,
+      }),
     }));
 
     this.#loop = params.loop.length > 0;
@@ -92,6 +102,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       frames: this.#framesOverall,
       loop: this.#loop,
       pause: false,
+      delayFrames: 0,
     });
 
     // TODO: move to restart?

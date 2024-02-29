@@ -19,6 +19,7 @@ export function timerSeq_(params, opts) {
         loop: params.loop ?? [],
     }, {
         pause: opts?.pause ?? false,
+        delayFrames: opts?.delayFrames ?? 0,
     });
 }
 
@@ -40,7 +41,12 @@ export class BpxTimerSequence {
         __classPrivateFieldSet(this, _BpxTimerSequence_phases, [...params.intro, ...params.loop].map((entry) => ({
             name: entry[0],
             frames: entry[1],
-            timer: BpxTimer.for({ frames: entry[1], loop: false, pause: false }),
+            timer: BpxTimer.for({
+                frames: entry[1],
+                loop: false,
+                pause: false,
+                delayFrames: 0,
+            }),
         })), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_loop, params.loop.length > 0, "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_framesOverall, __classPrivateFieldGet(this, _BpxTimerSequence_phases, "f").reduce((acc, p) => acc + p.frames, 0), "f");
@@ -48,6 +54,7 @@ export class BpxTimerSequence {
             frames: __classPrivateFieldGet(this, _BpxTimerSequence_framesOverall, "f"),
             loop: __classPrivateFieldGet(this, _BpxTimerSequence_loop, "f"),
             pause: false,
+            delayFrames: 0,
         }), "f");
         
         __classPrivateFieldSet(this, _BpxTimerSequence_offsetFrame, BeetPx.frameNumber, "f");

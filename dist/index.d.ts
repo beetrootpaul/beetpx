@@ -435,6 +435,7 @@ declare class BpxAnimatedSprite {
 declare function timer_(frames: number, opts?: {
     loop?: boolean;
     pause?: boolean;
+    delayFrames?: number;
 }): BpxTimer;
 declare class BpxTimer {
     #private;
@@ -442,6 +443,7 @@ declare class BpxTimer {
         frames: number;
         loop: boolean;
         pause: boolean;
+        delayFrames: number;
     }): BpxTimer;
     private constructor();
     get t(): number;

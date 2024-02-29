@@ -17,6 +17,7 @@ export function timer_(frames, opts) {
         frames,
         loop: opts?.loop ?? false,
         pause: opts?.pause ?? false,
+        delayFrames: opts?.delayFrames ?? 0,
     });
 }
 export class BpxTimer {
@@ -31,7 +32,7 @@ export class BpxTimer {
         _BpxTimer_pausedFrame.set(this, null);
         __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(params.frames)), "f");
         __classPrivateFieldSet(this, _BpxTimer_loop, params.loop, "f");
-        this.restart();
+        __classPrivateFieldSet(this, _BpxTimer_offsetFrame, BeetPx.frameNumber + params.delayFrames, "f");
         if (params.pause) {
             this.pause();
         }

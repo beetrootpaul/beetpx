@@ -504,6 +504,149 @@ describe("Timer", () => {
       expect(timer.hasFinished).toBe(true);
       expect(timer.hasJustFinished).toBe(false);
     });
+
+    test("delayed timer", () => {
+      const timer = timer_(5, { delayFrames: 3 });
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      incrementFrameNumber();
+      incrementFrameNumber();
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      incrementFrameNumber();
+      incrementFrameNumber();
+      expect(timer.t).toBe(4);
+      expect(timer.progress).toBe(0.8);
+      expect(timer.framesLeft).toBe(1);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      expect(timer.t).toBe(5);
+      expect(timer.progress).toBe(1);
+      expect(timer.framesLeft).toBe(0);
+      expect(timer.hasFinished).toBe(true);
+      expect(timer.hasJustFinished).toBe(true);
+      incrementFrameNumber();
+      expect(timer.t).toBe(5);
+      expect(timer.progress).toBe(1);
+      expect(timer.framesLeft).toBe(0);
+      expect(timer.hasFinished).toBe(true);
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.restart();
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.pause();
+
+      incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.resume();
+
+      incrementFrameNumber();
+      expect(timer.t).toBe(2);
+      expect(timer.progress).toBe(0.4);
+      expect(timer.framesLeft).toBe(3);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
+    test("delayed and already paused timer", () => {
+      const timer = timer_(5, { delayFrames: 3, pause: true });
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      u_.range(12).forEach(() => {
+        incrementFrameNumber();
+      });
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      timer.resume();
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      incrementFrameNumber();
+      incrementFrameNumber();
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+
+      incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+    });
+
+    test("delayed timer vs early restart", () => {
+      const timer = timer_(5, { delayFrames: 3 });
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+
+      timer.restart();
+
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(5);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+      incrementFrameNumber();
+      expect(timer.t).toBe(1);
+      expect(timer.progress).toBe(0.2);
+      expect(timer.framesLeft).toBe(4);
+      expect(timer.hasFinished).toBe(false);
+      expect(timer.hasJustFinished).toBe(false);
+    });
   });
 
   describe("looped", () => {

@@ -3,12 +3,13 @@ import { BpxUtils } from "../Utils";
 
 export function timer_(
   frames: number,
-  opts?: { loop?: boolean; pause?: boolean },
+  opts?: { loop?: boolean; pause?: boolean; delayFrames?: number },
 ): BpxTimer {
   return BpxTimer.for({
     frames,
     loop: opts?.loop ?? false,
     pause: opts?.pause ?? false,
+    delayFrames: opts?.delayFrames ?? 0,
   });
 }
 
@@ -17,6 +18,7 @@ export class BpxTimer {
     frames: number;
     loop: boolean;
     pause: boolean;
+    delayFrames: number;
   }): BpxTimer {
     return new BpxTimer(params);
   }
@@ -31,11 +33,12 @@ export class BpxTimer {
     frames: number;
     loop: boolean;
     pause: boolean;
+    delayFrames: number;
   }) {
     this.#frames = Math.max(0, Math.round(params.frames));
     this.#loop = params.loop;
 
-    this.restart();
+    this.#offsetFrame = BeetPx.frameNumber + params.delayFrames;
 
     if (params.pause) {
       this.pause();
