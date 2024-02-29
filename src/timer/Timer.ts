@@ -48,7 +48,9 @@ export class BpxTimer {
 
   get t(): number {
     return this.#loop
-      ? BpxUtils.mod(this.#tRaw, this.#frames)
+      ? this.#tRaw >= 0
+        ? BpxUtils.mod(this.#tRaw, this.#frames)
+        : 0
       : BpxUtils.clamp(0, this.#tRaw, this.#frames);
   }
 

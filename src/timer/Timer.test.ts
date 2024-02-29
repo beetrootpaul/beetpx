@@ -775,9 +775,9 @@ describe("Timer", () => {
       expect(timer.hasJustFinished).toBe(false);
 
       nextFrameNumberWillBe(499);
-      expect(timer.t).toBe(7);
-      expect(timer.progress).toBe(0.875);
-      expect(timer.framesLeft).toBe(1);
+      expect(timer.t).toBe(0);
+      expect(timer.progress).toBe(0);
+      expect(timer.framesLeft).toBe(8);
       expect(timer.hasFinished).toBe(false);
       expect(timer.hasJustFinished).toBe(false);
 

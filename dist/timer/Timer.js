@@ -38,7 +38,9 @@ export class BpxTimer {
     }
     get t() {
         return __classPrivateFieldGet(this, _BpxTimer_loop, "f")
-            ? BpxUtils.mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
+            ? __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= 0
+                ? BpxUtils.mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
+                : 0
             : BpxUtils.clamp(0, __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"));
     }
     get framesLeft() {
