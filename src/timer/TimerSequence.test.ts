@@ -575,16 +575,13 @@ describe("TimerSequence", () => {
         const framesBbb = 50;
         const framesCcc = 20;
 
-        const seq = timerSeq_(
-          {
-            intro: [
-              ["aaa", framesAaa],
-              ["bbb", framesBbb],
-              ["ccc", framesCcc],
-            ],
-          },
-          { pause: true },
-        );
+        const seq = timerSeq_({
+          intro: [
+            ["aaa", framesAaa],
+            ["bbb", framesBbb],
+            ["ccc", framesCcc],
+          ],
+        });
 
         u_.range(framesAaa + 1).forEach(() => {
           incrementFrameNumber();
@@ -629,17 +626,17 @@ describe("TimerSequence", () => {
 
         expect(ppt(seq)).toEqual(
           ppev({
-            tOverall: framesAaa + +1,
+            tOverall: framesAaa + 1,
             progressOverall:
-              (framesAaa + +1) / (framesAaa + framesBbb + framesCcc),
+              (framesAaa + 1) / (framesAaa + framesBbb + framesCcc),
             framesLeftOverall: framesBbb - 1 + framesCcc,
             hasFinishedOverall: false,
             hasJustFinishedOverall: false,
             justFinishedPhase: null,
             currentPhase: "bbb",
             t: 1,
-            progress: 1 / framesAaa,
-            framesLeft: framesAaa - 1,
+            progress: 1 / framesBbb,
+            framesLeft: framesBbb - 1,
           }),
         );
       },
@@ -738,8 +735,9 @@ describe("TimerSequence", () => {
 
         seq.resume();
 
-        incrementFrameNumber();
-        incrementFrameNumber();
+        u_.range(-1 + framesAaa + 1).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -856,7 +854,9 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa - 1 + framesBbb + 1);
+        u_.range(framesAaa - 1 + framesBbb + 1).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -967,7 +967,9 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa - 1 + framesBbb + 1);
+        u_.range(framesAaa - 1 + framesBbb + 1).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -1618,16 +1620,13 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
-          {
-            loop: [
-              ["ddd", framesDdd],
-              ["eee", framesEee],
-              ["fff", framesFff],
-            ],
-          },
-          { pause: true },
-        );
+        const seq = timerSeq_({
+          loop: [
+            ["ddd", framesDdd],
+            ["eee", framesEee],
+            ["fff", framesFff],
+          ],
+        });
 
         u_.range(framesDdd + 1).forEach(() => {
           incrementFrameNumber();
@@ -1958,7 +1957,9 @@ describe("TimerSequence", () => {
 
         u_.range(
           framesDdd - 1 + framesEee + framesFff + framesDdd + framesEee + 1,
-        );
+        ).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -2071,7 +2072,9 @@ describe("TimerSequence", () => {
 
         u_.range(
           framesDdd - 1 + framesEee + framesFff + framesDdd + framesEee + 1,
-        );
+        ).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -3133,21 +3136,18 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
-          {
-            intro: [
-              ["aaa", framesAaa],
-              ["bbb", framesBbb],
-              ["ccc", framesCcc],
-            ],
-            loop: [
-              ["ddd", framesDdd],
-              ["eee", framesEee],
-              ["fff", framesFff],
-            ],
-          },
-          { pause: true },
-        );
+        const seq = timerSeq_({
+          intro: [
+            ["aaa", framesAaa],
+            ["bbb", framesBbb],
+            ["ccc", framesCcc],
+          ],
+          loop: [
+            ["ddd", framesDdd],
+            ["eee", framesEee],
+            ["fff", framesFff],
+          ],
+        });
 
         u_.range(framesAaa + 1).forEach(() => {
           incrementFrameNumber();
@@ -3645,7 +3645,9 @@ describe("TimerSequence", () => {
             framesDdd +
             framesEee +
             1,
-        );
+        ).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -3819,7 +3821,9 @@ describe("TimerSequence", () => {
             framesDdd +
             framesEee +
             1,
-        );
+        ).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
