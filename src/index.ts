@@ -50,10 +50,10 @@ export { type BpxGamepadType } from "./game_input/GameInputGamepad";
 export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
 export { type BpxGameButtonName } from "./game_input/buttons/GameButtons";
 export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
-export { BpxTimer } from "./misc/Timer";
 export { BpxVector2d } from "./misc/Vector2d";
 export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
 export { BpxSprite } from "./sprite/Sprite";
+export { BpxTimer } from "./timer/Timer";
 
 export { BeetPx } from "./BeetPx";
 
@@ -70,7 +70,7 @@ export {
   white_,
   yellow_,
 } from "./color/RgbColor";
-export { timer_ } from "./misc/Timer";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";
+export { timer_ } from "./timer/Timer";

@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _a, _Button_repeatingFramesStart, _Button_repeatingFramesInterval, _Button_isPressed, _Button_wasJustToggled, _Button_repeatingTimer;
-import { timer_ } from "../../misc/Timer";
+import { timer_ } from "../../timer/Timer";
 import { BpxUtils } from "../../Utils";
 export class Button {
     constructor() {

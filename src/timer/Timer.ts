@@ -1,28 +1,49 @@
 import { BeetPx } from "../BeetPx";
 import { BpxUtils } from "../Utils";
 
-export function timer_(frames: number, opts?: { loop?: boolean }): BpxTimer {
+export function timer_(
+  frames: number,
+  opts?: { loop?: boolean; pause?: boolean; delayFrames?: number },
+): BpxTimer {
   return BpxTimer.for({
     frames,
     loop: opts?.loop ?? false,
+    pause: opts?.pause ?? false,
+    delayFrames: opts?.delayFrames ?? 0,
   });
 }
 
 export class BpxTimer {
-  static for(params: { frames: number; loop: boolean }): BpxTimer {
+  static for(params: {
+    frames: number;
+    loop: boolean;
+    pause: boolean;
+    delayFrames: number;
+  }): BpxTimer {
     return new BpxTimer(params);
   }
 
   readonly #frames: number;
   readonly #loop: boolean;
 
-  #offsetFrame: number = 0;
-  #pausedFrame: number | null = null;
+  #offsetFrame: number;
+  #pausedFrame: number | null;
 
-  private constructor(params: { frames: number; loop: boolean }) {
+  private constructor(params: {
+    frames: number;
+    loop: boolean;
+    pause: boolean;
+    delayFrames: number;
+  }) {
     this.#frames = Math.max(0, Math.round(params.frames));
     this.#loop = params.loop;
-    this.restart();
+
+    this.#offsetFrame = BeetPx.frameNumber + params.delayFrames;
+
+    this.#pausedFrame = null;
+    if (params.pause) {
+      this.pause();
+    }
   }
 
   get #tRaw(): number {
@@ -31,7 +52,9 @@ export class BpxTimer {
 
   get t(): number {
     return this.#loop
-      ? BpxUtils.mod(this.#tRaw, this.#frames)
+      ? this.#tRaw >= 0
+        ? BpxUtils.mod(this.#tRaw, this.#frames)
+        : 0
       : BpxUtils.clamp(0, this.#tRaw, this.#frames);
   }
 
@@ -44,7 +67,7 @@ export class BpxTimer {
   }
 
   get hasFinished(): boolean {
-    return this.#loop ? false : this.#tRaw >= this.#frames;
+    return this.#tRaw >= this.#frames;
   }
 
   get hasJustFinished(): boolean {
@@ -68,7 +91,7 @@ export class BpxTimer {
     if (!this.#pausedFrame) {
       return;
     }
-    this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
+    this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame;
     this.#pausedFrame = null;
   }
 

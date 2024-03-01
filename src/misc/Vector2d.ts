@@ -27,6 +27,8 @@ export class BpxVector2d implements PrintDebug {
     readonly y: number,
   ) {}
 
+  /////////////////////////////////////////////////////////////////////////////
+
   static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
   }
@@ -49,24 +51,7 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
-  get [Symbol.toStringTag]() {
-    return "BpxVector2d";
-  }
-
-  [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number {
-    switch (hint) {
-      case "default":
-      case "string":
-        return `(${this.x},${this.y})`;
-      case "number":
-        return NaN;
-    }
-  }
-
-  *[Symbol.iterator](): Generator<number> {
-    yield this.x;
-    yield this.y;
-  }
+  /////////////////////////////////////////////////////////////////////////////
 
   asArray(): [number, number] {
     return [this.x, this.y];
@@ -226,10 +211,33 @@ export class BpxVector2d implements PrintDebug {
         );
   }
 
+  /////////////////////////////////////////////////////////////////////////////
+
+  *[Symbol.iterator](): Generator<number> {
+    yield this.x;
+    yield this.y;
+  }
+
+  [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number {
+    switch (hint) {
+      case "default":
+      case "string":
+        return `(${this.x},${this.y})`;
+      case "number":
+        return NaN;
+    }
+  }
+
+  get [Symbol.toStringTag]() {
+    return "BpxVector2d";
+  }
+
   __printDebug(): string {
     return `(${this.x},${this.y})`;
   }
 }
+
+/////////////////////////////////////////////////////////////////////////////
 
 export const v_0_0_ = v_(0, 0);
 export const v_1_1_ = v_(1, 1);

@@ -39,9 +39,6 @@ declare class BpxVector2d implements PrintDebug {
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
     static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
-    get [Symbol.toStringTag](): string;
-    [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number;
-    [Symbol.iterator](): Generator<number>;
     asArray(): [number, number];
     magnitude(): number;
     normalize(): BpxVector2d;
@@ -88,6 +85,9 @@ declare class BpxVector2d implements PrintDebug {
     div(other: BpxVector2d): BpxVector2d;
     div(value: number): BpxVector2d;
     div(x: number, y: number): BpxVector2d;
+    [Symbol.iterator](): Generator<number>;
+    [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number;
+    get [Symbol.toStringTag](): string;
     __printDebug(): string;
 }
 declare const v_0_0_: BpxVector2d;
@@ -405,26 +405,6 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-declare function timer_(frames: number, opts?: {
-    loop?: boolean;
-}): BpxTimer;
-declare class BpxTimer {
-    #private;
-    static for(params: {
-        frames: number;
-        loop: boolean;
-    }): BpxTimer;
-    private constructor();
-    get t(): number;
-    get framesLeft(): number;
-    get progress(): number;
-    get hasFinished(): boolean;
-    get hasJustFinished(): boolean;
-    pause(): void;
-    resume(): void;
-    restart(): void;
-}
-
 type ImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
 declare function spr_(imageUrl: BpxImageUrl): ImageBoundSpriteFactory;
 declare class BpxSprite {
@@ -447,6 +427,30 @@ declare class BpxAnimatedSprite {
     readonly size: BpxVector2d;
     private constructor();
     get current(): BpxSprite;
+    pause(): void;
+    resume(): void;
+    restart(): void;
+}
+
+declare function timer_(frames: number, opts?: {
+    loop?: boolean;
+    pause?: boolean;
+    delayFrames?: number;
+}): BpxTimer;
+declare class BpxTimer {
+    #private;
+    static for(params: {
+        frames: number;
+        loop: boolean;
+        pause: boolean;
+        delayFrames: number;
+    }): BpxTimer;
+    private constructor();
+    get t(): number;
+    get framesLeft(): number;
+    get progress(): number;
+    get hasFinished(): boolean;
+    get hasJustFinished(): boolean;
     pause(): void;
     resume(): void;
     restart(): void;

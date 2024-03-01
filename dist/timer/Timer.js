@@ -16,6 +16,8 @@ export function timer_(frames, opts) {
     return BpxTimer.for({
         frames,
         loop: opts?.loop ?? false,
+        pause: opts?.pause ?? false,
+        delayFrames: opts?.delayFrames ?? 0,
     });
 }
 export class BpxTimer {
@@ -26,15 +28,21 @@ export class BpxTimer {
         _BpxTimer_instances.add(this);
         _BpxTimer_frames.set(this, void 0);
         _BpxTimer_loop.set(this, void 0);
-        _BpxTimer_offsetFrame.set(this, 0);
-        _BpxTimer_pausedFrame.set(this, null);
+        _BpxTimer_offsetFrame.set(this, void 0);
+        _BpxTimer_pausedFrame.set(this, void 0);
         __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(params.frames)), "f");
         __classPrivateFieldSet(this, _BpxTimer_loop, params.loop, "f");
-        this.restart();
+        __classPrivateFieldSet(this, _BpxTimer_offsetFrame, BeetPx.frameNumber + params.delayFrames, "f");
+        __classPrivateFieldSet(this, _BpxTimer_pausedFrame, null, "f");
+        if (params.pause) {
+            this.pause();
+        }
     }
     get t() {
         return __classPrivateFieldGet(this, _BpxTimer_loop, "f")
-            ? BpxUtils.mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
+            ? __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= 0
+                ? BpxUtils.mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
+                : 0
             : BpxUtils.clamp(0, __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"));
     }
     get framesLeft() {
@@ -44,7 +52,7 @@ export class BpxTimer {
         return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0 ? this.t / __classPrivateFieldGet(this, _BpxTimer_frames, "f") : 1;
     }
     get hasFinished() {
-        return __classPrivateFieldGet(this, _BpxTimer_loop, "f") ? false : __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= __classPrivateFieldGet(this, _BpxTimer_frames, "f");
+        return __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= __classPrivateFieldGet(this, _BpxTimer_frames, "f");
     }
     get hasJustFinished() {
         return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0

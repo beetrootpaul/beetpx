@@ -222,6 +222,7 @@ describe("Utils", () => {
     expect(BpxUtils.mod(-123.5, 1000)).toBe(876.5);
     expect(BpxUtils.mod(-1123.5, 1000)).toBe(876.5);
     expect(BpxUtils.mod(-123.5, 100)).toBe(76.5);
+    expect(BpxUtils.mod(-1123.5, 100)).toBe(76.5);
     expect(BpxUtils.mod(-123.5, 2)).toBe(0.5);
     expect(BpxUtils.mod(-123.5, 1)).toBe(0.5);
 
