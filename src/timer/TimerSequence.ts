@@ -86,16 +86,15 @@ export class BpxTimerSequence<TPhaseName extends string> {
       delayFrames: number;
     },
   ) {
-    // TODO: rounding? clamping?
     this.#firstIterationPhases = [...params.intro, ...params.loop].map(
       (entry) => ({
         name: entry[0],
-        frames: Math.round(entry[1]),
+        frames: Math.max(0, Math.round(entry[1])),
       }),
     );
     this.#loopPhases = params.loop.map((entry) => ({
       name: entry[0],
-      frames: Math.round(entry[1]),
+      frames: Math.max(0, Math.round(entry[1])),
     }));
 
     this.#firstIterationFrames = this.#firstIterationPhases.reduce(

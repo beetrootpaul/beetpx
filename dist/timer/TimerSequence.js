@@ -42,14 +42,13 @@ export class BpxTimerSequence {
         _BpxTimerSequence_firstIterationTimer.set(this, void 0);
         _BpxTimerSequence_loopTimer.set(this, void 0);
         _BpxTimerSequence_recentlyComputedNow.set(this, void 0);
-        
         __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationPhases, [...params.intro, ...params.loop].map((entry) => ({
             name: entry[0],
-            frames: Math.round(entry[1]),
+            frames: Math.max(0, Math.round(entry[1])),
         })), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_loopPhases, params.loop.map((entry) => ({
             name: entry[0],
-            frames: Math.round(entry[1]),
+            frames: Math.max(0, Math.round(entry[1])),
         })), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationFrames, __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").reduce((acc, p) => acc + p.frames, 0), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_loopFrames, __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").reduce((acc, p) => acc + p.frames, 0), "f");

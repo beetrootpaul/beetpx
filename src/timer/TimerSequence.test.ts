@@ -2474,6 +2474,44 @@ describe("TimerSequence", () => {
     );
 
     test.each(allPropertiesToTest)(
+      'intro & loop created from negative amounts of frames (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+
+        const seqZero = timerSeq_({
+          intro: [
+            ["aaa", 0],
+            ["bbb", 0],
+            ["ccc", 0],
+          ],
+          loop: [
+            ["ddd", 0],
+            ["eee", 0],
+            ["fff", 0],
+          ],
+        });
+        const seqNegative = timerSeq_({
+          intro: [
+            ["aaa", -1],
+            ["bbb", -2],
+            ["ccc", -3],
+          ],
+          loop: [
+            ["ddd", -4],
+            ["eee", -5],
+            ["fff", -6],
+          ],
+        });
+
+        u_.range(99).forEach(() => {
+          expect(ppt(seqZero)).toEqual(ppt(seqNegative));
+
+          incrementFrameNumber();
+        });
+      },
+    );
+
+    test.each(allPropertiesToTest)(
       'intro of 1 frame (tested property: "%s")',
       (testedProperty) => {
         const ppt = pickPropertyOfTimer(testedProperty);
