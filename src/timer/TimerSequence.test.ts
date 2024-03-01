@@ -2435,10 +2435,8 @@ describe("TimerSequence", () => {
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
         const seq = timerSeq_({
-          loop: [
-            ["aaa", 0],
-            ["ddd", 0],
-          ],
+          intro: [["aaa", 0]],
+          loop: [["ddd", 0]],
         });
 
         expect(ppt(seq)).toEqual(
@@ -2565,16 +2563,16 @@ describe("TimerSequence", () => {
 
         expect(ppt(seq)).toEqual(
           ppev({
-            tOverall: 1,
-            progressOverall: 1,
-            framesLeftOverall: 0,
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: 1,
             hasFinishedOverall: true,
             hasJustFinishedOverall: true,
             justFinishedPhase: "ddd",
             currentPhase: "ddd",
-            t: 1,
-            progress: 1,
-            framesLeft: 0,
+            t: 0,
+            progress: 0,
+            framesLeft: 1,
           }),
         );
 
@@ -2582,16 +2580,16 @@ describe("TimerSequence", () => {
 
         expect(ppt(seq)).toEqual(
           ppev({
-            tOverall: 1,
-            progressOverall: 1,
-            framesLeftOverall: 0,
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: 1,
             hasFinishedOverall: true,
             hasJustFinishedOverall: true,
             justFinishedPhase: "ddd",
             currentPhase: "ddd",
-            t: 1,
-            progress: 1,
-            framesLeft: 0,
+            t: 0,
+            progress: 0,
+            framesLeft: 1,
           }),
         );
       },
@@ -2644,16 +2642,16 @@ describe("TimerSequence", () => {
 
         expect(ppt(seq)).toEqual(
           ppev({
-            tOverall: 2,
-            progressOverall: 1,
-            framesLeftOverall: 0,
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: 1,
             hasFinishedOverall: true,
             hasJustFinishedOverall: true,
             justFinishedPhase: "ddd",
             currentPhase: "ddd",
-            t: 1,
-            progress: 1,
-            framesLeft: 0,
+            t: 0,
+            progress: 0,
+            framesLeft: 1,
           }),
         );
 
@@ -2661,16 +2659,16 @@ describe("TimerSequence", () => {
 
         expect(ppt(seq)).toEqual(
           ppev({
-            tOverall: 1,
-            progressOverall: 1,
-            framesLeftOverall: 0,
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: 1,
             hasFinishedOverall: true,
             hasJustFinishedOverall: true,
             justFinishedPhase: "ddd",
             currentPhase: "ddd",
-            t: 1,
-            progress: 1,
-            framesLeft: 0,
+            t: 0,
+            progress: 0,
+            framesLeft: 1,
           }),
         );
       },

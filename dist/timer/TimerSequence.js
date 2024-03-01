@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_loopOffset, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get, _BpxTimerSequence_frames_get;
+var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_loopOffset, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get;
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
 export function timerSeq_(params, opts) {
@@ -45,23 +45,11 @@ export class BpxTimerSequence {
         
         __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationPhases, [...params.intro, ...params.loop].map((entry) => ({
             name: entry[0],
-            frames: entry[1],
-            
-            
-            
-            
-            
-            
+            frames: Math.round(entry[1]),
         })), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_loopPhases, params.loop.map((entry) => ({
             name: entry[0],
-            frames: entry[1],
-            
-            
-            
-            
-            
-            
+            frames: Math.round(entry[1]),
         })), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationFrames, __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").reduce((acc, p) => acc + p.frames, 0), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_loopFrames, __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").reduce((acc, p) => acc + p.frames, 0), "f");
@@ -82,39 +70,25 @@ export class BpxTimerSequence {
             })
             : null, "f");
     }
-    
-    
-    
-    
-    
-    
-    
-    
     get justFinishedPhase() {
         return this.hasJustFinishedOverall || __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t === 0
             ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinishedPhase
             : null;
     }
     get currentPhase() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.name;
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase?.name ?? null;
     }
-    
-    
-    
-    
     get t() {
         return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t;
     }
     get progress() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t / __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames;
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase && __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames > 0
+            ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t / __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames
+            : 1;
     }
     get framesLeft() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames - __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t;
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames - __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t : 0;
     }
-    
-    
-    
-    
     get tOverall() {
         return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished
             ? __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.t ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t
@@ -180,22 +154,22 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
             let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
             if (firstIterationT < offset + curr.frames) {
                 return {
+                    recentlyFinishedPhase: prev?.name ?? null,
                     phase: curr,
                     t: firstIterationT - offset,
-                    recentlyFinishedPhase: prev?.name ?? null,
                 };
             }
             offset += curr.frames;
             prev = curr;
             i += 1;
         }
-        let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
+        let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i] ?? null;
         return {
+            recentlyFinishedPhase: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished
+                ? curr?.name ?? null
+                : prev?.name ?? null,
             phase: curr,
             t: firstIterationT - offset,
-            recentlyFinishedPhase: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished
-                ? curr.name
-                : prev?.name ?? null,
         };
     }
     
@@ -203,103 +177,25 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
     
     const loopT = __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f").t;
     let offset = 0;
-    let prev = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[__classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").length - 1];
+    let prev = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[__classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").length - 1] ?? null;
     let i = 0;
     while (i < __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length - 1) {
         let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i];
         if (loopT < offset + curr.frames) {
             return {
+                recentlyFinishedPhase: prev?.name ?? null,
                 phase: curr,
                 t: loopT - offset,
-                recentlyFinishedPhase: prev?.name ?? null,
             };
         }
         offset += curr.frames;
         prev = curr;
         i += 1;
     }
-    let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i];
+    let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i] ?? null;
     return {
+        recentlyFinishedPhase: prev?.name ?? null,
         phase: curr,
         t: loopT - offset,
-        recentlyFinishedPhase: prev?.name ?? null,
     };
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-}, _BpxTimerSequence_frames_get = function _BpxTimerSequence_frames_get() {
-    return 123;
-    
-    
 };
