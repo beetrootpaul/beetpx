@@ -136,7 +136,7 @@ export class BpxTimerSequence {
         __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
         __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").restart();
         
-        
+        __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.restart();
     }
 }
 _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPhases = new WeakMap(), _BpxTimerSequence_firstIterationFrames = new WeakMap(), _BpxTimerSequence_loopFrames = new WeakMap(), _BpxTimerSequence_firstIterationOffset = new WeakMap(), _BpxTimerSequence_loopOffset = new WeakMap(), _BpxTimerSequence_pausedFrame = new WeakMap(), _BpxTimerSequence_firstIterationTimer = new WeakMap(), _BpxTimerSequence_loopTimer = new WeakMap(), _BpxTimerSequence_recentlyComputedNow = new WeakMap(), _BpxTimerSequence_instances = new WeakSet(), _BpxTimerSequence_now_get = function _BpxTimerSequence_now_get() {

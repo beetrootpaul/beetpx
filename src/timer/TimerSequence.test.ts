@@ -1483,7 +1483,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesFff + framesDdd - 1).forEach(() => {
+        u_.range(-3 + framesEee + framesFff + framesDdd - 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1702,42 +1702,39 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesDdd + framesEee + framesFff + framesDdd + 1).forEach(
-          () => {
-            incrementFrameNumber();
-          },
-        );
-
-        expect(ppt(seq)).toEqual(
-          ppev({
-            tOverall: framesDdd + 1,
-            progressOverall:
-              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
-            framesLeftOverall: framesEee - 1 + framesFff,
-            hasFinishedOverall: false,
-            hasJustFinishedOverall: false,
-            justFinishedPhase: null,
-            currentPhase: "eee",
-            t: 1,
-            progress: 1 / framesEee,
-            framesLeft: framesEee - 1,
-          }),
-        );
-
-        seq.restart();
+        u_.range(framesDdd + framesEee + framesFff).forEach((i) => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
             tOverall: 0,
             progressOverall: 0,
             framesLeftOverall: framesDdd + framesEee + framesFff,
-            hasFinishedOverall: false,
-            hasJustFinishedOverall: false,
-            justFinishedPhase: null,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: true,
+            justFinishedPhase: "fff",
             currentPhase: "ddd",
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: true,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
           }),
         );
       },

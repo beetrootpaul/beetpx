@@ -283,6 +283,6 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
     this.#firstIterationTimer.restart();
     // TODO: ???
-    // this.#loopTimer?.pause();
+    this.#loopTimer?.restart();
   }
 }
