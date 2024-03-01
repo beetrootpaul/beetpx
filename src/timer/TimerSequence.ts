@@ -26,7 +26,6 @@ export function timerSeq_<TPhaseName extends string>(
 type Phase<TPhaseName extends string> = {
   name: TPhaseName;
   frames: number;
-  // timer: BpxTimer;
 };
 
 type Now<TPhaseName extends string> = {
@@ -36,9 +35,6 @@ type Now<TPhaseName extends string> = {
 };
 
 // TODO: simplify if possible (after implementing 100% of features)
-// TODO: tests for negative or 0-length frames
-// TODO: tests for nothing defined
-// TODO: tests for time moving backwards / before the timer's start
 
 export class BpxTimerSequence<TPhaseName extends string> {
   static of<TPhaseName extends string>(
@@ -62,8 +58,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
   readonly #loopFrames: number;
 
   // the frame the counting should start at
-  readonly #firstIterationOffset: number;
-  readonly #loopOffset: number;
+  #firstIterationOffset: number;
+  #loopOffset: number;
+  #pausedFrame: number | null;
 
   readonly #firstIterationTimer: BpxTimer;
   readonly #loopTimer: BpxTimer | null;
@@ -74,15 +71,11 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   private constructor(
     params: {
-      // TODO: test
       intro: Array<[phase: TPhaseName, frames: number]>;
-      // TODO: test
       loop: Array<[phase: TPhaseName, frames: number]>;
     },
     opts: {
-      // TODO: implement it + test
       pause: boolean;
-      // TODO: implement it + test
       delayFrames: number;
     },
   ) {
@@ -103,14 +96,14 @@ export class BpxTimerSequence<TPhaseName extends string> {
     );
     this.#loopFrames = this.#loopPhases.reduce((acc, p) => acc + p.frames, 0);
 
-    this.#firstIterationOffset = BeetPx.frameNumber;
+    this.#firstIterationOffset = BeetPx.frameNumber + opts.delayFrames;
     this.#loopOffset = this.#firstIterationOffset + this.#firstIterationFrames;
 
     this.#firstIterationTimer = BpxTimer.for({
       frames: this.#loopOffset - this.#firstIterationOffset,
       loop: false,
       pause: false,
-      delayFrames: 0,
+      delayFrames: opts.delayFrames,
     });
     this.#loopTimer =
       this.#loopPhases.length > 0
@@ -121,10 +114,18 @@ export class BpxTimerSequence<TPhaseName extends string> {
             delayFrames: this.#loopOffset - this.#firstIterationOffset,
           })
         : null;
+
+    this.#pausedFrame = null;
+    if (opts.pause) {
+      this.pause();
+    }
   }
 
   get #now(): Now<TPhaseName> {
-    if (this.#recentlyComputedNow?.frameNumber === BeetPx.frameNumber) {
+    if (
+      this.#recentlyComputedNow?.frameNumber ===
+      (this.#pausedFrame ?? BeetPx.frameNumber)
+    ) {
       return this.#recentlyComputedNow.value;
     }
 
@@ -132,7 +133,10 @@ export class BpxTimerSequence<TPhaseName extends string> {
     // If we are still within the first iteration (intro + first a iteration of the loop) …
     //
 
-    if (!this.#loopTimer || BeetPx.frameNumber < this.#loopOffset) {
+    if (
+      !this.#loopTimer ||
+      (this.#pausedFrame ?? BeetPx.frameNumber) < this.#loopOffset
+    ) {
       const firstIterationT = this.#firstIterationTimer.t;
 
       let offset = 0;
@@ -247,32 +251,38 @@ export class BpxTimerSequence<TPhaseName extends string> {
     );
   }
 
-  // TODO: test
   pause(): void {
-    // TODO: ???
-    // TODO: ???
-    // if (this.#pausedFrame) {
-    //   return;
-    // }
-    // this.#pausedFrame = BeetPx.frameNumber;
+    if (this.#pausedFrame) {
+      return;
+    }
+
+    this.#pausedFrame = BeetPx.frameNumber;
+
+    this.#firstIterationTimer.pause();
+    this.#loopTimer?.pause();
   }
 
-  // TODO: test
   resume(): void {
+    if (!this.#pausedFrame) {
+      return;
+    }
+
     // TODO: ???
-    // TODO: ???
-    // if (!this.#pausedFrame) {
-    //   return;
-    // }
     // this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
-    // this.#pausedFrame = null;
+    this.#pausedFrame = null;
+
+    this.#firstIterationTimer.resume();
+    this.#loopTimer?.resume();
   }
 
-  // TODO: test
   restart(): void {
+    this.#firstIterationOffset = BeetPx.frameNumber;
+    this.#loopOffset = this.#firstIterationOffset + this.#firstIterationFrames;
+
+    this.#pausedFrame = null;
+
+    this.#firstIterationTimer.restart();
     // TODO: ???
-    // TODO: ???
-    // this.#offsetFrame = BeetPx.frameNumber;
-    // this.#pausedFrame = null;
+    // this.#loopTimer?.pause();
   }
 }
