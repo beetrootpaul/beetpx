@@ -626,6 +626,30 @@ describe("Timer", () => {
             hasJustFinished: false,
           }),
         );
+
+        timer.restart();
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
       });
 
       test("restart", () => {
@@ -1663,6 +1687,30 @@ describe("Timer", () => {
             hasJustFinished: false,
           }),
         );
+
+        timer.restart();
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
       });
 
       test("restart", () => {
@@ -1812,6 +1860,284 @@ describe("Timer", () => {
         u_.range(15).forEach(() => {
           incrementFrameNumber();
         });
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: true,
+            hasJustFinished: true,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: true,
+            hasJustFinished: false,
+          }),
+        );
+      });
+
+      test("delayed timer", () => {
+        const timer = timer_(5, { loop: true, delayFrames: 3 });
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        incrementFrameNumber();
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        incrementFrameNumber();
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 4,
+            progress: 0.8,
+            framesLeft: 1,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: true,
+            hasJustFinished: true,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: true,
+            hasJustFinished: false,
+          }),
+        );
+
+        timer.restart();
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        timer.pause();
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        timer.resume();
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 2,
+            progress: 0.4,
+            framesLeft: 3,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+      });
+
+      test("delayed and already paused timer", () => {
+        const timer = timer_(5, {
+          loop: true,
+          delayFrames: 3,
+          pause: true,
+        });
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        u_.range(12).forEach(() => {
+          incrementFrameNumber();
+        });
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        timer.resume();
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        incrementFrameNumber();
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        incrementFrameNumber();
+        incrementFrameNumber();
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: true,
+            hasJustFinished: true,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: true,
+            hasJustFinished: false,
+          }),
+        );
+      });
+
+      test("delayed timer vs early restart", () => {
+        const timer = timer_(5, { loop: true, delayFrames: 3 });
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        timer.restart();
+
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 0,
+            progress: 0,
+            framesLeft: 5,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        expect(ppt(timer)).toEqual(
+          ppev({
+            t: 1,
+            progress: 0.2,
+            framesLeft: 4,
+            hasFinished: false,
+            hasJustFinished: false,
+          }),
+        );
+
+        incrementFrameNumber();
+        incrementFrameNumber();
+        incrementFrameNumber();
+        incrementFrameNumber();
         expect(ppt(timer)).toEqual(
           ppev({
             t: 0,

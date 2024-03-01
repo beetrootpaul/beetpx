@@ -24,6 +24,7 @@ export function timerSeq_(params, opts) {
 
 
 
+
 export class BpxTimerSequence {
     static of(params, opts) {
         return new BpxTimerSequence(params, opts);
@@ -135,6 +136,32 @@ export class BpxTimerSequence {
     get hasJustFinishedOverall() {
         return (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.hasJustFinished ||
             __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished);
+    }
+    
+    pause() {
+        
+        
+        
+        
+        
+        
+    }
+    
+    resume() {
+        
+        
+        
+        
+        
+        
+        
+    }
+    
+    restart() {
+        
+        
+        
+        
     }
 }
 _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPhases = new WeakMap(), _BpxTimerSequence_firstIterationFrames = new WeakMap(), _BpxTimerSequence_loopFrames = new WeakMap(), _BpxTimerSequence_firstIterationOffset = new WeakMap(), _BpxTimerSequence_loopOffset = new WeakMap(), _BpxTimerSequence_firstIterationTimer = new WeakMap(), _BpxTimerSequence_loopTimer = new WeakMap(), _BpxTimerSequence_recentlyComputedNow = new WeakMap(), _BpxTimerSequence_instances = new WeakSet(), _BpxTimerSequence_now_get = function _BpxTimerSequence_now_get() {

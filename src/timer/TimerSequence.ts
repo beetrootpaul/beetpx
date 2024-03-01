@@ -37,6 +37,7 @@ type Now<TPhaseName extends string> = {
   recentlyFinishedPhase: TPhaseName | null;
 };
 
+// TODO: simplify if possible (after implementing 100% of features)
 // TODO: tests for negative or 0-length frames
 // TODO: tests for nothing defined
 // TODO: tests for time moving backwards / before the timer's start
@@ -361,31 +362,31 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   // TODO: test
-  // pause(): void {
-  // TODO: ???
-  // TODO: ???
-  // if (this.#pausedFrame) {
-  //   return;
-  // }
-  // this.#pausedFrame = BeetPx.frameNumber;
-  // }
+  pause(): void {
+    // TODO: ???
+    // TODO: ???
+    // if (this.#pausedFrame) {
+    //   return;
+    // }
+    // this.#pausedFrame = BeetPx.frameNumber;
+  }
 
   // TODO: test
-  // resume(): void {
-  // TODO: ???
-  // TODO: ???
-  // if (!this.#pausedFrame) {
-  //   return;
-  // }
-  // this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
-  // this.#pausedFrame = null;
-  // }
+  resume(): void {
+    // TODO: ???
+    // TODO: ???
+    // if (!this.#pausedFrame) {
+    //   return;
+    // }
+    // this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
+    // this.#pausedFrame = null;
+  }
 
   // TODO: test
-  // restart(): void {
-  // TODO: ???
-  // TODO: ???
-  // this.#offsetFrame = BeetPx.frameNumber;
-  // this.#pausedFrame = null;
-  // }
+  restart(): void {
+    // TODO: ???
+    // TODO: ???
+    // this.#offsetFrame = BeetPx.frameNumber;
+    // this.#pausedFrame = null;
+  }
 }
