@@ -11,7 +11,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_loopOffset, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get, _BpxTimerSequence_frames_get, _BpxTimerSequence_tRaw_get;
 import { BeetPx } from "../BeetPx";
-import { u_ } from "../Utils";
 import { BpxTimer } from "./Timer";
 export function timerSeq_(params, opts) {
     return BpxTimerSequence.of({
@@ -91,7 +90,7 @@ export class BpxTimerSequence {
     
     
     get justFinishedPhase() {
-        return null;
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinishedPhase;
         
         
         
@@ -104,7 +103,7 @@ export class BpxTimerSequence {
         return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase;
     }
     get t() {
-        return 123;
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t;
         
         
         
@@ -154,41 +153,56 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
     
     
     
-    if (BeetPx.frameNumber < __classPrivateFieldGet(this, _BpxTimerSequence_loopOffset, "f") || !__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")) {
-        let offset = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationOffset, "f");
+    if (!__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f") || BeetPx.frameNumber < __classPrivateFieldGet(this, _BpxTimerSequence_loopOffset, "f")) {
+        const firstIterationT = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t;
+        let offset = 0;
+        let prev = null;
         let i = 0;
         while (i < __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").length - 1) {
-            let p = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
-            if (BeetPx.frameNumber < offset + p.frames) {
+            let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
+            if (firstIterationT < offset + curr.frames) {
                 return {
-                    phase: p.name,
+                    phase: curr.name,
+                    t: firstIterationT - offset,
+                    recentlyFinishedPhase: prev?.name ?? null,
                 };
             }
-            offset += p.frames;
+            offset += curr.frames;
+            prev = curr;
             i += 1;
         }
+        let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
         return {
-            phase: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i].name,
+            phase: curr.name,
+            t: firstIterationT - offset,
+            recentlyFinishedPhase: prev?.name ?? null,
         };
     }
     
     
     
-    let offset = __classPrivateFieldGet(this, _BpxTimerSequence_loopOffset, "f");
+    const loopT = __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f").t;
+    let offset = 0;
+    let prev = null;
     let i = 0;
     while (i < __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length - 1) {
-        let p = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i];
-        if (u_.mod(BeetPx.frameNumber - __classPrivateFieldGet(this, _BpxTimerSequence_loopOffset, "f"), __classPrivateFieldGet(this, _BpxTimerSequence_loopFrames, "f")) <
-            offset + p.frames - __classPrivateFieldGet(this, _BpxTimerSequence_loopOffset, "f")) {
+        let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i];
+        if (loopT < offset + curr.frames) {
             return {
-                phase: p.name,
+                phase: curr.name,
+                t: loopT - offset,
+                recentlyFinishedPhase: null,
             };
         }
-        offset += p.frames;
+        offset += curr.frames;
+        prev = curr;
         i += 1;
     }
+    let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
     return {
-        phase: __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i].name,
+        phase: curr.name,
+        t: loopT - offset,
+        recentlyFinishedPhase: null,
     };
     
     
