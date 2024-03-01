@@ -63,7 +63,7 @@ export class BpxTimerSequence {
                 frames: __classPrivateFieldGet(this, _BpxTimerSequence_loopFrames, "f"),
                 loop: true,
                 pause: false,
-                delayFrames: __classPrivateFieldGet(this, _BpxTimerSequence_loopOffset, "f") - __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationOffset, "f"),
+                delayFrames: opts.delayFrames + __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"),
             })
             : null, "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
@@ -124,8 +124,6 @@ export class BpxTimerSequence {
         if (!__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f")) {
             return;
         }
-        
-        
         __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
         __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").resume();
         __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.resume();
@@ -135,8 +133,14 @@ export class BpxTimerSequence {
         __classPrivateFieldSet(this, _BpxTimerSequence_loopOffset, __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationOffset, "f") + __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
         __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").restart();
-        
-        __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.restart();
+        if (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")) {
+            __classPrivateFieldSet(this, _BpxTimerSequence_loopTimer, BpxTimer.for({
+                frames: __classPrivateFieldGet(this, _BpxTimerSequence_loopFrames, "f"),
+                loop: true,
+                pause: false,
+                delayFrames: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"),
+            }), "f");
+        }
     }
 }
 _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPhases = new WeakMap(), _BpxTimerSequence_firstIterationFrames = new WeakMap(), _BpxTimerSequence_loopFrames = new WeakMap(), _BpxTimerSequence_firstIterationOffset = new WeakMap(), _BpxTimerSequence_loopOffset = new WeakMap(), _BpxTimerSequence_pausedFrame = new WeakMap(), _BpxTimerSequence_firstIterationTimer = new WeakMap(), _BpxTimerSequence_loopTimer = new WeakMap(), _BpxTimerSequence_recentlyComputedNow = new WeakMap(), _BpxTimerSequence_instances = new WeakSet(), _BpxTimerSequence_now_get = function _BpxTimerSequence_now_get() {

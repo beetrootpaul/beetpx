@@ -63,7 +63,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   #pausedFrame: number | null;
 
   readonly #firstIterationTimer: BpxTimer;
-  readonly #loopTimer: BpxTimer | null;
+  #loopTimer: BpxTimer | null;
 
   #recentlyComputedNow:
     | { frameNumber: number; value: Now<TPhaseName> }
@@ -111,7 +111,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
             frames: this.#loopFrames,
             loop: true,
             pause: false,
-            delayFrames: this.#loopOffset - this.#firstIterationOffset,
+            delayFrames: opts.delayFrames + this.#firstIterationFrames,
           })
         : null;
 
@@ -267,8 +267,6 @@ export class BpxTimerSequence<TPhaseName extends string> {
       return;
     }
 
-    // TODO: ???
-    // this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
     this.#pausedFrame = null;
 
     this.#firstIterationTimer.resume();
@@ -282,7 +280,13 @@ export class BpxTimerSequence<TPhaseName extends string> {
     this.#pausedFrame = null;
 
     this.#firstIterationTimer.restart();
-    // TODO: ???
-    this.#loopTimer?.restart();
+    if (this.#loopTimer) {
+      this.#loopTimer = BpxTimer.for({
+        frames: this.#loopFrames,
+        loop: true,
+        pause: false,
+        delayFrames: this.#firstIterationFrames,
+      });
+    }
   }
 }
