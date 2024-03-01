@@ -244,6 +244,767 @@ describe("TimerSequence", () => {
         );
       },
     );
+
+    test.each(allPropertiesToTest)(
+      'pause/resume (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesAaa = 10;
+        const framesBbb = 50;
+        const framesCcc = 20;
+
+        const seq = timerSeq_({
+          intro: [
+            ["aaa", framesAaa],
+            ["bbb", framesBbb],
+            ["ccc", framesCcc],
+          ],
+        });
+
+        u_.range(framesAaa).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa,
+            progressOverall: framesAaa / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: "aaa",
+            currentPhase: "bbb",
+            t: 0,
+            progress: 0,
+            framesLeft: framesBbb,
+          }),
+        );
+
+        seq.resume();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa,
+            progressOverall: framesAaa / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: "aaa",
+            currentPhase: "bbb",
+            t: 0,
+            progress: 0,
+            framesLeft: framesBbb,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 1,
+            progressOverall:
+              (framesAaa + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 1,
+            progress: 1 / framesBbb,
+            framesLeft: framesBbb - 1,
+          }),
+        );
+
+        seq.pause();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 1,
+            progressOverall:
+              (framesAaa + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 1,
+            progress: 1 / framesBbb,
+            framesLeft: framesBbb - 1,
+          }),
+        );
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 1,
+            progressOverall:
+              (framesAaa + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 1,
+            progress: 1 / framesBbb,
+            framesLeft: framesBbb - 1,
+          }),
+        );
+
+        seq.resume();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 1,
+            progressOverall:
+              (framesAaa + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 1,
+            progress: 1 / framesBbb,
+            framesLeft: framesBbb - 1,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 2,
+            progressOverall:
+              (framesAaa + 2) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - 2,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 2,
+            progress: 2 / framesBbb,
+            framesLeft: framesBbb - 2,
+          }),
+        );
+
+        seq.pause();
+        seq.pause();
+        seq.pause();
+        seq.pause();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 2,
+            progressOverall:
+              (framesAaa + 2) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - 2,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 2,
+            progress: 2 / framesBbb,
+            framesLeft: framesBbb - 2,
+          }),
+        );
+
+        seq.resume();
+        seq.resume();
+        seq.resume();
+        seq.resume();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 3,
+            progressOverall:
+              (framesAaa + 3) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb + framesCcc - 3,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 3,
+            progress: 3 / framesBbb,
+            framesLeft: framesBbb - 3,
+          }),
+        );
+
+        u_.range(-3 + framesBbb - 1).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        seq.pause();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + framesBbb - 1,
+            progressOverall:
+              (framesAaa + framesBbb - 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: 1 + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: framesBbb - 1,
+            progress: (framesBbb - 1) / framesBbb,
+            framesLeft: 1,
+          }),
+        );
+
+        seq.resume();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + framesBbb,
+            progressOverall:
+              (framesAaa + framesBbb) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: "bbb",
+            currentPhase: "ccc",
+            t: 0,
+            progress: 0,
+            framesLeft: framesCcc,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'already paused (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesAaa = 10;
+        const framesBbb = 50;
+        const framesCcc = 20;
+
+        const seq = timerSeq_(
+          {
+            intro: [
+              ["aaa", framesAaa],
+              ["bbb", framesBbb],
+              ["ccc", framesCcc],
+            ],
+          },
+          { pause: true },
+        );
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        seq.resume();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa + framesBbb + framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+
+        seq.pause();
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa + framesBbb + framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'restart (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesAaa = 10;
+        const framesBbb = 50;
+        const framesCcc = 20;
+
+        const seq = timerSeq_(
+          {
+            intro: [
+              ["aaa", framesAaa],
+              ["bbb", framesBbb],
+              ["ccc", framesCcc],
+            ],
+          },
+          { pause: true },
+        );
+
+        u_.range(framesAaa + 1).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 1,
+            progressOverall:
+              (framesAaa + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb - 1 + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 1,
+            progress: 1 / framesBbb,
+            framesLeft: framesBbb - 1,
+          }),
+        );
+
+        seq.restart();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        u_.range(framesAaa + 1).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + +1,
+            progressOverall:
+              (framesAaa + +1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb - 1 + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'delayed (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesAaa = 10;
+        const framesBbb = 50;
+        const framesCcc = 20;
+
+        const seq = timerSeq_(
+          {
+            intro: [
+              ["aaa", framesAaa],
+              ["bbb", framesBbb],
+              ["ccc", framesCcc],
+            ],
+          },
+          { delayFrames: 333 },
+        );
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        u_.range(333).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa - 1 + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+
+        seq.pause();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa - 1 + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+
+        seq.resume();
+
+        incrementFrameNumber();
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + 1,
+            progressOverall:
+              (framesAaa + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesBbb - 1 + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "bbb",
+            t: 1,
+            progress: 1 / framesBbb,
+            framesLeft: framesBbb - 1,
+          }),
+        );
+
+        seq.restart();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa - 1 + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'delayed and already paused (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesAaa = 10;
+        const framesBbb = 50;
+        const framesCcc = 20;
+
+        const seq = timerSeq_(
+          {
+            intro: [
+              ["aaa", framesAaa],
+              ["bbb", framesBbb],
+              ["ccc", framesCcc],
+            ],
+          },
+          { delayFrames: 333, pause: true },
+        );
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        seq.resume();
+
+        u_.range(333).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa - 1 + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+
+        u_.range(framesAaa - 1 + framesBbb + 1);
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + framesBbb + 1,
+            progressOverall:
+              (framesAaa + framesBbb + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ccc",
+            t: 1,
+            progress: 1 / framesCcc,
+            framesLeft: framesCcc - 1,
+          }),
+        );
+
+        seq.restart();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa - 1 + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'delayed timer vs early restart (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesAaa = 10;
+        const framesBbb = 50;
+        const framesCcc = 20;
+
+        const seq = timerSeq_(
+          {
+            intro: [
+              ["aaa", framesAaa],
+              ["bbb", framesBbb],
+              ["ccc", framesCcc],
+            ],
+          },
+          { delayFrames: 333 },
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        seq.restart();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesAaa + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 0,
+            progress: 0,
+            framesLeft: framesAaa,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa - 1 + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+
+        u_.range(framesAaa - 1 + framesBbb + 1);
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesAaa + framesBbb + 1,
+            progressOverall:
+              (framesAaa + framesBbb + 1) / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesCcc - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ccc",
+            t: 1,
+            progress: 1 / framesCcc,
+            framesLeft: framesCcc - 1,
+          }),
+        );
+
+        seq.restart();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesAaa + framesBbb + framesCcc),
+            framesLeftOverall: framesAaa - 1 + framesBbb + framesCcc,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesAaa,
+            framesLeft: framesAaa - 1,
+          }),
+        );
+      },
+    );
   });
 
   describe("loop only", () => {
@@ -523,6 +1284,827 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'pause/resume (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesDdd = 200;
+        const framesEee = 40;
+        const framesFff = 80;
+
+        const seq = timerSeq_({
+          loop: [
+            ["ddd", framesDdd],
+            ["eee", framesEee],
+            ["fff", framesFff],
+          ],
+        });
+
+        u_.range(framesDdd).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd,
+            progressOverall: framesDdd / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: "ddd",
+            currentPhase: "eee",
+            t: 0,
+            progress: 0,
+            framesLeft: framesEee,
+          }),
+        );
+
+        seq.resume();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd,
+            progressOverall: framesDdd / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: "ddd",
+            currentPhase: "eee",
+            t: 0,
+            progress: 0,
+            framesLeft: framesEee,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        seq.pause();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        seq.resume();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 2,
+            progressOverall:
+              (framesDdd + 2) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - 2,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 2,
+            progress: 2 / framesEee,
+            framesLeft: framesEee - 2,
+          }),
+        );
+
+        seq.pause();
+        seq.pause();
+        seq.pause();
+        seq.pause();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 2,
+            progressOverall:
+              (framesDdd + 2) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - 2,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 2,
+            progress: 2 / framesEee,
+            framesLeft: framesEee - 2,
+          }),
+        );
+
+        seq.resume();
+        seq.resume();
+        seq.resume();
+        seq.resume();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 3,
+            progressOverall:
+              (framesDdd + 3) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff - 3,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 3,
+            progress: 3 / framesEee,
+            framesLeft: framesEee - 3,
+          }),
+        );
+
+        u_.range(framesFff + framesDdd - 1).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        seq.pause();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd - 1,
+            progressOverall:
+              (framesDdd - 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: framesDdd - 1,
+            progress: (framesDdd - 1) / framesDdd,
+            framesLeft: 1,
+          }),
+        );
+
+        seq.resume();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd,
+            progressOverall: framesDdd / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: "ddd",
+            currentPhase: "eee",
+            t: 0,
+            progress: 0,
+            framesLeft: framesEee,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'already paused (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesDdd = 200;
+        const framesEee = 40;
+        const framesFff = 80;
+
+        const seq = timerSeq_(
+          {
+            loop: [
+              ["ddd", framesDdd],
+              ["eee", framesEee],
+              ["fff", framesFff],
+            ],
+          },
+          { pause: true },
+        );
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        seq.resume();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd + framesEee + framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+
+        seq.pause();
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd + framesEee + framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "aaa",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'restart (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesDdd = 200;
+        const framesEee = 40;
+        const framesFff = 80;
+
+        const seq = timerSeq_(
+          {
+            loop: [
+              ["ddd", framesDdd],
+              ["eee", framesEee],
+              ["fff", framesFff],
+            ],
+          },
+          { pause: true },
+        );
+
+        u_.range(framesDdd + 1).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee - 1 + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        seq.restart();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        u_.range(framesDdd + 1).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee - 1 + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        seq.restart();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        u_.range(framesDdd + framesEee + framesFff + framesDdd + 1).forEach(
+          () => {
+            incrementFrameNumber();
+          },
+        );
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee - 1 + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        seq.restart();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'delayed (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesDdd = 200;
+        const framesEee = 40;
+        const framesFff = 80;
+
+        const seq = timerSeq_(
+          {
+            loop: [
+              ["ddd", framesDdd],
+              ["eee", framesEee],
+              ["fff", framesFff],
+            ],
+          },
+          { delayFrames: 333 },
+        );
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        u_.range(333).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+
+        seq.pause();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+
+        seq.resume();
+
+        u_.range(-1 + framesDdd + 1).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + 1,
+            progressOverall:
+              (framesDdd + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesEee - 1 + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "eee",
+            t: 1,
+            progress: 1 / framesEee,
+            framesLeft: framesEee - 1,
+          }),
+        );
+
+        seq.restart();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'delayed and already paused (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesDdd = 200;
+        const framesEee = 40;
+        const framesFff = 80;
+
+        const seq = timerSeq_(
+          {
+            loop: [
+              ["ddd", framesDdd],
+              ["eee", framesEee],
+              ["fff", framesFff],
+            ],
+          },
+          { delayFrames: 333, pause: true },
+        );
+
+        u_.range(9999).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        seq.resume();
+
+        u_.range(333).forEach(() => {
+          incrementFrameNumber();
+        });
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+
+        u_.range(
+          framesDdd - 1 + framesEee + framesFff + framesDdd + framesEee + 1,
+        );
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + framesEee + 1,
+            progressOverall:
+              (framesDdd + framesEee + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "fff",
+            t: 1,
+            progress: 1 / framesFff,
+            framesLeft: framesFff - 1,
+          }),
+        );
+
+        seq.restart();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+      },
+    );
+
+    test.each(allPropertiesToTest)(
+      'delayed timer vs early restart (tested property: "%s")',
+      (testedProperty) => {
+        const ppt = pickPropertyOfTimer(testedProperty);
+        const ppev = pickPropertyOfExpectedValues(testedProperty);
+
+        const framesDdd = 200;
+        const framesEee = 40;
+        const framesFff = 80;
+
+        const seq = timerSeq_(
+          {
+            loop: [
+              ["ddd", framesDdd],
+              ["eee", framesEee],
+              ["fff", framesFff],
+            ],
+          },
+          { delayFrames: 333 },
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        seq.restart();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 0,
+            progressOverall: 0,
+            framesLeftOverall: framesDdd + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 0,
+            progress: 0,
+            framesLeft: framesDdd,
+          }),
+        );
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
+          }),
+        );
+
+        u_.range(
+          framesDdd - 1 + framesEee + framesFff + framesDdd + framesEee + 1,
+        );
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: framesDdd + framesEee + 1,
+            progressOverall:
+              (framesDdd + framesEee + 1) / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesFff - 1,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "fff",
+            t: 1,
+            progress: 1 / framesFff,
+            framesLeft: framesFff - 1,
+          }),
+        );
+
+        seq.restart();
+
+        incrementFrameNumber();
+
+        expect(ppt(seq)).toEqual(
+          ppev({
+            tOverall: 1,
+            progressOverall: 1 / (framesDdd + framesEee + framesFff),
+            framesLeftOverall: framesDdd - 1 + framesEee + framesFff,
+            hasFinishedOverall: false,
+            hasJustFinishedOverall: false,
+            justFinishedPhase: null,
+            currentPhase: "ddd",
+            t: 1,
+            progress: 1 / framesDdd,
+            framesLeft: framesDdd - 1,
           }),
         );
       },
@@ -1033,7 +2615,6 @@ describe("TimerSequence", () => {
       },
     );
 
-    // TODO: copy to intro only and to loop only
     test.each(allPropertiesToTest)(
       'pause/resume (tested property: "%s")',
       (testedProperty) => {
@@ -1407,7 +2988,6 @@ describe("TimerSequence", () => {
       },
     );
 
-    // TODO: copy to intro only and to loop only
     test.each(allPropertiesToTest)(
       'already paused (tested property: "%s")',
       (testedProperty) => {
@@ -1536,7 +3116,6 @@ describe("TimerSequence", () => {
       },
     );
 
-    // TODO: copy to intro only and to loop only
     test.each(allPropertiesToTest)(
       'restart (tested property: "%s")',
       (testedProperty) => {
@@ -1731,7 +3310,6 @@ describe("TimerSequence", () => {
       },
     );
 
-    // TODO: copy to intro only and to loop only
     test.each(allPropertiesToTest)(
       'delayed (tested property: "%s")',
       (testedProperty) => {
@@ -1940,7 +3518,6 @@ describe("TimerSequence", () => {
       },
     );
 
-    // TODO: copy to intro only and to loop only
     test.each(allPropertiesToTest)(
       'delayed and already paused (tested property: "%s")',
       (testedProperty) => {
@@ -2121,7 +3698,6 @@ describe("TimerSequence", () => {
       },
     );
 
-    // TODO: copy to intro only and to loop only
     test.each(allPropertiesToTest)(
       'delayed timer vs early restart (tested property: "%s")',
       (testedProperty) => {
