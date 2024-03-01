@@ -264,10 +264,10 @@ export class BpxTimerSequence<TPhaseName extends string> {
     // return this.#frames - this.t;
   }
 
-  get #tOverallRaw(): number {
-    return 123;
-    // return BeetPx.frameNumber - this.#offsetFrame;
-  }
+  // get #tOverallRaw(): number {
+  //   return 123;
+  // return BeetPx.frameNumber - this.#offsetFrame;
+  // }
 
   get tOverall(): number {
     return this.#loopTimer
@@ -278,21 +278,19 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   get framesLeftOverall(): number {
-    return 123;
-    // return this.#loopTimer
-    //   ? this.#firstIterationTimer.hasFinished
-    //     ? this.#loopTimer.framesLeft
-    //     : this.#firstIterationTimer.framesLeft
-    //   : this.#firstIterationTimer.framesLeft;
+    return this.#loopTimer
+      ? this.#firstIterationTimer.hasFinished
+        ? this.#loopTimer.framesLeft
+        : this.#firstIterationTimer.framesLeft
+      : this.#firstIterationTimer.framesLeft;
   }
 
   get progressOverall(): number {
-    return 123;
-    // return this.#loopTimer
-    //   ? this.#firstIterationTimer.hasFinished
-    //     ? this.#loopTimer.progress
-    //     : this.#firstIterationTimer.progress
-    //   : this.#firstIterationTimer.progress;
+    return this.#loopTimer
+      ? this.#firstIterationTimer.hasFinished
+        ? this.#loopTimer.progress
+        : this.#firstIterationTimer.progress
+      : this.#firstIterationTimer.progress;
   }
 
   get hasFinishedOverall(): boolean {
