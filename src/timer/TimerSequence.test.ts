@@ -56,12 +56,11 @@ const allPropertiesToTest = [
   "framesLeftOverall",
   "hasFinishedOverall",
   "hasJustFinishedOverall",
-  // TODO: UNCOMMENT
-  // "justFinishedPhase",
-  // "currentPhase",
-  // "t",
-  // "progress",
-  // "framesLeft",
+  "justFinishedPhase",
+  "currentPhase",
+  "t",
+  "progress",
+  "framesLeft",
 ];
 
 describe("TimerSequence", () => {
@@ -336,7 +335,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -505,7 +504,7 @@ describe("TimerSequence", () => {
           { pause: true },
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -545,7 +544,7 @@ describe("TimerSequence", () => {
 
         seq.pause();
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -798,7 +797,7 @@ describe("TimerSequence", () => {
           { delayFrames: 333, pause: true },
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1382,7 +1381,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1550,7 +1549,7 @@ describe("TimerSequence", () => {
           { pause: true },
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1590,7 +1589,7 @@ describe("TimerSequence", () => {
 
         seq.pause();
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1896,7 +1895,7 @@ describe("TimerSequence", () => {
           { delayFrames: 333, pause: true },
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -2748,7 +2747,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3022,7 +3021,7 @@ describe("TimerSequence", () => {
           { pause: true },
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3082,7 +3081,7 @@ describe("TimerSequence", () => {
 
         seq.pause();
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3543,7 +3542,7 @@ describe("TimerSequence", () => {
           { delayFrames: 333, pause: true },
         );
 
-        u_.range(9999).forEach(() => {
+        u_.range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
