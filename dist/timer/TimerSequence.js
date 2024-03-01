@@ -231,15 +231,11 @@ export class BpxTimerSequence {
             : __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").progress;
     }
     get hasFinishedOverall() {
-        return true;
-        
+        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished;
     }
     get hasJustFinishedOverall() {
-        return true;
-        
-        
-        
-        
+        return (__classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished ||
+            (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.hasJustFinished ?? false));
     }
 }
 _BpxTimerSequence_introPhases = new WeakMap(), _BpxTimerSequence_loopPhases = new WeakMap(), _BpxTimerSequence_introFrames = new WeakMap(), _BpxTimerSequence_loopFrames = new WeakMap(), _BpxTimerSequence_firstIterationTimer = new WeakMap(), _BpxTimerSequence_loopTimer = new WeakMap(), _BpxTimerSequence_instances = new WeakSet(), _BpxTimerSequence_frames_get = function _BpxTimerSequence_frames_get() {

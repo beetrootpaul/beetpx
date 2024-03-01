@@ -294,16 +294,14 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   get hasFinishedOverall(): boolean {
-    return true;
-    // return this.#firstIterationTimer.hasFinished;
+    return this.#firstIterationTimer.hasFinished;
   }
 
   get hasJustFinishedOverall(): boolean {
-    return true;
-    // return (
-    //   this.#firstIterationTimer.hasJustFinished ||
-    //   (this.#loopTimer?.hasJustFinished ?? false)
-    // );
+    return (
+      this.#firstIterationTimer.hasJustFinished ||
+      (this.#loopTimer?.hasJustFinished ?? false)
+    );
   }
 
   // TODO: test
