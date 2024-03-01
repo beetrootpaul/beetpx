@@ -119,7 +119,7 @@ export class Framework {
       );
     }
 
-    Button.setRepeatingParamsFor(options.desiredUpdateFps);
+    Button.configureRepeatingParamsFor(options.desiredUpdateFps);
 
     this.#frameByFrame = false;
 
@@ -264,17 +264,17 @@ export class Framework {
 
     this.#gameLoop.start({
       updateFn: () => {
-        if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
+        if (this.gameInput.buttonFullScreen.wasJustPressed) {
           this.fullScreen.toggleFullScreen();
         }
-        if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
+        if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
           if (this.audioApi.isAudioMuted()) {
             this.audioApi.unmuteAudio();
           } else {
             this.audioApi.muteAudio();
           }
         }
-        if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
+        if (this.gameInput.buttonDebugToggle.wasJustPressed) {
           DebugMode.enabled = !DebugMode.enabled;
           if (DebugMode.enabled) {
             window.localStorage.removeItem(Framework.#storageDebugDisabledKey);
@@ -285,14 +285,14 @@ export class Framework {
             );
           }
         }
-        if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
+        if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
           this.#frameByFrame = !this.#frameByFrame;
           Logger.infoBeetPx(`FrameByFrame mode set to: ${this.#frameByFrame}`);
         }
 
         const shouldUpdate =
           !this.#frameByFrame ||
-          this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
+          this.gameInput.buttonFrameByFrameStep.wasJustPressed;
 
         const hasAnyInteractionHappened = this.gameInput.update({
           skipGameButtons: !shouldUpdate,

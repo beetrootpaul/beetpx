@@ -20,13 +20,13 @@ export class GameButtons {
   readonly #b: Button = new Button();
   readonly #menu: Button = new Button();
 
+  // TODO: ???
   #repeatingLeft: boolean = true;
   #repeatingRight: boolean = true;
   #repeatingUp: boolean = true;
   #repeatingDown: boolean = true;
   #repeatingA: boolean = true;
   #repeatingB: boolean = true;
-
   #repeatingMenu: boolean = false;
 
   update(events: Set<BpxGameInputEvent>): void {
@@ -93,51 +93,51 @@ export class GameButtons {
 
   wasAnyJustPressed(): boolean {
     return (
-      this.#left.wasJustPressed(this.#repeatingLeft) ||
-      this.#right.wasJustPressed(this.#repeatingRight) ||
-      this.#up.wasJustPressed(this.#repeatingUp) ||
-      this.#down.wasJustPressed(this.#repeatingDown) ||
-      this.#a.wasJustPressed(this.#repeatingA) ||
-      this.#b.wasJustPressed(this.#repeatingB) ||
-      this.#menu.wasJustPressed(this.#repeatingMenu)
+      this.#left.wasJustPressed ||
+      this.#right.wasJustPressed ||
+      this.#up.wasJustPressed ||
+      this.#down.wasJustPressed ||
+      this.#a.wasJustPressed ||
+      this.#b.wasJustPressed ||
+      this.#menu.wasJustPressed
     );
   }
 
   wasJustPressed(button: BpxGameButtonName): boolean {
     switch (button) {
       case "left":
-        return this.#left.wasJustPressed(this.#repeatingLeft);
+        return this.#left.wasJustPressed;
       case "right":
-        return this.#right.wasJustPressed(this.#repeatingRight);
+        return this.#right.wasJustPressed;
       case "up":
-        return this.#up.wasJustPressed(this.#repeatingUp);
+        return this.#up.wasJustPressed;
       case "down":
-        return this.#down.wasJustPressed(this.#repeatingDown);
+        return this.#down.wasJustPressed;
       case "a":
-        return this.#a.wasJustPressed(this.#repeatingA);
+        return this.#a.wasJustPressed;
       case "b":
-        return this.#b.wasJustPressed(this.#repeatingB);
+        return this.#b.wasJustPressed;
       case "menu":
-        return this.#menu.wasJustPressed(this.#repeatingMenu);
+        return this.#menu.wasJustPressed;
     }
   }
 
   wasJustReleased(button: BpxGameButtonName): boolean {
     switch (button) {
       case "left":
-        return this.#left.wasJustReleased(this.#repeatingLeft);
+        return this.#left.wasJustReleased;
       case "right":
-        return this.#right.wasJustReleased(this.#repeatingRight);
+        return this.#right.wasJustReleased;
       case "up":
-        return this.#up.wasJustReleased(this.#repeatingUp);
+        return this.#up.wasJustReleased;
       case "down":
-        return this.#down.wasJustReleased(this.#repeatingDown);
+        return this.#down.wasJustReleased;
       case "a":
-        return this.#a.wasJustReleased(this.#repeatingA);
+        return this.#a.wasJustReleased;
       case "b":
-        return this.#b.wasJustReleased(this.#repeatingB);
+        return this.#b.wasJustReleased;
       case "menu":
-        return this.#menu.wasJustReleased(this.#repeatingMenu);
+        return this.#menu.wasJustReleased;
     }
   }
 }

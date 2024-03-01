@@ -87,7 +87,7 @@ export class Framework {
         if (options.desiredUpdateFps !== 30 && options.desiredUpdateFps !== 60) {
             BpxUtils.throwError(`Unsupported desiredUpdateFps: ${options.desiredUpdateFps}`);
         }
-        Button.setRepeatingParamsFor(options.desiredUpdateFps);
+        Button.configureRepeatingParamsFor(options.desiredUpdateFps);
         __classPrivateFieldSet(this, _Framework_frameByFrame, false, "f");
         __classPrivateFieldSet(this, _Framework_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         __classPrivateFieldSet(this, _Framework_gameCanvasSize, options.gameCanvasSize === "64x64"
@@ -189,10 +189,10 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
     this.gameInput.startListening();
     __classPrivateFieldGet(this, _Framework_gameLoop, "f").start({
         updateFn: () => {
-            if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
+            if (this.gameInput.buttonFullScreen.wasJustPressed) {
                 this.fullScreen.toggleFullScreen();
             }
-            if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
+            if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
                 if (this.audioApi.isAudioMuted()) {
                     this.audioApi.unmuteAudio();
                 }
@@ -200,7 +200,7 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
                     this.audioApi.muteAudio();
                 }
             }
-            if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
+            if (this.gameInput.buttonDebugToggle.wasJustPressed) {
                 DebugMode.enabled = !DebugMode.enabled;
                 if (DebugMode.enabled) {
                     window.localStorage.removeItem(__classPrivateFieldGet(_a, _a, "f", _Framework_storageDebugDisabledKey));
@@ -209,12 +209,12 @@ _a = Framework, _Framework_frameByFrame = new WeakMap(), _Framework_browserType 
                     window.localStorage.setItem(__classPrivateFieldGet(_a, _a, "f", _Framework_storageDebugDisabledKey), __classPrivateFieldGet(_a, _a, "f", _Framework_storageDebugDisabledTrue));
                 }
             }
-            if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
+            if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
                 __classPrivateFieldSet(this, _Framework_frameByFrame, !__classPrivateFieldGet(this, _Framework_frameByFrame, "f"), "f");
                 Logger.infoBeetPx(`FrameByFrame mode set to: ${__classPrivateFieldGet(this, _Framework_frameByFrame, "f")}`);
             }
             const shouldUpdate = !__classPrivateFieldGet(this, _Framework_frameByFrame, "f") ||
-                this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
+                this.gameInput.buttonFrameByFrameStep.wasJustPressed;
             const hasAnyInteractionHappened = this.gameInput.update({
                 skipGameButtons: !shouldUpdate,
             });

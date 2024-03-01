@@ -21,6 +21,7 @@ export class GameButtons {
         _GameButtons_a.set(this, new Button());
         _GameButtons_b.set(this, new Button());
         _GameButtons_menu.set(this, new Button());
+        
         _GameButtons_repeatingLeft.set(this, true);
         _GameButtons_repeatingRight.set(this, true);
         _GameButtons_repeatingUp.set(this, true);
@@ -85,48 +86,48 @@ export class GameButtons {
         }
     }
     wasAnyJustPressed() {
-        return (__classPrivateFieldGet(this, _GameButtons_left, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingLeft, "f")) ||
-            __classPrivateFieldGet(this, _GameButtons_right, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingRight, "f")) ||
-            __classPrivateFieldGet(this, _GameButtons_up, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingUp, "f")) ||
-            __classPrivateFieldGet(this, _GameButtons_down, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingDown, "f")) ||
-            __classPrivateFieldGet(this, _GameButtons_a, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingA, "f")) ||
-            __classPrivateFieldGet(this, _GameButtons_b, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingB, "f")) ||
-            __classPrivateFieldGet(this, _GameButtons_menu, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingMenu, "f")));
+        return (__classPrivateFieldGet(this, _GameButtons_left, "f").wasJustPressed ||
+            __classPrivateFieldGet(this, _GameButtons_right, "f").wasJustPressed ||
+            __classPrivateFieldGet(this, _GameButtons_up, "f").wasJustPressed ||
+            __classPrivateFieldGet(this, _GameButtons_down, "f").wasJustPressed ||
+            __classPrivateFieldGet(this, _GameButtons_a, "f").wasJustPressed ||
+            __classPrivateFieldGet(this, _GameButtons_b, "f").wasJustPressed ||
+            __classPrivateFieldGet(this, _GameButtons_menu, "f").wasJustPressed);
     }
     wasJustPressed(button) {
         switch (button) {
             case "left":
-                return __classPrivateFieldGet(this, _GameButtons_left, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingLeft, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_left, "f").wasJustPressed;
             case "right":
-                return __classPrivateFieldGet(this, _GameButtons_right, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingRight, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_right, "f").wasJustPressed;
             case "up":
-                return __classPrivateFieldGet(this, _GameButtons_up, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingUp, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_up, "f").wasJustPressed;
             case "down":
-                return __classPrivateFieldGet(this, _GameButtons_down, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingDown, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_down, "f").wasJustPressed;
             case "a":
-                return __classPrivateFieldGet(this, _GameButtons_a, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingA, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_a, "f").wasJustPressed;
             case "b":
-                return __classPrivateFieldGet(this, _GameButtons_b, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingB, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_b, "f").wasJustPressed;
             case "menu":
-                return __classPrivateFieldGet(this, _GameButtons_menu, "f").wasJustPressed(__classPrivateFieldGet(this, _GameButtons_repeatingMenu, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_menu, "f").wasJustPressed;
         }
     }
     wasJustReleased(button) {
         switch (button) {
             case "left":
-                return __classPrivateFieldGet(this, _GameButtons_left, "f").wasJustReleased(__classPrivateFieldGet(this, _GameButtons_repeatingLeft, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_left, "f").wasJustReleased;
             case "right":
-                return __classPrivateFieldGet(this, _GameButtons_right, "f").wasJustReleased(__classPrivateFieldGet(this, _GameButtons_repeatingRight, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_right, "f").wasJustReleased;
             case "up":
-                return __classPrivateFieldGet(this, _GameButtons_up, "f").wasJustReleased(__classPrivateFieldGet(this, _GameButtons_repeatingUp, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_up, "f").wasJustReleased;
             case "down":
-                return __classPrivateFieldGet(this, _GameButtons_down, "f").wasJustReleased(__classPrivateFieldGet(this, _GameButtons_repeatingDown, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_down, "f").wasJustReleased;
             case "a":
-                return __classPrivateFieldGet(this, _GameButtons_a, "f").wasJustReleased(__classPrivateFieldGet(this, _GameButtons_repeatingA, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_a, "f").wasJustReleased;
             case "b":
-                return __classPrivateFieldGet(this, _GameButtons_b, "f").wasJustReleased(__classPrivateFieldGet(this, _GameButtons_repeatingB, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_b, "f").wasJustReleased;
             case "menu":
-                return __classPrivateFieldGet(this, _GameButtons_menu, "f").wasJustReleased(__classPrivateFieldGet(this, _GameButtons_repeatingMenu, "f"));
+                return __classPrivateFieldGet(this, _GameButtons_menu, "f").wasJustReleased;
         }
     }
 }

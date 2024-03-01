@@ -323,10 +323,12 @@ declare class Button {
     #private;
     static get repeatingFramesStart(): number;
     static get repeatingFramesInterval(): number;
-    static setRepeatingParamsFor(updateFps: 30 | 60): void;
+    static configureRepeatingParamsFor(updateFps: 30 | 60): void;
     get isPressed(): boolean;
-    wasJustPressed(repeating: boolean): boolean;
-    wasJustReleased(repeating: boolean): boolean;
+    get wasJustPressed(): boolean;
+    get wasJustReleased(): boolean;
+    makeRepeating(initialFrames: number, intervalFrames: number): void;
+    makeNotRepeating(): void;
     update(isPressed: boolean): void;
 }
 
