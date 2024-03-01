@@ -34,8 +34,6 @@ type Now<TPhaseName extends string> = {
   t: number;
 };
 
-// TODO: simplify if possible (after implementing 100% of features)
-
 export class BpxTimerSequence<TPhaseName extends string> {
   static of<TPhaseName extends string>(
     params: {
@@ -59,7 +57,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   // the frame the counting should start at
   #firstIterationOffset: number;
-  #loopOffset: number;
+
   #pausedFrame: number | null;
 
   readonly #firstIterationTimer: BpxTimer;
@@ -97,12 +95,11 @@ export class BpxTimerSequence<TPhaseName extends string> {
     this.#loopFrames = this.#loopPhases.reduce((acc, p) => acc + p.frames, 0);
 
     this.#firstIterationOffset = BeetPx.frameNumber + opts.delayFrames;
-    this.#loopOffset = this.#firstIterationOffset + this.#firstIterationFrames;
 
     this.#firstIterationTimer = BpxTimer.for({
-      frames: this.#loopOffset - this.#firstIterationOffset,
+      frames: this.#firstIterationFrames,
       loop: false,
-      pause: false,
+      pause: opts.pause,
       delayFrames: opts.delayFrames,
     });
     this.#loopTimer =
@@ -110,7 +107,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
         ? BpxTimer.for({
             frames: this.#loopFrames,
             loop: true,
-            pause: false,
+            pause: opts.pause,
             delayFrames: opts.delayFrames + this.#firstIterationFrames,
           })
         : null;
@@ -135,7 +132,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
     if (
       !this.#loopTimer ||
-      (this.#pausedFrame ?? BeetPx.frameNumber) < this.#loopOffset
+      (this.#pausedFrame ?? BeetPx.frameNumber) <
+        this.#firstIterationOffset + this.#firstIterationFrames
     ) {
       const firstIterationT = this.#firstIterationTimer.t;
 
@@ -267,6 +265,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       return;
     }
 
+    this.#firstIterationOffset += BeetPx.frameNumber - this.#pausedFrame;
     this.#pausedFrame = null;
 
     this.#firstIterationTimer.resume();
@@ -275,7 +274,6 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   restart(): void {
     this.#firstIterationOffset = BeetPx.frameNumber;
-    this.#loopOffset = this.#firstIterationOffset + this.#firstIterationFrames;
 
     this.#pausedFrame = null;
 

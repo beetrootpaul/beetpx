@@ -73,7 +73,6 @@ export class BpxUtils {
     return [minXy, maxXy.sub(minXy)];
   }
 
-  // TODO: this does not count for a value way more below -modulus!
   /**
    * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
    */

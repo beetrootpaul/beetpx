@@ -91,7 +91,7 @@ export class BpxTimer {
     if (!this.#pausedFrame) {
       return;
     }
-    this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame!;
+    this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame;
     this.#pausedFrame = null;
   }
 
