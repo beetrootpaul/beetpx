@@ -32,7 +32,7 @@ type Phase<TPhaseName extends string> = {
 type Now<TPhaseName extends string> = {
   // offsetCurr: number;
   // offsetNext: number;
-  phase: TPhaseName;
+  phase: Phase<TPhaseName>;
   t: number;
   recentlyFinishedPhase: TPhaseName | null;
 };
@@ -156,7 +156,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
         let curr = this.#firstIterationPhases[i]!;
         if (firstIterationT < offset + curr.frames) {
           return {
-            phase: curr.name,
+            phase: curr,
             t: firstIterationT - offset,
             recentlyFinishedPhase: prev?.name ?? null,
           };
@@ -168,9 +168,11 @@ export class BpxTimerSequence<TPhaseName extends string> {
       let curr = this.#firstIterationPhases[i]!;
 
       return {
-        phase: curr.name,
+        phase: curr,
         t: firstIterationT - offset,
-        recentlyFinishedPhase: prev?.name ?? null,
+        recentlyFinishedPhase: this.#firstIterationTimer.hasJustFinished
+          ? curr.name
+          : prev?.name ?? null,
       };
     }
 
@@ -181,15 +183,16 @@ export class BpxTimerSequence<TPhaseName extends string> {
     const loopT = this.#loopTimer.t;
 
     let offset = 0;
-    let prev: Phase<TPhaseName> | null = null;
+    let prev: Phase<TPhaseName> | null =
+      this.#firstIterationPhases[this.#firstIterationPhases.length - 1]!;
     let i = 0;
     while (i < this.#loopPhases.length - 1) {
       let curr = this.#loopPhases[i]!;
       if (loopT < offset + curr.frames) {
         return {
-          phase: curr.name,
+          phase: curr,
           t: loopT - offset,
-          recentlyFinishedPhase: null,
+          recentlyFinishedPhase: prev?.name ?? null,
         };
       }
       offset += curr.frames;
@@ -199,9 +202,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
     let curr = this.#firstIterationPhases[i]!;
 
     return {
-      phase: curr.name,
+      phase: curr,
       t: loopT - offset,
-      recentlyFinishedPhase: null,
+      recentlyFinishedPhase: prev?.name ?? null,
     };
 
     //   let offset = this.#offsetFrame;
@@ -291,18 +294,13 @@ export class BpxTimerSequence<TPhaseName extends string> {
   // }
 
   get justFinishedPhase(): TPhaseName | null {
-    return this.#now.recentlyFinishedPhase;
-    // return this.#loopTimer
-    //   ? this.#tOverallRaw > 0 && this.t === 0
-    //     ? this.#now.recentlyFinished
-    //     : null
-    //   : this.#tRaw === 0 || this.#tRaw === this.#frames
-    //     ? this.#now.recentlyFinished
-    //     : null;
+    return this.hasJustFinishedOverall || this.#now.t === 0
+      ? this.#now.recentlyFinishedPhase
+      : null;
   }
 
   get currentPhase(): TPhaseName {
-    return this.#now.phase;
+    return this.#now.phase.name;
   }
 
   get #frames(): number {
@@ -311,29 +309,21 @@ export class BpxTimerSequence<TPhaseName extends string> {
     // return ctx.offsetNext - ctx.offsetCurr;
   }
 
-  get #tRaw(): number {
-    return 123;
-    // return BeetPx.frameNumber - this.#now.offsetCurr;
-  }
+  // get #tRaw(): number {
+  //   return 123;
+  // return BeetPx.frameNumber - this.#now.offsetCurr;
+  // }
 
   get t(): number {
     return this.#now.t;
-    // return this.#loopTimer
-    //   ? this.#tOverallRaw < this.#introFrames + this.#loopFrames
-    //     ? BpxUtils.mod(this.#tRaw, this.#introFrames + this.#loopFrames)
-    //     : BpxUtils.mod(this.#tRaw - this.#introFrames, this.#loopFrames)
-    //   : Math.min(this.#tRaw, this.#frames);
   }
 
   get progress(): number {
-    return 123;
-    // const f = this.#frames;
-    // return this.t / f;
+    return this.#now.t / this.#now.phase.frames;
   }
 
   get framesLeft(): number {
-    return 123;
-    // return this.#frames - this.t;
+    return this.#now.phase.frames - this.#now.t;
   }
 
   // get #tOverallRaw(): number {

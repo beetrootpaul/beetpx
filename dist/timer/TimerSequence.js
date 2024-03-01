@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_loopOffset, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get, _BpxTimerSequence_frames_get, _BpxTimerSequence_tRaw_get;
+var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_loopOffset, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get, _BpxTimerSequence_frames_get;
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
 export function timerSeq_(params, opts) {
@@ -90,34 +90,25 @@ export class BpxTimerSequence {
     
     
     get justFinishedPhase() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinishedPhase;
-        
-        
-        
-        
-        
-        
-        
+        return this.hasJustFinishedOverall || __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t === 0
+            ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinishedPhase
+            : null;
     }
     get currentPhase() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase;
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.name;
     }
+    
+    
+    
+    
     get t() {
         return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t;
-        
-        
-        
-        
-        
     }
     get progress() {
-        return 123;
-        
-        
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t / __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames;
     }
     get framesLeft() {
-        return 123;
-        
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames - __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t;
     }
     
     
@@ -162,7 +153,7 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
             let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
             if (firstIterationT < offset + curr.frames) {
                 return {
-                    phase: curr.name,
+                    phase: curr,
                     t: firstIterationT - offset,
                     recentlyFinishedPhase: prev?.name ?? null,
                 };
@@ -173,9 +164,11 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
         }
         let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
         return {
-            phase: curr.name,
+            phase: curr,
             t: firstIterationT - offset,
-            recentlyFinishedPhase: prev?.name ?? null,
+            recentlyFinishedPhase: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished
+                ? curr.name
+                : prev?.name ?? null,
         };
     }
     
@@ -183,15 +176,15 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
     
     const loopT = __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f").t;
     let offset = 0;
-    let prev = null;
+    let prev = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[__classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").length - 1];
     let i = 0;
     while (i < __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length - 1) {
         let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i];
         if (loopT < offset + curr.frames) {
             return {
-                phase: curr.name,
+                phase: curr,
                 t: loopT - offset,
-                recentlyFinishedPhase: null,
+                recentlyFinishedPhase: prev?.name ?? null,
             };
         }
         offset += curr.frames;
@@ -200,9 +193,9 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
     }
     let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
     return {
-        phase: curr.name,
+        phase: curr,
         t: loopT - offset,
-        recentlyFinishedPhase: null,
+        recentlyFinishedPhase: prev?.name ?? null,
     };
     
     
@@ -281,8 +274,5 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
 }, _BpxTimerSequence_frames_get = function _BpxTimerSequence_frames_get() {
     return 123;
     
-    
-}, _BpxTimerSequence_tRaw_get = function _BpxTimerSequence_tRaw_get() {
-    return 123;
     
 };
