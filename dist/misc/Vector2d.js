@@ -17,6 +17,7 @@ export class BpxVector2d {
         this.x = x;
         this.y = y;
     }
+    
     static min(xy1, xy2) {
         return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
     }
@@ -29,22 +30,7 @@ export class BpxVector2d {
     static lerp(xy1, xy2, t) {
         return new BpxVector2d(BpxUtils.lerp(xy1.x, xy2.x, t), BpxUtils.lerp(xy1.y, xy2.y, t));
     }
-    get [Symbol.toStringTag]() {
-        return "BpxVector2d";
-    }
-    [Symbol.toPrimitive](hint) {
-        switch (hint) {
-            case "default":
-            case "string":
-                return `(${this.x},${this.y})`;
-            case "number":
-                return NaN;
-        }
-    }
-    *[Symbol.iterator]() {
-        yield this.x;
-        yield this.y;
-    }
+    
     asArray() {
         return [this.x, this.y];
     }
@@ -129,9 +115,27 @@ export class BpxVector2d {
             ? new BpxVector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
             : new BpxVector2d(this.x / otherOrValueOrX, this.y / (maybeY ?? otherOrValueOrX));
     }
+    
+    *[Symbol.iterator]() {
+        yield this.x;
+        yield this.y;
+    }
+    [Symbol.toPrimitive](hint) {
+        switch (hint) {
+            case "default":
+            case "string":
+                return `(${this.x},${this.y})`;
+            case "number":
+                return NaN;
+        }
+    }
+    get [Symbol.toStringTag]() {
+        return "BpxVector2d";
+    }
     __printDebug() {
         return `(${this.x},${this.y})`;
     }
 }
+
 export const v_0_0_ = v_(0, 0);
 export const v_1_1_ = v_(1, 1);

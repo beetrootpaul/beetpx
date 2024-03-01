@@ -26,8 +26,8 @@ export class BpxTimer {
   readonly #frames: number;
   readonly #loop: boolean;
 
-  #offsetFrame: number = 0;
-  #pausedFrame: number | null = null;
+  #offsetFrame: number;
+  #pausedFrame: number | null;
 
   private constructor(params: {
     frames: number;
@@ -40,6 +40,7 @@ export class BpxTimer {
 
     this.#offsetFrame = BeetPx.frameNumber + params.delayFrames;
 
+    this.#pausedFrame = null;
     if (params.pause) {
       this.pause();
     }

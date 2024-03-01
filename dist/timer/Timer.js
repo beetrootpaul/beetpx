@@ -28,11 +28,12 @@ export class BpxTimer {
         _BpxTimer_instances.add(this);
         _BpxTimer_frames.set(this, void 0);
         _BpxTimer_loop.set(this, void 0);
-        _BpxTimer_offsetFrame.set(this, 0);
-        _BpxTimer_pausedFrame.set(this, null);
+        _BpxTimer_offsetFrame.set(this, void 0);
+        _BpxTimer_pausedFrame.set(this, void 0);
         __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(params.frames)), "f");
         __classPrivateFieldSet(this, _BpxTimer_loop, params.loop, "f");
         __classPrivateFieldSet(this, _BpxTimer_offsetFrame, BeetPx.frameNumber + params.delayFrames, "f");
+        __classPrivateFieldSet(this, _BpxTimer_pausedFrame, null, "f");
         if (params.pause) {
             this.pause();
         }

@@ -39,9 +39,6 @@ declare class BpxVector2d implements PrintDebug {
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
     static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
-    get [Symbol.toStringTag](): string;
-    [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number;
-    [Symbol.iterator](): Generator<number>;
     asArray(): [number, number];
     magnitude(): number;
     normalize(): BpxVector2d;
@@ -88,6 +85,9 @@ declare class BpxVector2d implements PrintDebug {
     div(other: BpxVector2d): BpxVector2d;
     div(value: number): BpxVector2d;
     div(x: number, y: number): BpxVector2d;
+    [Symbol.iterator](): Generator<number>;
+    [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number;
+    get [Symbol.toStringTag](): string;
     __printDebug(): string;
 }
 declare const v_0_0_: BpxVector2d;
