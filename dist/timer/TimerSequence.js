@@ -191,7 +191,7 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
         prev = curr;
         i += 1;
     }
-    let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
+    let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i];
     return {
         phase: curr,
         t: loopT - offset,

@@ -895,6 +895,7 @@ describe("TimerSequence", () => {
         //
         // 2nd loop iteration, where the intro is no longer counted towards the overall progress
         //
+
         incrementFrameNumber();
 
         expect(ppt(seq)).toEqual(

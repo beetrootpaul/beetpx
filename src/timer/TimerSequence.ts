@@ -199,7 +199,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       prev = curr;
       i += 1;
     }
-    let curr = this.#firstIterationPhases[i]!;
+    let curr = this.#loopPhases[i]!;
 
     return {
       phase: curr,
