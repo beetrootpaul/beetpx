@@ -77,11 +77,7 @@ const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
 
-const tsEntrypoint = path.resolve(
-  gameCodebaseDir,
-  "src",
-  "beetpx_entrypoint.ts",
-);
+const tsEntrypoint = path.resolve(gameCodebaseDir, "src", "beetpx.ts");
 
 const gameHtmlTemplate = "index.template.html";
 
