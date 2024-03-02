@@ -605,7 +605,7 @@ declare class StorageApi {
     clearPersistedState(): void;
 }
 
-type FrameworkOptions = {
+type EngineOptions = {
     gameCanvasSize: "64x64" | "128x128" | "256x256";
     desiredUpdateFps: 30 | 60;
     debugFeatures: boolean;
@@ -613,7 +613,7 @@ type FrameworkOptions = {
 type OnAssetsLoaded = {
     startGame: () => Promise<void>;
 };
-declare class Framework {
+declare class Engine {
     #private;
     readonly gameInput: GameInput;
     readonly audioApi: AudioApi;
@@ -624,7 +624,7 @@ declare class Framework {
     get frameNumber(): number;
     get renderingFps(): number;
     get detectedBrowserType(): BpxBrowserType;
-    constructor(options: FrameworkOptions);
+    constructor(options: EngineOptions);
     init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
@@ -646,7 +646,7 @@ declare class Logger {
 
 declare class BeetPx {
     #private;
-    static init(frameworkOptions: FrameworkOptions, assetsToLoad: AssetsToLoad): ReturnType<Framework["init"]>;
+    static init(engineOptions: EngineOptions, assetsToLoad: AssetsToLoad): ReturnType<Engine["init"]>;
     static get debug(): typeof DebugMode.enabled;
     /**
      * Number of frames processed since game started.
@@ -655,13 +655,13 @@ declare class BeetPx {
      *
      * @return number
      */
-    static get frameNumber(): Framework["frameNumber"];
-    static get renderingFps(): Framework["renderingFps"];
-    static get detectedBrowserType(): Framework["detectedBrowserType"];
-    static setOnStarted: Framework["setOnStarted"];
-    static setOnUpdate: Framework["setOnUpdate"];
-    static setOnDraw: Framework["setOnDraw"];
-    static restart: Framework["restart"];
+    static get frameNumber(): Engine["frameNumber"];
+    static get renderingFps(): Engine["renderingFps"];
+    static get detectedBrowserType(): Engine["detectedBrowserType"];
+    static setOnStarted: Engine["setOnStarted"];
+    static setOnUpdate: Engine["setOnUpdate"];
+    static setOnDraw: Engine["setOnDraw"];
+    static restart: Engine["restart"];
     static logDebug: typeof Logger.debug;
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;

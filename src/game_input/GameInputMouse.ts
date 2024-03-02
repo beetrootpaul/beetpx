@@ -70,7 +70,7 @@ export class GameInputMouse implements GameInputSpecialized {
     //   ends. Therefore, in order to toggle full screen back, user has to press
     //   the button twice: once to "release" the key, and second time to initiate
     //   the next full screen transition.
-    // As a workaround we do not keep "full_screen" event "pressed", so the framework
+    // As a workaround we do not keep "full_screen" event "pressed", so the engine
     //   will recognize it as a key being up immediately.
     this.#eventsSinceLastUpdate.delete("full_screen");
 

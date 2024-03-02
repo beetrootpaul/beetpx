@@ -24,7 +24,7 @@ import { BpxVector2d, v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils, u_ } from "./Utils";
 
-export type FrameworkOptions = {
+export type EngineOptions = {
   gameCanvasSize: "64x64" | "128x128" | "256x256";
   desiredUpdateFps: 30 | 60;
   debugFeatures: boolean;
@@ -34,8 +34,8 @@ export type OnAssetsLoaded = {
   startGame: () => Promise<void>;
 };
 
-export class Framework {
-  static readonly #storageDebugDisabledKey = "framework__debug_disabled";
+export class Engine {
+  static readonly #storageDebugDisabledKey = "beetpx__debug_disabled";
   static readonly #storageDebugDisabledTrue = "yes";
 
   #frameByFrame: boolean;
@@ -84,7 +84,7 @@ export class Framework {
     return this.#browserType;
   }
 
-  constructor(options: FrameworkOptions) {
+  constructor(options: EngineOptions) {
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
       // Pause music. But do it after other operations, since there
@@ -107,11 +107,11 @@ export class Framework {
     });
 
     DebugMode.enabled = options.debugFeatures
-      ? window.localStorage.getItem(Framework.#storageDebugDisabledKey) !==
-        Framework.#storageDebugDisabledTrue
+      ? window.localStorage.getItem(Engine.#storageDebugDisabledKey) !==
+        Engine.#storageDebugDisabledTrue
       : false;
 
-    Logger.debugBeetPx("Framework options:", options);
+    Logger.debugBeetPx("Engine options:", options);
 
     if (options.desiredUpdateFps !== 30 && options.desiredUpdateFps !== 60) {
       BpxUtils.throwError(
@@ -277,11 +277,11 @@ export class Framework {
         if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
           DebugMode.enabled = !DebugMode.enabled;
           if (DebugMode.enabled) {
-            window.localStorage.removeItem(Framework.#storageDebugDisabledKey);
+            window.localStorage.removeItem(Engine.#storageDebugDisabledKey);
           } else {
             window.localStorage.setItem(
-              Framework.#storageDebugDisabledKey,
-              Framework.#storageDebugDisabledTrue,
+              Engine.#storageDebugDisabledKey,
+              Engine.#storageDebugDisabledTrue,
             );
           }
         }
