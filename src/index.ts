@@ -64,6 +64,7 @@ export { BeetPx } from "./BeetPx";
 
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
+export { rgb_p8_ } from "./color/BpxPalettePico8";
 export {
   rgb_,
   rgb_black_,

@@ -7,7 +7,7 @@ var _BpxFontSaint11Minimal5_unknownCharSprite, _BpxFontSaint11Minimal5_sprites;
 import { BpxPixels } from "../draw_api/Pixels";
 import { v_0_0_ } from "../misc/Vector2d";
 /**
- * A free to use font created by saint11 and distributed on https:
+ * A free to use (CC-0) font created by saint11 and distributed on https:
  *
  * Note: only a subset of characters is implemented here:
  *   . : ! ? ' " * / + -

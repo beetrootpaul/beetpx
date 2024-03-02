@@ -1,4 +1,4 @@
-import { b_, BpxRgbColor, spr_, v_, v_0_0_ } from "../../../src";
+import { b_, rgb_p8_, spr_, v_, v_0_0_ } from "../../../src";
 
 b_.init({
   assets: {
@@ -27,7 +27,7 @@ b_.init({
   });
 
   b_.setOnDraw(() => {
-    b_.clearCanvas(BpxRgbColor.fromCssHex("#754665"));
+    b_.clearCanvas(rgb_p8_.storm);
     b_.drawSprite(logoSprite, logoPosition, { centerXy: [true, true] });
   });
 

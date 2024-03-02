@@ -4,7 +4,7 @@ import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
 
 /**
- * A free to use font created by saint11 and distributed on https://saint11.org/blog/fonts/
+ * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
  *
  * Note: only a subset of characters is implemented here:
  *   . : ! ? ' " * / + -
@@ -12,8 +12,8 @@ import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
  *   % $ ( ) [ ] { } < >
  *   A B C D E F G H I J K L M
  *   N O P Q R S T U V W X Y Z
- *   a b c d e f g h i j k l m
- *   n o p q r s t u v w x y z
+ *   a b c d e f g h i j k l m      (note: both upper- and lower-case
+ *   n o p q r s t u v w x y z             characters use same glyphs)
  */
 export class BpxFontSaint11Minimal4 implements BpxFont {
   static id: BpxFontId = "__internal__saint11_Minimal4";
