@@ -341,6 +341,7 @@ type BpxGameButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
 declare class GameButtons {
     #private;
     update(events: Set<BpxGameInputEvent>): void;
+    isAnyPressed(): boolean;
     isPressed(button: BpxGameButtonName): boolean;
     getPressedDirection(): BpxVector2d;
     setRepeating(button: BpxGameButtonName, repeating: boolean): void;
@@ -676,8 +677,10 @@ declare class BeetPx {
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;
     static logError: typeof Logger.error;
+    static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
     static wasButtonJustPressed: GameButtons["wasJustPressed"];
     static wasButtonJustReleased: GameButtons["wasJustReleased"];
+    static isAnyButtonPressed: GameButtons["isAnyPressed"];
     static isButtonPressed: GameButtons["isPressed"];
     static getPressedDirection: GameButtons["getPressedDirection"];
     static setButtonRepeating: GameButtons["setRepeating"];

@@ -95,12 +95,24 @@ export class BeetPx {
   // Game Input & Buttons
   //
 
+  static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"] = (
+    ...args
+  ) => {
+    return this.#tryGetEngine().gameInput.gameButtons.wasAnyJustPressed(
+      ...args,
+    );
+  };
+
   static wasButtonJustPressed: GameButtons["wasJustPressed"] = (...args) => {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustPressed(...args);
   };
 
   static wasButtonJustReleased: GameButtons["wasJustReleased"] = (...args) => {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustReleased(...args);
+  };
+
+  static isAnyButtonPressed: GameButtons["isAnyPressed"] = (...args) => {
+    return this.#tryGetEngine().gameInput.gameButtons.isAnyPressed(...args);
   };
 
   static isButtonPressed: GameButtons["isPressed"] = (...args) => {

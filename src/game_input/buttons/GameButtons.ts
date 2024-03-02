@@ -39,6 +39,18 @@ export class GameButtons {
     this.#menu.update(events.has("button_menu"));
   }
 
+  isAnyPressed(): boolean {
+    return (
+      this.#left.isPressed ||
+      this.#right.isPressed ||
+      this.#up.isPressed ||
+      this.#down.isPressed ||
+      this.#a.isPressed ||
+      this.#b.isPressed ||
+      this.#menu.isPressed
+    );
+  }
+
   isPressed(button: BpxGameButtonName): boolean {
     switch (button) {
       case "left":

@@ -38,6 +38,15 @@ export class GameButtons {
         __classPrivateFieldGet(this, _GameButtons_b, "f").update(events.has("button_b"));
         __classPrivateFieldGet(this, _GameButtons_menu, "f").update(events.has("button_menu"));
     }
+    isAnyPressed() {
+        return (__classPrivateFieldGet(this, _GameButtons_left, "f").isPressed ||
+            __classPrivateFieldGet(this, _GameButtons_right, "f").isPressed ||
+            __classPrivateFieldGet(this, _GameButtons_up, "f").isPressed ||
+            __classPrivateFieldGet(this, _GameButtons_down, "f").isPressed ||
+            __classPrivateFieldGet(this, _GameButtons_a, "f").isPressed ||
+            __classPrivateFieldGet(this, _GameButtons_b, "f").isPressed ||
+            __classPrivateFieldGet(this, _GameButtons_menu, "f").isPressed);
+    }
     isPressed(button) {
         switch (button) {
             case "left":

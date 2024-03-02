@@ -86,11 +86,17 @@ BeetPx.logError = (...args) => {
 
 
 
+BeetPx.wasAnyButtonJustPressed = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.wasAnyJustPressed(...args);
+};
 BeetPx.wasButtonJustPressed = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.wasJustPressed(...args);
 };
 BeetPx.wasButtonJustReleased = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.wasJustReleased(...args);
+};
+BeetPx.isAnyButtonPressed = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.isAnyPressed(...args);
 };
 BeetPx.isButtonPressed = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.isPressed(...args);
