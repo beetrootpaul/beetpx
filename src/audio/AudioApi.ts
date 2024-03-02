@@ -98,7 +98,7 @@ export class AudioApi {
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
-    opts.muteOnStart ??= true;
+    opts.muteOnStart ??= false;
 
     Logger.debugBeetPx(
       `AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`,
@@ -125,7 +125,7 @@ export class AudioApi {
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
-    opts.muteOnStart ??= true;
+    opts.muteOnStart ??= false;
 
     Logger.debugBeetPx(
       `AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`,
@@ -152,7 +152,7 @@ export class AudioApi {
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
-    opts.muteOnStart ??= true;
+    opts.muteOnStart ??= false;
 
     Logger.debugBeetPx(
       `AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`,

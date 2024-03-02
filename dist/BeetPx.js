@@ -18,10 +18,10 @@ export class BeetPx {
     
     
     
-    static init(engineOptions, assetsToLoad) {
+    static init(engineInitParams) {
         Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
-        __classPrivateFieldSet(this, _a, new Engine(engineOptions), "f", _BeetPx_engine);
-        return __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).init(assetsToLoad);
+        __classPrivateFieldSet(this, _a, new Engine(engineInitParams), "f", _BeetPx_engine);
+        return __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).init();
     }
     
     

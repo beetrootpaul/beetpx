@@ -52,7 +52,7 @@ export class GameLoop {
         });
         __classPrivateFieldSet(this, _GameLoop_requestAnimationFrameFn, options.rafFn, "f");
         __classPrivateFieldSet(this, _GameLoop_documentVisibilityStateProvider, options.documentVisibilityStateProvider, "f");
-        __classPrivateFieldSet(this, _GameLoop_expectedTimeStepMillis, 1000 / options.desiredUpdateFps, "f");
+        __classPrivateFieldSet(this, _GameLoop_expectedTimeStepMillis, 1000 / options.fixedTimestepFps, "f");
     }
     start(callbacks) {
         __classPrivateFieldGet(this, _GameLoop_callbacks, "f").updateFn = callbacks.updateFn;

@@ -115,6 +115,11 @@ describe("Utils", () => {
 
     expect(BpxUtils.lerp(200, 100, 0)).toBe(200);
     expect(BpxUtils.lerp(200, 100, 1)).toBe(100);
+
+    expect(BpxUtils.lerp(100, 200, -0.1, { clamp: true })).toBe(100);
+    expect(BpxUtils.lerp(100, 200, 1.1, { clamp: true })).toBe(200);
+    expect(BpxUtils.lerp(200, 100, -0.1, { clamp: true })).toBe(200);
+    expect(BpxUtils.lerp(200, 100, 1.1, { clamp: true })).toBe(100);
   });
 
   test("#measureText", () => {

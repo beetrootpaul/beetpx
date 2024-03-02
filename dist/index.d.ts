@@ -41,7 +41,9 @@ declare class BpxVector2d implements PrintDebug {
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
-    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
+    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number, opts?: {
+        clamp?: boolean;
+    }): BpxVector2d;
     asArray(): [number, number];
     magnitude(): number;
     normalize(): BpxVector2d;
@@ -112,7 +114,9 @@ declare class BpxUtils {
     static clamp(a: number, b: number, c: number): number;
     static identity<Param>(param: Param): Param;
     static isDefined<Value>(value: Value | null | undefined): value is Value;
-    static lerp(a: number, b: number, t: number): number;
+    static lerp(a: number, b: number, t: number, opts?: {
+        clamp?: boolean;
+    }): number;
     /**
      * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,
      *          where XY represents an offset from the initial top-left
@@ -459,26 +463,6 @@ declare class BpxTimer {
     restart(): void;
 }
 
-type AssetsToLoad = {
-    images: ImageAssetToLoad[];
-    fonts: FontAssetToLoad[];
-    sounds: SoundAssetToLoad[];
-    jsons: JsonAssetToLoad[];
-};
-type ImageAssetToLoad = {
-    url: BpxImageUrl;
-};
-type FontAssetToLoad = {
-    font: BpxFont;
-    spriteTextColor: BpxRgbColor | null;
-};
-type SoundAssetToLoad = {
-    url: BpxSoundUrl;
-};
-type JsonAssetToLoad = {
-    url: BpxJsonUrl;
-};
-
 declare class AudioApi {
     #private;
     constructor(assets: Assets, audioContext: AudioContext);
@@ -573,14 +557,34 @@ declare class DrawApi {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
-    setFont(fontId: BpxFontId | null): BpxFontId | null;
-    getFont(): BpxFont | null;
+    setFont(fontId: BpxFontId): BpxFontId;
+    getFont(): BpxFont;
     drawText(text: string, xy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
     takeCanvasSnapshot(): void;
 }
+
+type AssetsToLoad = {
+    images?: ImageAssetToLoad[];
+    fonts?: FontAssetToLoad[];
+    sounds?: SoundAssetToLoad[];
+    jsons?: JsonAssetToLoad[];
+};
+type ImageAssetToLoad = {
+    url: BpxImageUrl;
+};
+type FontAssetToLoad = {
+    font: BpxFont;
+    spriteTextColor: BpxRgbColor | null;
+};
+type SoundAssetToLoad = {
+    url: BpxSoundUrl;
+};
+type JsonAssetToLoad = {
+    url: BpxJsonUrl;
+};
 
 declare global {
     interface Document {
@@ -608,10 +612,11 @@ declare class StorageApi {
     clearPersistedState(): void;
 }
 
-type EngineOptions = {
-    gameCanvasSize: "64x64" | "128x128" | "256x256";
-    desiredUpdateFps: 30 | 60;
-    debugFeatures: boolean;
+type EngineInitParams = {
+    gameCanvasSize?: "64x64" | "128x128" | "256x256";
+    fixedTimestep?: "30fps" | "60fps";
+    debugMode?: boolean;
+    assets?: AssetsToLoad;
 };
 type OnAssetsLoaded = {
     startGame: () => Promise<void>;
@@ -627,8 +632,8 @@ declare class Engine {
     get frameNumber(): number;
     get renderingFps(): number;
     get detectedBrowserType(): BpxBrowserType;
-    constructor(options: EngineOptions);
-    init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
+    constructor(engineInitParams?: EngineInitParams);
+    init(): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
@@ -649,7 +654,7 @@ declare class Logger {
 
 declare class BeetPx {
     #private;
-    static init(engineOptions: EngineOptions, assetsToLoad: AssetsToLoad): ReturnType<Engine["init"]>;
+    static init(engineInitParams?: EngineInitParams): ReturnType<Engine["init"]>;
     static get debug(): typeof DebugMode.enabled;
     /**
      * Number of frames processed since game started.

@@ -1,103 +1,60 @@
-import { AssetsToLoad } from "./assets/AssetLoader";
 import { BeetPx } from "./BeetPx";
-import { EngineOptions } from "./Engine";
-
-const anyEngineOptions: EngineOptions = {
-  gameCanvasSize: "64x64",
-  debugFeatures: false,
-  desiredUpdateFps: 60,
-};
-
-const anyAssetsToLoad: AssetsToLoad = {
-  images: [],
-  fonts: [],
-  jsons: [],
-  sounds: [],
-};
 
 //
-// context: desiredUpdateFps
+// context: fixedTimestep
 // test:    valid values
 //
 
-BeetPx.init({ ...anyEngineOptions, desiredUpdateFps: 30 }, anyAssetsToLoad);
-
-BeetPx.init({ ...anyEngineOptions, desiredUpdateFps: 60 }, anyAssetsToLoad);
+BeetPx.init({ fixedTimestep: "30fps" });
+BeetPx.init({ fixedTimestep: "60fps" });
 
 //
-// context: desiredUpdateFps
+// context: fixedTimestep
 // test:    invalid values
 //
 
 // @ts-expect-error
-BeetPx.init({ ...anyEngineOptions, desiredUpdateFps: 0 }, anyAssetsToLoad);
+BeetPx.init({ fixedTimestep: "0fps" });
+// @ts-expect-error
+BeetPx.init({ fixedTimestep: "59fps" });
+// @ts-expect-error
+BeetPx.init({ fixedTimestep: "120fps" });
 
 // @ts-expect-error
-BeetPx.init({ ...anyEngineOptions, desiredUpdateFps: 59 }, anyAssetsToLoad);
+BeetPx.init({ fixedTimestep: 30 });
+// @ts-expect-error
+BeetPx.init({ fixedTimestep: 60 });
 
 // @ts-expect-error
-BeetPx.init({ ...anyEngineOptions, desiredUpdateFps: 120 }, anyAssetsToLoad);
-
-BeetPx.init(
-  // @ts-expect-error
-  { ...anyEngineOptions, desiredUpdateFps: undefined },
-  anyAssetsToLoad,
-);
-
-BeetPx.init(
-  // @ts-expect-error
-  { ...anyEngineOptions, desiredUpdateFps: null },
-  anyAssetsToLoad,
-);
+BeetPx.init({ fixedTimestep: null });
 
 //
 // context: gameCanvasSize
 // test:    valid values
 //
 
-BeetPx.init({ ...anyEngineOptions, gameCanvasSize: "64x64" }, anyAssetsToLoad);
-
-BeetPx.init(
-  { ...anyEngineOptions, gameCanvasSize: "128x128" },
-  anyAssetsToLoad,
-);
-
-BeetPx.init(
-  { ...anyEngineOptions, gameCanvasSize: "256x256" },
-  anyAssetsToLoad,
-);
+BeetPx.init({ gameCanvasSize: "64x64" });
+BeetPx.init({ gameCanvasSize: "128x128" });
+BeetPx.init({ gameCanvasSize: "256x256" });
 
 //
 // context: gameCanvasSize
 // test:    invalid values
 //
 
-BeetPx.init(
-  // @ts-expect-error
-  { ...anyEngineOptions, gameCanvasSize: "1x1" },
-  anyAssetsToLoad,
-);
-
-BeetPx.init(
-  // @ts-expect-error
-  { ...anyEngineOptions, gameCanvasSize: "512x512" },
-  anyAssetsToLoad,
-);
-
-BeetPx.init(
-  // @ts-expect-error
-  { ...anyEngineOptions, gameCanvasSize: "1980x1080" },
-  anyAssetsToLoad,
-);
+// @ts-expect-error
+BeetPx.init({ gameCanvasSize: "1x1" });
+// @ts-expect-error
+BeetPx.init({ gameCanvasSize: "512x512" });
+// @ts-expect-error
+BeetPx.init({ gameCanvasSize: "1980x1080" });
 
 // @ts-expect-error
-BeetPx.init({ ...anyEngineOptions, gameCanvasSize: null }, anyAssetsToLoad);
-
-BeetPx.init(
-  // @ts-expect-error
-  { ...anyEngineOptions, gameCanvasSize: undefined },
-  anyAssetsToLoad,
-);
+BeetPx.init({ gameCanvasSize: 64 });
+// @ts-expect-error
+BeetPx.init({ gameCanvasSize: 128 });
+// @ts-expect-error
+BeetPx.init({ gameCanvasSize: 256 });
 
 // @ts-expect-error
-BeetPx.init({ ...anyEngineOptions, gameCanvasSize: 64 }, anyAssetsToLoad);
+BeetPx.init({ gameCanvasSize: null });

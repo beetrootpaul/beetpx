@@ -6,7 +6,7 @@ export type GameLoopCallbacks = {
 };
 
 type GameLoopOptions = {
-  desiredUpdateFps: number;
+  fixedTimestepFps: number;
   rafFn: AnimationFrameProvider["requestAnimationFrame"];
   documentVisibilityStateProvider: { visibilityState: DocumentVisibilityState };
 };
@@ -36,7 +36,7 @@ export class GameLoop {
     this.#documentVisibilityStateProvider =
       options.documentVisibilityStateProvider;
 
-    this.#expectedTimeStepMillis = 1000 / options.desiredUpdateFps;
+    this.#expectedTimeStepMillis = 1000 / options.fixedTimestepFps;
   }
 
   start(callbacks: GameLoopCallbacks): void {

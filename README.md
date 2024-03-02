@@ -69,6 +69,19 @@ There are though some areas I would like differently:
 That being said, I am very grateful that PICO-8 exists and there is a big community around it. If not for PICO-8, BeetPx
 would never be created 💛
 
+## Credits
+
+### Fonts
+
+While you are able (and encouraged) to define your own font (as an implementation of `BpxFont` interface), there are 2
+fonts ready to use in BeetPx:
+
+- `BpxFontSaint11Minimal4` (the default one)
+- `BpxFontSaint11Minimal5`
+
+Both of them are created by [Saint11](https://saint11.org/about/) and available on https://saint11.org/blog/fonts/ under
+a Public Domain license.
+
 ## Random Notes
 
 - Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast paced games.

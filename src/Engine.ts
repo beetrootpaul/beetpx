@@ -24,10 +24,11 @@ import { BpxVector2d, v_ } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils, u_ } from "./Utils";
 
-export type EngineOptions = {
-  gameCanvasSize: "64x64" | "128x128" | "256x256";
-  desiredUpdateFps: 30 | 60;
-  debugFeatures: boolean;
+export type EngineInitParams = {
+  gameCanvasSize?: "64x64" | "128x128" | "256x256";
+  fixedTimestep?: "30fps" | "60fps";
+  debugMode?: boolean;
+  assets?: AssetsToLoad;
 };
 
 export type OnAssetsLoaded = {
@@ -37,6 +38,8 @@ export type OnAssetsLoaded = {
 export class Engine {
   static readonly #storageDebugDisabledKey = "beetpx__debug_disabled";
   static readonly #storageDebugDisabledTrue = "yes";
+
+  readonly #assetsToLoad: AssetsToLoad;
 
   #frameByFrame: boolean;
 
@@ -84,7 +87,12 @@ export class Engine {
     return this.#browserType;
   }
 
-  constructor(options: EngineOptions) {
+  constructor(engineInitParams: EngineInitParams = {}) {
+    engineInitParams.gameCanvasSize ??= "128x128";
+    engineInitParams.fixedTimestep ??= "60fps";
+    engineInitParams.debugMode ??= false;
+    engineInitParams.assets ??= {};
+
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
       // Pause music. But do it after other operations, since there
@@ -106,43 +114,57 @@ export class Engine {
         .then(() => {});
     });
 
-    DebugMode.enabled = options.debugFeatures
+    DebugMode.enabled = engineInitParams.debugMode
       ? window.localStorage.getItem(Engine.#storageDebugDisabledKey) !==
         Engine.#storageDebugDisabledTrue
       : false;
 
-    Logger.debugBeetPx("Engine options:", options);
+    Logger.debugBeetPx("Engine init params:", engineInitParams);
 
-    if (options.desiredUpdateFps !== 30 && options.desiredUpdateFps !== 60) {
-      BpxUtils.throwError(
-        `Unsupported desiredUpdateFps: ${options.desiredUpdateFps}`,
-      );
-    }
+    this.#assetsToLoad = engineInitParams.assets;
+    this.#assetsToLoad.fonts ??= [];
+    this.#assetsToLoad.fonts.push({
+      font: new BpxFontSaint11Minimal4(),
+      spriteTextColor: null,
+    });
+    this.#assetsToLoad.fonts.push({
+      font: new BpxFontSaint11Minimal5(),
+      spriteTextColor: null,
+    });
 
-    Button.setRepeatingParamsFor(options.desiredUpdateFps);
+    const fixedTimestepFps =
+      engineInitParams.fixedTimestep === "60fps"
+        ? 60
+        : engineInitParams.fixedTimestep === "30fps"
+          ? 30
+          : BpxUtils.throwError(
+              `Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`,
+            );
+
+    Button.setRepeatingParamsFor(fixedTimestepFps);
 
     this.#frameByFrame = false;
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
     this.#gameCanvasSize =
-      options.gameCanvasSize === "64x64"
+      engineInitParams.gameCanvasSize === "64x64"
         ? v_(64, 64)
-        : options.gameCanvasSize === "128x128"
+        : engineInitParams.gameCanvasSize === "128x128"
           ? v_(128, 128)
-          : options.gameCanvasSize === "256x256"
+          : engineInitParams.gameCanvasSize === "256x256"
             ? v_(256, 256)
             : BpxUtils.throwError(
-                `Unsupported canvas size: "${options.gameCanvasSize}"`,
+                `Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`,
               );
 
     this.gameInput = new GameInput({
-      enableDebugInputs: options.debugFeatures,
+      enableDebugInputs: engineInitParams.debugMode,
       browserType: this.#browserType,
     });
 
     this.#gameLoop = new GameLoop({
-      desiredUpdateFps: options.desiredUpdateFps,
+      fixedTimestepFps: fixedTimestepFps,
       rafFn: window.requestAnimationFrame.bind(window),
       documentVisibilityStateProvider: document,
     });
@@ -193,16 +215,9 @@ export class Engine {
     });
   }
 
-  async init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded> {
-    assetsToLoad.fonts.push({
-      font: new BpxFontSaint11Minimal4(),
-      spriteTextColor: null,
-    });
-    assetsToLoad.fonts.push({
-      font: new BpxFontSaint11Minimal5(),
-      spriteTextColor: null,
-    });
-    await this.#assetLoader.loadAssets(assetsToLoad);
+  async init(): Promise<OnAssetsLoaded> {
+    Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} will be initialized now`);
+    await this.#assetLoader.loadAssets(this.#assetsToLoad);
 
     Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
 
