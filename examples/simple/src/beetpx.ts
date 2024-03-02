@@ -1,13 +1,4 @@
-import {
-  b_,
-  BpxFontSaint11Minimal4,
-  BpxRgbColor,
-  spr_,
-  u_,
-  v_,
-  v_0_0_,
-  v_1_1_,
-} from "../../../src";
+import { b_, BpxRgbColor, spr_, u_, v_, v_0_0_, v_1_1_ } from "../../../src";
 
 b_.init(
   {
@@ -44,8 +35,6 @@ b_.init(
 
     logoPositionBase = logoPositionBaseDefault;
     logoPositionOffset = v_0_0_;
-
-    b_.setFont(BpxFontSaint11Minimal4.id);
   });
 
   b_.setOnUpdate(() => {

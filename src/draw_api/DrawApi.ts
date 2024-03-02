@@ -4,8 +4,8 @@ import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMappi
 import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
+import { BpxFontSaint11Minimal4 } from "../font/BpxFontSaint11Minimal4";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
-import { Logger } from "../logger/Logger";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
 import { BpxSprite } from "../sprite/Sprite";
@@ -45,7 +45,7 @@ export class DrawApi {
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
-  #fontAsset: BpxFontAsset | null = null;
+  #fontAsset: BpxFontAsset | undefined;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -60,6 +60,11 @@ export class DrawApi {
     this.#ellipse = new DrawEllipse(options.canvas);
     this.#sprite = new DrawSprite(options.canvas);
     this.#text = new DrawText(options.canvas);
+  }
+
+  #getFontAsset(): BpxFontAsset {
+    this.#fontAsset ??= this.#assets.getFontAsset(BpxFontSaint11Minimal4.id);
+    return this.#fontAsset;
   }
 
   clearCanvas(color: BpxRgbColor): void {
@@ -185,14 +190,14 @@ export class DrawApi {
     );
   }
 
-  setFont(fontId: BpxFontId | null): BpxFontId | null {
-    const prev = this.#fontAsset?.font.id ?? null;
-    this.#fontAsset = fontId ? this.#assets.getFontAsset(fontId) : null;
+  setFont(fontId: BpxFontId): BpxFontId {
+    const prev = this.#getFontAsset().font.id;
+    this.#fontAsset = this.#assets.getFontAsset(fontId);
     return prev;
   }
 
-  getFont(): BpxFont | null {
-    return this.#fontAsset?.font ?? null;
+  getFont(): BpxFont {
+    return this.#getFontAsset().font;
   }
 
   drawText(
@@ -209,22 +214,14 @@ export class DrawApi {
       const [_, size] = BpxUtils.measureText(text);
       xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
     }
-    if (this.#fontAsset) {
-      this.#text.draw(
-        text,
-        this.#fontAsset,
-        xy.sub(this.cameraXy),
-        color,
-        opts.scaleXy ?? v_1_1_,
-        this.#pattern,
-      );
-    } else {
-      Logger.infoBeetPx(
-        `print: (${xy.x},${xy.y}) [${
-          typeof color === "function" ? "computed" : color.cssHex
-        }] ${text}`,
-      );
-    }
+    this.#text.draw(
+      text,
+      this.#getFontAsset(),
+      xy.sub(this.cameraXy),
+      color,
+      opts.scaleXy ?? v_1_1_,
+      this.#pattern,
+    );
   }
 
   takeCanvasSnapshot(): void {
