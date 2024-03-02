@@ -73,7 +73,7 @@ export class AudioApi {
     }
     startPlayback(soundUrl, opts) {
         opts ?? (opts = {});
-        opts.muteOnStart ?? (opts.muteOnStart = true);
+        opts.muteOnStart ?? (opts.muteOnStart = false);
         Logger.debugBeetPx(`AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackOnce(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
@@ -89,7 +89,7 @@ export class AudioApi {
     }
     startPlaybackLooped(soundUrl, opts) {
         opts ?? (opts = {});
-        opts.muteOnStart ?? (opts.muteOnStart = true);
+        opts.muteOnStart ?? (opts.muteOnStart = false);
         Logger.debugBeetPx(`AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackLooped(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
@@ -105,7 +105,7 @@ export class AudioApi {
     }
     startPlaybackSequence(soundSequence, opts) {
         opts ?? (opts = {});
-        opts.muteOnStart ?? (opts.muteOnStart = true);
+        opts.muteOnStart ?? (opts.muteOnStart = false);
         Logger.debugBeetPx(`AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackSequence(soundSequence, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
