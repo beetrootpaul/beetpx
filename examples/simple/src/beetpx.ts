@@ -1,24 +1,17 @@
 import { b_, BpxRgbColor, spr_, v_, v_0_0_ } from "../../../src";
 
-b_.init(
-  {
-    gameCanvasSize: "128x128",
-    desiredUpdateFps: 60,
-    debugFeatures: !BEETPX__IS_PROD,
-  },
-  {
+b_.init({
+  assets: {
     images: [{ url: "logo.png" }],
-    fonts: [],
     sounds: [{ url: "music_melody.flac" }],
-    jsons: [],
   },
-).then(async ({ startGame }) => {
+}).then(async ({ startGame }) => {
   const logoSprite = spr_("logo.png")(16, 16, 0, 0);
   let circleMovementCenter = v_(64, 64);
   let logoPosition = v_0_0_;
 
   b_.setOnStarted(() => {
-    b_.startPlaybackLooped("music_melody.flac", { muteOnStart: true });
+    b_.startPlaybackLooped("music_melody.flac");
   });
 
   b_.setOnUpdate(() => {

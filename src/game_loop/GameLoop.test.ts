@@ -303,7 +303,7 @@ function testGameLoop(params: {
 
   // Start the Game Loop:
   new GameLoop({
-    desiredUpdateFps: params.desiredUpdateFps,
+    fixedTimestepFps: params.desiredUpdateFps,
     rafFn,
     documentVisibilityStateProvider,
   }).start({ updateFn, renderFn });

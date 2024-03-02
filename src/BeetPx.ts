@@ -1,11 +1,10 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { AssetsToLoad } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { Engine, type EngineOptions } from "./Engine";
+import { Engine, type EngineInitParams } from "./Engine";
 import { GameButtons } from "./game_input/buttons/GameButtons";
 import { GameInput } from "./game_input/GameInput";
 import { Logger } from "./logger/Logger";
@@ -19,14 +18,10 @@ export class BeetPx {
   // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
   //
 
-  static init(
-    engineOptions: EngineOptions,
-    assetsToLoad: AssetsToLoad,
-  ): ReturnType<Engine["init"]> {
+  static init(engineInitParams?: EngineInitParams): ReturnType<Engine["init"]> {
     Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
-
-    this.#engine = new Engine(engineOptions);
-    return this.#engine.init(assetsToLoad);
+    this.#engine = new Engine(engineInitParams);
+    return this.#engine.init();
   }
 
   //

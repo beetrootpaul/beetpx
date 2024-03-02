@@ -1,13 +1,14 @@
 import { decode as fastPngDecode, type DecodedPng } from "fast-png";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxFont } from "../font/Font";
+import { Logger } from "../logger/Logger";
 import { Assets, BpxImageUrl, BpxJsonUrl, BpxSoundUrl } from "./Assets";
 
 export type AssetsToLoad = {
-  images: ImageAssetToLoad[];
-  fonts: FontAssetToLoad[];
-  sounds: SoundAssetToLoad[];
-  jsons: JsonAssetToLoad[];
+  images?: ImageAssetToLoad[];
+  fonts?: FontAssetToLoad[];
+  sounds?: SoundAssetToLoad[];
+  jsons?: JsonAssetToLoad[];
 };
 
 type ImageAssetToLoad = {
@@ -42,6 +43,11 @@ export class AssetLoader {
   }
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
+    assetsToLoad.images ??= [];
+    assetsToLoad.sounds ??= [];
+    assetsToLoad.fonts ??= [];
+    assetsToLoad.jsons ??= [];
+
     assetsToLoad.fonts.forEach(({ font, spriteTextColor }) => {
       this.#assets.addFontAsset(font.id, {
         font,
@@ -64,6 +70,8 @@ export class AssetLoader {
   }
 
   async #loadImage(url: BpxImageUrl): Promise<void> {
+    Logger.infoBeetPx(`Assets: loading image "${url}"`);
+
     if (!url.toLowerCase().endsWith(".png")) {
       throw Error(
         `Assets: only PNG image files are supported. The file which doesn't seem to be PNG: "${url}"`,
@@ -117,6 +125,8 @@ export class AssetLoader {
   }
 
   async #loadSound(url: BpxSoundUrl): Promise<void> {
+    Logger.infoBeetPx(`Assets: loading sound "${url}"`);
+
     if (
       !url.toLowerCase().endsWith(".wav") &&
       !url.toLowerCase().endsWith(".flac")
@@ -135,6 +145,8 @@ export class AssetLoader {
   }
 
   async #loadJson(url: BpxJsonUrl): Promise<void> {
+    Logger.infoBeetPx(`Assets: loading JSON "${url}"`);
+
     const httpResponse = await fetch(url);
     if (!this.#is2xx(httpResponse.status)) {
       throw Error(`Assets: could not fetch JSON file: "${url}"`);

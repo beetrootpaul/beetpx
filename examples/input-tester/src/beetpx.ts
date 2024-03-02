@@ -9,20 +9,14 @@ let showDebug: boolean = false;
 let prevDebugToggleState: boolean = false;
 let nextDebugToggleState: boolean = false;
 
-const newVar = { url: "spritesheet.png" };
-b_.init(
-  {
-    gameCanvasSize: "128x128",
-    desiredUpdateFps: 60,
-    debugFeatures: true,
+b_.init({
+  gameCanvasSize: "128x128",
+  fixedTimestep: "60fps",
+  debugMode: true,
+  assets: {
+    images: [{ url: "spritesheet.png" }],
   },
-  {
-    images: [newVar],
-    fonts: [],
-    sounds: [{ url: "music_base.flac" }],
-    jsons: [],
-  },
-).then(async ({ startGame }) => {
+}).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     standardView = new StandardView();
     debugView = new DebugView();
@@ -30,8 +24,6 @@ b_.init(
 
     prevDebugToggleState = false;
     nextDebugToggleState = false;
-
-    b_.startPlaybackLooped("music_base.flac");
   });
 
   b_.setOnUpdate(() => {

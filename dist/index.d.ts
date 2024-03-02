@@ -459,26 +459,6 @@ declare class BpxTimer {
     restart(): void;
 }
 
-type AssetsToLoad = {
-    images: ImageAssetToLoad[];
-    fonts: FontAssetToLoad[];
-    sounds: SoundAssetToLoad[];
-    jsons: JsonAssetToLoad[];
-};
-type ImageAssetToLoad = {
-    url: BpxImageUrl;
-};
-type FontAssetToLoad = {
-    font: BpxFont;
-    spriteTextColor: BpxRgbColor | null;
-};
-type SoundAssetToLoad = {
-    url: BpxSoundUrl;
-};
-type JsonAssetToLoad = {
-    url: BpxJsonUrl;
-};
-
 declare class AudioApi {
     #private;
     constructor(assets: Assets, audioContext: AudioContext);
@@ -582,6 +562,26 @@ declare class DrawApi {
     takeCanvasSnapshot(): void;
 }
 
+type AssetsToLoad = {
+    images?: ImageAssetToLoad[];
+    fonts?: FontAssetToLoad[];
+    sounds?: SoundAssetToLoad[];
+    jsons?: JsonAssetToLoad[];
+};
+type ImageAssetToLoad = {
+    url: BpxImageUrl;
+};
+type FontAssetToLoad = {
+    font: BpxFont;
+    spriteTextColor: BpxRgbColor | null;
+};
+type SoundAssetToLoad = {
+    url: BpxSoundUrl;
+};
+type JsonAssetToLoad = {
+    url: BpxJsonUrl;
+};
+
 declare global {
     interface Document {
         webkitFullscreenEnabled?: boolean;
@@ -608,10 +608,11 @@ declare class StorageApi {
     clearPersistedState(): void;
 }
 
-type EngineOptions = {
-    gameCanvasSize: "64x64" | "128x128" | "256x256";
-    desiredUpdateFps: 30 | 60;
-    debugFeatures: boolean;
+type EngineInitParams = {
+    gameCanvasSize?: "64x64" | "128x128" | "256x256";
+    fixedTimestep?: "30fps" | "60fps";
+    debugMode?: boolean;
+    assets?: AssetsToLoad;
 };
 type OnAssetsLoaded = {
     startGame: () => Promise<void>;
@@ -627,8 +628,8 @@ declare class Engine {
     get frameNumber(): number;
     get renderingFps(): number;
     get detectedBrowserType(): BpxBrowserType;
-    constructor(options: EngineOptions);
-    init(assetsToLoad: AssetsToLoad): Promise<OnAssetsLoaded>;
+    constructor(engineInitParams?: EngineInitParams);
+    init(): Promise<OnAssetsLoaded>;
     setOnStarted(onStarted: () => void): void;
     setOnUpdate(onUpdate: () => void): void;
     setOnDraw(onDraw: () => void): void;
@@ -649,7 +650,7 @@ declare class Logger {
 
 declare class BeetPx {
     #private;
-    static init(engineOptions: EngineOptions, assetsToLoad: AssetsToLoad): ReturnType<Engine["init"]>;
+    static init(engineInitParams?: EngineInitParams): ReturnType<Engine["init"]>;
     static get debug(): typeof DebugMode.enabled;
     /**
      * Number of frames processed since game started.

@@ -11,6 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _AssetLoader_instances, _AssetLoader_assets, _AssetLoader_decodeAudioData, _AssetLoader_loadImage, _AssetLoader_loadSound, _AssetLoader_loadJson, _AssetLoader_is2xx;
 import { decode as fastPngDecode } from "fast-png";
+import { Logger } from "../logger/Logger";
 export class AssetLoader {
     constructor(assets, params) {
         _AssetLoader_instances.add(this);
@@ -20,6 +21,10 @@ export class AssetLoader {
         __classPrivateFieldSet(this, _AssetLoader_decodeAudioData, params.decodeAudioData, "f");
     }
     async loadAssets(assetsToLoad) {
+        assetsToLoad.images ?? (assetsToLoad.images = []);
+        assetsToLoad.sounds ?? (assetsToLoad.sounds = []);
+        assetsToLoad.fonts ?? (assetsToLoad.fonts = []);
+        assetsToLoad.jsons ?? (assetsToLoad.jsons = []);
         assetsToLoad.fonts.forEach(({ font, spriteTextColor }) => {
             __classPrivateFieldGet(this, _AssetLoader_assets, "f").addFontAsset(font.id, {
                 font,
@@ -40,6 +45,7 @@ export class AssetLoader {
     }
 }
 _AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(), _AssetLoader_instances = new WeakSet(), _AssetLoader_loadImage = async function _AssetLoader_loadImage(url) {
+    Logger.infoBeetPx(`Assets: loading image "${url}"`);
     if (!url.toLowerCase().endsWith(".png")) {
         throw Error(`Assets: only PNG image files are supported. The file which doesn't seem to be PNG: "${url}"`);
     }
@@ -83,6 +89,7 @@ _AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(
         rgba8bitData: decodedPng.data,
     });
 }, _AssetLoader_loadSound = async function _AssetLoader_loadSound(url) {
+    Logger.infoBeetPx(`Assets: loading sound "${url}"`);
     if (!url.toLowerCase().endsWith(".wav") &&
         !url.toLowerCase().endsWith(".flac")) {
         throw Error(`Assets: only wav and flac sound files are supported due to Safari compatibility. The file which doesn't seem to be neither wav nor flac: "${url}"`);
@@ -95,6 +102,7 @@ _AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(
     const audioBuffer = await __classPrivateFieldGet(this, _AssetLoader_decodeAudioData, "f").call(this, arrayBuffer);
     __classPrivateFieldGet(this, _AssetLoader_assets, "f").addSoundAsset(url, { audioBuffer });
 }, _AssetLoader_loadJson = async function _AssetLoader_loadJson(url) {
+    Logger.infoBeetPx(`Assets: loading JSON "${url}"`);
     const httpResponse = await fetch(url);
     if (!__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_is2xx).call(this, httpResponse.status)) {
         throw Error(`Assets: could not fetch JSON file: "${url}"`);
