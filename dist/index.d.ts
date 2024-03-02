@@ -41,7 +41,9 @@ declare class BpxVector2d implements PrintDebug {
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
-    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number): BpxVector2d;
+    static lerp(xy1: BpxVector2d, xy2: BpxVector2d, t: number, opts?: {
+        clamp?: boolean;
+    }): BpxVector2d;
     asArray(): [number, number];
     magnitude(): number;
     normalize(): BpxVector2d;
@@ -112,7 +114,9 @@ declare class BpxUtils {
     static clamp(a: number, b: number, c: number): number;
     static identity<Param>(param: Param): Param;
     static isDefined<Value>(value: Value | null | undefined): value is Value;
-    static lerp(a: number, b: number, t: number): number;
+    static lerp(a: number, b: number, t: number, opts?: {
+        clamp?: boolean;
+    }): number;
     /**
      * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,
      *          where XY represents an offset from the initial top-left

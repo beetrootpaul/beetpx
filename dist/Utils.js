@@ -31,8 +31,9 @@ export class BpxUtils {
     static isDefined(value) {
         return value != null;
     }
-    static lerp(a, b, t) {
-        return a + (b - a) * t;
+    static lerp(a, b, t, opts) {
+        const result = a + (b - a) * t;
+        return opts?.clamp ? BpxUtils.clamp(a, result, b) : result;
     }
     /**
      * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,

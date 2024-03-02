@@ -40,8 +40,14 @@ export class BpxUtils {
     return value != null;
   }
 
-  static lerp(a: number, b: number, t: number): number {
-    return a + (b - a) * t;
+  static lerp(
+    a: number,
+    b: number,
+    t: number,
+    opts?: { clamp?: boolean },
+  ): number {
+    const result = a + (b - a) * t;
+    return opts?.clamp ? BpxUtils.clamp(a, result, b) : result;
   }
 
   /**

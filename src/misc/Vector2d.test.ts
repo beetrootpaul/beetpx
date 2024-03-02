@@ -84,6 +84,15 @@ describe("Vector2d", () => {
       expect(
         BpxVector2d.lerp(v_(200, -400), v_(100, -300), 1.1).round(),
       ).toEqual(v_(90, -290));
+
+      expect(
+        BpxVector2d.lerp(v_(200, -400), v_(100, -300), -0.1, {
+          clamp: true,
+        }),
+      ).toEqual(v_(200, -400));
+      expect(
+        BpxVector2d.lerp(v_(200, -400), v_(100, -300), 1.1, { clamp: true }),
+      ).toEqual(v_(100, -300));
     });
 
     test("#asArray", () => {
