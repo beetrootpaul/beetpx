@@ -26,6 +26,7 @@ interface PrintDebug {
     __printDebug(): string;
 }
 
+declare function v_(value: number): BpxVector2d;
 declare function v_(x: number, y: number): BpxVector2d;
 declare class BpxVector2d implements PrintDebug {
     readonly x: number;
@@ -34,6 +35,7 @@ declare class BpxVector2d implements PrintDebug {
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static unitFromAngle(turnAngle: number): BpxVector2d;
+    static of(value: number): BpxVector2d;
     static of(x: number, y: number): BpxVector2d;
     private constructor();
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;

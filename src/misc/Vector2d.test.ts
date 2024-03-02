@@ -2,6 +2,13 @@ import { describe, expect, test } from "@jest/globals";
 import { BpxVector2d, v_ } from "./Vector2d";
 
 describe("Vector2d", () => {
+  test("construction", () => {
+    expect(BpxVector2d.of(111, 222).asArray()).toEqual([111, 222]);
+    expect(BpxVector2d.of(123).asArray()).toEqual([123, 123]);
+    expect(v_(111, 222).asArray()).toEqual([111, 222]);
+    expect(v_(123).asArray()).toEqual([123, 123]);
+  });
+
   test("equality checks in Jest tests", () => {
     expect(v_(12.345, -6789)).toEqual(v_(12.345, -6789));
     expect(v_(12.345, -6789)).not.toEqual(v_(12.3456, -6789));
