@@ -4,7 +4,7 @@ import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
 
 /**
- * A free to use font created by saint11 and distributed on https://saint11.org/blog/fonts/
+ * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
  *
  * Note: only a subset of characters is implemented here:
  *   . : ! ? ' " * / + -

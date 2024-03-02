@@ -20,6 +20,8 @@ in [its README](examples/simple/README.md).
 
 Also, you might want to take a look at how following projects are using BeetPx:
 
+- https://github.com/beetrootpaul/hat-escape
+- https://github.com/beetrootpaul/dart-07-beetpx
 - https://github.com/beetrootpaul/towers-of-survival-beetpx
 - https://github.com/beetrootpaul/avoid-your-past-beetpx
 
@@ -80,7 +82,13 @@ fonts ready to use in BeetPx:
 - `BpxFontSaint11Minimal5`
 
 Both of them are created by [Saint11](https://saint11.org/about/) and available on https://saint11.org/blog/fonts/ under
-a Public Domain license.
+a CC-0 license (public domain, free to use).
+
+### Color Palettes
+
+There is a PICO-8 color palette ready to use, exported as `BpxPalettePico8` and also as a `rgb_p8_`. That palette is
+created by zep and available under a CC-0 license (public domain, free to use). For more info
+see: https://www.lexaloffle.com/pico-8.php?page=faq
 
 ## Random Notes
 

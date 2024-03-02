@@ -13,14 +13,14 @@ declare class BpxRgbColor {
     asArray(): [r: number, g: number, b: number];
 }
 declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
-declare const black_: BpxRgbColor;
-declare const white_: BpxRgbColor;
-declare const red_: BpxRgbColor;
-declare const green_: BpxRgbColor;
-declare const blue_: BpxRgbColor;
-declare const yellow_: BpxRgbColor;
-declare const cyan_: BpxRgbColor;
-declare const magenta_: BpxRgbColor;
+declare const rgb_black_: BpxRgbColor;
+declare const rgb_white_: BpxRgbColor;
+declare const rgb_red_: BpxRgbColor;
+declare const rgb_green_: BpxRgbColor;
+declare const rgb_blue_: BpxRgbColor;
+declare const rgb_cyan_: BpxRgbColor;
+declare const rgb_magenta_: BpxRgbColor;
+declare const rgb_yellow_: BpxRgbColor;
 
 interface PrintDebug {
     __printDebug(): string;
@@ -287,7 +287,7 @@ declare class BpxDrawingPattern {
 }
 
 /**
- * A free to use font created by saint11 and distributed on https://saint11.org/blog/fonts/
+ * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
  *
  * Note: only a subset of characters is implemented here:
  *   . : ! ? ' " * / + -
@@ -295,8 +295,8 @@ declare class BpxDrawingPattern {
  *   % $ ( ) [ ] { } < >
  *   A B C D E F G H I J K L M
  *   N O P Q R S T U V W X Y Z
- *   a b c d e f g h i j k l m
- *   n o p q r s t u v w x y z
+ *   a b c d e f g h i j k l m      (note: both upper- and lower-case
+ *   n o p q r s t u v w x y z             characters use same glyphs)
  */
 declare class BpxFontSaint11Minimal4 implements BpxFont {
     #private;
@@ -307,7 +307,7 @@ declare class BpxFontSaint11Minimal4 implements BpxFont {
 }
 
 /**
- * A free to use font created by saint11 and distributed on https://saint11.org/blog/fonts/
+ * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
  *
  * Note: only a subset of characters is implemented here:
  *   . : ! ? ' " * / + -
@@ -341,6 +341,7 @@ type BpxGameButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
 declare class GameButtons {
     #private;
     update(events: Set<BpxGameInputEvent>): void;
+    isAnyPressed(): boolean;
     isPressed(button: BpxGameButtonName): boolean;
     getPressedDirection(): BpxVector2d;
     setRepeating(button: BpxGameButtonName, repeating: boolean): void;
@@ -506,6 +507,8 @@ declare class DebugMode {
     #private;
     static get enabled(): boolean;
     static set enabled(value: boolean);
+    static get frameByFrame(): boolean;
+    static toggleFrameByFrame(): void;
 }
 
 declare abstract class Canvas {
@@ -674,8 +677,10 @@ declare class BeetPx {
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;
     static logError: typeof Logger.error;
+    static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
     static wasButtonJustPressed: GameButtons["wasJustPressed"];
     static wasButtonJustReleased: GameButtons["wasJustReleased"];
+    static isAnyButtonPressed: GameButtons["isAnyPressed"];
     static isButtonPressed: GameButtons["isPressed"];
     static getPressedDirection: GameButtons["getPressedDirection"];
     static setButtonRepeating: GameButtons["setRepeating"];
@@ -755,6 +760,33 @@ declare class BeetPx {
 }
 declare const b_: typeof BeetPx;
 
+/**
+ * A free to use (CC-0) color palette created by zep and distributed as part of PICO-8 fantasy console.
+ *
+ * Links:
+ *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
+ *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from here
+ */
+declare class BpxPalettePico8 {
+    static black: BpxRgbColor;
+    static storm: BpxRgbColor;
+    static wine: BpxRgbColor;
+    static moss: BpxRgbColor;
+    static tan: BpxRgbColor;
+    static slate: BpxRgbColor;
+    static silver: BpxRgbColor;
+    static white: BpxRgbColor;
+    static ember: BpxRgbColor;
+    static orange: BpxRgbColor;
+    static lemon: BpxRgbColor;
+    static lime: BpxRgbColor;
+    static sky: BpxRgbColor;
+    static dusk: BpxRgbColor;
+    static pink: BpxRgbColor;
+    static peach: BpxRgbColor;
+}
+declare const rgb_p8_: typeof BpxPalettePico8;
+
 declare global {
     /**
      * Note: the generated documentation marks this variable as "Not Exported".
@@ -772,4 +804,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontAsset, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };
+export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontAsset, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };

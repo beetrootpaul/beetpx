@@ -8,7 +8,7 @@ import {
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { black_, BpxRgbColor } from "./color/RgbColor";
+import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
@@ -40,8 +40,6 @@ export class Engine {
   static readonly #storageDebugDisabledTrue = "yes";
 
   readonly #assetsToLoad: AssetsToLoad;
-
-  #frameByFrame: boolean;
 
   readonly #browserType: BpxBrowserType;
 
@@ -143,8 +141,6 @@ export class Engine {
 
     Button.setRepeatingParamsFor(fixedTimestepFps);
 
-    this.#frameByFrame = false;
-
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
     this.#gameCanvasSize =
@@ -243,7 +239,7 @@ export class Engine {
 
     this.audioApi.restart();
 
-    BeetPx.clearCanvas(black_);
+    BeetPx.clearCanvas(rgb_black_);
 
     this.#onStarted?.();
   }
@@ -301,12 +297,11 @@ export class Engine {
           }
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
-          this.#frameByFrame = !this.#frameByFrame;
-          Logger.infoBeetPx(`FrameByFrame mode set to: ${this.#frameByFrame}`);
+          DebugMode.toggleFrameByFrame();
         }
 
         const shouldUpdate =
-          !this.#frameByFrame ||
+          !DebugMode.frameByFrame ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
 
         const hasAnyInteractionHappened = this.gameInput.update({
@@ -323,7 +318,7 @@ export class Engine {
         }
 
         if (shouldUpdate) {
-          if (this.#frameByFrame) {
+          if (DebugMode.frameByFrame) {
             Logger.infoBeetPx(
               `Running onUpdate for frame: ${this.#currentFrameNumber}`,
             );
