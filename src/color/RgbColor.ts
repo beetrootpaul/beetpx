@@ -28,20 +28,19 @@ export class BpxRgbColor {
   readonly cssHex: BpxRgbCssHex;
 
   private constructor(r: number, g: number, b: number) {
-    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
-      throw Error(
-        `One of color components is outside 0-255 range: r=${r}, g=${g}, b=${b}.`,
-      );
-    }
-    this.r = r;
-    this.g = g;
-    this.b = b;
+    this.r = Math.min(Math.max(0x00, Math.round(r)), 0xff);
+    this.g = Math.min(Math.max(0x00, Math.round(g)), 0xff);
+    this.b = Math.min(Math.max(0x00, Math.round(b)), 0xff);
 
     this.cssHex =
       "#" +
       r.toString(16).padStart(2, "0") +
       g.toString(16).padStart(2, "0") +
       b.toString(16).padStart(2, "0");
+  }
+
+  asArray(): [r: number, g: number, b: number] {
+    return [this.r, this.g, this.b];
   }
 }
 

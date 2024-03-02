@@ -7,29 +7,29 @@ export type BpxImageUrl = string;
 export type BpxSoundUrl = string;
 export type BpxJsonUrl = string;
 
-export type ImageAsset = {
+export type BpxImageAsset = {
   width: number;
   height: number;
   channels: 3 | 4;
   rgba8bitData: PngDataArray;
 };
 
-export type FontAsset = {
+export type BpxFontAsset = {
   font: BpxFont;
-  image: ImageAsset | null;
+  image: BpxImageAsset | null;
   spriteTextColor: BpxRgbColor | null;
 };
 
-export type SoundAsset = {
+export type BpxSoundAsset = {
   audioBuffer: AudioBuffer;
 };
 
-export type JsonAsset = {
+export type BpxJsonAsset = {
   json: any;
 };
 
 export class Assets {
-  #images: Map<BpxImageUrl, ImageAsset> = new Map();
+  #images: Map<BpxImageUrl, BpxImageAsset> = new Map();
   #fonts: Map<
     BpxFontId,
     {
@@ -37,10 +37,10 @@ export class Assets {
       spriteTextColor: BpxRgbColor | null;
     }
   > = new Map();
-  #sounds: Map<BpxSoundUrl, SoundAsset> = new Map();
-  #jsons: Map<BpxJsonUrl, JsonAsset> = new Map();
+  #sounds: Map<BpxSoundUrl, BpxSoundAsset> = new Map();
+  #jsons: Map<BpxJsonUrl, BpxJsonAsset> = new Map();
 
-  addImageAsset(imageUrl: BpxImageUrl, imageAsset: ImageAsset): void {
+  addImageAsset(imageUrl: BpxImageUrl, imageAsset: BpxImageAsset): void {
     this.#images.set(imageUrl, imageAsset);
   }
 
@@ -54,15 +54,15 @@ export class Assets {
     this.#fonts.set(fontId, fontProps);
   }
 
-  addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: SoundAsset): void {
+  addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: BpxSoundAsset): void {
     this.#sounds.set(soundUrl, soundAsset);
   }
 
-  addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: JsonAsset): void {
+  addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: BpxJsonAsset): void {
     this.#jsons.set(jsonUrl, jsonAsset);
   }
 
-  getImageAsset(imageUrl: BpxImageUrl): ImageAsset {
+  getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset {
     const imageAsset = this.#images.get(imageUrl);
     if (!imageAsset) {
       throw Error(`Assets: There is no image loaded for: ${imageUrl}`);
@@ -70,7 +70,7 @@ export class Assets {
     return imageAsset;
   }
 
-  getFontAsset(fontId: BpxFontId): FontAsset {
+  getFontAsset(fontId: BpxFontId): BpxFontAsset {
     const { font, spriteTextColor } =
       this.#fonts.get(fontId) ??
       BpxUtils.throwError(
@@ -83,7 +83,7 @@ export class Assets {
     };
   }
 
-  getSoundAsset(soundUrl: BpxSoundUrl): SoundAsset {
+  getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset {
     const soundAsset = this.#sounds.get(soundUrl);
     if (!soundAsset) {
       throw Error(`Assets: There is no sound loaded for: ${soundUrl}`);
@@ -91,7 +91,7 @@ export class Assets {
     return soundAsset;
   }
 
-  getJsonAsset(jsonUrl: BpxJsonUrl): JsonAsset {
+  getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset {
     const jsonAsset = this.#jsons.get(jsonUrl);
     if (!jsonAsset) {
       throw Error(`Assets: There is no JSON loaded for: ${jsonUrl}`);

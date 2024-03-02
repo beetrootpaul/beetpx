@@ -3,8 +3,10 @@
 import { PrintDebug } from "../debug/PrintDebug";
 import { BpxUtils } from "../Utils";
 
-export function v_(x: number, y: number): BpxVector2d {
-  return BpxVector2d.of(x, y);
+export function v_(value: number): BpxVector2d;
+export function v_(x: number, y: number): BpxVector2d;
+export function v_(valueOrX: number, maybeY?: number): BpxVector2d {
+  return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
 }
 
 export class BpxVector2d implements PrintDebug {
@@ -18,8 +20,10 @@ export class BpxVector2d implements PrintDebug {
     );
   }
 
-  static of(x: number, y: number): BpxVector2d {
-    return new BpxVector2d(x, y);
+  static of(value: number): BpxVector2d;
+  static of(x: number, y: number): BpxVector2d;
+  static of(valueOrX: number, maybeY?: number): BpxVector2d {
+    return new BpxVector2d(valueOrX, maybeY ?? valueOrX);
   }
 
   private constructor(

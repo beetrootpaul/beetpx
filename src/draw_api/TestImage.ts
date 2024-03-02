@@ -1,8 +1,8 @@
-import { ImageAsset } from "../assets/Assets";
+import { BpxImageAsset } from "../assets/Assets";
 import { BpxRgbColor } from "../color/RgbColor";
 
 export class TestImage {
-  readonly asset: ImageAsset;
+  readonly asset: BpxImageAsset;
   readonly uniqueUrl: string;
 
   constructor(params: {

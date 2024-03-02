@@ -1,4 +1,4 @@
-import { ImageAsset } from "../../assets/Assets";
+import { BpxImageAsset } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
@@ -19,7 +19,7 @@ export class DrawSprite {
 
   draw(
     sprite: BpxSprite,
-    sourceImageAsset: ImageAsset,
+    sourceImageAsset: BpxImageAsset,
     targetXy: BpxVector2d,
     scaleXy: BpxVector2d,
     colorMapping: BpxSpriteColorMapping,

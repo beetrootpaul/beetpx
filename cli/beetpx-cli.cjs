@@ -77,11 +77,7 @@ const beetPxCodebaseDir = path.resolve(__dirname, "..");
 const gameCodebaseDir = process.cwd();
 const tmpBeetPxDir = ".beetpx/";
 
-const tsEntrypoint = path.resolve(
-  gameCodebaseDir,
-  "src",
-  "beetpx_entrypoint.ts",
-);
+const tsEntrypoint = path.resolve(gameCodebaseDir, "src", "beetpx.ts");
 
 const gameHtmlTemplate = "index.template.html";
 
@@ -369,7 +365,7 @@ function copyBeetPxAdditionalAssets(params) {
   const { inputDir, outputDir } = params;
 
   if (fs.existsSync(outputDir)) {
-    fs.rmdirSync(outputDir, { recursive: true });
+    fs.rmSync(outputDir, { recursive: true });
   }
 
   fs.mkdirSync(outputDir, { recursive: true });

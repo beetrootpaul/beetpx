@@ -10,6 +10,7 @@ declare class BpxRgbColor {
     readonly b: number;
     readonly cssHex: BpxRgbCssHex;
     private constructor();
+    asArray(): [r: number, g: number, b: number];
 }
 declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
 declare const black_: BpxRgbColor;
@@ -25,6 +26,7 @@ interface PrintDebug {
     __printDebug(): string;
 }
 
+declare function v_(value: number): BpxVector2d;
 declare function v_(x: number, y: number): BpxVector2d;
 declare class BpxVector2d implements PrintDebug {
     readonly x: number;
@@ -33,6 +35,7 @@ declare class BpxVector2d implements PrintDebug {
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static unitFromAngle(turnAngle: number): BpxVector2d;
+    static of(value: number): BpxVector2d;
     static of(x: number, y: number): BpxVector2d;
     private constructor();
     static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
@@ -180,36 +183,36 @@ interface BpxFont {
 type BpxImageUrl = string;
 type BpxSoundUrl = string;
 type BpxJsonUrl = string;
-type ImageAsset = {
+type BpxImageAsset = {
     width: number;
     height: number;
     channels: 3 | 4;
     rgba8bitData: PngDataArray;
 };
-type FontAsset = {
+type BpxFontAsset = {
     font: BpxFont;
-    image: ImageAsset | null;
+    image: BpxImageAsset | null;
     spriteTextColor: BpxRgbColor | null;
 };
-type SoundAsset = {
+type BpxSoundAsset = {
     audioBuffer: AudioBuffer;
 };
-type JsonAsset = {
+type BpxJsonAsset = {
     json: any;
 };
 declare class Assets {
     #private;
-    addImageAsset(imageUrl: BpxImageUrl, imageAsset: ImageAsset): void;
+    addImageAsset(imageUrl: BpxImageUrl, imageAsset: BpxImageAsset): void;
     addFontAsset(fontId: BpxFontId, fontProps: {
         font: BpxFont;
         spriteTextColor: BpxRgbColor | null;
     }): void;
-    addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: SoundAsset): void;
-    addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: JsonAsset): void;
-    getImageAsset(imageUrl: BpxImageUrl): ImageAsset;
-    getFontAsset(fontId: BpxFontId): FontAsset;
-    getSoundAsset(soundUrl: BpxSoundUrl): SoundAsset;
-    getJsonAsset(jsonUrl: BpxJsonUrl): JsonAsset;
+    addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: BpxSoundAsset): void;
+    addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: BpxJsonAsset): void;
+    getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset;
+    getFontAsset(fontId: BpxFontId): BpxFontAsset;
+    getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset;
+    getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
 }
 
 type BpxAudioPlaybackId = number;
@@ -764,4 +767,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageUrl, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };
+export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontAsset, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };

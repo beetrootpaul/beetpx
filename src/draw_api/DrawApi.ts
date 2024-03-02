@@ -1,4 +1,4 @@
-import { Assets, FontAsset } from "../assets/Assets";
+import { Assets, BpxFontAsset } from "../assets/Assets";
 import { Canvas } from "../canvas/Canvas";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../color/PatternColors";
@@ -45,7 +45,7 @@ export class DrawApi {
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
-  #fontAsset: FontAsset | null = null;
+  #fontAsset: BpxFontAsset | null = null;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
