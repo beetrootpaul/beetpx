@@ -9,18 +9,16 @@ b_.init(
   {
     images: [{ url: "logo.png" }],
     fonts: [],
-    sounds: [{ url: "music_base.flac" }, { url: "music_melody.flac" }],
+    sounds: [{ url: "music_melody.flac" }],
     jsons: [],
   },
 ).then(async ({ startGame }) => {
+  const logoSprite = spr_("logo.png")(16, 16, 0, 0);
   let circleMovementCenter = v_(64, 64);
   let logoPosition = v_0_0_;
-  let logoSprite = spr_("logo.png")(16, 16, 0, 0);
 
   b_.setOnStarted(() => {
-    b_.startPlaybackLooped("music_melody.flac", {
-      muteOnStart: false,
-    });
+    b_.startPlaybackLooped("music_melody.flac", { muteOnStart: true });
   });
 
   b_.setOnUpdate(() => {
