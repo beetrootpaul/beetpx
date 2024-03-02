@@ -10,6 +10,7 @@ declare class BpxRgbColor {
     readonly b: number;
     readonly cssHex: BpxRgbCssHex;
     private constructor();
+    asArray(): [r: number, g: number, b: number];
 }
 declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
 declare const black_: BpxRgbColor;

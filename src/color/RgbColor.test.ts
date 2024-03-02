@@ -11,13 +11,21 @@ describe("RgbColor", () => {
       expect(color.b).toEqual(3);
     });
 
-    test("validation", () => {
-      expect(() => BpxRgbColor.of(0, -1, 0)).toThrow(
-        "One of color components is outside 0-255 range",
-      );
-      expect(() => BpxRgbColor.of(0, 256, 0)).toThrow(
-        "One of color components is outside 0-255 range",
-      );
+    test("normalization", () => {
+      expect(BpxRgbColor.of(-1, 22, 33).asArray()).toEqual([0, 22, 33]);
+      expect(BpxRgbColor.of(11, -2, 33).asArray()).toEqual([11, 0, 33]);
+      expect(BpxRgbColor.of(11, 22, -3).asArray()).toEqual([11, 22, 0]);
+
+      expect(BpxRgbColor.of(256, 22, 33).asArray()).toEqual([255, 22, 33]);
+      expect(BpxRgbColor.of(11, 256, 33).asArray()).toEqual([11, 255, 33]);
+      expect(BpxRgbColor.of(11, 22, 256).asArray()).toEqual([11, 22, 255]);
+
+      expect(BpxRgbColor.of(10.6, 22, 33).asArray()).toEqual([11, 22, 33]);
+      expect(BpxRgbColor.of(11.4, 22, 33).asArray()).toEqual([11, 22, 33]);
+      expect(BpxRgbColor.of(11, 21.6, 33).asArray()).toEqual([11, 22, 33]);
+      expect(BpxRgbColor.of(11, 22.4, 33).asArray()).toEqual([11, 22, 33]);
+      expect(BpxRgbColor.of(11, 22, 32.6).asArray()).toEqual([11, 22, 33]);
+      expect(BpxRgbColor.of(11, 22, 33.4).asArray()).toEqual([11, 22, 33]);
     });
   });
 
