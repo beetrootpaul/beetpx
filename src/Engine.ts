@@ -8,7 +8,7 @@ import {
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { black_, BpxRgbColor } from "./color/RgbColor";
+import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
@@ -239,7 +239,7 @@ export class Engine {
 
     this.audioApi.restart();
 
-    BeetPx.clearCanvas(black_);
+    BeetPx.clearCanvas(rgb_black_);
 
     this.#onStarted?.();
   }

@@ -65,15 +65,15 @@ export { BeetPx } from "./BeetPx";
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
 export {
-  black_,
-  blue_,
-  cyan_,
-  green_,
-  magenta_,
-  red_,
   rgb_,
-  white_,
-  yellow_,
+  rgb_black_,
+  rgb_blue_,
+  rgb_cyan_,
+  rgb_green_,
+  rgb_magenta_,
+  rgb_red_,
+  rgb_white_,
+  rgb_yellow_,
 } from "./color/RgbColor";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 export { aspr_ } from "./sprite/AnimatedSprite";

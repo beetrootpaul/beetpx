@@ -16,7 +16,7 @@ import { AudioApi } from "./audio/AudioApi";
 import { BeetPx } from "./BeetPx";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { black_, BpxRgbColor } from "./color/RgbColor";
+import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
@@ -169,7 +169,7 @@ export class Engine {
     restart() {
         __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
         this.audioApi.restart();
-        BeetPx.clearCanvas(black_);
+        BeetPx.clearCanvas(rgb_black_);
         __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
     }
 }

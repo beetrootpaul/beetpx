@@ -13,14 +13,14 @@ declare class BpxRgbColor {
     asArray(): [r: number, g: number, b: number];
 }
 declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
-declare const black_: BpxRgbColor;
-declare const white_: BpxRgbColor;
-declare const red_: BpxRgbColor;
-declare const green_: BpxRgbColor;
-declare const blue_: BpxRgbColor;
-declare const yellow_: BpxRgbColor;
-declare const cyan_: BpxRgbColor;
-declare const magenta_: BpxRgbColor;
+declare const rgb_black_: BpxRgbColor;
+declare const rgb_white_: BpxRgbColor;
+declare const rgb_red_: BpxRgbColor;
+declare const rgb_green_: BpxRgbColor;
+declare const rgb_blue_: BpxRgbColor;
+declare const rgb_cyan_: BpxRgbColor;
+declare const rgb_magenta_: BpxRgbColor;
+declare const rgb_yellow_: BpxRgbColor;
 
 interface PrintDebug {
     __printDebug(): string;
@@ -774,4 +774,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontAsset, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, black_, blue_, cyan_, green_, magenta_, red_, rgb_, spr_, timer_, u_, v_, v_0_0_, v_1_1_, white_, yellow_ };
+export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontAsset, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };
