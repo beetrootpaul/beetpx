@@ -506,6 +506,8 @@ declare class DebugMode {
     #private;
     static get enabled(): boolean;
     static set enabled(value: boolean);
+    static get frameByFrame(): boolean;
+    static toggleFrameByFrame(): void;
 }
 
 declare abstract class Canvas {

@@ -41,8 +41,6 @@ export class Engine {
 
   readonly #assetsToLoad: AssetsToLoad;
 
-  #frameByFrame: boolean;
-
   readonly #browserType: BpxBrowserType;
 
   readonly #gameCanvasSize: BpxVector2d;
@@ -142,8 +140,6 @@ export class Engine {
             );
 
     Button.setRepeatingParamsFor(fixedTimestepFps);
-
-    this.#frameByFrame = false;
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
@@ -301,12 +297,11 @@ export class Engine {
           }
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
-          this.#frameByFrame = !this.#frameByFrame;
-          Logger.infoBeetPx(`FrameByFrame mode set to: ${this.#frameByFrame}`);
+          DebugMode.toggleFrameByFrame();
         }
 
         const shouldUpdate =
-          !this.#frameByFrame ||
+          !DebugMode.frameByFrame ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
 
         const hasAnyInteractionHappened = this.gameInput.update({
@@ -323,7 +318,7 @@ export class Engine {
         }
 
         if (shouldUpdate) {
-          if (this.#frameByFrame) {
+          if (DebugMode.frameByFrame) {
             Logger.infoBeetPx(
               `Running onUpdate for frame: ${this.#currentFrameNumber}`,
             );
