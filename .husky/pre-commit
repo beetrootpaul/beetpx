@@ -36,7 +36,7 @@ fi
 #   Thanks to this command being run on every commit, users can refer to
 #   any commit of this repo in their `package.json` files and have BeetPx
 #   ready to use there.
-# We do this on all branches, because during framework development we might
+# We do this on all branches, because during engine development we might
 #   want to install a specific non-versioned commit of BeetPx in a game
 #   repository.
 npm run compile

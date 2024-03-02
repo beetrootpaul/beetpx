@@ -61,7 +61,7 @@ export class AudioApi {
 
   // In some browsers audio should start in result of user interaction (e.g. button click).
   // Since we cannot assure it for every game setup, let' expose a function which tries to
-  // resume the AudioContext and call it on every user interaction detected by this framework.
+  // resume the AudioContext and call it on every user interaction detected by this engine.
   async tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean> {
     Logger.debugBeetPx(
       "AudioApi.tryToResumeAudioContextSuspendedByBrowserForSecurityReasons",
