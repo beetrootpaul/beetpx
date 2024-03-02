@@ -20,6 +20,8 @@ in [its README](examples/simple/README.md).
 
 Also, you might want to take a look at how following projects are using BeetPx:
 
+- https://github.com/beetrootpaul/hat-escape
+- https://github.com/beetrootpaul/dart-07-beetpx
 - https://github.com/beetrootpaul/towers-of-survival-beetpx
 - https://github.com/beetrootpaul/avoid-your-past-beetpx
 
