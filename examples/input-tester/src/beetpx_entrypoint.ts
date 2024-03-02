@@ -9,6 +9,7 @@ let showDebug: boolean = false;
 let prevDebugToggleState: boolean = false;
 let nextDebugToggleState: boolean = false;
 
+const newVar = { url: "spritesheet.png" };
 b_.init(
   {
     gameCanvasSize: "128x128",
@@ -16,7 +17,7 @@ b_.init(
     debugFeatures: true,
   },
   {
-    images: [{ url: "spritesheet.png" }],
+    images: [newVar],
     fonts: [],
     sounds: [{ url: "music_base.flac" }],
     jsons: [],

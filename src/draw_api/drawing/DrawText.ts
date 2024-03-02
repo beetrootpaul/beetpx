@@ -1,4 +1,4 @@
-import { FontAsset } from "../../assets/Assets";
+import { BpxFontAsset } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
@@ -28,7 +28,7 @@ export class DrawText {
 
   draw(
     text: string,
-    fontAsset: FontAsset,
+    fontAsset: BpxFontAsset,
     canvasXy: BpxVector2d,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
     scaleXy: BpxVector2d,
