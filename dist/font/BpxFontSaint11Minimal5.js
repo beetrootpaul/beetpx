@@ -21,6 +21,7 @@ import { v_0_0_ } from "../misc/Vector2d";
  */
 export class BpxFontSaint11Minimal5 {
     constructor() {
+        this.spriteTextColor = null;
         _BpxFontSaint11Minimal5_unknownCharSprite.set(this, BpxPixels.from(`
     ###
     ###

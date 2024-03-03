@@ -1,11 +1,11 @@
-import { Assets, BpxFontAsset } from "../assets/Assets";
+import { Assets } from "../assets/Assets";
 import { Canvas } from "../canvas/Canvas";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxFontPico8 } from "../font/BpxFontPico8";
-import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
+import { BpxCharSprite, BpxFont } from "../font/Font";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
 import { BpxSprite } from "../sprite/Sprite";
@@ -45,7 +45,7 @@ export class DrawApi {
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
-  #fontAsset: BpxFontAsset | undefined;
+  #font: BpxFont;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -60,11 +60,9 @@ export class DrawApi {
     this.#ellipse = new DrawEllipse(options.canvas);
     this.#sprite = new DrawSprite(options.canvas);
     this.#text = new DrawText(options.canvas);
-  }
 
-  #getFontAsset(): BpxFontAsset {
-    this.#fontAsset ??= this.#assets.getFontAsset(BpxFontPico8.id);
-    return this.#fontAsset;
+    // TODO: make it static, no construction required?
+    this.#font = new BpxFontPico8();
   }
 
   clearCanvas(color: BpxRgbColor): void {
@@ -190,12 +188,14 @@ export class DrawApi {
     );
   }
 
-  setFont(fontId: BpxFontId) {
-    this.#fontAsset = this.#assets.getFontAsset(fontId);
+  // TODO: add fg color here? or rather in the sole font definition
+  setFont(font: BpxFont): void {
+    this.#font = font;
   }
 
+  // TODO: really needed?
   getFont(): BpxFont {
-    return this.#getFontAsset().font;
+    return this.#font;
   }
 
   drawText(
@@ -214,7 +214,11 @@ export class DrawApi {
     }
     this.#text.draw(
       text,
-      this.#getFontAsset(),
+      this.#font,
+      // TODO: rework it
+      this.#font.imageUrl
+        ? this.#assets.getImageAsset(this.#font.imageUrl)
+        : null,
       xy.sub(this.cameraXy),
       color,
       opts.scaleXy ?? v_1_1_,

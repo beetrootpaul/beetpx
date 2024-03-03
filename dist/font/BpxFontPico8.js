@@ -4,6 +4,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BpxFontPico8_spaceW, _BpxFontPico8_sprites;
+import { rgb_p8_ } from "../color/BpxPalettePico8";
 import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
 function glyph(tileX1, tileY1, pxW = 3, pxH = 5) {
     return [BpxVector2d.of(tileX1 * 8, tileY1 * 8), BpxVector2d.of(pxW, pxH)];
@@ -12,6 +13,7 @@ function glyph(tileX1, tileY1, pxW = 3, pxH = 5) {
 
 export class BpxFontPico8 {
     constructor() {
+        this.spriteTextColor = rgb_p8_.white;
         this.id = _a.id;
         this.imageUrl = _a.imageUrl;
         _BpxFontPico8_sprites.set(this, {

@@ -26,7 +26,6 @@ window.BEETPX__VERSION = __BEETPX__VERSION__;
 
 export { BpxUtils } from "./Utils";
 export {
-  type BpxFontAsset,
   type BpxImageAsset,
   type BpxImageUrl,
   type BpxJsonAsset,

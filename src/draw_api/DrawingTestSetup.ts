@@ -1,7 +1,6 @@
 import { Assets } from "../assets/Assets";
 import { CanvasForTests } from "../canvas/CanvasForTests";
-import { BpxRgbColor, rgb_white_ } from "../color/RgbColor";
-import { BpxFontSaint11Minimal4 } from "../font/BpxFontSaint11Minimal4";
+import { BpxRgbColor } from "../color/RgbColor";
 import { DrawApi } from "./DrawApi";
 
 export type DrawingTestSetup = {
@@ -20,13 +19,6 @@ export function drawingTestSetup(
   const drawApi = new DrawApi({
     canvas,
     assets,
-  });
-
-  // Using BpxFontSaint11Minimal4, because it is a font defined
-  //   with pixels and requires no image to fetch.
-  assets.addFontAsset(BpxFontSaint11Minimal4.id, {
-    font: new BpxFontSaint11Minimal4(),
-    spriteTextColor: rgb_white_,
   });
 
   return { canvas, assets, drawApi };

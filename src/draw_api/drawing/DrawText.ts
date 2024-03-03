@@ -1,8 +1,8 @@
-import { BpxFontAsset } from "../../assets/Assets";
+import { BpxImageAsset } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { BpxCharSprite } from "../../font/Font";
+import { BpxCharSprite, BpxFont } from "../../font/Font";
 import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
 import { spr_ } from "../../sprite/Sprite";
 import { BpxDrawingPattern } from "../Pattern";
@@ -28,7 +28,8 @@ export class DrawText {
 
   draw(
     text: string,
-    fontAsset: BpxFontAsset,
+    font: BpxFont,
+    fontImage: BpxImageAsset | null,
     canvasXy: BpxVector2d,
     color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
     scaleXy: BpxVector2d,
@@ -41,37 +42,35 @@ export class DrawText {
       typeof color === "function"
         ? (charSprite: BpxCharSprite) =>
             BpxSpriteColorMapping.of((spriteColor) =>
-              spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
+              spriteColor?.cssHex === font.spriteTextColor?.cssHex
                 ? color(charSprite)
                 : null,
             )
         : BpxSpriteColorMapping.of((spriteColor) =>
-            spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
-              ? color
-              : null,
+            spriteColor?.cssHex === font.spriteTextColor?.cssHex ? color : null,
           );
 
-    for (const charSprite of fontAsset.font.spritesFor(text)) {
+    for (const charSprite of font.spritesFor(text)) {
       const xy = canvasXy.add(charSprite.positionInText.mul(scaleXy));
       if (charSprite.type === "image") {
-        if (fontAsset.font.imageUrl == null) {
+        if (font.imageUrl == null) {
           throw Error(
-            `There is no imageUrl defined for a font "${fontAsset.font.id}", which uses image sprites`,
+            `There is no imageUrl defined for a font "${font.id}", which uses image sprites`,
           );
         }
-        if (fontAsset.image == null) {
+        if (fontImage == null) {
           throw Error(
-            `There is no image loaded for a font "${fontAsset.font.id}", which uses image sprites`,
+            `There is no image loaded for a font "${font.id}", which uses image sprites`,
           );
         }
         this.#sprite.draw(
-          spr_(fontAsset.font.imageUrl)(
+          spr_(font.imageUrl)(
             charSprite.spriteXyWh[1].x,
             charSprite.spriteXyWh[1].y,
             charSprite.spriteXyWh[0].x,
             charSprite.spriteXyWh[0].y,
           ),
-          fontAsset.image,
+          fontImage,
           xy,
           scaleXy,
           typeof colorMapping === "function"

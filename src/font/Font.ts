@@ -1,4 +1,5 @@
 import { BpxImageUrl } from "../assets/Assets";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxPixels } from "../draw_api/Pixels";
 import { BpxVector2d } from "../misc/Vector2d";
 
@@ -19,7 +20,10 @@ export type BpxCharSprite = {
 export type BpxFontId = string;
 
 export interface BpxFont {
+  // TODO: is ID really needed still?
   readonly id: BpxFontId;
   readonly imageUrl: BpxImageUrl | null;
   spritesFor(text: string): BpxCharSprite[];
+
+  readonly spriteTextColor: BpxRgbColor | null;
 }

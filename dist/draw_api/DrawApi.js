@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawApi_instances, _DrawApi_assets, _DrawApi_canvas, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_pattern, _DrawApi_spriteColorMapping, _DrawApi_fontAsset, _DrawApi_getFontAsset;
+var _DrawApi_assets, _DrawApi_canvas, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_pattern, _DrawApi_spriteColorMapping, _DrawApi_font;
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxFontPico8 } from "../font/BpxFontPico8";
 import { v_, v_1_1_ } from "../misc/Vector2d";
@@ -25,7 +25,6 @@ import { DrawText } from "./drawing/DrawText";
 import { BpxDrawingPattern } from "./Pattern";
 export class DrawApi {
     constructor(options) {
-        _DrawApi_instances.add(this);
         _DrawApi_assets.set(this, void 0);
         _DrawApi_canvas.set(this, void 0);
         _DrawApi_clear.set(this, void 0);
@@ -39,7 +38,7 @@ export class DrawApi {
         this.cameraXy = v_(0, 0);
         _DrawApi_pattern.set(this, BpxDrawingPattern.primaryOnly);
         _DrawApi_spriteColorMapping.set(this, BpxSpriteColorMapping.noMapping);
-        _DrawApi_fontAsset.set(this, void 0);
+        _DrawApi_font.set(this, void 0);
         __classPrivateFieldSet(this, _DrawApi_assets, options.assets, "f");
         __classPrivateFieldSet(this, _DrawApi_canvas, options.canvas, "f");
         __classPrivateFieldSet(this, _DrawApi_clear, new DrawClear(options.canvas), "f");
@@ -50,6 +49,8 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_ellipse, new DrawEllipse(options.canvas), "f");
         __classPrivateFieldSet(this, _DrawApi_sprite, new DrawSprite(options.canvas), "f");
         __classPrivateFieldSet(this, _DrawApi_text, new DrawText(options.canvas), "f");
+        
+        __classPrivateFieldSet(this, _DrawApi_font, new BpxFontPico8(), "f");
     }
     clearCanvas(color) {
         __classPrivateFieldGet(this, _DrawApi_clear, "f").draw(color);
@@ -104,11 +105,13 @@ export class DrawApi {
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    setFont(fontId) {
-        __classPrivateFieldSet(this, _DrawApi_fontAsset, __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontId), "f");
+    
+    setFont(font) {
+        __classPrivateFieldSet(this, _DrawApi_font, font, "f");
     }
+    
     getFont() {
-        return __classPrivateFieldGet(this, _DrawApi_instances, "m", _DrawApi_getFontAsset).call(this).font;
+        return __classPrivateFieldGet(this, _DrawApi_font, "f");
     }
     drawText(text, xy, color, opts = {}) {
         const centerXy = opts.centerXy ?? [false, false];
@@ -116,13 +119,14 @@ export class DrawApi {
             const [_, size] = BpxUtils.measureText(text);
             xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
         }
-        __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_instances, "m", _DrawApi_getFontAsset).call(this), xy.sub(this.cameraXy), color, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_font, "f"), 
+        
+        __classPrivateFieldGet(this, _DrawApi_font, "f").imageUrl
+            ? __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(__classPrivateFieldGet(this, _DrawApi_font, "f").imageUrl)
+            : null, xy.sub(this.cameraXy), color, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     takeCanvasSnapshot() {
         return __classPrivateFieldGet(this, _DrawApi_canvas, "f").takeSnapshot();
     }
 }
-_DrawApi_assets = new WeakMap(), _DrawApi_canvas = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_pixels = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_pattern = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_instances = new WeakSet(), _DrawApi_getFontAsset = function _DrawApi_getFontAsset() {
-    __classPrivateFieldSet(this, _DrawApi_fontAsset, __classPrivateFieldGet(this, _DrawApi_fontAsset, "f") ?? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(BpxFontPico8.id), "f");
-    return __classPrivateFieldGet(this, _DrawApi_fontAsset, "f");
-};
+_DrawApi_assets = new WeakMap(), _DrawApi_canvas = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_pixels = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_pattern = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap(), _DrawApi_font = new WeakMap();

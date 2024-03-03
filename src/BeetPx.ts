@@ -357,10 +357,6 @@ export class BeetPx {
     return this.#tryGetEngine().assets.getImageAsset(...args);
   };
 
-  static getFontAsset: Assets["getFontAsset"] = (...args) => {
-    return this.#tryGetEngine().assets.getFontAsset(...args);
-  };
-
   static getSoundAsset: Assets["getSoundAsset"] = (...args) => {
     return this.#tryGetEngine().assets.getSoundAsset(...args);
   };

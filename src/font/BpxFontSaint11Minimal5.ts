@@ -19,6 +19,8 @@ import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
 export class BpxFontSaint11Minimal5 implements BpxFont {
   static id: BpxFontId = "__internal__saint11_Minimal5";
 
+  readonly spriteTextColor = null;
+
   #unknownCharSprite = BpxPixels.from(`
     ###
     ###

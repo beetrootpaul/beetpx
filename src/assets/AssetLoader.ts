@@ -1,24 +1,16 @@
 import { decode as fastPngDecode, type DecodedPng } from "fast-png";
-import { BpxRgbColor } from "../color/RgbColor";
-import { BpxFont } from "../font/Font";
 import { Logger } from "../logger/Logger";
 import { Assets, BpxImageUrl, BpxJsonUrl, BpxSoundUrl } from "./Assets";
 
+// TODO: make it an array of URLs?
 export type AssetsToLoad = {
   images?: ImageAssetToLoad[];
-  fonts?: FontAssetToLoad[];
   sounds?: SoundAssetToLoad[];
   jsons?: JsonAssetToLoad[];
 };
 
 type ImageAssetToLoad = {
   url: BpxImageUrl;
-};
-
-type FontAssetToLoad = {
-  font: BpxFont;
-  // TODO: why am I supposed to define it for a pixels-based font?
-  spriteTextColor: BpxRgbColor | null;
 };
 
 type SoundAssetToLoad = {
@@ -46,27 +38,22 @@ export class AssetLoader {
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
     assetsToLoad.images ??= [];
     assetsToLoad.sounds ??= [];
-    assetsToLoad.fonts ??= [];
     assetsToLoad.jsons ??= [];
 
-    assetsToLoad.fonts.forEach(({ font, spriteTextColor }) => {
-      this.#assets.addFontAsset(font.id, {
-        font,
-        spriteTextColor,
-      });
-    });
-
-    const uniqueImageUrls = new Set(assetsToLoad.images.map(({ url }) => url));
-    for (const { font } of assetsToLoad.fonts) {
-      if (font.imageUrl != null) {
-        uniqueImageUrls.add(font.imageUrl);
-      }
-    }
+    const uniqueImageUrls = Array.from(
+      new Set(assetsToLoad.images.map(({ url }) => url)),
+    );
+    const uniqueSoundUrls = Array.from(
+      new Set(assetsToLoad.sounds.map(({ url }) => url)),
+    );
+    const uniqueJsonUrls = Array.from(
+      new Set(assetsToLoad.jsons.map(({ url }) => url)),
+    );
 
     await Promise.all([
-      ...Array.from(uniqueImageUrls).map((url) => this.#loadImage(url)),
-      ...assetsToLoad.sounds.map(async ({ url }) => this.#loadSound(url)),
-      ...assetsToLoad.jsons.map(async ({ url }) => this.#loadJson(url)),
+      ...uniqueImageUrls.map((url) => this.#loadImage(url)),
+      ...uniqueSoundUrls.map((url) => this.#loadSound(url)),
+      ...uniqueJsonUrls.map((url) => this.#loadJson(url)),
     ]);
   }
 

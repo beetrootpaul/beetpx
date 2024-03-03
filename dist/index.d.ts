@@ -160,30 +160,6 @@ declare class BpxUtils {
 }
 declare const u_: typeof BpxUtils;
 
-declare class BpxPixels {
-    static from(ascii: string): BpxPixels;
-    readonly asciiRows: string[];
-    readonly wh: BpxVector2d;
-    private constructor();
-}
-
-type BpxCharSprite = {
-    char: string;
-    positionInText: BpxVector2d;
-} & ({
-    type: "image";
-    spriteXyWh: [xy: BpxVector2d, wh: BpxVector2d];
-} | {
-    type: "pixels";
-    pixels: BpxPixels;
-});
-type BpxFontId = string;
-interface BpxFont {
-    readonly id: BpxFontId;
-    readonly imageUrl: BpxImageUrl | null;
-    spritesFor(text: string): BpxCharSprite[];
-}
-
 type BpxImageUrl = string;
 type BpxSoundUrl = string;
 type BpxJsonUrl = string;
@@ -192,11 +168,6 @@ type BpxImageAsset = {
     height: number;
     channels: 3 | 4;
     rgba8bitData: PngDataArray;
-};
-type BpxFontAsset = {
-    font: BpxFont;
-    image: BpxImageAsset | null;
-    spriteTextColor: BpxRgbColor | null;
 };
 type BpxSoundAsset = {
     audioBuffer: AudioBuffer;
@@ -207,14 +178,9 @@ type BpxJsonAsset = {
 declare class Assets {
     #private;
     addImageAsset(imageUrl: BpxImageUrl, imageAsset: BpxImageAsset): void;
-    addFontAsset(fontId: BpxFontId, fontProps: {
-        font: BpxFont;
-        spriteTextColor: BpxRgbColor | null;
-    }): void;
     addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: BpxSoundAsset): void;
     addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: BpxJsonAsset): void;
     getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset;
-    getFontAsset(fontId: BpxFontId): BpxFontAsset;
     getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset;
     getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
 }
@@ -286,6 +252,31 @@ declare class BpxDrawingPattern {
     hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
+declare class BpxPixels {
+    static from(ascii: string): BpxPixels;
+    readonly asciiRows: string[];
+    readonly wh: BpxVector2d;
+    private constructor();
+}
+
+type BpxCharSprite = {
+    char: string;
+    positionInText: BpxVector2d;
+} & ({
+    type: "image";
+    spriteXyWh: [xy: BpxVector2d, wh: BpxVector2d];
+} | {
+    type: "pixels";
+    pixels: BpxPixels;
+});
+type BpxFontId = string;
+interface BpxFont {
+    readonly id: BpxFontId;
+    readonly imageUrl: BpxImageUrl | null;
+    spritesFor(text: string): BpxCharSprite[];
+    readonly spriteTextColor: BpxRgbColor | null;
+}
+
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
  *
@@ -301,6 +292,7 @@ declare class BpxDrawingPattern {
 declare class BpxFontSaint11Minimal4 implements BpxFont {
     #private;
     static id: BpxFontId;
+    readonly spriteTextColor: null;
     readonly id: BpxFontId;
     readonly imageUrl: BpxImageUrl | null;
     spritesFor(text: string): BpxCharSprite[];
@@ -321,6 +313,7 @@ declare class BpxFontSaint11Minimal4 implements BpxFont {
 declare class BpxFontSaint11Minimal5 implements BpxFont {
     #private;
     static id: BpxFontId;
+    readonly spriteTextColor: null;
     readonly id: BpxFontId;
     readonly imageUrl: BpxImageUrl | null;
     spritesFor(text: string): BpxCharSprite[];
@@ -560,7 +553,7 @@ declare class DrawApi {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
-    setFont(fontId: BpxFontId): void;
+    setFont(font: BpxFont): void;
     getFont(): BpxFont;
     drawText(text: string, xy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), opts?: {
         centerXy?: [boolean, boolean];
@@ -571,16 +564,11 @@ declare class DrawApi {
 
 type AssetsToLoad = {
     images?: ImageAssetToLoad[];
-    fonts?: FontAssetToLoad[];
     sounds?: SoundAssetToLoad[];
     jsons?: JsonAssetToLoad[];
 };
 type ImageAssetToLoad = {
     url: BpxImageUrl;
-};
-type FontAssetToLoad = {
-    font: BpxFont;
-    spriteTextColor: BpxRgbColor | null;
 };
 type SoundAssetToLoad = {
     url: BpxSoundUrl;
@@ -754,7 +742,6 @@ declare class BeetPx {
     static loadPersistedState: StorageApi["loadPersistedState"];
     static clearPersistedState: StorageApi["clearPersistedState"];
     static getImageAsset: Assets["getImageAsset"];
-    static getFontAsset: Assets["getFontAsset"];
     static getSoundAsset: Assets["getSoundAsset"];
     static getJsonAsset: Assets["getJsonAsset"];
 }
@@ -804,4 +791,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontAsset, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };

@@ -127,6 +127,7 @@ describe("Utils", () => {
       () =>
         new (class implements BpxFont {
           id = "test-font";
+          spriteTextColor = null;
           imageUrl = "any.image/url";
           spritesFor(text: string): BpxCharSprite[] {
             const sprites: BpxCharSprite[] = [];

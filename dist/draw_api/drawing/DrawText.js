@@ -28,26 +28,24 @@ export class DrawText {
             disableRounding: true,
         }), "f");
     }
-    draw(text, fontAsset, canvasXy, color, scaleXy, pattern) {
+    draw(text, font, fontImage, canvasXy, color, scaleXy, pattern) {
         canvasXy = canvasXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const colorMapping = typeof color === "function"
-            ? (charSprite) => BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
+            ? (charSprite) => BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === font.spriteTextColor?.cssHex
                 ? color(charSprite)
                 : null)
-            : BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
-                ? color
-                : null);
-        for (const charSprite of fontAsset.font.spritesFor(text)) {
+            : BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === font.spriteTextColor?.cssHex ? color : null);
+        for (const charSprite of font.spritesFor(text)) {
             const xy = canvasXy.add(charSprite.positionInText.mul(scaleXy));
             if (charSprite.type === "image") {
-                if (fontAsset.font.imageUrl == null) {
-                    throw Error(`There is no imageUrl defined for a font "${fontAsset.font.id}", which uses image sprites`);
+                if (font.imageUrl == null) {
+                    throw Error(`There is no imageUrl defined for a font "${font.id}", which uses image sprites`);
                 }
-                if (fontAsset.image == null) {
-                    throw Error(`There is no image loaded for a font "${fontAsset.font.id}", which uses image sprites`);
+                if (fontImage == null) {
+                    throw Error(`There is no image loaded for a font "${font.id}", which uses image sprites`);
                 }
-                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(spr_(fontAsset.font.imageUrl)(charSprite.spriteXyWh[1].x, charSprite.spriteXyWh[1].y, charSprite.spriteXyWh[0].x, charSprite.spriteXyWh[0].y), fontAsset.image, xy, scaleXy, typeof colorMapping === "function"
+                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(spr_(font.imageUrl)(charSprite.spriteXyWh[1].x, charSprite.spriteXyWh[1].y, charSprite.spriteXyWh[0].x, charSprite.spriteXyWh[0].y), fontImage, xy, scaleXy, typeof colorMapping === "function"
                     ? colorMapping(charSprite)
                     : colorMapping, pattern);
             }

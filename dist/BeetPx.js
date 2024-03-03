@@ -274,9 +274,6 @@ BeetPx.clearPersistedState = (...args) => {
 BeetPx.getImageAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).assets.getImageAsset(...args);
 };
-BeetPx.getFontAsset = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).assets.getFontAsset(...args);
-};
 BeetPx.getSoundAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).assets.getSoundAsset(...args);
 };

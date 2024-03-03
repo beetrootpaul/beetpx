@@ -1,4 +1,5 @@
 import { BpxImageUrl } from "../assets/Assets";
+import { rgb_p8_ } from "../color/BpxPalettePico8";
 import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
 
@@ -16,6 +17,8 @@ function glyph(
 export class BpxFontPico8 implements BpxFont {
   static id: BpxFontId = "__internal__PICO-8";
   static imageUrl: BpxFontId = ".beetpx/pico-8-font.png";
+
+  readonly spriteTextColor = rgb_p8_.white;
 
   readonly id: BpxFontId = BpxFontPico8.id;
 

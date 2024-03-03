@@ -23,24 +23,14 @@ export class AssetLoader {
     async loadAssets(assetsToLoad) {
         assetsToLoad.images ?? (assetsToLoad.images = []);
         assetsToLoad.sounds ?? (assetsToLoad.sounds = []);
-        assetsToLoad.fonts ?? (assetsToLoad.fonts = []);
         assetsToLoad.jsons ?? (assetsToLoad.jsons = []);
-        assetsToLoad.fonts.forEach(({ font, spriteTextColor }) => {
-            __classPrivateFieldGet(this, _AssetLoader_assets, "f").addFontAsset(font.id, {
-                font,
-                spriteTextColor,
-            });
-        });
-        const uniqueImageUrls = new Set(assetsToLoad.images.map(({ url }) => url));
-        for (const { font } of assetsToLoad.fonts) {
-            if (font.imageUrl != null) {
-                uniqueImageUrls.add(font.imageUrl);
-            }
-        }
+        const uniqueImageUrls = Array.from(new Set(assetsToLoad.images.map(({ url }) => url)));
+        const uniqueSoundUrls = Array.from(new Set(assetsToLoad.sounds.map(({ url }) => url)));
+        const uniqueJsonUrls = Array.from(new Set(assetsToLoad.jsons.map(({ url }) => url)));
         await Promise.all([
-            ...Array.from(uniqueImageUrls).map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadImage).call(this, url)),
-            ...assetsToLoad.sounds.map(async ({ url }) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadSound).call(this, url)),
-            ...assetsToLoad.jsons.map(async ({ url }) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadJson).call(this, url)),
+            ...uniqueImageUrls.map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadImage).call(this, url)),
+            ...uniqueSoundUrls.map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadSound).call(this, url)),
+            ...uniqueJsonUrls.map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadJson).call(this, url)),
         ]);
     }
 }

@@ -32,16 +32,16 @@ b_.init({
 
     let cursor = v_(2, 2);
 
-    for (const fontId of [
-      BpxFontPico8.id,
-      BpxFontSaint11Minimal4.id,
-      BpxFontSaint11Minimal5.id,
+    for (const font of [
+      // TODO: do not require a construction?
+      new BpxFontPico8(),
+      new BpxFontSaint11Minimal4(),
+      new BpxFontSaint11Minimal5(),
       // TODO: custom font from local image and pixels at the same time
       // TODO: custom font from external image
       // TODO: extending an existing built-in font with extra glyphs, both pixel- and image-originated at the same time
     ]) {
-      // TODO: pass Font instead of FontId here?
-      b_.setFont(fontId);
+      b_.setFont(font);
 
       const [_, wh] = u_.measureText(text);
 

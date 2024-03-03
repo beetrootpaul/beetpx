@@ -8,13 +8,10 @@ import {
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { rgb_p8_ } from "./color/BpxPalettePico8";
 import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { BpxFontPico8 } from "./font/BpxFontPico8";
-import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
-import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 import { Button } from "./game_input/buttons/Button";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -122,18 +119,9 @@ export class Engine {
     Logger.debugBeetPx("Engine init params:", engineInitParams);
 
     this.#assetsToLoad = engineInitParams.assets;
-    this.#assetsToLoad.fonts ??= [];
-    this.#assetsToLoad.fonts.push({
-      font: new BpxFontPico8(),
-      spriteTextColor: rgb_p8_.white,
-    });
-    this.#assetsToLoad.fonts.push({
-      font: new BpxFontSaint11Minimal4(),
-      spriteTextColor: null,
-    });
-    this.#assetsToLoad.fonts.push({
-      font: new BpxFontSaint11Minimal5(),
-      spriteTextColor: null,
+    this.#assetsToLoad.images ??= [];
+    this.#assetsToLoad.images.push({
+      url: BpxFontPico8.imageUrl,
     });
 
     const fixedTimestepFps =
