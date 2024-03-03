@@ -8,6 +8,7 @@ import {
 } from "../../../src";
 import { BpxFontPico8 } from "../../../src/font/BpxFontPico8";
 import { CustomFont } from "./CustomFont";
+import { CustomFontExternalImage } from "./CustomFontExternalImage";
 
 // TODO: take care of all TODOs
 // TODO: update tests, write new ones
@@ -28,7 +29,11 @@ b_.init({
   // TODO: change it to 128x128 if possible, after applying all the line breaks and custom fonts
   gameCanvasSize: "256x256",
   assets: {
-    images: [{ url: "custom-font.png" }],
+    images: [
+      // TODO: make it NOT require a new instance just to grab the image URL
+      { url: new CustomFont().imageUrl },
+      { url: new CustomFontExternalImage().imageUrl },
+    ],
   },
 }).then(async ({ startGame }) => {
   b_.setOnDraw(() => {
@@ -42,7 +47,7 @@ b_.init({
       new BpxFontSaint11Minimal4(),
       new BpxFontSaint11Minimal5(),
       new CustomFont(),
-      // TODO: custom font from external image
+      new CustomFontExternalImage(),
       // TODO: extending an existing built-in font with extra glyphs, both pixel- and image-originated at the same time
     ]) {
       b_.setFont(font);
