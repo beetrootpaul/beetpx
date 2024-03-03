@@ -125,7 +125,7 @@ declare class BpxUtils {
      *          than standard height of other characters. In such case
      *          returned XY would be (0,-1).
      */
-    static measureText(text: string): [BpxVector2d, BpxVector2d];
+    static measureText(text: string): [xy: BpxVector2d, wh: BpxVector2d];
     /**
      * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
      */

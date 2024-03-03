@@ -58,7 +58,7 @@ export class BpxUtils {
    *          than standard height of other characters. In such case
    *          returned XY would be (0,-1).
    */
-  static measureText(text: string): [BpxVector2d, BpxVector2d] {
+  static measureText(text: string): [xy: BpxVector2d, wh: BpxVector2d] {
     const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
 
     let minXy = v_0_0_;
