@@ -5,6 +5,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _a, _BpxFontPico8_spaceW, _BpxFontPico8_sprites;
 import { rgb_p8_ } from "../color/BpxPalettePico8";
+import { BpxPixels } from "../draw_api/Pixels";
 import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
 function glyph(tileX1, tileY1, pxW = 3, pxH = 5) {
     return [BpxVector2d.of(tileX1 * 8, tileY1 * 8), BpxVector2d.of(pxW, pxH)];
@@ -65,25 +66,31 @@ export class BpxFontPico8 {
             ["z"]: glyph(10, 7),
         });
     }
+    spriteFor(character) {
+        return __classPrivateFieldGet(this, _BpxFontPico8_sprites, "f")[character] ?? null;
+    }
     spritesFor(text) {
         const charSprites = [];
         let positionInText = v_0_0_;
         for (let i = 0; i < text.length; i += 1) {
             let char = text[i].toLowerCase();
-            let sprite = __classPrivateFieldGet(this, _BpxFontPico8_sprites, "f")[char] ?? null;
+            let sprite = this.spriteFor(char);
             if (!sprite && i + 1 < text.length) {
                 char += text[i + 1];
-                sprite = __classPrivateFieldGet(this, _BpxFontPico8_sprites, "f")[char] ?? null;
+                sprite = this.spriteFor(char);
             }
             if (sprite) {
                 charSprites.push({
                     char,
                     positionInText,
-                    type: "image",
-                    spriteXyWh: sprite,
+                    ...(sprite instanceof BpxPixels
+                        ? { type: "pixels", pixels: sprite }
+                        : { type: "image", spriteXyWh: sprite }),
                 });
             }
-            const jumpX = (sprite?.[1].x ?? __classPrivateFieldGet(_a, _a, "f", _BpxFontPico8_spaceW)) + 1;
+            const jumpX = (sprite instanceof BpxPixels
+                ? sprite.wh.x
+                : sprite?.[1].x ?? __classPrivateFieldGet(_a, _a, "f", _BpxFontPico8_spaceW)) + 1;
             positionInText = positionInText.add(jumpX, 0);
         }
         return charSprites;

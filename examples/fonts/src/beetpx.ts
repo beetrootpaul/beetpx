@@ -9,6 +9,7 @@ import {
 import { BpxFontPico8 } from "../../../src/font/BpxFontPico8";
 import { CustomFont } from "./CustomFont";
 import { CustomFontExternalImage } from "./CustomFontExternalImage";
+import { Pico8WithAdjustments } from "./Pico8WithAdjustments";
 
 // TODO: take care of all TODOs
 // TODO: update tests, write new ones
@@ -43,12 +44,13 @@ b_.init({
 
     for (const font of [
       // TODO: do not require a construction?
+      // TODO: add missing chars to PICO-8 font, but then rework how to demonstrate extending/overriding the built-in font
       new BpxFontPico8(),
       new BpxFontSaint11Minimal4(),
       new BpxFontSaint11Minimal5(),
       new CustomFont(),
       new CustomFontExternalImage(),
-      // TODO: extending an existing built-in font with extra glyphs, both pixel- and image-originated at the same time
+      new Pico8WithAdjustments(),
     ]) {
       b_.setFont(font);
 
