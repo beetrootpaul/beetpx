@@ -23,6 +23,7 @@ export class BpxRgbColor {
         return [this.r, this.g, this.b];
     }
 }
+
 export function rgb_(r, g, b) {
     return BpxRgbColor.of(r, g, b);
 }

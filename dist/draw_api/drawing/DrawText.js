@@ -42,6 +42,7 @@ export class DrawText {
                 if (font.imageUrl == null) {
                     throw Error(`There is no imageUrl defined for a font "${font.id}", which uses image sprites`);
                 }
+                
                 if (fontImage == null) {
                     throw Error(`There is no image loaded for a font "${font.id}", which uses image sprites`);
                 }

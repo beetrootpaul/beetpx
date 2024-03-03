@@ -44,6 +44,7 @@ export class BpxRgbColor {
   }
 }
 
+// TODO: overload for a CSS hex
 export function rgb_(r: number, g: number, b: number): BpxRgbColor {
   return BpxRgbColor.of(r, g, b);
 }
