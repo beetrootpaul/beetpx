@@ -17,6 +17,7 @@ type ImageAssetToLoad = {
 
 type FontAssetToLoad = {
   font: BpxFont;
+  // TODO: why am I supposed to define it for a pixels-based font?
   spriteTextColor: BpxRgbColor | null;
 };
 

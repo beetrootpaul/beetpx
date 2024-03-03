@@ -22,6 +22,8 @@ export function drawingTestSetup(
     assets,
   });
 
+  // Using BpxFontSaint11Minimal4, because it is a font defined
+  //   with pixels and requires no image to fetch.
   assets.addFontAsset(BpxFontSaint11Minimal4.id, {
     font: new BpxFontSaint11Minimal4(),
     spriteTextColor: rgb_white_,

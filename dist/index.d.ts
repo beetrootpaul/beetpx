@@ -560,7 +560,7 @@ declare class DrawApi {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
-    setFont(fontId: BpxFontId): BpxFontId;
+    setFont(fontId: BpxFontId): void;
     getFont(): BpxFont;
     drawText(text: string, xy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), opts?: {
         centerXy?: [boolean, boolean];

@@ -16,9 +16,11 @@ import { AudioApi } from "./audio/AudioApi";
 import { BeetPx } from "./BeetPx";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
+import { rgb_p8_ } from "./color/BpxPalettePico8";
 import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
+import { BpxFontPico8 } from "./font/BpxFontPico8";
 import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
 import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 import { Button } from "./game_input/buttons/Button";
@@ -91,6 +93,10 @@ export class Engine {
         Logger.debugBeetPx("Engine init params:", engineInitParams);
         __classPrivateFieldSet(this, _Engine_assetsToLoad, engineInitParams.assets, "f");
         (_b = __classPrivateFieldGet(this, _Engine_assetsToLoad, "f")).fonts ?? (_b.fonts = []);
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").fonts.push({
+            font: new BpxFontPico8(),
+            spriteTextColor: rgb_p8_.white,
+        });
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").fonts.push({
             font: new BpxFontSaint11Minimal4(),
             spriteTextColor: null,

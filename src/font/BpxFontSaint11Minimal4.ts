@@ -3,6 +3,7 @@ import { BpxPixels } from "../draw_api/Pixels";
 import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
 
+// TODO: rework this
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
  *

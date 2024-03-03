@@ -6,7 +6,9 @@ import {
   u_,
   v_,
 } from "../../../src";
+import { BpxFontPico8 } from "../../../src/font/BpxFontPico8";
 
+// TODO: take care of all TODOs
 // TODO: update tests, write new ones
 // TODO: remove fonts from assets to load, keep only images there. Then, simplify font loading to not fail if pixels font and no image fetcehd yet
 // TODO: better font characteristic
@@ -30,23 +32,21 @@ b_.init({
 
     let cursor = v_(2, 2);
 
-    for (const font of [
-      // TODO: set PICO-8 font here
-      undefined,
-      BpxFontSaint11Minimal4,
-      BpxFontSaint11Minimal5,
-      // TODO: custom font from local image
+    for (const fontId of [
+      BpxFontPico8.id,
+      BpxFontSaint11Minimal4.id,
+      BpxFontSaint11Minimal5.id,
+      // TODO: custom font from local image and pixels at the same time
       // TODO: custom font from external image
-      // TODO: custom font from pixels
-      // TODO: extending an existing font with extra glyphs
+      // TODO: extending an existing built-in font with extra glyphs, both pixel- and image-originated at the same time
     ]) {
-      // TODO: remove once PICO-8 is defined above
-      if (font) {
-        // TODO: pass Font instead of FontId here?
-        b_.setFont(font.id);
-      }
+      // TODO: pass Font instead of FontId here?
+      b_.setFont(fontId);
+
       const [_, wh] = u_.measureText(text);
+
       b_.drawRectFilled(cursor.sub(1), wh.add(2), rgb_p8_.storm);
+
       b_.drawText(text, cursor, rgb_p8_.peach);
 
       cursor = cursor.add(0, wh.y + 3);

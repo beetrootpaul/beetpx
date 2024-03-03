@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawApi_instances, _DrawApi_assets, _DrawApi_canvas, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_pattern, _DrawApi_spriteColorMapping, _DrawApi_fontAsset, _DrawApi_getFontAsset;
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { BpxFontSaint11Minimal4 } from "../font/BpxFontSaint11Minimal4";
+import { BpxFontPico8 } from "../font/BpxFontPico8";
 import { v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxUtils } from "../Utils";
 import { DrawClear } from "./drawing/DrawClear";
@@ -105,9 +105,7 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     setFont(fontId) {
-        const prev = __classPrivateFieldGet(this, _DrawApi_instances, "m", _DrawApi_getFontAsset).call(this).font.id;
         __classPrivateFieldSet(this, _DrawApi_fontAsset, __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(fontId), "f");
-        return prev;
     }
     getFont() {
         return __classPrivateFieldGet(this, _DrawApi_instances, "m", _DrawApi_getFontAsset).call(this).font;
@@ -125,6 +123,6 @@ export class DrawApi {
     }
 }
 _DrawApi_assets = new WeakMap(), _DrawApi_canvas = new WeakMap(), _DrawApi_clear = new WeakMap(), _DrawApi_pixel = new WeakMap(), _DrawApi_pixels = new WeakMap(), _DrawApi_line = new WeakMap(), _DrawApi_rect = new WeakMap(), _DrawApi_ellipse = new WeakMap(), _DrawApi_sprite = new WeakMap(), _DrawApi_text = new WeakMap(), _DrawApi_pattern = new WeakMap(), _DrawApi_spriteColorMapping = new WeakMap(), _DrawApi_fontAsset = new WeakMap(), _DrawApi_instances = new WeakSet(), _DrawApi_getFontAsset = function _DrawApi_getFontAsset() {
-    __classPrivateFieldSet(this, _DrawApi_fontAsset, __classPrivateFieldGet(this, _DrawApi_fontAsset, "f") ?? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(BpxFontSaint11Minimal4.id), "f");
+    __classPrivateFieldSet(this, _DrawApi_fontAsset, __classPrivateFieldGet(this, _DrawApi_fontAsset, "f") ?? __classPrivateFieldGet(this, _DrawApi_assets, "f").getFontAsset(BpxFontPico8.id), "f");
     return __classPrivateFieldGet(this, _DrawApi_fontAsset, "f");
 };

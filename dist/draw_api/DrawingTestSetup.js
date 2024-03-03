@@ -10,6 +10,8 @@ export function drawingTestSetup(canvasWidth, canvasHeight, canvasBgColor) {
         canvas,
         assets,
     });
+    
+    
     assets.addFontAsset(BpxFontSaint11Minimal4.id, {
         font: new BpxFontSaint11Minimal4(),
         spriteTextColor: rgb_white_,

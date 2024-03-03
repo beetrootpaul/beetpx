@@ -4,7 +4,7 @@ import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMappi
 import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { BpxFontSaint11Minimal4 } from "../font/BpxFontSaint11Minimal4";
+import { BpxFontPico8 } from "../font/BpxFontPico8";
 import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
@@ -63,7 +63,7 @@ export class DrawApi {
   }
 
   #getFontAsset(): BpxFontAsset {
-    this.#fontAsset ??= this.#assets.getFontAsset(BpxFontSaint11Minimal4.id);
+    this.#fontAsset ??= this.#assets.getFontAsset(BpxFontPico8.id);
     return this.#fontAsset;
   }
 
@@ -190,10 +190,8 @@ export class DrawApi {
     );
   }
 
-  setFont(fontId: BpxFontId): BpxFontId {
-    const prev = this.#getFontAsset().font.id;
+  setFont(fontId: BpxFontId) {
     this.#fontAsset = this.#assets.getFontAsset(fontId);
-    return prev;
   }
 
   getFont(): BpxFont {
