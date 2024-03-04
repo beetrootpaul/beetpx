@@ -1,7 +1,7 @@
 import { BpxImageUrl } from "../assets/Assets";
 import { rgb_p8_ } from "../color/BpxPalettePico8";
 import { BpxPixels } from "../draw_api/Pixels";
-import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "../misc/Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
 
 function glyph(
@@ -26,6 +26,8 @@ export class BpxFontPico8 implements BpxFont {
   readonly imageUrl: BpxImageUrl = BpxFontPico8.imageUrl;
 
   static #spaceW = 3;
+
+  readonly leading: number = 6;
 
   #sprites: Record<string, [BpxVector2d, BpxVector2d]> = {
     ["♪"]: glyph(13, 8, 7),
@@ -88,28 +90,35 @@ export class BpxFontPico8 implements BpxFont {
 
     for (let i = 0; i < text.length; i += 1) {
       let char = text[i]!.toLowerCase();
-      let sprite = this.spriteFor(char);
 
-      if (!sprite && i + 1 < text.length) {
-        char += text[i + 1];
-        sprite = this.spriteFor(char);
+      // TODO: REWORK THIS
+      if (char === "\n") {
+        positionInText = v_(0, positionInText.y + this.leading);
+      } else {
+        let sprite = this.spriteFor(char);
+
+        if (!sprite && i + 1 < text.length) {
+          // TODO: there is no "i += 1" here
+          char += text[i + 1];
+          sprite = this.spriteFor(char);
+        }
+
+        if (sprite) {
+          charSprites.push({
+            char,
+            positionInText,
+            ...(sprite instanceof BpxPixels
+              ? { type: "pixels", pixels: sprite }
+              : { type: "image", spriteXyWh: sprite }),
+          });
+        }
+
+        const jumpX =
+          (sprite instanceof BpxPixels
+            ? sprite.wh.x
+            : sprite?.[1].x ?? BpxFontPico8.#spaceW) + 1;
+        positionInText = positionInText.add(jumpX, 0);
       }
-
-      if (sprite) {
-        charSprites.push({
-          char,
-          positionInText,
-          ...(sprite instanceof BpxPixels
-            ? { type: "pixels", pixels: sprite }
-            : { type: "image", spriteXyWh: sprite }),
-        });
-      }
-
-      const jumpX =
-        (sprite instanceof BpxPixels
-          ? sprite.wh.x
-          : sprite?.[1].x ?? BpxFontPico8.#spaceW) + 1;
-      positionInText = positionInText.add(jumpX, 0);
     }
 
     return charSprites;

@@ -5,7 +5,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _BpxFontSaint11Minimal5_unknownCharSprite, _BpxFontSaint11Minimal5_sprites;
 import { BpxPixels } from "../draw_api/Pixels";
-import { v_0_0_ } from "../misc/Vector2d";
+import { v_, v_0_0_ } from "../misc/Vector2d";
+
 
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https:
@@ -620,15 +621,21 @@ export class BpxFontSaint11Minimal5 {
         let positionInText = v_0_0_;
         for (let i = 0; i < text.length; i += 1) {
             let char = text[i];
-            let sprite = __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_sprites, "f")[char] ?? __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_unknownCharSprite, "f");
-            charSprites.push({
-                char,
-                positionInText,
-                type: "pixels",
-                pixels: sprite,
-            });
-            const jumpX = sprite.wh.x + 1;
-            positionInText = positionInText.add(jumpX, 0);
+            
+            if (char === "\n") {
+                positionInText = v_(0, positionInText.y + 6);
+            }
+            else {
+                let sprite = __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_sprites, "f")[char] ?? __classPrivateFieldGet(this, _BpxFontSaint11Minimal5_unknownCharSprite, "f");
+                charSprites.push({
+                    char,
+                    positionInText,
+                    type: "pixels",
+                    pixels: sprite,
+                });
+                const jumpX = sprite.wh.x + 1;
+                positionInText = positionInText.add(jumpX, 0);
+            }
         }
         return charSprites;
     }

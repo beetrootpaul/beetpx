@@ -62,31 +62,37 @@ export class CustomFont implements BpxFont {
     return null;
   }
 
+  // TODO: make it possible to define a font without a need to define this whole calculation process, just glyphs
   spritesFor(text: string): BpxCharSprite[] {
     const sprites: BpxCharSprite[] = [];
     let positionInText = v_0_0_;
     for (let i = 0; i < text.length; i += 1) {
       const char = text[i]!;
-      const sprite = this.#spriteFor(char);
-      if (sprite) {
-        sprites.push({
-          char,
-          positionInText,
-          ...(sprite instanceof BpxPixels
-            ? { type: "pixels", pixels: sprite }
-            : { type: "image", spriteXyWh: sprite }),
-        });
+      // TODO: REWORK THIS
+      if (char === "\n") {
+        positionInText = v_(0, positionInText.y + 9);
+      } else {
+        const sprite = this.#spriteFor(char);
+        if (sprite) {
+          sprites.push({
+            char,
+            positionInText,
+            ...(sprite instanceof BpxPixels
+              ? { type: "pixels", pixels: sprite }
+              : { type: "image", spriteXyWh: sprite }),
+          });
+        }
+        positionInText = positionInText
+          .add(
+            sprite == null
+              ? 2
+              : sprite instanceof BpxPixels
+                ? sprite.wh.x
+                : sprite[1].x,
+            0,
+          )
+          .add(v_(1, 0));
       }
-      positionInText = positionInText
-        .add(
-          sprite == null
-            ? 2
-            : sprite instanceof BpxPixels
-              ? sprite.wh.x
-              : sprite[1].x,
-          0,
-        )
-        .add(v_(1, 0));
     }
     return sprites;
   }

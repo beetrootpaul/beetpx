@@ -3,6 +3,8 @@ import { BpxFontPico8 } from "../../../src/font/BpxFontPico8";
 
 // TODO: rework
 export class Pico8WithAdjustments extends BpxFontPico8 {
+  override leading: number = 7;
+
   override spriteFor(
     character: string,
   ): [BpxVector2d, BpxVector2d] | BpxPixels | null {

@@ -6,7 +6,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _a, _BpxFontPico8_spaceW, _BpxFontPico8_sprites;
 import { rgb_p8_ } from "../color/BpxPalettePico8";
 import { BpxPixels } from "../draw_api/Pixels";
-import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "../misc/Vector2d";
 function glyph(tileX1, tileY1, pxW = 3, pxH = 5) {
     return [BpxVector2d.of(tileX1 * 8, tileY1 * 8), BpxVector2d.of(pxW, pxH)];
 }
@@ -17,6 +17,7 @@ export class BpxFontPico8 {
         this.spriteTextColor = rgb_p8_.white;
         this.id = _a.id;
         this.imageUrl = _a.imageUrl;
+        this.leading = 6;
         _BpxFontPico8_sprites.set(this, {
             ["♪"]: glyph(13, 8, 7),
             
@@ -74,24 +75,31 @@ export class BpxFontPico8 {
         let positionInText = v_0_0_;
         for (let i = 0; i < text.length; i += 1) {
             let char = text[i].toLowerCase();
-            let sprite = this.spriteFor(char);
-            if (!sprite && i + 1 < text.length) {
-                char += text[i + 1];
-                sprite = this.spriteFor(char);
+            
+            if (char === "\n") {
+                positionInText = v_(0, positionInText.y + this.leading);
             }
-            if (sprite) {
-                charSprites.push({
-                    char,
-                    positionInText,
-                    ...(sprite instanceof BpxPixels
-                        ? { type: "pixels", pixels: sprite }
-                        : { type: "image", spriteXyWh: sprite }),
-                });
+            else {
+                let sprite = this.spriteFor(char);
+                if (!sprite && i + 1 < text.length) {
+                    
+                    char += text[i + 1];
+                    sprite = this.spriteFor(char);
+                }
+                if (sprite) {
+                    charSprites.push({
+                        char,
+                        positionInText,
+                        ...(sprite instanceof BpxPixels
+                            ? { type: "pixels", pixels: sprite }
+                            : { type: "image", spriteXyWh: sprite }),
+                    });
+                }
+                const jumpX = (sprite instanceof BpxPixels
+                    ? sprite.wh.x
+                    : sprite?.[1].x ?? __classPrivateFieldGet(_a, _a, "f", _BpxFontPico8_spaceW)) + 1;
+                positionInText = positionInText.add(jumpX, 0);
             }
-            const jumpX = (sprite instanceof BpxPixels
-                ? sprite.wh.x
-                : sprite?.[1].x ?? __classPrivateFieldGet(_a, _a, "f", _BpxFontPico8_spaceW)) + 1;
-            positionInText = positionInText.add(jumpX, 0);
         }
         return charSprites;
     }

@@ -1,8 +1,9 @@
 import { BpxImageUrl } from "../assets/Assets";
 import { BpxPixels } from "../draw_api/Pixels";
-import { BpxVector2d, v_0_0_ } from "../misc/Vector2d";
+import { BpxVector2d, v_, v_0_0_ } from "../misc/Vector2d";
 import { BpxCharSprite, BpxFont, BpxFontId } from "./Font";
 
+// TODO: export all fields necessary for overrides
 // TODO: rework this
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
@@ -622,15 +623,20 @@ export class BpxFontSaint11Minimal5 implements BpxFont {
 
     for (let i = 0; i < text.length; i += 1) {
       let char = text[i]!;
-      let sprite = this.#sprites[char] ?? this.#unknownCharSprite;
-      charSprites.push({
-        char,
-        positionInText,
-        type: "pixels",
-        pixels: sprite,
-      });
-      const jumpX = sprite.wh.x + 1;
-      positionInText = positionInText.add(jumpX, 0);
+      // TODO: REWORK THIS
+      if (char === "\n") {
+        positionInText = v_(0, positionInText.y + 6);
+      } else {
+        let sprite = this.#sprites[char] ?? this.#unknownCharSprite;
+        charSprites.push({
+          char,
+          positionInText,
+          type: "pixels",
+          pixels: sprite,
+        });
+        const jumpX = sprite.wh.x + 1;
+        positionInText = positionInText.add(jumpX, 0);
+      }
     }
 
     return charSprites;
