@@ -44,11 +44,12 @@ export { type BpxColorMapper } from "./color/ColorMapper";
 export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
-export { BpxDrawingPattern } from "./draw_api/Pattern";
+export { BpxDrawingPattern } from "./draw_api/DrawingPattern";
 export { BpxPixels } from "./draw_api/Pixels";
-export { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
-export { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
-export { type BpxCharSprite, type BpxFont, type BpxFontId } from "./font/Font";
+export { BpxFont, type BpxArrangedGlyph, type BpxGlyph } from "./font/Font";
+export { BpxFontPico8 } from "./font/FontPico8";
+export { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";
+export { BpxFontSaint11Minimal5 } from "./font/FontSaint11Minimal5";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
 export { type BpxGamepadType } from "./game_input/GameInputGamepad";
 export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
@@ -63,7 +64,7 @@ export { BeetPx } from "./BeetPx";
 
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
-export { rgb_p8_ } from "./color/BpxPalettePico8";
+export { rgb_p8_ } from "./color/PalettePico8";
 export {
   rgb_,
   rgb_black_,
@@ -75,6 +76,9 @@ export {
   rgb_white_,
   rgb_yellow_,
 } from "./color/RgbColor";
+export { font_pico8_ } from "./font/FontPico8";
+export { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
+export { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
 export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";

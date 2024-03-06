@@ -4,7 +4,7 @@ export class Pico8FontWithAdjustments extends BpxFontPico8 {
   constructor() {
     super();
 
-    this.leading = 8;
+    this.lineGap = 3;
 
     this.glyphs = new Map<string, BpxGlyph>([
       ...this.glyphs,
@@ -28,7 +28,7 @@ export class Pico8FontWithAdjustments extends BpxFontPico8 {
     return {
       type: "sprite",
       sprite: sprite,
-      advanceX: sprite.size.x + 1,
+      advance: sprite.size.x + 1,
     };
   }
 
@@ -37,7 +37,7 @@ export class Pico8FontWithAdjustments extends BpxFontPico8 {
     return {
       type: "pixels",
       pixels: pixels,
-      advanceX: pixels.size.x + 1,
+      advance: pixels.size.x + 1,
     };
   }
 }

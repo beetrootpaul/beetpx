@@ -5,9 +5,9 @@ import { BpxSprite } from "../sprite/Sprite";
 import { u_ } from "../Utils";
 
 export type BpxGlyph =
-  | { type: "sprite"; sprite: BpxSprite; advanceX: number }
-  | { type: "pixels"; pixels: BpxPixels; advanceX: number }
-  | { type: "whitespace"; advanceX: number };
+  | { type: "sprite"; sprite: BpxSprite; advance: number; offset?: BpxVector2d }
+  | { type: "pixels"; pixels: BpxPixels; advance: number; offset?: BpxVector2d }
+  | { type: "whitespace"; advance: number };
 
 export type BpxArrangedGlyph = {
   /** Left-top position of a glyph in relation to the left-top of the entire text. */
@@ -30,8 +30,8 @@ export abstract class BpxFont {
   abstract readonly ascent: number;
   /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
   abstract readonly descent: number;
-  /** An amount of pixels from the baseline of the previous line (excluded) to the baseline of the next line (included). */
-  abstract readonly leading: number;
+  /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and the top-most pixel of the next line (excluded). */
+  abstract readonly lineGap: number;
 
   /** URLs of sprite sheets used by glyphs of this font. */
   abstract readonly spriteSheetUrls: BpxImageUrl[];
@@ -49,7 +49,7 @@ export abstract class BpxFont {
 
     for (const char of text) {
       if (char === "\n") {
-        xy = v_(0, xy.y + this.leading);
+        xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
       } else {
         const glyph = this.getGlyph(char);
         if (!glyph) {
@@ -58,20 +58,26 @@ export abstract class BpxFont {
           arrangedGlyphs.push({
             type: "sprite",
             sprite: glyph.sprite,
-            xy: xy.add(0, this.ascent).sub(0, glyph.sprite.size.y),
+            xy: xy
+              .add(0, this.ascent)
+              .sub(0, glyph.sprite.size.y)
+              .add(glyph.offset ?? v_0_0_),
             // TODO: offset glyph
           });
-          xy = xy.add(glyph.advanceX, 0);
+          xy = xy.add(glyph.advance, 0);
         } else if (glyph.type === "pixels") {
           arrangedGlyphs.push({
             type: "pixels",
             pixels: glyph.pixels,
-            xy: xy.add(0, this.ascent).sub(0, glyph.pixels.size.y),
+            xy: xy
+              .add(0, this.ascent)
+              .sub(0, glyph.pixels.size.y)
+              .add(glyph.offset ?? v_0_0_),
             // TODO: offset glyph
           });
-          xy = xy.add(glyph.advanceX, 0);
+          xy = xy.add(glyph.advance, 0);
         } else if (glyph.type === "whitespace") {
-          xy = xy.add(glyph.advanceX, 0);
+          xy = xy.add(glyph.advance, 0);
         } else {
           u_.assertUnreachable(glyph);
         }

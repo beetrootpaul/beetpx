@@ -17,7 +17,7 @@ import { BpxFont, BpxGlyph } from "./Font";
 export class BpxFontSaint11Minimal5 extends BpxFont {
   ascent = 5;
   descent = 0;
-  leading = 6;
+  lineGap = 2;
 
   spriteSheetUrls = [];
 
@@ -30,7 +30,7 @@ export class BpxFontSaint11Minimal5 extends BpxFont {
     return {
       type: "pixels",
       pixels: pixels,
-      advanceX: pixels.size.x + 1,
+      advance: pixels.size.x + 1,
     };
   }
 

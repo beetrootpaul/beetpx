@@ -1,9 +1,9 @@
-import { BpxFont, BpxGlyph, BpxPixels, spr_ } from "../../../src";
+import { BpxFont, BpxGlyph, BpxPixels, spr_, v_ } from "../../../src";
 
 export class CustomFont extends BpxFont {
   ascent = 8;
   descent = 3;
-  leading = 12;
+  lineGap = 3;
 
   spriteSheetUrls = ["custom-font.png"];
 
@@ -11,13 +11,20 @@ export class CustomFont extends BpxFont {
     return this.glyphs.get(char);
   }
 
-  #spriteGlyph(w: number, h: number, x: number, y: number): BpxGlyph {
+  #spriteGlyph(
+    w: number,
+    h: number,
+    x: number,
+    y: number,
+    offsetY?: number,
+  ): BpxGlyph {
     // TODO: where to define the image URL?
     const sprite = spr_("custom-font.png")(w, h, x, y);
     return {
       type: "sprite",
       sprite: sprite,
-      advanceX: sprite.size.x + 1,
+      advance: sprite.size.x + 1,
+      offset: offsetY ? v_(0, offsetY) : undefined,
     };
   }
 
@@ -26,7 +33,7 @@ export class CustomFont extends BpxFont {
     return {
       type: "pixels",
       pixels: pixels,
-      advanceX: pixels.size.x + 1,
+      advance: pixels.size.x + 1,
     };
   }
 
@@ -47,7 +54,7 @@ export class CustomFont extends BpxFont {
       `),
     ],
     ["o", this.#spriteGlyph(3, 5, 5, 8)],
-    ["q", this.#spriteGlyph(3, 8, 5, 8)],
+    ["q", this.#spriteGlyph(3, 8, 5, 8, this.descent)],
     ["r", this.#spriteGlyph(3, 5, 5, 0)],
     [
       "w",

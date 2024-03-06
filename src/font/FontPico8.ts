@@ -6,7 +6,7 @@ import { BpxFont, BpxGlyph } from "./Font";
 export class BpxFontPico8 extends BpxFont {
   ascent = 5;
   descent = 0;
-  leading = 6;
+  lineGap = 1;
 
   spriteSheetUrls = [".beetpx/pico-8-font.png"];
 
@@ -15,7 +15,7 @@ export class BpxFontPico8 extends BpxFont {
   }
 
   glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
-    [" ", { type: "whitespace", advanceX: 4 }],
+    [" ", { type: "whitespace", advance: 4 }],
     ["0", this.#spriteGlyph(0, 3)],
     ["1", this.#spriteGlyph(1, 3)],
     ["2", this.#spriteGlyph(2, 3)],
@@ -66,7 +66,7 @@ export class BpxFontPico8 extends BpxFont {
     return {
       type: "sprite",
       sprite: sprite,
-      advanceX: sprite.size.x + 1,
+      advance: sprite.size.x + 1,
     };
   }
 }
