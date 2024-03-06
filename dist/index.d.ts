@@ -568,20 +568,7 @@ declare class DrawApi {
     takeCanvasSnapshot(): void;
 }
 
-type AssetsToLoad = {
-    images?: ImageAssetToLoad[];
-    sounds?: SoundAssetToLoad[];
-    jsons?: JsonAssetToLoad[];
-};
-type ImageAssetToLoad = {
-    url: BpxImageUrl;
-};
-type SoundAssetToLoad = {
-    url: BpxSoundUrl;
-};
-type JsonAssetToLoad = {
-    url: BpxJsonUrl;
-};
+type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
 
 declare global {
     interface Document {

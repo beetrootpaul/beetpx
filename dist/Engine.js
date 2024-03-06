@@ -40,7 +40,6 @@ export class Engine {
         return __classPrivateFieldGet(this, _Engine_browserType, "f");
     }
     constructor(engineInitParams = {}) {
-        var _b;
         _Engine_instances.add(this);
         _Engine_assetsToLoad.set(this, void 0);
         _Engine_browserType.set(this, void 0);
@@ -61,7 +60,7 @@ export class Engine {
         engineInitParams.gameCanvasSize ?? (engineInitParams.gameCanvasSize = "128x128");
         engineInitParams.fixedTimestep ?? (engineInitParams.fixedTimestep = "60fps");
         engineInitParams.debugMode ?? (engineInitParams.debugMode = false);
-        engineInitParams.assets ?? (engineInitParams.assets = {});
+        engineInitParams.assets ?? (engineInitParams.assets = []);
         window.addEventListener("error", (event) => {
             HtmlTemplate.showError(event.message);
             
@@ -88,11 +87,9 @@ export class Engine {
             : false;
         Logger.debugBeetPx("Engine init params:", engineInitParams);
         __classPrivateFieldSet(this, _Engine_assetsToLoad, engineInitParams.assets, "f");
-        (_b = __classPrivateFieldGet(this, _Engine_assetsToLoad, "f")).images ?? (_b.images = []);
-        
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").images.push(...font_pico8_.spriteSheetUrls.map((url) => ({ url })));
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").images.push(...font_saint11Minimal4_.spriteSheetUrls.map((url) => ({ url })));
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").images.push(...font_saint11Minimal5_.spriteSheetUrls.map((url) => ({ url })));
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_pico8_.spriteSheetUrls);
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal4_.spriteSheetUrls);
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal5_.spriteSheetUrls);
         const fixedTimestepFps = engineInitParams.fixedTimestep === "60fps"
             ? 60
             : engineInitParams.fixedTimestep === "30fps"

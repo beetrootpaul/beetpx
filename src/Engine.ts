@@ -94,7 +94,7 @@ export class Engine {
     engineInitParams.gameCanvasSize ??= "128x128";
     engineInitParams.fixedTimestep ??= "60fps";
     engineInitParams.debugMode ??= false;
-    engineInitParams.assets ??= {};
+    engineInitParams.assets ??= [];
 
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
@@ -125,17 +125,9 @@ export class Engine {
     Logger.debugBeetPx("Engine init params:", engineInitParams);
 
     this.#assetsToLoad = engineInitParams.assets;
-    this.#assetsToLoad.images ??= [];
-    // TODO: rework the way we define URLs to load
-    this.#assetsToLoad.images.push(
-      ...font_pico8_.spriteSheetUrls.map((url) => ({ url })),
-    );
-    this.#assetsToLoad.images.push(
-      ...font_saint11Minimal4_.spriteSheetUrls.map((url) => ({ url })),
-    );
-    this.#assetsToLoad.images.push(
-      ...font_saint11Minimal5_.spriteSheetUrls.map((url) => ({ url })),
-    );
+    this.#assetsToLoad.push(...font_pico8_.spriteSheetUrls);
+    this.#assetsToLoad.push(...font_saint11Minimal4_.spriteSheetUrls);
+    this.#assetsToLoad.push(...font_saint11Minimal5_.spriteSheetUrls);
 
     const fixedTimestepFps =
       engineInitParams.fixedTimestep === "60fps"

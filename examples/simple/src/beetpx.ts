@@ -1,10 +1,7 @@
 import { b_, rgb_p8_, spr_, v_, v_0_0_ } from "../../../src";
 
 b_.init({
-  assets: {
-    images: [{ url: "logo.png" }],
-    sounds: [{ url: "music_melody.flac" }],
-  },
+  assets: ["logo.png", "music_melody.flac"],
 }).then(async ({ startGame }) => {
   const logoSprite = spr_("logo.png")(16, 16, 0, 0);
   let circleMovementCenter = v_(64, 64);

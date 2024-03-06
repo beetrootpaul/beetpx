@@ -13,9 +13,7 @@ b_.init({
   gameCanvasSize: "128x128",
   fixedTimestep: "60fps",
   debugMode: true,
-  assets: {
-    images: [{ url: "spritesheet.png" }],
-  },
+  assets: ["spritesheet.png"],
 }).then(async ({ startGame }) => {
   b_.setOnStarted(() => {
     standardView = new StandardView();

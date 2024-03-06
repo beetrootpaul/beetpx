@@ -2,24 +2,7 @@ import { decode as fastPngDecode, type DecodedPng } from "fast-png";
 import { Logger } from "../logger/Logger";
 import { Assets, BpxImageUrl, BpxJsonUrl, BpxSoundUrl } from "./Assets";
 
-// TODO: make it an array of URLs?
-export type AssetsToLoad = {
-  images?: ImageAssetToLoad[];
-  sounds?: SoundAssetToLoad[];
-  jsons?: JsonAssetToLoad[];
-};
-
-type ImageAssetToLoad = {
-  url: BpxImageUrl;
-};
-
-type SoundAssetToLoad = {
-  url: BpxSoundUrl;
-};
-
-type JsonAssetToLoad = {
-  url: BpxJsonUrl;
-};
+export type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
 
 export class AssetLoader {
   readonly #assets: Assets;
@@ -36,35 +19,48 @@ export class AssetLoader {
   }
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
-    assetsToLoad.images ??= [];
-    assetsToLoad.sounds ??= [];
-    assetsToLoad.jsons ??= [];
-
-    const uniqueImageUrls = Array.from(
-      new Set(assetsToLoad.images.map(({ url }) => url)),
+    const unrecognizedAssetFormats = assetsToLoad.filter(
+      (url) => !this.#isImage(url) && !this.#isSound(url) && !this.#isJson(url),
     );
-    const uniqueSoundUrls = Array.from(
-      new Set(assetsToLoad.sounds.map(({ url }) => url)),
-    );
-    const uniqueJsonUrls = Array.from(
-      new Set(assetsToLoad.jsons.map(({ url }) => url)),
-    );
+    if (unrecognizedAssetFormats.length > 0) {
+      throw Error(
+        "Assets: following URLs don't look like any of supported formats: " +
+          unrecognizedAssetFormats.map((url) => `"${url}"`).join(", ") +
+          '. Supported formats are: ".png", ".wav", ".flac", ".json", ".ldtk"',
+      );
+    }
 
     await Promise.all([
-      ...uniqueImageUrls.map((url) => this.#loadImage(url)),
-      ...uniqueSoundUrls.map((url) => this.#loadSound(url)),
-      ...uniqueJsonUrls.map((url) => this.#loadJson(url)),
+      ...assetsToLoad
+        .filter((url) => this.#isImage(url))
+        .map((url) => this.#loadImage(url)),
+      ...assetsToLoad
+        .filter((url) => this.#isSound(url))
+        .map((url) => this.#loadSound(url)),
+      ...assetsToLoad
+        .filter((url) => this.#isJson(url))
+        .map((url) => this.#loadJson(url)),
     ]);
+  }
+
+  #isImage(url: BpxImageUrl): boolean {
+    return url.toLowerCase().endsWith(".png");
+  }
+
+  #isSound(url: BpxSoundUrl): boolean {
+    return (
+      url.toLowerCase().endsWith(".wav") || url.toLowerCase().endsWith(".flac")
+    );
+  }
+
+  #isJson(url: BpxJsonUrl): boolean {
+    return (
+      url.toLowerCase().endsWith(".json") || url.toLowerCase().endsWith(".ldtk")
+    );
   }
 
   async #loadImage(url: BpxImageUrl): Promise<void> {
     Logger.infoBeetPx(`Assets: loading image "${url}"`);
-
-    if (!url.toLowerCase().endsWith(".png")) {
-      throw Error(
-        `Assets: only PNG image files are supported. The file which doesn't seem to be PNG: "${url}"`,
-      );
-    }
 
     const httpResponse = await fetch(url);
     if (!this.#is2xx(httpResponse.status)) {
@@ -115,14 +111,6 @@ export class AssetLoader {
   async #loadSound(url: BpxSoundUrl): Promise<void> {
     Logger.infoBeetPx(`Assets: loading sound "${url}"`);
 
-    if (
-      !url.toLowerCase().endsWith(".wav") &&
-      !url.toLowerCase().endsWith(".flac")
-    ) {
-      throw Error(
-        `Assets: only wav and flac sound files are supported due to Safari compatibility. The file which doesn't seem to be neither wav nor flac: "${url}"`,
-      );
-    }
     const httpResponse = await fetch(url);
     if (!this.#is2xx(httpResponse.status)) {
       throw Error(`Assets: could not fetch sound file: "${url}"`);

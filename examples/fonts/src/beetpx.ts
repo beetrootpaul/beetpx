@@ -32,13 +32,10 @@ const text = [
 
 b_.init({
   gameCanvasSize: "256x256",
-  assets: {
-    images: [
-      // TODO: simplify the list of assets to be just a list of strings and type recognized by the extension (will it work for some strange URLs though?)
-      ...customFont.spriteSheetUrls.map((url) => ({ url })),
-      ...customFontExternalImage.spriteSheetUrls.map((url) => ({ url })),
-    ],
-  },
+  assets: [
+    ...customFont.spriteSheetUrls,
+    ...customFontExternalImage.spriteSheetUrls,
+  ],
 }).then(async ({ startGame }) => {
   const minZoom = 1;
   const maxZoom = 8;

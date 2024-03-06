@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _AssetLoader_instances, _AssetLoader_assets, _AssetLoader_decodeAudioData, _AssetLoader_loadImage, _AssetLoader_loadSound, _AssetLoader_loadJson, _AssetLoader_is2xx;
+var _AssetLoader_instances, _AssetLoader_assets, _AssetLoader_decodeAudioData, _AssetLoader_isImage, _AssetLoader_isSound, _AssetLoader_isJson, _AssetLoader_loadImage, _AssetLoader_loadSound, _AssetLoader_loadJson, _AssetLoader_is2xx;
 import { decode as fastPngDecode } from "fast-png";
 import { Logger } from "../logger/Logger";
 export class AssetLoader {
@@ -21,24 +21,33 @@ export class AssetLoader {
         __classPrivateFieldSet(this, _AssetLoader_decodeAudioData, params.decodeAudioData, "f");
     }
     async loadAssets(assetsToLoad) {
-        assetsToLoad.images ?? (assetsToLoad.images = []);
-        assetsToLoad.sounds ?? (assetsToLoad.sounds = []);
-        assetsToLoad.jsons ?? (assetsToLoad.jsons = []);
-        const uniqueImageUrls = Array.from(new Set(assetsToLoad.images.map(({ url }) => url)));
-        const uniqueSoundUrls = Array.from(new Set(assetsToLoad.sounds.map(({ url }) => url)));
-        const uniqueJsonUrls = Array.from(new Set(assetsToLoad.jsons.map(({ url }) => url)));
+        const unrecognizedAssetFormats = assetsToLoad.filter((url) => !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isImage).call(this, url) && !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isSound).call(this, url) && !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isJson).call(this, url));
+        if (unrecognizedAssetFormats.length > 0) {
+            throw Error("Assets: following URLs don't look like any of supported formats: " +
+                unrecognizedAssetFormats.map((url) => `"${url}"`).join(", ") +
+                '. Supported formats are: ".png", ".wav", ".flac", ".json", ".ldtk"');
+        }
         await Promise.all([
-            ...uniqueImageUrls.map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadImage).call(this, url)),
-            ...uniqueSoundUrls.map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadSound).call(this, url)),
-            ...uniqueJsonUrls.map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadJson).call(this, url)),
+            ...assetsToLoad
+                .filter((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isImage).call(this, url))
+                .map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadImage).call(this, url)),
+            ...assetsToLoad
+                .filter((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isSound).call(this, url))
+                .map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadSound).call(this, url)),
+            ...assetsToLoad
+                .filter((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isJson).call(this, url))
+                .map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadJson).call(this, url)),
         ]);
     }
 }
-_AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(), _AssetLoader_instances = new WeakSet(), _AssetLoader_loadImage = async function _AssetLoader_loadImage(url) {
+_AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(), _AssetLoader_instances = new WeakSet(), _AssetLoader_isImage = function _AssetLoader_isImage(url) {
+    return url.toLowerCase().endsWith(".png");
+}, _AssetLoader_isSound = function _AssetLoader_isSound(url) {
+    return (url.toLowerCase().endsWith(".wav") || url.toLowerCase().endsWith(".flac"));
+}, _AssetLoader_isJson = function _AssetLoader_isJson(url) {
+    return (url.toLowerCase().endsWith(".json") || url.toLowerCase().endsWith(".ldtk"));
+}, _AssetLoader_loadImage = async function _AssetLoader_loadImage(url) {
     Logger.infoBeetPx(`Assets: loading image "${url}"`);
-    if (!url.toLowerCase().endsWith(".png")) {
-        throw Error(`Assets: only PNG image files are supported. The file which doesn't seem to be PNG: "${url}"`);
-    }
     const httpResponse = await fetch(url);
     if (!__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_is2xx).call(this, httpResponse.status)) {
         throw Error(`Assets: could not fetch PNG file: "${url}"`);
@@ -80,10 +89,6 @@ _AssetLoader_assets = new WeakMap(), _AssetLoader_decodeAudioData = new WeakMap(
     });
 }, _AssetLoader_loadSound = async function _AssetLoader_loadSound(url) {
     Logger.infoBeetPx(`Assets: loading sound "${url}"`);
-    if (!url.toLowerCase().endsWith(".wav") &&
-        !url.toLowerCase().endsWith(".flac")) {
-        throw Error(`Assets: only wav and flac sound files are supported due to Safari compatibility. The file which doesn't seem to be neither wav nor flac: "${url}"`);
-    }
     const httpResponse = await fetch(url);
     if (!__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_is2xx).call(this, httpResponse.status)) {
         throw Error(`Assets: could not fetch sound file: "${url}"`);
