@@ -11,7 +11,9 @@ import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { BpxFontPico8 } from "./font/BpxFontPico8";
+import { font_pico8_ } from "./font/FontPico8";
+import { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
+import { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
 import { Button } from "./game_input/buttons/Button";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -120,9 +122,16 @@ export class Engine {
 
     this.#assetsToLoad = engineInitParams.assets;
     this.#assetsToLoad.images ??= [];
-    this.#assetsToLoad.images.push({
-      url: BpxFontPico8.imageUrl,
-    });
+    // TODO: rework the way we define URLs to load
+    this.#assetsToLoad.images.push(
+      ...font_pico8_.spriteSheetUrls.map((url) => ({ url })),
+    );
+    this.#assetsToLoad.images.push(
+      ...font_saint11Minimal4_.spriteSheetUrls.map((url) => ({ url })),
+    );
+    this.#assetsToLoad.images.push(
+      ...font_saint11Minimal5_.spriteSheetUrls.map((url) => ({ url })),
+    );
 
     const fixedTimestepFps =
       engineInitParams.fixedTimestep === "60fps"

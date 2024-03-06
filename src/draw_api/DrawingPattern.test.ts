@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { BpxDrawingPattern } from "./Pattern";
+import { BpxDrawingPattern } from "./DrawingPattern";
 
 describe("Pattern", () => {
   [

@@ -7,7 +7,7 @@ export class BpxPixels {
 
   readonly asciiRows: string[];
 
-  readonly wh: BpxVector2d;
+  readonly size: BpxVector2d;
 
   private constructor(ascii: string) {
     this.asciiRows = ascii
@@ -25,6 +25,6 @@ export class BpxPixels {
       }
       w = Math.max(w, row.length);
     }
-    this.wh = BpxVector2d.of(w, this.asciiRows.length);
+    this.size = BpxVector2d.of(w, this.asciiRows.length);
   }
 }

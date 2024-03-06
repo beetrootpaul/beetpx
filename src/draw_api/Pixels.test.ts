@@ -73,6 +73,6 @@ describe("Pixels", () => {
       ----------##
       #
     `);
-    expect(pixels.wh).toEqual(v_(16, 8));
+    expect(pixels.size).toEqual(v_(16, 8));
   });
 });
