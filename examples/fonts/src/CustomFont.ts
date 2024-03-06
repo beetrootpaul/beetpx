@@ -38,6 +38,7 @@ export class CustomFont extends BpxFont {
   }
 
   glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
+    [" ", { type: "whitespace", advance: 3 }],
     ["T", this.#spriteGlyph(5, 8, 3, 0)],
     ["b", this.#spriteGlyph(3, 8, 5, 5)],
     ["e", this.#spriteGlyph(3, 5, 8, 0)],

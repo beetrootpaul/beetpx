@@ -24,8 +24,11 @@ import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 // TODO: ability to change line height?
 // TODO: markup for changing a color of a word (then, remove color by the char) + turning it on/off depending on whether markup definition is passed or not
 // TODO: a way to print a markup without interpreting it as a markup ("[[c1]"?]
-const text =
-  "The quick [c1]brown[c0] fox jumps\nover the [c2]lazy[c0] dog\n0123456789 -+= .,:;!? @#$%^&* ()[]{}<> \\|/'\"";
+const text = [
+  "The quick [c1]brown[c0] fox jumps",
+  "over the [c2]lazy[c0] dog",
+  "0123456789 -+= .,:;!? ~@#$%^&*_ ()[]{}<> /|\\ `'\"",
+].join("\n");
 
 b_.init({
   gameCanvasSize: "256x256",
@@ -54,7 +57,7 @@ b_.init({
       cameraXy = cameraXy.mul(newZoom / zoom);
       zoom = newZoom;
     }
-    cameraXy = cameraXy.add(b_.getPressedDirection().mul(2).mul(zoom));
+    cameraXy = cameraXy.sub(b_.getPressedDirection().mul(2).mul(zoom));
   });
 
   b_.setOnDraw(() => {
@@ -62,7 +65,7 @@ b_.init({
 
     b_.clearCanvas(rgb_p8_.wine);
 
-    let cursor = v_(8, 2).mul(zoom);
+    let cursor = v_(8, 8).mul(zoom);
 
     for (const font of [
       font_pico8_,
@@ -104,10 +107,15 @@ function drawBox(textWh: BpxVector2d, cursor: BpxVector2d, zoom: number): void {
 
 function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   //
+  // the highest pixel of the ascent
+  //
+  b_.drawRectFilled(cursor.add(v_(-3, 0).mul(zoom)), v_(zoom), rgb_p8_.pink);
+
+  //
   // the ascent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-5, 0).mul(zoom)),
+    cursor.add(v_(-4, 0).mul(zoom)),
     v_(1, font.ascent).mul(zoom),
     rgb_p8_.pink,
   );
@@ -116,7 +124,7 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the lowest pixel of the ascent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-4, font.ascent - 1).mul(zoom)),
+    cursor.add(v_(-3, font.ascent - 1).mul(zoom)),
     v_(zoom),
     rgb_p8_.pink,
   );
@@ -125,7 +133,7 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the descent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-5, font.ascent).mul(zoom)),
+    cursor.add(v_(-4, font.ascent).mul(zoom)),
     v_(1, font.descent).mul(zoom),
     rgb_p8_.pink,
   );
@@ -134,7 +142,7 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the lowest pixel of the descent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-6, font.ascent + font.descent - 1).mul(zoom)),
+    cursor.add(v_(-3, font.ascent + font.descent - 1).mul(zoom)),
     v_(zoom),
     rgb_p8_.pink,
   );
@@ -143,7 +151,7 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the line gap
   //
   b_.drawRectFilled(
-    cursor.add(v_(-5, font.ascent + font.descent).mul(zoom)),
+    cursor.add(v_(-4, font.ascent + font.descent).mul(zoom)),
     v_(1, font.lineGap).mul(zoom),
     rgb_p8_.pink,
   );

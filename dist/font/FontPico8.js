@@ -18,6 +18,7 @@ export class BpxFontPico8 extends BpxFont {
         this.spriteSheetUrls = [".beetpx/pico-8-font.png"];
         this.glyphs = new Map([
             [" ", { type: "whitespace", advance: 4 }],
+            
             ["0", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 0, 3)],
             ["1", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 1, 3)],
             ["2", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 2, 3)],
@@ -27,13 +28,45 @@ export class BpxFontPico8 extends BpxFont {
             ["6", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 6, 3)],
             ["7", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 7, 3)],
             ["8", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 8, 3)],
-            ["9", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 9, 3)],
-            ["@", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 0, 4)],
+            
+            ["-", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 13, 2)],
+            ["+", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 11, 2)],
+            ["=", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 13, 3)],
+            
+            ["(", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 8, 2)],
+            [")", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 9, 2)],
+            ["[", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 11, 5)],
+            ["]", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 13, 5)],
+            ["{", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 11, 7)],
+            ["}", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 13, 7)],
+            ["<", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 12, 3)],
+            [">", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 14, 3)],
+            
+            ["~", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 14, 7)],
+            ["!", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 1, 2)],
             ["?", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 15, 3)],
+            ["@", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 0, 4)],
+            ["#", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 3, 2)],
+            ["$", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 4, 2)],
+            ["%", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 5, 2)],
+            ["^", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 14, 5)],
             ["&", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 6, 2)],
-            ["/", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 15, 2)],
+            ["*", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 10, 2)],
+            ["_", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 15, 5)],
+            
             [".", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 14, 2)],
+            [",", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 12, 2)],
             [":", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 10, 3)],
+            [";", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 11, 3)],
+            
+            ["`", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 0, 6)],
+            ["'", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 7, 2)],
+            ['"', __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 2, 2)],
+            
+            ["/", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 15, 2)],
+            ["|", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 12, 7)],
+            ["\\", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 12, 5)],
+            
             ["a", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 1, 6)],
             ["b", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 2, 6)],
             ["c", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 3, 6)],
