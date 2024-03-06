@@ -190,11 +190,11 @@ BeetPx.setSpriteColorMapping = (...args) => {
 BeetPx.drawSprite = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.drawSprite(...args);
 };
-BeetPx.setFont = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.setFont(...args);
+BeetPx.useFont = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.useFont(...args);
 };
-BeetPx.getFont = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.getFont(...args);
+BeetPx.measureText = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.measureText(...args);
 };
 BeetPx.drawText = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.drawText(...args);

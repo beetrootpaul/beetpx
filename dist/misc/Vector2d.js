@@ -1,8 +1,5 @@
 
 import { BpxUtils } from "../Utils";
-export function v_(valueOrX, maybeY) {
-    return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
-}
 export class BpxVector2d {
     /**
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
@@ -136,6 +133,3 @@ export class BpxVector2d {
         return `(${this.x},${this.y})`;
     }
 }
-
-export const v_0_0_ = v_(0, 0);
-export const v_1_1_ = v_(1, 1);

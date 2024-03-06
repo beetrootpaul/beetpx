@@ -79,7 +79,6 @@ export {
 } from "./color/RgbColor";
 export { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
 export { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
-export { v_0_0_, v_1_1_ } from "./misc/Vector2d";
 export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";
 

@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasForProduction_instances, _CanvasForProduction_length, _CanvasForProduction_htmlCanvas, _CanvasForProduction_htmlCanvasContext, _CanvasForProduction_offscreenContext, _CanvasForProduction_offscreenImageData, _CanvasForProduction_initializeAsNonTransparent;
-import { v_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
 import { u_ } from "../Utils";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
@@ -64,7 +64,7 @@ export class CanvasForProduction extends Canvas {
     }
     doRender() {
         __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").putImageData(__classPrivateFieldGet(this, _CanvasForProduction_offscreenImageData, "f"), 0, 0);
-        const htmlCanvasSize = v_(__classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").height);
+        const htmlCanvasSize = BpxVector2d.of(__classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").width, __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvas, "f").height);
         const scaleToFill = Math.max(1, Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y));
         const centeringOffset = htmlCanvasSize
             .sub(this.canvasSize.mul(scaleToFill))

@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawLine_instances, _DrawLine_canvas, _DrawLine_drawPixel;
-import { v_ } from "../../misc/Vector2d";
+import { v_ } from "../../shorthands";
 export class DrawLine {
     constructor(canvas) {
         _DrawLine_instances.add(this);

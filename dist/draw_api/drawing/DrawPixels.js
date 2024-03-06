@@ -10,7 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawPixels_canvas, _DrawPixels_options;
-import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
+import { BpxVector2d } from "../../misc/Vector2d";
+import { v_0_0_ } from "../../shorthands";
 export class DrawPixels {
     constructor(canvas, options = {}) {
         _DrawPixels_canvas.set(this, void 0);

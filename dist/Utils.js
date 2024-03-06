@@ -1,5 +1,5 @@
 import { BeetPx } from "./BeetPx";
-import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
+import { BpxVector2d } from "./misc/Vector2d";
 export class BpxUtils {
     /**
      * This function is meant to be used in a last branch of `if - else if - … - else`
@@ -36,26 +36,6 @@ export class BpxUtils {
         return opts?.clamp ? BpxUtils.clamp(a, result, b) : result;
     }
     /**
-     * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,
-     *          where XY represents an offset from the initial top-left
-     *          corner where printing of the text would start. For example
-     *          imagine a font in which there are some chars higher by 1px
-     *          than standard height of other characters. In such case
-     *          returned XY would be (0,-1).
-     */
-    static measureText(text) {
-        const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
-        let minXy = v_0_0_;
-        let maxXy = v_0_0_;
-        for (const charSprite of charSprites) {
-            minXy = BpxVector2d.min(minXy, charSprite.positionInText);
-            maxXy = BpxVector2d.max(maxXy, charSprite.positionInText.add(charSprite.type === "image"
-                ? charSprite.spriteXyWh[1]
-                : charSprite.pixels.wh));
-        }
-        return [minXy, maxXy.sub(minXy)];
-    }
-    /**
      * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
      */
     static mod(value, modulus) {
@@ -64,26 +44,31 @@ export class BpxUtils {
     static noop() { }
     
     static offset4Directions() {
-        return [v_(-1, -1), v_(1, -1), v_(1, 1), v_(-1, 1)];
+        return [
+            BpxVector2d.of(-1, -1),
+            BpxVector2d.of(1, -1),
+            BpxVector2d.of(1, 1),
+            BpxVector2d.of(-1, 1),
+        ];
     }
     
     static offset8Directions() {
         return [
-            v_(-1, -1),
-            v_(0, -1),
-            v_(1, -1),
-            v_(1, 0),
-            v_(1, 1),
-            v_(0, 1),
-            v_(-1, 1),
-            v_(-1, 0),
+            BpxVector2d.of(-1, -1),
+            BpxVector2d.of(0, -1),
+            BpxVector2d.of(1, -1),
+            BpxVector2d.of(1, 0),
+            BpxVector2d.of(1, 1),
+            BpxVector2d.of(0, 1),
+            BpxVector2d.of(-1, 1),
+            BpxVector2d.of(-1, 0),
         ];
     }
     static drawTextWithOutline(text, canvasXy1, textColor, outlineColor, opts = {}) {
         for (const offset of BpxUtils.offset8Directions()) {
-            BeetPx.drawText(text, canvasXy1.add(offset), outlineColor, opts);
+            
         }
-        BeetPx.drawText(text, canvasXy1, textColor, opts);
+        
     }
     static randomElementOf(array) {
         if (array.length <= 0)

@@ -1,7 +1,7 @@
 import { expect } from "@jest/globals";
 import { u_ } from "../Utils";
 import { BpxRgbColor, BpxRgbCssHex } from "../color/RgbColor";
-import { v_ } from "../misc/Vector2d";
+import { v_ } from "../shorthands";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";

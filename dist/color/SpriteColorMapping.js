@@ -33,4 +33,5 @@ export class BpxSpriteColorMapping {
     }
 }
 _BpxSpriteColorMapping_mapping = new WeakMap();
+
 BpxSpriteColorMapping.noMapping = new BpxSpriteColorMapping((c) => c);

@@ -19,7 +19,8 @@ import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { BpxFontPico8 } from "./font/BpxFontPico8";
+import { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
+import { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
 import { Button } from "./game_input/buttons/Button";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -27,7 +28,7 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
-import { v_ } from "./misc/Vector2d";
+import { font_pico8_, v_ } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils, u_ } from "./Utils";
 export class Engine {
@@ -90,9 +91,10 @@ export class Engine {
         Logger.debugBeetPx("Engine init params:", engineInitParams);
         __classPrivateFieldSet(this, _Engine_assetsToLoad, engineInitParams.assets, "f");
         (_b = __classPrivateFieldGet(this, _Engine_assetsToLoad, "f")).images ?? (_b.images = []);
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").images.push({
-            url: BpxFontPico8.imageUrl,
-        });
+        
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").images.push(...font_pico8_.spriteSheetUrls.map((url) => ({ url })));
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").images.push(...font_saint11Minimal4_.spriteSheetUrls.map((url) => ({ url })));
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").images.push(...font_saint11Minimal5_.spriteSheetUrls.map((url) => ({ url })));
         const fixedTimestepFps = engineInitParams.fixedTimestep === "60fps"
             ? 60
             : engineInitParams.fixedTimestep === "30fps"

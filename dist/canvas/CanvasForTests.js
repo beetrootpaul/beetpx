@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _CanvasForTests_instances, _CanvasForTests_length, _CanvasForTests_rgbValues, _CanvasForTests_asAscii;
 import { expect } from "@jest/globals";
 import { u_ } from "../Utils";
-import { v_ } from "../misc/Vector2d";
+import { v_ } from "../shorthands";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";
 export class CanvasForTests extends Canvas {

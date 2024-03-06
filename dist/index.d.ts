@@ -26,8 +26,6 @@ interface PrintDebug {
     __printDebug(): string;
 }
 
-declare function v_(value: number): BpxVector2d;
-declare function v_(x: number, y: number): BpxVector2d;
 declare class BpxVector2d implements PrintDebug {
     readonly x: number;
     readonly y: number;
@@ -95,8 +93,6 @@ declare class BpxVector2d implements PrintDebug {
     get [Symbol.toStringTag](): string;
     __printDebug(): string;
 }
-declare const v_0_0_: BpxVector2d;
-declare const v_1_1_: BpxVector2d;
 
 declare class BpxUtils {
     /**
@@ -117,15 +113,6 @@ declare class BpxUtils {
     static lerp(a: number, b: number, t: number, opts?: {
         clamp?: boolean;
     }): number;
-    /**
-     * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,
-     *          where XY represents an offset from the initial top-left
-     *          corner where printing of the text would start. For example
-     *          imagine a font in which there are some chars higher by 1px
-     *          than standard height of other characters. In such case
-     *          returned XY would be (0,-1).
-     */
-    static measureText(text: string): [xy: BpxVector2d, wh: BpxVector2d];
     /**
      * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
      */
@@ -255,26 +242,70 @@ declare class BpxDrawingPattern {
 declare class BpxPixels {
     static from(ascii: string): BpxPixels;
     readonly asciiRows: string[];
-    readonly wh: BpxVector2d;
+    readonly size: BpxVector2d;
     private constructor();
 }
 
-type BpxCharSprite = {
+type ImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
+declare function spr_(imageUrl: BpxImageUrl): ImageBoundSpriteFactory;
+declare class BpxSprite {
+    static from(imageUrl: BpxImageUrl, w: number, h: number, x: number, y: number): BpxSprite;
+    readonly type = "static";
+    readonly imageUrl: BpxImageUrl;
+    readonly size: BpxVector2d;
+    readonly xy: BpxVector2d;
+    private constructor();
+    clipBy(xy1: BpxVector2d, xy2: BpxVector2d): BpxSprite;
+}
+
+type BpxGlyph = {
+    type: "sprite";
+    sprite: BpxSprite;
+    advance: number;
+    offset?: BpxVector2d;
+} | {
+    type: "pixels";
+    pixels: BpxPixels;
+    advance: number;
+    offset?: BpxVector2d;
+} | {
+    type: "whitespace";
+    advance: number;
+};
+type BpxArrangedGlyph = {
+    /** Left-top position of a glyph in relation to the left-top of the entire text. */
+    leftTop: BpxVector2d;
+    lineNumber: number;
     char: string;
-    positionInText: BpxVector2d;
 } & ({
-    type: "image";
-    spriteXyWh: [xy: BpxVector2d, wh: BpxVector2d];
+    type: "sprite";
+    sprite: BpxSprite;
 } | {
     type: "pixels";
     pixels: BpxPixels;
 });
-type BpxFontId = string;
-interface BpxFont {
-    readonly id: BpxFontId;
-    readonly imageUrl: BpxImageUrl | null;
-    spritesFor(text: string): BpxCharSprite[];
-    readonly spriteTextColor: BpxRgbColor | null;
+declare abstract class BpxFont {
+    /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
+    abstract readonly ascent: number;
+    /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
+    abstract readonly descent: number;
+    /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and the top-most pixel of the next line (excluded). */
+    abstract readonly lineGap: number;
+    /** URLs of sprite sheets used by glyphs of this font. */
+    abstract readonly spriteSheetUrls: BpxImageUrl[];
+    protected abstract readonly glyphs: Map<string, BpxGlyph>;
+    abstract getGlyph(char: string): BpxGlyph | undefined;
+    arrangeGlyphsFor(text: string): BpxArrangedGlyph[];
+}
+
+declare class BpxFontPico8 extends BpxFont {
+    #private;
+    ascent: number;
+    descent: number;
+    lineGap: number;
+    spriteSheetUrls: string[];
+    getGlyph(char: string): BpxGlyph | undefined;
+    glyphs: Map<string, BpxGlyph>;
 }
 
 /**
@@ -289,14 +320,16 @@ interface BpxFont {
  *   a b c d e f g h i j k l m      (note: both upper- and lower-case
  *   n o p q r s t u v w x y z             characters use same glyphs)
  */
-declare class BpxFontSaint11Minimal4 implements BpxFont {
+declare class BpxFontSaint11Minimal4 extends BpxFont {
     #private;
-    static id: BpxFontId;
-    readonly spriteTextColor: null;
-    readonly id: BpxFontId;
-    readonly imageUrl: BpxImageUrl | null;
-    spritesFor(text: string): BpxCharSprite[];
+    ascent: number;
+    descent: number;
+    lineGap: number;
+    spriteSheetUrls: never[];
+    getGlyph(char: string): BpxGlyph | undefined;
+    glyphs: Map<string, BpxGlyph>;
 }
+declare const font_saint11Minimal4_: BpxFontSaint11Minimal4;
 
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
@@ -310,14 +343,16 @@ declare class BpxFontSaint11Minimal4 implements BpxFont {
  *   a b c d e f g h i j k l m
  *   n o p q r s t u v w x y z
  */
-declare class BpxFontSaint11Minimal5 implements BpxFont {
+declare class BpxFontSaint11Minimal5 extends BpxFont {
     #private;
-    static id: BpxFontId;
-    readonly spriteTextColor: null;
-    readonly id: BpxFontId;
-    readonly imageUrl: BpxImageUrl | null;
-    spritesFor(text: string): BpxCharSprite[];
+    ascent: number;
+    descent: number;
+    lineGap: number;
+    spriteSheetUrls: never[];
+    getGlyph(char: string): BpxGlyph | undefined;
+    glyphs: Map<string, BpxGlyph>;
 }
+declare const font_saint11Minimal5_: BpxFontSaint11Minimal5;
 
 declare class Button {
     #private;
@@ -406,18 +441,6 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-type ImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
-declare function spr_(imageUrl: BpxImageUrl): ImageBoundSpriteFactory;
-declare class BpxSprite {
-    static from(imageUrl: BpxImageUrl, w: number, h: number, x: number, y: number): BpxSprite;
-    readonly type = "static";
-    readonly imageUrl: BpxImageUrl;
-    readonly size: BpxVector2d;
-    readonly xy: BpxVector2d;
-    private constructor();
-    clipBy(xy1: BpxVector2d, xy2: BpxVector2d): BpxSprite;
-}
-
 type ImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][]) => BpxAnimatedSprite;
 declare function aspr_(imageUrl: BpxImageUrl): ImageBoundAnimatedSpriteFactory;
 declare class BpxAnimatedSprite {
@@ -433,11 +456,6 @@ declare class BpxAnimatedSprite {
     restart(): void;
 }
 
-declare function timer_(frames: number, opts?: {
-    loop?: boolean;
-    pause?: boolean;
-    delayFrames?: number;
-}): BpxTimer;
 declare class BpxTimer {
     #private;
     static for(params: {
@@ -553,10 +571,11 @@ declare class DrawApi {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
-    setFont(font: BpxFont): void;
-    getFont(): BpxFont;
-    drawText(text: string, xy: BpxVector2d, color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor), opts?: {
-        centerXy?: [boolean, boolean];
+    useFont(font: BpxFont): void;
+    measureText(text: string, opts?: {
+        scaleXy?: BpxVector2d;
+    }): BpxVector2d;
+    drawText(xy: BpxVector2d, color: BpxRgbColor, text: string, opts?: {
         scaleXy?: BpxVector2d;
     }): void;
     takeCanvasSnapshot(): void;
@@ -718,8 +737,8 @@ declare class BeetPx {
      */
     static setSpriteColorMapping: DrawApi["setSpriteColorMapping"];
     static drawSprite: DrawApi["drawSprite"];
-    static setFont: DrawApi["setFont"];
-    static getFont: DrawApi["getFont"];
+    static useFont: DrawApi["useFont"];
+    static measureText: DrawApi["measureText"];
     static drawText: DrawApi["drawText"];
     static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"];
     static isAudioMuted: AudioApi["isAudioMuted"];
@@ -774,6 +793,17 @@ declare class BpxPalettePico8 {
 }
 declare const rgb_p8_: typeof BpxPalettePico8;
 
+declare const font_pico8_: BpxFont;
+declare function timer_(frames: number, opts?: {
+    loop?: boolean;
+    pause?: boolean;
+    delayFrames?: number;
+}): BpxTimer;
+declare function v_(value: number): BpxVector2d;
+declare function v_(x: number, y: number): BpxVector2d;
+declare const v_0_0_: BpxVector2d;
+declare const v_1_1_: BpxVector2d;
+
 declare global {
     /**
      * Note: the generated documentation marks this variable as "Not Exported".
@@ -791,4 +821,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxCharSprite, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxFont, type BpxFontId, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };

@@ -9,18 +9,22 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _DrawText_canvas, _DrawText_sprite, _DrawText_pixels;
+var _DrawText_canvas, _DrawText_assets, _DrawText_sprite, _DrawText_pixels;
+import { rgb_red_ } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
-import { spr_ } from "../../sprite/Sprite";
+import { BpxVector2d } from "../../misc/Vector2d";
+import { v_0_0_ } from "../../shorthands";
+import { u_ } from "../../Utils";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
 export class DrawText {
-    constructor(canvas) {
+    constructor(canvas, assets) {
         _DrawText_canvas.set(this, void 0);
+        _DrawText_assets.set(this, void 0);
         _DrawText_sprite.set(this, void 0);
         _DrawText_pixels.set(this, void 0);
         __classPrivateFieldSet(this, _DrawText_canvas, canvas, "f");
+        __classPrivateFieldSet(this, _DrawText_assets, assets, "f");
         __classPrivateFieldSet(this, _DrawText_sprite, new DrawSprite(__classPrivateFieldGet(this, _DrawText_canvas, "f"), {
             disableRounding: true,
         }), "f");
@@ -28,32 +32,68 @@ export class DrawText {
             disableRounding: true,
         }), "f");
     }
-    draw(text, font, fontImage, canvasXy, color, scaleXy, pattern) {
+    draw(text, font, 
+    
+    
+    canvasXy, 
+    
+    
+    scaleXy, pattern) {
         canvasXy = canvasXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
-        const colorMapping = typeof color === "function"
-            ? (charSprite) => BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === font.spriteTextColor?.cssHex
-                ? color(charSprite)
-                : null)
-            : BpxSpriteColorMapping.of((spriteColor) => spriteColor?.cssHex === font.spriteTextColor?.cssHex ? color : null);
-        for (const charSprite of font.spritesFor(text)) {
-            const xy = canvasXy.add(charSprite.positionInText.mul(scaleXy));
-            if (charSprite.type === "image") {
-                if (font.imageUrl == null) {
-                    throw Error(`There is no imageUrl defined for a font "${font.id}", which uses image sprites`);
-                }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        for (const arrangedGlyph of font.arrangeGlyphsFor(text)) {
+            const xy = canvasXy.add(arrangedGlyph.leftTop.mul(scaleXy));
+            if (arrangedGlyph.type === "sprite") {
                 
-                if (fontImage == null) {
-                    throw Error(`There is no image loaded for a font "${font.id}", which uses image sprites`);
-                }
-                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(spr_(font.imageUrl)(charSprite.spriteXyWh[1].x, charSprite.spriteXyWh[1].y, charSprite.spriteXyWh[0].x, charSprite.spriteXyWh[0].y), fontImage, xy, scaleXy, typeof colorMapping === "function"
-                    ? colorMapping(charSprite)
-                    : colorMapping, pattern);
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(arrangedGlyph.sprite, 
+                
+                
+                
+                
+                
+                
+                
+                
+                __classPrivateFieldGet(this, _DrawText_assets, "f").getImageAsset(arrangedGlyph.sprite.imageUrl), xy, scaleXy, 
+                
+                
+                
+                
+                BpxSpriteColorMapping.noMapping, pattern);
+            }
+            else if (arrangedGlyph.type === "pixels") {
+                __classPrivateFieldGet(this, _DrawText_pixels, "f").draw(arrangedGlyph.pixels, xy, 
+                
+                
+                rgb_red_, scaleXy, pattern);
             }
             else {
-                __classPrivateFieldGet(this, _DrawText_pixels, "f").draw(charSprite.pixels, xy, typeof color === "function" ? color(charSprite) : color, scaleXy, pattern);
+                u_.assertUnreachable(arrangedGlyph);
             }
         }
     }
 }
-_DrawText_canvas = new WeakMap(), _DrawText_sprite = new WeakMap(), _DrawText_pixels = new WeakMap();
+_DrawText_canvas = new WeakMap(), _DrawText_assets = new WeakMap(), _DrawText_sprite = new WeakMap(), _DrawText_pixels = new WeakMap();

@@ -10,8 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxAnimatedSprite_sprites, _BpxAnimatedSprite_loop;
-import { v_ } from "../misc/Vector2d";
-import { timer_ } from "../timer/Timer";
+import { timer_, v_ } from "../shorthands";
 import { BpxSprite } from "./Sprite";
 export function aspr_(imageUrl) {
     return (w, h, xys) => {

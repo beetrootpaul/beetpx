@@ -51,5 +51,6 @@ export class BpxDrawingPattern {
     }
 }
 _BpxDrawingPattern_bits = new WeakMap();
+
 BpxDrawingPattern.primaryOnly = BpxDrawingPattern.of(65535);
 BpxDrawingPattern.secondaryOnly = BpxDrawingPattern.of(0);

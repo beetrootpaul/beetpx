@@ -12,14 +12,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _BpxTimer_instances, _BpxTimer_frames, _BpxTimer_loop, _BpxTimer_offsetFrame, _BpxTimer_pausedFrame, _BpxTimer_tRaw_get;
 import { BeetPx } from "../BeetPx";
 import { BpxUtils } from "../Utils";
-export function timer_(frames, opts) {
-    return BpxTimer.for({
-        frames,
-        loop: opts?.loop ?? false,
-        pause: opts?.pause ?? false,
-        delayFrames: opts?.delayFrames ?? 0,
-    });
-}
 export class BpxTimer {
     static for(params) {
         return new BpxTimer(params);
