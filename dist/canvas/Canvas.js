@@ -30,7 +30,7 @@ export class Canvas {
     setClippingRegion(xy, wh) {
         const prev = [
             BpxVector2d.of(__classPrivateFieldGet(this, _Canvas_minX, "f"), __classPrivateFieldGet(this, _Canvas_minY, "f")),
-            BpxVector2d.of((__classPrivateFieldGet(this, _Canvas_maxX, "f") - __classPrivateFieldGet(this, _Canvas_minX, "f") + 1, __classPrivateFieldGet(this, _Canvas_maxY, "f") - __classPrivateFieldGet(this, _Canvas_minY, "f") + 1)),
+            BpxVector2d.of(__classPrivateFieldGet(this, _Canvas_maxX, "f") - __classPrivateFieldGet(this, _Canvas_minX, "f") + 1, __classPrivateFieldGet(this, _Canvas_maxY, "f") - __classPrivateFieldGet(this, _Canvas_minY, "f") + 1),
         ];
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         __classPrivateFieldSet(this, _Canvas_minX, xyMinInclusive.x, "f");
