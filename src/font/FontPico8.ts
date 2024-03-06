@@ -10,98 +10,55 @@ export class BpxFontPico8 extends BpxFont {
 
   spriteSheetUrls = [".beetpx/pico-8-font.png"];
 
-  getGlyphFor(char: string): BpxGlyph {
-    switch (char.toLowerCase()) {
-      case " ":
-        return { type: "blank", advanceX: 4 };
-      case "0":
-        return this.#spriteGlyph(0, 3);
-      case "1":
-        return this.#spriteGlyph(1, 3);
-      case "2":
-        return this.#spriteGlyph(2, 3);
-      case "3":
-        return this.#spriteGlyph(3, 3);
-      case "4":
-        return this.#spriteGlyph(4, 3);
-      case "5":
-        return this.#spriteGlyph(5, 3);
-      case "6":
-        return this.#spriteGlyph(6, 3);
-      case "7":
-        return this.#spriteGlyph(7, 3);
-      case "8":
-        return this.#spriteGlyph(8, 3);
-      case "9":
-        return this.#spriteGlyph(9, 3);
-      case "@":
-        return this.#spriteGlyph(0, 4);
-      case "?":
-        return this.#spriteGlyph(15, 3);
-      case "&":
-        return this.#spriteGlyph(6, 2);
-      case "/":
-        return this.#spriteGlyph(15, 2);
-      case ".":
-        return this.#spriteGlyph(14, 2);
-      case ":":
-        return this.#spriteGlyph(10, 3);
-      case "a":
-        return this.#spriteGlyph(1, 6);
-      case "b":
-        return this.#spriteGlyph(2, 6);
-      case "c":
-        return this.#spriteGlyph(3, 6);
-      case "d":
-        return this.#spriteGlyph(4, 6);
-      case "e":
-        return this.#spriteGlyph(5, 6);
-      case "f":
-        return this.#spriteGlyph(6, 6);
-      case "g":
-        return this.#spriteGlyph(7, 6);
-      case "h":
-        return this.#spriteGlyph(8, 6);
-      case "i":
-        return this.#spriteGlyph(9, 6);
-      case "j":
-        return this.#spriteGlyph(10, 6);
-      case "k":
-        return this.#spriteGlyph(11, 6);
-      case "l":
-        return this.#spriteGlyph(12, 6);
-      case "m":
-        return this.#spriteGlyph(13, 6);
-      case "n":
-        return this.#spriteGlyph(14, 6);
-      case "o":
-        return this.#spriteGlyph(15, 6);
-      case "p":
-        return this.#spriteGlyph(0, 7);
-      case "q":
-        return this.#spriteGlyph(1, 7);
-      case "r":
-        return this.#spriteGlyph(2, 7);
-      case "s":
-        return this.#spriteGlyph(3, 7);
-      case "t":
-        return this.#spriteGlyph(4, 7);
-      case "u":
-        return this.#spriteGlyph(5, 7);
-      case "v":
-        return this.#spriteGlyph(6, 7);
-      case "w":
-        return this.#spriteGlyph(7, 7);
-      case "x":
-        return this.#spriteGlyph(8, 7);
-      case "y":
-        return this.#spriteGlyph(9, 7);
-      case "z":
-        return this.#spriteGlyph(10, 7);
-      default:
-        return { type: "none" };
-    }
+  getGlyph(char: string): BpxGlyph | undefined {
+    return this.glyphs.get(char.toLowerCase());
   }
+
+  glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
+    [" ", { type: "whitespace", advanceX: 4 }],
+    ["0", this.#spriteGlyph(0, 3)],
+    ["1", this.#spriteGlyph(1, 3)],
+    ["2", this.#spriteGlyph(2, 3)],
+    ["3", this.#spriteGlyph(3, 3)],
+    ["4", this.#spriteGlyph(4, 3)],
+    ["5", this.#spriteGlyph(5, 3)],
+    ["6", this.#spriteGlyph(6, 3)],
+    ["7", this.#spriteGlyph(7, 3)],
+    ["8", this.#spriteGlyph(8, 3)],
+    ["9", this.#spriteGlyph(9, 3)],
+    ["@", this.#spriteGlyph(0, 4)],
+    ["?", this.#spriteGlyph(15, 3)],
+    ["&", this.#spriteGlyph(6, 2)],
+    ["/", this.#spriteGlyph(15, 2)],
+    [".", this.#spriteGlyph(14, 2)],
+    [":", this.#spriteGlyph(10, 3)],
+    ["a", this.#spriteGlyph(1, 6)],
+    ["b", this.#spriteGlyph(2, 6)],
+    ["c", this.#spriteGlyph(3, 6)],
+    ["d", this.#spriteGlyph(4, 6)],
+    ["e", this.#spriteGlyph(5, 6)],
+    ["f", this.#spriteGlyph(6, 6)],
+    ["g", this.#spriteGlyph(7, 6)],
+    ["h", this.#spriteGlyph(8, 6)],
+    ["i", this.#spriteGlyph(9, 6)],
+    ["j", this.#spriteGlyph(10, 6)],
+    ["k", this.#spriteGlyph(11, 6)],
+    ["l", this.#spriteGlyph(12, 6)],
+    ["m", this.#spriteGlyph(13, 6)],
+    ["n", this.#spriteGlyph(14, 6)],
+    ["o", this.#spriteGlyph(15, 6)],
+    ["p", this.#spriteGlyph(0, 7)],
+    ["q", this.#spriteGlyph(1, 7)],
+    ["r", this.#spriteGlyph(2, 7)],
+    ["s", this.#spriteGlyph(3, 7)],
+    ["t", this.#spriteGlyph(4, 7)],
+    ["u", this.#spriteGlyph(5, 7)],
+    ["v", this.#spriteGlyph(6, 7)],
+    ["w", this.#spriteGlyph(7, 7)],
+    ["x", this.#spriteGlyph(8, 7)],
+    ["y", this.#spriteGlyph(9, 7)],
+    ["z", this.#spriteGlyph(10, 7)],
+  ]);
 
   #spriteGlyph(tileX: number, tileY: number): BpxGlyph {
     // TODO: where to define the image URL? to derive it from PICO-8 definition?

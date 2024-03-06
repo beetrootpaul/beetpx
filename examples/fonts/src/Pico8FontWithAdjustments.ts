@@ -1,25 +1,25 @@
-import { BpxPixels, spr_ } from "../../../src";
-import { BpxGlyph } from "../../../src/font/Font";
-import { BpxFontPico8 } from "../../../src/font/FontPico8";
+import { BpxFontPico8, BpxGlyph, BpxPixels, spr_ } from "../../../src";
 
 export class Pico8FontWithAdjustments extends BpxFontPico8 {
-  leading = 6;
+  constructor() {
+    super();
 
-  getGlyphFor(char: string): BpxGlyph {
-    switch (char) {
-      case "]":
-        return this.#spriteGlyph(13, 5);
-      case "[":
-        return this.#pixelsGlyph(`
-          ##-
-          #--
-          #--
-          #--
-          ##-
-        `);
-      default:
-        return super.getGlyphFor(char);
-    }
+    this.leading = 8;
+
+    this.glyphs = new Map<string, BpxGlyph>([
+      ...this.glyphs,
+      ["]", this.#spriteGlyph(13, 5)],
+      [
+        "[",
+        this.#pixelsGlyph(`
+        ##-
+        #--
+        #--
+        #--
+        ##-
+      `),
+      ],
+    ]);
   }
 
   #spriteGlyph(tileX: number, tileY: number): BpxGlyph {

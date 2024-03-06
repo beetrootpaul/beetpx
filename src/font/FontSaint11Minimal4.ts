@@ -16,419 +16,13 @@ import { BpxFont, BpxGlyph } from "./Font";
 // TODO: update the name in README
 export class BpxFontSaint11Minimal4 extends BpxFont {
   ascent = 4;
-  descent = 2;
+  descent = 0;
   leading = 5;
 
   spriteSheetUrls = [];
 
-  getGlyphFor(char: string): BpxGlyph {
-    switch (char.toLowerCase()) {
-      case " ":
-        return this.#pixelsGlyph(`
-          ----
-          ----
-          ----
-          ----
-        `);
-      case ".":
-        return this.#pixelsGlyph(`
-          -
-          -
-          -
-          #
-        `);
-      case ":":
-        return this.#pixelsGlyph(`
-          #
-          -
-          -
-          #
-        `);
-      case "!":
-        return this.#pixelsGlyph(`
-          #
-          #
-          #
-          -
-          #
-        `);
-      case "?":
-        return this.#pixelsGlyph(`
-          -#-
-          #-#
-          --#
-          -#-
-          -#-
-        `);
-      case "'":
-        return this.#pixelsGlyph(`
-          #
-          #
-          -
-          -
-          -
-        `);
-      case '"':
-        return this.#pixelsGlyph(`
-          #-#
-          #-#
-          ---
-          ---
-          ---
-        `);
-      case "*":
-        return this.#pixelsGlyph(`
-          #-#
-          -#-
-          #-#
-          ---
-        `);
-      case "/":
-        return this.#pixelsGlyph(`
-          --#
-          -#-
-          -#-
-          #--
-        `);
-      case "+":
-        return this.#pixelsGlyph(`
-          ---
-          -#-
-          ###
-          -#-
-        `);
-      case "-":
-        return this.#pixelsGlyph(`
-          ---
-          ---
-          ###
-          ---
-        `);
-      case "0":
-        return this.#pixelsGlyph(`
-          -#-
-          #-#
-          #-#
-          -#-
-        `);
-      case "1":
-        return this.#pixelsGlyph(`
-          -#-
-          ##-
-          -#-
-          -#-
-        `);
-      case "2":
-        return this.#pixelsGlyph(`
-          ##-
-          -##
-          #--
-          ###
-        `);
-      case "3":
-        return this.#pixelsGlyph(`
-          ###
-          -##
-          --#
-          ###
-        `);
-      case "4":
-        return this.#pixelsGlyph(`
-          #-#
-          #-#
-          ###
-          --#
-        `);
-      case "5":
-        return this.#pixelsGlyph(`
-          ###
-          ##-
-          --#
-          ##-
-        `);
-      case "6":
-        return this.#pixelsGlyph(`
-          -#-
-          #--
-          ###
-          -#-
-        `);
-      case "7":
-        return this.#pixelsGlyph(`
-          ###
-          --#
-          -#-
-          #--
-        `);
-      case "8":
-        return this.#pixelsGlyph(`
-          ###
-          -#-
-          #-#
-          -#-
-        `);
-      case "9":
-        return this.#pixelsGlyph(`
-          ###
-          ###
-          --#
-          ##-
-        `);
-      case "%":
-        return this.#pixelsGlyph(`
-          #--#
-          --#-
-          -#--
-          #--#
-        `);
-      case "$":
-        return this.#pixelsGlyph(`
-          -##
-          ##-
-          -##
-          ##-
-        `);
-      case "(":
-        return this.#pixelsGlyph(`
-          -#
-          #-
-          #-
-          -#
-        `);
-      case ")":
-        return this.#pixelsGlyph(`
-          #-
-          -#
-          -#
-          #-
-        `);
-      case "[":
-        return this.#pixelsGlyph(`
-          ##
-          #-
-          #-
-          ##
-        `);
-      case "]":
-        return this.#pixelsGlyph(`
-          ##
-          -#
-          -#
-          ##
-        `);
-      case "{":
-        return this.#pixelsGlyph(`
-          -#
-          ##
-          ##
-          -#
-        `);
-      case "}":
-        return this.#pixelsGlyph(`
-          #-
-          ##
-          ##
-          #-
-        `);
-      case "<":
-        return this.#pixelsGlyph(`
-          ---
-          -##
-          #--
-          -##
-        `);
-      case ">":
-        return this.#pixelsGlyph(`
-          ##-
-          --#
-          ##-
-          ---
-        `);
-      case "a":
-        return this.#pixelsGlyph(`
-          ##-
-          #-#
-          ###
-          #-#
-        `);
-      case "b":
-        return this.#pixelsGlyph(`
-          #--
-          ##-
-          #-#
-          ###
-        `);
-      case "c":
-        return this.#pixelsGlyph(`
-          -##
-          #--
-          #--
-          -##
-        `);
-      case "d":
-        return this.#pixelsGlyph(`
-          ##-
-          #-#
-          #-#
-          ##-
-        `);
-      case "e":
-        return this.#pixelsGlyph(`
-          ###
-          ##-
-          #--
-          ###
-        `);
-      case "f":
-        return this.#pixelsGlyph(`
-          ###
-          #--
-          ##-
-          #--
-        `);
-      case "g":
-        return this.#pixelsGlyph(`
-          -##
-          #--
-          #-#
-          -##
-        `);
-      case "h":
-        return this.#pixelsGlyph(`
-          #--
-          ##-
-          #-#
-          #-#
-        `);
-      case "i":
-        return this.#pixelsGlyph(`
-          #
-          #
-          #
-          #
-        `);
-      case "j":
-        return this.#pixelsGlyph(`
-          ##
-          -#
-          -#
-          #-
-        `);
-      case "k":
-        return this.#pixelsGlyph(`
-          #-#
-          ##-
-          #-#
-          #-#
-        `);
-      case "l":
-        return this.#pixelsGlyph(`
-          #-
-          #-
-          #-
-          ##
-        `);
-      case "m":
-        return this.#pixelsGlyph(`
-          #-#
-          ###
-          #-#
-          #-#
-        `);
-      case "n":
-        return this.#pixelsGlyph(`
-          ##-
-          #-#
-          #-#
-          #-#
-        `);
-      case "o":
-        return this.#pixelsGlyph(`
-          -##
-          #-#
-          #-#
-          ##-
-        `);
-      case "p":
-        return this.#pixelsGlyph(`
-          ###
-          #-#
-          ##-
-          #--
-        `);
-      case "q":
-        return this.#pixelsGlyph(`
-          -#-
-          #-#
-          ###
-          -#-
-        `);
-      case "r":
-        return this.#pixelsGlyph(`
-          ##-
-          #-#
-          ##-
-          #-#
-        `);
-      case "s":
-        return this.#pixelsGlyph(`
-          -##
-          ##-
-          --#
-          ##-
-        `);
-      case "t":
-        return this.#pixelsGlyph(`
-          ###
-          -#-
-          -#-
-          -#-
-        `);
-      case "u":
-        return this.#pixelsGlyph(`
-          #-#
-          #-#
-          #-#
-          ##-
-        `);
-      case "v":
-        return this.#pixelsGlyph(`
-          #-#
-          #-#
-          #-#
-          -#-
-        `);
-      case "w":
-        return this.#pixelsGlyph(`
-          #-#
-          #-#
-          ###
-          #-#
-        `);
-      case "x":
-        return this.#pixelsGlyph(`
-          #-#
-          -#-
-          #-#
-          #-#
-        `);
-      case "y":
-        return this.#pixelsGlyph(`
-          #-#
-          #-#
-          -#-
-          -#-
-        `);
-      case "z":
-        return this.#pixelsGlyph(`
-          ###
-          -#-
-          #--
-          ###
-        `);
-      default:
-        return { type: "none" };
-    }
+  getGlyph(char: string): BpxGlyph | undefined {
+    return this.glyphs.get(char.toLowerCase());
   }
 
   #pixelsGlyph(ascii: string): BpxGlyph {
@@ -439,6 +33,526 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
       advanceX: pixels.size.x + 1,
     };
   }
+
+  glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
+    [
+      " ",
+      this.#pixelsGlyph(`
+        ----
+        ----
+        ----
+        ----
+      `),
+    ],
+    [
+      ".",
+      this.#pixelsGlyph(`
+        -
+        -
+        -
+        #
+      `),
+    ],
+    [
+      ":",
+      this.#pixelsGlyph(`
+        #
+        -
+        -
+        #
+      `),
+    ],
+    [
+      "!",
+      this.#pixelsGlyph(`
+        #
+        #
+        #
+        -
+        #
+      `),
+    ],
+    [
+      "?",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        --#
+        -#-
+        -#-
+      `),
+    ],
+    [
+      "'",
+      this.#pixelsGlyph(`
+        #
+        #
+        -
+        -
+        -
+      `),
+    ],
+    [
+      '"',
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        ---
+        ---
+        ---
+      `),
+    ],
+    [
+      "*",
+      this.#pixelsGlyph(`
+        #-#
+        -#-
+        #-#
+        ---
+      `),
+    ],
+    [
+      "/",
+      this.#pixelsGlyph(`
+        --#
+        -#-
+        -#-
+        #--
+      `),
+    ],
+    [
+      "+",
+      this.#pixelsGlyph(`
+        ---
+        -#-
+        ###
+        -#-
+      `),
+    ],
+    [
+      "-",
+      this.#pixelsGlyph(`
+        ---
+        ---
+        ###
+        ---
+      `),
+    ],
+    [
+      "0",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        #-#
+        -#-
+      `),
+    ],
+    [
+      "1",
+      this.#pixelsGlyph(`
+        -#-
+        ##-
+        -#-
+        -#-
+      `),
+    ],
+    [
+      "2",
+      this.#pixelsGlyph(`
+        ##-
+        -##
+        #--
+        ###
+      `),
+    ],
+    [
+      "3",
+      this.#pixelsGlyph(`
+        ###
+        -##
+        --#
+        ###
+      `),
+    ],
+    [
+      "4",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        ###
+        --#
+      `),
+    ],
+    [
+      "5",
+      this.#pixelsGlyph(`
+        ###
+        ##-
+        --#
+        ##-
+      `),
+    ],
+    [
+      "6",
+      this.#pixelsGlyph(`
+        -#-
+        #--
+        ###
+        -#-
+      `),
+    ],
+    [
+      "7",
+      this.#pixelsGlyph(`
+        ###
+        --#
+        -#-
+        #--
+      `),
+    ],
+    [
+      "8",
+      this.#pixelsGlyph(`
+        ###
+        -#-
+        #-#
+        -#-
+      `),
+    ],
+    [
+      "9",
+      this.#pixelsGlyph(`
+        ###
+        ###
+        --#
+        ##-
+      `),
+    ],
+    [
+      "%",
+      this.#pixelsGlyph(`
+        #--#
+        --#-
+        -#--
+        #--#
+      `),
+    ],
+    [
+      "$",
+      this.#pixelsGlyph(`
+        -##
+        ##-
+        -##
+        ##-
+      `),
+    ],
+    [
+      "(",
+      this.#pixelsGlyph(`
+        -#
+        #-
+        #-
+        -#
+      `),
+    ],
+    [
+      ")",
+      this.#pixelsGlyph(`
+        #-
+        -#
+        -#
+        #-
+      `),
+    ],
+    [
+      "[",
+      this.#pixelsGlyph(`
+        ##
+        #-
+        #-
+        ##
+      `),
+    ],
+    [
+      "]",
+      this.#pixelsGlyph(`
+        ##
+        -#
+        -#
+        ##
+      `),
+    ],
+    [
+      "{",
+      this.#pixelsGlyph(`
+        -#
+        ##
+        ##
+        -#
+      `),
+    ],
+    [
+      "}",
+      this.#pixelsGlyph(`
+        #-
+        ##
+        ##
+        #-
+      `),
+    ],
+    [
+      "<",
+      this.#pixelsGlyph(`
+        ---
+        -##
+        #--
+        -##
+      `),
+    ],
+    [
+      ">",
+      this.#pixelsGlyph(`
+        ##-
+        --#
+        ##-
+        ---
+      `),
+    ],
+    [
+      "a",
+      this.#pixelsGlyph(`
+        ##-
+        #-#
+        ###
+        #-#
+      `),
+    ],
+    [
+      "b",
+      this.#pixelsGlyph(`
+        #--
+        ##-
+        #-#
+        ###
+      `),
+    ],
+    [
+      "c",
+      this.#pixelsGlyph(`
+        -##
+        #--
+        #--
+        -##
+      `),
+    ],
+    [
+      "d",
+      this.#pixelsGlyph(`
+        ##-
+        #-#
+        #-#
+        ##-
+      `),
+    ],
+    [
+      "e",
+      this.#pixelsGlyph(`
+        ###
+        ##-
+        #--
+        ###
+      `),
+    ],
+    [
+      "f",
+      this.#pixelsGlyph(`
+        ###
+        #--
+        ##-
+        #--
+      `),
+    ],
+    [
+      "g",
+      this.#pixelsGlyph(`
+        -##
+        #--
+        #-#
+        -##
+      `),
+    ],
+    [
+      "h",
+      this.#pixelsGlyph(`
+        #--
+        ##-
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "i",
+      this.#pixelsGlyph(`
+        #
+        #
+        #
+        #
+      `),
+    ],
+    [
+      "j",
+      this.#pixelsGlyph(`
+        ##
+        -#
+        -#
+        #-
+      `),
+    ],
+    [
+      "k",
+      this.#pixelsGlyph(`
+        #-#
+        ##-
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "l",
+      this.#pixelsGlyph(`
+        #-
+        #-
+        #-
+        ##
+      `),
+    ],
+    [
+      "m",
+      this.#pixelsGlyph(`
+        #-#
+        ###
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "n",
+      this.#pixelsGlyph(`
+        ##-
+        #-#
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "o",
+      this.#pixelsGlyph(`
+        -##
+        #-#
+        #-#
+        ##-
+      `),
+    ],
+    [
+      "p",
+      this.#pixelsGlyph(`
+        ###
+        #-#
+        ##-
+        #--
+      `),
+    ],
+    [
+      "q",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        ###
+        -#-
+      `),
+    ],
+    [
+      "r",
+      this.#pixelsGlyph(`
+        ##-
+        #-#
+        ##-
+        #-#
+      `),
+    ],
+    [
+      "s",
+      this.#pixelsGlyph(`
+        -##
+        ##-
+        --#
+        ##-
+      `),
+    ],
+    [
+      "t",
+      this.#pixelsGlyph(`
+        ###
+        -#-
+        -#-
+        -#-
+      `),
+    ],
+    [
+      "u",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        #-#
+        ##-
+      `),
+    ],
+    [
+      "v",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        #-#
+        -#-
+      `),
+    ],
+    [
+      "w",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        ###
+        #-#
+      `),
+    ],
+    [
+      "x",
+      this.#pixelsGlyph(`
+        #-#
+        -#-
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "y",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        -#-
+        -#-
+      `),
+    ],
+    [
+      "z",
+      this.#pixelsGlyph(`
+        ###
+        -#-
+        #--
+        ###
+      `),
+    ],
+  ]);
 }
 
 export const font_saint11Minimal4_ = new BpxFontSaint11Minimal4();

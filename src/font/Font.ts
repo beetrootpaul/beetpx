@@ -7,8 +7,7 @@ import { u_ } from "../Utils";
 export type BpxGlyph =
   | { type: "sprite"; sprite: BpxSprite; advanceX: number }
   | { type: "pixels"; pixels: BpxPixels; advanceX: number }
-  | { type: "blank"; advanceX: number }
-  | { type: "none" };
+  | { type: "whitespace"; advanceX: number };
 
 export type BpxArrangedGlyph = {
   /** Left-top position of a glyph in relation to the left-top of the entire text. */
@@ -37,7 +36,10 @@ export abstract class BpxFont {
   /** URLs of sprite sheets used by glyphs of this font. */
   abstract readonly spriteSheetUrls: BpxImageUrl[];
 
-  abstract getGlyphFor(char: string): BpxGlyph;
+  // TODO: add ligatures to the example? Handle "[c1]" such way?
+  protected abstract readonly glyphs: Map<string, BpxGlyph>;
+
+  abstract getGlyph(char: string): BpxGlyph | undefined;
 
   // TODO: support glyphs for char sequences
   // TODO: test this function
@@ -49,12 +51,14 @@ export abstract class BpxFont {
       if (char === "\n") {
         xy = v_(0, xy.y + this.leading);
       } else {
-        const glyph = this.getGlyphFor(char);
-        if (glyph.type === "sprite") {
+        const glyph = this.getGlyph(char);
+        if (!glyph) {
+          // do nothing
+        } else if (glyph.type === "sprite") {
           arrangedGlyphs.push({
             type: "sprite",
             sprite: glyph.sprite,
-            xy: xy,
+            xy: xy.add(0, this.ascent).sub(0, glyph.sprite.size.y),
             // TODO: offset glyph
           });
           xy = xy.add(glyph.advanceX, 0);
@@ -62,14 +66,12 @@ export abstract class BpxFont {
           arrangedGlyphs.push({
             type: "pixels",
             pixels: glyph.pixels,
-            xy: xy,
+            xy: xy.add(0, this.ascent).sub(0, glyph.pixels.size.y),
             // TODO: offset glyph
           });
           xy = xy.add(glyph.advanceX, 0);
-        } else if (glyph.type === "blank") {
+        } else if (glyph.type === "whitespace") {
           xy = xy.add(glyph.advanceX, 0);
-        } else if (glyph.type === "none") {
-          // do nothing
         } else {
           u_.assertUnreachable(glyph);
         }
