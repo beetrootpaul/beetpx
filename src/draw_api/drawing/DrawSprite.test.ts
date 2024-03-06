@@ -149,25 +149,26 @@ describe("DrawSprite", () => {
   });
 
   describe("centering", () => {
-    const dts = drawingTestSetup(8, 7, c0);
-    const image = new TestImage({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      image: `
+    test("no centering", () => {
+      const dts = drawingTestSetup(8, 7, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
         # # # #
         # * * *
         # * # *
       `,
-    });
-    const s = spr_(image.uniqueUrl);
-    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
-      centerXy: [false, false],
-    });
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
+        centerXy: [false, false],
+      });
 
-    dts.canvas.expectToEqual({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      expectedImageAsAscii: `
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
         - - - - - - - -
         - - - - - - - -
         - - - - - - - -
@@ -176,29 +177,29 @@ describe("DrawSprite", () => {
         - - - # * # * -
         - - - - - - - -
       `,
+      });
     });
-  });
 
-  test("X centering", () => {
-    const dts = drawingTestSetup(8, 7, c0);
-    const image = new TestImage({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      image: `
+    test("X centering", () => {
+      const dts = drawingTestSetup(8, 7, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
         # # # #
         # * * *
         # * # *
       `,
-    });
-    const s = spr_(image.uniqueUrl);
-    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
-      centerXy: [true, false],
-    });
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
+        centerXy: [true, false],
+      });
 
-    dts.canvas.expectToEqual({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      expectedImageAsAscii: `
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
         - - - - - - - -
         - - - - - - - -
         - - - - - - - -
@@ -207,29 +208,29 @@ describe("DrawSprite", () => {
         - # * # * - - -
         - - - - - - - -
       `,
+      });
     });
-  });
 
-  test("Y centering", () => {
-    const dts = drawingTestSetup(8, 7, c0);
-    const image = new TestImage({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      image: `
+    test("Y centering", () => {
+      const dts = drawingTestSetup(8, 7, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
         # # # #
         # * * *
         # * # *
       `,
-    });
-    const s = spr_(image.uniqueUrl);
-    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
-      centerXy: [false, true],
-    });
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
+        centerXy: [false, true],
+      });
 
-    dts.canvas.expectToEqual({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      expectedImageAsAscii: `
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
         - - - - - - - -
         - - - - - - - -
         - - - # # # # -
@@ -238,29 +239,29 @@ describe("DrawSprite", () => {
         - - - - - - - -
         - - - - - - - -
       `,
+      });
     });
-  });
 
-  test("XY centering", () => {
-    const dts = drawingTestSetup(8, 7, c0);
-    const image = new TestImage({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      image: `
+    test("XY centering", () => {
+      const dts = drawingTestSetup(8, 7, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
         # # # #
         # * * *
         # * # *
       `,
-    });
-    const s = spr_(image.uniqueUrl);
-    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
 
-    dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
-      centerXy: [true, true],
-    });
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(3, 3), {
+        centerXy: [true, true],
+      });
 
-    dts.canvas.expectToEqual({
-      withMapping: { "-": c0, "#": c1, "*": c2 },
-      expectedImageAsAscii: `
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
         - - - - - - - -
         - - - - - - - -
         - # # # # - - -
@@ -269,6 +270,7 @@ describe("DrawSprite", () => {
         - - - - - - - -
         - - - - - - - -
       `,
+      });
     });
   });
 
