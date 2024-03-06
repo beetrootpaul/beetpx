@@ -11,7 +11,9 @@ export type BpxGlyph =
 
 export type BpxArrangedGlyph = {
   /** Left-top position of a glyph in relation to the left-top of the entire text. */
-  xy: BpxVector2d;
+  leftTop: BpxVector2d;
+  lineNumber: number;
+  char: string;
 } & (
   | {
       type: "sprite";
@@ -45,11 +47,13 @@ export abstract class BpxFont {
   // TODO: test this function
   arrangeGlyphsFor(text: string): BpxArrangedGlyph[] {
     const arrangedGlyphs: BpxArrangedGlyph[] = [];
-    let xy: BpxVector2d = v_0_0_;
+    let xy = v_0_0_;
+    let lineNumber = 0;
 
     for (const char of text) {
       if (char === "\n") {
         xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
+        lineNumber += 1;
       } else {
         const glyph = this.getGlyph(char);
         if (!glyph) {
@@ -57,8 +61,10 @@ export abstract class BpxFont {
         } else if (glyph.type === "sprite") {
           arrangedGlyphs.push({
             type: "sprite",
+            char: char,
             sprite: glyph.sprite,
-            xy: xy
+            lineNumber: lineNumber,
+            leftTop: xy
               .add(0, this.ascent)
               .sub(0, glyph.sprite.size.y)
               .add(glyph.offset ?? v_0_0_),
@@ -68,8 +74,10 @@ export abstract class BpxFont {
         } else if (glyph.type === "pixels") {
           arrangedGlyphs.push({
             type: "pixels",
+            char: char,
             pixels: glyph.pixels,
-            xy: xy
+            lineNumber: lineNumber,
+            leftTop: xy
               .add(0, this.ascent)
               .sub(0, glyph.pixels.size.y)
               .add(glyph.offset ?? v_0_0_),

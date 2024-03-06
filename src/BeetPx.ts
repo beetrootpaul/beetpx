@@ -241,12 +241,12 @@ export class BeetPx {
     return this.#tryGetEngine().drawApi.drawSprite(...args);
   };
 
-  static setFont: DrawApi["setFont"] = (...args) => {
-    return this.#tryGetEngine().drawApi.setFont(...args);
+  static useFont: DrawApi["useFont"] = (...args) => {
+    return this.#tryGetEngine().drawApi.useFont(...args);
   };
 
-  static getFont: DrawApi["getFont"] = (...args) => {
-    return this.#tryGetEngine().drawApi.getFont(...args);
+  static measureText: DrawApi["measureText"] = (...args) => {
+    return this.#tryGetEngine().drawApi.measureText(...args);
   };
 
   static drawText: DrawApi["drawText"] = (...args) => {

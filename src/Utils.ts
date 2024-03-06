@@ -1,6 +1,6 @@
 import { BeetPx } from "./BeetPx";
 import { BpxRgbColor } from "./color/RgbColor";
-import { BpxVector2d, v_, v_0_0_ } from "./misc/Vector2d";
+import { BpxVector2d, v_ } from "./misc/Vector2d";
 
 export class BpxUtils {
   /**
@@ -51,35 +51,6 @@ export class BpxUtils {
   }
 
   /**
-   * @returns {[BpxVector2d, BpxVector2d] } - XY and WH of the text,
-   *          where XY represents an offset from the initial top-left
-   *          corner where printing of the text would start. For example
-   *          imagine a font in which there are some chars higher by 1px
-   *          than standard height of other characters. In such case
-   *          returned XY would be (0,-1).
-   */
-  static measureText(text: string): [xy: BpxVector2d, wh: BpxVector2d] {
-    const charSprites = BeetPx.getFont()?.spritesFor(text) ?? [];
-
-    let minXy = v_0_0_;
-    let maxXy = v_0_0_;
-
-    for (const charSprite of charSprites) {
-      minXy = BpxVector2d.min(minXy, charSprite.positionInText);
-      maxXy = BpxVector2d.max(
-        maxXy,
-        charSprite.positionInText.add(
-          charSprite.type === "image"
-            ? charSprite.spriteXyWh[1]
-            : charSprite.pixels.wh,
-        ),
-      );
-    }
-
-    return [minXy, maxXy.sub(minXy)];
-  }
-
-  /**
    * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
    */
   static mod(value: number, modulus: number): number {
@@ -118,9 +89,9 @@ export class BpxUtils {
     } = {},
   ): void {
     for (const offset of BpxUtils.offset8Directions()) {
-      BeetPx.drawText(text, canvasXy1.add(offset), outlineColor, opts);
+      // BeetPx.drawText(text, canvasXy1.add(offset), outlineColor, opts);
     }
-    BeetPx.drawText(text, canvasXy1, textColor, opts);
+    // BeetPx.drawText(text, canvasXy1, textColor, opts);
   }
 
   static randomElementOf<TElement>(array: TElement[]): TElement | undefined {

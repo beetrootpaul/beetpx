@@ -4,7 +4,7 @@ import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMa
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { BpxDrawingPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../DrawingPattern";
 
 export class DrawRect {
   readonly #canvas: Canvas;

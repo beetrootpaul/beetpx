@@ -1,8 +1,8 @@
 import { describe, test } from "@jest/globals";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { v_ } from "../../misc/Vector2d";
+import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
-import { BpxDrawingPattern } from "../Pattern";
 import { BpxPixels } from "../Pixels";
 
 describe("DrawPixels", () => {

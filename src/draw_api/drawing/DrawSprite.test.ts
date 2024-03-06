@@ -3,8 +3,8 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { v_ } from "../../misc/Vector2d";
 import { spr_ } from "../../sprite/Sprite";
+import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
-import { BpxDrawingPattern } from "../Pattern";
 import { TestImage } from "../TestImage";
 
 describe("DrawSprite", () => {

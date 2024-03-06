@@ -3,8 +3,8 @@ import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMa
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { v_ } from "../../misc/Vector2d";
+import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
-import { BpxDrawingPattern } from "../Pattern";
 
 describe("DrawEllipse", () => {
   const c0 = BpxRgbColor.fromCssHex("#010203");

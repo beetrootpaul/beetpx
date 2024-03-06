@@ -1,89 +1,151 @@
 import {
   b_,
-  BpxFontSaint11Minimal4,
-  BpxFontSaint11Minimal5,
+  BpxFont,
+  BpxVector2d,
+  font_pico8_,
+  font_saint11Minimal4_,
+  font_saint11Minimal5_,
   rgb_p8_,
   u_,
   v_,
+  v_0_0_,
 } from "../../../src";
-import { BpxFontPico8 } from "../../../src/font/BpxFontPico8";
-import { CustomFont } from "./CustomFont";
-import { CustomFontExternalImage } from "./CustomFontExternalImage";
-import { Pico8WithAdjustments } from "./Pico8WithAdjustments";
+import { customFont } from "./CustomFont";
+import { customFontExternalImage } from "./CustomFontExternalImage";
+import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
 // TODO: take care of all TODOs
 // TODO: update tests, write new ones
-// TODO: remove fonts from assets to load, keep only images there. Then, simplify font loading to not fail if pixels font and no image fetcehd yet
+// TODO: simplify font loading to not fail if pixels font and no image fetched yet
 // TODO: better font characteristic
 // TODO: font fg color to replace or bg color to remove? Or some function to blend fonts with antialiasing in them?
 // TODO: tests for the markup edge cases like nesting, unclosing, escaping what is supposed to not be a markup, unrecognized markup, turning markup on and off
-// TODO: utils helper to inject "\n" in order to make text fit within
 
-// TODO: "\n" support + ability to change line height?
-// TODO: consider allowing to make
+// TODO: ability to change line height?
 // TODO: markup for changing a color of a word (then, remove color by the char) + turning it on/off depending on whether markup definition is passed or not
 // TODO: a way to print a markup without interpreting it as a markup ("[[c1]"?]
 const text =
-  "The quick [c1]brown[c0] fox jumps\nover the [c2]lazy[c0] dog\n0123456789 -+= .,:;!?\n@#$%^&* ()[]{}<> \\|/'\"";
+  "The quick [c1]brown[c0] fox jumps\nover the [c2]lazy[c0] dog\n0123456789 -+= .,:;!? @#$%^&* ()[]{}<> \\|/'\"";
 
 b_.init({
   gameCanvasSize: "256x256",
   assets: {
     images: [
-      // TODO: make it NOT require a new instance just to grab the image URL
-      { url: new CustomFont().imageUrl },
-      { url: new CustomFontExternalImage().imageUrl },
+      // TODO: simplify the list of assets to be just a list of strings and type recognized by the extension (will it work for some strange URLs though?)
+      ...customFont.spriteSheetUrls.map((url) => ({ url })),
+      ...customFontExternalImage.spriteSheetUrls.map((url) => ({ url })),
     ],
   },
 }).then(async ({ startGame }) => {
+  const minZoom = 1;
+  const maxZoom = 8;
+  let zoom = minZoom;
+
+  let cameraXy = v_0_0_;
+
+  b_.setOnUpdate(() => {
+    if (b_.wasButtonJustPressed("a")) {
+      const newZoom = u_.clamp(minZoom, zoom * 2, maxZoom);
+      cameraXy = cameraXy.mul(newZoom / zoom);
+      zoom = newZoom;
+    }
+    if (b_.wasButtonJustPressed("b")) {
+      const newZoom = u_.clamp(minZoom, zoom / 2, maxZoom);
+      cameraXy = cameraXy.mul(newZoom / zoom);
+      zoom = newZoom;
+    }
+    cameraXy = cameraXy.add(b_.getPressedDirection().mul(2).mul(zoom));
+  });
+
   b_.setOnDraw(() => {
+    b_.setCameraXy(cameraXy);
+
     b_.clearCanvas(rgb_p8_.wine);
 
-    let cursor = v_(8, 2);
+    let cursor = v_(8, 2).mul(zoom);
 
-    // TODO: implement and demonstrate line breaking within a given width
     for (const font of [
-      // TODO: do not require a construction?
       // TODO: add missing chars to PICO-8 font, but then rework how to demonstrate extending/overriding the built-in font
-      new BpxFontPico8(),
-      new Pico8WithAdjustments(),
-      new BpxFontSaint11Minimal4(),
-      new BpxFontSaint11Minimal5(),
-      new CustomFont(),
-      new CustomFontExternalImage(),
+      font_pico8_,
+      pico8FontWithAdjustments,
+      font_saint11Minimal4_,
+      font_saint11Minimal5_,
+      customFont,
+      customFontExternalImage,
     ]) {
-      b_.setFont(font);
+      b_.useFont(font);
 
-      const [_, wh] = u_.measureText(text);
+      const textWh = b_.measureText(text, { scaleXy: v_(zoom) });
+      drawBox(textWh, cursor, zoom);
+      b_.drawText(cursor, rgb_p8_.peach, text, { scaleXy: v_(zoom) });
 
-      // TODO: drawn rect does not cover the blank characters if they are at the end
-      b_.drawRectFilled(cursor.sub(1), wh.add(2), rgb_p8_.storm);
+      drawMarkers(font, cursor, zoom);
 
-      b_.drawText(text, cursor, rgb_p8_.peach);
-
-      // TODO: derive the y offset from the font's single line size
-      b_.drawLine(cursor.add(-6, 0), v_(3, 1), rgb_p8_.pink);
-      b_.drawLine(cursor.add(-5, 0), v_(1, 4), rgb_p8_.pink);
-      b_.drawLine(cursor.add(-6, 4), v_(3, 1), rgb_p8_.pink);
-
-      cursor = cursor.add(0, wh.y + 5);
-
-      // TODO: measuring API - proposal A
-      // const { wh } = u_.measureText(text);
-      // b_.drawRectFilled(cursor.sub(1), wh.add(2), rgb_p8_.storm);
-      // b_.drawText(text, cursor, rgb_p8_.peach);
-
-      // TODO: measuring API - proposal B
-      // const computedText: BpxComputedText = b_.computeText(text);
-      // b_.drawRect(cursor.sub(1), computedText.wh.add(2), rgb_p8_.storm);
-      // b_.drawText(computedText, cursor, rgb_p8_.peach);
-
-      // TODO: measuring API - proposal C
-      // b_.drawText(b_.computeText(text), cursor, rgb_p8_.peach);
-
-      // TODO: measuring API - proposal D
-      // b_.drawText(text, cursor, rgb_p8_.peach);
+      cursor = cursor.add(0, textWh.y).add(v_(0, 4).mul(zoom));
     }
   });
   await startGame();
 });
+
+function drawBox(textWh: BpxVector2d, cursor: BpxVector2d, zoom: number): void {
+  //
+  // a border
+  //
+  b_.drawRectFilled(
+    cursor.sub(v_(zoom)),
+    textWh.add(v_(2).mul(zoom)),
+    rgb_p8_.dusk,
+  );
+
+  //
+  // a background
+  //
+  b_.drawRectFilled(cursor, textWh, rgb_p8_.storm);
+}
+
+function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
+  //
+  // the ascent
+  //
+  b_.drawRectFilled(
+    cursor.add(v_(-5, 0).mul(zoom)),
+    v_(1, font.ascent).mul(zoom),
+    rgb_p8_.pink,
+  );
+
+  //
+  // the lowest pixel of the ascent
+  //
+  b_.drawRectFilled(
+    cursor.add(v_(-4, font.ascent - 1).mul(zoom)),
+    v_(zoom),
+    rgb_p8_.pink,
+  );
+
+  //
+  // the descent
+  //
+  b_.drawRectFilled(
+    cursor.add(v_(-5, font.ascent).mul(zoom)),
+    v_(1, font.descent).mul(zoom),
+    rgb_p8_.pink,
+  );
+
+  //
+  // the lowest pixel of the descent
+  //
+  b_.drawRectFilled(
+    cursor.add(v_(-6, font.ascent + font.descent - 1).mul(zoom)),
+    v_(zoom),
+    rgb_p8_.pink,
+  );
+
+  //
+  // the line gap
+  //
+  b_.drawRectFilled(
+    cursor.add(v_(-5, font.ascent + font.descent).mul(zoom)),
+    v_(1, font.lineGap).mul(zoom),
+    rgb_p8_.pink,
+  );
+}

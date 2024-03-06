@@ -3,7 +3,7 @@ import { Canvas } from "../../canvas/Canvas";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
 import { BpxSprite } from "../../sprite/Sprite";
-import { BpxDrawingPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../DrawingPattern";
 import { PreparedSprites } from "../PreparedSprites";
 
 export class DrawSprite {

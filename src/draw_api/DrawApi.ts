@@ -4,12 +4,11 @@ import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMappi
 import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { BpxFontPico8 } from "../font/BpxFontPico8";
-import { BpxCharSprite, BpxFont } from "../font/Font";
+import { BpxFont } from "../font/Font";
+import { font_pico8_ } from "../font/FontPico8";
 import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
 import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
 import { BpxSprite } from "../sprite/Sprite";
-import { BpxUtils } from "../Utils";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
 import { DrawLine } from "./drawing/DrawLine";
@@ -18,7 +17,7 @@ import { DrawPixels } from "./drawing/DrawPixels";
 import { DrawRect } from "./drawing/DrawRect";
 import { DrawSprite } from "./drawing/DrawSprite";
 import { DrawText } from "./drawing/DrawText";
-import { BpxDrawingPattern } from "./Pattern";
+import { BpxDrawingPattern } from "./DrawingPattern";
 import { BpxPixels } from "./Pixels";
 
 type DrawApiOptions = {
@@ -45,7 +44,7 @@ export class DrawApi {
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
-  #font: BpxFont;
+  #font: BpxFont = font_pico8_;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -59,10 +58,7 @@ export class DrawApi {
     this.#rect = new DrawRect(options.canvas);
     this.#ellipse = new DrawEllipse(options.canvas);
     this.#sprite = new DrawSprite(options.canvas);
-    this.#text = new DrawText(options.canvas);
-
-    // TODO: make it static, no construction required?
-    this.#font = new BpxFontPico8();
+    this.#text = new DrawText(options.canvas, options.assets);
   }
 
   clearCanvas(color: BpxRgbColor): void {
@@ -188,39 +184,59 @@ export class DrawApi {
     );
   }
 
-  // TODO: add fg color here? or rather in the sole font definition
-  setFont(font: BpxFont): void {
+  useFont(font: BpxFont): void {
     this.#font = font;
   }
 
-  // TODO: really needed?
-  getFont(): BpxFont {
-    return this.#font;
+  measureText(text: string, opts: { scaleXy?: BpxVector2d } = {}): BpxVector2d {
+    let maxLineNumber = 0;
+    let maxX = 0;
+
+    for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text)) {
+      maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber);
+      maxX = Math.max(
+        maxX,
+        arrangedGlyph.leftTop.x +
+          (arrangedGlyph.type === "sprite"
+            ? arrangedGlyph.sprite.size.x
+            : arrangedGlyph.pixels.size.x),
+      );
+    }
+
+    return v_(
+      maxX,
+      (maxLineNumber + 1) * (this.#font.ascent + this.#font.descent) +
+        maxLineNumber * this.#font.lineGap,
+    ).mul(opts?.scaleXy ?? v_1_1_);
   }
 
   drawText(
-    text: string,
     xy: BpxVector2d,
-    color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
+    // TODO: bring back coloring
+    color: BpxRgbColor,
+    text: string,
     opts: {
-      centerXy?: [boolean, boolean];
+      // TODO: bring back centering
+      //     centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
     } = {},
   ): void {
-    const centerXy = opts.centerXy ?? [false, false];
-    if (centerXy[0] || centerXy[1]) {
-      const [_, size] = BpxUtils.measureText(text);
-      xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
-    }
+    // TODO: bring back centering
+    //   const centerXy = opts.centerXy ?? [false, false];
+    //   if (centerXy[0] || centerXy[1]) {
+    //     const [_, size] = BpxUtils.measureText(text);
+    //     xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
+    //   }
     this.#text.draw(
       text,
       this.#font,
       // TODO: rework it
-      this.#font.imageUrl
-        ? this.#assets.getImageAsset(this.#font.imageUrl)
-        : null,
+      // this.#font.imageUrl
+      //   ? this.#assets.getImageAsset(this.#font.imageUrl)
+      //   : null,
+      // null,
       xy.sub(this.cameraXy),
-      color,
+      // color,
       opts.scaleXy ?? v_1_1_,
       this.#pattern,
     );
