@@ -1,6 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { v_ } from "../shorthands";
-import { spr_ } from "./Sprite";
+import { spr_, v_ } from "../shorthands";
 
 describe("Sprite", () => {
   test("construction", () => {

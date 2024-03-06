@@ -5,7 +5,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _PreparedSprites_cache;
 import { u_ } from "../Utils";
-import { rgb_ } from "../color/RgbColor";
+import { rgb_ } from "../shorthands";
 export class PreparedSprites {
     constructor() {
         _PreparedSprites_cache.set(this, new Map());

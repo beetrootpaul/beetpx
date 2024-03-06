@@ -16,7 +16,7 @@ import { AudioApi } from "./audio/AudioApi";
 import { BeetPx } from "./BeetPx";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
+import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Button } from "./game_input/buttons/Button";
@@ -26,9 +26,9 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
-import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, v_, } from "./shorthands";
+import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxUtils, u_ } from "./Utils";
+import { BpxUtils } from "./Utils";
 export class Engine {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f");
@@ -136,7 +136,7 @@ export class Engine {
         }), "f");
         this.fullScreen = FullScreen.create();
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas) ??
-            u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
+            BpxUtils.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
         __classPrivateFieldSet(this, _Engine_canvas, new CanvasForProduction(__classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Engine_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
             canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),

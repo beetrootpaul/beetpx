@@ -1,8 +1,8 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { u_ } from "../Utils";
+import { BpxUtils } from "../Utils";
 
 export class Loading {
-  readonly #minWaitToAvoidFlicker: Promise<void> = u_.wait(750);
+  readonly #minWaitToAvoidFlicker: Promise<void> = BpxUtils.wait(750);
 
   readonly #startButton: HTMLElement;
   readonly #startClicked: Promise<void>;
@@ -10,7 +10,7 @@ export class Loading {
   constructor(params: { onStartClicked: () => void }) {
     this.#startButton =
       document.querySelector<HTMLElement>(HtmlTemplate.selectors.startButton) ??
-      u_.throwError(
+      BpxUtils.throwError(
         `Unable to find a start button under a selector "${HtmlTemplate.selectors.startButton}"`,
       );
 

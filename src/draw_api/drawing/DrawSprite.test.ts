@@ -1,8 +1,7 @@
 import { describe, test } from "vitest";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { v_ } from "../../shorthands";
-import { spr_ } from "../../sprite/Sprite";
+import { spr_, v_ } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 import { TestImage } from "../TestImage";

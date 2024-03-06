@@ -11,7 +11,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _AudioPlaybackSequence_instances, _AudioPlaybackSequence_sourceNode, _AudioPlaybackSequence_intoEntryBuffersWithEqualDurations, _AudioPlaybackSequence_combineBuffers;
 import * as ABU from "audio-buffer-utils";
-import { u_ } from "../Utils";
+import { BpxUtils } from "../Utils";
 import { AudioPlayback } from "./AudioPlayback";
 export class AudioPlaybackSequence extends AudioPlayback {
     constructor(soundSequence, params) {
@@ -68,7 +68,7 @@ _AudioPlaybackSequence_sourceNode = new WeakMap(), _AudioPlaybackSequence_instan
         .map((originalBuffer) => ABU.resize(originalBuffer, (durationMs / 1000) * originalBuffer.sampleRate));
     return { firstBuffer, otherBuffers, durationMs };
 }, _AudioPlaybackSequence_combineBuffers = function _AudioPlaybackSequence_combineBuffers(entries) {
-    const sumBuffers = (lValue, rValue) => u_.clamp(-1, lValue + rValue, 1);
+    const sumBuffers = (lValue, rValue) => BpxUtils.clamp(-1, lValue + rValue, 1);
     const mixedBuffers = entries.map((entry) => entry.otherBuffers.reduce((mixedBuffer, nextBuffer) => ABU.mix(mixedBuffer, nextBuffer, sumBuffers), ABU.clone(entry.firstBuffer)));
     return ABU.concat(...mixedBuffers);
 };

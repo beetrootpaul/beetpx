@@ -4,7 +4,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxFontPico8_instances, _BpxFontPico8_spriteGlyph;
-import { spr_ } from "../sprite/Sprite";
+import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont } from "./Font";
 
 
@@ -68,7 +68,7 @@ export class BpxFontPico8 extends BpxFont {
 }
 _BpxFontPico8_instances = new WeakSet(), _BpxFontPico8_spriteGlyph = function _BpxFontPico8_spriteGlyph(tileX, tileY) {
     
-    const sprite = spr_(".beetpx/pico-8-font.png")(3, 5, tileX * 8, tileY * 8);
+    const sprite = BpxSprite.from(".beetpx/pico-8-font.png", 3, 5, tileX * 8, tileY * 8);
     return {
         type: "sprite",
         sprite: sprite,

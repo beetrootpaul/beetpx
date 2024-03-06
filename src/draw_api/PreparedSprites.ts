@@ -1,6 +1,7 @@
 import { type PngDataArray } from "fast-png";
 import { u_ } from "../Utils";
-import { BpxRgbColor, rgb_ } from "../color/RgbColor";
+import { BpxRgbColor } from "../color/RgbColor";
+import { rgb_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 
 export type PreparedSprite = {

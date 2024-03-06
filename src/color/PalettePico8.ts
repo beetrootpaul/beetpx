@@ -25,5 +25,3 @@ export class BpxPalettePico8 {
   static pink = BpxRgbColor.fromCssHex("#FF77A8");
   static peach = BpxRgbColor.fromCssHex("#FFCCAA");
 }
-
-export const rgb_p8_ = BpxPalettePico8;

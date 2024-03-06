@@ -1,4 +1,4 @@
-import { spr_ } from "../sprite/Sprite";
+import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont, BpxGlyph } from "./Font";
 
 // TODO: update the name in README
@@ -62,7 +62,13 @@ export class BpxFontPico8 extends BpxFont {
 
   #spriteGlyph(tileX: number, tileY: number): BpxGlyph {
     // TODO: where to define the image URL? to derive it from PICO-8 definition?
-    const sprite = spr_(".beetpx/pico-8-font.png")(3, 5, tileX * 8, tileY * 8);
+    const sprite = BpxSprite.from(
+      ".beetpx/pico-8-font.png",
+      3,
+      5,
+      tileX * 8,
+      tileY * 8,
+    );
     return {
       type: "sprite",
       sprite: sprite,

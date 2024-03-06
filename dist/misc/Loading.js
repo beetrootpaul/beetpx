@@ -11,14 +11,14 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _Loading_minWaitToAvoidFlicker, _Loading_startButton, _Loading_startClicked;
 import { HtmlTemplate } from "../HtmlTemplate";
-import { u_ } from "../Utils";
+import { BpxUtils } from "../Utils";
 export class Loading {
     constructor(params) {
-        _Loading_minWaitToAvoidFlicker.set(this, u_.wait(750));
+        _Loading_minWaitToAvoidFlicker.set(this, BpxUtils.wait(750));
         _Loading_startButton.set(this, void 0);
         _Loading_startClicked.set(this, void 0);
         __classPrivateFieldSet(this, _Loading_startButton, document.querySelector(HtmlTemplate.selectors.startButton) ??
-            u_.throwError(`Unable to find a start button under a selector "${HtmlTemplate.selectors.startButton}"`), "f");
+            BpxUtils.throwError(`Unable to find a start button under a selector "${HtmlTemplate.selectors.startButton}"`), "f");
         __classPrivateFieldSet(this, _Loading_startClicked, new Promise((resolve) => {
             __classPrivateFieldGet(this, _Loading_startButton, "f").addEventListener("click", () => {
                 params.onStartClicked();

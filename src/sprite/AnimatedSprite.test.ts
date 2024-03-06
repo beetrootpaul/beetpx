@@ -1,8 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
 import { u_ } from "../Utils";
-import { v_ } from "../shorthands";
-import { aspr_ } from "./AnimatedSprite";
+import { aspr_, v_ } from "../shorthands";
 
 describe("AnimatedSprite", () => {
   beforeEach(() => {

@@ -1,4 +1,4 @@
-import { BpxRgbColor, rgb_ } from "../color/RgbColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 
 export class CanvasSnapshotForProduction implements CanvasSnapshot {
@@ -18,7 +18,7 @@ export class CanvasSnapshotForProduction implements CanvasSnapshot {
     }
 
     const dataIndex = index * 4;
-    return rgb_(
+    return BpxRgbColor.of(
       this.#imageDataData[dataIndex]!,
       this.#imageDataData[dataIndex + 1]!,
       this.#imageDataData[dataIndex + 2]!,

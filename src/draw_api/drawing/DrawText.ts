@@ -1,10 +1,9 @@
 import { Assets } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
-import { rgb_red_ } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxFont } from "../../font/Font";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_0_0_ } from "../../shorthands";
+import { rgb_red_, v_0_0_ } from "../../shorthands";
 import { u_ } from "../../Utils";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { DrawPixels } from "./DrawPixels";

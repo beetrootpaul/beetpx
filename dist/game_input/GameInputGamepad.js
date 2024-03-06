@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _GameInputGamepad_instances, _GameInputGamepad_browserType, _GameInputGamepad_mappings, _GameInputGamepad_mappingFor;
-import { u_ } from "../Utils";
+import { BpxUtils } from "../Utils";
 import { GamepadMapping8BitDo } from "./gamepad_mapping/GamepadMapping8BitDo";
 import { GamepadMappingFallback } from "./gamepad_mapping/GamepadMappingFallback";
 import { GamepadMappingFirefox8BitDoOther } from "./gamepad_mapping/GamepadMappingFirefox8BitDoOther";
@@ -75,7 +75,7 @@ export class GameInputGamepad {
     connectedGamepadTypes() {
         return new Set(navigator
             .getGamepads()
-            .filter(u_.isDefined)
+            .filter(BpxUtils.isDefined)
             .map((gamepad) => BpxGamepadTypeDetector.detect(gamepad)));
     }
 }

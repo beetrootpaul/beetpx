@@ -4,17 +4,11 @@ import { timer_, v_ } from "../shorthands";
 import { BpxTimer } from "../timer/Timer";
 import { BpxSprite } from "./Sprite";
 
-type ImageBoundAnimatedSpriteFactory = (
+export type BpxImageBoundAnimatedSpriteFactory = (
   w: number,
   h: number,
   xys: [x: number, y: number][],
 ) => BpxAnimatedSprite;
-
-export function aspr_(imageUrl: BpxImageUrl): ImageBoundAnimatedSpriteFactory {
-  return (w: number, h: number, xys: [x: number, y: number][]) => {
-    return BpxAnimatedSprite.from(imageUrl, w, h, xys);
-  };
-}
 
 export class BpxAnimatedSprite {
   static from(

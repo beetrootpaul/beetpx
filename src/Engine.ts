@@ -8,7 +8,7 @@ import {
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
+import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { Button } from "./game_input/buttons/Button";
@@ -23,10 +23,11 @@ import {
   font_pico8_,
   font_saint11Minimal4_,
   font_saint11Minimal5_,
+  rgb_black_,
   v_,
 } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxUtils, u_ } from "./Utils";
+import { BpxUtils } from "./Utils";
 
 export type EngineInitParams = {
   gameCanvasSize?: "64x64" | "128x128" | "256x256";
@@ -201,7 +202,7 @@ export class Engine {
       document.querySelector<HTMLCanvasElement>(
         HtmlTemplate.selectors.canvas,
       ) ??
-      u_.throwError(
+      BpxUtils.throwError(
         `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
       );
 

@@ -65,7 +65,6 @@ b_.init({
     let cursor = v_(8, 2).mul(zoom);
 
     for (const font of [
-      // TODO: add missing chars to PICO-8 font, but then rework how to demonstrate extending/overriding the built-in font
       font_pico8_,
       pico8FontWithAdjustments,
       font_saint11Minimal4_,

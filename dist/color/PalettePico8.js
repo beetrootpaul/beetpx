@@ -24,4 +24,3 @@ BpxPalettePico8.sky = BpxRgbColor.fromCssHex("#29ADFF");
 BpxPalettePico8.dusk = BpxRgbColor.fromCssHex("#83769C");
 BpxPalettePico8.pink = BpxRgbColor.fromCssHex("#FF77A8");
 BpxPalettePico8.peach = BpxRgbColor.fromCssHex("#FFCCAA");
-export const rgb_p8_ = BpxPalettePico8;

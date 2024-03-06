@@ -1,7 +1,4 @@
 import { BpxVector2d } from "../misc/Vector2d";
-export function spr_(imageUrl) {
-    return (w, h, x, y) => BpxSprite.from(imageUrl, w, h, x, y);
-}
 export class BpxSprite {
     static from(imageUrl, w, h, x, y) {
         return new BpxSprite(imageUrl, w, h, x, y);

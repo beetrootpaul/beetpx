@@ -12,15 +12,6 @@ declare class BpxRgbColor {
     private constructor();
     asArray(): [r: number, g: number, b: number];
 }
-declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
-declare const rgb_black_: BpxRgbColor;
-declare const rgb_white_: BpxRgbColor;
-declare const rgb_red_: BpxRgbColor;
-declare const rgb_green_: BpxRgbColor;
-declare const rgb_blue_: BpxRgbColor;
-declare const rgb_cyan_: BpxRgbColor;
-declare const rgb_magenta_: BpxRgbColor;
-declare const rgb_yellow_: BpxRgbColor;
 
 interface PrintDebug {
     __printDebug(): string;
@@ -246,8 +237,7 @@ declare class BpxPixels {
     private constructor();
 }
 
-type ImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
-declare function spr_(imageUrl: BpxImageUrl): ImageBoundSpriteFactory;
+type BpxImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
 declare class BpxSprite {
     static from(imageUrl: BpxImageUrl, w: number, h: number, x: number, y: number): BpxSprite;
     readonly type = "static";
@@ -439,8 +429,7 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-type ImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][]) => BpxAnimatedSprite;
-declare function aspr_(imageUrl: BpxImageUrl): ImageBoundAnimatedSpriteFactory;
+type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][]) => BpxAnimatedSprite;
 declare class BpxAnimatedSprite {
     #private;
     static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][]): BpxAnimatedSprite;
@@ -789,11 +778,22 @@ declare class BpxPalettePico8 {
     static pink: BpxRgbColor;
     static peach: BpxRgbColor;
 }
-declare const rgb_p8_: typeof BpxPalettePico8;
 
+declare function aspr_(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;
 declare const font_pico8_: BpxFont;
 declare const font_saint11Minimal4_: BpxFont;
 declare const font_saint11Minimal5_: BpxFont;
+declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
+declare const rgb_black_: BpxRgbColor;
+declare const rgb_white_: BpxRgbColor;
+declare const rgb_red_: BpxRgbColor;
+declare const rgb_green_: BpxRgbColor;
+declare const rgb_blue_: BpxRgbColor;
+declare const rgb_cyan_: BpxRgbColor;
+declare const rgb_magenta_: BpxRgbColor;
+declare const rgb_yellow_: BpxRgbColor;
+declare const rgb_p8_: typeof BpxPalettePico8;
+declare function spr_(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory;
 declare function timer_(frames: number, opts?: {
     loop?: boolean;
     pause?: boolean;
@@ -821,4 +821,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };

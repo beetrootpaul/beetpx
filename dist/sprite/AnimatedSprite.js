@@ -12,11 +12,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _BpxAnimatedSprite_sprites, _BpxAnimatedSprite_loop;
 import { timer_, v_ } from "../shorthands";
 import { BpxSprite } from "./Sprite";
-export function aspr_(imageUrl) {
-    return (w, h, xys) => {
-        return BpxAnimatedSprite.from(imageUrl, w, h, xys);
-    };
-}
 export class BpxAnimatedSprite {
     static from(imageUrl, w, h, xys) {
         return new BpxAnimatedSprite({ imageUrl, w, h, xys });

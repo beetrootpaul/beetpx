@@ -10,10 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawText_canvas, _DrawText_assets, _DrawText_sprite, _DrawText_pixels;
-import { rgb_red_ } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_0_0_ } from "../../shorthands";
+import { rgb_red_, v_0_0_ } from "../../shorthands";
 import { u_ } from "../../Utils";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
