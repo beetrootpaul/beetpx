@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, jest, test } from "@jest/globals";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
 import { u_ } from "../Utils";
 import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
@@ -65,9 +65,9 @@ const allPropertiesToTest = [
 
 describe("TimerSequence", () => {
   beforeEach(() => {
-    jest
-      .spyOn(BeetPx, "frameNumber", "get")
-      .mockImplementation(() => stubbedFrameNumber);
+    vi.spyOn(BeetPx, "frameNumber", "get").mockImplementation(
+      () => stubbedFrameNumber,
+    );
     nextFrameNumberWillBe(501);
   });
 

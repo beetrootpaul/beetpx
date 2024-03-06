@@ -1,4 +1,4 @@
-import { describe, test } from "@jest/globals";
+import { describe, test } from "vitest";
 import { BpxRgbColor } from "../color/RgbColor";
 import { v_ } from "../shorthands";
 import { BpxDrawingPattern } from "./DrawingPattern";
@@ -36,7 +36,7 @@ describe("DrawApi", () => {
       `,
     });
 
-    let prev = dts.drawApi.setClippingRegion(v_(3, 2), v_(21, 11));
+    let [prevXy, prevWh] = dts.drawApi.setClippingRegion(v_(3, 2), v_(21, 11));
     dts.drawApi.clearCanvas(c0);
     dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
@@ -61,7 +61,7 @@ describe("DrawApi", () => {
       `,
     });
 
-    prev = dts.drawApi.setClippingRegion(prev[0], prev[1]);
+    [prevXy, prevWh] = dts.drawApi.setClippingRegion(prevXy, prevWh);
     dts.drawApi.clearCanvas(c0);
     dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
@@ -86,7 +86,7 @@ describe("DrawApi", () => {
       `,
     });
 
-    dts.drawApi.setClippingRegion(prev[0], prev[1]);
+    dts.drawApi.setClippingRegion(prevXy, prevWh);
     dts.drawApi.clearCanvas(c0);
     dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
@@ -111,7 +111,7 @@ describe("DrawApi", () => {
       `,
     });
 
-    prev = dts.drawApi.removeClippingRegion();
+    [prevXy, prevWh] = dts.drawApi.removeClippingRegion();
     dts.drawApi.clearCanvas(c0);
     dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 
@@ -136,7 +136,7 @@ describe("DrawApi", () => {
       `,
     });
 
-    prev = dts.drawApi.setClippingRegion(prev[0], prev[1]);
+    dts.drawApi.setClippingRegion(prevXy, prevWh);
     dts.drawApi.clearCanvas(c0);
     dts.drawApi.drawEllipseFilled(v_(1, 1), v_(25, 13), c1);
 

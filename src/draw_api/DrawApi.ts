@@ -68,11 +68,11 @@ export class DrawApi {
   setClippingRegion(
     xy: BpxVector2d,
     wh: BpxVector2d,
-  ): [BpxVector2d, BpxVector2d] {
+  ): [xy: BpxVector2d, wh: BpxVector2d] {
     return this.#canvas.setClippingRegion(xy, wh);
   }
 
-  removeClippingRegion(): [BpxVector2d, BpxVector2d] {
+  removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d] {
     return this.#canvas.removeClippingRegion();
   }
 

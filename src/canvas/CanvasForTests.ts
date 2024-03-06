@@ -1,4 +1,4 @@
-import { expect } from "@jest/globals";
+import { expect } from "vitest";
 import { u_ } from "../Utils";
 import { BpxRgbColor, BpxRgbCssHex } from "../color/RgbColor";
 import { v_ } from "../shorthands";

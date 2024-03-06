@@ -1,4 +1,4 @@
-import { describe, test } from "@jest/globals";
+import { describe, test } from "vitest";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { v_ } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";

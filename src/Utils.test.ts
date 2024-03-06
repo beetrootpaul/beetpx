@@ -1,4 +1,4 @@
-import { describe, expect, jest, test } from "@jest/globals";
+import { describe, expect, test, vi } from "vitest";
 import { BeetPx } from "./BeetPx";
 import { BpxUtils } from "./Utils";
 
@@ -121,7 +121,7 @@ describe("Utils", () => {
 
   // TODO: move elsewhere?
   test("#measureText", () => {
-    // jest.spyOn(BeetPx, "getFont").mockImplementation(
+    // vi.spyOn(BeetPx, "getFont").mockImplementation(
     //   () =>
     //     new (class implements BpxFont {
     //       id = "test-font";
@@ -339,7 +339,5 @@ describe("Utils", () => {
 });
 
 function nextFrameNumberWillBe(frameNumber: number): void {
-  jest
-    .spyOn(BeetPx, "frameNumber", "get")
-    .mockImplementation(() => frameNumber);
+  vi.spyOn(BeetPx, "frameNumber", "get").mockImplementation(() => frameNumber);
 }

@@ -77,8 +77,6 @@ export {
   rgb_white_,
   rgb_yellow_,
 } from "./color/RgbColor";
-export { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
-export { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
 export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";
 

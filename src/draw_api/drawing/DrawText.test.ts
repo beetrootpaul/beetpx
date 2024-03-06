@@ -1,4 +1,4 @@
-import { beforeEach, describe, test } from "@jest/globals";
+import { beforeEach, describe, test } from "vitest";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d } from "../../misc/Vector2d";
 import { v_ } from "../../shorthands";
@@ -79,7 +79,7 @@ describe("DrawText", () => {
   let dts: DrawingTestSetup;
 
   // TODO: rework it, do not return a new instance every time
-  // jest.spyOn(BeetPx, "getFont").mockImplementation(() => new TestFont());
+  // vi.spyOn(BeetPx, "getFont").mockImplementation(() => new TestFont());
 
   beforeEach(() => {
     // // TestFont.gapBetweenChars = v_(1, 0);

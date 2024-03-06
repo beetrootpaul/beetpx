@@ -559,4 +559,3 @@ _BpxFontSaint11Minimal4_instances = new WeakSet(), _BpxFontSaint11Minimal4_pixel
         advance: pixels.size.x + 1,
     };
 };
-export const font_saint11Minimal4_ = new BpxFontSaint11Minimal4();

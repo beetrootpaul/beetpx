@@ -27,8 +27,6 @@ export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
 export { rgb_p8_ } from "./color/PalettePico8";
 export { rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_red_, rgb_white_, rgb_yellow_, } from "./color/RgbColor";
-export { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
-export { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
 export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";
 export * from "./shorthands";

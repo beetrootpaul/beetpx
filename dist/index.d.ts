@@ -329,7 +329,6 @@ declare class BpxFontSaint11Minimal4 extends BpxFont {
     getGlyph(char: string): BpxGlyph | undefined;
     glyphs: Map<string, BpxGlyph>;
 }
-declare const font_saint11Minimal4_: BpxFontSaint11Minimal4;
 
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
@@ -352,7 +351,6 @@ declare class BpxFontSaint11Minimal5 extends BpxFont {
     getGlyph(char: string): BpxGlyph | undefined;
     glyphs: Map<string, BpxGlyph>;
 }
-declare const font_saint11Minimal5_: BpxFontSaint11Minimal5;
 
 declare class Button {
     #private;
@@ -529,11 +527,11 @@ declare abstract class Canvas {
     /**
      * @returns - previous clipping region in form of an array: [xy, wh]
      */
-    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [BpxVector2d, BpxVector2d];
+    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
     /**
      * @returns - previous clipping region in form of an array: [xy, wh]
      */
-    removeClippingRegion(): [BpxVector2d, BpxVector2d];
+    removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
     canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
     canSetAt(x: number, y: number): boolean;
     abstract set(color: BpxRgbColor, x: number, y: number): void;
@@ -553,8 +551,8 @@ declare class DrawApi {
     cameraXy: BpxVector2d;
     constructor(options: DrawApiOptions);
     clearCanvas(color: BpxRgbColor): void;
-    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [BpxVector2d, BpxVector2d];
-    removeClippingRegion(): [BpxVector2d, BpxVector2d];
+    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
+    removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
     setCameraXy(xy: BpxVector2d): BpxVector2d;
     setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
     drawPixel(xy: BpxVector2d, color: BpxRgbColor): void;
@@ -794,6 +792,8 @@ declare class BpxPalettePico8 {
 declare const rgb_p8_: typeof BpxPalettePico8;
 
 declare const font_pico8_: BpxFont;
+declare const font_saint11Minimal4_: BpxFont;
+declare const font_saint11Minimal5_: BpxFont;
 declare function timer_(frames: number, opts?: {
     loop?: boolean;
     pause?: boolean;

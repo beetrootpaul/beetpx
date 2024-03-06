@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _CanvasForTests_instances, _CanvasForTests_length, _CanvasForTests_rgbValues, _CanvasForTests_asAscii;
-import { expect } from "@jest/globals";
+import { expect } from "vitest";
 import { u_ } from "../Utils";
 import { v_ } from "../shorthands";
 import { Canvas } from "./Canvas";

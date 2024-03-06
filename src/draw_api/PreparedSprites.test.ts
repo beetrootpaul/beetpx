@@ -1,5 +1,5 @@
-import { describe, expect, test } from "@jest/globals";
 import { PngDataArray } from "fast-png";
+import { describe, expect, test } from "vitest";
 import { u_ } from "../Utils";
 import { spr_ } from "../sprite/Sprite";
 import { PreparedSprites } from "./PreparedSprites";

@@ -27,7 +27,7 @@ export abstract class Canvas {
   setClippingRegion(
     xy: BpxVector2d,
     wh: BpxVector2d,
-  ): [BpxVector2d, BpxVector2d] {
+  ): [xy: BpxVector2d, wh: BpxVector2d] {
     const prev: [BpxVector2d, BpxVector2d] = [
       BpxVector2d.of(this.#minX, this.#minY),
       BpxVector2d.of(
@@ -50,7 +50,7 @@ export abstract class Canvas {
   /**
    * @returns - previous clipping region in form of an array: [xy, wh]
    */
-  removeClippingRegion(): [BpxVector2d, BpxVector2d] {
+  removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d] {
     return this.setClippingRegion(BpxVector2d.of(0, 0), this.canvasSize);
   }
 

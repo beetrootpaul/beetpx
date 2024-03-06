@@ -1,11 +1,15 @@
 import { BpxFont } from "./font/Font";
 import { BpxFontPico8 } from "./font/FontPico8";
+import { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";
+import { BpxFontSaint11Minimal5 } from "./font/FontSaint11Minimal5";
 import { BpxVector2d } from "./misc/Vector2d";
 import { BpxTimer } from "./timer/Timer";
 
 /////////////////////////////////////////////////////////////////////////////
 
 export const font_pico8_: BpxFont = new BpxFontPico8();
+export const font_saint11Minimal4_: BpxFont = new BpxFontSaint11Minimal4();
+export const font_saint11Minimal5_: BpxFont = new BpxFontSaint11Minimal5();
 
 /////////////////////////////////////////////////////////////////////////////
 

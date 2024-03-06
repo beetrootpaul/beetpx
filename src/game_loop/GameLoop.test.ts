@@ -1,5 +1,5 @@
-import { describe, expect, jest, test } from "@jest/globals";
-import { GameLoop, GameLoopCallbacks } from "./GameLoop";
+import { describe, expect, test, vi } from "vitest";
+import { GameLoop } from "./GameLoop";
 
 describe("GameLoop", () => {
   describe("updateFn", () => {
@@ -187,9 +187,9 @@ describe("GameLoop", () => {
 
 const anyFps = 10;
 
-const rafFn = jest.fn<AnimationFrameProvider["requestAnimationFrame"]>();
-const updateFn = jest.fn<GameLoopCallbacks["updateFn"]>();
-const renderFn = jest.fn<GameLoopCallbacks["renderFn"]>();
+const rafFn = vi.fn();
+const updateFn = vi.fn();
+const renderFn = vi.fn();
 
 const documentVisibilityStateProvider: {
   visibilityState: DocumentVisibilityState;
@@ -270,7 +270,7 @@ function testGameLoop(params: {
   }
 
   // Prepare for the sequence processing:
-  jest.resetAllMocks();
+  vi.resetAllMocks();
   documentVisibilityStateProvider.visibilityState = "visible";
   let nextRafRequestId = 1;
   rafFn.mockImplementation((_callback) => nextRafRequestId++);

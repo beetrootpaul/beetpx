@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "vitest";
 import { v_ } from "../shorthands";
 import { BpxVector2d } from "./Vector2d";
 

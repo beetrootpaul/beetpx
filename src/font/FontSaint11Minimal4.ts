@@ -554,5 +554,3 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
     ],
   ]);
 }
-
-export const font_saint11Minimal4_ = new BpxFontSaint11Minimal4();
