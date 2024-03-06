@@ -296,6 +296,7 @@ declare abstract class BpxFont {
 
 declare class BpxFontPico8 extends BpxFont {
     #private;
+    static spriteSheetUrl: string;
     ascent: number;
     descent: number;
     lineGap: number;

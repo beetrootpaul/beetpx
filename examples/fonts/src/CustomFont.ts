@@ -8,11 +8,21 @@ import {
 } from "../../../src";
 
 export class CustomFont extends BpxFont {
+  // We use both sprite sheets only to make an example of:
+  //   - using more than 1 sprite sheet for a single font,
+  //   - using both local (deployed together with the game) and external sprite sheets.
+  static #internalSpriteSheetUrl = "custom-font.png";
+  static #externalSpriteSheetUrl =
+    "https://raw.githubusercontent.com/beetrootpaul/beetpx/fonts_rework/examples/fonts/public/custom-font.png";
+
   ascent = 8;
   descent = 3;
   lineGap = 3;
 
-  spriteSheetUrls = ["custom-font.png"];
+  spriteSheetUrls = [
+    CustomFont.#internalSpriteSheetUrl,
+    CustomFont.#externalSpriteSheetUrl,
+  ];
 
   mapChar(char: string): string {
     return char;
@@ -26,10 +36,14 @@ export class CustomFont extends BpxFont {
     extras?: {
       offsetY?: number;
       kerning?: BpxKerningNextCharMap;
+      useExternalSpriteSheet?: boolean;
     },
   ): BpxGlyph {
-    // TODO: where to define the image URL?
-    const sprite = spr_("custom-font.png")(w, h, x, y);
+    const sprite = spr_(
+      extras?.useExternalSpriteSheet
+        ? CustomFont.#externalSpriteSheetUrl
+        : CustomFont.#internalSpriteSheetUrl,
+    )(w, h, x, y);
     return {
       type: "sprite",
       sprite: sprite,
@@ -53,8 +67,8 @@ export class CustomFont extends BpxFont {
     ["T", this.#spriteGlyph(5, 8, 3, 0, { kerning: { h: -1 } })],
     ["b", this.#spriteGlyph(3, 8, 5, 5)],
     ["e", this.#spriteGlyph(3, 5, 8, 0)],
-    ["f", this.#spriteGlyph(3, 8, 6, 9)],
-    ["h", this.#spriteGlyph(3, 8, 0, 0)],
+    ["f", this.#spriteGlyph(3, 8, 6, 9, { useExternalSpriteSheet: true })],
+    ["h", this.#spriteGlyph(3, 8, 0, 0, { useExternalSpriteSheet: true })],
     [
       "n",
       this.#pixelsGlyph(`
@@ -67,7 +81,7 @@ export class CustomFont extends BpxFont {
     ],
     ["o", this.#spriteGlyph(3, 5, 5, 8, { kerning: { o: 1, x: 1 } })],
     ["q", this.#spriteGlyph(3, 8, 5, 8, { offsetY: this.descent })],
-    ["r", this.#spriteGlyph(3, 5, 5, 0)],
+    ["r", this.#spriteGlyph(3, 5, 5, 0, { useExternalSpriteSheet: true })],
     [
       "w",
       this.#pixelsGlyph(`

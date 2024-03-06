@@ -2,7 +2,6 @@ import { v_, v_0_0_ } from "../shorthands";
 import { u_ } from "../Utils";
 export class BpxFont {
     
-    
     arrangeGlyphsFor(text) {
         const arrangedGlyphs = [];
         let xy = v_0_0_;

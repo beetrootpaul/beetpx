@@ -66,7 +66,6 @@ export class DrawText {
         //         `There is no imageUrl defined for a font "${font.id}", which uses image sprites`,
         //       );
         //     }
-        //     // TODO: move font image to each char sprite maybe?
         //     if (fontImage == null) {
         //       throw Error(
         //         `There is no image loaded for a font "${font.id}", which uses image sprites`,

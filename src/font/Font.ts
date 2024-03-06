@@ -55,12 +55,10 @@ export abstract class BpxFont {
   /** URLs of sprite sheets used by glyphs of this font. */
   abstract readonly spriteSheetUrls: BpxImageUrl[];
 
-  // TODO: add ligatures to the example? Handle "[c1]" such way?
   protected abstract readonly glyphs: Map<string, BpxGlyph>;
 
   abstract mapChar(char: string): string;
 
-  // TODO: support glyphs for char sequences
   // TODO: test this function
   arrangeGlyphsFor(text: string): BpxArrangedGlyph[] {
     const arrangedGlyphs: BpxArrangedGlyph[] = [];

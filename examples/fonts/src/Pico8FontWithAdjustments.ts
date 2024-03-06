@@ -14,7 +14,7 @@ export class Pico8FontWithAdjustments extends BpxFontPico8 {
         "x",
         {
           type: "sprite",
-          sprite: spr_(".beetpx/pico-8-font.png")(5, 5, 57, 72),
+          sprite: spr_(BpxFontPico8.spriteSheetUrl)(5, 5, 57, 72),
           advance: 4,
         },
       ],
@@ -69,16 +69,6 @@ export class Pico8FontWithAdjustments extends BpxFontPico8 {
         },
       ],
     ]);
-  }
-
-  #spriteGlyph(tileX: number, tileY: number): BpxGlyph {
-    // TODO: where to define the image URL? to derive it from PICO-8 definition?
-    const sprite = spr_(".beetpx/pico-8-font.png")(3, 5, tileX * 8, tileY * 8);
-    return {
-      type: "sprite",
-      sprite: sprite,
-      advance: sprite.size.x + 1,
-    };
   }
 }
 

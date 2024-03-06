@@ -11,15 +11,12 @@ import {
   v_0_0_,
 } from "../../../src";
 import { customFont } from "./CustomFont";
-import { customFontExternalImage } from "./CustomFontExternalImage";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
 // TODO: take care of all TODOs
 // TODO: update tests, write new ones
 // TODO: font fg color to replace or bg color to remove? Or some function to blend fonts with antialiasing in them?
 // TODO: tests for the markup edge cases like nesting, unclosing, escaping what is supposed to not be a markup, unrecognized markup, turning markup on and off
-
-// TODO: ability to change line height?
 // TODO: markup for changing a color of a word (then, remove color by the char) + turning it on/off depending on whether markup definition is passed or not
 // TODO: a way to print a markup without interpreting it as a markup ("[[c1]"?]
 const text = [
@@ -30,10 +27,7 @@ const text = [
 
 b_.init({
   gameCanvasSize: "256x256",
-  assets: [
-    ...customFont.spriteSheetUrls,
-    ...customFontExternalImage.spriteSheetUrls,
-  ],
+  assets: [...customFont.spriteSheetUrls],
 }).then(async ({ startGame }) => {
   const minZoom = 1;
   const maxZoom = 8;
@@ -68,7 +62,6 @@ b_.init({
       font_saint11Minimal4_,
       font_saint11Minimal5_,
       customFont,
-      customFontExternalImage,
     ]) {
       b_.useFont(font);
 

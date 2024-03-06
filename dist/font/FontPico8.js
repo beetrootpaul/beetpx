@@ -3,7 +3,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _BpxFontPico8_instances, _BpxFontPico8_spriteGlyph;
+var _BpxFontPico8_instances, _a, _BpxFontPico8_spriteGlyph;
 import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont } from "./Font";
 
@@ -15,7 +15,7 @@ export class BpxFontPico8 extends BpxFont {
         this.ascent = 5;
         this.descent = 0;
         this.lineGap = 1;
-        this.spriteSheetUrls = [".beetpx/pico-8-font.png"];
+        this.spriteSheetUrls = [_a.spriteSheetUrl];
         this.glyphs = new Map([
             [" ", { type: "whitespace", advance: 4 }],
             
@@ -99,12 +99,12 @@ export class BpxFontPico8 extends BpxFont {
         return char.toLowerCase();
     }
 }
-_BpxFontPico8_instances = new WeakSet(), _BpxFontPico8_spriteGlyph = function _BpxFontPico8_spriteGlyph(tileX, tileY) {
-    
-    const sprite = BpxSprite.from(".beetpx/pico-8-font.png", 3, 5, tileX * 8, tileY * 8);
+_a = BpxFontPico8, _BpxFontPico8_instances = new WeakSet(), _BpxFontPico8_spriteGlyph = function _BpxFontPico8_spriteGlyph(tileX, tileY) {
+    const sprite = BpxSprite.from(_a.spriteSheetUrl, 3, 5, tileX * 8, tileY * 8);
     return {
         type: "sprite",
         sprite: sprite,
         advance: sprite.size.x + 1,
     };
 };
+BpxFontPico8.spriteSheetUrl = ".beetpx/pico-8-font.png";

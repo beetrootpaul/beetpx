@@ -4,11 +4,13 @@ import { BpxFont, BpxGlyph } from "./Font";
 // TODO: update the name in README
 // TODO: add a comment here and in README about the origin of this font and its CC-0 license
 export class BpxFontPico8 extends BpxFont {
+  static spriteSheetUrl = ".beetpx/pico-8-font.png";
+
   ascent = 5;
   descent = 0;
   lineGap = 1;
 
-  spriteSheetUrls = [".beetpx/pico-8-font.png"];
+  spriteSheetUrls = [BpxFontPico8.spriteSheetUrl];
 
   mapChar(char: string): string {
     return char.toLowerCase();
@@ -94,9 +96,8 @@ export class BpxFontPico8 extends BpxFont {
   ]);
 
   #spriteGlyph(tileX: number, tileY: number): BpxGlyph {
-    // TODO: where to define the image URL? to derive it from PICO-8 definition?
     const sprite = BpxSprite.from(
-      ".beetpx/pico-8-font.png",
+      BpxFontPico8.spriteSheetUrl,
       3,
       5,
       tileX * 8,

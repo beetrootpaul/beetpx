@@ -66,7 +66,6 @@ export class DrawText {
                 
                 
                 
-                
                 __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(arrangedGlyph.sprite, 
                 
                 
