@@ -1,6 +1,5 @@
 import { v_, v_0_0_ } from "../shorthands";
 import { u_ } from "../Utils";
-
 export class BpxFont {
     
     
@@ -8,13 +7,17 @@ export class BpxFont {
         const arrangedGlyphs = [];
         let xy = v_0_0_;
         let lineNumber = 0;
-        for (const char of text) {
+        let prevKerningMap = {};
+        for (let char of text) {
+            char = this.mapChar(char);
             if (char === "\n") {
+                prevKerningMap = {};
                 xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
                 lineNumber += 1;
             }
             else {
-                const glyph = this.getGlyph(char);
+                const kerning = prevKerningMap[char] ?? 0;
+                const glyph = this.glyphs.get(char);
                 if (!glyph) {
                     
                 }
@@ -27,10 +30,11 @@ export class BpxFont {
                         leftTop: xy
                             .add(0, this.ascent)
                             .sub(0, glyph.sprite.size.y)
-                            .add(glyph.offset ?? v_0_0_),
-                        
+                            .add(glyph.offset ?? v_0_0_)
+                            .add(kerning, 0),
                     });
-                    xy = xy.add(glyph.advance, 0);
+                    prevKerningMap = glyph.kerning ?? {};
+                    xy = xy.add(glyph.advance + kerning, 0);
                 }
                 else if (glyph.type === "pixels") {
                     arrangedGlyphs.push({
@@ -41,13 +45,15 @@ export class BpxFont {
                         leftTop: xy
                             .add(0, this.ascent)
                             .sub(0, glyph.pixels.size.y)
-                            .add(glyph.offset ?? v_0_0_),
-                        
+                            .add(glyph.offset ?? v_0_0_)
+                            .add(kerning, 0),
                     });
-                    xy = xy.add(glyph.advance, 0);
+                    prevKerningMap = glyph.kerning ?? {};
+                    xy = xy.add(glyph.advance + kerning, 0);
                 }
                 else if (glyph.type === "whitespace") {
-                    xy = xy.add(glyph.advance, 0);
+                    prevKerningMap = glyph.kerning ?? {};
+                    xy = xy.add(glyph.advance + kerning, 0);
                 }
                 else {
                     u_.assertUnreachable(glyph);

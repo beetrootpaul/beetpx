@@ -46,7 +46,12 @@ export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxDrawingPattern } from "./draw_api/DrawingPattern";
 export { BpxPixels } from "./draw_api/Pixels";
-export { BpxFont, type BpxArrangedGlyph, type BpxGlyph } from "./font/Font";
+export {
+  BpxFont,
+  type BpxArrangedGlyph,
+  type BpxGlyph,
+  type BpxKerningNextCharMap,
+} from "./font/Font";
 export { BpxFontPico8 } from "./font/FontPico8";
 export { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";
 export { BpxFontSaint11Minimal5 } from "./font/FontSaint11Minimal5";

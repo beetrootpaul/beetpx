@@ -16,8 +16,6 @@ import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
 // TODO: take care of all TODOs
 // TODO: update tests, write new ones
-// TODO: simplify font loading to not fail if pixels font and no image fetched yet
-// TODO: better font characteristic
 // TODO: font fg color to replace or bg color to remove? Or some function to blend fonts with antialiasing in them?
 // TODO: tests for the markup edge cases like nesting, unclosing, escaping what is supposed to not be a markup, unrecognized markup, turning markup on and off
 

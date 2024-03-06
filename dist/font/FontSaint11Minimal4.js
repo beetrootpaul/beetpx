@@ -547,8 +547,8 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
             ],
         ]);
     }
-    getGlyph(char) {
-        return this.glyphs.get(char.toLowerCase());
+    mapChar(char) {
+        return char.toLowerCase();
     }
 }
 _BpxFontSaint11Minimal4_instances = new WeakSet(), _BpxFontSaint11Minimal4_pixelsGlyph = function _BpxFontSaint11Minimal4_pixelsGlyph(ascii) {

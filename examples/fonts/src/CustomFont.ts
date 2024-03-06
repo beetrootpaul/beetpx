@@ -1,4 +1,11 @@
-import { BpxFont, BpxGlyph, BpxPixels, spr_, v_ } from "../../../src";
+import {
+  BpxFont,
+  BpxGlyph,
+  BpxKerningNextCharMap,
+  BpxPixels,
+  spr_,
+  v_,
+} from "../../../src";
 
 export class CustomFont extends BpxFont {
   ascent = 8;
@@ -7,8 +14,8 @@ export class CustomFont extends BpxFont {
 
   spriteSheetUrls = ["custom-font.png"];
 
-  getGlyph(char: string): BpxGlyph | undefined {
-    return this.glyphs.get(char);
+  mapChar(char: string): string {
+    return char;
   }
 
   #spriteGlyph(
@@ -16,7 +23,10 @@ export class CustomFont extends BpxFont {
     h: number,
     x: number,
     y: number,
-    offsetY?: number,
+    extras?: {
+      offsetY?: number;
+      kerning?: BpxKerningNextCharMap;
+    },
   ): BpxGlyph {
     // TODO: where to define the image URL?
     const sprite = spr_("custom-font.png")(w, h, x, y);
@@ -24,7 +34,8 @@ export class CustomFont extends BpxFont {
       type: "sprite",
       sprite: sprite,
       advance: sprite.size.x + 1,
-      offset: offsetY ? v_(0, offsetY) : undefined,
+      offset: extras?.offsetY ? v_(0, extras.offsetY) : undefined,
+      kerning: extras?.kernin,
     };
   }
 
@@ -38,8 +49,8 @@ export class CustomFont extends BpxFont {
   }
 
   glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
-    [" ", { type: "whitespace", advance: 3 }],
-    ["T", this.#spriteGlyph(5, 8, 3, 0)],
+    [" ", { type: "whitespace", advance: 3, kerning: { f: -1 } }],
+    ["T", this.#spriteGlyph(5, 8, 3, 0, { kerning: { h: -1 } })],
     ["b", this.#spriteGlyph(3, 8, 5, 5)],
     ["e", this.#spriteGlyph(3, 5, 8, 0)],
     ["f", this.#spriteGlyph(3, 8, 6, 9)],
@@ -54,8 +65,8 @@ export class CustomFont extends BpxFont {
         #-#
       `),
     ],
-    ["o", this.#spriteGlyph(3, 5, 5, 8)],
-    ["q", this.#spriteGlyph(3, 8, 5, 8, this.descent)],
+    ["o", this.#spriteGlyph(3, 5, 5, 8, { kerning: { o: 1, x: 1 } })],
+    ["q", this.#spriteGlyph(3, 8, 5, 8, { offsetY: this.descent })],
     ["r", this.#spriteGlyph(3, 5, 5, 0)],
     [
       "w",

@@ -10,8 +10,8 @@ export class BpxFontPico8 extends BpxFont {
 
   spriteSheetUrls = [".beetpx/pico-8-font.png"];
 
-  getGlyph(char: string): BpxGlyph | undefined {
-    return this.glyphs.get(char.toLowerCase());
+  mapChar(char: string): string {
+    return char.toLowerCase();
   }
 
   glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([

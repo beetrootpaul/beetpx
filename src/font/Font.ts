@@ -5,10 +5,28 @@ import { v_, v_0_0_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 import { u_ } from "../Utils";
 
+export type BpxKerningNextCharMap = { [nextChar: string]: number };
+
 export type BpxGlyph =
-  | { type: "sprite"; sprite: BpxSprite; advance: number; offset?: BpxVector2d }
-  | { type: "pixels"; pixels: BpxPixels; advance: number; offset?: BpxVector2d }
-  | { type: "whitespace"; advance: number };
+  | {
+      type: "sprite";
+      sprite: BpxSprite;
+      advance: number;
+      offset?: BpxVector2d;
+      kerning?: BpxKerningNextCharMap;
+    }
+  | {
+      type: "pixels";
+      pixels: BpxPixels;
+      advance: number;
+      offset?: BpxVector2d;
+      kerning?: BpxKerningNextCharMap;
+    }
+  | {
+      type: "whitespace";
+      advance: number;
+      kerning?: BpxKerningNextCharMap;
+    };
 
 export type BpxArrangedGlyph = {
   /** Left-top position of a glyph in relation to the left-top of the entire text. */
@@ -26,8 +44,6 @@ export type BpxArrangedGlyph = {
     }
 );
 
-// TODO: kerning pairs
-
 export abstract class BpxFont {
   /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
   abstract readonly ascent: number;
@@ -42,7 +58,7 @@ export abstract class BpxFont {
   // TODO: add ligatures to the example? Handle "[c1]" such way?
   protected abstract readonly glyphs: Map<string, BpxGlyph>;
 
-  abstract getGlyph(char: string): BpxGlyph | undefined;
+  abstract mapChar(char: string): string;
 
   // TODO: support glyphs for char sequences
   // TODO: test this function
@@ -50,13 +66,17 @@ export abstract class BpxFont {
     const arrangedGlyphs: BpxArrangedGlyph[] = [];
     let xy = v_0_0_;
     let lineNumber = 0;
+    let prevKerningMap: BpxKerningNextCharMap = {};
 
-    for (const char of text) {
+    for (let char of text) {
+      char = this.mapChar(char);
       if (char === "\n") {
+        prevKerningMap = {};
         xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
         lineNumber += 1;
       } else {
-        const glyph = this.getGlyph(char);
+        const kerning = prevKerningMap[char] ?? 0;
+        const glyph = this.glyphs.get(char);
         if (!glyph) {
           // do nothing
         } else if (glyph.type === "sprite") {
@@ -68,10 +88,11 @@ export abstract class BpxFont {
             leftTop: xy
               .add(0, this.ascent)
               .sub(0, glyph.sprite.size.y)
-              .add(glyph.offset ?? v_0_0_),
-            // TODO: offset glyph
+              .add(glyph.offset ?? v_0_0_)
+              .add(kerning, 0),
           });
-          xy = xy.add(glyph.advance, 0);
+          prevKerningMap = glyph.kerning ?? {};
+          xy = xy.add(glyph.advance + kerning, 0);
         } else if (glyph.type === "pixels") {
           arrangedGlyphs.push({
             type: "pixels",
@@ -81,12 +102,14 @@ export abstract class BpxFont {
             leftTop: xy
               .add(0, this.ascent)
               .sub(0, glyph.pixels.size.y)
-              .add(glyph.offset ?? v_0_0_),
-            // TODO: offset glyph
+              .add(glyph.offset ?? v_0_0_)
+              .add(kerning, 0),
           });
-          xy = xy.add(glyph.advance, 0);
+          prevKerningMap = glyph.kerning ?? {};
+          xy = xy.add(glyph.advance + kerning, 0);
         } else if (glyph.type === "whitespace") {
-          xy = xy.add(glyph.advance, 0);
+          prevKerningMap = glyph.kerning ?? {};
+          xy = xy.add(glyph.advance + kerning, 0);
         } else {
           u_.assertUnreachable(glyph);
         }

@@ -95,8 +95,8 @@ export class BpxFontPico8 extends BpxFont {
             ["z", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 10, 7)],
         ]);
     }
-    getGlyph(char) {
-        return this.glyphs.get(char.toLowerCase());
+    mapChar(char) {
+        return char.toLowerCase();
     }
 }
 _BpxFontPico8_instances = new WeakSet(), _BpxFontPico8_spriteGlyph = function _BpxFontPico8_spriteGlyph(tileX, tileY) {

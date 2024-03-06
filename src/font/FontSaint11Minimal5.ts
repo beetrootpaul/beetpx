@@ -21,8 +21,8 @@ export class BpxFontSaint11Minimal5 extends BpxFont {
 
   spriteSheetUrls = [];
 
-  getGlyph(char: string): BpxGlyph | undefined {
-    return this.glyphs.get(char);
+  mapChar(char: string): string {
+    return char;
   }
 
   #pixelsGlyph(ascii: string): BpxGlyph {

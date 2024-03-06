@@ -860,8 +860,8 @@ export class BpxFontSaint11Minimal5 extends BpxFont {
             ],
         ]);
     }
-    getGlyph(char) {
-        return this.glyphs.get(char);
+    mapChar(char) {
+        return char;
     }
 }
 _BpxFontSaint11Minimal5_instances = new WeakSet(), _BpxFontSaint11Minimal5_pixelsGlyph = function _BpxFontSaint11Minimal5_pixelsGlyph(ascii) {
