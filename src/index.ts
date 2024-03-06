@@ -62,6 +62,7 @@ export { BpxTimer } from "./timer/Timer";
 
 export { BeetPx } from "./BeetPx";
 
+// TODO: move to shorthands.ts
 export { b_ } from "./BeetPx";
 export { u_ } from "./Utils";
 export { rgb_p8_ } from "./color/PalettePico8";
@@ -76,10 +77,10 @@ export {
   rgb_white_,
   rgb_yellow_,
 } from "./color/RgbColor";
-export { font_pico8_ } from "./font/FontPico8";
 export { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
 export { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
-export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
+export { v_0_0_, v_1_1_ } from "./misc/Vector2d";
 export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";
-export { timer_ } from "./timer/Timer";
+
+export * from "./shorthands";

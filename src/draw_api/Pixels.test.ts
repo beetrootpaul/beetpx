@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { v_ } from "../misc/Vector2d";
+import { v_ } from "../shorthands";
 import { BpxPixels } from "./Pixels";
 
 describe("Pixels", () => {

@@ -11,7 +11,6 @@ import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { font_pico8_ } from "./font/FontPico8";
 import { font_saint11Minimal4_ } from "./font/FontSaint11Minimal4";
 import { font_saint11Minimal5_ } from "./font/FontSaint11Minimal5";
 import { Button } from "./game_input/buttons/Button";
@@ -21,7 +20,8 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
-import { BpxVector2d, v_ } from "./misc/Vector2d";
+import { BpxVector2d } from "./misc/Vector2d";
+import { font_pico8_, v_ } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxUtils, u_ } from "./Utils";
 

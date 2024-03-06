@@ -1,6 +1,6 @@
 import { describe, test } from "@jest/globals";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { v_ } from "../../misc/Vector2d";
+import { v_ } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 

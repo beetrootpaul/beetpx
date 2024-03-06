@@ -3,12 +3,6 @@
 import { PrintDebug } from "../debug/PrintDebug";
 import { BpxUtils } from "../Utils";
 
-export function v_(value: number): BpxVector2d;
-export function v_(x: number, y: number): BpxVector2d;
-export function v_(valueOrX: number, maybeY?: number): BpxVector2d {
-  return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
-}
-
 export class BpxVector2d implements PrintDebug {
   /**
    * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
@@ -245,8 +239,3 @@ export class BpxVector2d implements PrintDebug {
     return `(${this.x},${this.y})`;
   }
 }
-
-/////////////////////////////////////////////////////////////////////////////
-
-export const v_0_0_ = v_(0, 0);
-export const v_1_1_ = v_(1, 1);

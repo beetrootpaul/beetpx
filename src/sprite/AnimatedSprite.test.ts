@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { BeetPx } from "../BeetPx";
 import { u_ } from "../Utils";
-import { v_ } from "../misc/Vector2d";
+import { v_ } from "../shorthands";
 import { aspr_ } from "./AnimatedSprite";
 
 describe("AnimatedSprite", () => {

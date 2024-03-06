@@ -1,18 +1,6 @@
 import { BeetPx } from "../BeetPx";
 import { BpxUtils } from "../Utils";
 
-export function timer_(
-  frames: number,
-  opts?: { loop?: boolean; pause?: boolean; delayFrames?: number },
-): BpxTimer {
-  return BpxTimer.for({
-    frames,
-    loop: opts?.loop ?? false,
-    pause: opts?.pause ?? false,
-    delayFrames: opts?.delayFrames ?? 0,
-  });
-}
-
 export class BpxTimer {
   static for(params: {
     frames: number;

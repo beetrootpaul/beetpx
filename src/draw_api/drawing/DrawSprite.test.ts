@@ -1,7 +1,7 @@
 import { describe, test } from "@jest/globals";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { v_ } from "../../misc/Vector2d";
+import { v_ } from "../../shorthands";
 import { spr_ } from "../../sprite/Sprite";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";

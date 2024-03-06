@@ -1,4 +1,5 @@
-import { BpxTimer, timer_ } from "../../timer/Timer";
+import { timer_ } from "../../shorthands";
+import { BpxTimer } from "../../timer/Timer";
 import { BpxUtils } from "../../Utils";
 
 export class Button {

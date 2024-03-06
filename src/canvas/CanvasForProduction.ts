@@ -1,5 +1,5 @@
 import { BpxRgbColor } from "../color/RgbColor";
-import { BpxVector2d, v_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
 import { u_ } from "../Utils";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
@@ -91,7 +91,10 @@ export class CanvasForProduction extends Canvas {
   doRender(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
-    const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
+    const htmlCanvasSize = BpxVector2d.of(
+      this.#htmlCanvas.width,
+      this.#htmlCanvas.height,
+    );
     const scaleToFill = Math.max(
       1,
       Math.min(

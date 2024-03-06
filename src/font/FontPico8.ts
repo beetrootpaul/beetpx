@@ -70,5 +70,3 @@ export class BpxFontPico8 extends BpxFont {
     };
   }
 }
-
-export const font_pico8_ = new BpxFontPico8();

@@ -1,6 +1,7 @@
 import { BpxImageUrl } from "../assets/Assets";
 import { BpxPixels } from "../draw_api/Pixels";
-import { BpxVector2d, v_, v_0_0_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
+import { v_, v_0_0_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 import { u_ } from "../Utils";
 

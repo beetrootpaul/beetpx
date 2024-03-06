@@ -1,6 +1,6 @@
 import { BeetPx } from "./BeetPx";
 import { BpxRgbColor } from "./color/RgbColor";
-import { BpxVector2d, v_ } from "./misc/Vector2d";
+import { BpxVector2d } from "./misc/Vector2d";
 
 export class BpxUtils {
   /**
@@ -61,20 +61,25 @@ export class BpxUtils {
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
   static offset4Directions(): BpxVector2d[] {
-    return [v_(-1, -1), v_(1, -1), v_(1, 1), v_(-1, 1)];
+    return [
+      BpxVector2d.of(-1, -1),
+      BpxVector2d.of(1, -1),
+      BpxVector2d.of(1, 1),
+      BpxVector2d.of(-1, 1),
+    ];
   }
 
   // generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions
   static offset8Directions(): BpxVector2d[] {
     return [
-      v_(-1, -1),
-      v_(0, -1),
-      v_(1, -1),
-      v_(1, 0),
-      v_(1, 1),
-      v_(0, 1),
-      v_(-1, 1),
-      v_(-1, 0),
+      BpxVector2d.of(-1, -1),
+      BpxVector2d.of(0, -1),
+      BpxVector2d.of(1, -1),
+      BpxVector2d.of(1, 0),
+      BpxVector2d.of(1, 1),
+      BpxVector2d.of(0, 1),
+      BpxVector2d.of(-1, 1),
+      BpxVector2d.of(-1, 0),
     ];
   }
 

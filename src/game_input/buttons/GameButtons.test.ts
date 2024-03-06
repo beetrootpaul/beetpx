@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { BeetPx } from "../../BeetPx";
-import { v_ } from "../../misc/Vector2d";
+import { v_ } from "../../shorthands";
 import { GameButtons } from "./GameButtons";
 
 describe("GameButtons", () => {

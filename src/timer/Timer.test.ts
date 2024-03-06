@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { BeetPx } from "../BeetPx";
 import { u_ } from "../Utils";
-import { BpxTimer, timer_ } from "./Timer";
+import { timer_ } from "../shorthands";
+import { BpxTimer } from "./Timer";
 
 let stubbedFrameNumber = 1;
 
