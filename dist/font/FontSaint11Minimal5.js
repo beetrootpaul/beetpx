@@ -860,6 +860,9 @@ export class BpxFontSaint11Minimal5 extends BpxFont {
             ],
         ]);
     }
+    isSpriteSheetTextColor(color) {
+        return true;
+    }
     mapChar(char) {
         return char;
     }

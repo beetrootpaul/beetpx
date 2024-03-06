@@ -251,6 +251,9 @@ declare class BpxSprite {
 type BpxKerningNextCharMap = {
     [nextChar: string]: number;
 };
+type BpxTextColorMarkers = {
+    [marker: string]: BpxRgbColor;
+};
 type BpxGlyph = {
     type: "sprite";
     sprite: BpxSprite;
@@ -276,22 +279,28 @@ type BpxArrangedGlyph = {
 } & ({
     type: "sprite";
     sprite: BpxSprite;
+    spriteColorMapping: BpxSpriteColorMapping;
 } | {
     type: "pixels";
     pixels: BpxPixels;
+    color: BpxRgbColor;
 });
 declare abstract class BpxFont {
     /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
     abstract readonly ascent: number;
     /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
     abstract readonly descent: number;
-    /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and the top-most pixel of the next line (excluded). */
+    /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and
+     * the top-most pixel of the next line (excluded). */
     abstract readonly lineGap: number;
     /** URLs of sprite sheets used by glyphs of this font. */
     abstract readonly spriteSheetUrls: BpxImageUrl[];
+    /** This function is used to distinguish text from its background on a font's sprite sheet.
+     *  If there is no sprite sheet in use at all, feel free to return `true` here. */
+    protected abstract isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
     protected abstract readonly glyphs: Map<string, BpxGlyph>;
-    abstract mapChar(char: string): string;
-    arrangeGlyphsFor(text: string): BpxArrangedGlyph[];
+    protected abstract mapChar(char: string): string;
+    arrangeGlyphsFor(text: string, textColor: BpxRgbColor, colorMarkers?: BpxTextColorMarkers): BpxArrangedGlyph[];
 }
 
 declare class BpxFontPico8 extends BpxFont {
@@ -301,7 +310,8 @@ declare class BpxFontPico8 extends BpxFont {
     descent: number;
     lineGap: number;
     spriteSheetUrls: string[];
-    mapChar(char: string): string;
+    protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
+    protected mapChar(char: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
 
@@ -323,6 +333,7 @@ declare class BpxFontSaint11Minimal4 extends BpxFont {
     descent: number;
     lineGap: number;
     spriteSheetUrls: never[];
+    protected isSpriteSheetTextColor(_color: BpxRgbColor | null): boolean;
     mapChar(char: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
@@ -345,6 +356,7 @@ declare class BpxFontSaint11Minimal5 extends BpxFont {
     descent: number;
     lineGap: number;
     spriteSheetUrls: never[];
+    protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
     mapChar(char: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
@@ -571,6 +583,7 @@ declare class DrawApi {
     }): BpxVector2d;
     drawText(xy: BpxVector2d, color: BpxRgbColor, text: string, opts?: {
         scaleXy?: BpxVector2d;
+        colorMarkers?: BpxTextColorMarkers;
     }): void;
     takeCanvasSnapshot(): void;
 }
@@ -815,4 +828,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningNextCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningNextCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };

@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _DrawApi_assets, _DrawApi_canvas, _DrawApi_clear, _DrawApi_pixel, _DrawApi_pixels, _DrawApi_line, _DrawApi_rect, _DrawApi_ellipse, _DrawApi_sprite, _DrawApi_text, _DrawApi_pattern, _DrawApi_spriteColorMapping, _DrawApi_font;
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { font_pico8_, v_, v_1_1_ } from "../shorthands";
+import { font_pico8_, rgb_white_, v_, v_1_1_ } from "../shorthands";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
 import { DrawLine } from "./drawing/DrawLine";
@@ -107,7 +107,7 @@ export class DrawApi {
     measureText(text, opts = {}) {
         let maxLineNumber = 0;
         let maxX = 0;
-        for (const arrangedGlyph of __classPrivateFieldGet(this, _DrawApi_font, "f").arrangeGlyphsFor(text)) {
+        for (const arrangedGlyph of __classPrivateFieldGet(this, _DrawApi_font, "f").arrangeGlyphsFor(text, rgb_white_)) {
             maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber);
             maxX = Math.max(maxX, arrangedGlyph.leftTop.x +
                 (arrangedGlyph.type === "sprite"
@@ -117,24 +117,14 @@ export class DrawApi {
         return v_(maxX, (maxLineNumber + 1) * (__classPrivateFieldGet(this, _DrawApi_font, "f").ascent + __classPrivateFieldGet(this, _DrawApi_font, "f").descent) +
             maxLineNumber * __classPrivateFieldGet(this, _DrawApi_font, "f").lineGap).mul(opts?.scaleXy ?? v_1_1_);
     }
-    drawText(xy, 
-    
-    color, text, opts = {}) {
+    drawText(xy, color, text, opts = {}) {
         
         
         
         
         
         
-        __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_font, "f"), 
-        
-        
-        
-        
-        
-        xy.sub(this.cameraXy), 
-        
-        opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_font, "f"), xy.sub(this.cameraXy), color, opts?.colorMarkers ?? {}, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     takeCanvasSnapshot() {
         return __classPrivateFieldGet(this, _DrawApi_canvas, "f").takeSnapshot();

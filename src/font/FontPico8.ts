@@ -1,3 +1,5 @@
+import { BpxRgbColor } from "../color/RgbColor";
+import { rgb_p8_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont, BpxGlyph } from "./Font";
 
@@ -12,7 +14,11 @@ export class BpxFontPico8 extends BpxFont {
 
   spriteSheetUrls = [BpxFontPico8.spriteSheetUrl];
 
-  mapChar(char: string): string {
+  protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean {
+    return color?.cssHex === rgb_p8_.white.cssHex;
+  }
+
+  protected mapChar(char: string): string {
     return char.toLowerCase();
   }
 

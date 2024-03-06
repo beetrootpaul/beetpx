@@ -4,9 +4,9 @@ import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMappi
 import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { BpxFont } from "../font/Font";
+import { BpxFont, BpxTextColorMarkers } from "../font/Font";
 import { BpxVector2d } from "../misc/Vector2d";
-import { font_pico8_, v_, v_1_1_ } from "../shorthands";
+import { font_pico8_, rgb_white_, v_, v_1_1_ } from "../shorthands";
 import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
 import { BpxSprite } from "../sprite/Sprite";
 import { DrawClear } from "./drawing/DrawClear";
@@ -192,7 +192,7 @@ export class DrawApi {
     let maxLineNumber = 0;
     let maxX = 0;
 
-    for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text)) {
+    for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, rgb_white_)) {
       maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber);
       maxX = Math.max(
         maxX,
@@ -212,13 +212,14 @@ export class DrawApi {
 
   drawText(
     xy: BpxVector2d,
-    // TODO: bring back coloring
     color: BpxRgbColor,
     text: string,
     opts: {
       // TODO: bring back centering
       //     centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
+      // TODO: test it somehow?
+      colorMarkers?: BpxTextColorMarkers;
     } = {},
   ): void {
     // TODO: bring back centering
@@ -230,13 +231,9 @@ export class DrawApi {
     this.#text.draw(
       text,
       this.#font,
-      // TODO: rework it
-      // this.#font.imageUrl
-      //   ? this.#assets.getImageAsset(this.#font.imageUrl)
-      //   : null,
-      // null,
       xy.sub(this.cameraXy),
-      // color,
+      color,
+      opts?.colorMarkers ?? {},
       opts.scaleXy ?? v_1_1_,
       this.#pattern,
     );

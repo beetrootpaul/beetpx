@@ -1,3 +1,4 @@
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxPixels } from "../draw_api/Pixels";
 import { BpxFont, BpxGlyph } from "./Font";
 
@@ -20,6 +21,10 @@ export class BpxFontSaint11Minimal5 extends BpxFont {
   lineGap = 2;
 
   spriteSheetUrls = [];
+
+  protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean {
+    return true;
+  }
 
   mapChar(char: string): string {
     return char;

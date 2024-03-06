@@ -3,6 +3,7 @@ import {
   BpxGlyph,
   BpxKerningNextCharMap,
   BpxPixels,
+  BpxRgbColor,
   spr_,
   v_,
 } from "../../../src";
@@ -23,6 +24,10 @@ export class CustomFont extends BpxFont {
     CustomFont.#internalSpriteSheetUrl,
     CustomFont.#externalSpriteSheetUrl,
   ];
+
+  protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean {
+    return color?.cssHex === "#99e550";
+  }
 
   mapChar(char: string): string {
     return char;
@@ -49,7 +54,7 @@ export class CustomFont extends BpxFont {
       sprite: sprite,
       advance: sprite.size.x + 1,
       offset: extras?.offsetY ? v_(0, extras.offsetY) : undefined,
-      kerning: extras?.kernin,
+      kerning: extras?.kerning,
     };
   }
 

@@ -10,9 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawText_canvas, _DrawText_assets, _DrawText_sprite, _DrawText_pixels;
-import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { rgb_red_, v_0_0_ } from "../../shorthands";
+import { v_0_0_ } from "../../shorthands";
 import { u_ } from "../../Utils";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
@@ -31,62 +30,16 @@ export class DrawText {
             disableRounding: true,
         }), "f");
     }
-    draw(text, font, 
-    
-    
-    canvasXy, 
-    
-    
-    scaleXy, pattern) {
+    draw(text, font, canvasXy, color, colorMarkers, scaleXy, pattern) {
         canvasXy = canvasXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        for (const arrangedGlyph of font.arrangeGlyphsFor(text)) {
+        for (const arrangedGlyph of font.arrangeGlyphsFor(text, color, colorMarkers)) {
             const xy = canvasXy.add(arrangedGlyph.leftTop.mul(scaleXy));
             if (arrangedGlyph.type === "sprite") {
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(arrangedGlyph.sprite, 
-                
-                
-                
-                
-                
-                
-                
-                
-                __classPrivateFieldGet(this, _DrawText_assets, "f").getImageAsset(arrangedGlyph.sprite.imageUrl), xy, scaleXy, 
-                
-                
-                
-                
-                BpxSpriteColorMapping.noMapping, pattern);
+                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(arrangedGlyph.sprite, __classPrivateFieldGet(this, _DrawText_assets, "f").getImageAsset(arrangedGlyph.sprite.imageUrl), xy, scaleXy, arrangedGlyph.spriteColorMapping, pattern);
             }
             else if (arrangedGlyph.type === "pixels") {
-                __classPrivateFieldGet(this, _DrawText_pixels, "f").draw(arrangedGlyph.pixels, xy, 
-                
-                
-                rgb_red_, scaleXy, pattern);
+                __classPrivateFieldGet(this, _DrawText_pixels, "f").draw(arrangedGlyph.pixels, xy, arrangedGlyph.color, scaleXy, pattern);
             }
             else {
                 u_.assertUnreachable(arrangedGlyph);

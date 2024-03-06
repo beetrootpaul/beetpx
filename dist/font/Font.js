@@ -1,8 +1,11 @@
+import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { v_, v_0_0_ } from "../shorthands";
 import { u_ } from "../Utils";
 export class BpxFont {
     
-    arrangeGlyphsFor(text) {
+    arrangeGlyphsFor(text, textColor, 
+    
+    colorMarkers) {
         const arrangedGlyphs = [];
         let xy = v_0_0_;
         let lineNumber = 0;
@@ -25,6 +28,7 @@ export class BpxFont {
                         type: "sprite",
                         char: char,
                         sprite: glyph.sprite,
+                        spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) => this.isSpriteSheetTextColor(sourceColor) ? textColor : null),
                         lineNumber: lineNumber,
                         leftTop: xy
                             .add(0, this.ascent)
@@ -40,6 +44,7 @@ export class BpxFont {
                         type: "pixels",
                         char: char,
                         pixels: glyph.pixels,
+                        color: textColor,
                         lineNumber: lineNumber,
                         leftTop: xy
                             .add(0, this.ascent)

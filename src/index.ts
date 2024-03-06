@@ -51,6 +51,7 @@ export {
   type BpxArrangedGlyph,
   type BpxGlyph,
   type BpxKerningNextCharMap,
+  type BpxTextColorMarkers,
 } from "./font/Font";
 export { BpxFontPico8 } from "./font/FontPico8";
 export { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";

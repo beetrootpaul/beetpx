@@ -67,7 +67,14 @@ b_.init({
 
       const textWh = b_.measureText(text, { scaleXy: v_(zoom) });
       drawBox(textWh, cursor, zoom);
-      b_.drawText(cursor, rgb_p8_.peach, text, { scaleXy: v_(zoom) });
+      b_.drawText(cursor, rgb_p8_.peach, text, {
+        scaleXy: v_(zoom),
+        colorMarkers: {
+          c0: rgb_p8_.peach,
+          c1: rgb_p8_.tan,
+          c2: rgb_p8_.sky,
+        },
+      });
 
       drawMarkers(font, cursor, zoom);
 

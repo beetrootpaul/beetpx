@@ -547,6 +547,9 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
             ],
         ]);
     }
+    isSpriteSheetTextColor(_color) {
+        return true;
+    }
     mapChar(char) {
         return char.toLowerCase();
     }
