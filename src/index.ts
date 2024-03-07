@@ -50,7 +50,7 @@ export {
   BpxFont,
   type BpxArrangedGlyph,
   type BpxGlyph,
-  type BpxKerningNextCharMap,
+  type BpxKerningPrevCharMap,
   type BpxTextColorMarkers,
 } from "./font/Font";
 export { BpxFontPico8 } from "./font/FontPico8";

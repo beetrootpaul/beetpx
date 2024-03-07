@@ -1,7 +1,7 @@
 import {
   BpxFont,
   BpxGlyph,
-  BpxKerningNextCharMap,
+  BpxKerningPrevCharMap,
   BpxPixels,
   BpxRgbColor,
   spr_,
@@ -40,7 +40,7 @@ export class CustomFont extends BpxFont {
     y: number,
     extras?: {
       offsetY?: number;
-      kerning?: BpxKerningNextCharMap;
+      kerning?: BpxKerningPrevCharMap;
       useExternalSpriteSheet?: boolean;
     },
   ): BpxGlyph {
@@ -68,12 +68,24 @@ export class CustomFont extends BpxFont {
   }
 
   glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
-    [" ", { type: "whitespace", advance: 3, kerning: { f: -1 } }],
-    ["T", this.#spriteGlyph(5, 8, 3, 0, { kerning: { h: -1 } })],
+    [" ", { type: "whitespace", advance: 3 }],
+    ["T", this.#spriteGlyph(5, 8, 3, 0)],
     ["b", this.#spriteGlyph(3, 8, 5, 5)],
     ["e", this.#spriteGlyph(3, 5, 8, 0)],
-    ["f", this.#spriteGlyph(3, 8, 6, 9, { useExternalSpriteSheet: true })],
-    ["h", this.#spriteGlyph(3, 8, 0, 0, { useExternalSpriteSheet: true })],
+    [
+      "f",
+      this.#spriteGlyph(3, 8, 6, 9, {
+        kerning: { " ": -1 },
+        useExternalSpriteSheet: true,
+      }),
+    ],
+    [
+      "h",
+      this.#spriteGlyph(3, 8, 0, 0, {
+        kerning: { t: -1, T: -1 },
+        useExternalSpriteSheet: true,
+      }),
+    ],
     [
       "n",
       this.#pixelsGlyph(`
@@ -84,7 +96,7 @@ export class CustomFont extends BpxFont {
         #-#
       `),
     ],
-    ["o", this.#spriteGlyph(3, 5, 5, 8, { kerning: { o: 1, x: 1 } })],
+    ["o", this.#spriteGlyph(3, 5, 5, 8)],
     ["q", this.#spriteGlyph(3, 8, 5, 8, { offsetY: this.descent })],
     ["r", this.#spriteGlyph(3, 5, 5, 0, { useExternalSpriteSheet: true })],
     [
@@ -97,7 +109,7 @@ export class CustomFont extends BpxFont {
         -#-#-
       `),
     ],
-    ["x", this.#spriteGlyph(3, 5, 1, 8)],
+    ["x", this.#spriteGlyph(3, 5, 1, 8, { kerning: { o: 1 } })],
   ]);
 }
 

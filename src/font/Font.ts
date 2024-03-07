@@ -7,7 +7,7 @@ import { v_, v_0_0_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 import { u_ } from "../Utils";
 
-export type BpxKerningNextCharMap = { [nextChar: string]: number };
+export type BpxKerningPrevCharMap = { [prevChar: string]: number };
 
 export type BpxTextColorMarkers = { [marker: string]: BpxRgbColor };
 
@@ -17,19 +17,19 @@ export type BpxGlyph =
       sprite: BpxSprite;
       advance: number;
       offset?: BpxVector2d;
-      kerning?: BpxKerningNextCharMap;
+      kerning?: BpxKerningPrevCharMap;
     }
   | {
       type: "pixels";
       pixels: BpxPixels;
       advance: number;
       offset?: BpxVector2d;
-      kerning?: BpxKerningNextCharMap;
+      kerning?: BpxKerningPrevCharMap;
     }
   | {
       type: "whitespace";
       advance: number;
-      kerning?: BpxKerningNextCharMap;
+      kerning?: BpxKerningPrevCharMap;
     };
 
 export type BpxArrangedGlyph = {
@@ -81,13 +81,13 @@ export abstract class BpxFont {
     const arrangedGlyphs: BpxArrangedGlyph[] = [];
     let xy = v_0_0_;
     let lineNumber = 0;
-    let prevKerningMap: BpxKerningNextCharMap = {};
+    let prevChar = "\n";
 
     for (let i = 0; i < text.length; i++) {
       const char = this.mapChar(text[i]!);
 
       if (char === "\n") {
-        prevKerningMap = {};
+        prevChar = "\n";
         xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
         lineNumber += 1;
         continue;
@@ -109,12 +109,12 @@ export abstract class BpxFont {
         }
       }
 
-      const kerning = prevKerningMap[char] ?? 0;
       const glyph = this.glyphs.get(char);
       if (!glyph) {
         continue;
       }
 
+      const kerning = glyph.kerning?.[prevChar] ?? 0;
       const glyphColor = textColor;
 
       if (glyph.type === "sprite") {
@@ -134,7 +134,7 @@ export abstract class BpxFont {
             .add(kerning, 0),
         });
 
-        prevKerningMap = glyph.kerning ?? {};
+        prevChar = char;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }
@@ -153,13 +153,13 @@ export abstract class BpxFont {
             .add(kerning, 0),
         });
 
-        prevKerningMap = glyph.kerning ?? {};
+        prevChar = char;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }
 
       if (glyph.type === "whitespace") {
-        prevKerningMap = glyph.kerning ?? {};
+        prevChar = char;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }

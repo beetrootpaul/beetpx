@@ -8,11 +8,11 @@ export class BpxFont {
         const arrangedGlyphs = [];
         let xy = v_0_0_;
         let lineNumber = 0;
-        let prevKerningMap = {};
+        let prevChar = "\n";
         for (let i = 0; i < text.length; i++) {
             const char = this.mapChar(text[i]);
             if (char === "\n") {
-                prevKerningMap = {};
+                prevChar = "\n";
                 xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
                 lineNumber += 1;
                 continue;
@@ -32,11 +32,11 @@ export class BpxFont {
                     continue;
                 }
             }
-            const kerning = prevKerningMap[char] ?? 0;
             const glyph = this.glyphs.get(char);
             if (!glyph) {
                 continue;
             }
+            const kerning = glyph.kerning?.[prevChar] ?? 0;
             const glyphColor = textColor;
             if (glyph.type === "sprite") {
                 arrangedGlyphs.push({
@@ -53,7 +53,7 @@ export class BpxFont {
                         .add(glyph.offset ?? v_0_0_)
                         .add(kerning, 0),
                 });
-                prevKerningMap = glyph.kerning ?? {};
+                prevChar = char;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
@@ -70,12 +70,12 @@ export class BpxFont {
                         .add(glyph.offset ?? v_0_0_)
                         .add(kerning, 0),
                 });
-                prevKerningMap = glyph.kerning ?? {};
+                prevChar = char;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
             if (glyph.type === "whitespace") {
-                prevKerningMap = glyph.kerning ?? {};
+                prevChar = char;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
