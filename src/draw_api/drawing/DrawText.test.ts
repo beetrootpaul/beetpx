@@ -7,108 +7,12 @@ import { DrawingTestSetup, drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPixels } from "../Pixels";
 import { TestImage } from "../TestImage";
 
-// TODO: test kerning across "[c1]" marker, e.g. "J[c1]K"
-
-// TODO: test for text measurement
-// test("#measureText", () => {
-// vi.spyOn(BeetPx, "getFont").mockImplementation(
-//   () =>
-//     new (class implements BpxFont {
-//       id = "test-font";
-//       spriteTextColor = null;
-//       imageUrl = "any.image/url";
-//       spritesFor(text: string): BpxCharSprite[] {
-//         const sprites: BpxCharSprite[] = [];
-//         let positionInText = v_0_0_;
-//         for (let i = 0; i < text.length; i += 1) {
-//           //
-//           // data for test assertions where chars are tiny and jumps are huge
-//           //
-//           if (text[i] === ".") {
-//             sprites.push({
-//               char: ".",
-//               positionInText,
-//               type: "pixels",
-//               // pixels of a size 1 x 2
-//               pixels: BpxPixels.from("-\n#"),
-//             });
-//             positionInText = positionInText.add(100, -200);
-//           }
-//           if (text[i] === "o") {
-//             sprites.push({
-//               char: "o",
-//               positionInText,
-//               type: "image",
-//               spriteXyWh: [v_(50_000, 60_000), v_(30, 40)],
-//             });
-//             positionInText = positionInText.add(-3_000, 4_000);
-//           }
-//           //
-//           // data for test assertions where chars are huge and jumps are tiny
-//           //
-//           if (text[i] === "x") {
-//             sprites.push({
-//               char: "x",
-//               positionInText,
-//               type: "pixels",
-//               // pixels of a size 100 x 200
-//               pixels: BpxPixels.from(
-//                 u_
-//                   .range(200)
-//                   .map(
-//                     (_) => "-".repeat(25) + "#".repeat(50) + "-".repeat(25),
-//                   )
-//                   .join("\n"),
-//               ),
-//             });
-//             positionInText = positionInText.add(1, -2);
-//           }
-//           if (text[i] === "#") {
-//             sprites.push({
-//               char: "#",
-//               positionInText,
-//               type: "image",
-//               spriteXyWh: [v_(50_000, 60_000), v_(3_000, 4_000)],
-//             });
-//             positionInText = positionInText.add(-30, 40);
-//           }
-//         }
-//         return sprites;
-//       }
-//     })(),
-// );
-//
-// assertions where chars are tiny and jumps are huge
-//
-// expect(BpxUtils.measureText(".")).toEqual([v_(0, 0), v_(1, 2)]);
-// expect(BpxUtils.measureText("o")).toEqual([v_(0, 0), v_(30, 40)]);
-// expect(BpxUtils.measureText("...")).toEqual([v_(0, -400), v_(201, 402)]);
-// expect(BpxUtils.measureText("ooo")).toEqual([
-//   v_(-6_000, 0),
-//   v_(6_030, 8_040),
-// ]);
-// expect(BpxUtils.measureText(".o.o.o")).toEqual([
-//   v_(-5_800, -200),
-//   v_(5_930, 7_802),
-// ]);
-//
-// assertions where chars are huge and jumps are tiny
-//
-// expect(BpxUtils.measureText("x")).toEqual([v_(0, 0), v_(100, 200)]);
-// expect(BpxUtils.measureText("#")).toEqual([v_(0, 0), v_(3_000, 4_000)]);
-// expect(BpxUtils.measureText("xxx")).toEqual([v_(0, -4), v_(102, 204)]);
-// expect(BpxUtils.measureText("###")).toEqual([v_(-60, 0), v_(3_060, 4_080)]);
-// expect(BpxUtils.measureText("x#x#x#")).toEqual([
-//   v_(-58, -2),
-//   v_(3_059, 4_076),
-// ]);
-// });
-
 describe("DrawText", () => {
   const c0 = BpxRgbColor.fromCssHex("#010203");
   const c1 = BpxRgbColor.fromCssHex("#111213");
   const c2 = BpxRgbColor.fromCssHex("#212223");
   const c3 = BpxRgbColor.fromCssHex("#313233");
+  const c4 = BpxRgbColor.fromCssHex("#414243");
   const cFontBg = BpxRgbColor.fromCssHex("#818283");
   const cFontFg = BpxRgbColor.fromCssHex("#919293");
 
@@ -176,6 +80,34 @@ describe("DrawText", () => {
           advance: 4,
           offset: v_(0, 2),
           kerning: { x: -1 },
+        },
+      ],
+      [
+        "[",
+        {
+          type: "pixels",
+          pixels: BpxPixels.from(`
+            ##
+            #-
+            #-
+            #-
+            ##
+          `),
+          advance: 3,
+        },
+      ],
+      [
+        "]",
+        {
+          type: "pixels",
+          pixels: BpxPixels.from(`
+            ##
+            -#
+            -#
+            -#
+            ##
+          `),
+          advance: 3,
         },
       ],
     ]);
@@ -556,6 +488,45 @@ describe("DrawText", () => {
         - - - - # - - - # - - - - - - -
         # # - - # - - - # - - - # - - -
       `,
+    });
+  });
+
+  describe("color markers", () => {
+    test("use defined color markers to affect the color of subsequent characters", () => {
+      dts = drawingTestSetup(26, 10, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.drawText("B[x2]p[x3]x[x4],", v_(1, 1), c1, {
+        colorMarkers: {
+          x2: c2,
+          x4: c4,
+        },
+      });
+
+      // explanation:
+      //  - "B" is printed with color "c1"
+      //  - "[x2]" changes the color to "c2" and is not printed
+      //  - "p" is printed with color "c2"
+      //  - "[x3]" is not defined in "colorMarkers", therefore is printed as is (but only glyphs defined in TestFont are really printed)
+      //  - "x" is printed with color "c2", still
+      //  - "[x4]" changes the color to "c4" and is not printed
+      //  - "," is printed with color "c4"
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "%": c2, "^": c3, "@": c4 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - - - - - - - - - - - - - -
+          - # - # - - % % - - % % - % - % - % % - % - % - - -
+          - # # # - - % - % - % - - % - % - - % - % - % - - -
+          - # - - # - % % - - % - - - % - - - % - - % - - - -
+          - # - - # - % - - - % - - % - % - - % - % - % - - -
+          - # # # - - % - - - % % - % - % - % % - % - % - @ -
+          - - - - - - - - - - - - - - - - - - - - - - - - @ -
+          - - - - - - - - - - - - - - - - - - - - - - - @ - -
+          - - - - - - - - - - - - - - - - - - - - - - - - - -
+        `,
+      });
     });
   });
 });

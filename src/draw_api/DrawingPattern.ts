@@ -33,7 +33,6 @@ export class BpxDrawingPattern {
     return new BpxDrawingPattern(bits);
   }
 
-  // TODO: move these statics outside of the class in order to make them consistent with e.g. `v_1_1_` or `rgb_red_`
   static primaryOnly = BpxDrawingPattern.of(0b1111_1111_1111_1111);
   static secondaryOnly = BpxDrawingPattern.of(0b0000_0000_0000_0000);
 

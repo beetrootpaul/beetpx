@@ -69,7 +69,6 @@ export abstract class BpxFont {
 
   protected abstract mapChar(char: string): string;
 
-  // TODO: test this function
   arrangeGlyphsFor(
     text: string,
     textColor: BpxRgbColor,
@@ -125,7 +124,6 @@ export abstract class BpxFont {
           char: char,
           sprite: glyph.sprite,
           spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) =>
-            // TODO: test for this edge case of `textColor` returned from a function being always the last assigned value
             this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null,
           ),
           lineNumber: lineNumber,

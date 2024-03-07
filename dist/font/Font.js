@@ -2,7 +2,6 @@ import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxVector2d } from "../misc/Vector2d";
 import { assertUnreachable } from "../utils/assertUnreachable";
 export class BpxFont {
-    
     arrangeGlyphsFor(text, textColor, colorMarkers) {
         colorMarkers ?? (colorMarkers = {});
         const arrangedGlyphs = [];
@@ -43,9 +42,7 @@ export class BpxFont {
                     type: "sprite",
                     char: char,
                     sprite: glyph.sprite,
-                    spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) => 
-                    
-                    this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null),
+                    spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) => this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null),
                     lineNumber: lineNumber,
                     leftTop: xy
                         .add(0, this.ascent)

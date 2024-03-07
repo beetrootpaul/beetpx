@@ -188,7 +188,6 @@ export class DrawApi {
     this.#font = font;
   }
 
-  // TODO: move tests here from utils + cover scale and centering
   measureText(
     text: string,
     opts?: { scaleXy?: BpxVector2d; centerXy?: [boolean, boolean] },
@@ -232,7 +231,6 @@ export class DrawApi {
     },
   ): void {
     const centerXy = opts?.centerXy ?? [false, false];
-    // TODO: test the combination of scale and center vs rounding with a pixel precision instead of rounding before scaling up
     if (centerXy[0] || centerXy[1]) {
       const { offset } = this.measureText(text, {
         scaleXy: opts?.scaleXy,

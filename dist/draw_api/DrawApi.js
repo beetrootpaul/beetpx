@@ -104,7 +104,6 @@ export class DrawApi {
     useFont(font) {
         __classPrivateFieldSet(this, _DrawApi_font, font, "f");
     }
-    
     measureText(text, opts) {
         let maxLineNumber = 0;
         let maxX = 0;
@@ -122,7 +121,6 @@ export class DrawApi {
     }
     drawText(text, xy, color, opts) {
         const centerXy = opts?.centerXy ?? [false, false];
-        
         if (centerXy[0] || centerXy[1]) {
             const { offset } = this.measureText(text, {
                 scaleXy: opts?.scaleXy,

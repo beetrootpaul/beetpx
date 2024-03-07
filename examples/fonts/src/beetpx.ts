@@ -12,7 +12,6 @@ import { offset4Directions } from "../../../src/utils/offset4Directions";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
-// TODO: update tests, write new ones
 const text = [
   "The quick [c1]brown[c0] fox jumps",
   "over the [c2]lazy[c0] dog",
