@@ -2,7 +2,6 @@ import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor, BpxRgbCssHex } from "./RgbColor";
 
 export class BpxSpriteColorMapping {
-  // TODO: move this static outside of the class in order to make it consistent with e.g. `v_1_1_` or `rgb_red_`
   static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping((c) => c);
 
   static from(

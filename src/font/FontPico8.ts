@@ -3,7 +3,12 @@ import { type BpxRgbColor } from "../color/RgbColor";
 import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont, type BpxGlyph } from "./Font";
 
-// TODO: add a comment here and in README about the origin of this font and its CC-0 license
+/**
+ * A free to use (CC-0) font created by zep and distributed as part of PICO-8 fantasy console.
+ *
+ * Links:
+ *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the font being available under a CC-0 license
+ */
 export class BpxFontPico8 extends BpxFont {
   static spriteSheetUrl = ".beetpx/pico-8-font.png";
 

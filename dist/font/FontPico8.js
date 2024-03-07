@@ -7,7 +7,12 @@ var _BpxFontPico8_instances, _a, _BpxFontPico8_spriteGlyph;
 import { BpxPalettePico8 } from "../color/PalettePico8";
 import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont } from "./Font";
-
+/**
+ * A free to use (CC-0) font created by zep and distributed as part of PICO-8 fantasy console.
+ *
+ * Links:
+ *  - https:
+ */
 export class BpxFontPico8 extends BpxFont {
     constructor() {
         super(...arguments);

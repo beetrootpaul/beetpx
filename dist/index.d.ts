@@ -250,6 +250,12 @@ declare abstract class BpxFont {
     arrangeGlyphsFor(text: string, textColor: BpxRgbColor, colorMarkers?: BpxTextColorMarkers): BpxArrangedGlyph[];
 }
 
+/**
+ * A free to use (CC-0) font created by zep and distributed as part of PICO-8 fantasy console.
+ *
+ * Links:
+ *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the font being available under a CC-0 license
+ */
 declare class BpxFontPico8 extends BpxFont {
     #private;
     static spriteSheetUrl: string;
@@ -731,6 +737,8 @@ declare function clamp(a: number, b: number, c: number): number;
 declare function drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, opts?: {
     centerXy?: [boolean, boolean];
     scaleXy?: BpxVector2d;
+    textColorMarkers?: BpxTextColorMarkers;
+    outlineColorMarkers?: BpxTextColorMarkers;
 }): void;
 
 declare function identity<Param>(param: Param): Param;
