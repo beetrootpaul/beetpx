@@ -1,19 +1,19 @@
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { v_, v_0_0_ } from "../shorthands";
-import { u_ } from "../Utils";
+import { BpxVector2d } from "../misc/Vector2d";
+import { assertUnreachable } from "../utils/assertUnreachable";
 export class BpxFont {
     
     arrangeGlyphsFor(text, textColor, colorMarkers) {
         colorMarkers ?? (colorMarkers = {});
         const arrangedGlyphs = [];
-        let xy = v_0_0_;
+        let xy = BpxVector2d.of(0, 0);
         let lineNumber = 0;
         let prevChar = "\n";
         for (let i = 0; i < text.length; i++) {
             const char = this.mapChar(text[i]);
             if (char === "\n") {
                 prevChar = "\n";
-                xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
+                xy = BpxVector2d.of(0, xy.y + this.ascent + this.descent + this.lineGap);
                 lineNumber += 1;
                 continue;
             }
@@ -50,7 +50,7 @@ export class BpxFont {
                     leftTop: xy
                         .add(0, this.ascent)
                         .sub(0, glyph.sprite.size.y)
-                        .add(glyph.offset ?? v_0_0_)
+                        .add(glyph.offset ?? BpxVector2d.of(0, 0))
                         .add(kerning, 0),
                 });
                 prevChar = char;
@@ -67,7 +67,7 @@ export class BpxFont {
                     leftTop: xy
                         .add(0, this.ascent)
                         .sub(0, glyph.pixels.size.y)
-                        .add(glyph.offset ?? v_0_0_)
+                        .add(glyph.offset ?? BpxVector2d.of(0, 0))
                         .add(kerning, 0),
                 });
                 prevChar = char;
@@ -79,7 +79,7 @@ export class BpxFont {
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
-            u_.assertUnreachable(glyph);
+            assertUnreachable(glyph);
         }
         return arrangedGlyphs;
     }

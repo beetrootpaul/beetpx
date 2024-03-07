@@ -1,6 +1,6 @@
 import { timer_ } from "../../shorthands";
 import { BpxTimer } from "../../timer/Timer";
-import { BpxUtils } from "../../Utils";
+import { throwError } from "../../utils/throwError";
 
 export class Button {
   static #repeatingFramesStart = 30;
@@ -20,13 +20,13 @@ export class Button {
         ? 15
         : updateFps === 60
           ? 30
-          : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
+          : throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
     Button.#repeatingFramesInterval =
       updateFps === 30
         ? 4
         : updateFps === 60
           ? 8
-          : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
+          : throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
   }
 
   #isPressed = false;

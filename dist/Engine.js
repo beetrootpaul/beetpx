@@ -28,7 +28,7 @@ import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxUtils } from "./Utils";
+import { throwError } from "./utils/throwError";
 export class Engine {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f");
@@ -94,7 +94,7 @@ export class Engine {
             ? 60
             : engineInitParams.fixedTimestep === "30fps"
                 ? 30
-                : BpxUtils.throwError(`Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`);
+                : throwError(`Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`);
         Button.setRepeatingParamsFor(fixedTimestepFps);
         __classPrivateFieldSet(this, _Engine_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         __classPrivateFieldSet(this, _Engine_gameCanvasSize, engineInitParams.gameCanvasSize === "64x64"
@@ -103,7 +103,7 @@ export class Engine {
                 ? v_(128, 128)
                 : engineInitParams.gameCanvasSize === "256x256"
                     ? v_(256, 256)
-                    : BpxUtils.throwError(`Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`), "f");
+                    : throwError(`Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`), "f");
         this.gameInput = new GameInput({
             enableDebugInputs: engineInitParams.debugMode,
             browserType: __classPrivateFieldGet(this, _Engine_browserType, "f"),
@@ -133,7 +133,7 @@ export class Engine {
         }), "f");
         this.fullScreen = FullScreen.create();
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas) ??
-            BpxUtils.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
+            throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
         __classPrivateFieldSet(this, _Engine_canvas, new CanvasForProduction(__classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Engine_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
             canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),

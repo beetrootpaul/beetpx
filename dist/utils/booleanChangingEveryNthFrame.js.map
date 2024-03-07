@@ -1,0 +1,1 @@
+{"version":3,"file":"booleanChangingEveryNthFrame.js","sourceRoot":"","sources":["../../src/utils/booleanChangingEveryNthFrame.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,WAAW,CAAC;AAEnC,MAAM,UAAU,4BAA4B,CAAC,CAAS;IACpD,OAAO,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,MAAM,CAAC,WAAW,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC;AACzD,CAAC"}

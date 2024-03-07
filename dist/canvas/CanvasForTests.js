@@ -11,18 +11,18 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _CanvasForTests_instances, _CanvasForTests_length, _CanvasForTests_rgbValues, _CanvasForTests_asAscii;
 import { expect } from "vitest";
-import { BpxUtils } from "../Utils";
-import { v_ } from "../shorthands";
+import { BpxVector2d } from "../misc/Vector2d";
+import { range } from "../utils/range";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";
 export class CanvasForTests extends Canvas {
     constructor(width, height, initialColor) {
-        super(v_(width, height));
+        super(BpxVector2d.of(width, height));
         _CanvasForTests_instances.add(this);
         _CanvasForTests_length.set(this, void 0);
         _CanvasForTests_rgbValues.set(this, void 0);
         __classPrivateFieldSet(this, _CanvasForTests_length, width * height, "f");
-        __classPrivateFieldSet(this, _CanvasForTests_rgbValues, BpxUtils.range(__classPrivateFieldGet(this, _CanvasForTests_length, "f")).map(() => (initialColor.r << 16) + (initialColor.g << 8) + initialColor.b), "f");
+        __classPrivateFieldSet(this, _CanvasForTests_rgbValues, range(__classPrivateFieldGet(this, _CanvasForTests_length, "f")).map(() => (initialColor.r << 16) + (initialColor.g << 8) + initialColor.b), "f");
     }
     set(color, x, y) {
         if (x < 0 || y < 0 || x >= this.canvasSize.x || y >= this.canvasSize.y) {

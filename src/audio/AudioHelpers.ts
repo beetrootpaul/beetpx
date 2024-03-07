@@ -1,12 +1,12 @@
 import { Logger } from "../logger/Logger";
-import { BpxUtils } from "../Utils";
+import { noop } from "../utils/noop";
 
 export class AudioHelpers {
   static muteGain(
     gainNode: GainNode,
     audioContextCurrentTime: number,
     fadeOutMillis: number,
-    onMuted: () => void = BpxUtils.noop,
+    onMuted: () => void = noop,
   ): void {
     fadeOutMillis = Math.max(0, fadeOutMillis);
     Logger.debugBeetPx(
@@ -34,7 +34,7 @@ export class AudioHelpers {
     gainNode: GainNode,
     audioContextCurrentTime: number,
     fadeInMillis: number,
-    onUnmuted: () => void = BpxUtils.noop,
+    onUnmuted: () => void = noop,
   ): void {
     fadeInMillis = Math.max(0, fadeInMillis);
     Logger.debugBeetPx(

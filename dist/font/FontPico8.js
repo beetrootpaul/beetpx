@@ -4,7 +4,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxFontPico8_instances, _a, _BpxFontPico8_spriteGlyph;
-import { rgb_p8_ } from "../shorthands";
+import { BpxPalettePico8 } from "../color/PalettePico8";
 import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont } from "./Font";
 
@@ -96,7 +96,7 @@ export class BpxFontPico8 extends BpxFont {
         ]);
     }
     isSpriteSheetTextColor(color) {
-        return color?.cssHex === rgb_p8_.white.cssHex;
+        return color?.cssHex === BpxPalettePico8.white.cssHex;
     }
     mapChar(char) {
         return char.toLowerCase();

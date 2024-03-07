@@ -4,7 +4,6 @@
 window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
 
 window.BEETPX__VERSION = __BEETPX__VERSION__;
-export { BpxUtils } from "./Utils";
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor } from "./color/RgbColor";
@@ -21,8 +20,6 @@ export { BpxVector2d } from "./misc/Vector2d";
 export { BpxAnimatedSprite, } from "./sprite/AnimatedSprite";
 export { BpxSprite } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
-export { BeetPx } from "./BeetPx";
-
-export { b_ } from "./BeetPx";
-export { u_ } from "./Utils";
+export { BeetPx, b_ } from "./BeetPx";
+export { BpxUtils, u_ } from "./utils/Utils";
 export * from "./shorthands";

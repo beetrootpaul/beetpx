@@ -1,8 +1,8 @@
 import { type PngDataArray } from "fast-png";
-import { u_ } from "../Utils";
 import { BpxRgbColor } from "../color/RgbColor";
 import { rgb_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
+import { range } from "../utils/range";
 
 export type PreparedSprite = {
   w: number;
@@ -40,9 +40,9 @@ export class PreparedSprites {
     const w = sprite.size.x;
     const h = sprite.size.y;
 
-    const colors: (BpxRgbColor | null)[][] = u_
-      .range(w)
-      .map(() => u_.range(h).map(() => null));
+    const colors: (BpxRgbColor | null)[][] = range(w).map(() =>
+      range(h).map(() => null),
+    );
 
     for (let spriteY = 0; spriteY < h; ++spriteY) {
       const imgY = sprite.xy.y + spriteY;

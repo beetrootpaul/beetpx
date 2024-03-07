@@ -5,9 +5,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _a, _AudioHelpers_tryNTimes;
 import { Logger } from "../logger/Logger";
-import { BpxUtils } from "../Utils";
+import { noop } from "../utils/noop";
 export class AudioHelpers {
-    static muteGain(gainNode, audioContextCurrentTime, fadeOutMillis, onMuted = BpxUtils.noop) {
+    static muteGain(gainNode, audioContextCurrentTime, fadeOutMillis, onMuted = noop) {
         fadeOutMillis = Math.max(0, fadeOutMillis);
         Logger.debugBeetPx(`AudioHelpers.muteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeOutMillis: ${fadeOutMillis})`);
         __classPrivateFieldGet(_a, _a, "m", _AudioHelpers_tryNTimes).call(_a, 15, 100, () => {
@@ -22,7 +22,7 @@ export class AudioHelpers {
             onMuted();
         }, fadeOutMillis);
     }
-    static unmuteGain(gainNode, audioContextCurrentTime, fadeInMillis, onUnmuted = BpxUtils.noop) {
+    static unmuteGain(gainNode, audioContextCurrentTime, fadeInMillis, onUnmuted = noop) {
         fadeInMillis = Math.max(0, fadeInMillis);
         Logger.debugBeetPx(`AudioHelpers.unmuteGain (audioContextCurrentTime: ${audioContextCurrentTime}, fadeInMillis: ${fadeInMillis})`);
         __classPrivateFieldGet(_a, _a, "m", _AudioHelpers_tryNTimes).call(_a, 15, 100, () => {

@@ -1,7 +1,7 @@
-import { BpxRgbColor } from "../color/RgbColor";
-import { rgb_p8_ } from "../shorthands";
+import { BpxPalettePico8 } from "../color/PalettePico8";
+import { type BpxRgbColor } from "../color/RgbColor";
 import { BpxSprite } from "../sprite/Sprite";
-import { BpxFont, BpxGlyph } from "./Font";
+import { BpxFont, type BpxGlyph } from "./Font";
 
 // TODO: add a comment here and in README about the origin of this font and its CC-0 license
 export class BpxFontPico8 extends BpxFont {
@@ -14,7 +14,7 @@ export class BpxFontPico8 extends BpxFont {
   spriteSheetUrls = [BpxFontPico8.spriteSheetUrl];
 
   protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean {
-    return color?.cssHex === rgb_p8_.white.cssHex;
+    return color?.cssHex === BpxPalettePico8.white.cssHex;
   }
 
   protected mapChar(char: string): string {

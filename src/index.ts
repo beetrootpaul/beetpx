@@ -24,7 +24,6 @@ window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
 // @ts-ignore
 window.BEETPX__VERSION = __BEETPX__VERSION__;
 
-export { BpxUtils } from "./Utils";
 export {
   type BpxImageAsset,
   type BpxImageUrl,
@@ -69,9 +68,7 @@ export {
 export { BpxSprite, type BpxImageBoundSpriteFactory } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
 
-export { BeetPx } from "./BeetPx";
+export { BeetPx, b_ } from "./BeetPx";
+export { BpxUtils, u_ } from "./utils/Utils";
 
-// We had to move these
-export { b_ } from "./BeetPx";
-export { u_ } from "./Utils";
 export * from "./shorthands";

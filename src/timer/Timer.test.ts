@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
-import { u_ } from "../Utils";
 import { timer_ } from "../shorthands";
+import { range } from "../utils/range";
 import { BpxTimer } from "./Timer";
 
 let stubbedFrameNumber = 1;
@@ -141,7 +141,7 @@ describe("Timer", () => {
         const timerNegative = timer_(-3);
         const timerZero = timer_(0);
 
-        u_.range(5).forEach(() => {
+        range(5).forEach(() => {
           expect(ppt(timerNegative)).toEqual(ppt(timerZero));
 
           incrementFrameNumber();
@@ -271,7 +271,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(96).forEach(() => {
+        range(96).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -326,7 +326,7 @@ describe("Timer", () => {
         nextFrameNumberWillBe(500);
         const timer = timer_(8);
 
-        u_.range(6).forEach(() => {
+        range(6).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -755,7 +755,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(5).forEach(() => {
+        range(5).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -781,7 +781,7 @@ describe("Timer", () => {
 
         timer.restart();
 
-        u_.range(5).forEach(() => {
+        range(5).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -941,7 +941,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(12).forEach(() => {
+        range(12).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1061,7 +1061,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(6).forEach(() => {
+        range(6).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1115,7 +1115,7 @@ describe("Timer", () => {
         const timerNegative = timer_(-3, { loop: true });
         const timerZero = timer_(0, { loop: true });
 
-        u_.range(5).forEach(() => {
+        range(5).forEach(() => {
           expect(ppt(timerNegative)).toEqual(ppt(timerZero));
 
           incrementFrameNumber();
@@ -1251,7 +1251,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(96).forEach(() => {
+        range(96).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1297,7 +1297,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(97).forEach(() => {
+        range(97).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1337,7 +1337,7 @@ describe("Timer", () => {
         nextFrameNumberWillBe(500);
         const timer = timer_(8, { loop: true });
 
-        u_.range(6).forEach(() => {
+        range(6).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1514,7 +1514,7 @@ describe("Timer", () => {
         );
 
         incrementFrameNumber();
-        u_.range(15).forEach(() => {
+        range(15).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1560,7 +1560,7 @@ describe("Timer", () => {
 
         incrementFrameNumber();
         incrementFrameNumber();
-        u_.range(15).forEach(() => {
+        range(15).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1676,7 +1676,7 @@ describe("Timer", () => {
             hasJustFinished: false,
           }),
         );
-        u_.range(5).forEach(() => {
+        range(5).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1740,7 +1740,7 @@ describe("Timer", () => {
         );
 
         incrementFrameNumber();
-        u_.range(15).forEach(() => {
+        range(15).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1768,7 +1768,7 @@ describe("Timer", () => {
         incrementFrameNumber();
         incrementFrameNumber();
         incrementFrameNumber();
-        u_.range(15).forEach(() => {
+        range(15).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1822,7 +1822,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(15).forEach(() => {
+        range(15).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -1858,7 +1858,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(15).forEach(() => {
+        range(15).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(
@@ -2022,7 +2022,7 @@ describe("Timer", () => {
           }),
         );
 
-        u_.range(12).forEach(() => {
+        range(12).forEach(() => {
           incrementFrameNumber();
         });
         expect(ppt(timer)).toEqual(

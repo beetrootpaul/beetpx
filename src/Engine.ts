@@ -27,7 +27,7 @@ import {
   v_,
 } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxUtils } from "./Utils";
+import { throwError } from "./utils/throwError";
 
 export type EngineInitParams = {
   gameCanvasSize?: "64x64" | "128x128" | "256x256";
@@ -134,7 +134,7 @@ export class Engine {
         ? 60
         : engineInitParams.fixedTimestep === "30fps"
           ? 30
-          : BpxUtils.throwError(
+          : throwError(
               `Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`,
             );
 
@@ -149,7 +149,7 @@ export class Engine {
           ? v_(128, 128)
           : engineInitParams.gameCanvasSize === "256x256"
             ? v_(256, 256)
-            : BpxUtils.throwError(
+            : throwError(
                 `Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`,
               );
 
@@ -194,7 +194,7 @@ export class Engine {
       document.querySelector<HTMLCanvasElement>(
         HtmlTemplate.selectors.canvas,
       ) ??
-      BpxUtils.throwError(
+      throwError(
         `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
       );
 

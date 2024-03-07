@@ -11,7 +11,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
 };
 var _a, _Button_repeatingFramesStart, _Button_repeatingFramesInterval, _Button_isPressed, _Button_wasJustToggled, _Button_repeatingTimer;
 import { timer_ } from "../../shorthands";
-import { BpxUtils } from "../../Utils";
+import { throwError } from "../../utils/throwError";
 export class Button {
     constructor() {
         _Button_isPressed.set(this, false);
@@ -29,12 +29,12 @@ export class Button {
             ? 15
             : updateFps === 60
                 ? 30
-                : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`), "f", _Button_repeatingFramesStart);
+                : throwError(`Unsupported desiredUpdateFps: ${updateFps}`), "f", _Button_repeatingFramesStart);
         __classPrivateFieldSet(_a, _a, updateFps === 30
             ? 4
             : updateFps === 60
                 ? 8
-                : BpxUtils.throwError(`Unsupported desiredUpdateFps: ${updateFps}`), "f", _Button_repeatingFramesInterval);
+                : throwError(`Unsupported desiredUpdateFps: ${updateFps}`), "f", _Button_repeatingFramesInterval);
     }
     get isPressed() {
         return __classPrivateFieldGet(this, _Button_isPressed, "f");

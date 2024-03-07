@@ -1,7 +1,7 @@
 import { PngDataArray } from "fast-png";
 import { describe, expect, test } from "vitest";
-import { u_ } from "../Utils";
 import { spr_ } from "../shorthands";
+import { range } from "../utils/range";
 import { PreparedSprites } from "./PreparedSprites";
 
 const imgW1: number = 100;
@@ -11,14 +11,10 @@ const imgH2: number = 250;
 const imgChannels1: 3 | 4 = 3;
 const imgChannels2: 3 | 4 = 4;
 const pngData1: PngDataArray = new Uint8ClampedArray(
-  u_
-    .range(imgW1 * imgH1 * imgChannels1)
-    .map((_, index) => 123 + (index % 0x100)),
+  range(imgW1 * imgH1 * imgChannels1).map((_, index) => 123 + (index % 0x100)),
 );
 const pngData2: PngDataArray = new Uint8ClampedArray(
-  u_
-    .range(imgW2 * imgH2 * imgChannels2)
-    .map((_, index) => 234 + (index % 0x100)),
+  range(imgW2 * imgH2 * imgChannels2).map((_, index) => 234 + (index % 0x100)),
 );
 
 describe("PreparedSprites", () => {

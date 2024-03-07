@@ -1,5 +1,5 @@
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
-import { BpxUtils } from "../Utils";
+import { isDefined } from "../utils/isDefined";
 import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { GameInputSpecialized } from "./GameInputSpecialized";
 import { GamepadMapping } from "./gamepad_mapping/GamepadMapping";
@@ -88,7 +88,7 @@ export class GameInputGamepad implements GameInputSpecialized {
     return new Set<BpxGamepadType>(
       navigator
         .getGamepads()
-        .filter(BpxUtils.isDefined)
+        .filter(isDefined)
         .map((gamepad) => BpxGamepadTypeDetector.detect(gamepad)),
     );
   }

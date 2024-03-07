@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _CanvasForProduction_instances, _CanvasForProduction_length, _CanvasForProduction_htmlCanvas, _CanvasForProduction_htmlCanvasContext, _CanvasForProduction_offscreenContext, _CanvasForProduction_offscreenImageData, _CanvasForProduction_initializeAsNonTransparent;
 import { BpxVector2d } from "../misc/Vector2d";
-import { BpxUtils } from "../Utils";
+import { throwError } from "../utils/throwError";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
 export class CanvasForProduction extends Canvas {
@@ -30,8 +30,7 @@ export class CanvasForProduction extends Canvas {
             colorSpace: "srgb",
             
             alpha: true,
-        }) ??
-            BpxUtils.throwError("Was unable to obtain '2d' context from <canvas>"), "f");
+        }) ?? throwError("Was unable to obtain '2d' context from <canvas>"), "f");
         __classPrivateFieldGet(this, _CanvasForProduction_htmlCanvasContext, "f").imageSmoothingEnabled = false;
         const offscreenCanvas = document
             .createElement("canvas")
@@ -43,7 +42,7 @@ export class CanvasForProduction extends Canvas {
             
             alpha: false,
         }) ??
-            BpxUtils.throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
+            throwError("Was unable to obtain '2d' context from OffscreenCanvas"), "f");
         __classPrivateFieldSet(this, _CanvasForProduction_offscreenImageData, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").createImageData(__classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.width, __classPrivateFieldGet(this, _CanvasForProduction_offscreenContext, "f").canvas.height, { colorSpace: "srgb" }), "f");
         __classPrivateFieldGet(this, _CanvasForProduction_instances, "m", _CanvasForProduction_initializeAsNonTransparent).call(this);
     }

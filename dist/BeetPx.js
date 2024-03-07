@@ -14,6 +14,7 @@ var _a, _BeetPx_engine, _BeetPx_tryGetEngine;
 import { DebugMode } from "./debug/DebugMode";
 import { Engine } from "./Engine";
 import { Logger } from "./logger/Logger";
+
 export class BeetPx {
     
     
@@ -280,4 +281,5 @@ BeetPx.getSoundAsset = (...args) => {
 BeetPx.getJsonAsset = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).assets.getJsonAsset(...args);
 };
+
 export const b_ = BeetPx;

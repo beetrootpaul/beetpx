@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../../BeetPx";
+import { range } from "../../utils/range";
 
-import { u_ } from "../../Utils";
 import { Button } from "./Button";
 
 describe("Button", () => {
@@ -31,7 +31,7 @@ describe("Button", () => {
     expect(wasJustPressed()).toBe(true);
 
     // still pressed
-    u_.range(
+    range(
       Button.repeatingFramesStart + Button.repeatingFramesInterval + 1,
     ).forEach(() => {
       button.update(true);
@@ -51,7 +51,7 @@ describe("Button", () => {
     incrementFrameNumber();
     expect(wasJustReleased()).toBe(false);
     expect(wasJustPressed()).toBe(false);
-    u_.range(
+    range(
       Button.repeatingFramesStart + Button.repeatingFramesInterval + 1 - 2,
     ).forEach(() => {
       button.update(false);
@@ -95,7 +95,7 @@ describe("Button", () => {
     incrementFrameNumber();
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(false);
-    u_.range(Button.repeatingFramesStart - 1 - 2).forEach(() => {
+    range(Button.repeatingFramesStart - 1 - 2).forEach(() => {
       button.update(true);
       incrementFrameNumber();
       expect(wasJustReleasedRepeating()).toBe(false);
@@ -121,7 +121,7 @@ describe("Button", () => {
     incrementFrameNumber();
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(false);
-    u_.range(Button.repeatingFramesStart - 1 - 2).forEach(() => {
+    range(Button.repeatingFramesStart - 1 - 2).forEach(() => {
       button.update(true);
       incrementFrameNumber();
       expect(wasJustReleasedRepeating()).toBe(false);
@@ -141,7 +141,7 @@ describe("Button", () => {
     incrementFrameNumber();
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(false);
-    u_.range(Button.repeatingFramesInterval - 1 - 2).forEach(() => {
+    range(Button.repeatingFramesInterval - 1 - 2).forEach(() => {
       button.update(true);
       incrementFrameNumber();
       expect(wasJustReleasedRepeating()).toBe(false);
@@ -167,7 +167,7 @@ describe("Button", () => {
     incrementFrameNumber();
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(false);
-    u_.range(Button.repeatingFramesStart - 1 - 2).forEach(() => {
+    range(Button.repeatingFramesStart - 1 - 2).forEach(() => {
       button.update(true);
       incrementFrameNumber();
       expect(wasJustReleasedRepeating()).toBe(false);
@@ -187,7 +187,7 @@ describe("Button", () => {
     incrementFrameNumber();
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(false);
-    u_.range(Button.repeatingFramesInterval - 1 - 2).forEach(() => {
+    range(Button.repeatingFramesInterval - 1 - 2).forEach(() => {
       button.update(true);
       incrementFrameNumber();
       expect(wasJustReleasedRepeating()).toBe(false);
@@ -207,7 +207,7 @@ describe("Button", () => {
     incrementFrameNumber();
     expect(wasJustReleasedRepeating()).toBe(false);
     expect(wasJustPressedRepeating()).toBe(false);
-    u_.range(Button.repeatingFramesInterval - 1 - 2).forEach(() => {
+    range(Button.repeatingFramesInterval - 1 - 2).forEach(() => {
       button.update(true);
       incrementFrameNumber();
       expect(wasJustReleasedRepeating()).toBe(false);

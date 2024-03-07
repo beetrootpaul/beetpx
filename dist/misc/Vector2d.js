@@ -1,11 +1,15 @@
-
-import { BpxUtils } from "../Utils";
+import { clamp } from "../utils/clamp";
+import { lerp } from "../utils/lerp";
+import { mod } from "../utils/mod";
+import { trigAtan2 } from "../utils/trigAtan2";
+import { trigCos } from "../utils/trigCos";
+import { trigSin } from "../utils/trigSin";
 export class BpxVector2d {
     /**
      * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     static unitFromAngle(turnAngle) {
-        return new BpxVector2d(BpxUtils.trigCos(turnAngle), BpxUtils.trigSin(turnAngle));
+        return new BpxVector2d(trigCos(turnAngle), trigSin(turnAngle));
     }
     static of(valueOrX, maybeY) {
         return new BpxVector2d(valueOrX, maybeY ?? valueOrX);
@@ -25,7 +29,7 @@ export class BpxVector2d {
         return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
     }
     static lerp(xy1, xy2, t, opts) {
-        return new BpxVector2d(BpxUtils.lerp(xy1.x, xy2.x, t, opts), BpxUtils.lerp(xy1.y, xy2.y, t, opts));
+        return new BpxVector2d(lerp(xy1.x, xy2.x, t, opts), lerp(xy1.y, xy2.y, t, opts));
     }
     
     asArray() {
@@ -57,7 +61,7 @@ export class BpxVector2d {
      * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     toAngle() {
-        return BpxUtils.trigAtan2(this.x, this.y);
+        return trigAtan2(this.x, this.y);
     }
     eq(otherOrValue) {
         return typeof otherOrValue !== "number"
@@ -85,12 +89,12 @@ export class BpxVector2d {
             : this.x <= otherOrValue && this.y <= otherOrValue;
     }
     clamp(xy1, xy2) {
-        return new BpxVector2d(BpxUtils.clamp(xy1.x, this.x, xy2.x), BpxUtils.clamp(xy1.y, this.y, xy2.y));
+        return new BpxVector2d(clamp(xy1.x, this.x, xy2.x), clamp(xy1.y, this.y, xy2.y));
     }
     mod(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(BpxUtils.mod(this.x, otherOrValueOrX.x), BpxUtils.mod(this.y, otherOrValueOrX.y))
-            : new BpxVector2d(BpxUtils.mod(this.x, otherOrValueOrX), BpxUtils.mod(this.y, maybeY ?? otherOrValueOrX));
+            ? new BpxVector2d(mod(this.x, otherOrValueOrX.x), mod(this.y, otherOrValueOrX.y))
+            : new BpxVector2d(mod(this.x, otherOrValueOrX), mod(this.y, maybeY ?? otherOrValueOrX));
     }
     add(otherOrValueOrX, maybeY) {
         return typeof otherOrValueOrX !== "number"

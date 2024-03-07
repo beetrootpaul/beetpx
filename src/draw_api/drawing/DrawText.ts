@@ -4,7 +4,7 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxFont, BpxTextColorMarkers } from "../../font/Font";
 import { BpxVector2d } from "../../misc/Vector2d";
 import { v_0_0_ } from "../../shorthands";
-import { u_ } from "../../Utils";
+import { assertUnreachable } from "../../utils/assertUnreachable";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
@@ -66,7 +66,7 @@ export class DrawText {
           pattern,
         );
       } else {
-        u_.assertUnreachable(arrangedGlyph);
+        assertUnreachable(arrangedGlyph);
       }
     }
   }

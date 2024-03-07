@@ -7,8 +7,8 @@ import {
   font_saint11Minimal5_,
   rgb_p8_,
   v_,
-  v_0_0_,
 } from "../../../src";
+import { offset4Directions } from "../../../src/utils/offset4Directions";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
@@ -29,7 +29,7 @@ b_.init({
   const maxScaleXy = v_(8);
   let scaleXy = minScaleXy;
 
-  let cameraXy = v_0_0_;
+  let cameraXy = offset4Directions()[0]!;
 
   b_.setOnUpdate(() => {
     if (b_.wasButtonJustPressed("a")) {

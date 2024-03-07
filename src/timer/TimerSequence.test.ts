@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
+import { range } from "../utils/range";
 
-import { u_ } from "../Utils";
 import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
 
 let stubbedFrameNumber = 1;
@@ -109,7 +109,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa - 1).forEach((i) => {
+        range(framesAaa - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -147,7 +147,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesBbb - 1).forEach((i) => {
+        range(framesBbb - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -187,7 +187,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesCcc - 1).forEach((i) => {
+        range(framesCcc - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -264,7 +264,7 @@ describe("TimerSequence", () => {
           ],
         });
 
-        u_.range(framesAaa).forEach(() => {
+        range(framesAaa).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -336,7 +336,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -438,7 +438,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(-3 + framesBbb - 1).forEach(() => {
+        range(-3 + framesBbb - 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -505,7 +505,7 @@ describe("TimerSequence", () => {
           { pause: true },
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -545,7 +545,7 @@ describe("TimerSequence", () => {
 
         seq.pause();
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -584,7 +584,7 @@ describe("TimerSequence", () => {
           ],
         });
 
-        u_.range(framesAaa + 1).forEach(() => {
+        range(framesAaa + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -621,7 +621,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa + 1).forEach(() => {
+        range(framesAaa + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -679,7 +679,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(333).forEach(() => {
+        range(333).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -736,7 +736,7 @@ describe("TimerSequence", () => {
 
         seq.resume();
 
-        u_.range(-1 + framesAaa + 1).forEach(() => {
+        range(-1 + framesAaa + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -798,7 +798,7 @@ describe("TimerSequence", () => {
           { delayFrames: 333, pause: true },
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -819,7 +819,7 @@ describe("TimerSequence", () => {
 
         seq.resume();
 
-        u_.range(333).forEach(() => {
+        range(333).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -855,7 +855,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa - 1 + framesBbb + 1).forEach(() => {
+        range(framesAaa - 1 + framesBbb + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -968,7 +968,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa - 1 + framesBbb + 1).forEach(() => {
+        range(framesAaa - 1 + framesBbb + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1051,7 +1051,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1089,7 +1089,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1129,7 +1129,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1172,7 +1172,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1210,7 +1210,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1250,7 +1250,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1310,7 +1310,7 @@ describe("TimerSequence", () => {
           ],
         });
 
-        u_.range(framesDdd).forEach(() => {
+        range(framesDdd).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1382,7 +1382,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1484,7 +1484,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(-3 + framesEee + framesFff + framesDdd - 1).forEach(() => {
+        range(-3 + framesEee + framesFff + framesDdd - 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1550,7 +1550,7 @@ describe("TimerSequence", () => {
           { pause: true },
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1590,7 +1590,7 @@ describe("TimerSequence", () => {
 
         seq.pause();
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1629,7 +1629,7 @@ describe("TimerSequence", () => {
           ],
         });
 
-        u_.range(framesDdd + 1).forEach(() => {
+        range(framesDdd + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1666,7 +1666,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesDdd + 1).forEach(() => {
+        range(framesDdd + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1703,7 +1703,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesDdd + framesEee + framesFff).forEach((i) => {
+        range(framesDdd + framesEee + framesFff).forEach((i) => {
           incrementFrameNumber();
         });
 
@@ -1777,7 +1777,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(333).forEach(() => {
+        range(333).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1834,7 +1834,7 @@ describe("TimerSequence", () => {
 
         seq.resume();
 
-        u_.range(-1 + framesDdd + 1).forEach(() => {
+        range(-1 + framesDdd + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1896,7 +1896,7 @@ describe("TimerSequence", () => {
           { delayFrames: 333, pause: true },
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1917,7 +1917,7 @@ describe("TimerSequence", () => {
 
         seq.resume();
 
-        u_.range(333).forEach(() => {
+        range(333).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -1953,7 +1953,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(
+        range(
           -1 + framesDdd + framesEee + framesFff + framesDdd + framesEee + 1,
         ).forEach(() => {
           incrementFrameNumber();
@@ -2068,7 +2068,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(
+        range(
           framesDdd - 1 + framesEee + framesFff + framesDdd + framesEee + 1,
         ).forEach(() => {
           incrementFrameNumber();
@@ -2168,7 +2168,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa - 1).forEach((i) => {
+        range(framesAaa - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2228,7 +2228,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesBbb - 1).forEach((i) => {
+        range(framesBbb - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2281,7 +2281,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesCcc - 1).forEach((i) => {
+        range(framesCcc - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2337,7 +2337,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2389,7 +2389,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2441,7 +2441,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2496,7 +2496,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2534,7 +2534,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2574,7 +2574,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach((i) => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2646,7 +2646,7 @@ describe("TimerSequence", () => {
           ],
         });
 
-        u_.range(framesAaa).forEach(() => {
+        range(framesAaa).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -2748,7 +2748,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -2885,7 +2885,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesBbb - 3 + framesCcc + framesDdd + framesEee - 1).forEach(
+        range(framesBbb - 3 + framesCcc + framesDdd + framesEee - 1).forEach(
           () => {
             incrementFrameNumber();
           },
@@ -2944,7 +2944,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesFff + framesDdd - 1).forEach(() => {
+        range(framesFff + framesDdd - 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3022,7 +3022,7 @@ describe("TimerSequence", () => {
           { pause: true },
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3082,7 +3082,7 @@ describe("TimerSequence", () => {
 
         seq.pause();
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3147,7 +3147,7 @@ describe("TimerSequence", () => {
           ],
         });
 
-        u_.range(framesAaa + 1).forEach(() => {
+        range(framesAaa + 1).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3197,11 +3197,9 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(framesAaa + framesBbb + framesCcc + framesDdd + 1).forEach(
-          () => {
-            incrementFrameNumber();
-          },
-        );
+        range(framesAaa + framesBbb + framesCcc + framesDdd + 1).forEach(() => {
+          incrementFrameNumber();
+        });
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -3248,7 +3246,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(
+        range(
           framesAaa +
             framesBbb +
             framesCcc +
@@ -3356,7 +3354,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(333).forEach(() => {
+        range(333).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3447,7 +3445,7 @@ describe("TimerSequence", () => {
 
         seq.resume();
 
-        u_.range(framesAaa - 1 + framesBbb + framesCcc + framesDdd + 1).forEach(
+        range(framesAaa - 1 + framesBbb + framesCcc + framesDdd + 1).forEach(
           () => {
             incrementFrameNumber();
           },
@@ -3543,7 +3541,7 @@ describe("TimerSequence", () => {
           { delayFrames: 333, pause: true },
         );
 
-        u_.range(9876).forEach(() => {
+        range(9876).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3570,7 +3568,7 @@ describe("TimerSequence", () => {
 
         seq.resume();
 
-        u_.range(333).forEach(() => {
+        range(333).forEach(() => {
           incrementFrameNumber();
         });
 
@@ -3626,7 +3624,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(
+        range(
           framesAaa -
             1 +
             framesBbb +
@@ -3802,7 +3800,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        u_.range(
+        range(
           -1 +
             framesAaa +
             framesBbb +
@@ -4075,7 +4073,7 @@ describe("TimerSequence", () => {
           ],
         });
 
-        u_.range(99).forEach(() => {
+        range(99).forEach(() => {
           expect(ppt(seqZero)).toEqual(ppt(seqNegative));
 
           incrementFrameNumber();

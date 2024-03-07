@@ -11,7 +11,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 };
 var _BpxTimer_instances, _BpxTimer_frames, _BpxTimer_loop, _BpxTimer_offsetFrame, _BpxTimer_pausedFrame, _BpxTimer_tRaw_get;
 import { BeetPx } from "../BeetPx";
-import { BpxUtils } from "../Utils";
+import { clamp } from "../utils/clamp";
+import { mod } from "../utils/mod";
 export class BpxTimer {
     static for(params) {
         return new BpxTimer(params);
@@ -33,9 +34,9 @@ export class BpxTimer {
     get t() {
         return __classPrivateFieldGet(this, _BpxTimer_loop, "f")
             ? __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= 0
-                ? BpxUtils.mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
+                ? mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
                 : 0
-            : BpxUtils.clamp(0, __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"));
+            : clamp(0, __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"));
     }
     get framesLeft() {
         return __classPrivateFieldGet(this, _BpxTimer_frames, "f") - this.t;

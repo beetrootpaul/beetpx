@@ -1,5 +1,50 @@
 import { PngDataArray } from 'fast-png';
 
+type BpxImageUrl = string;
+type BpxSoundUrl = string;
+type BpxJsonUrl = string;
+type BpxImageAsset = {
+    width: number;
+    height: number;
+    channels: 3 | 4;
+    rgba8bitData: PngDataArray;
+};
+type BpxSoundAsset = {
+    audioBuffer: AudioBuffer;
+};
+type BpxJsonAsset = {
+    json: any;
+};
+declare class Assets {
+    #private;
+    addImageAsset(imageUrl: BpxImageUrl, imageAsset: BpxImageAsset): void;
+    addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: BpxSoundAsset): void;
+    addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: BpxJsonAsset): void;
+    getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset;
+    getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset;
+    getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
+}
+
+type BpxAudioPlaybackId = number;
+
+type BpxSoundSequence = {
+    intro?: BpxSoundSequenceEntry[];
+    loop?: BpxSoundSequenceEntry[];
+};
+type BpxSoundSequenceEntry = [
+    SoundSequenceEntrySoundMain,
+    ...SoundSequenceEntrySoundAdditional[]
+];
+type SoundSequenceEntrySoundMain = BpxSoundUrl | {
+    url: BpxSoundUrl;
+    durationMs?: (fullSoundDurationMs: number) => number;
+};
+type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
+    url: BpxSoundUrl;
+};
+
+type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
+
 type BpxRgbCssHex = string;
 declare class BpxRgbColor {
     static of(r: number, g: number, b: number): BpxRgbColor;
@@ -11,6 +56,53 @@ declare class BpxRgbColor {
     readonly cssHex: BpxRgbCssHex;
     private constructor();
     asArray(): [r: number, g: number, b: number];
+}
+
+interface CanvasSnapshot {
+    getColorAtIndex(index: number): BpxRgbColor;
+}
+
+type BpxColorMapper = (sourceColor: BpxRgbColor | null) => BpxRgbColor | null;
+
+declare class BpxCanvasSnapshotColorMapping {
+    #private;
+    static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping;
+    readonly type = "canvas_snapshot_mapping";
+    private constructor();
+    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
+}
+
+declare class BpxPatternColors {
+    readonly primary: BpxRgbColor | null;
+    readonly secondary: BpxRgbColor | null;
+    static of(primary: BpxRgbColor | null, secondary: BpxRgbColor | null): BpxPatternColors;
+    readonly type = "pattern";
+    private constructor();
+}
+
+declare class BpxSpriteColorMapping {
+    #private;
+    static noMapping: BpxSpriteColorMapping;
+    static from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>): BpxSpriteColorMapping;
+    static of(mapping: BpxColorMapper): BpxSpriteColorMapping;
+    readonly type = "sprite_mapping";
+    private constructor();
+    getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
+}
+
+declare class BpxDrawingPattern {
+    #private;
+    /**
+     * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
+     *   (designated by new lines) where `#` and `-` stand for a primary and
+     *   a secondary color. Whitespaces are ignored.
+     */
+    static from(ascii: string): BpxDrawingPattern;
+    static of(bits: number): BpxDrawingPattern;
+    static primaryOnly: BpxDrawingPattern;
+    static secondaryOnly: BpxDrawingPattern;
+    private constructor();
+    hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
 interface PrintDebug {
@@ -83,151 +175,6 @@ declare class BpxVector2d implements PrintDebug {
     [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number;
     get [Symbol.toStringTag](): string;
     __printDebug(): string;
-}
-
-declare class BpxUtils {
-    /**
-     * This function is meant to be used in a last branch of `if - else if - … - else`
-     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
-     *   a union type of which we check all possible cases. Someday we add one more
-     *   type to the union, but we forget to extend our `switch` by that one more `case`.
-     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
-     *   will inform us about such mistake.
-     *
-     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
-     */
-    static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
-    static booleanChangingEveryNthFrame(n: number): boolean;
-    static clamp(a: number, b: number, c: number): number;
-    static identity<Param>(param: Param): Param;
-    static isDefined<Value>(value: Value | null | undefined): value is Value;
-    static lerp(a: number, b: number, t: number, opts?: {
-        clamp?: boolean;
-    }): number;
-    /**
-     * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
-     */
-    static mod(value: number, modulus: number): number;
-    static noop(): void;
-    static offset4Directions(): BpxVector2d[];
-    static offset8Directions(): BpxVector2d[];
-    static drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-    }): void;
-    static randomElementOf<TElement>(array: TElement[]): TElement | undefined;
-    static range(n: number): number[];
-    static repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
-    /**
-     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
-     */
-    static throwError(message: string): never;
-    /**
-     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    static trigAtan2(x: number, y: number): number;
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    static trigCos(turnAngle: number): number;
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    static trigSin(turnAngle: number): number;
-    static wait(millis: number): Promise<void>;
-}
-declare const u_: typeof BpxUtils;
-
-type BpxImageUrl = string;
-type BpxSoundUrl = string;
-type BpxJsonUrl = string;
-type BpxImageAsset = {
-    width: number;
-    height: number;
-    channels: 3 | 4;
-    rgba8bitData: PngDataArray;
-};
-type BpxSoundAsset = {
-    audioBuffer: AudioBuffer;
-};
-type BpxJsonAsset = {
-    json: any;
-};
-declare class Assets {
-    #private;
-    addImageAsset(imageUrl: BpxImageUrl, imageAsset: BpxImageAsset): void;
-    addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: BpxSoundAsset): void;
-    addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: BpxJsonAsset): void;
-    getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset;
-    getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset;
-    getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
-}
-
-type BpxAudioPlaybackId = number;
-
-type BpxSoundSequence = {
-    intro?: BpxSoundSequenceEntry[];
-    loop?: BpxSoundSequenceEntry[];
-};
-type BpxSoundSequenceEntry = [
-    SoundSequenceEntrySoundMain,
-    ...SoundSequenceEntrySoundAdditional[]
-];
-type SoundSequenceEntrySoundMain = BpxSoundUrl | {
-    url: BpxSoundUrl;
-    durationMs?: (fullSoundDurationMs: number) => number;
-};
-type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
-    url: BpxSoundUrl;
-};
-
-type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
-
-interface CanvasSnapshot {
-    getColorAtIndex(index: number): BpxRgbColor;
-}
-
-type BpxColorMapper = (sourceColor: BpxRgbColor | null) => BpxRgbColor | null;
-
-declare class BpxCanvasSnapshotColorMapping {
-    #private;
-    static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping;
-    readonly type = "canvas_snapshot_mapping";
-    private constructor();
-    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
-}
-
-declare class BpxPatternColors {
-    readonly primary: BpxRgbColor | null;
-    readonly secondary: BpxRgbColor | null;
-    static of(primary: BpxRgbColor | null, secondary: BpxRgbColor | null): BpxPatternColors;
-    readonly type = "pattern";
-    private constructor();
-}
-
-declare class BpxSpriteColorMapping {
-    #private;
-    static noMapping: BpxSpriteColorMapping;
-    static from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>): BpxSpriteColorMapping;
-    static of(mapping: BpxColorMapper): BpxSpriteColorMapping;
-    readonly type = "sprite_mapping";
-    private constructor();
-    getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
-}
-
-declare class BpxDrawingPattern {
-    #private;
-    /**
-     * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
-     *   (designated by new lines) where `#` and `-` stand for a primary and
-     *   a secondary color. Whitespaces are ignored.
-     */
-    static from(ascii: string): BpxDrawingPattern;
-    static of(bits: number): BpxDrawingPattern;
-    static primaryOnly: BpxDrawingPattern;
-    static secondaryOnly: BpxDrawingPattern;
-    private constructor();
-    hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
 declare class BpxPixels {
@@ -764,6 +711,97 @@ declare class BeetPx {
     static getJsonAsset: Assets["getJsonAsset"];
 }
 declare const b_: typeof BeetPx;
+
+/**
+ * This function is meant to be used in a last branch of `if - else if - … - else`
+ *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+ *   a union type of which we check all possible cases. Someday we add one more
+ *   type to the union, but we forget to extend our `switch` by that one more `case`.
+ *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+ *   will inform us about such mistake.
+ *
+ * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+ */
+declare function assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
+
+declare function booleanChangingEveryNthFrame(n: number): boolean;
+
+declare function clamp(a: number, b: number, c: number): number;
+
+declare function drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, opts?: {
+    centerXy?: [boolean, boolean];
+    scaleXy?: BpxVector2d;
+}): void;
+
+declare function identity<Param>(param: Param): Param;
+
+declare function isDefined<Value>(value: Value | null | undefined): value is Value;
+
+declare function lerp(a: number, b: number, t: number, opts?: {
+    clamp?: boolean;
+}): number;
+
+/**
+ * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+ */
+declare function mod(value: number, modulus: number): number;
+
+declare function noop(): void;
+
+declare function offset4Directions(): BpxVector2d[];
+
+declare function offset8Directions(): BpxVector2d[];
+
+declare function randomElementOf<TElement>(array: TElement[]): TElement | undefined;
+
+declare function range(n: number): number[];
+
+declare function repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
+
+/**
+ * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+ */
+declare function throwError(message: string): never;
+
+/**
+ * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+ */
+declare function trigAtan2(x: number, y: number): number;
+
+/**
+ * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+ */
+declare function trigCos(turnAngle: number): number;
+
+/**
+ * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+ */
+declare function trigSin(turnAngle: number): number;
+
+declare function wait(millis: number): Promise<void>;
+
+declare class BpxUtils {
+    static assertUnreachable: typeof assertUnreachable;
+    static booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
+    static clamp: typeof clamp;
+    static drawTextWithOutline: typeof drawTextWithOutline;
+    static identity: typeof identity;
+    static isDefined: typeof isDefined;
+    static lerp: typeof lerp;
+    static mod: typeof mod;
+    static noop: typeof noop;
+    static offset4Directions: typeof offset4Directions;
+    static offset8Directions: typeof offset8Directions;
+    static randomElementOf: typeof randomElementOf;
+    static range: typeof range;
+    static repeatEachElement: typeof repeatEachElement;
+    static throwError: typeof throwError;
+    static trigAtan2: typeof trigAtan2;
+    static trigCos: typeof trigCos;
+    static trigSin: typeof trigSin;
+    static wait: typeof wait;
+}
+declare const u_: typeof BpxUtils;
 
 /**
  * A free to use (CC-0) color palette created by zep and distributed as part of PICO-8 fantasy console.

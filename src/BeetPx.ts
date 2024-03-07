@@ -11,6 +11,8 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { StorageApi } from "./storage/StorageApi";
 
+/////////////////////////////////////////////////////////////////////////////
+
 export class BeetPx {
   static #engine: Engine;
 
@@ -378,5 +380,7 @@ export class BeetPx {
     return this.#engine;
   }
 }
+
+/////////////////////////////////////////////////////////////////////////////
 
 export const b_ = BeetPx;

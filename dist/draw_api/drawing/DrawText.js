@@ -12,7 +12,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _DrawText_canvas, _DrawText_assets, _DrawText_sprite, _DrawText_pixels;
 import { BpxVector2d } from "../../misc/Vector2d";
 import { v_0_0_ } from "../../shorthands";
-import { u_ } from "../../Utils";
+import { assertUnreachable } from "../../utils/assertUnreachable";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
 export class DrawText {
@@ -42,7 +42,7 @@ export class DrawText {
                 __classPrivateFieldGet(this, _DrawText_pixels, "f").draw(arrangedGlyph.pixels, xy, arrangedGlyph.color, scaleXy, pattern);
             }
             else {
-                u_.assertUnreachable(arrangedGlyph);
+                assertUnreachable(arrangedGlyph);
             }
         }
     }

@@ -1,11 +1,10 @@
-import { BpxImageUrl } from "../assets/Assets";
-import { BpxRgbColor } from "../color/RgbColor";
+import { type BpxImageUrl } from "../assets/Assets";
+import { type BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { BpxPixels } from "../draw_api/Pixels";
+import { type BpxPixels } from "../draw_api/Pixels";
 import { BpxVector2d } from "../misc/Vector2d";
-import { v_, v_0_0_ } from "../shorthands";
-import { BpxSprite } from "../sprite/Sprite";
-import { u_ } from "../Utils";
+import { type BpxSprite } from "../sprite/Sprite";
+import { assertUnreachable } from "../utils/assertUnreachable";
 
 export type BpxKerningPrevCharMap = { [prevChar: string]: number };
 
@@ -79,7 +78,7 @@ export abstract class BpxFont {
     colorMarkers ??= {};
 
     const arrangedGlyphs: BpxArrangedGlyph[] = [];
-    let xy = v_0_0_;
+    let xy = BpxVector2d.of(0, 0);
     let lineNumber = 0;
     let prevChar = "\n";
 
@@ -88,7 +87,10 @@ export abstract class BpxFont {
 
       if (char === "\n") {
         prevChar = "\n";
-        xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
+        xy = BpxVector2d.of(
+          0,
+          xy.y + this.ascent + this.descent + this.lineGap,
+        );
         lineNumber += 1;
         continue;
       }
@@ -130,7 +132,7 @@ export abstract class BpxFont {
           leftTop: xy
             .add(0, this.ascent)
             .sub(0, glyph.sprite.size.y)
-            .add(glyph.offset ?? v_0_0_)
+            .add(glyph.offset ?? BpxVector2d.of(0, 0))
             .add(kerning, 0),
         });
 
@@ -149,7 +151,7 @@ export abstract class BpxFont {
           leftTop: xy
             .add(0, this.ascent)
             .sub(0, glyph.pixels.size.y)
-            .add(glyph.offset ?? v_0_0_)
+            .add(glyph.offset ?? BpxVector2d.of(0, 0))
             .add(kerning, 0),
         });
 
@@ -164,7 +166,7 @@ export abstract class BpxFont {
         continue;
       }
 
-      u_.assertUnreachable(glyph);
+      assertUnreachable(glyph);
     }
 
     return arrangedGlyphs;
