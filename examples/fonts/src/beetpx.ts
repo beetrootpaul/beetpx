@@ -15,10 +15,6 @@ import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
 // TODO: take care of all TODOs
 // TODO: update tests, write new ones
-// TODO: font fg color to replace or bg color to remove? Or some function to blend fonts with antialiasing in them?
-// TODO: tests for the markup edge cases like nesting, unclosing, escaping what is supposed to not be a markup, unrecognized markup, turning markup on and off
-// TODO: markup for changing a color of a word (then, remove color by the char) + turning it on/off depending on whether markup definition is passed or not
-// TODO: a way to print a markup without interpreting it as a markup ("[[c1]"?]
 const text = [
   "The quick [c1]brown[c0] fox jumps",
   "over the [c2]lazy[c0] dog",

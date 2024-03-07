@@ -74,7 +74,6 @@ export abstract class BpxFont {
   arrangeGlyphsFor(
     text: string,
     textColor: BpxRgbColor,
-    // TODO: use these markers
     colorMarkers?: BpxTextColorMarkers,
   ): BpxArrangedGlyph[] {
     colorMarkers ??= {};

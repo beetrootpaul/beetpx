@@ -791,6 +791,7 @@ declare const font_pico8_: BpxFont;
 declare const font_saint11Minimal4_: BpxFont;
 declare const font_saint11Minimal5_: BpxFont;
 declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
+declare function rgb_(cssHex: string): BpxRgbColor;
 declare const rgb_black_: BpxRgbColor;
 declare const rgb_white_: BpxRgbColor;
 declare const rgb_red_: BpxRgbColor;

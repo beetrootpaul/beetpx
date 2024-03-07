@@ -31,19 +31,26 @@ export const font_saint11Minimal5_: BpxFont = new BpxFontSaint11Minimal5();
 
 /////////////////////////////////////////////////////////////////////////////
 
-// TODO: overload for a CSS hex
-export function rgb_(r: number, g: number, b: number): BpxRgbColor {
-  return BpxRgbColor.of(r, g, b);
+export function rgb_(r: number, g: number, b: number): BpxRgbColor;
+export function rgb_(cssHex: string): BpxRgbColor;
+export function rgb_(
+  rOrCssHex: string | number,
+  g?: number,
+  b?: number,
+): BpxRgbColor {
+  return typeof rOrCssHex === "string"
+    ? BpxRgbColor.fromCssHex(rOrCssHex)
+    : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
 
-export const rgb_black_ = BpxRgbColor.fromCssHex("#000000");
-export const rgb_white_ = BpxRgbColor.fromCssHex("#ffffff");
-export const rgb_red_ = BpxRgbColor.fromCssHex("#ff0000");
-export const rgb_green_ = BpxRgbColor.fromCssHex("#00ff00");
-export const rgb_blue_ = BpxRgbColor.fromCssHex("#0000ff");
-export const rgb_cyan_ = BpxRgbColor.fromCssHex("#00ffff");
-export const rgb_magenta_ = BpxRgbColor.fromCssHex("#ff00ff");
-export const rgb_yellow_ = BpxRgbColor.fromCssHex("#ffff00");
+export const rgb_black_ = rgb_("#000000");
+export const rgb_white_ = rgb_("#ffffff");
+export const rgb_red_ = rgb_("#ff0000");
+export const rgb_green_ = rgb_("#00ff00");
+export const rgb_blue_ = rgb_("#0000ff");
+export const rgb_cyan_ = rgb_("#00ffff");
+export const rgb_magenta_ = rgb_("#ff00ff");
+export const rgb_yellow_ = rgb_("#ffff00");
 
 export const rgb_p8_ = BpxPalettePico8;
 
