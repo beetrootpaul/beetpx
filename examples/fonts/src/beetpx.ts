@@ -68,7 +68,7 @@ b_.init({
 
       drawBox(textWh, cursor.add(textOffset), scaleXy);
 
-      b_.drawText(cursor, rgb_p8_.peach, text, {
+      b_.drawText(text, cursor, rgb_p8_.peach, {
         scaleXy,
         centerXy,
         colorMarkers: {

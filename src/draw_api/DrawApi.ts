@@ -222,13 +222,12 @@ export class DrawApi {
   }
 
   drawText(
+    text: string,
     xy: BpxVector2d,
     color: BpxRgbColor,
-    text: string,
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      // TODO: test it
       colorMarkers?: BpxTextColorMarkers;
     },
   ): void {

@@ -120,7 +120,7 @@ export class DrawApi {
         const offset = v_(opts?.centerXy?.[0] ? -wh.x / 2 : 0, opts?.centerXy?.[1] ? -wh.y / 2 : 0);
         return { wh, offset };
     }
-    drawText(xy, color, text, opts) {
+    drawText(text, xy, color, opts) {
         const centerXy = opts?.centerXy ?? [false, false];
         
         if (centerXy[0] || centerXy[1]) {
