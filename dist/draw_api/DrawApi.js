@@ -70,8 +70,8 @@ export class DrawApi {
     drawPixel(xy, color) {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(this.cameraXy), color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
-    drawPixels(pixels, xy, color, opts = {}) {
-        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+    drawPixels(pixels, xy, color, opts) {
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawLine(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(this.cameraXy), wh, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
@@ -93,18 +93,18 @@ export class DrawApi {
         __classPrivateFieldSet(this, _DrawApi_spriteColorMapping, spriteColorMapping, "f");
         return prev;
     }
-    drawSprite(sprite, xy, opts = {}) {
-        const centerXy = opts.centerXy ?? [false, false];
+    drawSprite(sprite, xy, opts) {
+        const centerXy = opts?.centerXy ?? [false, false];
         if (centerXy[0] || centerXy[1]) {
             xy = xy.sub(centerXy[0] ? sprite.size.x / 2 : 0, centerXy[1] ? sprite.size.y / 2 : 0);
         }
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
-        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     useFont(font) {
         __classPrivateFieldSet(this, _DrawApi_font, font, "f");
     }
-    measureText(text, opts = {}) {
+    measureText(text, opts) {
         let maxLineNumber = 0;
         let maxX = 0;
         for (const arrangedGlyph of __classPrivateFieldGet(this, _DrawApi_font, "f").arrangeGlyphsFor(text, rgb_white_)) {
@@ -117,14 +117,14 @@ export class DrawApi {
         return v_(maxX, (maxLineNumber + 1) * (__classPrivateFieldGet(this, _DrawApi_font, "f").ascent + __classPrivateFieldGet(this, _DrawApi_font, "f").descent) +
             maxLineNumber * __classPrivateFieldGet(this, _DrawApi_font, "f").lineGap).mul(opts?.scaleXy ?? v_1_1_);
     }
-    drawText(xy, color, text, opts = {}) {
+    drawText(xy, color, text, opts) {
+        const centerXy = opts?.centerXy ?? [false, false];
         
-        
-        
-        
-        
-        
-        __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_font, "f"), xy.sub(this.cameraXy), color, opts?.colorMarkers ?? {}, opts.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        if (centerXy[0] || centerXy[1]) {
+            const wh = this.measureText(text, { scaleXy: opts?.scaleXy });
+            xy = xy.sub(centerXy[0] ? wh.x / 2 : 0, centerXy[1] ? wh.y / 2 : 0);
+        }
+        __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_font, "f"), xy.sub(this.cameraXy), color, opts?.colorMarkers ?? {}, opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     takeCanvasSnapshot() {
         return __classPrivateFieldGet(this, _DrawApi_canvas, "f").takeSnapshot();

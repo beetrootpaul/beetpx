@@ -582,6 +582,7 @@ declare class DrawApi {
         scaleXy?: BpxVector2d;
     }): BpxVector2d;
     drawText(xy: BpxVector2d, color: BpxRgbColor, text: string, opts?: {
+        centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
         colorMarkers?: BpxTextColorMarkers;
     }): void;

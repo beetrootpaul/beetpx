@@ -60,11 +60,11 @@ b_.init({
       customFont,
     ]) {
       b_.useFont(font);
-
       const textWh = b_.measureText(text, { scaleXy: v_(zoom) });
       drawBox(textWh, cursor, zoom);
       b_.drawText(cursor, rgb_p8_.peach, text, {
         scaleXy: v_(zoom),
+        centerXy: [true, true],
         colorMarkers: {
           c0: rgb_p8_.peach,
           c1: rgb_p8_.tan,

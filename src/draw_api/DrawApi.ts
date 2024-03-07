@@ -96,15 +96,15 @@ export class DrawApi {
     pixels: BpxPixels,
     xy: BpxVector2d,
     color: BpxRgbColor,
-    opts: {
+    opts?: {
       scaleXy?: BpxVector2d;
-    } = {},
+    },
   ): void {
     this.#pixels.draw(
       pixels,
       xy.sub(this.cameraXy),
       color,
-      opts.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? v_1_1_,
       this.#pattern,
     );
   }
@@ -160,12 +160,12 @@ export class DrawApi {
   drawSprite(
     sprite: BpxSprite | BpxAnimatedSprite,
     xy: BpxVector2d,
-    opts: {
+    opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-    } = {},
+    },
   ): void {
-    const centerXy = opts.centerXy ?? [false, false];
+    const centerXy = opts?.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
       xy = xy.sub(
         centerXy[0] ? sprite.size.x / 2 : 0,
@@ -178,7 +178,7 @@ export class DrawApi {
       sprite.type === "static" ? sprite : sprite.current,
       sourceImageAsset,
       xy.sub(this.cameraXy),
-      opts.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? v_1_1_,
       this.#spriteColorMapping,
       this.#pattern,
     );
@@ -188,7 +188,7 @@ export class DrawApi {
     this.#font = font;
   }
 
-  measureText(text: string, opts: { scaleXy?: BpxVector2d } = {}): BpxVector2d {
+  measureText(text: string, opts?: { scaleXy?: BpxVector2d }): BpxVector2d {
     let maxLineNumber = 0;
     let maxX = 0;
 
@@ -214,27 +214,26 @@ export class DrawApi {
     xy: BpxVector2d,
     color: BpxRgbColor,
     text: string,
-    opts: {
-      // TODO: bring back centering
-      //     centerXy?: [boolean, boolean];
+    opts?: {
+      centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      // TODO: test it somehow?
+      // TODO: test it
       colorMarkers?: BpxTextColorMarkers;
-    } = {},
+    },
   ): void {
-    // TODO: bring back centering
-    //   const centerXy = opts.centerXy ?? [false, false];
-    //   if (centerXy[0] || centerXy[1]) {
-    //     const [_, size] = BpxUtils.measureText(text);
-    //     xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
-    //   }
+    const centerXy = opts?.centerXy ?? [false, false];
+    // TODO: test the combination of scale and center vs rounding with a pixel precision instead of rounding before scaling up
+    if (centerXy[0] || centerXy[1]) {
+      const wh = this.measureText(text, { scaleXy: opts?.scaleXy });
+      xy = xy.sub(centerXy[0] ? wh.x / 2 : 0, centerXy[1] ? wh.y / 2 : 0);
+    }
     this.#text.draw(
       text,
       this.#font,
       xy.sub(this.cameraXy),
       color,
       opts?.colorMarkers ?? {},
-      opts.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? v_1_1_,
       this.#pattern,
     );
   }
