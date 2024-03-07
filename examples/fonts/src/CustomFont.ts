@@ -14,7 +14,7 @@ export class CustomFont extends BpxFont {
   //   - using both local (deployed together with the game) and external sprite sheets.
   static #internalSpriteSheetUrl = "custom-font.png";
   static #externalSpriteSheetUrl =
-    "https://raw.githubusercontent.com/beetrootpaul/beetpx/fonts_rework/examples/fonts/public/custom-font.png";
+    "https://raw.githubusercontent.com/beetrootpaul/beetpx/main/examples/fonts/public/custom-font.png";
 
   ascent = 8;
   descent = 3;
