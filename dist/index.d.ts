@@ -580,7 +580,11 @@ declare class DrawApi {
     useFont(font: BpxFont): void;
     measureText(text: string, opts?: {
         scaleXy?: BpxVector2d;
-    }): BpxVector2d;
+        centerXy?: [boolean, boolean];
+    }): {
+        wh: BpxVector2d;
+        offset: BpxVector2d;
+    };
     drawText(xy: BpxVector2d, color: BpxRgbColor, text: string, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;

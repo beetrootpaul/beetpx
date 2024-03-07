@@ -119,7 +119,7 @@ describe("Utils", () => {
     expect(BpxUtils.lerp(200, 100, 1.1, { clamp: true })).toBe(100);
   });
 
-  // TODO: move elsewhere?
+  // TODO: move to draw api testes
   test("#measureText", () => {
     // vi.spyOn(BeetPx, "getFont").mockImplementation(
     //   () =>

@@ -6,14 +6,12 @@ import {
   font_saint11Minimal4_,
   font_saint11Minimal5_,
   rgb_p8_,
-  u_,
   v_,
   v_0_0_,
 } from "../../../src";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
-// TODO: take care of all TODOs
 // TODO: update tests, write new ones
 const text = [
   "The quick [c1]brown[c0] fox jumps",
@@ -25,24 +23,26 @@ b_.init({
   gameCanvasSize: "256x256",
   assets: [...customFont.spriteSheetUrls],
 }).then(async ({ startGame }) => {
-  const minZoom = 1;
-  const maxZoom = 8;
-  let zoom = minZoom;
+  const centerXy: [boolean, boolean] = [true, false];
+
+  const minScaleXy = v_(1);
+  const maxScaleXy = v_(8);
+  let scaleXy = minScaleXy;
 
   let cameraXy = v_0_0_;
 
   b_.setOnUpdate(() => {
     if (b_.wasButtonJustPressed("a")) {
-      const newZoom = u_.clamp(minZoom, zoom * 2, maxZoom);
-      cameraXy = cameraXy.mul(newZoom / zoom);
-      zoom = newZoom;
+      const newScale = scaleXy.mul(2).clamp(minScaleXy, maxScaleXy);
+      cameraXy = cameraXy.mul(newScale.div(scaleXy));
+      scaleXy = newScale;
     }
     if (b_.wasButtonJustPressed("b")) {
-      const newZoom = u_.clamp(minZoom, zoom / 2, maxZoom);
-      cameraXy = cameraXy.mul(newZoom / zoom);
-      zoom = newZoom;
+      const newScale = scaleXy.div(2).clamp(minScaleXy, maxScaleXy);
+      cameraXy = cameraXy.mul(newScale.div(scaleXy));
+      scaleXy = newScale;
     }
-    cameraXy = cameraXy.sub(b_.getPressedDirection().mul(2).mul(zoom));
+    cameraXy = cameraXy.sub(b_.getPressedDirection().mul(2).mul(scaleXy));
   });
 
   b_.setOnDraw(() => {
@@ -50,7 +50,7 @@ b_.init({
 
     b_.clearCanvas(rgb_p8_.wine);
 
-    let cursor = v_(8, 8).mul(zoom);
+    let cursor = v_(128, 8).mul(scaleXy);
 
     for (const font of [
       font_pico8_,
@@ -60,11 +60,17 @@ b_.init({
       customFont,
     ]) {
       b_.useFont(font);
-      const textWh = b_.measureText(text, { scaleXy: v_(zoom) });
-      drawBox(textWh, cursor, zoom);
+
+      const { wh: textWh, offset: textOffset } = b_.measureText(text, {
+        scaleXy,
+        centerXy,
+      });
+
+      drawBox(textWh, cursor.add(textOffset), scaleXy);
+
       b_.drawText(cursor, rgb_p8_.peach, text, {
-        scaleXy: v_(zoom),
-        centerXy: [true, true],
+        scaleXy,
+        centerXy,
         colorMarkers: {
           c0: rgb_p8_.peach,
           c1: rgb_p8_.tan,
@@ -72,21 +78,25 @@ b_.init({
         },
       });
 
-      drawMarkers(font, cursor, zoom);
+      drawMarkers(font, cursor.add(textOffset), scaleXy);
 
-      cursor = cursor.add(0, textWh.y).add(v_(0, 4).mul(zoom));
+      cursor = cursor.add(0, textWh.y).add(v_(0, 4).mul(scaleXy));
     }
   });
   await startGame();
 });
 
-function drawBox(textWh: BpxVector2d, cursor: BpxVector2d, zoom: number): void {
+function drawBox(
+  textWh: BpxVector2d,
+  cursor: BpxVector2d,
+  scaleXy: BpxVector2d,
+): void {
   //
   // a border
   //
   b_.drawRectFilled(
-    cursor.sub(v_(zoom)),
-    textWh.add(v_(2).mul(zoom)),
+    cursor.sub(scaleXy),
+    textWh.add(v_(2).mul(scaleXy)),
     rgb_p8_.dusk,
   );
 
@@ -96,18 +106,22 @@ function drawBox(textWh: BpxVector2d, cursor: BpxVector2d, zoom: number): void {
   b_.drawRectFilled(cursor, textWh, rgb_p8_.storm);
 }
 
-function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
+function drawMarkers(
+  font: BpxFont,
+  cursor: BpxVector2d,
+  scaleXy: BpxVector2d,
+): void {
   //
   // the highest pixel of the ascent
   //
-  b_.drawRectFilled(cursor.add(v_(-3, 0).mul(zoom)), v_(zoom), rgb_p8_.pink);
+  b_.drawRectFilled(cursor.add(v_(-3, 0).mul(scaleXy)), scaleXy, rgb_p8_.pink);
 
   //
   // the ascent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-4, 0).mul(zoom)),
-    v_(1, font.ascent).mul(zoom),
+    cursor.add(v_(-4, 0).mul(scaleXy)),
+    v_(1, font.ascent).mul(scaleXy),
     rgb_p8_.pink,
   );
 
@@ -115,8 +129,8 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the lowest pixel of the ascent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-3, font.ascent - 1).mul(zoom)),
-    v_(zoom),
+    cursor.add(v_(-3, font.ascent - 1).mul(scaleXy)),
+    scaleXy,
     rgb_p8_.pink,
   );
 
@@ -124,8 +138,8 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the descent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-4, font.ascent).mul(zoom)),
-    v_(1, font.descent).mul(zoom),
+    cursor.add(v_(-4, font.ascent).mul(scaleXy)),
+    v_(1, font.descent).mul(scaleXy),
     rgb_p8_.pink,
   );
 
@@ -133,8 +147,8 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the lowest pixel of the descent
   //
   b_.drawRectFilled(
-    cursor.add(v_(-3, font.ascent + font.descent - 1).mul(zoom)),
-    v_(zoom),
+    cursor.add(v_(-3, font.ascent + font.descent - 1).mul(scaleXy)),
+    scaleXy,
     rgb_p8_.pink,
   );
 
@@ -142,8 +156,8 @@ function drawMarkers(font: BpxFont, cursor: BpxVector2d, zoom: number): void {
   // the line gap
   //
   b_.drawRectFilled(
-    cursor.add(v_(-4, font.ascent + font.descent).mul(zoom)),
-    v_(1, font.lineGap).mul(zoom),
+    cursor.add(v_(-4, font.ascent + font.descent).mul(scaleXy)),
+    v_(1, font.lineGap).mul(scaleXy),
     rgb_p8_.pink,
   );
 }

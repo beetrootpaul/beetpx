@@ -188,7 +188,11 @@ export class DrawApi {
     this.#font = font;
   }
 
-  measureText(text: string, opts?: { scaleXy?: BpxVector2d }): BpxVector2d {
+  // TODO: move tests here from utils + cover scale and centering
+  measureText(
+    text: string,
+    opts?: { scaleXy?: BpxVector2d; centerXy?: [boolean, boolean] },
+  ): { wh: BpxVector2d; offset: BpxVector2d } {
     let maxLineNumber = 0;
     let maxX = 0;
 
@@ -203,11 +207,18 @@ export class DrawApi {
       );
     }
 
-    return v_(
+    const wh = v_(
       maxX,
       (maxLineNumber + 1) * (this.#font.ascent + this.#font.descent) +
         maxLineNumber * this.#font.lineGap,
     ).mul(opts?.scaleXy ?? v_1_1_);
+
+    const offset = v_(
+      opts?.centerXy?.[0] ? -wh.x / 2 : 0,
+      opts?.centerXy?.[1] ? -wh.y / 2 : 0,
+    );
+
+    return { wh, offset };
   }
 
   drawText(
@@ -224,8 +235,11 @@ export class DrawApi {
     const centerXy = opts?.centerXy ?? [false, false];
     // TODO: test the combination of scale and center vs rounding with a pixel precision instead of rounding before scaling up
     if (centerXy[0] || centerXy[1]) {
-      const wh = this.measureText(text, { scaleXy: opts?.scaleXy });
-      xy = xy.sub(centerXy[0] ? wh.x / 2 : 0, centerXy[1] ? wh.y / 2 : 0);
+      const { offset } = this.measureText(text, {
+        scaleXy: opts?.scaleXy,
+        centerXy: opts?.centerXy,
+      });
+      xy = xy.add(offset);
     }
     this.#text.draw(
       text,

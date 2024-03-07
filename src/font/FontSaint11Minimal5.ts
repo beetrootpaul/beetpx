@@ -14,7 +14,6 @@ import { BpxFont, BpxGlyph } from "./Font";
  *   a b c d e f g h i j k l m
  *   n o p q r s t u v w x y z
  */
-// TODO: update the name in README
 export class BpxFontSaint11Minimal5 extends BpxFont {
   ascent = 5;
   descent = 0;

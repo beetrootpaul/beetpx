@@ -3,7 +3,6 @@ import { rgb_p8_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont, BpxGlyph } from "./Font";
 
-// TODO: update the name in README
 // TODO: add a comment here and in README about the origin of this font and its CC-0 license
 export class BpxFontPico8 extends BpxFont {
   static spriteSheetUrl = ".beetpx/pico-8-font.png";

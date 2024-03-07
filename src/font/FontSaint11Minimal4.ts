@@ -14,7 +14,6 @@ import { BpxFont, BpxGlyph } from "./Font";
  *   a b c d e f g h i j k l m      (note: both upper- and lower-case
  *   n o p q r s t u v w x y z             characters use same glyphs)
  */
-// TODO: update the name in README
 export class BpxFontSaint11Minimal4 extends BpxFont {
   ascent = 4;
   descent = 0;

@@ -8,7 +8,6 @@ import { rgb_p8_ } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 import { BpxFont } from "./Font";
 
-
 export class BpxFontPico8 extends BpxFont {
     constructor() {
         super(...arguments);

@@ -104,6 +104,7 @@ export class DrawApi {
     useFont(font) {
         __classPrivateFieldSet(this, _DrawApi_font, font, "f");
     }
+    
     measureText(text, opts) {
         let maxLineNumber = 0;
         let maxX = 0;
@@ -114,15 +115,20 @@ export class DrawApi {
                     ? arrangedGlyph.sprite.size.x
                     : arrangedGlyph.pixels.size.x));
         }
-        return v_(maxX, (maxLineNumber + 1) * (__classPrivateFieldGet(this, _DrawApi_font, "f").ascent + __classPrivateFieldGet(this, _DrawApi_font, "f").descent) +
+        const wh = v_(maxX, (maxLineNumber + 1) * (__classPrivateFieldGet(this, _DrawApi_font, "f").ascent + __classPrivateFieldGet(this, _DrawApi_font, "f").descent) +
             maxLineNumber * __classPrivateFieldGet(this, _DrawApi_font, "f").lineGap).mul(opts?.scaleXy ?? v_1_1_);
+        const offset = v_(opts?.centerXy?.[0] ? -wh.x / 2 : 0, opts?.centerXy?.[1] ? -wh.y / 2 : 0);
+        return { wh, offset };
     }
     drawText(xy, color, text, opts) {
         const centerXy = opts?.centerXy ?? [false, false];
         
         if (centerXy[0] || centerXy[1]) {
-            const wh = this.measureText(text, { scaleXy: opts?.scaleXy });
-            xy = xy.sub(centerXy[0] ? wh.x / 2 : 0, centerXy[1] ? wh.y / 2 : 0);
+            const { offset } = this.measureText(text, {
+                scaleXy: opts?.scaleXy,
+                centerXy: opts?.centerXy,
+            });
+            xy = xy.add(offset);
         }
         __classPrivateFieldGet(this, _DrawApi_text, "f").draw(text, __classPrivateFieldGet(this, _DrawApi_font, "f"), xy.sub(this.cameraXy), color, opts?.colorMarkers ?? {}, opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
