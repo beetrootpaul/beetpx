@@ -77,61 +77,95 @@ export abstract class BpxFont {
     // TODO: use these markers
     colorMarkers?: BpxTextColorMarkers,
   ): BpxArrangedGlyph[] {
+    colorMarkers ??= {};
+
     const arrangedGlyphs: BpxArrangedGlyph[] = [];
     let xy = v_0_0_;
     let lineNumber = 0;
     let prevKerningMap: BpxKerningNextCharMap = {};
 
-    for (let char of text) {
-      char = this.mapChar(char);
+    for (let i = 0; i < text.length; i++) {
+      const char = this.mapChar(text[i]!);
+
       if (char === "\n") {
         prevKerningMap = {};
         xy = v_(0, xy.y + this.ascent + this.descent + this.lineGap);
         lineNumber += 1;
-      } else {
-        const kerning = prevKerningMap[char] ?? 0;
-        const glyph = this.glyphs.get(char);
-        if (!glyph) {
-          // do nothing
-        } else if (glyph.type === "sprite") {
-          arrangedGlyphs.push({
-            type: "sprite",
-            char: char,
-            sprite: glyph.sprite,
-            spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) =>
-              this.isSpriteSheetTextColor(sourceColor) ? textColor : null,
-            ),
-            lineNumber: lineNumber,
-            leftTop: xy
-              .add(0, this.ascent)
-              .sub(0, glyph.sprite.size.y)
-              .add(glyph.offset ?? v_0_0_)
-              .add(kerning, 0),
-          });
-          prevKerningMap = glyph.kerning ?? {};
-          xy = xy.add(glyph.advance + kerning, 0);
-        } else if (glyph.type === "pixels") {
-          arrangedGlyphs.push({
-            type: "pixels",
-            char: char,
-            pixels: glyph.pixels,
-            color: textColor,
-            lineNumber: lineNumber,
-            leftTop: xy
-              .add(0, this.ascent)
-              .sub(0, glyph.pixels.size.y)
-              .add(glyph.offset ?? v_0_0_)
-              .add(kerning, 0),
-          });
-          prevKerningMap = glyph.kerning ?? {};
-          xy = xy.add(glyph.advance + kerning, 0);
-        } else if (glyph.type === "whitespace") {
-          prevKerningMap = glyph.kerning ?? {};
-          xy = xy.add(glyph.advance + kerning, 0);
-        } else {
-          u_.assertUnreachable(glyph);
+        continue;
+      }
+
+      if (char === "[") {
+        let newColor: BpxRgbColor | undefined;
+        for (const [marker, markedColor] of Object.entries(colorMarkers)) {
+          const markerText = `[${marker}]`;
+          if (text.slice(i, i + markerText.length) === markerText) {
+            newColor = markedColor;
+            i += markerText.length - 1;
+            break;
+          }
+        }
+        if (newColor) {
+          textColor = newColor;
+          continue;
         }
       }
+
+      const kerning = prevKerningMap[char] ?? 0;
+      const glyph = this.glyphs.get(char);
+      if (!glyph) {
+        continue;
+      }
+
+      const glyphColor = textColor;
+
+      if (glyph.type === "sprite") {
+        arrangedGlyphs.push({
+          type: "sprite",
+          char: char,
+          sprite: glyph.sprite,
+          spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) =>
+            // TODO: test for this edge case of `textColor` returned from a function being always the last assigned value
+            this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null,
+          ),
+          lineNumber: lineNumber,
+          leftTop: xy
+            .add(0, this.ascent)
+            .sub(0, glyph.sprite.size.y)
+            .add(glyph.offset ?? v_0_0_)
+            .add(kerning, 0),
+        });
+
+        prevKerningMap = glyph.kerning ?? {};
+        xy = xy.add(glyph.advance + kerning, 0);
+        continue;
+      }
+
+      if (glyph.type === "pixels") {
+        arrangedGlyphs.push({
+          type: "pixels",
+          char: char,
+          pixels: glyph.pixels,
+          color: glyphColor,
+          lineNumber: lineNumber,
+          leftTop: xy
+            .add(0, this.ascent)
+            .sub(0, glyph.pixels.size.y)
+            .add(glyph.offset ?? v_0_0_)
+            .add(kerning, 0),
+        });
+
+        prevKerningMap = glyph.kerning ?? {};
+        xy = xy.add(glyph.advance + kerning, 0);
+        continue;
+      }
+
+      if (glyph.type === "whitespace") {
+        prevKerningMap = glyph.kerning ?? {};
+        xy = xy.add(glyph.advance + kerning, 0);
+        continue;
+      }
+
+      u_.assertUnreachable(glyph);
     }
 
     return arrangedGlyphs;
