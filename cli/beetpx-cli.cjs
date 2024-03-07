@@ -381,6 +381,7 @@ function copyBeetPxAdditionalAssets(params) {
     "gui.png",
     "loading.gif",
     "start.png",
+    "pico-8-font.png",
   ].forEach((pngAsset) => {
     fs.copyFileSync(
       path.resolve(inputDir, pngAsset),

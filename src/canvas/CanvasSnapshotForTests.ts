@@ -1,4 +1,4 @@
-import { BpxRgbColor, rgb_ } from "../color/RgbColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 
 export class CanvasSnapshotForTests implements CanvasSnapshot {
@@ -18,7 +18,7 @@ export class CanvasSnapshotForTests implements CanvasSnapshot {
     }
 
     const value = this.#rgbValues[index]!;
-    return rgb_(
+    return BpxRgbColor.of(
       (value & 0xff0000) >> 16,
       (value & 0x00ff00) >> 8,
       value & 0x0000ff,

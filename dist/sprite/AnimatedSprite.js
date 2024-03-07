@@ -10,14 +10,9 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _BpxAnimatedSprite_sprites, _BpxAnimatedSprite_loop;
-import { v_ } from "../misc/Vector2d";
-import { timer_ } from "../timer/Timer";
+import { BpxVector2d } from "../misc/Vector2d";
+import { BpxTimer } from "../timer/Timer";
 import { BpxSprite } from "./Sprite";
-export function aspr_(imageUrl) {
-    return (w, h, xys) => {
-        return BpxAnimatedSprite.from(imageUrl, w, h, xys);
-    };
-}
 export class BpxAnimatedSprite {
     static from(imageUrl, w, h, xys) {
         return new BpxAnimatedSprite({ imageUrl, w, h, xys });
@@ -27,9 +22,14 @@ export class BpxAnimatedSprite {
         _BpxAnimatedSprite_sprites.set(this, void 0);
         _BpxAnimatedSprite_loop.set(this, void 0);
         this.imageUrl = params.imageUrl;
-        this.size = v_(params.w, params.h).abs().round();
+        this.size = BpxVector2d.of(params.w, params.h).abs().round();
         __classPrivateFieldSet(this, _BpxAnimatedSprite_sprites, params.xys.map(([x, y]) => BpxSprite.from(params.imageUrl, params.w, params.h, x, y)), "f");
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_loop, timer_(__classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length, { loop: true }), "f");
+        __classPrivateFieldSet(this, _BpxAnimatedSprite_loop, BpxTimer.for({
+            frames: __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length,
+            loop: true,
+            pause: false,
+            delayFrames: 0,
+        }), "f");
     }
     get current() {
         return __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f")[__classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").t];

@@ -10,7 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _DrawSprite_preparedSprites, _DrawSprite_canvas, _DrawSprite_options;
-import { BpxVector2d, v_, v_0_0_ } from "../../misc/Vector2d";
+import { BpxVector2d } from "../../misc/Vector2d";
+import { v_, v_0_0_ } from "../../shorthands";
 import { PreparedSprites } from "../PreparedSprites";
 export class DrawSprite {
     constructor(canvas, options = {}) {

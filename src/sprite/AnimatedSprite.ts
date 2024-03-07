@@ -1,19 +1,13 @@
 import { BpxImageUrl } from "../assets/Assets";
-import { BpxVector2d, v_ } from "../misc/Vector2d";
-import { BpxTimer, timer_ } from "../timer/Timer";
+import { BpxVector2d } from "../misc/Vector2d";
+import { BpxTimer } from "../timer/Timer";
 import { BpxSprite } from "./Sprite";
 
-type ImageBoundAnimatedSpriteFactory = (
+export type BpxImageBoundAnimatedSpriteFactory = (
   w: number,
   h: number,
   xys: [x: number, y: number][],
 ) => BpxAnimatedSprite;
-
-export function aspr_(imageUrl: BpxImageUrl): ImageBoundAnimatedSpriteFactory {
-  return (w: number, h: number, xys: [x: number, y: number][]) => {
-    return BpxAnimatedSprite.from(imageUrl, w, h, xys);
-  };
-}
 
 export class BpxAnimatedSprite {
   static from(
@@ -40,11 +34,16 @@ export class BpxAnimatedSprite {
     xys: [x: number, y: number][];
   }) {
     this.imageUrl = params.imageUrl;
-    this.size = v_(params.w, params.h).abs().round();
+    this.size = BpxVector2d.of(params.w, params.h).abs().round();
     this.#sprites = params.xys.map(([x, y]) =>
       BpxSprite.from(params.imageUrl, params.w, params.h, x, y),
     );
-    this.#loop = timer_(this.#sprites.length, { loop: true });
+    this.#loop = BpxTimer.for({
+      frames: this.#sprites.length,
+      loop: true,
+      pause: false,
+      delayFrames: 0,
+    });
   }
 
   get current(): BpxSprite {

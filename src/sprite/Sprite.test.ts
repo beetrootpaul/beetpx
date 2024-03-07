@@ -1,6 +1,5 @@
-import { describe, expect, test } from "@jest/globals";
-import { v_ } from "../misc/Vector2d";
-import { spr_ } from "./Sprite";
+import { describe, expect, test } from "vitest";
+import { spr_, v_ } from "../shorthands";
 
 describe("Sprite", () => {
   test("construction", () => {

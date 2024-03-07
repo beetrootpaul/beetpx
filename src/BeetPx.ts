@@ -11,6 +11,8 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { StorageApi } from "./storage/StorageApi";
 
+/////////////////////////////////////////////////////////////////////////////
+
 export class BeetPx {
   static #engine: Engine;
 
@@ -241,12 +243,12 @@ export class BeetPx {
     return this.#tryGetEngine().drawApi.drawSprite(...args);
   };
 
-  static setFont: DrawApi["setFont"] = (...args) => {
-    return this.#tryGetEngine().drawApi.setFont(...args);
+  static useFont: DrawApi["useFont"] = (...args) => {
+    return this.#tryGetEngine().drawApi.useFont(...args);
   };
 
-  static getFont: DrawApi["getFont"] = (...args) => {
-    return this.#tryGetEngine().drawApi.getFont(...args);
+  static measureText: DrawApi["measureText"] = (...args) => {
+    return this.#tryGetEngine().drawApi.measureText(...args);
   };
 
   static drawText: DrawApi["drawText"] = (...args) => {
@@ -357,10 +359,6 @@ export class BeetPx {
     return this.#tryGetEngine().assets.getImageAsset(...args);
   };
 
-  static getFontAsset: Assets["getFontAsset"] = (...args) => {
-    return this.#tryGetEngine().assets.getFontAsset(...args);
-  };
-
   static getSoundAsset: Assets["getSoundAsset"] = (...args) => {
     return this.#tryGetEngine().assets.getSoundAsset(...args);
   };
@@ -382,5 +380,7 @@ export class BeetPx {
     return this.#engine;
   }
 }
+
+/////////////////////////////////////////////////////////////////////////////
 
 export const b_ = BeetPx;

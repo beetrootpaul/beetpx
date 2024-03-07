@@ -1,7 +1,7 @@
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { BpxDrawingPattern } from "../Pattern";
+import { BpxDrawingPattern } from "../DrawingPattern";
 
 export class DrawPixel {
   readonly #canvas: Canvas;

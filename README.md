@@ -75,18 +75,24 @@ would never be created 💛
 
 ### Fonts
 
-While you are able (and encouraged) to define your own font (as an implementation of `BpxFont` interface), there are 2
-fonts ready to use in BeetPx:
+While you are able (and encouraged) to define your own font (as an implementation of `BpxFont` interface), there are 3
+fonts ready to use in BeetPx out of the box:
 
-- `BpxFontSaint11Minimal4` (the default one)
-- `BpxFontSaint11Minimal5`
+- `font_pico8__` (the default one)
+- `font_saint11Minimal4_`
+- `font_saint11Minimal5_`
 
-Both of them are created by [Saint11](https://saint11.org/about/) and available on https://saint11.org/blog/fonts/ under
+The first one is a font from PICO-8 fantasy console, available under a CC-0 license (public domain, free to use). For
+more info
+see: https://www.lexaloffle.com/pico-8.php?page=faq
+
+Two other fonts are created by [Saint11](https://saint11.org/about/) and available on https://saint11.org/blog/fonts/
+under
 a CC-0 license (public domain, free to use).
 
 ### Color Palettes
 
-There is a PICO-8 color palette ready to use, exported as `BpxPalettePico8` and also as a `rgb_p8_`. That palette is
+There is a PICO-8 color palette ready to use, exported as `rgb_p8_`. That palette is
 created by zep and available under a CC-0 license (public domain, free to use). For more info
 see: https://www.lexaloffle.com/pico-8.php?page=faq
 

@@ -4,8 +4,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _PreparedSprites_cache;
-import { u_ } from "../Utils";
-import { rgb_ } from "../color/RgbColor";
+import { rgb_ } from "../shorthands";
+import { range } from "../utils/range";
 export class PreparedSprites {
     constructor() {
         _PreparedSprites_cache.set(this, new Map());
@@ -25,9 +25,7 @@ export class PreparedSprites {
         }
         const w = sprite.size.x;
         const h = sprite.size.y;
-        const colors = u_
-            .range(w)
-            .map(() => u_.range(h).map(() => null));
+        const colors = range(w).map(() => range(h).map(() => null));
         for (let spriteY = 0; spriteY < h; ++spriteY) {
             const imgY = sprite.xy.y + spriteY;
             for (let spriteX = 0; spriteX < w; ++spriteX) {

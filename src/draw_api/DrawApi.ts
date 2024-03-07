@@ -1,15 +1,14 @@
-import { Assets, BpxFontAsset } from "../assets/Assets";
+import { Assets } from "../assets/Assets";
 import { Canvas } from "../canvas/Canvas";
 import { BpxCanvasSnapshotColorMapping } from "../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../color/PatternColors";
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { BpxFontSaint11Minimal4 } from "../font/BpxFontSaint11Minimal4";
-import { BpxCharSprite, BpxFont, BpxFontId } from "../font/Font";
-import { BpxVector2d, v_, v_1_1_ } from "../misc/Vector2d";
+import { BpxFont, BpxTextColorMarkers } from "../font/Font";
+import { BpxVector2d } from "../misc/Vector2d";
+import { font_pico8_, rgb_white_, v_, v_1_1_ } from "../shorthands";
 import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
 import { BpxSprite } from "../sprite/Sprite";
-import { BpxUtils } from "../Utils";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
 import { DrawLine } from "./drawing/DrawLine";
@@ -18,7 +17,7 @@ import { DrawPixels } from "./drawing/DrawPixels";
 import { DrawRect } from "./drawing/DrawRect";
 import { DrawSprite } from "./drawing/DrawSprite";
 import { DrawText } from "./drawing/DrawText";
-import { BpxDrawingPattern } from "./Pattern";
+import { BpxDrawingPattern } from "./DrawingPattern";
 import { BpxPixels } from "./Pixels";
 
 type DrawApiOptions = {
@@ -45,7 +44,7 @@ export class DrawApi {
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
-  #fontAsset: BpxFontAsset | undefined;
+  #font: BpxFont = font_pico8_;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -59,12 +58,7 @@ export class DrawApi {
     this.#rect = new DrawRect(options.canvas);
     this.#ellipse = new DrawEllipse(options.canvas);
     this.#sprite = new DrawSprite(options.canvas);
-    this.#text = new DrawText(options.canvas);
-  }
-
-  #getFontAsset(): BpxFontAsset {
-    this.#fontAsset ??= this.#assets.getFontAsset(BpxFontSaint11Minimal4.id);
-    return this.#fontAsset;
+    this.#text = new DrawText(options.canvas, options.assets);
   }
 
   clearCanvas(color: BpxRgbColor): void {
@@ -74,11 +68,11 @@ export class DrawApi {
   setClippingRegion(
     xy: BpxVector2d,
     wh: BpxVector2d,
-  ): [BpxVector2d, BpxVector2d] {
+  ): [xy: BpxVector2d, wh: BpxVector2d] {
     return this.#canvas.setClippingRegion(xy, wh);
   }
 
-  removeClippingRegion(): [BpxVector2d, BpxVector2d] {
+  removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d] {
     return this.#canvas.removeClippingRegion();
   }
 
@@ -102,15 +96,15 @@ export class DrawApi {
     pixels: BpxPixels,
     xy: BpxVector2d,
     color: BpxRgbColor,
-    opts: {
+    opts?: {
       scaleXy?: BpxVector2d;
-    } = {},
+    },
   ): void {
     this.#pixels.draw(
       pixels,
       xy.sub(this.cameraXy),
       color,
-      opts.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? v_1_1_,
       this.#pattern,
     );
   }
@@ -166,12 +160,12 @@ export class DrawApi {
   drawSprite(
     sprite: BpxSprite | BpxAnimatedSprite,
     xy: BpxVector2d,
-    opts: {
+    opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-    } = {},
+    },
   ): void {
-    const centerXy = opts.centerXy ?? [false, false];
+    const centerXy = opts?.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
       xy = xy.sub(
         centerXy[0] ? sprite.size.x / 2 : 0,
@@ -184,42 +178,73 @@ export class DrawApi {
       sprite.type === "static" ? sprite : sprite.current,
       sourceImageAsset,
       xy.sub(this.cameraXy),
-      opts.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? v_1_1_,
       this.#spriteColorMapping,
       this.#pattern,
     );
   }
 
-  setFont(fontId: BpxFontId): BpxFontId {
-    const prev = this.#getFontAsset().font.id;
-    this.#fontAsset = this.#assets.getFontAsset(fontId);
-    return prev;
+  useFont(font: BpxFont): void {
+    this.#font = font;
   }
 
-  getFont(): BpxFont {
-    return this.#getFontAsset().font;
+  measureText(
+    text: string,
+    opts?: { scaleXy?: BpxVector2d; centerXy?: [boolean, boolean] },
+  ): { wh: BpxVector2d; offset: BpxVector2d } {
+    let maxLineNumber = 0;
+    let maxX = 0;
+
+    for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, rgb_white_)) {
+      maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber);
+      maxX = Math.max(
+        maxX,
+        arrangedGlyph.leftTop.x +
+          (arrangedGlyph.type === "sprite"
+            ? arrangedGlyph.sprite.size.x
+            : arrangedGlyph.pixels.size.x),
+      );
+    }
+
+    const wh = v_(
+      maxX,
+      (maxLineNumber + 1) * (this.#font.ascent + this.#font.descent) +
+        maxLineNumber * this.#font.lineGap,
+    ).mul(opts?.scaleXy ?? v_1_1_);
+
+    const offset = v_(
+      opts?.centerXy?.[0] ? -wh.x / 2 : 0,
+      opts?.centerXy?.[1] ? -wh.y / 2 : 0,
+    );
+
+    return { wh, offset };
   }
 
   drawText(
     text: string,
     xy: BpxVector2d,
-    color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
-    opts: {
+    color: BpxRgbColor,
+    opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-    } = {},
+      colorMarkers?: BpxTextColorMarkers;
+    },
   ): void {
-    const centerXy = opts.centerXy ?? [false, false];
+    const centerXy = opts?.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
-      const [_, size] = BpxUtils.measureText(text);
-      xy = xy.sub(centerXy[0] ? size.x / 2 : 0, centerXy[1] ? size.y / 2 : 0);
+      const { offset } = this.measureText(text, {
+        scaleXy: opts?.scaleXy,
+        centerXy: opts?.centerXy,
+      });
+      xy = xy.add(offset);
     }
     this.#text.draw(
       text,
-      this.#getFontAsset(),
+      this.#font,
       xy.sub(this.cameraXy),
       color,
-      opts.scaleXy ?? v_1_1_,
+      opts?.colorMarkers ?? {},
+      opts?.scaleXy ?? v_1_1_,
       this.#pattern,
     );
   }

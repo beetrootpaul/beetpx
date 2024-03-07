@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _GameButtons_left, _GameButtons_right, _GameButtons_up, _GameButtons_down, _GameButtons_a, _GameButtons_b, _GameButtons_menu, _GameButtons_repeatingLeft, _GameButtons_repeatingRight, _GameButtons_repeatingUp, _GameButtons_repeatingDown, _GameButtons_repeatingA, _GameButtons_repeatingB, _GameButtons_repeatingMenu;
-import { v_ } from "../../misc/Vector2d";
+import { v_ } from "../../shorthands";
 import { Button } from "./Button";
 export class GameButtons {
     constructor() {

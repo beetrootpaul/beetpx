@@ -1,6 +1,6 @@
 import { BpxRgbColor } from "../color/RgbColor";
-import { BpxVector2d, v_ } from "../misc/Vector2d";
-import { u_ } from "../Utils";
+import { BpxVector2d } from "../misc/Vector2d";
+import { throwError } from "../utils/throwError";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
@@ -30,7 +30,7 @@ export class CanvasForProduction extends Canvas {
         colorSpace: "srgb",
         // we allow transparency in order ot make background color visible around the game itself
         alpha: true,
-      }) ?? u_.throwError("Was unable to obtain '2d' context from <canvas>");
+      }) ?? throwError("Was unable to obtain '2d' context from <canvas>");
 
     this.#htmlCanvasContext.imageSmoothingEnabled = false;
 
@@ -46,7 +46,7 @@ export class CanvasForProduction extends Canvas {
         // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
         alpha: false,
       }) ??
-      u_.throwError("Was unable to obtain '2d' context from OffscreenCanvas");
+      throwError("Was unable to obtain '2d' context from OffscreenCanvas");
 
     this.#offscreenImageData = this.#offscreenContext.createImageData(
       this.#offscreenContext.canvas.width,
@@ -91,7 +91,10 @@ export class CanvasForProduction extends Canvas {
   doRender(): void {
     this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
 
-    const htmlCanvasSize = v_(this.#htmlCanvas.width, this.#htmlCanvas.height);
+    const htmlCanvasSize = BpxVector2d.of(
+      this.#htmlCanvas.width,
+      this.#htmlCanvas.height,
+    );
     const scaleToFill = Math.max(
       1,
       Math.min(

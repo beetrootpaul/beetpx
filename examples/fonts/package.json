@@ -1,0 +1,19 @@
+{
+  "name": "beetpx-example-fonts",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "scripts": {
+    "start": "beetpx dev --open --htmlTitle \"[dev] Fonts | BeetPx example\"",
+    "build": "beetpx build --htmlTitle \"Fonts | BeetPx example\"",
+    "prod": "npm run build && beetpx preview",
+    "zip": "npm run build && beetpx zip",
+    "format": "prettier --ignore-path .gitignore --write src/",
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "file:../../"
+  }
+}

@@ -1,12 +1,12 @@
 import { Logger } from "../logger/Logger";
-import { u_ } from "../Utils";
+import { noop } from "../utils/noop";
 
 export class AudioHelpers {
   static muteGain(
     gainNode: GainNode,
     audioContextCurrentTime: number,
     fadeOutMillis: number,
-    onMuted: () => void = u_.noop,
+    onMuted: () => void = noop,
   ): void {
     fadeOutMillis = Math.max(0, fadeOutMillis);
     Logger.debugBeetPx(
@@ -34,7 +34,7 @@ export class AudioHelpers {
     gainNode: GainNode,
     audioContextCurrentTime: number,
     fadeInMillis: number,
-    onUnmuted: () => void = u_.noop,
+    onUnmuted: () => void = noop,
   ): void {
     fadeInMillis = Math.max(0, fadeInMillis);
     Logger.debugBeetPx(
@@ -51,7 +51,7 @@ export class AudioHelpers {
       } else {
         gainNode.gain.setValueAtTime(1, audioContextCurrentTime);
       }
-    }).catch((err) => {});
+    }).catch((_err) => {});
 
     setTimeout(() => {
       onUnmuted();

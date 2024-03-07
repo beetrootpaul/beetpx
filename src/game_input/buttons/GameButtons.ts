@@ -1,4 +1,5 @@
-import { BpxVector2d, v_ } from "../../misc/Vector2d";
+import { BpxVector2d } from "../../misc/Vector2d";
+import { v_ } from "../../shorthands";
 import { BpxGameInputEvent } from "../GameInput";
 import { Button } from "./Button";
 

@@ -1,6 +1,6 @@
 import * as ABU from "audio-buffer-utils";
-import { u_ } from "../Utils";
 import { Assets } from "../assets/Assets";
+import { clamp } from "../utils/clamp";
 import { AudioPlayback, BpxAudioPlaybackId } from "./AudioPlayback";
 import { BpxSoundSequence, BpxSoundSequenceEntry } from "./SoundSequence";
 
@@ -108,7 +108,7 @@ export class AudioPlaybackSequence extends AudioPlayback {
 
   #combineBuffers(entries: EntryBuffers[]): AudioBuffer {
     const sumBuffers = (lValue: number, rValue: number): number =>
-      u_.clamp(-1, lValue + rValue, 1);
+      clamp(-1, lValue + rValue, 1);
     const mixedBuffers: AudioBuffer[] = entries.map((entry) =>
       entry.otherBuffers.reduce(
         (mixedBuffer, nextBuffer) =>

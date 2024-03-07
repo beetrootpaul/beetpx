@@ -1,17 +1,6 @@
 import { BeetPx } from "../BeetPx";
-import { BpxUtils } from "../Utils";
-
-export function timer_(
-  frames: number,
-  opts?: { loop?: boolean; pause?: boolean; delayFrames?: number },
-): BpxTimer {
-  return BpxTimer.for({
-    frames,
-    loop: opts?.loop ?? false,
-    pause: opts?.pause ?? false,
-    delayFrames: opts?.delayFrames ?? 0,
-  });
-}
+import { clamp } from "../utils/clamp";
+import { mod } from "../utils/mod";
 
 export class BpxTimer {
   static for(params: {
@@ -53,9 +42,9 @@ export class BpxTimer {
   get t(): number {
     return this.#loop
       ? this.#tRaw >= 0
-        ? BpxUtils.mod(this.#tRaw, this.#frames)
+        ? mod(this.#tRaw, this.#frames)
         : 0
-      : BpxUtils.clamp(0, this.#tRaw, this.#frames);
+      : clamp(0, this.#tRaw, this.#frames);
   }
 
   get framesLeft(): number {

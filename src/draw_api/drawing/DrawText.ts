@@ -1,22 +1,26 @@
-import { BpxFontAsset } from "../../assets/Assets";
+import { Assets } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { BpxCharSprite } from "../../font/Font";
-import { BpxVector2d, v_0_0_ } from "../../misc/Vector2d";
-import { spr_ } from "../../sprite/Sprite";
-import { BpxDrawingPattern } from "../Pattern";
+import { BpxFont, BpxTextColorMarkers } from "../../font/Font";
+import { BpxVector2d } from "../../misc/Vector2d";
+import { v_0_0_ } from "../../shorthands";
+import { assertUnreachable } from "../../utils/assertUnreachable";
+import { BpxDrawingPattern } from "../DrawingPattern";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
 
 export class DrawText {
   readonly #canvas: Canvas;
 
+  readonly #assets: Assets;
+
   readonly #sprite: DrawSprite;
   readonly #pixels: DrawPixels;
 
-  constructor(canvas: Canvas) {
+  constructor(canvas: Canvas, assets: Assets) {
     this.#canvas = canvas;
+
+    this.#assets = assets;
 
     this.#sprite = new DrawSprite(this.#canvas, {
       disableRounding: true,
@@ -28,65 +32,41 @@ export class DrawText {
 
   draw(
     text: string,
-    fontAsset: BpxFontAsset,
+    font: BpxFont,
     canvasXy: BpxVector2d,
-    color: BpxRgbColor | ((charSprite: BpxCharSprite) => BpxRgbColor),
+    color: BpxRgbColor,
+    colorMarkers: BpxTextColorMarkers,
     scaleXy: BpxVector2d,
     pattern: BpxDrawingPattern,
   ): void {
     canvasXy = canvasXy.round();
     scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
 
-    const colorMapping =
-      typeof color === "function"
-        ? (charSprite: BpxCharSprite) =>
-            BpxSpriteColorMapping.of((spriteColor) =>
-              spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
-                ? color(charSprite)
-                : null,
-            )
-        : BpxSpriteColorMapping.of((spriteColor) =>
-            spriteColor?.cssHex === fontAsset.spriteTextColor?.cssHex
-              ? color
-              : null,
-          );
-
-    for (const charSprite of fontAsset.font.spritesFor(text)) {
-      const xy = canvasXy.add(charSprite.positionInText.mul(scaleXy));
-      if (charSprite.type === "image") {
-        if (fontAsset.font.imageUrl == null) {
-          throw Error(
-            `There is no imageUrl defined for a font "${fontAsset.font.id}", which uses image sprites`,
-          );
-        }
-        if (fontAsset.image == null) {
-          throw Error(
-            `There is no image loaded for a font "${fontAsset.font.id}", which uses image sprites`,
-          );
-        }
+    for (const arrangedGlyph of font.arrangeGlyphsFor(
+      text,
+      color,
+      colorMarkers,
+    )) {
+      const xy = canvasXy.add(arrangedGlyph.leftTop.mul(scaleXy));
+      if (arrangedGlyph.type === "sprite") {
         this.#sprite.draw(
-          spr_(fontAsset.font.imageUrl)(
-            charSprite.spriteXyWh[1].x,
-            charSprite.spriteXyWh[1].y,
-            charSprite.spriteXyWh[0].x,
-            charSprite.spriteXyWh[0].y,
-          ),
-          fontAsset.image,
+          arrangedGlyph.sprite,
+          this.#assets.getImageAsset(arrangedGlyph.sprite.imageUrl),
           xy,
           scaleXy,
-          typeof colorMapping === "function"
-            ? colorMapping(charSprite)
-            : colorMapping,
+          arrangedGlyph.spriteColorMapping,
+          pattern,
+        );
+      } else if (arrangedGlyph.type === "pixels") {
+        this.#pixels.draw(
+          arrangedGlyph.pixels,
+          xy,
+          arrangedGlyph.color,
+          scaleXy,
           pattern,
         );
       } else {
-        this.#pixels.draw(
-          charSprite.pixels,
-          xy,
-          typeof color === "function" ? color(charSprite) : color,
-          scaleXy,
-          pattern,
-        );
+        assertUnreachable(arrangedGlyph);
       }
     }
   }

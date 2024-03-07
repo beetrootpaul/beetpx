@@ -1,5 +1,6 @@
-import { describe, expect, test } from "@jest/globals";
-import { BpxVector2d, v_ } from "./Vector2d";
+import { describe, expect, test } from "vitest";
+import { v_ } from "../shorthands";
+import { BpxVector2d } from "./Vector2d";
 
 describe("Vector2d", () => {
   test("construction", () => {

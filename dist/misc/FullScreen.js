@@ -24,7 +24,10 @@ export class FullScreen {
 }
 _a = FullScreen;
 
-_FullScreen_isFullScreenSupported = { value: !!(document.fullscreenEnabled || document.webkitFullscreenEnabled) };
+_FullScreen_isFullScreenSupported = { value: !!(typeof document ===
+        "undefined"
+        ? false
+        : document.fullscreenEnabled || document.webkitFullscreenEnabled) };
 class FullScreenNoop extends FullScreen {
     constructor() {
         super();

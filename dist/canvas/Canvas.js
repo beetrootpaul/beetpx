@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _Canvas_minX, _Canvas_minY, _Canvas_maxX, _Canvas_maxY, _Canvas_snapshot;
-import { BpxVector2d, v_, v_0_0_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
 export class Canvas {
     constructor(canvasSize) {
         _Canvas_minX.set(this, void 0);
@@ -29,8 +29,8 @@ export class Canvas {
      */
     setClippingRegion(xy, wh) {
         const prev = [
-            v_(__classPrivateFieldGet(this, _Canvas_minX, "f"), __classPrivateFieldGet(this, _Canvas_minY, "f")),
-            v_(__classPrivateFieldGet(this, _Canvas_maxX, "f") - __classPrivateFieldGet(this, _Canvas_minX, "f") + 1, __classPrivateFieldGet(this, _Canvas_maxY, "f") - __classPrivateFieldGet(this, _Canvas_minY, "f") + 1),
+            BpxVector2d.of(__classPrivateFieldGet(this, _Canvas_minX, "f"), __classPrivateFieldGet(this, _Canvas_minY, "f")),
+            BpxVector2d.of(__classPrivateFieldGet(this, _Canvas_maxX, "f") - __classPrivateFieldGet(this, _Canvas_minX, "f") + 1, __classPrivateFieldGet(this, _Canvas_maxY, "f") - __classPrivateFieldGet(this, _Canvas_minY, "f") + 1),
         ];
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         __classPrivateFieldSet(this, _Canvas_minX, xyMinInclusive.x, "f");
@@ -43,7 +43,7 @@ export class Canvas {
      * @returns - previous clipping region in form of an array: [xy, wh]
      */
     removeClippingRegion() {
-        return this.setClippingRegion(v_0_0_, this.canvasSize);
+        return this.setClippingRegion(BpxVector2d.of(0, 0), this.canvasSize);
     }
     canSetAny(xMin, yMin, xMax, yMax) {
         return (xMax >= __classPrivateFieldGet(this, _Canvas_minX, "f") &&

@@ -1,5 +1,5 @@
 import { BpxRgbColor } from "../color/RgbColor";
-import { BpxVector2d, v_, v_0_0_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 
 export abstract class Canvas {
@@ -27,10 +27,10 @@ export abstract class Canvas {
   setClippingRegion(
     xy: BpxVector2d,
     wh: BpxVector2d,
-  ): [BpxVector2d, BpxVector2d] {
+  ): [xy: BpxVector2d, wh: BpxVector2d] {
     const prev: [BpxVector2d, BpxVector2d] = [
-      v_(this.#minX, this.#minY),
-      v_(this.#maxX - this.#minX + 1, this.#maxY - this.#minY + 1),
+      BpxVector2d.of(this.#minX, this.#minY),
+      BpxVector2d.of(this.#maxX - this.#minX + 1, this.#maxY - this.#minY + 1),
     ];
 
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
@@ -48,8 +48,8 @@ export abstract class Canvas {
   /**
    * @returns - previous clipping region in form of an array: [xy, wh]
    */
-  removeClippingRegion(): [BpxVector2d, BpxVector2d] {
-    return this.setClippingRegion(v_0_0_, this.canvasSize);
+  removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d] {
+    return this.setClippingRegion(BpxVector2d.of(0, 0), this.canvasSize);
   }
 
   canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean {

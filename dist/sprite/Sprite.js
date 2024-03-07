@@ -1,7 +1,4 @@
-import { v_ } from "../misc/Vector2d";
-export function spr_(imageUrl) {
-    return (w, h, x, y) => BpxSprite.from(imageUrl, w, h, x, y);
-}
+import { BpxVector2d } from "../misc/Vector2d";
 export class BpxSprite {
     static from(imageUrl, w, h, x, y) {
         return new BpxSprite(imageUrl, w, h, x, y);
@@ -17,8 +14,8 @@ export class BpxSprite {
             y -= h;
         }
         this.imageUrl = imageUrl;
-        this.xy = v_(x, y).round();
-        this.size = v_(x + w, y + h)
+        this.xy = BpxVector2d.of(x, y).round();
+        this.size = BpxVector2d.of(x + w, y + h)
             .round()
             .sub(this.xy);
     }

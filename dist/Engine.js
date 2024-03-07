@@ -16,11 +16,9 @@ import { AudioApi } from "./audio/AudioApi";
 import { BeetPx } from "./BeetPx";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
+import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
-import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 import { Button } from "./game_input/buttons/Button";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -28,9 +26,9 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
-import { v_ } from "./misc/Vector2d";
+import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxUtils, u_ } from "./Utils";
+import { throwError } from "./utils/throwError";
 export class Engine {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f");
@@ -42,7 +40,6 @@ export class Engine {
         return __classPrivateFieldGet(this, _Engine_browserType, "f");
     }
     constructor(engineInitParams = {}) {
-        var _b;
         _Engine_instances.add(this);
         _Engine_assetsToLoad.set(this, void 0);
         _Engine_browserType.set(this, void 0);
@@ -63,7 +60,7 @@ export class Engine {
         engineInitParams.gameCanvasSize ?? (engineInitParams.gameCanvasSize = "128x128");
         engineInitParams.fixedTimestep ?? (engineInitParams.fixedTimestep = "60fps");
         engineInitParams.debugMode ?? (engineInitParams.debugMode = false);
-        engineInitParams.assets ?? (engineInitParams.assets = {});
+        engineInitParams.assets ?? (engineInitParams.assets = []);
         window.addEventListener("error", (event) => {
             HtmlTemplate.showError(event.message);
             
@@ -90,20 +87,14 @@ export class Engine {
             : false;
         Logger.debugBeetPx("Engine init params:", engineInitParams);
         __classPrivateFieldSet(this, _Engine_assetsToLoad, engineInitParams.assets, "f");
-        (_b = __classPrivateFieldGet(this, _Engine_assetsToLoad, "f")).fonts ?? (_b.fonts = []);
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").fonts.push({
-            font: new BpxFontSaint11Minimal4(),
-            spriteTextColor: null,
-        });
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").fonts.push({
-            font: new BpxFontSaint11Minimal5(),
-            spriteTextColor: null,
-        });
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_pico8_.spriteSheetUrls);
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal4_.spriteSheetUrls);
+        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal5_.spriteSheetUrls);
         const fixedTimestepFps = engineInitParams.fixedTimestep === "60fps"
             ? 60
             : engineInitParams.fixedTimestep === "30fps"
                 ? 30
-                : BpxUtils.throwError(`Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`);
+                : throwError(`Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`);
         Button.setRepeatingParamsFor(fixedTimestepFps);
         __classPrivateFieldSet(this, _Engine_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         __classPrivateFieldSet(this, _Engine_gameCanvasSize, engineInitParams.gameCanvasSize === "64x64"
@@ -112,7 +103,7 @@ export class Engine {
                 ? v_(128, 128)
                 : engineInitParams.gameCanvasSize === "256x256"
                     ? v_(256, 256)
-                    : BpxUtils.throwError(`Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`), "f");
+                    : throwError(`Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`), "f");
         this.gameInput = new GameInput({
             enableDebugInputs: engineInitParams.debugMode,
             browserType: __classPrivateFieldGet(this, _Engine_browserType, "f"),
@@ -142,7 +133,7 @@ export class Engine {
         }), "f");
         this.fullScreen = FullScreen.create();
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas) ??
-            u_.throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
+            throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
         __classPrivateFieldSet(this, _Engine_canvas, new CanvasForProduction(__classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Engine_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
             canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),

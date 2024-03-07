@@ -8,11 +8,9 @@ import {
 } from "./browser/BrowserTypeDetector";
 import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
-import { BpxRgbColor, rgb_black_ } from "./color/RgbColor";
+import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { BpxFontSaint11Minimal4 } from "./font/BpxFontSaint11Minimal4";
-import { BpxFontSaint11Minimal5 } from "./font/BpxFontSaint11Minimal5";
 import { Button } from "./game_input/buttons/Button";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
@@ -20,9 +18,16 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
-import { BpxVector2d, v_ } from "./misc/Vector2d";
+import { BpxVector2d } from "./misc/Vector2d";
+import {
+  font_pico8_,
+  font_saint11Minimal4_,
+  font_saint11Minimal5_,
+  rgb_black_,
+  v_,
+} from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxUtils, u_ } from "./Utils";
+import { throwError } from "./utils/throwError";
 
 export type EngineInitParams = {
   gameCanvasSize?: "64x64" | "128x128" | "256x256";
@@ -89,7 +94,7 @@ export class Engine {
     engineInitParams.gameCanvasSize ??= "128x128";
     engineInitParams.fixedTimestep ??= "60fps";
     engineInitParams.debugMode ??= false;
-    engineInitParams.assets ??= {};
+    engineInitParams.assets ??= [];
 
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
@@ -120,22 +125,16 @@ export class Engine {
     Logger.debugBeetPx("Engine init params:", engineInitParams);
 
     this.#assetsToLoad = engineInitParams.assets;
-    this.#assetsToLoad.fonts ??= [];
-    this.#assetsToLoad.fonts.push({
-      font: new BpxFontSaint11Minimal4(),
-      spriteTextColor: null,
-    });
-    this.#assetsToLoad.fonts.push({
-      font: new BpxFontSaint11Minimal5(),
-      spriteTextColor: null,
-    });
+    this.#assetsToLoad.push(...font_pico8_.spriteSheetUrls);
+    this.#assetsToLoad.push(...font_saint11Minimal4_.spriteSheetUrls);
+    this.#assetsToLoad.push(...font_saint11Minimal5_.spriteSheetUrls);
 
     const fixedTimestepFps =
       engineInitParams.fixedTimestep === "60fps"
         ? 60
         : engineInitParams.fixedTimestep === "30fps"
           ? 30
-          : BpxUtils.throwError(
+          : throwError(
               `Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`,
             );
 
@@ -150,7 +149,7 @@ export class Engine {
           ? v_(128, 128)
           : engineInitParams.gameCanvasSize === "256x256"
             ? v_(256, 256)
-            : BpxUtils.throwError(
+            : throwError(
                 `Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`,
               );
 
@@ -195,7 +194,7 @@ export class Engine {
       document.querySelector<HTMLCanvasElement>(
         HtmlTemplate.selectors.canvas,
       ) ??
-      u_.throwError(
+      throwError(
         `Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`,
       );
 

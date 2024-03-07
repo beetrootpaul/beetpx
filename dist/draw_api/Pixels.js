@@ -16,6 +16,6 @@ export class BpxPixels {
             }
             w = Math.max(w, row.length);
         }
-        this.wh = BpxVector2d.of(w, this.asciiRows.length);
+        this.size = BpxVector2d.of(w, this.asciiRows.length);
     }
 }

@@ -3,8 +3,9 @@ import { CanvasSnapshot } from "../../canvas/CanvasSnapshot";
 import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { BpxVector2d, v_ } from "../../misc/Vector2d";
-import { BpxDrawingPattern } from "../Pattern";
+import { BpxVector2d } from "../../misc/Vector2d";
+import { v_ } from "../../shorthands";
+import { BpxDrawingPattern } from "../DrawingPattern";
 
 export class DrawLine {
   readonly #canvas: Canvas;

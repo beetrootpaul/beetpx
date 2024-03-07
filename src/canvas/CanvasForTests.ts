@@ -1,7 +1,7 @@
-import { expect } from "@jest/globals";
-import { u_ } from "../Utils";
+import { expect } from "vitest";
 import { BpxRgbColor, BpxRgbCssHex } from "../color/RgbColor";
-import { v_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
+import { range } from "../utils/range";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";
@@ -11,13 +11,11 @@ export class CanvasForTests extends Canvas {
   readonly #rgbValues: number[];
 
   constructor(width: number, height: number, initialColor: BpxRgbColor) {
-    super(v_(width, height));
+    super(BpxVector2d.of(width, height));
     this.#length = width * height;
-    this.#rgbValues = u_
-      .range(this.#length)
-      .map(
-        () => (initialColor.r << 16) + (initialColor.g << 8) + initialColor.b,
-      );
+    this.#rgbValues = range(this.#length).map(
+      () => (initialColor.r << 16) + (initialColor.g << 8) + initialColor.b,
+    );
   }
 
   set(color: BpxRgbColor, x: number, y: number): void {

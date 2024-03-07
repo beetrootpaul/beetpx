@@ -1,17 +1,12 @@
 import { BpxImageUrl } from "../assets/Assets";
-import { BpxVector2d, v_ } from "../misc/Vector2d";
+import { BpxVector2d } from "../misc/Vector2d";
 
-type ImageBoundSpriteFactory = (
+export type BpxImageBoundSpriteFactory = (
   w: number,
   h: number,
   x: number,
   y: number,
 ) => BpxSprite;
-
-export function spr_(imageUrl: BpxImageUrl): ImageBoundSpriteFactory {
-  return (w: number, h: number, x: number, y: number) =>
-    BpxSprite.from(imageUrl, w, h, x, y);
-}
 
 export class BpxSprite {
   static from(
@@ -47,8 +42,8 @@ export class BpxSprite {
     }
 
     this.imageUrl = imageUrl;
-    this.xy = v_(x, y).round();
-    this.size = v_(x + w, y + h)
+    this.xy = BpxVector2d.of(x, y).round();
+    this.size = BpxVector2d.of(x + w, y + h)
       .round()
       .sub(this.xy);
   }

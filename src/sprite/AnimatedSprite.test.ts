@@ -1,14 +1,13 @@
-import { beforeEach, describe, expect, jest, test } from "@jest/globals";
+import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
-import { u_ } from "../Utils";
-import { v_ } from "../misc/Vector2d";
-import { aspr_ } from "./AnimatedSprite";
+import { aspr_, v_ } from "../shorthands";
+import { range } from "../utils/range";
 
 describe("AnimatedSprite", () => {
   beforeEach(() => {
-    jest
-      .spyOn(BeetPx, "frameNumber", "get")
-      .mockImplementation(() => stubbedFrameNumber);
+    vi.spyOn(BeetPx, "frameNumber", "get").mockImplementation(
+      () => stubbedFrameNumber,
+    );
     nextFrameNumberWillBe(501);
   });
 
@@ -65,7 +64,7 @@ describe("AnimatedSprite", () => {
     incrementFrameNumber();
     expect(sprite.current.xy).toEqual(v_(1, 10));
 
-    u_.range(xys.length).forEach(() => {
+    range(xys.length).forEach(() => {
       incrementFrameNumber();
     });
     expect(sprite.current.xy).toEqual(v_(1, 10));
@@ -166,7 +165,7 @@ describe("AnimatedSprite", () => {
     expect(sprite.current.xy).toEqual(v_(2, 20));
     incrementFrameNumber();
     expect(sprite.current.xy).toEqual(v_(3, 30));
-    u_.range(xys.length).forEach(() => {
+    range(xys.length).forEach(() => {
       incrementFrameNumber();
     });
     expect(sprite.current.xy).toEqual(v_(3, 30));
