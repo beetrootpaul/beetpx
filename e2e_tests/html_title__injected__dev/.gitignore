@@ -1,0 +1,17 @@
+#
+# Playwright
+#
+/test-results/
+
+#
+# BeetPx
+#
+/.beetpx/
+/index.html
+/public/.beetpx/
+
+#
+# Node.js
+#
+/node_modules/
+/package-lock.json

@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "beetpx dev --htmlTitle \"My Best Injected HTML Title\"",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "file:../../"
+  }
+}
