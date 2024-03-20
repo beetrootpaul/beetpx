@@ -1,0 +1,6 @@
+/.beetpx/
+/index.html
+/node_modules/
+/package-lock.json
+/public/
+/test-results/

@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "beetpx dev",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "file:../../"
+  }
+}
