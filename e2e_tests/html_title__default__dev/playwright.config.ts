@@ -14,14 +14,17 @@ export default defineConfig({
   forbidOnly: true,
 
   webServer: {
-    command: "npm install && npm start",
+    command: "../../cli/beetpx-cli.cjs dev",
+
     url: "http://localhost:5173",
     timeout: 10_000,
+
+    stdout: "pipe",
+
     reuseExistingServer: false,
   },
 
   use: {
     baseURL: "http://localhost:5173",
-    trace: "off",
   },
 });
