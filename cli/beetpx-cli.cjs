@@ -184,6 +184,16 @@ function WatchPublicDir() {
 function runDevCommand(params) {
   const { htmlTitle, htmlIconFile, open } = params;
 
+  [
+    gameCodebase.generatedIndexHtml,
+    gameCodebase.generatedAdditionalAssetsDir,
+    gameCodebase.tmpBeetPxDir,
+  ].forEach((fileOrDir) => {
+    if (fs.existsSync(fileOrDir)) {
+      fs.rmSync(fileOrDir, { recursive: true });
+    }
+  });
+
   generateHtmlFile({
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
@@ -240,6 +250,16 @@ function runDevCommand(params) {
 
 function runBuildCommand(params) {
   const { htmlTitle, htmlIconFile } = params;
+
+  [
+    gameCodebase.generatedIndexHtml,
+    gameCodebase.generatedAdditionalAssetsDir,
+    gameCodebase.tmpBeetPxDir,
+  ].forEach((fileOrDir) => {
+    if (fs.existsSync(fileOrDir)) {
+      fs.rmSync(fileOrDir, { recursive: true });
+    }
+  });
 
   generateHtmlFile({
     htmlTitle: htmlTitle,
@@ -323,7 +343,7 @@ function runZipCommand() {
 
   // Remove the ZIP file first, otherwise its old content will get merged with the new one
   if (fs.existsSync(outputZip)) {
-    fs.unlinkSync(outputZip);
+    fs.rmSync(outputZip);
   }
 
   require("cross-zip").zipSync(inputDir, outputZip);
