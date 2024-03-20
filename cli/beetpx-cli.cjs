@@ -137,7 +137,7 @@ if (argv._.includes("dev") || argv._.length <= 0) {
       argv.htmlIcon ??
       path.resolve(
         bpxCodebase.templatesDir,
-        bpxCodebase.templateFileNames.defaultIco,
+        bpxCodebase.templateFileNames.defaultIcon,
       ),
     open: argv.open ?? false,
   });
