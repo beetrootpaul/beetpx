@@ -13,9 +13,8 @@ export const configBase: PlaywrightTestConfig = {
 
   webServer: {
     command: 'echo "pls define the command for each test separately"',
-
-    url: "http://localhost:5173",
-    timeout: 10_000,
+    url: "http://localhost:1234",
+    timeout: 5_000,
 
     stdout: "pipe",
 
@@ -23,6 +22,6 @@ export const configBase: PlaywrightTestConfig = {
   },
 
   use: {
-    baseURL: "http://localhost:5173",
+    baseURL: "http://localhost:1234",
   },
 };
