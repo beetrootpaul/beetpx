@@ -1,9 +1,7 @@
-import { defineConfig } from "@playwright/test";
+import { type PlaywrightTestConfig } from "@playwright/test";
 
 // Docs: https://playwright.dev/docs/test-configuration
-export default defineConfig({
-  testMatch: /.*\.e2e\.ts/,
-
+export const configBase: PlaywrightTestConfig = {
   timeout: 1000,
 
   reporter: "list",
@@ -14,8 +12,7 @@ export default defineConfig({
   forbidOnly: true,
 
   webServer: {
-    command:
-      '../../cli/beetpx-cli.cjs dev --htmlTitle "My Best Injected HTML Title"',
+    command: 'echo "pls define the command for each test separately"',
 
     url: "http://localhost:5173",
     timeout: 10_000,
@@ -28,4 +25,4 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:5173",
   },
-});
+};
