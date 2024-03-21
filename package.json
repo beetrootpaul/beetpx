@@ -50,7 +50,7 @@
     "test:tsc:watch": "tsc --watch",
     "test:vitest": "vitest run",
     "test:vitest:watch": "vitest watch",
-    "test:playwright": "./run_e2e_tests.sh",
+    "test:playwright": "cd e2e_tests/ && ./run_e2e_tests.js",
     "test": "run-p test:tsc test:vitest test:playwright",
     "precompile": "rimraf ./.dist/* ./dist/*",
     "compile": "tsc --project tsconfig.compile.json",

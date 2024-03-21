@@ -2,6 +2,7 @@
 # Playwright
 #
 /test-results/
+/playwright.config.ts
 
 #
 # BeetPx
