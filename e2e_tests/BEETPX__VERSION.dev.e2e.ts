@@ -15,5 +15,8 @@ test("current BeetPx version", async ({ page }) => {
   // First, let's make sure we read the version properly, so we can safely compare to it later on.
   expect(packageJson.version).toMatch(/^\d+\.\d+\.\d+$/);
 
-  expect(await page.evaluate(() => window.BEETPX__VERSION)).toBe(packageJson.version);
+  const version = await page.evaluate(() => window.BEETPX__VERSION);
+
+  expect(version).toBe(packageJson.version);
+  expect(typeof version).toBe("string");
 });

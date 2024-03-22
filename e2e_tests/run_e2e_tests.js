@@ -92,7 +92,7 @@ export default defineConfig({
     url: "http://localhost:9999",
     timeout: 2_000,
     stdout: "ignore",
-    stderr: "ignore",
+    stderr: "pipe",
     reuseExistingServer: false,
   },
   use: {

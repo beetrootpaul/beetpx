@@ -21,11 +21,6 @@ declare global {
   }
 }
 
-// @ts-expect-error TS2304: Cannot find name '__BEETPX__IS_PROD__'.
-window.BEETPX__IS_PROD = __BEETPX__IS_PROD__;
-// @ts-expect-error TS2304: Cannot find name '__BEETPX__VERSION__'.
-window.BEETPX__VERSION = __BEETPX__VERSION__;
-
 export {
   type BpxImageAsset,
   type BpxImageUrl,

@@ -22,6 +22,10 @@ if [ "$git_branch" = "main" ]; then
   npm test
 
   # Check example projects
+  cd ./examples/fonts
+  npm run format
+  npm run tsc
+  cd ../../
   cd ./examples/input-tester
   npm run format
   npm run tsc
