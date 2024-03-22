@@ -12,5 +12,8 @@ declare global {
 test("is prod", async ({ page }) => {
   await page.goto("/");
 
-  expect(await page.evaluate(() => window.BEETPX__IS_PROD)).toBe(true);
+  const isProd = await page.evaluate(() => window.BEETPX__IS_PROD);
+
+  expect(isProd).toBe(true);
+  expect(typeof isProd).toBe('boolean');
 });
