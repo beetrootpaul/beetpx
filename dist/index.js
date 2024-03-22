@@ -1,5 +1,3 @@
-
-
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor } from "./color/RgbColor";
