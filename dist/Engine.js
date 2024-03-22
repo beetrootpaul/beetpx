@@ -141,9 +141,9 @@ export class Engine {
         });
     }
     async init() {
-        Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} will be initialized now`);
+        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} will be initialized now`);
         await __classPrivateFieldGet(this, _Engine_assetLoader, "f").loadAssets(__classPrivateFieldGet(this, _Engine_assetsToLoad, "f"));
-        Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
+        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} initialized`);
         return {
             startGame: __classPrivateFieldGet(this, _Engine_instances, "m", _Engine_startGame).bind(this),
         };
@@ -169,7 +169,7 @@ _a = Engine, _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new Wea
         throw Error("Tried to start a game, but it is already started");
     }
     __classPrivateFieldSet(this, _Engine_isStarted, true, "f");
-    if (BEETPX__IS_PROD) {
+    if (window.BEETPX__IS_PROD) {
         
         
         

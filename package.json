@@ -50,7 +50,8 @@
     "test:tsc:watch": "tsc --watch",
     "test:vitest": "vitest run",
     "test:vitest:watch": "vitest watch",
-    "test": "run-p test:tsc test:vitest",
+    "test:playwright": "cd e2e_tests/ && ./run_e2e_tests.js",
+    "test": "run-p test:tsc test:vitest test:playwright",
     "precompile": "rimraf ./.dist/* ./dist/*",
     "compile": "tsc --project tsconfig.compile.json",
     "compile:watch": "tsc --project tsconfig.compile.json --watch",
@@ -69,6 +70,7 @@
     "yargs": "17.7.2"
   },
   "devDependencies": {
+    "@playwright/test": "1.42.1",
     "@rollup/plugin-typescript": "11.1.5",
     "@zamiell/typedoc-plugin-not-exported": "0.2.0",
     "glob": "10.3.10",

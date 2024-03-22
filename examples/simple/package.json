@@ -6,8 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "beetpx dev --open --htmlTitle \"[dev] Simple | BeetPx example\"",
-    "build": "beetpx build --htmlTitle \"Simple | BeetPx example\"",
-    "prod": "npm run build && beetpx preview",
+    "build": "beetpx build --htmlTitle \"Simple | BeetPx example\" --const PREV_COMMIT=\"$(git rev-parse --short --verify HEAD)\"",
+    "prod": "npm run build && beetpx preview --open",
     "zip": "npm run build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/",
     "tsc": "tsc",

@@ -44,6 +44,9 @@ You might find it helpful to use
 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) in order to make sure you use the same Node.js version as
 which is specified in [.nvmrc](.nvmrc).
 
+There is no CI configured for this project. For now, it is developed by me only, and all tests as well as the
+compilation happen in a [pre-commit hook](.husky/pre-commit).
+
 ## The Origin
 
 My idea for BeetPx came from a good time I had working on mini games in [PICO-8](https://www.lexaloffle.com/pico-8.php).

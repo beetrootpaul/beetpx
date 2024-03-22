@@ -5,10 +5,21 @@ const fs = require("fs");
 const removeHtmlComments = require("remove-html-comments");
 const removeCssComments = require("strip-comments");
 
+const yargsBuilderConstants = {
+  const: {
+    type: "string",
+    array: true,
+    describe:
+      'A constant (or many of them) to define on a browser\'s "window" object. In a format of MY_CONST="its value" (quotes can be omitted if not needed). Can be used multiple times.',
+    demandOption: false,
+    requiresArg: true,
+  },
+};
+
 const yargsBuilderHtmlTitle = {
   htmlTitle: {
     type: "string",
-    describe: "A title to use in <title> tag of a generated HTML page",
+    describe: "A title to use in <title> tag of a generated HTML page.",
     demandOption: false,
     requiresArg: true,
   },
@@ -17,16 +28,24 @@ const yargsBuilderHtmlTitle = {
 const yargsBuilderHtmlIcon = {
   htmlIcon: {
     type: "string",
-    describe: `A path to a PNG file to use as <link rel="icon"> in a generated HTML page`,
+    describe: `A path to a PNG file to use as <link rel="icon"> in a generated HTML page.`,
     demandOption: false,
     requiresArg: true,
+  },
+};
+
+const yargsBuilderPort = {
+  port: {
+    type: "number",
+    describe: "Specify an exact port the game should be served on.",
+    demandOption: false,
   },
 };
 
 const yargsBuilderOpen = {
   open: {
     type: "boolean",
-    describe: "Automatically open the game in a browser",
+    describe: "Automatically open the game in a browser.",
     demandOption: false,
   },
 };
@@ -39,16 +58,22 @@ const argv = require("yargs")
     ["dev", "$0"],
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
     {
+      ...yargsBuilderConstants,
       ...yargsBuilderHtmlTitle,
       ...yargsBuilderHtmlIcon,
+      ...yargsBuilderPort,
       ...yargsBuilderOpen,
     },
   )
   .command("build", "Builds a production-ready bundle with the game.", {
+    ...yargsBuilderConstants,
     ...yargsBuilderHtmlTitle,
     ...yargsBuilderHtmlIcon,
   })
-  .command("preview", "Starts a production-ready bundle of the game.")
+  .command("preview", "Starts a production-ready bundle of the game.", {
+    ...yargsBuilderPort,
+    ...yargsBuilderOpen,
+  })
   .command(
     "zip",
     "Generates a ZIP file with a previously built production-ready bundle and static assets in it. Ready to be uploaded to e.g. itch.io.",
@@ -73,33 +98,49 @@ const argv = require("yargs")
   .showHelpOnFail(true)
   .help().argv;
 
-const beetPxCodebaseDir = path.resolve(__dirname, "..");
-const gameCodebaseDir = process.cwd();
-const tmpBeetPxDir = ".beetpx/";
+const _bpxCodebaseRoot = path.resolve(__dirname, "..");
+const bpxCodebase = {
+  root: _bpxCodebaseRoot,
+  packageJson: path.resolve(_bpxCodebaseRoot, "package.json"),
+  templatesDir: path.resolve(_bpxCodebaseRoot, "html_templates"),
+  templateFileNames: {
+    indexHtml: "index.template.html",
+    defaultIcon: "icon.png",
+    additionalPngAsset: [
+      "edge_tl.png",
+      "edge_t.png",
+      "edge_tr.png",
+      "edge_l.png",
+      "edge_r.png",
+      "edge_bl.png",
+      "edge_b.png",
+      "edge_br.png",
+      "gui.png",
+      "loading.gif",
+      "start.png",
+      "pico-8-font.png",
+    ],
+  },
+};
 
-const tsEntrypoint = path.resolve(gameCodebaseDir, "src", "beetpx.ts");
-
-const gameHtmlTemplate = "index.template.html";
-
-const beetPxHtmlTemplatesInDir = path.resolve(
-  beetPxCodebaseDir,
-  "html_templates",
-);
-
-const defaultHtmlIcon = path.resolve(beetPxHtmlTemplatesInDir, "icon.png");
-
-const beetPxAdditionalPublicAssetsOutDir = path.resolve(
-  gameCodebaseDir,
-  "public",
-  ".beetpx",
-);
-
-const buildOutDirAsExpectedByVitePreview = "dist/";
-const distZipDir = "dist/";
-const distZipFile = "game.zip";
+const _gameCodebaseRoot = process.cwd();
+const gameCodebase = {
+  root: _gameCodebaseRoot,
+  tmpBeetPxDir: path.resolve(_gameCodebaseRoot, ".beetpx"),
+  generatedIndexHtml: path.resolve(_gameCodebaseRoot, "index.html"),
+  assetsDirName: "public",
+  assetsDir: path.resolve(_gameCodebaseRoot, "public"),
+  generatedAdditionalAssetsDir: path.resolve(
+    _gameCodebaseRoot,
+    "public",
+    ".beetpx",
+  ),
+  tsEntrypoint: path.resolve(_gameCodebaseRoot, "src", "beetpx.ts"),
+  distZipDir: path.resolve(_gameCodebaseRoot, "dist"),
+};
 
 const beetPxVersion = JSON.parse(
-  fs.readFileSync(path.resolve(beetPxCodebaseDir, "package.json"), {
+  fs.readFileSync(bpxCodebase.packageJson, {
     encoding: "utf8",
   }),
 ).version;
@@ -107,30 +148,59 @@ if (typeof beetPxVersion !== "string" || beetPxVersion.length <= 0) {
   throw Error('Unable to read "version" from "package.json"');
 }
 
-if (!fs.existsSync(tsEntrypoint)) {
+if (!fs.existsSync(gameCodebase.tsEntrypoint)) {
   console.error(
-    `Could not find required BeetPx entrypoint TypeScript file: "${tsEntrypoint}"`,
+    `Could not find required BeetPx entrypoint TypeScript file: "${gameCodebase.tsEntrypoint}"`,
   );
   process.exit(1);
 }
 
 if (argv._.includes("dev") || argv._.length <= 0) {
   runDevCommand({
+    constants: parseConstants(argv.const),
     htmlTitle: argv.htmlTitle ?? "BeetPx game",
-    htmlIconFile: argv.htmlIcon ?? defaultHtmlIcon,
+    htmlIconFile:
+      argv.htmlIcon ??
+      path.resolve(
+        bpxCodebase.templatesDir,
+        bpxCodebase.templateFileNames.defaultIcon,
+      ),
+    port: argv.port ?? undefined,
     open: argv.open ?? false,
   });
 } else if (argv._.includes("build")) {
   runBuildCommand({
+    constants: parseConstants(argv.const),
     htmlTitle: argv.htmlTitle ?? "BeetPx game",
-    htmlIconFile: argv.htmlIcon ?? defaultHtmlIcon,
+    htmlIconFile:
+      argv.htmlIcon ??
+      path.resolve(
+        bpxCodebase.templatesDir,
+        bpxCodebase.templateFileNames.defaultIcon,
+      ),
   });
 } else if (argv._.includes("preview")) {
-  runPreviewCommand();
+  runPreviewCommand({
+    port: argv.port ?? undefined,
+    open: argv.open ?? false,
+  });
 } else if (argv._.includes("zip")) {
   runZipCommand();
 } else {
   throw Error("This code should not be reached :-)");
+}
+
+function parseConstants(argvConst) {
+  const result = {};
+  (argvConst ?? []).forEach((entry) => {
+    const delimiterPos = entry.indexOf("=");
+    if (delimiterPos > 0) {
+      result[entry.slice(0, delimiterPos)] = entry.slice(delimiterPos + 1);
+    } else {
+      result[entry] = "";
+    }
+  });
+  return result;
 }
 
 // Based on https://stackoverflow.com/a/69628635/1036577
@@ -139,9 +209,12 @@ function WatchPublicDir() {
     name: "watch-public-dir",
     enforce: "post",
     handleHotUpdate({ file, server }) {
-      const prefixToMatch = path.resolve(gameCodebaseDir, "public") + "/";
+      const prefixToMatch = gameCodebase.assetsDir + "/";
       if (file.startsWith(prefixToMatch)) {
-        const shortFileName = "public/" + file.substring(prefixToMatch.length);
+        const shortFileName =
+          gameCodebase.assetsDirName +
+          "/" +
+          file.substring(prefixToMatch.length);
         console.log(`reloading due to change in file "${shortFileName}"...`);
         server.ws.send({
           type: "full-reload",
@@ -153,24 +226,31 @@ function WatchPublicDir() {
 }
 
 function runDevCommand(params) {
-  const { htmlTitle, htmlIconFile, open } = params;
+  const { constants, htmlTitle, htmlIconFile, port, open } = params;
+
+  [
+    gameCodebase.generatedIndexHtml,
+    gameCodebase.generatedAdditionalAssetsDir,
+    gameCodebase.tmpBeetPxDir,
+  ].forEach((fileOrDir) => {
+    if (fs.existsSync(fileOrDir)) {
+      fs.rmSync(fileOrDir, { recursive: true });
+    }
+  });
 
   generateHtmlFile({
-    inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
-    outputFile: path.resolve(
-      gameCodebaseDir,
-      gameHtmlTemplate.replace(".template", ""),
-    ),
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
+    constants: {
+      ...constants,
+      BEETPX__IS_PROD: false,
+      BEETPX__VERSION: beetPxVersion,
+    },
   });
 
-  copyBeetPxAdditionalAssets({
-    inputDir: beetPxHtmlTemplatesInDir,
-    outputDir: beetPxAdditionalPublicAssetsOutDir,
-  });
+  copyBeetPxAdditionalAssets();
 
-  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
+  fs.mkdirSync(gameCodebase.tmpBeetPxDir, {
     recursive: true,
   });
 
@@ -182,9 +262,9 @@ function runDevCommand(params) {
     .createServer({
       plugins: [WatchPublicDir()],
       configFile: false,
-      root: gameCodebaseDir,
-      publicDir: path.resolve(gameCodebaseDir, "public"),
-      cacheDir: path.resolve(gameCodebaseDir, tmpBeetPxDir, ".vite"),
+      root: gameCodebase.root,
+      publicDir: gameCodebase.assetsDir,
+      cacheDir: path.resolve(gameCodebase.tmpBeetPxDir, ".vite"),
       // Base `./` is crucial for itch.io, since it produces
       //     <script type="module" crossOrigin src="./assets/index-<hash>.js"></script>
       //   instead of
@@ -192,17 +272,14 @@ function runDevCommand(params) {
       //   and the latter does not work there.
       base: "./",
       server: {
-        open: open ? gameHtmlTemplate.replace(".template", "") : false,
+        port: port ?? undefined,
+        strictPort: !!port,
+        open: open ? "index.html" : false,
         hmr: true,
         watch: {
           interval: 500,
           binaryInterval: 1000,
         },
-      },
-      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
-      define: {
-        __BEETPX__IS_PROD__: false,
-        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
       },
       logLevel: "info",
     })
@@ -218,24 +295,31 @@ function runDevCommand(params) {
 }
 
 function runBuildCommand(params) {
-  const { htmlTitle, htmlIconFile } = params;
+  const { constants, htmlTitle, htmlIconFile } = params;
+
+  [
+    gameCodebase.generatedIndexHtml,
+    gameCodebase.generatedAdditionalAssetsDir,
+    gameCodebase.tmpBeetPxDir,
+  ].forEach((fileOrDir) => {
+    if (fs.existsSync(fileOrDir)) {
+      fs.rmSync(fileOrDir, { recursive: true });
+    }
+  });
 
   generateHtmlFile({
-    inputFile: path.resolve(beetPxHtmlTemplatesInDir, gameHtmlTemplate),
-    outputFile: path.resolve(
-      gameCodebaseDir,
-      gameHtmlTemplate.replace(".template", ""),
-    ),
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
+    constants: {
+      ...constants,
+      BEETPX__IS_PROD: true,
+      BEETPX__VERSION: beetPxVersion,
+    },
   });
 
-  copyBeetPxAdditionalAssets({
-    inputDir: beetPxHtmlTemplatesInDir,
-    outputDir: beetPxAdditionalPublicAssetsOutDir,
-  });
+  copyBeetPxAdditionalAssets();
 
-  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
+  fs.mkdirSync(gameCodebase.tmpBeetPxDir, {
     recursive: true,
   });
 
@@ -246,22 +330,13 @@ function runBuildCommand(params) {
   require("vite")
     .build({
       configFile: false,
-      root: gameCodebaseDir,
-      publicDir: path.resolve(gameCodebaseDir, "public"),
-      cacheDir: path.resolve(gameCodebaseDir, tmpBeetPxDir, ".vite"),
+      root: gameCodebase.root,
+      publicDir: gameCodebase.assetsDir,
+      cacheDir: path.resolve(gameCodebase.tmpBeetPxDir, ".vite"),
       base: "./",
       build: {
-        outDir: path.resolve(
-          gameCodebaseDir,
-          tmpBeetPxDir,
-          buildOutDirAsExpectedByVitePreview,
-        ),
+        outDir: path.resolve(gameCodebase.tmpBeetPxDir, "dist"),
         emptyOutDir: true,
-      },
-      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
-      define: {
-        __BEETPX__IS_PROD__: true,
-        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
       },
       logLevel: "info",
     })
@@ -271,8 +346,10 @@ function runBuildCommand(params) {
     });
 }
 
-function runPreviewCommand() {
-  fs.mkdirSync(path.resolve(gameCodebaseDir, tmpBeetPxDir), {
+function runPreviewCommand(params) {
+  const { port, open } = params;
+
+  fs.mkdirSync(gameCodebase.tmpBeetPxDir, {
     recursive: true,
   });
 
@@ -283,11 +360,14 @@ function runPreviewCommand() {
   require("vite")
     .preview({
       configFile: false,
-      root: path.resolve(gameCodebaseDir, tmpBeetPxDir),
-      cacheDir: path.resolve(gameCodebaseDir, tmpBeetPxDir, ".vite"),
+      // NOTE: Vite expects `dist/` directory inside the `root`. Make sure it is generated in `build`.
+      root: gameCodebase.tmpBeetPxDir,
+      cacheDir: path.resolve(gameCodebase.tmpBeetPxDir, ".vite"),
       base: "./",
       preview: {
-        open: true,
+        port: port ?? undefined,
+        strictPort: !!port,
+        open: open ? "index.html" : false,
       },
       logLevel: "info",
     })
@@ -301,20 +381,19 @@ function runPreviewCommand() {
 }
 
 function runZipCommand() {
-  fs.mkdirSync(path.resolve(gameCodebaseDir, distZipDir), {
+  fs.mkdirSync(gameCodebase.distZipDir, {
     recursive: true,
   });
 
   const inputDir = path.resolve(
-    gameCodebaseDir,
-    tmpBeetPxDir,
-    buildOutDirAsExpectedByVitePreview,
+    gameCodebase.tmpBeetPxDir,
+    gameCodebase.distZipDir,
   );
-  const outputZip = path.resolve(gameCodebaseDir, distZipDir, distZipFile);
+  const outputZip = path.resolve(gameCodebase.distZipDir, "game.zip");
 
   // Remove the ZIP file first, otherwise its old content will get merged with the new one
   if (fs.existsSync(outputZip)) {
-    fs.unlinkSync(outputZip);
+    fs.rmSync(outputZip);
   }
 
   require("cross-zip").zipSync(inputDir, outputZip);
@@ -335,11 +414,53 @@ function runZipCommand() {
 }
 
 function generateHtmlFile(params) {
-  const { inputFile, outputFile, htmlTitle, htmlIconFile } = params;
+  const { htmlTitle, htmlIconFile, constants } = params;
 
-  let content = fs.readFileSync(inputFile, { encoding: "utf8" });
+  let content = fs.readFileSync(
+    path.resolve(
+      bpxCodebase.templatesDir,
+      bpxCodebase.templateFileNames.indexHtml,
+    ),
+    { encoding: "utf8" },
+  );
+
+  const htmlTitleSlot = "__BPX__HTML_TITLE__";
+  while (content.indexOf(htmlTitleSlot) >= 0) {
+    content = content.replace(htmlTitleSlot, htmlTitle);
+  }
+
+  const htmlIconBase64 = fs.readFileSync(htmlIconFile, "base64");
+  const htmlIconSlot = "__BPX__HTML_ICON_BASE64__";
+  while (content.indexOf(htmlIconSlot) >= 0) {
+    content = content.replace(htmlIconSlot, htmlIconBase64);
+  }
+
+  const htmlWindowConstantsSlot = "__BPX__WINDOW_CONSTANTS__";
+  let htmlWindowConstants = " */\n";
+  for (const [key, value] of Object.entries(constants)) {
+    const sanitizedKey = key.replaceAll('"', '\\"');
+    if (typeof value === "string") {
+      const sanitizedValue = value.replaceAll('"', '\\"');
+      htmlWindowConstants += `window["${sanitizedKey}"] = "${sanitizedValue}";\n`;
+    } else if (typeof value === "boolean") {
+      htmlWindowConstants += `window["${sanitizedKey}"] = ${
+        value ? "true" : "false"
+      };\n`;
+    } else if (typeof value === "number") {
+      htmlWindowConstants += `window["${sanitizedKey}"] = ${value};\n`;
+    } else {
+      throw Error(
+        `HTML generation: unexpected value type of a constant "${key}"`,
+      );
+    }
+  }
+  htmlWindowConstants += "/* ";
+  while (content.indexOf(htmlWindowConstantsSlot) >= 0) {
+    content = content.replace(htmlWindowConstantsSlot, htmlWindowConstants);
+  }
 
   content = removeHtmlComments(content).data;
+  // NOTE: This one also removes JS block comments!
   content = removeCssComments(content, {
     line: true,
     block: true,
@@ -347,45 +468,22 @@ function generateHtmlFile(params) {
     preserveNewlines: true,
   });
 
-  const htmlTitleSlot = "__HTML_TITLE__";
-  while (content.indexOf(htmlTitleSlot) >= 0) {
-    content = content.replace(htmlTitleSlot, htmlTitle);
-  }
-
-  const htmlIconBase64 = fs.readFileSync(htmlIconFile, "base64");
-  const htmlIconSlot = "__HTML_ICON_BASE64__";
-  while (content.indexOf(htmlIconSlot) >= 0) {
-    content = content.replace(htmlIconSlot, htmlIconBase64);
-  }
-
-  fs.writeFileSync(outputFile, content, { encoding: "utf8" });
+  fs.writeFileSync(gameCodebase.generatedIndexHtml, content, {
+    encoding: "utf8",
+  });
 }
 
-function copyBeetPxAdditionalAssets(params) {
-  const { inputDir, outputDir } = params;
-
-  if (fs.existsSync(outputDir)) {
-    fs.rmSync(outputDir, { recursive: true });
+function copyBeetPxAdditionalAssets() {
+  if (fs.existsSync(gameCodebase.generatedAdditionalAssetsDir)) {
+    fs.rmSync(gameCodebase.generatedAdditionalAssetsDir, { recursive: true });
   }
 
-  fs.mkdirSync(outputDir, { recursive: true });
-  [
-    "edge_tl.png",
-    "edge_t.png",
-    "edge_tr.png",
-    "edge_l.png",
-    "edge_r.png",
-    "edge_bl.png",
-    "edge_b.png",
-    "edge_br.png",
-    "gui.png",
-    "loading.gif",
-    "start.png",
-    "pico-8-font.png",
-  ].forEach((pngAsset) => {
+  fs.mkdirSync(gameCodebase.generatedAdditionalAssetsDir, { recursive: true });
+
+  bpxCodebase.templateFileNames.additionalPngAsset.forEach((pngAsset) => {
     fs.copyFileSync(
-      path.resolve(inputDir, pngAsset),
-      path.resolve(outputDir, pngAsset),
+      path.resolve(bpxCodebase.templatesDir, pngAsset),
+      path.resolve(gameCodebase.generatedAdditionalAssetsDir, pngAsset),
     );
   });
 }

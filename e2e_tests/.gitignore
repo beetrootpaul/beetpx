@@ -1,0 +1,12 @@
+#
+# Playwright
+#
+/test-results/
+/playwright.config.ts
+
+#
+# BeetPx
+#
+/.beetpx/
+/index.html
+/public/.beetpx/
