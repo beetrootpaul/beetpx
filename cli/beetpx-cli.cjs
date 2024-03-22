@@ -5,10 +5,21 @@ const fs = require("fs");
 const removeHtmlComments = require("remove-html-comments");
 const removeCssComments = require("strip-comments");
 
+const yargsBuilderConstants = {
+  const: {
+    type: "string",
+    array: true,
+    describe:
+      'A constant (or many of them) to define on a browser\'s "window" object. In a format of MY_CONST="its value" (quotes can be omitted if not needed). Can be used multiple times.',
+    demandOption: false,
+    requiresArg: true,
+  },
+};
+
 const yargsBuilderHtmlTitle = {
   htmlTitle: {
     type: "string",
-    describe: "A title to use in <title> tag of a generated HTML page",
+    describe: "A title to use in <title> tag of a generated HTML page.",
     demandOption: false,
     requiresArg: true,
   },
@@ -17,7 +28,7 @@ const yargsBuilderHtmlTitle = {
 const yargsBuilderHtmlIcon = {
   htmlIcon: {
     type: "string",
-    describe: `A path to a PNG file to use as <link rel="icon"> in a generated HTML page`,
+    describe: `A path to a PNG file to use as <link rel="icon"> in a generated HTML page.`,
     demandOption: false,
     requiresArg: true,
   },
@@ -26,7 +37,7 @@ const yargsBuilderHtmlIcon = {
 const yargsBuilderPort = {
   port: {
     type: "number",
-    describe: "Specify an exact port the game should be served on",
+    describe: "Specify an exact port the game should be served on.",
     demandOption: false,
   },
 };
@@ -34,7 +45,7 @@ const yargsBuilderPort = {
 const yargsBuilderOpen = {
   open: {
     type: "boolean",
-    describe: "Automatically open the game in a browser",
+    describe: "Automatically open the game in a browser.",
     demandOption: false,
   },
 };
@@ -47,6 +58,7 @@ const argv = require("yargs")
     ["dev", "$0"],
     "Start the game in a dev mode, with hot reloading and a sample HTML page.",
     {
+      ...yargsBuilderConstants,
       ...yargsBuilderHtmlTitle,
       ...yargsBuilderHtmlIcon,
       ...yargsBuilderPort,
@@ -54,6 +66,7 @@ const argv = require("yargs")
     },
   )
   .command("build", "Builds a production-ready bundle with the game.", {
+    ...yargsBuilderConstants,
     ...yargsBuilderHtmlTitle,
     ...yargsBuilderHtmlIcon,
   })
@@ -144,6 +157,7 @@ if (!fs.existsSync(gameCodebase.tsEntrypoint)) {
 
 if (argv._.includes("dev") || argv._.length <= 0) {
   runDevCommand({
+    constants: parseConstants(argv.const),
     htmlTitle: argv.htmlTitle ?? "BeetPx game",
     htmlIconFile:
       argv.htmlIcon ??
@@ -156,6 +170,7 @@ if (argv._.includes("dev") || argv._.length <= 0) {
   });
 } else if (argv._.includes("build")) {
   runBuildCommand({
+    constants: parseConstants(argv.const),
     htmlTitle: argv.htmlTitle ?? "BeetPx game",
     htmlIconFile:
       argv.htmlIcon ??
@@ -173,6 +188,19 @@ if (argv._.includes("dev") || argv._.length <= 0) {
   runZipCommand();
 } else {
   throw Error("This code should not be reached :-)");
+}
+
+function parseConstants(argvConst) {
+  const result = {};
+  (argvConst ?? []).forEach((entry) => {
+    const delimiterPos = entry.indexOf("=");
+    if (delimiterPos > 0) {
+      result[entry.slice(0, delimiterPos)] = entry.slice(delimiterPos + 1);
+    } else {
+      result[entry] = "";
+    }
+  });
+  return result;
 }
 
 // Based on https://stackoverflow.com/a/69628635/1036577
@@ -198,7 +226,7 @@ function WatchPublicDir() {
 }
 
 function runDevCommand(params) {
-  const { htmlTitle, htmlIconFile, port, open } = params;
+  const { constants, htmlTitle, htmlIconFile, port, open } = params;
 
   [
     gameCodebase.generatedIndexHtml,
@@ -213,6 +241,11 @@ function runDevCommand(params) {
   generateHtmlFile({
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
+    constants: {
+      ...constants,
+      BEETPX__IS_PROD: false,
+      BEETPX__VERSION: beetPxVersion,
+    },
   });
 
   copyBeetPxAdditionalAssets();
@@ -248,11 +281,6 @@ function runDevCommand(params) {
           binaryInterval: 1000,
         },
       },
-      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
-      define: {
-        __BEETPX__IS_PROD__: false,
-        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
-      },
       logLevel: "info",
     })
     .then((devServer) =>
@@ -267,7 +295,7 @@ function runDevCommand(params) {
 }
 
 function runBuildCommand(params) {
-  const { htmlTitle, htmlIconFile } = params;
+  const { constants, htmlTitle, htmlIconFile } = params;
 
   [
     gameCodebase.generatedIndexHtml,
@@ -282,6 +310,11 @@ function runBuildCommand(params) {
   generateHtmlFile({
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
+    constants: {
+      ...constants,
+      BEETPX__IS_PROD: true,
+      BEETPX__VERSION: beetPxVersion,
+    },
   });
 
   copyBeetPxAdditionalAssets();
@@ -304,11 +337,6 @@ function runBuildCommand(params) {
       build: {
         outDir: path.resolve(gameCodebase.tmpBeetPxDir, "dist"),
         emptyOutDir: true,
-      },
-      // important docs about "define": https://vitejs.dev/config/shared-options.html#define
-      define: {
-        __BEETPX__IS_PROD__: true,
-        __BEETPX__VERSION__: JSON.stringify(beetPxVersion),
       },
       logLevel: "info",
     })
@@ -386,7 +414,7 @@ function runZipCommand() {
 }
 
 function generateHtmlFile(params) {
-  const { htmlTitle, htmlIconFile } = params;
+  const { htmlTitle, htmlIconFile, constants } = params;
 
   let content = fs.readFileSync(
     path.resolve(
@@ -396,24 +424,49 @@ function generateHtmlFile(params) {
     { encoding: "utf8" },
   );
 
+  const htmlTitleSlot = "__BPX__HTML_TITLE__";
+  while (content.indexOf(htmlTitleSlot) >= 0) {
+    content = content.replace(htmlTitleSlot, htmlTitle);
+  }
+
+  const htmlIconBase64 = fs.readFileSync(htmlIconFile, "base64");
+  const htmlIconSlot = "__BPX__HTML_ICON_BASE64__";
+  while (content.indexOf(htmlIconSlot) >= 0) {
+    content = content.replace(htmlIconSlot, htmlIconBase64);
+  }
+
+  const htmlWindowConstantsSlot = "__BPX__WINDOW_CONSTANTS__";
+  let htmlWindowConstants = " */\n";
+  for (const [key, value] of Object.entries(constants)) {
+    const sanitizedKey = key.replaceAll('"', '\\"');
+    if (typeof value === "string") {
+      const sanitizedValue = value.replaceAll('"', '\\"');
+      htmlWindowConstants += `window["${sanitizedKey}"] = "${sanitizedValue}";\n`;
+    } else if (typeof value === "boolean") {
+      htmlWindowConstants += `window["${sanitizedKey}"] = ${
+        value ? "true" : "false"
+      };\n`;
+    } else if (typeof value === "number") {
+      htmlWindowConstants += `window["${sanitizedKey}"] = ${value};\n`;
+    } else {
+      throw Error(
+        `HTML generation: unexpected value type of a constant "${key}"`,
+      );
+    }
+  }
+  htmlWindowConstants += "/* ";
+  while (content.indexOf(htmlWindowConstantsSlot) >= 0) {
+    content = content.replace(htmlWindowConstantsSlot, htmlWindowConstants);
+  }
+
   content = removeHtmlComments(content).data;
+  // NOTE: This one also removes JS block comments!
   content = removeCssComments(content, {
     line: true,
     block: true,
     keepProtected: false,
     preserveNewlines: true,
   });
-
-  const htmlTitleSlot = "__HTML_TITLE__";
-  while (content.indexOf(htmlTitleSlot) >= 0) {
-    content = content.replace(htmlTitleSlot, htmlTitle);
-  }
-
-  const htmlIconBase64 = fs.readFileSync(htmlIconFile, "base64");
-  const htmlIconSlot = "__HTML_ICON_BASE64__";
-  while (content.indexOf(htmlIconSlot) >= 0) {
-    content = content.replace(htmlIconSlot, htmlIconBase64);
-  }
 
   fs.writeFileSync(gameCodebase.generatedIndexHtml, content, {
     encoding: "utf8",
