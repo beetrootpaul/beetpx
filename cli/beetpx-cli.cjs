@@ -23,6 +23,14 @@ const yargsBuilderHtmlIcon = {
   },
 };
 
+const yargsBuilderPort = {
+  port: {
+    type: "number",
+    describe: "Specify an exact port the game should be served on",
+    demandOption: false,
+  },
+};
+
 const yargsBuilderOpen = {
   open: {
     type: "boolean",
@@ -41,6 +49,7 @@ const argv = require("yargs")
     {
       ...yargsBuilderHtmlTitle,
       ...yargsBuilderHtmlIcon,
+      ...yargsBuilderPort,
       ...yargsBuilderOpen,
     },
   )
@@ -48,7 +57,10 @@ const argv = require("yargs")
     ...yargsBuilderHtmlTitle,
     ...yargsBuilderHtmlIcon,
   })
-  .command("preview", "Starts a production-ready bundle of the game.")
+  .command("preview", "Starts a production-ready bundle of the game.", {
+    ...yargsBuilderPort,
+    ...yargsBuilderOpen,
+  })
   .command(
     "zip",
     "Generates a ZIP file with a previously built production-ready bundle and static assets in it. Ready to be uploaded to e.g. itch.io.",
@@ -139,6 +151,7 @@ if (argv._.includes("dev") || argv._.length <= 0) {
         bpxCodebase.templatesDir,
         bpxCodebase.templateFileNames.defaultIcon,
       ),
+    port: argv.port ?? undefined,
     open: argv.open ?? false,
   });
 } else if (argv._.includes("build")) {
@@ -152,7 +165,10 @@ if (argv._.includes("dev") || argv._.length <= 0) {
       ),
   });
 } else if (argv._.includes("preview")) {
-  runPreviewCommand();
+  runPreviewCommand({
+    port: argv.port ?? undefined,
+    open: argv.open ?? false,
+  });
 } else if (argv._.includes("zip")) {
   runZipCommand();
 } else {
@@ -182,7 +198,7 @@ function WatchPublicDir() {
 }
 
 function runDevCommand(params) {
-  const { htmlTitle, htmlIconFile, open } = params;
+  const { htmlTitle, htmlIconFile, port, open } = params;
 
   [
     gameCodebase.generatedIndexHtml,
@@ -223,6 +239,8 @@ function runDevCommand(params) {
       //   and the latter does not work there.
       base: "./",
       server: {
+        port: port ?? undefined,
+        strictPort: !!port,
         open: open ? "index.html" : false,
         hmr: true,
         watch: {
@@ -300,7 +318,9 @@ function runBuildCommand(params) {
     });
 }
 
-function runPreviewCommand() {
+function runPreviewCommand(params) {
+  const { port, open } = params;
+
   fs.mkdirSync(gameCodebase.tmpBeetPxDir, {
     recursive: true,
   });
@@ -317,7 +337,9 @@ function runPreviewCommand() {
       cacheDir: path.resolve(gameCodebase.tmpBeetPxDir, ".vite"),
       base: "./",
       preview: {
-        open: true,
+        port: port ?? undefined,
+        strictPort: !!port,
+        open: open ? "index.html" : false,
       },
       logLevel: "info",
     })
