@@ -17,28 +17,36 @@ const allowedNonTestFiles = [
   "public",
   "run_e2e_tests.js",
   "some-folder-1",
-  "src",
+  "src"
 ];
 
 const nonTestFile = files.find(
   (f) =>
     !devTestFiles.includes(f) &&
     !prodTestFiles.includes(f) &&
-    !allowedNonTestFiles.includes(f),
+    !allowedNonTestFiles.includes(f)
 );
 if (nonTestFile) {
   throw Error(
-    `File ${nonTestFile} doesn't seems to be named in a format which would allow it to be automatically captured`,
+    `File ${nonTestFile} doesn't seems to be named in a format which would allow it to be automatically captured`
   );
 }
 
+const results = [];
 devTestFiles.forEach((devTestFile) => {
-  runTest(devTestFile, false);
+  results.push(runTest(devTestFile, false));
 });
-
 prodTestFiles.forEach((prodTestFile) => {
-  runTest(prodTestFile, true);
+  results.push(runTest(prodTestFile, true));
 });
+const testsAmount = results.length;
+const hasSucceeded = results.every(r => !r.err);
+if (hasSucceeded) {
+  console.log(`\n✅ ALL E2E TESTS PASSED (passed ${testsAmount}/${testsAmount})\n`);
+} else {
+  console.log(`\n🛑 SOME E2E TESTS FAILED (passed ${results.filter(r => !r.err).length}/${testsAmount})\n`);
+  process.exit(1);
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -71,6 +79,7 @@ function runTest(testFile, isProd) {
   fs.writeFileSync(
     playwrightConfigFile,
     `
+// Docs: https://playwright.dev/docs/test-configuration
 import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
@@ -85,7 +94,8 @@ export default defineConfig({
     command: "${command}",
     url: "${url}",
     timeout: 5_000,
-    stdout: "pipe",
+    stdout: "ignore",
+    stderr: "ignore",
     reuseExistingServer: false,
   },
   use: {
@@ -93,7 +103,7 @@ export default defineConfig({
   },
 });
   `,
-    { encoding: "utf8" },
+    { encoding: "utf8" }
   );
 
   const child = childProcess.spawnSync("npx", ["playwright", "test"]);
@@ -102,6 +112,8 @@ export default defineConfig({
   console.log(child.stderr?.toString() ?? "");
 
   if (child.status !== 0) {
-    throw Error(`[e2e] Test FAILED for ${testFile}`);
+    return { err: Error(`[e2e] Test FAILED for ${testFile}`) };
   }
+
+  return { err: null };
 }
