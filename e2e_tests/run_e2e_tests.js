@@ -39,12 +39,11 @@ devTestFiles.forEach((devTestFile) => {
 prodTestFiles.forEach((prodTestFile) => {
   results.push(runTest(prodTestFile, true));
 });
-const testsAmount = results.length;
-const hasSucceeded = results.every(r => !r.err);
+const hasSucceeded = results.every(r => r.pass);
 if (hasSucceeded) {
-  console.log(`\n✅ ALL E2E TESTS PASSED (passed ${testsAmount}/${testsAmount})\n`);
+  console.log(`\n✅ ALL E2E TESTS PASSED (passed ${results.length}/${results.length})\n`);
 } else {
-  console.log(`\n🛑 SOME E2E TESTS FAILED (passed ${results.filter(r => !r.err).length}/${testsAmount})\n`);
+  console.log(`\n🛑 SOME E2E TESTS FAILED (passed ${results.filter(r => r.pass).length}/${results.length})\n`);
   process.exit(1);
 }
 
@@ -71,10 +70,8 @@ function runTest(testFile, isProd) {
 
   const commandArgsSafe = commandArgs.replaceAll('"', '\\"');
   const command = isProd
-    ? `../cli/beetpx-cli.cjs build ${commandArgsSafe} && ../cli/beetpx-cli.cjs preview`
-    : `../cli/beetpx-cli.cjs dev ${commandArgsSafe}`;
-
-  const url = isProd ? "http://localhost:4173" : "http://localhost:5173";
+    ? `../cli/beetpx-cli.cjs build ${commandArgsSafe} && ../cli/beetpx-cli.cjs preview --port 9999`
+    : `../cli/beetpx-cli.cjs dev --port 9999 ${commandArgsSafe}`;
 
   fs.writeFileSync(
     playwrightConfigFile,
@@ -84,7 +81,7 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   testMatch: "${testFile}",
-  timeout: 1000,
+  timeout: 1_000,
   reporter: "list",
   quiet: false,
   preserveOutput: "never",
@@ -92,14 +89,14 @@ export default defineConfig({
   forbidOnly: true,
   webServer: {
     command: "${command}",
-    url: "${url}",
-    timeout: 5_000,
+    url: "http://localhost:9999",
+    timeout: 2_000,
     stdout: "ignore",
     stderr: "ignore",
     reuseExistingServer: false,
   },
   use: {
-    baseURL: "${url}",
+    baseURL: "http://localhost:9999",
   },
 });
   `,
@@ -112,8 +109,8 @@ export default defineConfig({
   console.log(child.stderr?.toString() ?? "");
 
   if (child.status !== 0) {
-    return { err: Error(`[e2e] Test FAILED for ${testFile}`) };
+    return { pass: false };
   }
 
-  return { err: null };
+  return { pass: true };
 }
