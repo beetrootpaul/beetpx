@@ -21,7 +21,7 @@ export class BeetPx {
   //
 
   static init(engineInitParams?: EngineInitParams): ReturnType<Engine["init"]> {
-    Logger.infoBeetPx(`Initializing BeetPx ${BEETPX__VERSION} …`);
+    Logger.infoBeetPx(`Initializing BeetPx ${window.BEETPX__VERSION} …`);
     this.#engine = new Engine(engineInitParams);
     return this.#engine.init();
   }

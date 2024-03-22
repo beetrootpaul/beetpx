@@ -17,7 +17,7 @@ function nextFrameNumberWillBe(frameNumber: number): void {
 function pickPropertyOfTimer(propertyName: string) {
   return (timer: BpxTimer) => {
     return {
-      // @ts-ignore
+      // @ts-expect-error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'BpxTimer'.
       [propertyName]: timer[propertyName],
     };
   };
@@ -32,7 +32,7 @@ function pickPropertyOfExpectedValues(propertyName: string) {
     hasJustFinished: boolean;
   }) => {
     return {
-      // @ts-ignore
+      // @ts-expect-error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ t: number; progress: number; framesLeft: number; hasFinished: boolean; hasJustFinished: boolean; }'.
       [propertyName]: expectedValues[propertyName],
     };
   };

@@ -864,20 +864,22 @@ declare const v_0_0_: BpxVector2d;
 declare const v_1_1_: BpxVector2d;
 
 declare global {
-    /**
-     * Note: the generated documentation marks this variable as "Not Exported".
-     *   This is *not* true.
-     *
-     * @notExported
-     */
-    const BEETPX__IS_PROD: boolean;
-    /**
-     * Note: the generated documentation marks this variable as "Not Exported".
-     *   This is *not* true.
-     *
-     * @notExported
-     */
-    const BEETPX__VERSION: string;
+    interface Window {
+        /**
+         * Note: the generated documentation marks this variable as "Not Exported".
+         *   This is *not* true.
+         *
+         * @notExported
+         */
+        BEETPX__IS_PROD: boolean;
+        /**
+         * Note: the generated documentation marks this variable as "Not Exported".
+         *   This is *not* true.
+         *
+         * @notExported
+         */
+        BEETPX__VERSION: string;
+    }
 }
 
 export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };

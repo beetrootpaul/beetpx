@@ -19,7 +19,7 @@ function pickPropertyOfTimer<TPhaseName extends string>(
 ) {
   return (timer: BpxTimerSequence<TPhaseName>) => {
     return {
-      // @ts-ignore
+      // @ts-expect-error TS2536: Type 'TPhaseName' cannot be used to index type 'BpxTimerSequence<TPhaseName>'.
       [propertyName]: timer[propertyName],
     };
   };
@@ -41,7 +41,7 @@ function pickPropertyOfExpectedValues<TPhaseName extends string>(
     framesLeft: number;
   }) => {
     return {
-      // @ts-ignore
+      // @ts-expect-error TS2536: Type 'TPhaseName' cannot be used to index type '{ tOverall: number; progressOverall: number; framesLeftOverall: number; hasFinishedOverall: boolean; hasJustFinishedOverall: boolean; justFinishedPhase: TPhaseName | null; currentPhase: TPhaseName | null; t: number; progress: number; framesLeft: number; }'.
       [propertyName]: expectedValues[propertyName],
     };
   };

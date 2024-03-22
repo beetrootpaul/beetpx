@@ -211,10 +211,12 @@ export class Engine {
   }
 
   async init(): Promise<OnAssetsLoaded> {
-    Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} will be initialized now`);
+    Logger.infoBeetPx(
+      `BeetPx ${window.BEETPX__VERSION} will be initialized now`,
+    );
     await this.#assetLoader.loadAssets(this.#assetsToLoad);
 
-    Logger.infoBeetPx(`BeetPx ${BEETPX__VERSION} initialized`);
+    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} initialized`);
 
     return {
       startGame: this.#startGame.bind(this),
@@ -249,7 +251,7 @@ export class Engine {
     }
     this.#isStarted = true;
 
-    if (BEETPX__IS_PROD) {
+    if (window.BEETPX__IS_PROD) {
       // A popup which prevents user from accidentally closing the browser tab during gameplay.
       // Implementation notes:
       // - returned message seems to be ignored by some browsers, therefore using `""`
