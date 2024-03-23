@@ -184,8 +184,10 @@ export class DrawApi {
     );
   }
 
-  useFont(font: BpxFont): void {
+  useFont(font: BpxFont): BpxFont {
+    const prev = this.#font;
     this.#font = font;
+    return prev;
   }
 
   measureText(

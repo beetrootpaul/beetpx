@@ -12,6 +12,7 @@ import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
 import { FpsDisplay } from "./debug/FpsDisplay";
+import { FrameByFrame } from "./debug/FrameByFrame";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
 import { Button } from "./game_input/buttons/Button";
@@ -33,8 +34,17 @@ import { throwError } from "./utils/throwError";
 export type EngineInitParams = {
   gameCanvasSize?: "64x64" | "128x128" | "256x256";
   fixedTimestep?: "30fps" | "60fps";
-  debugMode?: boolean;
   assets?: AssetsToLoad;
+  debugMode?: {
+    /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
+    available?: boolean;
+    /** If `true`, then the debug mode will be enabled no matter what its persisted state was. */
+    forceEnabledOnStart?: boolean;
+  };
+  frameByFrame?: {
+    /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
+    available?: boolean;
+  };
 };
 
 export type OnAssetsLoaded = {
@@ -42,9 +52,6 @@ export type OnAssetsLoaded = {
 };
 
 export class Engine {
-  static readonly #storageDebugDisabledKey = "beetpx__debug_disabled";
-  static readonly #storageDebugDisabledTrue = "yes";
-
   readonly #assetsToLoad: AssetsToLoad;
 
   readonly #browserType: BpxBrowserType;
@@ -96,8 +103,9 @@ export class Engine {
   constructor(engineInitParams: EngineInitParams = {}) {
     engineInitParams.gameCanvasSize ??= "128x128";
     engineInitParams.fixedTimestep ??= "60fps";
-    engineInitParams.debugMode ??= false;
     engineInitParams.assets ??= [];
+    engineInitParams.debugMode ??= { available: false };
+    engineInitParams.frameByFrame ??= { available: false };
 
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
@@ -120,10 +128,14 @@ export class Engine {
         .then(() => {});
     });
 
-    DebugMode.enabled = engineInitParams.debugMode
-      ? window.localStorage.getItem(Engine.#storageDebugDisabledKey) !==
-        Engine.#storageDebugDisabledTrue
-      : false;
+    DebugMode.loadFromStorage();
+    if (!engineInitParams.debugMode.available) {
+      DebugMode.enabled = false;
+    } else {
+      if (engineInitParams.debugMode.forceEnabledOnStart) {
+        DebugMode.enabled = true;
+      }
+    }
 
     Logger.debugBeetPx("Engine init params:", engineInitParams);
 
@@ -157,7 +169,9 @@ export class Engine {
               );
 
     this.gameInput = new GameInput({
-      enableDebugInputs: engineInitParams.debugMode,
+      enableDebugToggle: engineInitParams.debugMode.available ?? false,
+      enabledFrameByFrameControls:
+        engineInitParams.frameByFrame.available ?? false,
       browserType: this.#browserType,
     });
 
@@ -293,21 +307,13 @@ export class Engine {
         }
         if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
           DebugMode.enabled = !DebugMode.enabled;
-          if (DebugMode.enabled) {
-            window.localStorage.removeItem(Engine.#storageDebugDisabledKey);
-          } else {
-            window.localStorage.setItem(
-              Engine.#storageDebugDisabledKey,
-              Engine.#storageDebugDisabledTrue,
-            );
-          }
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
-          DebugMode.toggleFrameByFrame();
+          FrameByFrame.enabled = !FrameByFrame.enabled;
         }
 
         const shouldUpdate =
-          !DebugMode.frameByFrame ||
+          !FrameByFrame.enabled ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
 
         const hasAnyInteractionHappened = this.gameInput.update({
@@ -324,7 +330,7 @@ export class Engine {
         }
 
         if (shouldUpdate) {
-          if (DebugMode.frameByFrame) {
+          if (FrameByFrame.enabled) {
             Logger.infoBeetPx(
               `Running onUpdate for frame: ${this.#currentFrameNumber}`,
             );

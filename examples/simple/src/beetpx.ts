@@ -8,7 +8,8 @@ declare global {
 
 b_.init({
   assets: ["logo.png", "music_melody.flac"],
-  debugMode: !window.BEETPX__IS_PROD,
+  debugMode: { available: true, forceEnabledOnStart: true },
+  frameByFrame: { available: true },
 }).then(async ({ startGame }) => {
   const logoSprite = spr_("logo.png")(16, 16, 0, 0);
   let circleMovementCenter = v_(64, 64);

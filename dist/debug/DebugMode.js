@@ -9,26 +9,31 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _a, _DebugMode_enabled, _DebugMode_frameByFrame;
+var _a, _DebugMode_storageDebugDisabledKey, _DebugMode_storageDebugDisabledTrue, _DebugMode_enabled;
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 export class DebugMode {
+    static loadFromStorage() {
+        __classPrivateFieldSet(this, _a, window.localStorage.getItem(__classPrivateFieldGet(this, _a, "f", _DebugMode_storageDebugDisabledKey)) !==
+            __classPrivateFieldGet(this, _a, "f", _DebugMode_storageDebugDisabledTrue), "f", _DebugMode_enabled);
+        HtmlTemplate.updateDebugClass(this.enabled);
+    }
     static get enabled() {
         return __classPrivateFieldGet(this, _a, "f", _DebugMode_enabled);
     }
     static set enabled(value) {
         __classPrivateFieldSet(this, _a, value, "f", _DebugMode_enabled);
         Logger.infoBeetPx(`Debug flag set to: ${__classPrivateFieldGet(this, _a, "f", _DebugMode_enabled)}`);
-        HtmlTemplate.updateDebugClass(_a.enabled);
-    }
-    static get frameByFrame() {
-        return __classPrivateFieldGet(_a, _a, "f", _DebugMode_frameByFrame);
-    }
-    static toggleFrameByFrame() {
-        __classPrivateFieldSet(this, _a, !__classPrivateFieldGet(this, _a, "f", _DebugMode_frameByFrame), "f", _DebugMode_frameByFrame);
-        Logger.infoBeetPx(`FrameByFrame mode set to: ${__classPrivateFieldGet(this, _a, "f", _DebugMode_frameByFrame)}`);
+        HtmlTemplate.updateDebugClass(this.enabled);
+        if (__classPrivateFieldGet(this, _a, "f", _DebugMode_enabled)) {
+            window.localStorage.removeItem(__classPrivateFieldGet(this, _a, "f", _DebugMode_storageDebugDisabledKey));
+        }
+        else {
+            window.localStorage.setItem(__classPrivateFieldGet(this, _a, "f", _DebugMode_storageDebugDisabledKey), __classPrivateFieldGet(this, _a, "f", _DebugMode_storageDebugDisabledTrue));
+        }
     }
 }
 _a = DebugMode;
+_DebugMode_storageDebugDisabledKey = { value: "beetpx__debug_disabled" };
+_DebugMode_storageDebugDisabledTrue = { value: "yes" };
 _DebugMode_enabled = { value: false };
-_DebugMode_frameByFrame = { value: false };

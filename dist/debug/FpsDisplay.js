@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _FpsDisplay_drawApi, _FpsDisplay_color;
-import { rgb_p8_, v_1_1_ } from "../shorthands";
+import { font_saint11Minimal4_, rgb_p8_, v_1_1_ } from "../shorthands";
 export class FpsDisplay {
     constructor(drawApi, params) {
         _FpsDisplay_drawApi.set(this, void 0);
@@ -19,7 +19,9 @@ export class FpsDisplay {
         __classPrivateFieldSet(this, _FpsDisplay_color, params.color ?? rgb_p8_.ember, "f");
     }
     drawRenderingFps(renderingFps) {
+        const prevFont = __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").useFont(font_saint11Minimal4_);
         __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").drawText(renderingFps.toFixed(), v_1_1_, __classPrivateFieldGet(this, _FpsDisplay_color, "f"));
+        __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").useFont(prevFont);
     }
 }
 _FpsDisplay_drawApi = new WeakMap(), _FpsDisplay_color = new WeakMap();

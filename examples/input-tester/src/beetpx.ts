@@ -12,7 +12,7 @@ let nextDebugToggleState: boolean = false;
 b_.init({
   gameCanvasSize: "128x128",
   fixedTimestep: "60fps",
-  debugMode: true,
+  debugMode: { available: true },
   assets: ["spritesheet.png"],
 }).then(async ({ startGame }) => {
   b_.setOnStarted(() => {

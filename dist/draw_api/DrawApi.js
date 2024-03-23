@@ -102,7 +102,9 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     useFont(font) {
+        const prev = __classPrivateFieldGet(this, _DrawApi_font, "f");
         __classPrivateFieldSet(this, _DrawApi_font, font, "f");
+        return prev;
     }
     measureText(text, opts) {
         let maxLineNumber = 0;

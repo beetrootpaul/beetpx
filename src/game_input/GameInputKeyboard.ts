@@ -47,9 +47,14 @@ export class GameInputKeyboard implements GameInputSpecialized {
   readonly #eventsSinceLastUpdate: Set<BpxGameInputEvent> =
     new Set<BpxGameInputEvent>();
 
-  constructor(params: { enableDebugInputs: boolean }) {
-    if (params.enableDebugInputs) {
+  constructor(params: {
+    enableDebugToggle: boolean;
+    enabledFrameByFrameControls: boolean;
+  }) {
+    if (params.enableDebugToggle) {
       this.#keyMapping.set(";", "debug_toggle");
+    }
+    if (params.enabledFrameByFrameControls) {
       this.#keyMapping.set(",", "frame_by_frame_toggle");
       this.#keyMapping.set(".", "frame_by_frame_step");
     }
