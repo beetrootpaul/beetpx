@@ -21,6 +21,10 @@ const text = [
 b_.init({
   gameCanvasSize: "256x256",
   assets: [...customFont.spriteSheetUrls],
+  debugMode: {
+    available: true,
+    fpsDisplay: { enabled: true },
+  },
 }).then(async ({ startGame }) => {
   const centerXy: [boolean, boolean] = [true, false];
 

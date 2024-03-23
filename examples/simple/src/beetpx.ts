@@ -11,11 +11,11 @@ b_.init({
   debugMode: {
     available: true,
     forceEnabledOnStart: true,
-    fpsDisplay: {
-      enabled: true,
-    },
+    fpsDisplay: { enabled: true },
   },
-  frameByFrame: { available: true },
+  frameByFrame: {
+    available: true,
+  },
 }).then(async ({ startGame }) => {
   const logoSprite = spr_("logo.png")(16, 16, 0, 0);
   let circleMovementCenter = v_(64, 64);
