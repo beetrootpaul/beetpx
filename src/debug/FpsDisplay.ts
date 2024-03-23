@@ -1,7 +1,7 @@
 import { BpxRgbColor } from "../color/RgbColor";
 import { DrawApi } from "../draw_api/DrawApi";
 import { BpxVector2d } from "../misc/Vector2d";
-import { font_saint11Minimal4_, rgb_p8_, v_ } from "../shorthands";
+import { font_pico8_, rgb_p8_, v_ } from "../shorthands";
 import { BpxUtils } from "../utils/Utils";
 
 export type FpsDisplayPlacement =
@@ -13,6 +13,7 @@ export type FpsDisplayPlacement =
 export class FpsDisplay {
   constructor(
     drawApi: DrawApi,
+    canvasSize: BpxVector2d,
     params: {
       color?: BpxRgbColor;
       placement?: FpsDisplayPlacement;
@@ -24,8 +25,8 @@ export class FpsDisplay {
 
     const placement: FpsDisplayPlacement = params.placement ?? "top-right";
     this.#xy = v_(
-      placement.endsWith("-left") ? 1 : 128 - 3 * 4,
-      placement.startsWith("top-") ? 1 : 128 - 5,
+      placement.endsWith("-left") ? 1 : canvasSize.x - 3 * 4,
+      placement.startsWith("top-") ? 1 : canvasSize.y - 5,
     );
 
     this.#recentSamples = Array.from({ length: 15 }, () => 0);
@@ -57,7 +58,7 @@ export class FpsDisplay {
       this.#lastCalculatedAverageFps /= this.#recentSamples.length;
     }
 
-    const prevFont = this.#drawApi.useFont(font_saint11Minimal4_);
+    const prevFont = this.#drawApi.useFont(font_pico8_);
     this.#drawApi.drawText(
       this.#lastCalculatedAverageFps.toFixed(),
       this.#xy.add(this.#drawApi.cameraXy),

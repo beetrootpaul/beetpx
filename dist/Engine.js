@@ -150,7 +150,7 @@ export class Engine {
             assets: this.assets,
         });
         if (engineInitParams.debugMode.fpsDisplay?.enabled) {
-            __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, {
+            __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, __classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), {
                 color: engineInitParams.debugMode.fpsDisplay.color,
                 placement: engineInitParams.debugMode.fpsDisplay.placement,
             }), "f");

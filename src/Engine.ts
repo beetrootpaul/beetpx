@@ -236,7 +236,7 @@ export class Engine {
     });
 
     if (engineInitParams.debugMode.fpsDisplay?.enabled) {
-      this.#fpsDisplay = new FpsDisplay(this.drawApi, {
+      this.#fpsDisplay = new FpsDisplay(this.drawApi, this.#gameCanvasSize, {
         color: engineInitParams.debugMode.fpsDisplay.color,
         placement: engineInitParams.debugMode.fpsDisplay.placement,
       });
