@@ -2,6 +2,7 @@
 # Playwright
 #
 /test-results/
+# We ignore the config here, because we are generating it on the fly
 /playwright.config.ts
 
 #

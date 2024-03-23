@@ -1,7 +1,8 @@
+import { BeetPx } from "./BeetPx";
+import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader, AssetsToLoad } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
-import { BeetPx } from "./BeetPx";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
@@ -10,11 +11,11 @@ import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
+import { FpsDisplay } from "./debug/FpsDisplay";
 import { DrawApi } from "./draw_api/DrawApi";
-import { Button } from "./game_input/buttons/Button";
 import { GameInput } from "./game_input/GameInput";
+import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
-import { HtmlTemplate } from "./HtmlTemplate";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
@@ -65,6 +66,8 @@ export class Engine {
 
   readonly #canvas: Canvas;
   readonly drawApi: DrawApi;
+
+  readonly #fpsDisplay: FpsDisplay;
 
   #isStarted: boolean = false;
 
@@ -208,6 +211,8 @@ export class Engine {
       canvas: this.#canvas,
       assets: this.assets,
     });
+
+    this.#fpsDisplay = new FpsDisplay(this.drawApi, {});
   }
 
   async init(): Promise<OnAssetsLoaded> {
@@ -337,6 +342,10 @@ export class Engine {
         this.#renderingFps = renderingFps;
 
         this.#onDraw?.();
+
+        if (DebugMode.enabled) {
+          this.#fpsDisplay.drawRenderingFps(renderingFps);
+        }
 
         this.#canvas.render();
       },

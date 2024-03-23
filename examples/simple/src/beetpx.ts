@@ -8,6 +8,7 @@ declare global {
 
 b_.init({
   assets: ["logo.png", "music_melody.flac"],
+  debugMode: !window.BEETPX__IS_PROD,
 }).then(async ({ startGame }) => {
   const logoSprite = spr_("logo.png")(16, 16, 0, 0);
   let circleMovementCenter = v_(64, 64);
@@ -32,7 +33,7 @@ b_.init({
   b_.setOnDraw(() => {
     b_.clearCanvas(rgb_p8_.storm);
     b_.drawSprite(logoSprite, logoPosition, { centerXy: [true, true] });
-    b_.drawText(`PREV_COMMIT=${window.PREV_COMMIT}`, v_(1, 1), rgb_p8_.dusk);
+    b_.drawText(`PREV_COMMIT=${window.PREV_COMMIT}`, v_(1, 122), rgb_p8_.dusk);
   });
 
   await startGame();

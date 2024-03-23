@@ -31,7 +31,7 @@ b_.init({
       standardView?.update();
     }
 
-    // This whole wor with detecting debug toggle button release is here only
+    // This whole work with detecting debug toggle button release is here only
     //   because we want to see debug toggle button pressed in standard view
     //   before (on the button release) the view switches to the debug one.
     // If not for that, we could just use `b_.debug` as a condition for
