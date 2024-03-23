@@ -373,7 +373,8 @@ declare class GameInput {
     readonly buttonFrameByFrameToggle: Button;
     readonly buttonFrameByFrameStep: Button;
     constructor(params: {
-        enableDebugInputs: boolean;
+        enableDebugToggle: boolean;
+        enabledFrameByFrameControls: boolean;
         browserType: BpxBrowserType;
     });
     startListening(): void;
@@ -475,10 +476,9 @@ declare class AudioApi {
 
 declare class DebugMode {
     #private;
+    static loadFromStorage(): void;
     static get enabled(): boolean;
     static set enabled(value: boolean);
-    static get frameByFrame(): boolean;
-    static toggleFrameByFrame(): void;
 }
 
 declare abstract class Canvas {
@@ -530,7 +530,7 @@ declare class DrawApi {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
     }): void;
-    useFont(font: BpxFont): void;
+    useFont(font: BpxFont): BpxFont;
     measureText(text: string, opts?: {
         scaleXy?: BpxVector2d;
         centerXy?: [boolean, boolean];
@@ -547,6 +547,8 @@ declare class DrawApi {
 }
 
 type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
+
+type FpsDisplayPlacement = "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
 declare global {
     interface Document {
@@ -577,8 +579,22 @@ declare class StorageApi {
 type EngineInitParams = {
     gameCanvasSize?: "64x64" | "128x128" | "256x256";
     fixedTimestep?: "30fps" | "60fps";
-    debugMode?: boolean;
     assets?: AssetsToLoad;
+    debugMode?: {
+        /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
+        available?: boolean;
+        /** If `true`, then the debug mode will be enabled no matter what its persisted state was. */
+        forceEnabledOnStart?: boolean;
+        fpsDisplay?: {
+            enabled?: boolean;
+            color?: BpxRgbColor;
+            placement?: FpsDisplayPlacement;
+        };
+    };
+    frameByFrame?: {
+        /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
+        available?: boolean;
+    };
 };
 type OnAssetsLoaded = {
     startGame: () => Promise<void>;

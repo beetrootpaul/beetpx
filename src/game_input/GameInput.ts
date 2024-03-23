@@ -42,7 +42,8 @@ export class GameInput {
   #mostRecentInputMethods: Set<GameInputMethod> = new Set();
 
   constructor(params: {
-    enableDebugInputs: boolean;
+    enableDebugToggle: boolean;
+    enabledFrameByFrameControls: boolean;
     browserType: BpxBrowserType;
   }) {
     this.gameInputGamepad = new GameInputGamepad({
@@ -51,7 +52,8 @@ export class GameInput {
     this.gameInputsSpecialized = [
       new GameInputMouse(),
       new GameInputKeyboard({
-        enableDebugInputs: params.enableDebugInputs,
+        enableDebugToggle: params.enableDebugToggle,
+        enabledFrameByFrameControls: params.enabledFrameByFrameControls,
       }),
       new GameInputTouch(),
       this.gameInputGamepad,

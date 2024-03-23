@@ -38,8 +38,10 @@ export class GameInputKeyboard {
             ["F", "full_screen"],
         ]));
         _GameInputKeyboard_eventsSinceLastUpdate.set(this, new Set());
-        if (params.enableDebugInputs) {
+        if (params.enableDebugToggle) {
             __classPrivateFieldGet(this, _GameInputKeyboard_keyMapping, "f").set(";", "debug_toggle");
+        }
+        if (params.enabledFrameByFrameControls) {
             __classPrivateFieldGet(this, _GameInputKeyboard_keyMapping, "f").set(",", "frame_by_frame_toggle");
             __classPrivateFieldGet(this, _GameInputKeyboard_keyMapping, "f").set(".", "frame_by_frame_step");
         }

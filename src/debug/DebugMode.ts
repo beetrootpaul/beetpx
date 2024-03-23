@@ -2,8 +2,18 @@ import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 
 export class DebugMode {
+  static readonly #storageDebugDisabledKey = "beetpx__debug_disabled";
+  static readonly #storageDebugDisabledTrue = "yes";
+
   static #enabled = false;
-  static #frameByFrame: boolean = false;
+
+  static loadFromStorage(): void {
+    this.#enabled =
+      window.localStorage.getItem(this.#storageDebugDisabledKey) !==
+      this.#storageDebugDisabledTrue;
+
+    HtmlTemplate.updateDebugClass(this.enabled);
+  }
 
   static get enabled(): boolean {
     return this.#enabled;
@@ -11,17 +21,18 @@ export class DebugMode {
 
   static set enabled(value: boolean) {
     this.#enabled = value;
+
     Logger.infoBeetPx(`Debug flag set to: ${this.#enabled}`);
 
-    HtmlTemplate.updateDebugClass(DebugMode.enabled);
-  }
+    HtmlTemplate.updateDebugClass(this.enabled);
 
-  static get frameByFrame(): boolean {
-    return DebugMode.#frameByFrame;
-  }
-
-  static toggleFrameByFrame(): void {
-    this.#frameByFrame = !this.#frameByFrame;
-    Logger.infoBeetPx(`FrameByFrame mode set to: ${this.#frameByFrame}`);
+    if (this.#enabled) {
+      window.localStorage.removeItem(this.#storageDebugDisabledKey);
+    } else {
+      window.localStorage.setItem(
+        this.#storageDebugDisabledKey,
+        this.#storageDebugDisabledTrue,
+      );
+    }
   }
 }
