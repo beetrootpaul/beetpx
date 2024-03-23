@@ -33,6 +33,7 @@ export class BpxFontPico8 extends BpxFont {
             ["6", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 6, 3)],
             ["7", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 7, 3)],
             ["8", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 8, 3)],
+            ["9", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 9, 3)],
             
             ["-", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 13, 2)],
             ["+", __classPrivateFieldGet(this, _BpxFontPico8_instances, "m", _BpxFontPico8_spriteGlyph).call(this, 11, 2)],

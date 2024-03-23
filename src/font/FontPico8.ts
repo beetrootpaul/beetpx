@@ -38,6 +38,7 @@ export class BpxFontPico8 extends BpxFont {
     ["6", this.#spriteGlyph(6, 3)],
     ["7", this.#spriteGlyph(7, 3)],
     ["8", this.#spriteGlyph(8, 3)],
+    ["9", this.#spriteGlyph(9, 3)],
     //
     ["-", this.#spriteGlyph(13, 2)],
     ["+", this.#spriteGlyph(11, 2)],
