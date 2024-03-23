@@ -9,19 +9,22 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _FpsDisplay_drawApi, _FpsDisplay_color;
-import { font_saint11Minimal4_, rgb_p8_, v_1_1_ } from "../shorthands";
+var _FpsDisplay_drawApi, _FpsDisplay_color, _FpsDisplay_xy;
+import { font_saint11Minimal4_, rgb_p8_, v_ } from "../shorthands";
 export class FpsDisplay {
     constructor(drawApi, params) {
         _FpsDisplay_drawApi.set(this, void 0);
         _FpsDisplay_color.set(this, void 0);
+        _FpsDisplay_xy.set(this, void 0);
         __classPrivateFieldSet(this, _FpsDisplay_drawApi, drawApi, "f");
-        __classPrivateFieldSet(this, _FpsDisplay_color, params.color ?? rgb_p8_.ember, "f");
+        __classPrivateFieldSet(this, _FpsDisplay_color, params.color ?? rgb_p8_.orange, "f");
+        const placement = params.placement ?? "top-right";
+        __classPrivateFieldSet(this, _FpsDisplay_xy, v_(placement.endsWith("-left") ? 1 : 128 - 3 * 4, placement.startsWith("top-") ? 1 : 128 - 5), "f");
     }
     drawRenderingFps(renderingFps) {
         const prevFont = __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").useFont(font_saint11Minimal4_);
-        __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").drawText(renderingFps.toFixed(), v_1_1_, __classPrivateFieldGet(this, _FpsDisplay_color, "f"));
+        __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").drawText(renderingFps.toFixed(), __classPrivateFieldGet(this, _FpsDisplay_xy, "f"), __classPrivateFieldGet(this, _FpsDisplay_color, "f"));
         __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").useFont(prevFont);
     }
 }
-_FpsDisplay_drawApi = new WeakMap(), _FpsDisplay_color = new WeakMap();
+_FpsDisplay_drawApi = new WeakMap(), _FpsDisplay_color = new WeakMap(), _FpsDisplay_xy = new WeakMap();

@@ -548,6 +548,8 @@ declare class DrawApi {
 
 type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
 
+type FpsDisplayPlacement = "top-left" | "top-right" | "bottom-left" | "bottom-right";
+
 declare global {
     interface Document {
         webkitFullscreenEnabled?: boolean;
@@ -583,6 +585,11 @@ type EngineInitParams = {
         available?: boolean;
         /** If `true`, then the debug mode will be enabled no matter what its persisted state was. */
         forceEnabledOnStart?: boolean;
+        fpsDisplay?: {
+            enabled?: boolean;
+            color?: BpxRgbColor;
+            placement?: FpsDisplayPlacement;
+        };
     };
     frameByFrame?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */

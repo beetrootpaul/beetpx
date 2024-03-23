@@ -8,7 +8,13 @@ declare global {
 
 b_.init({
   assets: ["logo.png", "music_melody.flac"],
-  debugMode: { available: true, forceEnabledOnStart: true },
+  debugMode: {
+    available: true,
+    forceEnabledOnStart: true,
+    fpsDisplay: {
+      enabled: true,
+    },
+  },
   frameByFrame: { available: true },
 }).then(async ({ startGame }) => {
   const logoSprite = spr_("logo.png")(16, 16, 0, 0);

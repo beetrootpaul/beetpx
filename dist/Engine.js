@@ -149,7 +149,12 @@ export class Engine {
             canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),
             assets: this.assets,
         });
-        __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, {}), "f");
+        if (engineInitParams.debugMode.fpsDisplay?.enabled) {
+            __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, {
+                color: engineInitParams.debugMode.fpsDisplay.color,
+                placement: engineInitParams.debugMode.fpsDisplay.placement,
+            }), "f");
+        }
     }
     async init() {
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} will be initialized now`);
@@ -245,7 +250,7 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
             __classPrivateFieldSet(this, _Engine_renderingFps, renderingFps, "f");
             __classPrivateFieldGet(this, _Engine_onDraw, "f")?.call(this);
             if (DebugMode.enabled) {
-                __classPrivateFieldGet(this, _Engine_fpsDisplay, "f").drawRenderingFps(renderingFps);
+                __classPrivateFieldGet(this, _Engine_fpsDisplay, "f")?.drawRenderingFps(renderingFps);
             }
             __classPrivateFieldGet(this, _Engine_canvas, "f").render();
         },

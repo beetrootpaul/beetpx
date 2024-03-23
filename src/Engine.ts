@@ -11,7 +11,7 @@ import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
-import { FpsDisplay } from "./debug/FpsDisplay";
+import { FpsDisplay, FpsDisplayPlacement } from "./debug/FpsDisplay";
 import { FrameByFrame } from "./debug/FrameByFrame";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
@@ -40,6 +40,15 @@ export type EngineInitParams = {
     available?: boolean;
     /** If `true`, then the debug mode will be enabled no matter what its persisted state was. */
     forceEnabledOnStart?: boolean;
+    // TODO: USE IT
+    fpsDisplay?: {
+      // TODO: USE IT
+      enabled?: boolean;
+      // TODO: USE IT
+      color?: BpxRgbColor;
+      // TODO: USE IT
+      placement?: FpsDisplayPlacement;
+    };
   };
   frameByFrame?: {
     /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
@@ -74,7 +83,7 @@ export class Engine {
   readonly #canvas: Canvas;
   readonly drawApi: DrawApi;
 
-  readonly #fpsDisplay: FpsDisplay;
+  readonly #fpsDisplay?: FpsDisplay;
 
   #isStarted: boolean = false;
 
@@ -226,7 +235,12 @@ export class Engine {
       assets: this.assets,
     });
 
-    this.#fpsDisplay = new FpsDisplay(this.drawApi, {});
+    if (engineInitParams.debugMode.fpsDisplay?.enabled) {
+      this.#fpsDisplay = new FpsDisplay(this.drawApi, {
+        color: engineInitParams.debugMode.fpsDisplay.color,
+        placement: engineInitParams.debugMode.fpsDisplay.placement,
+      });
+    }
   }
 
   async init(): Promise<OnAssetsLoaded> {
@@ -350,7 +364,7 @@ export class Engine {
         this.#onDraw?.();
 
         if (DebugMode.enabled) {
-          this.#fpsDisplay.drawRenderingFps(renderingFps);
+          this.#fpsDisplay?.drawRenderingFps(renderingFps);
         }
 
         this.#canvas.render();
