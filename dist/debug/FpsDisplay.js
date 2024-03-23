@@ -40,7 +40,7 @@ export class FpsDisplay {
             __classPrivateFieldSet(this, _FpsDisplay_lastCalculatedAverageFps, __classPrivateFieldGet(this, _FpsDisplay_lastCalculatedAverageFps, "f") / __classPrivateFieldGet(this, _FpsDisplay_recentSamples, "f").length, "f");
         }
         const prevFont = __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").useFont(font_saint11Minimal4_);
-        __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").drawText(__classPrivateFieldGet(this, _FpsDisplay_lastCalculatedAverageFps, "f").toFixed(), __classPrivateFieldGet(this, _FpsDisplay_xy, "f"), __classPrivateFieldGet(this, _FpsDisplay_color, "f"));
+        __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").drawText(__classPrivateFieldGet(this, _FpsDisplay_lastCalculatedAverageFps, "f").toFixed(), __classPrivateFieldGet(this, _FpsDisplay_xy, "f").add(__classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").cameraXy), __classPrivateFieldGet(this, _FpsDisplay_color, "f"));
         __classPrivateFieldGet(this, _FpsDisplay_drawApi, "f").useFont(prevFont);
     }
 }

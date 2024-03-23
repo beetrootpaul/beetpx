@@ -60,7 +60,7 @@ export class FpsDisplay {
     const prevFont = this.#drawApi.useFont(font_saint11Minimal4_);
     this.#drawApi.drawText(
       this.#lastCalculatedAverageFps.toFixed(),
-      this.#xy,
+      this.#xy.add(this.#drawApi.cameraXy),
       this.#color,
     );
     this.#drawApi.useFont(prevFont);
