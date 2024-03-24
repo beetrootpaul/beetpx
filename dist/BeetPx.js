@@ -106,7 +106,7 @@ BeetPx.getPressedDirection = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.getPressedDirection(...args);
 };
 BeetPx.setButtonRepeating = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.setRepeating(...args);
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.gameButtons.setButtonRepeating(...args);
 };
 BeetPx.getRecentInputMethods = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).gameInput.getRecentInputMethods(...args);

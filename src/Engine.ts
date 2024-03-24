@@ -15,7 +15,6 @@ import { FpsDisplay, FpsDisplayPlacement } from "./debug/FpsDisplay";
 import { FrameByFrame } from "./debug/FrameByFrame";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
-import { Button } from "./game_input/buttons/Button";
 import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
@@ -162,8 +161,6 @@ export class Engine {
               `Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`,
             );
 
-    Button.setRepeatingParamsFor(fixedTimestepFps);
-
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
     this.#gameCanvasSize =
@@ -309,26 +306,26 @@ export class Engine {
 
     this.#gameLoop.start({
       updateFn: () => {
-        if (this.gameInput.buttonFullScreen.wasJustPressed(false)) {
+        if (this.gameInput.buttonFullScreen.wasJustPressed) {
           this.fullScreen.toggleFullScreen();
         }
-        if (this.gameInput.buttonMuteUnmute.wasJustPressed(false)) {
+        if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
           if (this.audioApi.isAudioMuted()) {
             this.audioApi.unmuteAudio();
           } else {
             this.audioApi.muteAudio();
           }
         }
-        if (this.gameInput.buttonDebugToggle.wasJustPressed(false)) {
+        if (this.gameInput.buttonDebugToggle.wasJustPressed) {
           DebugMode.enabled = !DebugMode.enabled;
         }
-        if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed(false)) {
+        if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
           FrameByFrame.enabled = !FrameByFrame.enabled;
         }
 
         const shouldUpdate =
           !FrameByFrame.enabled ||
-          this.gameInput.buttonFrameByFrameStep.wasJustPressed(false);
+          this.gameInput.buttonFrameByFrameStep.wasJustPressed;
 
         const hasAnyInteractionHappened = this.gameInput.update({
           skipGameButtons: !shouldUpdate,
