@@ -1,62 +1,55 @@
 import { BpxTimerSequence, timerSeq_ } from "../../timer/TimerSequence";
-import { throwError } from "../../utils/throwError";
 
 export class Button {
-  static #repeatingFramesStart = 30;
-  static #repeatingFramesInterval = 8;
-
-  static get repeatingFramesStart(): number {
-    return Button.#repeatingFramesStart;
-  }
-
-  static get repeatingFramesInterval(): number {
-    return Button.#repeatingFramesInterval;
-  }
-
-  static setRepeatingParamsFor(updateFps: 30 | 60) {
-    Button.#repeatingFramesStart =
-      updateFps === 30
-        ? 15
-        : updateFps === 60
-          ? 30
-          : throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
-    Button.#repeatingFramesInterval =
-      updateFps === 30
-        ? 4
-        : updateFps === 60
-          ? 8
-          : throwError(`Unsupported desiredUpdateFps: ${updateFps}`);
-  }
-
   #isPressed = false;
   #wasJustToggled = false;
 
-  #repeatingTimer: BpxTimerSequence<"start" | "interval"> | null = null;
+  #firstRepeatFrames: number | null = null;
+  #loopedRepeatFrames: number | null = null;
+  #repeatingTimer: BpxTimerSequence<"first" | "looped"> | null = null;
+
+  setRepeating(params: {
+    firstRepeatFrames: number | null;
+    loopedRepeatFrames: number | null;
+  }): void {
+    this.#firstRepeatFrames = params.firstRepeatFrames;
+    this.#loopedRepeatFrames = params.loopedRepeatFrames;
+  }
+
+  get #isRepeatingEnabled(): boolean {
+    return this.#firstRepeatFrames != null || this.#loopedRepeatFrames != null;
+  }
 
   get isPressed(): boolean {
     return this.#isPressed;
   }
 
-  wasJustPressed(repeating: boolean): boolean {
+  get wasJustPressed(): boolean {
     return (
       (this.#wasJustToggled && this.#isPressed) ||
-      (repeating && this.#repeatingTimer?.justFinishedPhase != null)
+      (this.#isRepeatingEnabled &&
+        this.#repeatingTimer?.justFinishedPhase != null)
     );
   }
 
-  wasJustReleased(repeating: boolean): boolean {
+  get wasJustReleased(): boolean {
     return (
       (this.#wasJustToggled && !this.#isPressed) ||
-      (repeating && this.#repeatingTimer?.justFinishedPhase != null)
+      (this.#isRepeatingEnabled &&
+        this.#repeatingTimer?.justFinishedPhase != null)
     );
   }
 
   update(isPressed: boolean): void {
     if (isPressed) {
-      if (this.#wasJustToggled) {
+      if (this.#wasJustToggled && this.#isRepeatingEnabled) {
         this.#repeatingTimer = timerSeq_({
-          intro: [["start", Button.repeatingFramesStart]],
-          loop: [["interval", Button.repeatingFramesInterval]],
+          intro: this.#firstRepeatFrames
+            ? [["first", this.#firstRepeatFrames]]
+            : undefined,
+          loop: this.#loopedRepeatFrames
+            ? [["looped", this.#loopedRepeatFrames]]
+            : undefined,
         });
       }
     } else {

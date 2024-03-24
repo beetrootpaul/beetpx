@@ -129,8 +129,10 @@ export class BeetPx {
     );
   };
 
-  static setButtonRepeating: GameButtons["setRepeating"] = (...args) => {
-    return this.#tryGetEngine().gameInput.gameButtons.setRepeating(...args);
+  static setButtonRepeating: GameButtons["setButtonRepeating"] = (...args) => {
+    return this.#tryGetEngine().gameInput.gameButtons.setButtonRepeating(
+      ...args,
+    );
   };
 
   static getRecentInputMethods: GameInput["getRecentInputMethods"] = (

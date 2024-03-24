@@ -316,12 +316,13 @@ declare class BpxFontSaint11Minimal5 extends BpxFont {
 
 declare class Button {
     #private;
-    static get repeatingFramesStart(): number;
-    static get repeatingFramesInterval(): number;
-    static setRepeatingParamsFor(updateFps: 30 | 60): void;
+    setRepeating(params: {
+        firstRepeatFrames: number | null;
+        loopedRepeatFrames: number | null;
+    }): void;
     get isPressed(): boolean;
-    wasJustPressed(repeating: boolean): boolean;
-    wasJustReleased(repeating: boolean): boolean;
+    get wasJustPressed(): boolean;
+    get wasJustReleased(): boolean;
     update(isPressed: boolean): void;
 }
 
@@ -332,7 +333,10 @@ declare class GameButtons {
     isAnyPressed(): boolean;
     isPressed(button: BpxGameButtonName): boolean;
     getPressedDirection(): BpxVector2d;
-    setRepeating(button: BpxGameButtonName, repeating: boolean): void;
+    setButtonRepeating(button: BpxGameButtonName, repeating: {
+        firstRepeatFrames: number | null;
+        loopedRepeatFrames: number | null;
+    }): void;
     wasAnyJustPressed(): boolean;
     wasJustPressed(button: BpxGameButtonName): boolean;
     wasJustReleased(button: BpxGameButtonName): boolean;
@@ -658,7 +662,7 @@ declare class BeetPx {
     static isAnyButtonPressed: GameButtons["isAnyPressed"];
     static isButtonPressed: GameButtons["isPressed"];
     static getPressedDirection: GameButtons["getPressedDirection"];
-    static setButtonRepeating: GameButtons["setRepeating"];
+    static setButtonRepeating: GameButtons["setButtonRepeating"];
     static getRecentInputMethods: GameInput["getRecentInputMethods"];
     static getConnectedGamepadTypes: GameInput["getConnectedGamepadTypes"];
     static getEventsCapturedInLastUpdate: GameInput["getEventsCapturedInLastUpdate"];
