@@ -10,7 +10,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
 var _a, _Button_repeatingFramesStart, _Button_repeatingFramesInterval, _Button_isPressed, _Button_wasJustToggled, _Button_repeatingTimer;
-import { timer_ } from "../../shorthands";
+import { timerSeq_ } from "../../timer/TimerSequence";
 import { throwError } from "../../utils/throwError";
 export class Button {
     constructor() {
@@ -41,20 +41,18 @@ export class Button {
     }
     wasJustPressed(repeating) {
         return ((__classPrivateFieldGet(this, _Button_wasJustToggled, "f") && __classPrivateFieldGet(this, _Button_isPressed, "f")) ||
-            (repeating && !!__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasJustFinished));
+            (repeating && __classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.justFinishedPhase != null));
     }
     wasJustReleased(repeating) {
         return ((__classPrivateFieldGet(this, _Button_wasJustToggled, "f") && !__classPrivateFieldGet(this, _Button_isPressed, "f")) ||
-            (repeating && !!__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasJustFinished));
+            (repeating && __classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.justFinishedPhase != null));
     }
     update(isPressed) {
         if (isPressed) {
             if (__classPrivateFieldGet(this, _Button_wasJustToggled, "f")) {
-                __classPrivateFieldSet(this, _Button_repeatingTimer, timer_(_a.repeatingFramesStart), "f");
-            }
-            else if (__classPrivateFieldGet(this, _Button_repeatingTimer, "f")?.hasFinished) {
-                __classPrivateFieldSet(this, _Button_repeatingTimer, timer_(_a.repeatingFramesInterval, {
-                    loop: true,
+                __classPrivateFieldSet(this, _Button_repeatingTimer, timerSeq_({
+                    intro: [["start", _a.repeatingFramesStart]],
+                    loop: [["interval", _a.repeatingFramesInterval]],
                 }), "f");
             }
         }

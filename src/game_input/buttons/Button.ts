@@ -1,5 +1,4 @@
-import { timer_ } from "../../shorthands";
-import { BpxTimer } from "../../timer/Timer";
+import { BpxTimerSequence, timerSeq_ } from "../../timer/TimerSequence";
 import { throwError } from "../../utils/throwError";
 
 export class Button {
@@ -32,7 +31,7 @@ export class Button {
   #isPressed = false;
   #wasJustToggled = false;
 
-  #repeatingTimer: BpxTimer | null = null;
+  #repeatingTimer: BpxTimerSequence<"start" | "interval"> | null = null;
 
   get isPressed(): boolean {
     return this.#isPressed;
@@ -41,24 +40,23 @@ export class Button {
   wasJustPressed(repeating: boolean): boolean {
     return (
       (this.#wasJustToggled && this.#isPressed) ||
-      (repeating && !!this.#repeatingTimer?.hasJustFinished)
+      (repeating && this.#repeatingTimer?.justFinishedPhase != null)
     );
   }
 
   wasJustReleased(repeating: boolean): boolean {
     return (
       (this.#wasJustToggled && !this.#isPressed) ||
-      (repeating && !!this.#repeatingTimer?.hasJustFinished)
+      (repeating && this.#repeatingTimer?.justFinishedPhase != null)
     );
   }
 
   update(isPressed: boolean): void {
     if (isPressed) {
       if (this.#wasJustToggled) {
-        this.#repeatingTimer = timer_(Button.repeatingFramesStart);
-      } else if (this.#repeatingTimer?.hasFinished) {
-        this.#repeatingTimer = timer_(Button.repeatingFramesInterval, {
-          loop: true,
+        this.#repeatingTimer = timerSeq_({
+          intro: [["start", Button.repeatingFramesStart]],
+          loop: [["interval", Button.repeatingFramesInterval]],
         });
       }
     } else {
