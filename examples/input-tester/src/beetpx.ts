@@ -1,6 +1,6 @@
+import { b_ } from "../../../src";
 import { DebugView } from "./DebugView";
 import { StandardView } from "./StandardView";
-import { b_ } from "../../../src";
 
 let standardView: StandardView | null = null;
 let debugView: DebugView | null = null;
@@ -52,4 +52,3 @@ b_.init({
     }
   },
 });
-
