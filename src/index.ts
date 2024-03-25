@@ -28,6 +28,7 @@ declare global {
   const BEETPX__VERSION: string;
 }
 
+export { type BpxEngineConfig } from "./Engine";
 export {
   type BpxImageAsset,
   type BpxImageUrl,

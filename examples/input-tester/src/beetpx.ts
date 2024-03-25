@@ -1,6 +1,6 @@
-import { b_ } from "../../../src";
 import { DebugView } from "./DebugView";
 import { StandardView } from "./StandardView";
+import { b_ } from "../../../src";
 
 let standardView: StandardView | null = null;
 let debugView: DebugView | null = null;
@@ -10,21 +10,21 @@ let prevDebugToggleState: boolean = false;
 let nextDebugToggleState: boolean = false;
 
 b_.init({
-  gameCanvasSize: "128x128",
-  fixedTimestep: "60fps",
-  debugMode: { available: true },
-  assets: ["spritesheet.png"],
-}).then(async ({ startGame }) => {
-  b_.setOnStarted(() => {
+  config: {
+    gameCanvasSize: "128x128",
+    fixedTimestep: "60fps",
+    debugMode: { available: true },
+    assets: ["spritesheet.png"],
+  },
+  onStarted() {
     standardView = new StandardView();
     debugView = new DebugView();
     showDebug = false;
 
     prevDebugToggleState = false;
     nextDebugToggleState = false;
-  });
-
-  b_.setOnUpdate(() => {
+  },
+  onUpdate() {
     if (showDebug) {
       debugView?.update();
     } else {
@@ -43,15 +43,13 @@ b_.init({
     if (prevDebugToggleState && !nextDebugToggleState) {
       showDebug = !showDebug;
     }
-  });
-
-  b_.setOnDraw(() => {
+  },
+  onDraw() {
     if (showDebug) {
       debugView?.draw();
     } else {
       standardView?.draw();
     }
-  });
-
-  await startGame();
+  },
 });
+

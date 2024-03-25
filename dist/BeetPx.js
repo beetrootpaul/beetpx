@@ -19,10 +19,22 @@ export class BeetPx {
     
     
     
-    static init(engineInitParams) {
-        Logger.infoBeetPx(`Initializing BeetPx ${window.BEETPX__VERSION} …`);
-        __classPrivateFieldSet(this, _a, new Engine(engineInitParams), "f", _BeetPx_engine);
-        return __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).init();
+    static init(initParams) {
+        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
+        __classPrivateFieldSet(this, _a, new Engine(initParams?.config), "f", _BeetPx_engine);
+        __classPrivateFieldGet(this, _a, "f", _BeetPx_engine)
+            .init()
+            .then(({ startGame }) => {
+            Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
+            __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).setOnStarted(initParams?.onStarted);
+            __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).setOnUpdate(initParams?.onUpdate);
+            __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).setOnDraw(initParams?.onDraw);
+            Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Starting…`);
+            return startGame();
+        })
+            .then(() => {
+            Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Started`);
+        });
     }
     
     

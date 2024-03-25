@@ -6,26 +6,26 @@ declare global {
   }
 }
 
+const logoSprite = spr_("logo.png")(16, 16, 0, 0);
+let circleMovementCenter = v_(64, 64);
+let logoPosition = v_0_0_;
+
 b_.init({
-  assets: ["logo.png", "music_melody.flac"],
-  debugMode: {
-    available: true,
-    forceEnabledOnStart: true,
-    fpsDisplay: { enabled: true },
+  config: {
+    assets: ["logo.png", "music_melody.flac"],
+    debugMode: {
+      available: true,
+      forceEnabledOnStart: true,
+      fpsDisplay: { enabled: true },
+    },
+    frameByFrame: {
+      available: true,
+    },
   },
-  frameByFrame: {
-    available: true,
-  },
-}).then(async ({ startGame }) => {
-  const logoSprite = spr_("logo.png")(16, 16, 0, 0);
-  let circleMovementCenter = v_(64, 64);
-  let logoPosition = v_0_0_;
-
-  b_.setOnStarted(() => {
+  onStarted() {
     b_.startPlaybackLooped("music_melody.flac");
-  });
-
-  b_.setOnUpdate(() => {
+  },
+  onUpdate() {
     circleMovementCenter = circleMovementCenter.add(
       b_.getPressedDirection().mul(3),
     );
@@ -35,13 +35,10 @@ b_.init({
         Math.sin((b_.frameNumber / 120) * Math.PI),
       ),
     );
-  });
-
-  b_.setOnDraw(() => {
+  },
+  onDraw() {
     b_.clearCanvas(rgb_p8_.storm);
     b_.drawSprite(logoSprite, logoPosition, { centerXy: [true, true] });
     b_.drawText(`PREV_COMMIT=${window.PREV_COMMIT}`, v_(1, 122), rgb_p8_.dusk);
-  });
-
-  await startGame();
+  },
 });

@@ -4,7 +4,7 @@ import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { Engine, type EngineInitParams } from "./Engine";
+import { Engine, type BpxEngineConfig } from "./Engine";
 import { GameButtons } from "./game_input/buttons/GameButtons";
 import { GameInput } from "./game_input/GameInput";
 import { Logger } from "./logger/Logger";
@@ -20,10 +20,27 @@ export class BeetPx {
   // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
   //
 
-  static init(engineInitParams?: EngineInitParams): ReturnType<Engine["init"]> {
-    Logger.infoBeetPx(`Initializing BeetPx ${window.BEETPX__VERSION} …`);
-    this.#engine = new Engine(engineInitParams);
-    return this.#engine.init();
+  static init(initParams?: {
+    config?: BpxEngineConfig;
+    onStarted?: () => void;
+    onUpdate?: () => void;
+    onDraw?: () => void;
+  }): void {
+    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
+    this.#engine = new Engine(initParams?.config);
+    this.#engine
+      .init()
+      .then(({ startGame }) => {
+        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
+        this.#engine.setOnStarted(initParams?.onStarted);
+        this.#engine.setOnUpdate(initParams?.onUpdate);
+        this.#engine.setOnDraw(initParams?.onDraw);
+        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Starting…`);
+        return startGame();
+      })
+      .then(() => {
+        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Started`);
+      });
   }
 
   //

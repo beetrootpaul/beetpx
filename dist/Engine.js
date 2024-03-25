@@ -40,7 +40,7 @@ export class Engine {
     get detectedBrowserType() {
         return __classPrivateFieldGet(this, _Engine_browserType, "f");
     }
-    constructor(engineInitParams = {}) {
+    constructor(engineConfig = {}) {
         _Engine_instances.add(this);
         _Engine_assetsToLoad.set(this, void 0);
         _Engine_browserType.set(this, void 0);
@@ -59,11 +59,11 @@ export class Engine {
         _Engine_renderingFps.set(this, 1);
         
         _Engine_alreadyResumedAudioContext.set(this, false);
-        engineInitParams.gameCanvasSize ?? (engineInitParams.gameCanvasSize = "128x128");
-        engineInitParams.fixedTimestep ?? (engineInitParams.fixedTimestep = "60fps");
-        engineInitParams.assets ?? (engineInitParams.assets = []);
-        engineInitParams.debugMode ?? (engineInitParams.debugMode = { available: false });
-        engineInitParams.frameByFrame ?? (engineInitParams.frameByFrame = { available: false });
+        engineConfig.gameCanvasSize ?? (engineConfig.gameCanvasSize = "128x128");
+        engineConfig.fixedTimestep ?? (engineConfig.fixedTimestep = "60fps");
+        engineConfig.assets ?? (engineConfig.assets = []);
+        engineConfig.debugMode ?? (engineConfig.debugMode = { available: false });
+        engineConfig.frameByFrame ?? (engineConfig.frameByFrame = { available: false });
         window.addEventListener("error", (event) => {
             HtmlTemplate.showError(event.message);
             
@@ -85,35 +85,35 @@ export class Engine {
                 .then(() => { });
         });
         DebugMode.loadFromStorage();
-        if (!engineInitParams.debugMode.available) {
+        if (!engineConfig.debugMode.available) {
             DebugMode.enabled = false;
         }
         else {
-            if (engineInitParams.debugMode.forceEnabledOnStart) {
+            if (engineConfig.debugMode.forceEnabledOnStart) {
                 DebugMode.enabled = true;
             }
         }
-        Logger.debugBeetPx("Engine init params:", engineInitParams);
-        __classPrivateFieldSet(this, _Engine_assetsToLoad, engineInitParams.assets, "f");
+        Logger.debugBeetPx("Engine init params:", engineConfig);
+        __classPrivateFieldSet(this, _Engine_assetsToLoad, engineConfig.assets, "f");
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_pico8_.spriteSheetUrls);
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal4_.spriteSheetUrls);
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal5_.spriteSheetUrls);
-        const fixedTimestepFps = engineInitParams.fixedTimestep === "60fps"
+        const fixedTimestepFps = engineConfig.fixedTimestep === "60fps"
             ? 60
-            : engineInitParams.fixedTimestep === "30fps"
+            : engineConfig.fixedTimestep === "30fps"
                 ? 30
-                : throwError(`Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`);
+                : throwError(`Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`);
         __classPrivateFieldSet(this, _Engine_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
-        __classPrivateFieldSet(this, _Engine_gameCanvasSize, engineInitParams.gameCanvasSize === "64x64"
+        __classPrivateFieldSet(this, _Engine_gameCanvasSize, engineConfig.gameCanvasSize === "64x64"
             ? v_(64, 64)
-            : engineInitParams.gameCanvasSize === "128x128"
+            : engineConfig.gameCanvasSize === "128x128"
                 ? v_(128, 128)
-                : engineInitParams.gameCanvasSize === "256x256"
+                : engineConfig.gameCanvasSize === "256x256"
                     ? v_(256, 256)
-                    : throwError(`Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`), "f");
+                    : throwError(`Unsupported gameCanvasSize: "${engineConfig.gameCanvasSize}"`), "f");
         this.gameInput = new GameInput({
-            enableDebugToggle: engineInitParams.debugMode.available ?? false,
-            enabledFrameByFrameControls: engineInitParams.frameByFrame.available ?? false,
+            enableDebugToggle: engineConfig.debugMode.available ?? false,
+            enabledFrameByFrameControls: engineConfig.frameByFrame.available ?? false,
             browserType: __classPrivateFieldGet(this, _Engine_browserType, "f"),
         });
         __classPrivateFieldSet(this, _Engine_gameLoop, new GameLoop({
@@ -147,17 +147,15 @@ export class Engine {
             canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),
             assets: this.assets,
         });
-        if (engineInitParams.debugMode.fpsDisplay?.enabled) {
+        if (engineConfig.debugMode.fpsDisplay?.enabled) {
             __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, __classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), {
-                color: engineInitParams.debugMode.fpsDisplay.color,
-                placement: engineInitParams.debugMode.fpsDisplay.placement,
+                color: engineConfig.debugMode.fpsDisplay.color,
+                placement: engineConfig.debugMode.fpsDisplay.placement,
             }), "f");
         }
     }
     async init() {
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} will be initialized now`);
         await __classPrivateFieldGet(this, _Engine_assetLoader, "f").loadAssets(__classPrivateFieldGet(this, _Engine_assetsToLoad, "f"));
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} initialized`);
         return {
             startGame: __classPrivateFieldGet(this, _Engine_instances, "m", _Engine_startGame).bind(this),
         };
