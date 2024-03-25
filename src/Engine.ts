@@ -30,7 +30,7 @@ import {
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 
-export type EngineInitParams = {
+export type BpxEngineConfig = {
   gameCanvasSize?: "64x64" | "128x128" | "256x256";
   fixedTimestep?: "30fps" | "60fps";
   assets?: AssetsToLoad;
@@ -108,12 +108,12 @@ export class Engine {
     return this.#browserType;
   }
 
-  constructor(engineInitParams: EngineInitParams = {}) {
-    engineInitParams.gameCanvasSize ??= "128x128";
-    engineInitParams.fixedTimestep ??= "60fps";
-    engineInitParams.assets ??= [];
-    engineInitParams.debugMode ??= { available: false };
-    engineInitParams.frameByFrame ??= { available: false };
+  constructor(engineConfig: BpxEngineConfig = {}) {
+    engineConfig.gameCanvasSize ??= "128x128";
+    engineConfig.fixedTimestep ??= "60fps";
+    engineConfig.assets ??= [];
+    engineConfig.debugMode ??= { available: false };
+    engineConfig.frameByFrame ??= { available: false };
 
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
@@ -137,47 +137,46 @@ export class Engine {
     });
 
     DebugMode.loadFromStorage();
-    if (!engineInitParams.debugMode.available) {
+    if (!engineConfig.debugMode.available) {
       DebugMode.enabled = false;
     } else {
-      if (engineInitParams.debugMode.forceEnabledOnStart) {
+      if (engineConfig.debugMode.forceEnabledOnStart) {
         DebugMode.enabled = true;
       }
     }
 
-    Logger.debugBeetPx("Engine init params:", engineInitParams);
+    Logger.debugBeetPx("Engine init params:", engineConfig);
 
-    this.#assetsToLoad = engineInitParams.assets;
+    this.#assetsToLoad = engineConfig.assets;
     this.#assetsToLoad.push(...font_pico8_.spriteSheetUrls);
     this.#assetsToLoad.push(...font_saint11Minimal4_.spriteSheetUrls);
     this.#assetsToLoad.push(...font_saint11Minimal5_.spriteSheetUrls);
 
     const fixedTimestepFps =
-      engineInitParams.fixedTimestep === "60fps"
+      engineConfig.fixedTimestep === "60fps"
         ? 60
-        : engineInitParams.fixedTimestep === "30fps"
+        : engineConfig.fixedTimestep === "30fps"
           ? 30
           : throwError(
-              `Unsupported fixedTimestep: "${engineInitParams.fixedTimestep}"`,
+              `Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`,
             );
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
     this.#gameCanvasSize =
-      engineInitParams.gameCanvasSize === "64x64"
+      engineConfig.gameCanvasSize === "64x64"
         ? v_(64, 64)
-        : engineInitParams.gameCanvasSize === "128x128"
+        : engineConfig.gameCanvasSize === "128x128"
           ? v_(128, 128)
-          : engineInitParams.gameCanvasSize === "256x256"
+          : engineConfig.gameCanvasSize === "256x256"
             ? v_(256, 256)
             : throwError(
-                `Unsupported gameCanvasSize: "${engineInitParams.gameCanvasSize}"`,
+                `Unsupported gameCanvasSize: "${engineConfig.gameCanvasSize}"`,
               );
 
     this.gameInput = new GameInput({
-      enableDebugToggle: engineInitParams.debugMode.available ?? false,
-      enabledFrameByFrameControls:
-        engineInitParams.frameByFrame.available ?? false,
+      enableDebugToggle: engineConfig.debugMode.available ?? false,
+      enabledFrameByFrameControls: engineConfig.frameByFrame.available ?? false,
       browserType: this.#browserType,
     });
 
@@ -232,36 +231,30 @@ export class Engine {
       assets: this.assets,
     });
 
-    if (engineInitParams.debugMode.fpsDisplay?.enabled) {
+    if (engineConfig.debugMode.fpsDisplay?.enabled) {
       this.#fpsDisplay = new FpsDisplay(this.drawApi, this.#gameCanvasSize, {
-        color: engineInitParams.debugMode.fpsDisplay.color,
-        placement: engineInitParams.debugMode.fpsDisplay.placement,
+        color: engineConfig.debugMode.fpsDisplay.color,
+        placement: engineConfig.debugMode.fpsDisplay.placement,
       });
     }
   }
 
   async init(): Promise<OnAssetsLoaded> {
-    Logger.infoBeetPx(
-      `BeetPx ${window.BEETPX__VERSION} will be initialized now`,
-    );
     await this.#assetLoader.loadAssets(this.#assetsToLoad);
-
-    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} initialized`);
-
     return {
       startGame: this.#startGame.bind(this),
     };
   }
 
-  setOnStarted(onStarted: () => void) {
+  setOnStarted(onStarted?: () => void) {
     this.#onStarted = onStarted;
   }
 
-  setOnUpdate(onUpdate: () => void) {
+  setOnUpdate(onUpdate?: () => void) {
     this.#onUpdate = onUpdate;
   }
 
-  setOnDraw(onDraw: () => void) {
+  setOnDraw(onDraw?: () => void) {
     this.#onDraw = onDraw;
   }
 
