@@ -347,6 +347,7 @@ declare class DrawApi {
     drawLine(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawRect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawRectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    drawRectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawEllipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawEllipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
@@ -709,6 +710,7 @@ declare class BeetPx {
     static drawLine: DrawApi["drawLine"];
     static drawRect: DrawApi["drawRect"];
     static drawRectFilled: DrawApi["drawRectFilled"];
+    static drawRectOutsideFilled: DrawApi["drawRectOutsideFilled"];
     static drawEllipse: DrawApi["drawEllipse"];
     static drawEllipseFilled: DrawApi["drawEllipseFilled"];
     /**

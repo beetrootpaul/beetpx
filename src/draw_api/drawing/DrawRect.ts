@@ -6,6 +6,8 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d } from "../../misc/Vector2d";
 import { BpxDrawingPattern } from "../DrawingPattern";
 
+export type RectFillMode = "none" | "inside" | "outside";
+
 export class DrawRect {
   readonly #canvas: Canvas;
 
@@ -17,21 +19,13 @@ export class DrawRect {
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
-    fill: boolean,
+    fill: RectFillMode,
     pattern: BpxDrawingPattern,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
       xy.round(),
       xy.add(wh).round(),
     );
-
-    // avoid all computations if the rectangle has a size of 0 in either direction
-    if (
-      xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
-      xyMaxExclusive.y - xyMinInclusive.y <= 0
-    ) {
-      return;
-    }
 
     // avoid all computations if the whole rectangle is outside the canvas
     if (
@@ -56,14 +50,66 @@ export class DrawRect {
 
     const fp = pattern;
 
-    for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
-      if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
-        for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+    // a rectangle itself (no fill)
+    for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+      this.#drawPixel(x, xyMinInclusive.y, c1, c2, fp, sn);
+      this.#drawPixel(x, xyMaxExclusive.y - 1, c1, c2, fp, sn);
+    }
+    for (let y = xyMinInclusive.y + 1; y < xyMaxExclusive.y - 1; y += 1) {
+      this.#drawPixel(xyMinInclusive.x, y, c1, c2, fp, sn);
+      this.#drawPixel(xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
+    }
+
+    // inside fill
+    if (fill === "inside") {
+      for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+        for (let y = xyMinInclusive.y + 1; y < xyMaxExclusive.y - 1; y += 1) {
           this.#drawPixel(x, y, c1, c2, fp, sn);
         }
-      } else {
-        this.#drawPixel(xyMinInclusive.x, y, c1, c2, fp, sn);
-        this.#drawPixel(xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
+      }
+    }
+
+    // outside fill
+    if (fill === "outside") {
+      for (let x = 0; x < xyMinInclusive.x; x += 1) {
+        // left-top area
+        for (let y = 0; y < xyMinInclusive.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
+        // left area
+        for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
+        // left-bottom area
+        for (let y = xyMaxExclusive.y; y < this.#canvas.canvasSize.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
+      }
+      // top area
+      for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+        for (let y = 0; y < xyMinInclusive.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
+      }
+      // bottom area
+      for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+        for (let y = xyMaxExclusive.y; y < this.#canvas.canvasSize.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
+      }
+      for (let x = xyMaxExclusive.x; x < this.#canvas.canvasSize.x; x += 1) {
+        // right-top area
+        for (let y = 0; y < xyMinInclusive.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
+        // right area
+        for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
+        // right-bottom area
+        for (let y = xyMaxExclusive.y; y < this.#canvas.canvasSize.y; y += 1) {
+          this.#drawPixel(x, y, c1, c2, fp, sn);
+        }
       }
     }
   }

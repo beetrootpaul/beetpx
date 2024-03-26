@@ -241,6 +241,12 @@ export class BeetPx {
     return this.#tryGetEngine().drawApi.drawRectFilled(...args);
   };
 
+  static drawRectOutsideFilled: DrawApi["drawRectOutsideFilled"] = (
+    ...args
+  ) => {
+    return this.#tryGetEngine().drawApi.drawRectOutsideFilled(...args);
+  };
+
   static drawEllipse: DrawApi["drawEllipse"] = (...args) => {
     return this.#tryGetEngine().drawApi.drawEllipse(...args);
   };

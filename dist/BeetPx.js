@@ -188,6 +188,9 @@ BeetPx.drawRect = (...args) => {
 BeetPx.drawRectFilled = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.drawRectFilled(...args);
 };
+BeetPx.drawRectOutsideFilled = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.drawRectOutsideFilled(...args);
+};
 BeetPx.drawEllipse = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.drawEllipse(...args);
 };

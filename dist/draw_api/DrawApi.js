@@ -77,10 +77,13 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(this.cameraXy), wh, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawRect(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, false, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, "none", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawRectFilled(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, true, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, "inside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+    }
+    drawRectOutsideFilled(xy, wh, color) {
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, "outside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawEllipse(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, false, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));

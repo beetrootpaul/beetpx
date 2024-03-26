@@ -122,7 +122,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#rect.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, "none", this.#pattern);
   }
 
   drawRectFilled(
@@ -130,7 +130,15 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#rect.draw(xy.sub(this.cameraXy), wh, color, true, this.#pattern);
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, "inside", this.#pattern);
+  }
+
+  drawRectOutsideFilled(
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
+  ): void {
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, "outside", this.#pattern);
   }
 
   drawEllipse(

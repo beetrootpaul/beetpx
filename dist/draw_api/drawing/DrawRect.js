@@ -20,11 +20,6 @@ export class DrawRect {
     draw(xy, wh, color, fill, pattern) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
         
-        if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
-            xyMaxExclusive.y - xyMinInclusive.y <= 0) {
-            return;
-        }
-        
         if (!__classPrivateFieldGet(this, _DrawRect_canvas, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
@@ -34,15 +29,64 @@ export class DrawRect {
             ? __classPrivateFieldGet(this, _DrawRect_canvas, "f").getMostRecentSnapshot()
             : null;
         const fp = pattern;
-        for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
-            if (fill || y === xyMinInclusive.y || y === xyMaxExclusive.y - 1) {
-                for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+        
+        for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+            __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, xyMinInclusive.y, c1, c2, fp, sn);
+            __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, xyMaxExclusive.y - 1, c1, c2, fp, sn);
+        }
+        for (let y = xyMinInclusive.y + 1; y < xyMaxExclusive.y - 1; y += 1) {
+            __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMinInclusive.x, y, c1, c2, fp, sn);
+            __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
+        }
+        
+        if (fill === "inside") {
+            for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+                for (let y = xyMinInclusive.y + 1; y < xyMaxExclusive.y - 1; y += 1) {
                     __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
                 }
             }
-            else {
-                __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMinInclusive.x, y, c1, c2, fp, sn);
-                __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
+        }
+        
+        if (fill === "outside") {
+            for (let x = 0; x < xyMinInclusive.x; x += 1) {
+                
+                for (let y = 0; y < xyMinInclusive.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
+                
+                for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
+                
+                for (let y = xyMaxExclusive.y; y < __classPrivateFieldGet(this, _DrawRect_canvas, "f").canvasSize.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
+            }
+            
+            for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+                for (let y = 0; y < xyMinInclusive.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
+            }
+            
+            for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
+                for (let y = xyMaxExclusive.y; y < __classPrivateFieldGet(this, _DrawRect_canvas, "f").canvasSize.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
+            }
+            for (let x = xyMaxExclusive.x; x < __classPrivateFieldGet(this, _DrawRect_canvas, "f").canvasSize.x; x += 1) {
+                
+                for (let y = 0; y < xyMinInclusive.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
+                
+                for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
+                
+                for (let y = xyMaxExclusive.y; y < __classPrivateFieldGet(this, _DrawRect_canvas, "f").canvasSize.y; y += 1) {
+                    __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
+                }
             }
         }
     }
