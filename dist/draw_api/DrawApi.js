@@ -73,7 +73,7 @@ export class DrawApi {
     drawPixels(pixels, xy, color, opts) {
         const centerXy = opts?.centerXy ?? [false, false];
         if (centerXy[0] || centerXy[1]) {
-            xy = xy.sub(centerXy[0] ? pixels.size.x / 2 : 0, centerXy[1] ? pixels.size.y / 2 : 0);
+            xy = xy.sub(centerXy[0] ? (pixels.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0, centerXy[1] ? (pixels.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0);
         }
         __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
@@ -106,7 +106,7 @@ export class DrawApi {
     drawSprite(sprite, xy, opts) {
         const centerXy = opts?.centerXy ?? [false, false];
         if (centerXy[0] || centerXy[1]) {
-            xy = xy.sub(centerXy[0] ? sprite.size.x / 2 : 0, centerXy[1] ? sprite.size.y / 2 : 0);
+            xy = xy.sub(centerXy[0] ? (sprite.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0, centerXy[1] ? (sprite.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0);
         }
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
         __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));

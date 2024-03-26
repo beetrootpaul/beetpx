@@ -360,6 +360,34 @@ describe("DrawPixels", () => {
     });
   });
 
+  test("scale vs centering", () => {
+    const dts = drawingTestSetup(10, 8, c0);
+
+    dts.drawApi.drawPixels(
+      BpxPixels.from(`
+          ###
+          #--
+        `),
+      v_(5, 4),
+      c1,
+      { scaleXy: v_(2, 3), centerXy: [true, true] },
+    );
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+          - - - - - - - - - -
+          - - # # # # # # - -
+          - - # # # # # # - -
+          - - # # # # # # - -
+          - - # # - - - - - -
+          - - # # - - - - - -
+          - - # # - - - - - -
+          - - - - - - - - - -
+        `,
+    });
+  });
+
   test("clipping: left edge", () => {
     const dts = drawingTestSetup(6, 6, c0);
 

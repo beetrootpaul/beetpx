@@ -428,6 +428,38 @@ describe("DrawSprite", () => {
     });
   });
 
+  test("scale vs centering", () => {
+    const dts = drawingTestSetup(8, 6, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      image: `
+        # : % =
+        # : = %
+        # % : =
+        # = : %
+      `,
+    });
+    const s = spr_(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.drawSprite(s(2, 2, 1, 1), v_(4, 3), {
+      scaleXy: v_(3, 2),
+      centerXy: [true, true],
+    });
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      expectedImageAsAscii: `
+          - - - - - - - -
+          - : : : = = = -
+          - : : : = = = -
+          - % % % : : : -
+          - % % % : : : -
+          - - - - - - - -
+        `,
+    });
+  });
+
   test("sprite vs source image clipping: left edge", () => {
     const dts = drawingTestSetup(8, 8, c0);
     const image = new TestImage({

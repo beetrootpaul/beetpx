@@ -106,8 +106,8 @@ export class DrawApi {
     const centerXy = opts?.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
       xy = xy.sub(
-        centerXy[0] ? pixels.size.x / 2 : 0,
-        centerXy[1] ? pixels.size.y / 2 : 0,
+        centerXy[0] ? (pixels.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0,
+        centerXy[1] ? (pixels.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0,
       );
     }
 
@@ -209,8 +209,8 @@ export class DrawApi {
     const centerXy = opts?.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
       xy = xy.sub(
-        centerXy[0] ? sprite.size.x / 2 : 0,
-        centerXy[1] ? sprite.size.y / 2 : 0,
+        centerXy[0] ? (sprite.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0,
+        centerXy[1] ? (sprite.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0,
       );
     }
 

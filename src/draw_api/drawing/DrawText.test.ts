@@ -384,7 +384,7 @@ describe("DrawText", () => {
     });
   });
 
-  test("centering + scale", () => {
+  test("scale vs centering", () => {
     dts = drawingTestSetup(26, 18, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
