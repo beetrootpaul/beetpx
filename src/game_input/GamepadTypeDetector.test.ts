@@ -94,7 +94,6 @@ function gamepad(id: string): Gamepad {
     mapping: "",
     axes: [],
     buttons: [],
-    hapticActuators: [],
     vibrationActuator: null,
     timestamp: 1,
   };
