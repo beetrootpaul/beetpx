@@ -2,7 +2,7 @@
 
 ![BeetPx logo](./logo/BeetPx%20logo%20(x5).png)
 
-> A TypeScript engine for low-res browser games.
+> A TypeScript engine for pixel art browser games.
 
 ## Getting Started
 

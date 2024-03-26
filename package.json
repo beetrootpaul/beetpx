@@ -3,7 +3,7 @@
   "version": "0.35.0",
   "author": "Beetroot Paul",
   "license": "MIT",
-  "description": "A TypeScript engine for low-res browser games.",
+  "description": "A TypeScript engine for pixel art browser games.",
   "keywords": [
     "browser",
     "browser-games",

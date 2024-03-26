@@ -39,13 +39,9 @@ export type BpxEngineConfig = {
     available?: boolean;
     /** If `true`, then the debug mode will be enabled on start no matter what its persisted state was. */
     forceEnabledOnStart?: boolean;
-    // TODO: USE IT
     fpsDisplay?: {
-      // TODO: USE IT
       enabled?: boolean;
-      // TODO: USE IT
       color?: BpxRgbColor;
-      // TODO: USE IT
       placement?: FpsDisplayPlacement;
     };
   };
