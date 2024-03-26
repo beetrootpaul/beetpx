@@ -6,6 +6,8 @@ import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d } from "../../misc/Vector2d";
 import { BpxDrawingPattern } from "../DrawingPattern";
 
+export type EllipseFillMode = "none" | "inside" | "outside";
+
 export class DrawEllipse {
   readonly #canvas: Canvas;
 
@@ -18,7 +20,7 @@ export class DrawEllipse {
     xy: BpxVector2d,
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
-    fill: boolean,
+    fill: EllipseFillMode,
     pattern: BpxDrawingPattern,
   ): void {
     const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
@@ -82,12 +84,21 @@ export class DrawEllipse {
       // DRAW THE CURRENT PIXEL IN EACH QUADRANT
       //
 
-      this.#drawPixel(right, bottom, c1, c2, p, sn);
-      this.#drawPixel(left, bottom, c1, c2, p, sn);
       this.#drawPixel(left, top, c1, c2, p, sn);
       this.#drawPixel(right, top, c1, c2, p, sn);
-      if (fill) {
+      this.#drawPixel(right, bottom, c1, c2, p, sn);
+      this.#drawPixel(left, bottom, c1, c2, p, sn);
+      if (fill === "inside") {
         for (let x = left + 1; x < right; ++x) {
+          this.#drawPixel(x, top, c1, c2, p, sn);
+          this.#drawPixel(x, bottom, c1, c2, p, sn);
+        }
+      } else if (fill === "outside") {
+        for (let x = 0; x < left; ++x) {
+          this.#drawPixel(x, top, c1, c2, p, sn);
+          this.#drawPixel(x, bottom, c1, c2, p, sn);
+        }
+        for (let x = right + 1; x < this.#canvas.canvasSize.x; ++x) {
           this.#drawPixel(x, top, c1, c2, p, sn);
           this.#drawPixel(x, bottom, c1, c2, p, sn);
         }
@@ -122,10 +133,42 @@ export class DrawEllipse {
     while (bottom - top <= b) {
       this.#drawPixel(left - 1, bottom, c1, c2, p, sn);
       this.#drawPixel(right + 1, bottom, c1, c2, p, sn);
+      if (fill === "outside") {
+        for (let x = 0; x < left - 1; ++x) {
+          this.#drawPixel(x, bottom, c1, c2, p, sn);
+        }
+        for (let x = right + 2; x < this.#canvas.canvasSize.x; ++x) {
+          this.#drawPixel(x, bottom, c1, c2, p, sn);
+        }
+      }
       bottom += 1;
+
       this.#drawPixel(left - 1, top, c1, c2, p, sn);
       this.#drawPixel(right + 1, top, c1, c2, p, sn);
+      if (fill === "outside") {
+        for (let x = 0; x < left - 1; ++x) {
+          this.#drawPixel(x, top, c1, c2, p, sn);
+        }
+        for (let x = right + 2; x < this.#canvas.canvasSize.x; ++x) {
+          this.#drawPixel(x, top, c1, c2, p, sn);
+        }
+      }
       top -= 1;
+    }
+
+    //
+    // DRAW THE OUTSIDE FILL ABOVE AND BELOW THE ELLIPSE
+    //
+
+    if (fill === "outside") {
+      for (let x = 0; x < this.#canvas.canvasSize.x; ++x) {
+        for (let y = 0; y < top + 1; ++y) {
+          this.#drawPixel(x, y, c1, c2, p, sn);
+        }
+        for (let y = bottom; y < this.#canvas.canvasSize.y; ++y) {
+          this.#drawPixel(x, y, c1, c2, p, sn);
+        }
+      }
     }
   }
 

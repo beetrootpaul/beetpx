@@ -38,16 +38,16 @@ export class DrawRect {
             __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMinInclusive.x, y, c1, c2, fp, sn);
             __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
         }
-        
         if (fill === "inside") {
+            
             for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
                 for (let y = xyMinInclusive.y + 1; y < xyMaxExclusive.y - 1; y += 1) {
                     __classPrivateFieldGet(this, _DrawRect_instances, "m", _DrawRect_drawPixel).call(this, x, y, c1, c2, fp, sn);
                 }
             }
         }
-        
-        if (fill === "outside") {
+        else if (fill === "outside") {
+            
             for (let x = 0; x < xyMinInclusive.x; x += 1) {
                 
                 for (let y = 0; y < xyMinInclusive.y; y += 1) {

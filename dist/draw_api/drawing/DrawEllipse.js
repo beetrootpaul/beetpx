@@ -54,12 +54,22 @@ export class DrawEllipse {
             
             
             
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, bottom, c1, c2, p, sn);
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, bottom, c1, c2, p, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, top, c1, c2, p, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, top, c1, c2, p, sn);
-            if (fill) {
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, bottom, c1, c2, p, sn);
+            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, bottom, c1, c2, p, sn);
+            if (fill === "inside") {
                 for (let x = left + 1; x < right; ++x) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                }
+            }
+            else if (fill === "outside") {
+                for (let x = 0; x < left; ++x) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                }
+                for (let x = right + 1; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
                     __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
                     __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
                 }
@@ -88,10 +98,39 @@ export class DrawEllipse {
         while (bottom - top <= b) {
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, bottom, c1, c2, p, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, bottom, c1, c2, p, sn);
+            if (fill === "outside") {
+                for (let x = 0; x < left - 1; ++x) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                }
+                for (let x = right + 2; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                }
+            }
             bottom += 1;
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, top, c1, c2, p, sn);
             __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, top, c1, c2, p, sn);
+            if (fill === "outside") {
+                for (let x = 0; x < left - 1; ++x) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
+                }
+                for (let x = right + 2; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
+                }
+            }
             top -= 1;
+        }
+        
+        
+        
+        if (fill === "outside") {
+            for (let x = 0; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
+                for (let y = 0; y < top + 1; ++y) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, y, c1, c2, p, sn);
+                }
+                for (let y = bottom; y < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.y; ++y) {
+                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, y, c1, c2, p, sn);
+                }
+            }
         }
     }
 }

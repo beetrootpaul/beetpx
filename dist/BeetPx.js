@@ -197,6 +197,9 @@ BeetPx.drawEllipse = (...args) => {
 BeetPx.drawEllipseFilled = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.drawEllipseFilled(...args);
 };
+BeetPx.drawEllipseOutsideFilled = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).drawApi.drawEllipseOutsideFilled(...args);
+};
 /**
  * @returns previous sprite color mapping
  */

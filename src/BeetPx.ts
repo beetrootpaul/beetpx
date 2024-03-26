@@ -255,6 +255,12 @@ export class BeetPx {
     return this.#tryGetEngine().drawApi.drawEllipseFilled(...args);
   };
 
+  static drawEllipseOutsideFilled: DrawApi["drawEllipseOutsideFilled"] = (
+    ...args
+  ) => {
+    return this.#tryGetEngine().drawApi.drawEllipseOutsideFilled(...args);
+  };
+
   /**
    * @returns previous sprite color mapping
    */

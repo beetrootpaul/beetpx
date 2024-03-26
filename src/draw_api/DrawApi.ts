@@ -146,7 +146,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
+    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, "none", this.#pattern);
   }
 
   drawEllipseFilled(
@@ -154,7 +154,27 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, true, this.#pattern);
+    this.#ellipse.draw(
+      xy.sub(this.cameraXy),
+      wh,
+      color,
+      "inside",
+      this.#pattern,
+    );
+  }
+
+  drawEllipseOutsideFilled(
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
+  ): void {
+    this.#ellipse.draw(
+      xy.sub(this.cameraXy),
+      wh,
+      color,
+      "outside",
+      this.#pattern,
+    );
   }
 
   setSpriteColorMapping(

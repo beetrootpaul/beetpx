@@ -86,10 +86,13 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, "outside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawEllipse(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, false, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, "none", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawEllipseFilled(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, true, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, "inside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+    }
+    drawEllipseOutsideFilled(xy, wh, color) {
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, "outside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     setSpriteColorMapping(spriteColorMapping) {
         const prev = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f");

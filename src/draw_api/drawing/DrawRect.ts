@@ -60,17 +60,15 @@ export class DrawRect {
       this.#drawPixel(xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
     }
 
-    // inside fill
     if (fill === "inside") {
+      // inside fill
       for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
         for (let y = xyMinInclusive.y + 1; y < xyMaxExclusive.y - 1; y += 1) {
           this.#drawPixel(x, y, c1, c2, fp, sn);
         }
       }
-    }
-
-    // outside fill
-    if (fill === "outside") {
+    } else if (fill === "outside") {
+      // outside fill
       for (let x = 0; x < xyMinInclusive.x; x += 1) {
         // left-top area
         for (let y = 0; y < xyMinInclusive.y; y += 1) {

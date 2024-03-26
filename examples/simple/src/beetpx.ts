@@ -38,6 +38,9 @@ b_.init({
   },
   onDraw() {
     b_.clearCanvas(rgb_p8_.storm);
+    b_.drawEllipseFilled(circleMovementCenter.sub(32 - 2), v_(64 - 4), rgb_p8_.moss);
+    b_.drawEllipse(circleMovementCenter.sub(32), v_(64), rgb_p8_.ember);
+    b_.drawEllipseOutsideFilled(circleMovementCenter.sub(32 + 2), v_(64 + 4), rgb_p8_.moss);
     b_.drawSprite(logoSprite, logoPosition, { centerXy: [true, true] });
     b_.drawText(`PREV_COMMIT=${window.PREV_COMMIT}`, v_(1, 122), rgb_p8_.dusk);
   },
