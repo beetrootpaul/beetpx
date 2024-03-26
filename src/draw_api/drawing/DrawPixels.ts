@@ -19,15 +19,20 @@ export class DrawPixels {
     targetXy: BpxVector2d,
     color: BpxRgbColor,
     scaleXy: BpxVector2d,
+    flipXy: [boolean, boolean],
     pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
     scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
 
     for (let bitsY = 0; bitsY < pixels.asciiRows.length; bitsY += 1) {
-      const yBase = targetXy.y + bitsY * scaleXy.y;
+      const yBase =
+        targetXy.y +
+        (flipXy[1] ? pixels.size.y - 1 - bitsY : bitsY) * scaleXy.y;
       for (let bitsX = 0; bitsX < pixels.asciiRows[bitsY]!.length; bitsX += 1) {
-        const xBase = targetXy.x + bitsX * scaleXy.x;
+        const xBase =
+          targetXy.x +
+          (flipXy[0] ? pixels.size.x - 1 - bitsX : bitsX) * scaleXy.x;
 
         if (pixels.asciiRows[bitsY]![bitsX] !== "#") {
           continue;

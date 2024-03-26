@@ -99,7 +99,6 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      // TODO
       flipXy?: [boolean, boolean];
     },
   ): void {
@@ -116,6 +115,7 @@ export class DrawApi {
       xy.sub(this.cameraXy),
       color,
       opts?.scaleXy ?? v_1_1_,
+      opts?.flipXy ?? [false, false],
       this.#pattern,
     );
   }

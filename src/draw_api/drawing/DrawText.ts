@@ -63,6 +63,7 @@ export class DrawText {
           xy,
           arrangedGlyph.color,
           scaleXy,
+          [false, false],
           pattern,
         );
       } else {
