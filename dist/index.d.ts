@@ -342,7 +342,9 @@ declare class DrawApi {
     setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
     drawPixel(xy: BpxVector2d, color: BpxRgbColor): void;
     drawPixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
     }): void;
     drawLine(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawRect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
@@ -355,11 +357,13 @@ declare class DrawApi {
     drawSprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
     }): void;
     useFont(font: BpxFont): BpxFont;
     measureText(text: string, opts?: {
-        scaleXy?: BpxVector2d;
         centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
     }): {
         wh: BpxVector2d;
         offset: BpxVector2d;
@@ -367,6 +371,7 @@ declare class DrawApi {
     drawText(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
         colorMarkers?: BpxTextColorMarkers;
     }): void;
     takeCanvasSnapshot(): void;

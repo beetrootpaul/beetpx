@@ -134,6 +134,88 @@ describe("DrawPixels", () => {
     });
   });
 
+  describe("centering", () => {
+    test("no centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [false, false],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - # # # - -
+        - - - - - # # # # -
+        - - - - - - - - - -
+      `,
+      });
+    });
+
+    test("X centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [true, false],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - # # # - - - -
+        - - - # # # # - - -
+        - - - - - - - - - -
+      `,
+      });
+    });
+
+    test("Y centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [false, true],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - # # # - -
+        - - - - - # # # # -
+        - - - - - - - - - -
+        - - - - - - - - - -
+      `,
+      });
+    });
+
+    test("XY centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [true, true],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - # # # - - - -
+        - - - # # # # - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+      `,
+      });
+    });
+  });
+
   test("rounding", () => {
     const dts = drawingTestSetup(7, 6, c0);
 

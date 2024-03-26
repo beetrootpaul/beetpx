@@ -71,6 +71,10 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(this.cameraXy), color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawPixels(pixels, xy, color, opts) {
+        const centerXy = opts?.centerXy ?? [false, false];
+        if (centerXy[0] || centerXy[1]) {
+            xy = xy.sub(centerXy[0] ? pixels.size.x / 2 : 0, centerXy[1] ? pixels.size.y / 2 : 0);
+        }
         __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawLine(xy, wh, color) {

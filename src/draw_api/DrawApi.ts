@@ -97,9 +97,20 @@ export class DrawApi {
     xy: BpxVector2d,
     color: BpxRgbColor,
     opts?: {
+      centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
+      // TODO
+      flipXy?: [boolean, boolean];
     },
   ): void {
+    const centerXy = opts?.centerXy ?? [false, false];
+    if (centerXy[0] || centerXy[1]) {
+      xy = xy.sub(
+        centerXy[0] ? pixels.size.x / 2 : 0,
+        centerXy[1] ? pixels.size.y / 2 : 0,
+      );
+    }
+
     this.#pixels.draw(
       pixels,
       xy.sub(this.cameraXy),
@@ -191,6 +202,8 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
+      // TODO
+      flipXy?: [boolean, boolean];
     },
   ): void {
     const centerXy = opts?.centerXy ?? [false, false];
@@ -220,7 +233,12 @@ export class DrawApi {
 
   measureText(
     text: string,
-    opts?: { scaleXy?: BpxVector2d; centerXy?: [boolean, boolean] },
+    opts?: {
+      centerXy?: [boolean, boolean];
+      scaleXy?: BpxVector2d;
+      // TODO
+      flipXy?: [boolean, boolean];
+    },
   ): { wh: BpxVector2d; offset: BpxVector2d } {
     let maxLineNumber = 0;
     let maxX = 0;
@@ -257,6 +275,8 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
+      // TODO
+      flipXy?: [boolean, boolean];
       colorMarkers?: BpxTextColorMarkers;
     },
   ): void {
