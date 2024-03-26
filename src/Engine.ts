@@ -37,7 +37,7 @@ export type BpxEngineConfig = {
   debugMode?: {
     /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
     available?: boolean;
-    /** If `true`, then the debug mode will be enabled no matter what its persisted state was. */
+    /** If `true`, then the debug mode will be enabled on start no matter what its persisted state was. */
     forceEnabledOnStart?: boolean;
     // TODO: USE IT
     fpsDisplay?: {
@@ -52,6 +52,8 @@ export type BpxEngineConfig = {
   frameByFrame?: {
     /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
     available?: boolean;
+    /** If `true`, then the frame-by-frame mode will be activated from the very start. */
+    activateOnStart?: boolean;
   };
 };
 
@@ -111,9 +113,6 @@ export class Engine {
   constructor(engineConfig: BpxEngineConfig = {}) {
     engineConfig.gameCanvasSize ??= "128x128";
     engineConfig.fixedTimestep ??= "60fps";
-    engineConfig.assets ??= [];
-    engineConfig.debugMode ??= { available: false };
-    engineConfig.frameByFrame ??= { available: false };
 
     window.addEventListener("error", (event) => {
       HtmlTemplate.showError(event.message);
@@ -137,7 +136,7 @@ export class Engine {
     });
 
     DebugMode.loadFromStorage();
-    if (!engineConfig.debugMode.available) {
+    if (!engineConfig.debugMode?.available) {
       DebugMode.enabled = false;
     } else {
       if (engineConfig.debugMode.forceEnabledOnStart) {
@@ -145,9 +144,16 @@ export class Engine {
       }
     }
 
+    if (
+      engineConfig.frameByFrame?.available &&
+      engineConfig.frameByFrame?.activateOnStart
+    ) {
+      FrameByFrame.active = true;
+    }
+
     Logger.debugBeetPx("Engine init params:", engineConfig);
 
-    this.#assetsToLoad = engineConfig.assets;
+    this.#assetsToLoad = engineConfig.assets ?? [];
     this.#assetsToLoad.push(...font_pico8_.spriteSheetUrls);
     this.#assetsToLoad.push(...font_saint11Minimal4_.spriteSheetUrls);
     this.#assetsToLoad.push(...font_saint11Minimal5_.spriteSheetUrls);
@@ -175,8 +181,8 @@ export class Engine {
               );
 
     this.gameInput = new GameInput({
-      enableDebugToggle: engineConfig.debugMode.available ?? false,
-      enabledFrameByFrameControls: engineConfig.frameByFrame.available ?? false,
+      enableDebugToggle: engineConfig.debugMode?.available ?? false,
+      enableFrameByFrameControls: engineConfig.frameByFrame?.available ?? false,
       browserType: this.#browserType,
     });
 
@@ -231,7 +237,7 @@ export class Engine {
       assets: this.assets,
     });
 
-    if (engineConfig.debugMode.fpsDisplay?.enabled) {
+    if (engineConfig.debugMode?.fpsDisplay?.enabled) {
       this.#fpsDisplay = new FpsDisplay(this.drawApi, this.#gameCanvasSize, {
         color: engineConfig.debugMode.fpsDisplay.color,
         placement: engineConfig.debugMode.fpsDisplay.placement,
@@ -313,11 +319,11 @@ export class Engine {
           DebugMode.enabled = !DebugMode.enabled;
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
-          FrameByFrame.enabled = !FrameByFrame.enabled;
+          FrameByFrame.active = !FrameByFrame.active;
         }
 
         const shouldUpdate =
-          !FrameByFrame.enabled ||
+          !FrameByFrame.active ||
           this.gameInput.buttonFrameByFrameStep.wasJustPressed;
 
         const hasAnyInteractionHappened = this.gameInput.update({
@@ -334,7 +340,7 @@ export class Engine {
         }
 
         if (shouldUpdate) {
-          if (FrameByFrame.enabled) {
+          if (FrameByFrame.active) {
             Logger.infoBeetPx(
               `Running onUpdate for frame: ${this.#currentFrameNumber}`,
             );

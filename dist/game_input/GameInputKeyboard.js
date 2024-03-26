@@ -41,7 +41,7 @@ export class GameInputKeyboard {
         if (params.enableDebugToggle) {
             __classPrivateFieldGet(this, _GameInputKeyboard_keyMapping, "f").set(";", "debug_toggle");
         }
-        if (params.enabledFrameByFrameControls) {
+        if (params.enableFrameByFrameControls) {
             __classPrivateFieldGet(this, _GameInputKeyboard_keyMapping, "f").set(",", "frame_by_frame_toggle");
             __classPrivateFieldGet(this, _GameInputKeyboard_keyMapping, "f").set(".", "frame_by_frame_step");
         }

@@ -9,16 +9,16 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _a, _FrameByFrame_enabled;
+var _a, _FrameByFrame_active;
 import { Logger } from "../logger/Logger";
 export class FrameByFrame {
-    static get enabled() {
-        return __classPrivateFieldGet(_a, _a, "f", _FrameByFrame_enabled);
+    static get active() {
+        return __classPrivateFieldGet(_a, _a, "f", _FrameByFrame_active);
     }
-    static set enabled(value) {
-        __classPrivateFieldSet(this, _a, value, "f", _FrameByFrame_enabled);
-        Logger.infoBeetPx(`FrameByFrame flag set to: ${__classPrivateFieldGet(this, _a, "f", _FrameByFrame_enabled)}`);
+    static set active(value) {
+        __classPrivateFieldSet(this, _a, value, "f", _FrameByFrame_active);
+        Logger.infoBeetPx(`FrameByFrame flag set to: ${__classPrivateFieldGet(this, _a, "f", _FrameByFrame_active)}`);
     }
 }
 _a = FrameByFrame;
-_FrameByFrame_enabled = { value: false };
+_FrameByFrame_active = { value: false };

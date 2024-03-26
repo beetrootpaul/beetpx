@@ -43,7 +43,7 @@ export class GameInput {
 
   constructor(params: {
     enableDebugToggle: boolean;
-    enabledFrameByFrameControls: boolean;
+    enableFrameByFrameControls: boolean;
     browserType: BpxBrowserType;
   }) {
     this.gameInputGamepad = new GameInputGamepad({
@@ -53,7 +53,7 @@ export class GameInput {
       new GameInputMouse(),
       new GameInputKeyboard({
         enableDebugToggle: params.enableDebugToggle,
-        enabledFrameByFrameControls: params.enabledFrameByFrameControls,
+        enableFrameByFrameControls: params.enableFrameByFrameControls,
       }),
       new GameInputTouch(),
       this.gameInputGamepad,

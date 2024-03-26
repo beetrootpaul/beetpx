@@ -1,15 +1,15 @@
 import { Logger } from "../logger/Logger";
 
 export class FrameByFrame {
-  static #enabled = false;
+  static #active = false;
 
-  static get enabled(): boolean {
-    return FrameByFrame.#enabled;
+  static get active(): boolean {
+    return FrameByFrame.#active;
   }
 
-  static set enabled(value) {
-    this.#enabled = value;
+  static set active(value) {
+    this.#active = value;
 
-    Logger.infoBeetPx(`FrameByFrame flag set to: ${this.#enabled}`);
+    Logger.infoBeetPx(`FrameByFrame flag set to: ${this.#active}`);
   }
 }

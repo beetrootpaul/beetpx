@@ -436,7 +436,7 @@ declare class GameInput {
     readonly buttonFrameByFrameStep: Button;
     constructor(params: {
         enableDebugToggle: boolean;
-        enabledFrameByFrameControls: boolean;
+        enableFrameByFrameControls: boolean;
         browserType: BpxBrowserType;
     });
     startListening(): void;
@@ -484,7 +484,7 @@ type BpxEngineConfig = {
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;
-        /** If `true`, then the debug mode will be enabled no matter what its persisted state was. */
+        /** If `true`, then the debug mode will be enabled on start no matter what its persisted state was. */
         forceEnabledOnStart?: boolean;
         fpsDisplay?: {
             enabled?: boolean;
@@ -495,6 +495,8 @@ type BpxEngineConfig = {
     frameByFrame?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;
+        /** If `true`, then the frame-by-frame mode will be activated from the very start. */
+        activateOnStart?: boolean;
     };
 };
 type OnAssetsLoaded = {
