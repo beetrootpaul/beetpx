@@ -61,9 +61,6 @@ export class Engine {
         _Engine_alreadyResumedAudioContext.set(this, false);
         engineConfig.gameCanvasSize ?? (engineConfig.gameCanvasSize = "128x128");
         engineConfig.fixedTimestep ?? (engineConfig.fixedTimestep = "60fps");
-        engineConfig.assets ?? (engineConfig.assets = []);
-        engineConfig.debugMode ?? (engineConfig.debugMode = { available: false });
-        engineConfig.frameByFrame ?? (engineConfig.frameByFrame = { available: false });
         window.addEventListener("error", (event) => {
             HtmlTemplate.showError(event.message);
             
@@ -85,7 +82,7 @@ export class Engine {
                 .then(() => { });
         });
         DebugMode.loadFromStorage();
-        if (!engineConfig.debugMode.available) {
+        if (!engineConfig.debugMode?.available) {
             DebugMode.enabled = false;
         }
         else {
@@ -93,8 +90,12 @@ export class Engine {
                 DebugMode.enabled = true;
             }
         }
+        if (engineConfig.frameByFrame?.available &&
+            engineConfig.frameByFrame?.activateOnStart) {
+            FrameByFrame.active = true;
+        }
         Logger.debugBeetPx("Engine init params:", engineConfig);
-        __classPrivateFieldSet(this, _Engine_assetsToLoad, engineConfig.assets, "f");
+        __classPrivateFieldSet(this, _Engine_assetsToLoad, engineConfig.assets ?? [], "f");
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_pico8_.spriteSheetUrls);
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal4_.spriteSheetUrls);
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal5_.spriteSheetUrls);
@@ -112,8 +113,8 @@ export class Engine {
                     ? v_(256, 256)
                     : throwError(`Unsupported gameCanvasSize: "${engineConfig.gameCanvasSize}"`), "f");
         this.gameInput = new GameInput({
-            enableDebugToggle: engineConfig.debugMode.available ?? false,
-            enabledFrameByFrameControls: engineConfig.frameByFrame.available ?? false,
+            enableDebugToggle: engineConfig.debugMode?.available ?? false,
+            enableFrameByFrameControls: engineConfig.frameByFrame?.available ?? false,
             browserType: __classPrivateFieldGet(this, _Engine_browserType, "f"),
         });
         __classPrivateFieldSet(this, _Engine_gameLoop, new GameLoop({
@@ -147,7 +148,7 @@ export class Engine {
             canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),
             assets: this.assets,
         });
-        if (engineConfig.debugMode.fpsDisplay?.enabled) {
+        if (engineConfig.debugMode?.fpsDisplay?.enabled) {
             __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, __classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), {
                 color: engineConfig.debugMode.fpsDisplay.color,
                 placement: engineConfig.debugMode.fpsDisplay.placement,
@@ -216,9 +217,9 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                 DebugMode.enabled = !DebugMode.enabled;
             }
             if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
-                FrameByFrame.enabled = !FrameByFrame.enabled;
+                FrameByFrame.active = !FrameByFrame.active;
             }
-            const shouldUpdate = !FrameByFrame.enabled ||
+            const shouldUpdate = !FrameByFrame.active ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed;
             const hasAnyInteractionHappened = this.gameInput.update({
                 skipGameButtons: !shouldUpdate,
@@ -233,7 +234,7 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                 });
             }
             if (shouldUpdate) {
-                if (FrameByFrame.enabled) {
+                if (FrameByFrame.active) {
                     Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Engine_currentFrameNumber, "f")}`);
                 }
                 __classPrivateFieldGet(this, _Engine_onUpdate, "f")?.call(this);

@@ -152,6 +152,88 @@ describe("DrawPixels", () => {
     });
   });
 
+  describe("centering", () => {
+    test("no centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [false, false],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - # # # - -
+        - - - - - # # # # -
+        - - - - - - - - - -
+      `,
+      });
+    });
+
+    test("X centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [true, false],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - # # # - - - -
+        - - - # # # # - - -
+        - - - - - - - - - -
+      `,
+      });
+    });
+
+    test("Y centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [false, true],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - # # # - -
+        - - - - - # # # # -
+        - - - - - - - - - -
+        - - - - - - - - - -
+      `,
+      });
+    });
+
+    test("XY centering", () => {
+      const dts = drawingTestSetup(10, 6, c0);
+
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+        centerXy: [true, true],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - # # # - - - -
+        - - - # # # # - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+      `,
+      });
+    });
+  });
+
   describe("scale", () => {
     test("an integer positive scale", () => {
       const dts = drawingTestSetup(9, 6, c0);
@@ -275,6 +357,132 @@ describe("DrawPixels", () => {
           - - - - - - - - -
         `,
       });
+    });
+  });
+
+  describe("flip", () => {
+    test("no flip", () => {
+      const dts = drawingTestSetup(5, 4, c0);
+
+      dts.drawApi.drawPixels(
+        BpxPixels.from(`
+          ###
+          #--
+        `),
+        v_(1, 1),
+        c1,
+        { flipXy: [false, false] },
+      );
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - # # # -
+          - # - - -
+          - - - - -
+        `,
+      });
+    });
+
+    test("flip X", () => {
+      const dts = drawingTestSetup(5, 4, c0);
+
+      dts.drawApi.drawPixels(
+        BpxPixels.from(`
+          ###
+          #--
+        `),
+        v_(1, 1),
+        c1,
+        { flipXy: [true, false] },
+      );
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - # # # -
+          - - - # -
+          - - - - -
+        `,
+      });
+    });
+
+    test("flip Y", () => {
+      const dts = drawingTestSetup(5, 4, c0);
+
+      dts.drawApi.drawPixels(
+        BpxPixels.from(`
+          ###
+          #--
+        `),
+        v_(1, 1),
+        c1,
+        { flipXy: [false, true] },
+      );
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - # - - -
+          - # # # -
+          - - - - -
+        `,
+      });
+    });
+
+    test("flip XY", () => {
+      const dts = drawingTestSetup(5, 4, c0);
+
+      dts.drawApi.drawPixels(
+        BpxPixels.from(`
+          ###
+          #--
+        `),
+        v_(1, 1),
+        c1,
+        { flipXy: [true, true] },
+      );
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - -
+          - - - # -
+          - # # # -
+          - - - - -
+        `,
+      });
+    });
+  });
+
+  test("scale vs centering vs flip", () => {
+    const dts = drawingTestSetup(10, 8, c0);
+
+    dts.drawApi.drawPixels(
+      BpxPixels.from(`
+          ###
+          #--
+        `),
+      v_(5, 4),
+      c1,
+      { scaleXy: v_(2, 3), centerXy: [true, true], flipXy: [true, true] },
+    );
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+          - - - - - - - - - -
+          - - - - - - # # - -
+          - - - - - - # # - -
+          - - - - - - # # - -
+          - - # # # # # # - -
+          - - # # # # # # - -
+          - - # # # # # # - -
+          - - - - - - - - - -
+        `,
     });
   });
 

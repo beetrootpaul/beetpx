@@ -241,12 +241,24 @@ export class BeetPx {
     return this.#tryGetEngine().drawApi.drawRectFilled(...args);
   };
 
+  static drawRectOutsideFilled: DrawApi["drawRectOutsideFilled"] = (
+    ...args
+  ) => {
+    return this.#tryGetEngine().drawApi.drawRectOutsideFilled(...args);
+  };
+
   static drawEllipse: DrawApi["drawEllipse"] = (...args) => {
     return this.#tryGetEngine().drawApi.drawEllipse(...args);
   };
 
   static drawEllipseFilled: DrawApi["drawEllipseFilled"] = (...args) => {
     return this.#tryGetEngine().drawApi.drawEllipseFilled(...args);
+  };
+
+  static drawEllipseOutsideFilled: DrawApi["drawEllipseOutsideFilled"] = (
+    ...args
+  ) => {
+    return this.#tryGetEngine().drawApi.drawEllipseOutsideFilled(...args);
   };
 
   /**

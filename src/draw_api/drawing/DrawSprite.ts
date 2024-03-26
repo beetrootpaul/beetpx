@@ -23,6 +23,7 @@ export class DrawSprite {
     sourceImageAsset: BpxImageAsset,
     targetXy: BpxVector2d,
     scaleXy: BpxVector2d,
+    flipXy: [boolean, boolean],
     colorMapping: BpxSpriteColorMapping,
     pattern: BpxDrawingPattern,
   ): void {
@@ -58,9 +59,13 @@ export class DrawSprite {
     );
 
     for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
-      const canvasYBase = targetXy.y + spriteY * scaleXy.y;
+      const canvasYBase =
+        targetXy.y +
+        (flipXy[1] ? sprite.size.y - 1 - spriteY : spriteY) * scaleXy.y;
       for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
-        const canvasXBase = targetXy.x + spriteX * scaleXy.x;
+        const canvasXBase =
+          targetXy.x +
+          (flipXy[0] ? sprite.size.x - 1 - spriteX : spriteX) * scaleXy.x;
 
         for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
           for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {

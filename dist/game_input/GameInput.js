@@ -28,7 +28,7 @@ export class GameInput {
             new GameInputMouse(),
             new GameInputKeyboard({
                 enableDebugToggle: params.enableDebugToggle,
-                enabledFrameByFrameControls: params.enabledFrameByFrameControls,
+                enableFrameByFrameControls: params.enableFrameByFrameControls,
             }),
             new GameInputTouch(),
             this.gameInputGamepad,

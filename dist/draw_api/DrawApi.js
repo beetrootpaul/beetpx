@@ -71,22 +71,32 @@ export class DrawApi {
         __classPrivateFieldGet(this, _DrawApi_pixel, "f").draw(xy.sub(this.cameraXy), color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawPixels(pixels, xy, color, opts) {
-        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        const centerXy = opts?.centerXy ?? [false, false];
+        if (centerXy[0] || centerXy[1]) {
+            xy = xy.sub(centerXy[0] ? (pixels.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0, centerXy[1] ? (pixels.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0);
+        }
+        __classPrivateFieldGet(this, _DrawApi_pixels, "f").draw(pixels, xy.sub(this.cameraXy), color, opts?.scaleXy ?? v_1_1_, opts?.flipXy ?? [false, false], __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawLine(xy, wh, color) {
         __classPrivateFieldGet(this, _DrawApi_line, "f").draw(xy.sub(this.cameraXy), wh, color, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawRect(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, false, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, "none", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawRectFilled(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, true, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, "inside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+    }
+    drawRectOutsideFilled(xy, wh, color) {
+        __classPrivateFieldGet(this, _DrawApi_rect, "f").draw(xy.sub(this.cameraXy), wh, color, "outside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawEllipse(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, false, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, "none", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     drawEllipseFilled(xy, wh, color) {
-        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, true, __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, "inside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+    }
+    drawEllipseOutsideFilled(xy, wh, color) {
+        __classPrivateFieldGet(this, _DrawApi_ellipse, "f").draw(xy.sub(this.cameraXy), wh, color, "outside", __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     setSpriteColorMapping(spriteColorMapping) {
         const prev = __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f");
@@ -96,10 +106,10 @@ export class DrawApi {
     drawSprite(sprite, xy, opts) {
         const centerXy = opts?.centerXy ?? [false, false];
         if (centerXy[0] || centerXy[1]) {
-            xy = xy.sub(centerXy[0] ? sprite.size.x / 2 : 0, centerXy[1] ? sprite.size.y / 2 : 0);
+            xy = xy.sub(centerXy[0] ? (sprite.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0, centerXy[1] ? (sprite.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0);
         }
         const sourceImageAsset = __classPrivateFieldGet(this, _DrawApi_assets, "f").getImageAsset(sprite.imageUrl);
-        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? v_1_1_, __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
+        __classPrivateFieldGet(this, _DrawApi_sprite, "f").draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? v_1_1_, opts?.flipXy ?? [false, false], __classPrivateFieldGet(this, _DrawApi_spriteColorMapping, "f"), __classPrivateFieldGet(this, _DrawApi_pattern, "f"));
     }
     useFont(font) {
         const prev = __classPrivateFieldGet(this, _DrawApi_font, "f");

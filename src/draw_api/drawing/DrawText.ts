@@ -54,6 +54,7 @@ export class DrawText {
           this.#assets.getImageAsset(arrangedGlyph.sprite.imageUrl),
           xy,
           scaleXy,
+          [false, false],
           arrangedGlyph.spriteColorMapping,
           pattern,
         );
@@ -63,6 +64,7 @@ export class DrawText {
           xy,
           arrangedGlyph.color,
           scaleXy,
+          [false, false],
           pattern,
         );
       } else {

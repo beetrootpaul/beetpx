@@ -1,11 +1,5 @@
 import { b_, rgb_p8_, spr_, v_, v_0_0_ } from "../../../src";
 
-declare global {
-  interface Window {
-    PREV_COMMIT: string;
-  }
-}
-
 const logoSprite = spr_("logo.png")(16, 16, 0, 0);
 let circleMovementCenter = v_(64, 64);
 let logoPosition = v_0_0_;
@@ -39,6 +33,5 @@ b_.init({
   onDraw() {
     b_.clearCanvas(rgb_p8_.storm);
     b_.drawSprite(logoSprite, logoPosition, { centerXy: [true, true] });
-    b_.drawText(`PREV_COMMIT=${window.PREV_COMMIT}`, v_(1, 122), rgb_p8_.dusk);
   },
 });

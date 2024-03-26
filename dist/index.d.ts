@@ -342,22 +342,27 @@ declare class DrawApi {
     setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
     drawPixel(xy: BpxVector2d, color: BpxRgbColor): void;
     drawPixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
     }): void;
     drawLine(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawRect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawRectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    drawRectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawEllipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     drawEllipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    drawEllipseOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
     setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
     drawSprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
     }): void;
     useFont(font: BpxFont): BpxFont;
     measureText(text: string, opts?: {
-        scaleXy?: BpxVector2d;
         centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
     }): {
         wh: BpxVector2d;
         offset: BpxVector2d;
@@ -436,7 +441,7 @@ declare class GameInput {
     readonly buttonFrameByFrameStep: Button;
     constructor(params: {
         enableDebugToggle: boolean;
-        enabledFrameByFrameControls: boolean;
+        enableFrameByFrameControls: boolean;
         browserType: BpxBrowserType;
     });
     startListening(): void;
@@ -484,7 +489,7 @@ type BpxEngineConfig = {
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;
-        /** If `true`, then the debug mode will be enabled no matter what its persisted state was. */
+        /** If `true`, then the debug mode will be enabled on start no matter what its persisted state was. */
         forceEnabledOnStart?: boolean;
         fpsDisplay?: {
             enabled?: boolean;
@@ -495,6 +500,8 @@ type BpxEngineConfig = {
     frameByFrame?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;
+        /** If `true`, then the frame-by-frame mode will be activated from the very start. */
+        activateOnStart?: boolean;
     };
 };
 type OnAssetsLoaded = {
@@ -707,8 +714,10 @@ declare class BeetPx {
     static drawLine: DrawApi["drawLine"];
     static drawRect: DrawApi["drawRect"];
     static drawRectFilled: DrawApi["drawRectFilled"];
+    static drawRectOutsideFilled: DrawApi["drawRectOutsideFilled"];
     static drawEllipse: DrawApi["drawEllipse"];
     static drawEllipseFilled: DrawApi["drawEllipseFilled"];
+    static drawEllipseOutsideFilled: DrawApi["drawEllipseOutsideFilled"];
     /**
      * @returns previous sprite color mapping
      */

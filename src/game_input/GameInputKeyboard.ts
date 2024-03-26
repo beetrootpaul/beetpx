@@ -49,12 +49,12 @@ export class GameInputKeyboard implements GameInputSpecialized {
 
   constructor(params: {
     enableDebugToggle: boolean;
-    enabledFrameByFrameControls: boolean;
+    enableFrameByFrameControls: boolean;
   }) {
     if (params.enableDebugToggle) {
       this.#keyMapping.set(";", "debug_toggle");
     }
-    if (params.enabledFrameByFrameControls) {
+    if (params.enableFrameByFrameControls) {
       this.#keyMapping.set(",", "frame_by_frame_toggle");
       this.#keyMapping.set(".", "frame_by_frame_step");
     }

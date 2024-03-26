@@ -97,14 +97,25 @@ export class DrawApi {
     xy: BpxVector2d,
     color: BpxRgbColor,
     opts?: {
+      centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
+      flipXy?: [boolean, boolean];
     },
   ): void {
+    const centerXy = opts?.centerXy ?? [false, false];
+    if (centerXy[0] || centerXy[1]) {
+      xy = xy.sub(
+        centerXy[0] ? (pixels.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0,
+        centerXy[1] ? (pixels.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0,
+      );
+    }
+
     this.#pixels.draw(
       pixels,
       xy.sub(this.cameraXy),
       color,
       opts?.scaleXy ?? v_1_1_,
+      opts?.flipXy ?? [false, false],
       this.#pattern,
     );
   }
@@ -122,7 +133,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#rect.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, "none", this.#pattern);
   }
 
   drawRectFilled(
@@ -130,7 +141,15 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#rect.draw(xy.sub(this.cameraXy), wh, color, true, this.#pattern);
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, "inside", this.#pattern);
+  }
+
+  drawRectOutsideFilled(
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
+  ): void {
+    this.#rect.draw(xy.sub(this.cameraXy), wh, color, "outside", this.#pattern);
   }
 
   drawEllipse(
@@ -138,7 +157,7 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, false, this.#pattern);
+    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, "none", this.#pattern);
   }
 
   drawEllipseFilled(
@@ -146,7 +165,27 @@ export class DrawApi {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    this.#ellipse.draw(xy.sub(this.cameraXy), wh, color, true, this.#pattern);
+    this.#ellipse.draw(
+      xy.sub(this.cameraXy),
+      wh,
+      color,
+      "inside",
+      this.#pattern,
+    );
+  }
+
+  drawEllipseOutsideFilled(
+    xy: BpxVector2d,
+    wh: BpxVector2d,
+    color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
+  ): void {
+    this.#ellipse.draw(
+      xy.sub(this.cameraXy),
+      wh,
+      color,
+      "outside",
+      this.#pattern,
+    );
   }
 
   setSpriteColorMapping(
@@ -163,13 +202,14 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
+      flipXy?: [boolean, boolean];
     },
   ): void {
     const centerXy = opts?.centerXy ?? [false, false];
     if (centerXy[0] || centerXy[1]) {
       xy = xy.sub(
-        centerXy[0] ? sprite.size.x / 2 : 0,
-        centerXy[1] ? sprite.size.y / 2 : 0,
+        centerXy[0] ? (sprite.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0,
+        centerXy[1] ? (sprite.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0,
       );
     }
 
@@ -179,6 +219,7 @@ export class DrawApi {
       sourceImageAsset,
       xy.sub(this.cameraXy),
       opts?.scaleXy ?? v_1_1_,
+      opts?.flipXy ?? [false, false],
       this.#spriteColorMapping,
       this.#pattern,
     );
@@ -192,7 +233,10 @@ export class DrawApi {
 
   measureText(
     text: string,
-    opts?: { scaleXy?: BpxVector2d; centerXy?: [boolean, boolean] },
+    opts?: {
+      centerXy?: [boolean, boolean];
+      scaleXy?: BpxVector2d;
+    },
   ): { wh: BpxVector2d; offset: BpxVector2d } {
     let maxLineNumber = 0;
     let maxX = 0;
