@@ -363,7 +363,6 @@ declare class DrawApi {
     measureText(text: string, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        flipXy?: [boolean, boolean];
     }): {
         wh: BpxVector2d;
         offset: BpxVector2d;
@@ -371,7 +370,6 @@ declare class DrawApi {
     drawText(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        flipXy?: [boolean, boolean];
         colorMarkers?: BpxTextColorMarkers;
     }): void;
     takeCanvasSnapshot(): void;

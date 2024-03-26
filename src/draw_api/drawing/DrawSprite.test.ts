@@ -147,6 +147,36 @@ describe("DrawSprite", () => {
     });
   });
 
+  test("rounding", () => {
+    const dts = drawingTestSetup(5, 4, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      image: `
+        # : % =
+        # : = %
+        # % : =
+        # = : %
+      `,
+    });
+    const s = spr_(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    // These sprite numbers are chosen in away which should test whether
+    //   rounding is performed on initial values of w, h, x, y (which is
+    //   *not* what we want here) or rather on the calculated ones.
+    dts.drawApi.drawSprite(s(2.6, 1.4, 0.6, 1.4), v_(2.49, 0.51));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      expectedImageAsAscii: `
+        - - - - -
+        - - : = -
+        - - % : -
+        - - - - -
+      `,
+    });
+  });
+
   describe("centering", () => {
     test("no centering", () => {
       const dts = drawingTestSetup(8, 7, c0);
@@ -270,36 +300,6 @@ describe("DrawSprite", () => {
         - - - - - - - -
       `,
       });
-    });
-  });
-
-  test("rounding", () => {
-    const dts = drawingTestSetup(5, 4, c0);
-    const image = new TestImage({
-      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
-      image: `
-        # : % =
-        # : = %
-        # % : =
-        # = : %
-      `,
-    });
-    const s = spr_(image.uniqueUrl);
-    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
-
-    // These sprite numbers are chosen in away which should test whether
-    //   rounding is performed on initial values of w, h, x, y (which is
-    //   *not* what we want here) or rather on the calculated ones.
-    dts.drawApi.drawSprite(s(2.6, 1.4, 0.6, 1.4), v_(2.49, 0.51));
-
-    dts.canvas.expectToEqual({
-      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
-      expectedImageAsAscii: `
-        - - - - -
-        - - : = -
-        - - % : -
-        - - - - -
-      `,
     });
   });
 
@@ -428,7 +428,125 @@ describe("DrawSprite", () => {
     });
   });
 
-  test("scale vs centering", () => {
+  describe("flip", () => {
+    test("no flip", () => {
+      const dts = drawingTestSetup(6, 5, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
+          # # # #
+          # * * *
+          # * # *
+        `,
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(1, 1), {
+        flipXy: [false, false],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - # # # # -
+          - # * * * -
+          - # * # * -
+          - - - - - -
+        `,
+      });
+    });
+
+    test("X flip", () => {
+      const dts = drawingTestSetup(6, 5, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
+          # # # #
+          # * * *
+          # * # *
+        `,
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(1, 1), {
+        flipXy: [true, false],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - # # # # -
+          - * * * # -
+          - * # * # -
+          - - - - - -
+        `,
+      });
+    });
+
+    test("Y flip", () => {
+      const dts = drawingTestSetup(6, 5, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
+          # # # #
+          # * * *
+          # * # *
+        `,
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(1, 1), {
+        flipXy: [false, true],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - # * # * -
+          - # * * * -
+          - # # # # -
+          - - - - - -
+        `,
+      });
+    });
+
+    test("XY flip", () => {
+      const dts = drawingTestSetup(6, 5, c0);
+      const image = new TestImage({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        image: `
+          # # # #
+          # * * *
+          # * # *
+        `,
+      });
+      const s = spr_(image.uniqueUrl);
+      dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+      dts.drawApi.drawSprite(s(4, 3, 0, 0), v_(1, 1), {
+        flipXy: [true, true],
+      });
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1, "*": c2 },
+        expectedImageAsAscii: `
+          - - - - - -
+          - * # * # -
+          - * * * # -
+          - # # # # -
+          - - - - - -
+        `,
+      });
+    });
+  });
+
+  test("scale vs centering vs flip", () => {
     const dts = drawingTestSetup(8, 6, c0);
     const image = new TestImage({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
@@ -445,16 +563,17 @@ describe("DrawSprite", () => {
     dts.drawApi.drawSprite(s(2, 2, 1, 1), v_(4, 3), {
       scaleXy: v_(3, 2),
       centerXy: [true, true],
+      flipXy: [true, true],
     });
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
       expectedImageAsAscii: `
           - - - - - - - -
-          - : : : = = = -
-          - : : : = = = -
-          - % % % : : : -
-          - % % % : : : -
+          - : : : % % % -
+          - : : : % % % -
+          - = = = : : : -
+          - = = = : : : -
           - - - - - - - -
         `,
     });

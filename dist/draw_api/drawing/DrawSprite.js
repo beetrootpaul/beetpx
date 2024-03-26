@@ -21,7 +21,7 @@ export class DrawSprite {
         __classPrivateFieldSet(this, _DrawSprite_canvas, canvas, "f");
         __classPrivateFieldSet(this, _DrawSprite_options, options, "f");
     }
-    draw(sprite, sourceImageAsset, targetXy, scaleXy, colorMapping, pattern) {
+    draw(sprite, sourceImageAsset, targetXy, scaleXy, flipXy, colorMapping, pattern) {
         targetXy = __classPrivateFieldGet(this, _DrawSprite_options, "f").disableRounding ? targetXy : targetXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
@@ -32,9 +32,11 @@ export class DrawSprite {
         }
         const preparedSprite = __classPrivateFieldGet(this, _DrawSprite_preparedSprites, "f").prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels);
         for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
-            const canvasYBase = targetXy.y + spriteY * scaleXy.y;
+            const canvasYBase = targetXy.y +
+                (flipXy[1] ? sprite.size.y - 1 - spriteY : spriteY) * scaleXy.y;
             for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
-                const canvasXBase = targetXy.x + spriteX * scaleXy.x;
+                const canvasXBase = targetXy.x +
+                    (flipXy[0] ? sprite.size.x - 1 - spriteX : spriteX) * scaleXy.x;
                 for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
                     for (let xScaledStep = 0; xScaledStep < scaleXy.x; ++xScaledStep) {
                         const canvasX = canvasXBase + xScaledStep;

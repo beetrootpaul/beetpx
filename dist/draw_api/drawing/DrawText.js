@@ -36,7 +36,7 @@ export class DrawText {
         for (const arrangedGlyph of font.arrangeGlyphsFor(text, color, colorMarkers)) {
             const xy = canvasXy.add(arrangedGlyph.leftTop.mul(scaleXy));
             if (arrangedGlyph.type === "sprite") {
-                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(arrangedGlyph.sprite, __classPrivateFieldGet(this, _DrawText_assets, "f").getImageAsset(arrangedGlyph.sprite.imageUrl), xy, scaleXy, arrangedGlyph.spriteColorMapping, pattern);
+                __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(arrangedGlyph.sprite, __classPrivateFieldGet(this, _DrawText_assets, "f").getImageAsset(arrangedGlyph.sprite.imageUrl), xy, scaleXy, [false, false], arrangedGlyph.spriteColorMapping, pattern);
             }
             else if (arrangedGlyph.type === "pixels") {
                 __classPrivateFieldGet(this, _DrawText_pixels, "f").draw(arrangedGlyph.pixels, xy, arrangedGlyph.color, scaleXy, [false, false], pattern);

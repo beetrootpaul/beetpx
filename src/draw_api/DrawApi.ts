@@ -202,7 +202,6 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      // TODO
       flipXy?: [boolean, boolean];
     },
   ): void {
@@ -220,6 +219,7 @@ export class DrawApi {
       sourceImageAsset,
       xy.sub(this.cameraXy),
       opts?.scaleXy ?? v_1_1_,
+      opts?.flipXy ?? [false, false],
       this.#spriteColorMapping,
       this.#pattern,
     );
@@ -236,8 +236,6 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      // TODO
-      flipXy?: [boolean, boolean];
     },
   ): { wh: BpxVector2d; offset: BpxVector2d } {
     let maxLineNumber = 0;
@@ -275,8 +273,6 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      // TODO
-      flipXy?: [boolean, boolean];
       colorMarkers?: BpxTextColorMarkers;
     },
   ): void {
