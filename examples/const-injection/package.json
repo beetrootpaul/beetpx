@@ -1,12 +1,12 @@
 {
-  "name": "beetpx-example-simple",
+  "name": "beetpx-example-const-injection",
   "version": "0.0.0",
   "private": true,
   "author": "Beetroot Paul",
   "license": "MIT",
   "scripts": {
-    "start": "beetpx dev --open --htmlTitle \"[dev] Simple | BeetPx example\"",
-    "build": "beetpx build --htmlTitle \"Simple | BeetPx example\"",
+    "start": "beetpx dev --open --const envType=dev PREV_COMMIT=\"$(git rev-parse --short --verify HEAD)\"",
+    "build": "beetpx build --const envType=prod --const PREV_COMMIT=\"$(git rev-parse --short --verify HEAD)\"",
     "prod": "npm run build && beetpx preview --open",
     "zip": "npm run build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/",
