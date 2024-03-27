@@ -31,7 +31,7 @@ import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 
 export type BpxEngineConfig = {
-  gameCanvasSize?: "64x64" | "128x128" | "256x256";
+  canvasSize?: "64x64" | "128x128" | "256x256";
   fixedTimestep?: "30fps" | "60fps";
   assets?: AssetsToLoad;
   debugMode?: {
@@ -53,7 +53,7 @@ export type BpxEngineConfig = {
   };
 };
 
-export type OnAssetsLoaded = {
+export type OnEngineInitialized = {
   startGame: () => Promise<void>;
 };
 
@@ -62,7 +62,7 @@ export class Engine {
 
   readonly #browserType: BpxBrowserType;
 
-  readonly #gameCanvasSize: BpxVector2d;
+  readonly canvasSize: BpxVector2d;
   readonly #htmlCanvasBackground: BpxRgbColor =
     BpxRgbColor.fromCssHex("#000000");
 
@@ -107,7 +107,7 @@ export class Engine {
   }
 
   constructor(engineConfig: BpxEngineConfig = {}) {
-    engineConfig.gameCanvasSize ??= "128x128";
+    engineConfig.canvasSize ??= "128x128";
     engineConfig.fixedTimestep ??= "60fps";
 
     window.addEventListener("error", (event) => {
@@ -165,15 +165,15 @@ export class Engine {
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
-    this.#gameCanvasSize =
-      engineConfig.gameCanvasSize === "64x64"
+    this.canvasSize =
+      engineConfig.canvasSize === "64x64"
         ? v_(64, 64)
-        : engineConfig.gameCanvasSize === "128x128"
+        : engineConfig.canvasSize === "128x128"
           ? v_(128, 128)
-          : engineConfig.gameCanvasSize === "256x256"
+          : engineConfig.canvasSize === "256x256"
             ? v_(256, 256)
             : throwError(
-                `Unsupported gameCanvasSize: "${engineConfig.gameCanvasSize}"`,
+                `Unsupported canvasSize: "${engineConfig.canvasSize}"`,
               );
 
     this.gameInput = new GameInput({
@@ -223,7 +223,7 @@ export class Engine {
       );
 
     this.#canvas = new CanvasForProduction(
-      this.#gameCanvasSize,
+      this.canvasSize,
       htmlCanvas,
       this.#htmlCanvasBackground,
     );
@@ -234,14 +234,14 @@ export class Engine {
     });
 
     if (engineConfig.debugMode?.fpsDisplay?.enabled) {
-      this.#fpsDisplay = new FpsDisplay(this.drawApi, this.#gameCanvasSize, {
+      this.#fpsDisplay = new FpsDisplay(this.drawApi, this.canvasSize, {
         color: engineConfig.debugMode.fpsDisplay.color,
         placement: engineConfig.debugMode.fpsDisplay.placement,
       });
     }
   }
 
-  async init(): Promise<OnAssetsLoaded> {
+  async init(): Promise<OnEngineInitialized> {
     await this.#assetLoader.loadAssets(this.#assetsToLoad);
     return {
       startGame: this.#startGame.bind(this),

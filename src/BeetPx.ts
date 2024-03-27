@@ -1,14 +1,15 @@
 // noinspection JSUnusedGlobalSymbols
 
+import { Engine, type BpxEngineConfig } from "./Engine";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { Engine, type BpxEngineConfig } from "./Engine";
-import { GameButtons } from "./game_input/buttons/GameButtons";
 import { GameInput } from "./game_input/GameInput";
+import { GameButtons } from "./game_input/buttons/GameButtons";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
+import { BpxVector2d } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
 
 /////////////////////////////////////////////////////////////////////////////
@@ -19,6 +20,8 @@ export class BeetPx {
   //
   // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
   //
+
+  /*
 
   static init(initParams?: {
     config?: BpxEngineConfig;
@@ -42,6 +45,15 @@ export class BeetPx {
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Started`);
       });
   }
+   */
+
+  static async init(config?: BpxEngineConfig): ReturnType<Engine["init"]> {
+    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
+    this.#engine = new Engine(config);
+    const { startGame } = await this.#engine.init();
+    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
+    return { startGame };
+  }
 
   //
   // field-like getters
@@ -49,6 +61,10 @@ export class BeetPx {
 
   static get debug(): typeof DebugMode.enabled {
     return DebugMode.enabled;
+  }
+
+  static get canvasSize(): BpxVector2d {
+    return this.#tryGetEngine().canvasSize;
   }
 
   /**

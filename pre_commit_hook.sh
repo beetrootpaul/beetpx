@@ -4,13 +4,32 @@
 #   in case of a failure.
 set -e
 
+simulated_git_branch="$1"
+
 git_branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$simulated_git_branch" = "" ]
+then
+  if [ "$git_branch" = "main" ]
+  then
+    run_full_check="yes"
+  else
+    run_full_check="no"
+  fi
+else
+  if [ "$simulated_git_branch" = "main" ]
+  then
+    run_full_check="yes"
+  else
+    run_full_check="no"
+  fi
+fi
 
 # Assumption for all `if [ "$branch" = "main" ]` blocks:
 #   - we develop on branches other than `main`
 #   - we release new versions on `main`
 
-if [ "$git_branch" = "main" ]; then
+if [ "$run_full_check" = "yes" ]; then
   # If version got bumped in package.json, update the version in package-lock.json as well
   npm install
 fi
@@ -18,7 +37,7 @@ fi
 # Make sure everything is formatted as desired
 npm run format
 
-if [ "$git_branch" = "main" ]; then
+if [ "$run_full_check" = "yes" ]; then
   # Make sure TypeScript types and Jest tests didn't break due to most recent changes.
   # We do this on a `main` branch only in order to allow broken tests while development
   #   is in progress.
@@ -45,7 +64,7 @@ fi
 #   repository.
 npm run compile
 
-if [ "$git_branch" = "main" ]; then
+if [ "$run_full_check" = "yes" ]; then
   # Generate up-to-date HTML documentation
   npm run docs:generate
 fi

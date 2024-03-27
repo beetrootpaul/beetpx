@@ -11,36 +11,30 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BeetPx_engine, _BeetPx_tryGetEngine;
-import { DebugMode } from "./debug/DebugMode";
 import { Engine } from "./Engine";
+import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
 
 export class BeetPx {
     
     
     
-    static init(initParams) {
+    
+    static async init(config) {
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
-        __classPrivateFieldSet(this, _a, new Engine(initParams?.config), "f", _BeetPx_engine);
-        __classPrivateFieldGet(this, _a, "f", _BeetPx_engine)
-            .init()
-            .then(({ startGame }) => {
-            Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
-            __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).setOnStarted(initParams?.onStarted);
-            __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).setOnUpdate(initParams?.onUpdate);
-            __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).setOnDraw(initParams?.onDraw);
-            Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Starting…`);
-            return startGame();
-        })
-            .then(() => {
-            Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Started`);
-        });
+        __classPrivateFieldSet(this, _a, new Engine(config), "f", _BeetPx_engine);
+        const { startGame } = await __classPrivateFieldGet(this, _a, "f", _BeetPx_engine).init();
+        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
+        return { startGame };
     }
     
     
     
     static get debug() {
         return DebugMode.enabled;
+    }
+    static get canvasSize() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetEngine).call(this).canvasSize;
     }
     /**
      * Number of frames processed since game started.
