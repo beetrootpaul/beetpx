@@ -134,7 +134,7 @@ would never be created 💛
 While you are able (and encouraged) to define your own font (as an implementation of `BpxFont` interface), there are 3
 fonts ready to use in BeetPx out of the box:
 
-- `font_pico8__` (the default one)
+- `font_pico8_` (the default one)
 - `font_saint11Minimal4_`
 - `font_saint11Minimal5_`
 
