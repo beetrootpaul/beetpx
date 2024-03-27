@@ -1,0 +1,19 @@
+{
+  "name": "beetpx-example-pause",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "scripts": {
+    "start": "beetpx dev --open",
+    "build": "beetpx build",
+    "prod": "npm run build && beetpx preview --open",
+    "zip": "npm run build && beetpx zip",
+    "format": "prettier --ignore-path .gitignore --write src/",
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "file:../../"
+  }
+}

@@ -6,9 +6,9 @@ import {
   font_saint11Minimal4_,
   font_saint11Minimal5_,
   rgb_p8_,
+  u_,
   v_,
 } from "../../../src";
-import { offset4Directions } from "../../../src/utils/offset4Directions";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
@@ -24,7 +24,7 @@ const minScaleXy = v_(1);
 const maxScaleXy = v_(8);
 let scaleXy = minScaleXy;
 
-let cameraXy = offset4Directions()[0]!;
+let cameraXy = u_.offset4Directions()[0]!;
 
 b_.init({
   config: {

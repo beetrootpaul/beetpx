@@ -37,6 +37,11 @@ if [ "$git_branch" = "main" ]; then
   npm run format
   npm run tsc
   cd ../../
+  cd ./examples/pause
+  npm install
+  npm run format
+  npm run tsc
+  cd ../../
   cd ./examples/simple
   npm install
   npm run format
