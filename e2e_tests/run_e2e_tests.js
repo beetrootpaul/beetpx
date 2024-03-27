@@ -17,18 +17,18 @@ const allowedNonTestFiles = [
   "public",
   "run_e2e_tests.js",
   "some-folder-1",
-  "src"
+  "src",
 ];
 
 const nonTestFile = files.find(
   (f) =>
     !devTestFiles.includes(f) &&
     !prodTestFiles.includes(f) &&
-    !allowedNonTestFiles.includes(f)
+    !allowedNonTestFiles.includes(f),
 );
 if (nonTestFile) {
   throw Error(
-    `File ${nonTestFile} doesn't seems to be named in a format which would allow it to be automatically captured`
+    `File ${nonTestFile} doesn't seems to be named in a format which would allow it to be automatically captured`,
   );
 }
 
@@ -68,7 +68,7 @@ function runTest(testFile, isProd) {
     .substring(commandArgsMarker.length)
     .trim();
 
-  const commandArgsSafe = commandArgs.replaceAll('"', '\\"');
+  const commandArgsSafe = commandArgs.replaceAll("\"", "\\\"");
   const command = isProd
     ? `../cli/beetpx-cli.cjs build ${commandArgsSafe} && ../cli/beetpx-cli.cjs preview --port 9999`
     : `../cli/beetpx-cli.cjs dev --port 9999 ${commandArgsSafe}`;
@@ -90,7 +90,7 @@ export default defineConfig({
   webServer: {
     command: "${command}",
     url: "http://localhost:9999",
-    timeout: 2_000,
+    timeout: 4_000,
     stdout: "ignore",
     stderr: "pipe",
     reuseExistingServer: false,
@@ -100,7 +100,7 @@ export default defineConfig({
   },
 });
   `,
-    { encoding: "utf8" }
+    { encoding: "utf8" },
   );
 
   const child = childProcess.spawnSync("npx", ["playwright", "test"]);

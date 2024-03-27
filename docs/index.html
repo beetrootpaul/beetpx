@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@beetpx/beetpx - v0.36.1</title><meta name="description" content="Documentation for @beetpx/beetpx"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@beetpx/beetpx - v0.36.1</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>@beetpx/beetpx - v0.36.1</h2></div><div class="tsd-panel tsd-typography"><a id="md:beetpx" class="tsd-anchor"></a><h1><a href="#md:beetpx">BeetPx</a></h1><p><img src="./logo/BeetPx%20logo%20(x5).png" alt="BeetPx logo"></p>
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@beetpx/beetpx - v0.37.0</title><meta name="description" content="Documentation for @beetpx/beetpx"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@beetpx/beetpx - v0.37.0</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>@beetpx/beetpx - v0.37.0</h2></div><div class="tsd-panel tsd-typography"><a id="md:beetpx" class="tsd-anchor"></a><h1><a href="#md:beetpx">BeetPx</a></h1><p><img src="./logo/BeetPx%20logo%20(x5).png" alt="BeetPx logo"></p>
 <blockquote>
 <p>A TypeScript engine for pixel art browser games.</p>
 </blockquote>
@@ -16,11 +16,76 @@ in <a href="examples/simple/README.md">its README</a>.</p>
 <li><a href="https://github.com/beetrootpaul/towers-of-survival-beetpx">https://github.com/beetrootpaul/towers-of-survival-beetpx</a></li>
 <li><a href="https://github.com/beetrootpaul/avoid-your-past-beetpx">https://github.com/beetrootpaul/avoid-your-past-beetpx</a></li>
 </ul>
+<a id="md:game-controls" class="tsd-anchor"></a><h2><a href="#md:game-controls">Game Controls</a></h2><p>The BeetPx engine supports a following sets of game buttons and their mappings from physical devices:</p>
+<ul>
+<li><strong>A</strong> and <strong>B</strong> buttons:<ul>
+<li>on keyboard, variant 1: <code>c</code> and <code>x</code></li>
+<li>on keyboard, variant 1: <code>j</code> and <code>k</code></li>
+<li>on DualSense controller, variant 1: cross and circle</li>
+<li>on DualSense controller, variant 2: triangle and square</li>
+<li>on Xbox controller, variant 1: <code>A</code> and <code>B</code></li>
+<li>on Xbox controller, variant 2: <code>Y</code> and <code>X</code></li>
+<li>etc. for other controllers, e.g. 8BitDo Lite 2</li>
+<li>and rendered touch buttons on touch devices</li>
+</ul>
+</li>
+<li><strong>menu</strong> button:<ul>
+<li>on keyboard, variant 1: <code>p</code></li>
+<li>on keyboard, variant 2: <code>return</code></li>
+<li>on keyboard, variant 3: <code>esc</code></li>
+<li>on DualSense controller: menu</li>
+<li>on Xbox controller: menu</li>
+<li>etc. for other controllers, e.g. 8BitDo Lite 2</li>
+<li>and rendered touch button on touch devices</li>
+</ul>
+</li>
+<li><strong>directions</strong>:<ul>
+<li>on keyboard, variant 1: arrows</li>
+<li>on keyboard, variant 2: <code>w</code>, <code>s</code>, <code>a</code>, <code>d</code></li>
+<li>on game controllers: D-pad, sticks</li>
+<li>and rendered touch buttons on touch devices</li>
+</ul>
+</li>
+</ul>
+<p>Some additional controls meant to be used by the end user:</p>
+<ul>
+<li><strong>mute/unmute</strong>:<ul>
+<li>on keyboard: <code>m</code></li>
+<li>and rendered mouse/touch button</li>
+</ul>
+</li>
+<li><strong>full screen</strong>:<ul>
+<li>on keyboard: <code>f</code></li>
+<li>and rendered mouse/touch button</li>
+</ul>
+</li>
+</ul>
+<p>Dev controls meant to be used by the game developer themselves and gated
+behind related engine config fields:</p>
+<ul>
+<li><strong>toggle debug</strong>:<ul>
+<li>on keyboard: <code>;</code></li>
+</ul>
+</li>
+<li><strong>toggle frame-by-frame</strong>:<ul>
+<li>on keyboard: <code>,</code></li>
+</ul>
+</li>
+<li><strong>jump to the next frame</strong> (only while in frame-by-frame mode):<ul>
+<li>on keyboard: <code>.</code></li>
+</ul>
+</li>
+</ul>
+<p>To check if your controls work as expected, go to <code>examples/input-tester</code>,
+then run <code>npm install</code>, then <code>npm start</code> and test your controllers in an
+opened browser tab.</p>
 <a id="md:api-documentation" class="tsd-anchor"></a><h2><a href="#md:api-documentation">API Documentation</a></h2><p>For a nicely formatted list of API exposed by BeetPx run:</p>
 <pre><code class="language-shell"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">docs</span>
 </code><button>Copy</button></pre>
 <p>to open it in your default browser. In case of any issues, the website which is supposed to open is located
 under <a href="./docs/index.html">docs/index.html</a></p>
+<p>⚠️ Please be aware the docs are very raw so far. There are mostly just a list of exposed types and classes and
+constants, and nothing more. This is something to be improved before 1.0 release.</p>
 <a id="md:development-setup" class="tsd-anchor"></a><h2><a href="#md:development-setup">Development Setup</a></h2><p>This projects is developed on <a href="https://nodejs.org/docs/latest-v18.x/api/index.html">Node.js 18</a>.</p>
 <p>You might find it helpful to use
 <a href="https://github.com/nvm-sh/nvm#installing-and-updating">nvm</a> in order to make sure you use the same Node.js version as
@@ -71,4 +136,4 @@ see: <a href="https://www.lexaloffle.com/pico-8.php?page=faq">https://www.lexalo
 <li>It&#39;s good to avoid <code>.forEach</code>, <code>.reduce</code> and similar functions and use classic <code>for</code> loops instead. The former tend to
 have significantly worse performance due to an extra function call in each iteration.</li>
 </ul>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:beetpx"><span>Beet<wbr/>Px</span></a><ul><li><a href="#md:getting-started"><span>Getting <wbr/>Started</span></a></li><li><a href="#md:api-documentation"><span>API <wbr/>Documentation</span></a></li><li><a href="#md:development-setup"><span>Development <wbr/>Setup</span></a></li><li><a href="#md:the-origin"><span>The <wbr/>Origin</span></a></li><li><a href="#md:credits"><span>Credits</span></a></li><li><ul><li><a href="#md:fonts"><span>Fonts</span></a></li><li><a href="#md:color-palettes"><span>Color <wbr/>Palettes</span></a></li></ul></li><li><a href="#md:random-notes"><span>Random <wbr/>Notes</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@beetpx/beetpx - v0.36.1</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><div class="tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div></body></html>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-index-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><h4 class="uppercase">Member Visibility</h4><form><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div><div class="tsd-theme-toggle"><h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-index-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:beetpx"><span>Beet<wbr/>Px</span></a><ul><li><a href="#md:getting-started"><span>Getting <wbr/>Started</span></a></li><li><a href="#md:game-controls"><span>Game <wbr/>Controls</span></a></li><li><a href="#md:api-documentation"><span>API <wbr/>Documentation</span></a></li><li><a href="#md:development-setup"><span>Development <wbr/>Setup</span></a></li><li><a href="#md:the-origin"><span>The <wbr/>Origin</span></a></li><li><a href="#md:credits"><span>Credits</span></a></li><li><ul><li><a href="#md:fonts"><span>Fonts</span></a></li><li><a href="#md:color-palettes"><span>Color <wbr/>Palettes</span></a></li></ul></li><li><a href="#md:random-notes"><span>Random <wbr/>Notes</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@beetpx/beetpx - v0.37.0</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><div class="tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div></body></html>
