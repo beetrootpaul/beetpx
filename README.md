@@ -1,6 +1,6 @@
 # BeetPx
 
-![BeetPx logo](./logo/BeetPx%20logo%20(x5).png)
+![BeetPx logo](<./logo/BeetPx%20logo%20(x5).png>)
 
 > A TypeScript engine for pixel art browser games.
 
@@ -25,6 +25,56 @@ Also, you might want to take a look at how following projects are using BeetPx:
 - https://github.com/beetrootpaul/towers-of-survival-beetpx
 - https://github.com/beetrootpaul/avoid-your-past-beetpx
 
+## Game Controls
+
+The BeetPx engine supports a following sets of game buttons and their mappings from physical devices:
+
+- **A** and **B** buttons:
+    - on keyboard, variant 1: `c` and `x`
+    - on keyboard, variant 1: `j` and `k`
+    - on DualSense controller, variant 1: cross and circle
+    - on DualSense controller, variant 2: triangle and square
+    - on Xbox controller, variant 1: `A` and `B`
+    - on Xbox controller, variant 2: `Y` and `X`
+    - etc. for other controllers, e.g. 8BitDo Lite 2
+    - and rendered touch buttons on touch devices
+- **menu** button:
+    - on keyboard, variant 1: `p`
+    - on keyboard, variant 2: `return`
+    - on keyboard, variant 3: `esc`
+    - on DualSense controller: menu
+    - on Xbox controller: menu
+    - etc. for other controllers, e.g. 8BitDo Lite 2
+    - and rendered touch button on touch devices
+- **directions**:
+    - on keyboard, variant 1: arrows
+    - on keyboard, variant 2: `w`, `s`, `a`, `d`
+    - on game controllers: D-pad, sticks
+    - and rendered touch buttons on touch devices
+
+Some additional controls meant to be used by the end user:
+
+- **mute/unmute**:
+    - on keyboard: `m`
+    - and rendered mouse/touch button
+- **full screen**:
+    - on keyboard: `f`
+    - and rendered mouse/touch button
+
+Dev controls meant to be used by the game developer themselves and gated
+behind related engine config fields:
+
+- **toggle debug**:
+    - on keyboard: `;`
+- **toggle frame-by-frame**:
+    - on keyboard: `,`
+- **jump to the next frame** (only while in frame-by-frame mode):
+    - on keyboard: `.`
+
+To check if your controls work as expected, go to `examples/input-tester`,
+then run `npm install`, then `npm start` and test your controllers in an
+opened browser tab.
+
 ## API Documentation
 
 For a nicely formatted list of API exposed by BeetPx run:
@@ -35,6 +85,9 @@ npm run docs
 
 to open it in your default browser. In case of any issues, the website which is supposed to open is located
 under [docs/index.html](./docs/index.html)
+
+⚠️ Please be aware the docs are very raw so far. There are mostly just a list of exposed types and classes and
+constants, and nothing more. This is something to be improved before 1.0 release.
 
 ## Development Setup
 
