@@ -10,21 +10,21 @@ let prevDebugToggleState: boolean = false;
 let nextDebugToggleState: boolean = false;
 
 b_.init({
-  config: {
-    canvasSize: "128x128",
-    fixedTimestep: "60fps",
-    debugMode: { available: true },
-    assets: ["spritesheet.png"],
-  },
-  onStarted() {
+  canvasSize: "128x128",
+  fixedTimestep: "60fps",
+  debugMode: { available: true },
+  assets: ["spritesheet.png"],
+}).then(async ({ startGame }) => {
+  b_.setOnStarted(() => {
     standardView = new StandardView();
     debugView = new DebugView();
     showDebug = false;
 
     prevDebugToggleState = false;
     nextDebugToggleState = false;
-  },
-  onUpdate() {
+  });
+
+  b_.setOnUpdate(() => {
     if (showDebug) {
       debugView?.update();
     } else {
@@ -43,12 +43,15 @@ b_.init({
     if (prevDebugToggleState && !nextDebugToggleState) {
       showDebug = !showDebug;
     }
-  },
-  onDraw() {
+  });
+
+  b_.setOnDraw(() => {
     if (showDebug) {
       debugView?.draw();
     } else {
       standardView?.draw();
     }
-  },
+  });
+
+  await startGame();
 });

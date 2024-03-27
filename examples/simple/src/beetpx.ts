@@ -5,21 +5,21 @@ let circleMovementCenter = v_(64, 64);
 let logoPosition = v_0_0_;
 
 b_.init({
-  config: {
-    assets: ["logo.png", "music_melody.flac"],
-    debugMode: {
-      available: true,
-      forceEnabledOnStart: true,
-      fpsDisplay: { enabled: true },
-    },
-    frameByFrame: {
-      available: true,
-    },
+  assets: ["logo.png", "music_melody.flac"],
+  debugMode: {
+    available: true,
+    forceEnabledOnStart: true,
+    fpsDisplay: { enabled: true },
   },
-  onStarted() {
+  frameByFrame: {
+    available: true,
+  },
+}).then(async ({ startGame }) => {
+  b_.setOnStarted(() => {
     b_.startPlaybackLooped("music_melody.flac");
-  },
-  onUpdate() {
+  });
+
+  b_.setOnUpdate(() => {
     circleMovementCenter = circleMovementCenter.add(
       b_.getPressedDirection().mul(3),
     );
@@ -29,9 +29,12 @@ b_.init({
         Math.sin((b_.frameNumber / 120) * Math.PI),
       ),
     );
-  },
-  onDraw() {
+  });
+
+  b_.setOnDraw(() => {
     b_.clearCanvas(rgb_p8_.storm);
     b_.drawSprite(logoSprite, logoPosition, { centerXy: [true, true] });
-  },
+  });
+
+  await startGame();
 });

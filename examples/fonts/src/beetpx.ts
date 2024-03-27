@@ -27,15 +27,14 @@ let scaleXy = minScaleXy;
 let cameraXy = u_.offset4Directions()[0]!;
 
 b_.init({
-  config: {
-    canvasSize: "256x256",
-    assets: [...customFont.spriteSheetUrls],
-    debugMode: {
-      available: true,
-      fpsDisplay: { enabled: true },
-    },
+  canvasSize: "256x256",
+  assets: [...customFont.spriteSheetUrls],
+  debugMode: {
+    available: true,
+    fpsDisplay: { enabled: true },
   },
-  onUpdate() {
+}).then(async ({ startGame }) => {
+  b_.setOnUpdate(() => {
     if (b_.wasButtonJustPressed("a")) {
       const newScale = scaleXy.mul(2).clamp(minScaleXy, maxScaleXy);
       cameraXy = cameraXy.mul(newScale.div(scaleXy));
@@ -47,8 +46,9 @@ b_.init({
       scaleXy = newScale;
     }
     cameraXy = cameraXy.sub(b_.getPressedDirection().mul(2).mul(scaleXy));
-  },
-  onDraw() {
+  });
+
+  b_.setOnDraw(() => {
     b_.setCameraXy(cameraXy);
 
     b_.clearCanvas(rgb_p8_.wine);
@@ -85,7 +85,9 @@ b_.init({
 
       cursor = cursor.add(0, textWh.y).add(v_(0, 4).mul(scaleXy));
     }
-  },
+  });
+
+  await startGame();
 });
 
 function drawBox(

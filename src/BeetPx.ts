@@ -21,6 +21,8 @@ export class BeetPx {
   // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
   //
 
+  /*
+
   static init(initParams?: {
     config?: BpxEngineConfig;
     onStarted?: () => void;
@@ -42,6 +44,15 @@ export class BeetPx {
       .then(() => {
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Started`);
       });
+  }
+   */
+
+  static async init(config?: BpxEngineConfig): ReturnType<Engine["init"]> {
+    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
+    this.#engine = new Engine(config);
+    const { startGame } = await this.#engine.init();
+    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
+    return { startGame };
   }
 
   //

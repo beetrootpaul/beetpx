@@ -53,7 +53,7 @@ export type BpxEngineConfig = {
   };
 };
 
-export type OnAssetsLoaded = {
+export type OnEngineInitialized = {
   startGame: () => Promise<void>;
 };
 
@@ -241,7 +241,7 @@ export class Engine {
     }
   }
 
-  async init(): Promise<OnAssetsLoaded> {
+  async init(): Promise<OnEngineInitialized> {
     await this.#assetLoader.loadAssets(this.#assetsToLoad);
     return {
       startGame: this.#startGame.bind(this),

@@ -5,8 +5,8 @@ import { BeetPx } from "./BeetPx";
 // test:    valid values
 //
 
-BeetPx.init({ config: { fixedTimestep: "30fps" } });
-BeetPx.init({ config: { fixedTimestep: "60fps" } });
+BeetPx.init({ fixedTimestep: "30fps" });
+BeetPx.init({ fixedTimestep: "60fps" });
 
 //
 // context: fixedTimestep
@@ -14,28 +14,28 @@ BeetPx.init({ config: { fixedTimestep: "60fps" } });
 //
 
 // @ts-expect-error
-BeetPx.init({ config: { fixedTimestep: "0fps" } });
+BeetPx.init({ fixedTimestep: "0fps" });
 // @ts-expect-error
-BeetPx.init({ config: { fixedTimestep: "59fps" } });
+BeetPx.init({ fixedTimestep: "59fps" });
 // @ts-expect-error
-BeetPx.init({ config: { fixedTimestep: "120fps" } });
+BeetPx.init({ fixedTimestep: "120fps" });
 
 // @ts-expect-error
-BeetPx.init({ config: { fixedTimestep: 30 } });
+BeetPx.init({ fixedTimestep: 30 });
 // @ts-expect-error
-BeetPx.init({ config: { fixedTimestep: 60 } });
+BeetPx.init({ fixedTimestep: 60 });
 
 // @ts-expect-error
-BeetPx.init({ config: { fixedTimestep: null } });
+BeetPx.init({ fixedTimestep: null });
 
 //
 // context: canvasSize
 // test:    valid values
 //
 
-BeetPx.init({ config: { canvasSize: "64x64" } });
-BeetPx.init({ config: { canvasSize: "128x128" } });
-BeetPx.init({ config: { canvasSize: "256x256" } });
+BeetPx.init({ canvasSize: "64x64" });
+BeetPx.init({ canvasSize: "128x128" });
+BeetPx.init({ canvasSize: "256x256" });
 
 //
 // context: canvasSize
@@ -43,18 +43,18 @@ BeetPx.init({ config: { canvasSize: "256x256" } });
 //
 
 // @ts-expect-error
-BeetPx.init({ config: { canvasSize: "1x1" } });
+BeetPx.init({ canvasSize: "1x1" });
 // @ts-expect-error
-BeetPx.init({ config: { canvasSize: "512x512" } });
+BeetPx.init({ canvasSize: "512x512" });
 // @ts-expect-error
-BeetPx.init({ config: { canvasSize: "1980x1080" } });
+BeetPx.init({ canvasSize: "1980x1080" });
 
 // @ts-expect-error
-BeetPx.init({ config: { canvasSize: 64 } });
+BeetPx.init({ canvasSize: 64 });
 // @ts-expect-error
-BeetPx.init({ config: { canvasSize: 128 } });
+BeetPx.init({ canvasSize: 128 });
 // @ts-expect-error
-BeetPx.init({ config: { canvasSize: 256 } });
+BeetPx.init({ canvasSize: 256 });
 
 // @ts-expect-error
-BeetPx.init({ config: { canvasSize: null } });
+BeetPx.init({ canvasSize: null });

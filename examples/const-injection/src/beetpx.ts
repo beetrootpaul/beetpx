@@ -7,10 +7,12 @@ declare global {
   }
 }
 
-b_.init({
-  onDraw() {
+b_.init().then(async ({ startGame }) => {
+  b_.setOnDraw(() => {
     b_.clearCanvas(window.envType === "prod" ? rgb_p8_.wine : rgb_p8_.storm);
     b_.drawText(`PREV_COMMIT=${window.PREV_COMMIT}`, v_(1, 1), rgb_p8_.silver);
     b_.drawText(`envType=${window.envType}`, v_(1, 8), rgb_p8_.silver);
-  },
+  });
+
+  await startGame();
 });

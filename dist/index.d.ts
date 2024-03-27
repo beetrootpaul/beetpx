@@ -504,7 +504,7 @@ type BpxEngineConfig = {
         activateOnStart?: boolean;
     };
 };
-type OnAssetsLoaded = {
+type OnEngineInitialized = {
     startGame: () => Promise<void>;
 };
 declare class Engine {
@@ -520,7 +520,7 @@ declare class Engine {
     get renderingFps(): number;
     get detectedBrowserType(): BpxBrowserType;
     constructor(engineConfig?: BpxEngineConfig);
-    init(): Promise<OnAssetsLoaded>;
+    init(): Promise<OnEngineInitialized>;
     setOnStarted(onStarted?: () => void): void;
     setOnUpdate(onUpdate?: () => void): void;
     setOnDraw(onDraw?: () => void): void;
@@ -644,12 +644,7 @@ declare class Logger {
 
 declare class BeetPx {
     #private;
-    static init(initParams?: {
-        config?: BpxEngineConfig;
-        onStarted?: () => void;
-        onUpdate?: () => void;
-        onDraw?: () => void;
-    }): void;
+    static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
     static get debug(): typeof DebugMode.enabled;
     static get canvasSize(): BpxVector2d;
     /**
