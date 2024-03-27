@@ -1,6 +1,6 @@
 {
   "name": "@beetpx/beetpx",
-  "version": "0.36.0",
+  "version": "0.36.1",
   "author": "Beetroot Paul",
   "license": "MIT",
   "description": "A TypeScript engine for pixel art browser games.",
