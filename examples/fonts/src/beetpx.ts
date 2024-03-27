@@ -28,7 +28,7 @@ let cameraXy = u_.offset4Directions()[0]!;
 
 b_.init({
   config: {
-    gameCanvasSize: "256x256",
+    canvasSize: "256x256",
     assets: [...customFont.spriteSheetUrls],
     debugMode: {
       available: true,

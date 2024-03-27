@@ -29,32 +29,32 @@ BeetPx.init({ config: { fixedTimestep: 60 } });
 BeetPx.init({ config: { fixedTimestep: null } });
 
 //
-// context: gameCanvasSize
+// context: canvasSize
 // test:    valid values
 //
 
-BeetPx.init({ config: { gameCanvasSize: "64x64" } });
-BeetPx.init({ config: { gameCanvasSize: "128x128" } });
-BeetPx.init({ config: { gameCanvasSize: "256x256" } });
+BeetPx.init({ config: { canvasSize: "64x64" } });
+BeetPx.init({ config: { canvasSize: "128x128" } });
+BeetPx.init({ config: { canvasSize: "256x256" } });
 
 //
-// context: gameCanvasSize
+// context: canvasSize
 // test:    invalid values
 //
 
 // @ts-expect-error
-BeetPx.init({ config: { gameCanvasSize: "1x1" } });
+BeetPx.init({ config: { canvasSize: "1x1" } });
 // @ts-expect-error
-BeetPx.init({ config: { gameCanvasSize: "512x512" } });
+BeetPx.init({ config: { canvasSize: "512x512" } });
 // @ts-expect-error
-BeetPx.init({ config: { gameCanvasSize: "1980x1080" } });
+BeetPx.init({ config: { canvasSize: "1980x1080" } });
 
 // @ts-expect-error
-BeetPx.init({ config: { gameCanvasSize: 64 } });
+BeetPx.init({ config: { canvasSize: 64 } });
 // @ts-expect-error
-BeetPx.init({ config: { gameCanvasSize: 128 } });
+BeetPx.init({ config: { canvasSize: 128 } });
 // @ts-expect-error
-BeetPx.init({ config: { gameCanvasSize: 256 } });
+BeetPx.init({ config: { canvasSize: 256 } });
 
 // @ts-expect-error
-BeetPx.init({ config: { gameCanvasSize: null } });
+BeetPx.init({ config: { canvasSize: null } });

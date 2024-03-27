@@ -9,7 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Engine_instances, _Engine_assetsToLoad, _Engine_browserType, _Engine_gameCanvasSize, _Engine_htmlCanvasBackground, _Engine_loading, _Engine_gameLoop, _Engine_assetLoader, _Engine_canvas, _Engine_fpsDisplay, _Engine_isStarted, _Engine_onStarted, _Engine_onUpdate, _Engine_onDraw, _Engine_currentFrameNumber, _Engine_renderingFps, _Engine_alreadyResumedAudioContext, _Engine_startGame;
+var _Engine_instances, _Engine_assetsToLoad, _Engine_browserType, _Engine_htmlCanvasBackground, _Engine_loading, _Engine_gameLoop, _Engine_assetLoader, _Engine_canvas, _Engine_fpsDisplay, _Engine_isStarted, _Engine_onStarted, _Engine_onUpdate, _Engine_onDraw, _Engine_currentFrameNumber, _Engine_renderingFps, _Engine_alreadyResumedAudioContext, _Engine_startGame;
 import { BeetPx } from "./BeetPx";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader } from "./assets/AssetLoader";
@@ -44,7 +44,6 @@ export class Engine {
         _Engine_instances.add(this);
         _Engine_assetsToLoad.set(this, void 0);
         _Engine_browserType.set(this, void 0);
-        _Engine_gameCanvasSize.set(this, void 0);
         _Engine_htmlCanvasBackground.set(this, BpxRgbColor.fromCssHex("#000000"));
         _Engine_loading.set(this, void 0);
         _Engine_gameLoop.set(this, void 0);
@@ -59,7 +58,7 @@ export class Engine {
         _Engine_renderingFps.set(this, 1);
         
         _Engine_alreadyResumedAudioContext.set(this, false);
-        engineConfig.gameCanvasSize ?? (engineConfig.gameCanvasSize = "128x128");
+        engineConfig.canvasSize ?? (engineConfig.canvasSize = "128x128");
         engineConfig.fixedTimestep ?? (engineConfig.fixedTimestep = "60fps");
         window.addEventListener("error", (event) => {
             HtmlTemplate.showError(event.message);
@@ -105,13 +104,14 @@ export class Engine {
                 ? 30
                 : throwError(`Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`);
         __classPrivateFieldSet(this, _Engine_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
-        __classPrivateFieldSet(this, _Engine_gameCanvasSize, engineConfig.gameCanvasSize === "64x64"
-            ? v_(64, 64)
-            : engineConfig.gameCanvasSize === "128x128"
-                ? v_(128, 128)
-                : engineConfig.gameCanvasSize === "256x256"
-                    ? v_(256, 256)
-                    : throwError(`Unsupported gameCanvasSize: "${engineConfig.gameCanvasSize}"`), "f");
+        this.canvasSize =
+            engineConfig.canvasSize === "64x64"
+                ? v_(64, 64)
+                : engineConfig.canvasSize === "128x128"
+                    ? v_(128, 128)
+                    : engineConfig.canvasSize === "256x256"
+                        ? v_(256, 256)
+                        : throwError(`Unsupported canvasSize: "${engineConfig.canvasSize}"`);
         this.gameInput = new GameInput({
             enableDebugToggle: engineConfig.debugMode?.available ?? false,
             enableFrameByFrameControls: engineConfig.frameByFrame?.available ?? false,
@@ -143,13 +143,13 @@ export class Engine {
         this.fullScreen = FullScreen.create();
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas) ??
             throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
-        __classPrivateFieldSet(this, _Engine_canvas, new CanvasForProduction(__classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), htmlCanvas, __classPrivateFieldGet(this, _Engine_htmlCanvasBackground, "f")), "f");
+        __classPrivateFieldSet(this, _Engine_canvas, new CanvasForProduction(this.canvasSize, htmlCanvas, __classPrivateFieldGet(this, _Engine_htmlCanvasBackground, "f")), "f");
         this.drawApi = new DrawApi({
             canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),
             assets: this.assets,
         });
         if (engineConfig.debugMode?.fpsDisplay?.enabled) {
-            __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, __classPrivateFieldGet(this, _Engine_gameCanvasSize, "f"), {
+            __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, this.canvasSize, {
                 color: engineConfig.debugMode.fpsDisplay.color,
                 placement: engineConfig.debugMode.fpsDisplay.placement,
             }), "f");
@@ -177,7 +177,7 @@ export class Engine {
         __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
     }
 }
-_Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engine_gameCanvasSize = new WeakMap(), _Engine_htmlCanvasBackground = new WeakMap(), _Engine_loading = new WeakMap(), _Engine_gameLoop = new WeakMap(), _Engine_assetLoader = new WeakMap(), _Engine_canvas = new WeakMap(), _Engine_fpsDisplay = new WeakMap(), _Engine_isStarted = new WeakMap(), _Engine_onStarted = new WeakMap(), _Engine_onUpdate = new WeakMap(), _Engine_onDraw = new WeakMap(), _Engine_currentFrameNumber = new WeakMap(), _Engine_renderingFps = new WeakMap(), _Engine_alreadyResumedAudioContext = new WeakMap(), _Engine_instances = new WeakSet(), _Engine_startGame = async function _Engine_startGame() {
+_Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engine_htmlCanvasBackground = new WeakMap(), _Engine_loading = new WeakMap(), _Engine_gameLoop = new WeakMap(), _Engine_assetLoader = new WeakMap(), _Engine_canvas = new WeakMap(), _Engine_fpsDisplay = new WeakMap(), _Engine_isStarted = new WeakMap(), _Engine_onStarted = new WeakMap(), _Engine_onUpdate = new WeakMap(), _Engine_onDraw = new WeakMap(), _Engine_currentFrameNumber = new WeakMap(), _Engine_renderingFps = new WeakMap(), _Engine_alreadyResumedAudioContext = new WeakMap(), _Engine_instances = new WeakSet(), _Engine_startGame = async function _Engine_startGame() {
     if (__classPrivateFieldGet(this, _Engine_isStarted, "f")) {
         throw Error("Tried to start a game, but it is already started");
     }

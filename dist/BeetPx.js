@@ -11,8 +11,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _BeetPx_engine, _BeetPx_tryGetEngine;
-import { DebugMode } from "./debug/DebugMode";
 import { Engine } from "./Engine";
+import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
 
 export class BeetPx {
@@ -41,6 +41,9 @@ export class BeetPx {
     
     static get debug() {
         return DebugMode.enabled;
+    }
+    static get canvasSize() {
+        return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetEngine).call(this).canvasSize;
     }
     /**
      * Number of frames processed since game started.

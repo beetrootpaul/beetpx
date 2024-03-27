@@ -483,7 +483,7 @@ declare class StorageApi {
 }
 
 type BpxEngineConfig = {
-    gameCanvasSize?: "64x64" | "128x128" | "256x256";
+    canvasSize?: "64x64" | "128x128" | "256x256";
     fixedTimestep?: "30fps" | "60fps";
     assets?: AssetsToLoad;
     debugMode?: {
@@ -509,6 +509,7 @@ type OnAssetsLoaded = {
 };
 declare class Engine {
     #private;
+    readonly canvasSize: BpxVector2d;
     readonly gameInput: GameInput;
     readonly audioApi: AudioApi;
     readonly fullScreen: FullScreen;
@@ -650,6 +651,7 @@ declare class BeetPx {
         onDraw?: () => void;
     }): void;
     static get debug(): typeof DebugMode.enabled;
+    static get canvasSize(): BpxVector2d;
     /**
      * Number of frames processed since game started.
      * It gets reset to 0 when `BeetPx.restart()` is called.

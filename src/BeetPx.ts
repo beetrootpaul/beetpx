@@ -1,14 +1,15 @@
 // noinspection JSUnusedGlobalSymbols
 
+import { Engine, type BpxEngineConfig } from "./Engine";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
-import { Engine, type BpxEngineConfig } from "./Engine";
-import { GameButtons } from "./game_input/buttons/GameButtons";
 import { GameInput } from "./game_input/GameInput";
+import { GameButtons } from "./game_input/buttons/GameButtons";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
+import { BpxVector2d } from "./misc/Vector2d";
 import { StorageApi } from "./storage/StorageApi";
 
 /////////////////////////////////////////////////////////////////////////////
@@ -49,6 +50,10 @@ export class BeetPx {
 
   static get debug(): typeof DebugMode.enabled {
     return DebugMode.enabled;
+  }
+
+  static get canvasSize(): BpxVector2d {
+    return this.#tryGetEngine().canvasSize;
   }
 
   /**
