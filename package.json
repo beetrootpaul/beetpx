@@ -44,7 +44,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "format": "prettier --ignore-path .gitignore --write cli/ html_templates/ src/",
     "test:tsc": "tsc",
     "test:tsc:watch": "tsc --watch",
