@@ -37,6 +37,8 @@ b_.init({
 
   b_.setOnStarted(() => {
     isPaused = false;
+    movementTimer.restart();
+    vfxTimer.restart();
     b_.startPlaybackLooped("music_base.flac");
     melodyPlaybackId = b_.startPlaybackLooped("music_melody.flac");
   });
