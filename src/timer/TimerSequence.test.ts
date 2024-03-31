@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
 import { range } from "../utils/range";
 
-import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
+import { timerSeq_ } from "../shorthands";
+import { BpxTimerSequence } from "./TimerSequence";
 
 let stubbedFrameNumber = 1;
 
