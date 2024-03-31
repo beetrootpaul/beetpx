@@ -1,4 +1,5 @@
-import { BpxTimerSequence, timerSeq_ } from "../../timer/TimerSequence";
+import { timerSeq_ } from "../../shorthands";
+import { BpxTimerSequence } from "../../timer/TimerSequence";
 
 export class Button {
   #isPressed = false;

@@ -12,15 +12,6 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_pausedFrame, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get;
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
-export function timerSeq_(params, opts) {
-    return BpxTimerSequence.of({
-        intro: params.intro ?? [],
-        loop: params.loop ?? [],
-    }, {
-        pause: opts?.pause ?? false,
-        delayFrames: opts?.delayFrames ?? 0,
-    });
-}
 export class BpxTimerSequence {
     static of(params, opts) {
         return new BpxTimerSequence(params, opts);
