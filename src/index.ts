@@ -54,6 +54,7 @@ export { BpxVector2d } from "./misc/Vector2d";
 export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
 export { BpxSprite } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
+export { BpxTimerSequence } from "./timer/TimerSequence";
 
 export { BeetPx } from "./BeetPx";
 
@@ -74,3 +75,4 @@ export { v_, v_0_0_, v_1_1_ } from "./misc/Vector2d";
 export { aspr_ } from "./sprite/AnimatedSprite";
 export { spr_ } from "./sprite/Sprite";
 export { timer_ } from "./timer/Timer";
+export { timerSeq_ } from "./timer/TimerSequence";
