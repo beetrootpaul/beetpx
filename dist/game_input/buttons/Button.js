@@ -10,7 +10,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _Button_instances, _Button_isPressed, _Button_wasJustToggled, _Button_firstRepeatFrames, _Button_loopedRepeatFrames, _Button_repeatingTimer, _Button_isRepeatingEnabled_get;
-import { timerSeq_ } from "../../timer/TimerSequence";
+import { timerSeq_ } from "../../shorthands";
 export class Button {
     constructor() {
         _Button_instances.add(this);
