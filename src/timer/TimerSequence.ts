@@ -1,28 +1,6 @@
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
 
-export function timerSeq_<TPhaseName extends string>(
-  params: {
-    intro?: Array<[phase: TPhaseName, frames: number]>;
-    loop?: Array<[phase: TPhaseName, frames: number]>;
-  },
-  opts?: {
-    pause?: boolean;
-    delayFrames?: number;
-  },
-): BpxTimerSequence<TPhaseName> {
-  return BpxTimerSequence.of<TPhaseName>(
-    {
-      intro: params.intro ?? [],
-      loop: params.loop ?? [],
-    },
-    {
-      pause: opts?.pause ?? false,
-      delayFrames: opts?.delayFrames ?? 0,
-    },
-  );
-}
-
 type Phase<TPhaseName extends string> = {
   name: TPhaseName;
   frames: number;

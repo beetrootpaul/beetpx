@@ -67,6 +67,7 @@ export {
 } from "./sprite/AnimatedSprite";
 export { BpxSprite, type BpxImageBoundSpriteFactory } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
+export { BpxTimerSequence } from "./timer/TimerSequence";
 
 export { BeetPx, b_ } from "./BeetPx";
 export { BpxUtils, u_ } from "./utils/Utils";

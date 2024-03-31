@@ -20,6 +20,7 @@ export { BpxVector2d } from "./misc/Vector2d";
 export { BpxAnimatedSprite, } from "./sprite/AnimatedSprite";
 export { BpxSprite } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
+export { BpxTimerSequence } from "./timer/TimerSequence";
 export { BeetPx, b_ } from "./BeetPx";
 export { BpxUtils, u_ } from "./utils/Utils";
 export * from "./shorthands";
