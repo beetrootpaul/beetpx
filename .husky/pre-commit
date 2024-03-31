@@ -7,7 +7,7 @@ git_branch="$(git rev-parse --abbrev-ref HEAD)"
 #   - we develop on branches other than `main`
 #   - we release new versions on `main`
 
-if [ "$git_branch" = "main" ]; then
+if [ "$git_branch" = "0.31.0-fixes" ]; then
   # If version got bumped in package.json, update the version in package-lock.json as well
   npm install
 fi
@@ -15,7 +15,7 @@ fi
 # Make sure everything is formatted as desired
 npm run format
 
-if [ "$git_branch" = "main" ]; then
+if [ "$git_branch" = "0.31.0-fixes" ]; then
   # Make sure TypeScript types and Jest tests didn't break due to most recent changes.
   # We do this on a `main` branch only in order to allow broken tests while development
   #   is in progress.
@@ -41,7 +41,7 @@ fi
 #   repository.
 npm run compile
 
-if [ "$git_branch" = "main" ]; then
+if [ "$git_branch" = "0.31.0-fixes" ]; then
   # Generate up-to-date HTML documentation
   npm run docs:generate
 fi
