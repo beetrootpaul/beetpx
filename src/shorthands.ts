@@ -12,6 +12,7 @@ import {
 } from "./sprite/AnimatedSprite";
 import { BpxImageBoundSpriteFactory, BpxSprite } from "./sprite/Sprite";
 import { BpxTimer } from "./timer/Timer";
+import { BpxTimerSequence } from "./timer/TimerSequence";
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -73,6 +74,28 @@ export function timer_(
     pause: opts?.pause ?? false,
     delayFrames: opts?.delayFrames ?? 0,
   });
+}
+
+export function timerSeq_<TPhaseName extends string>(
+  params: {
+    intro?: Array<[phase: TPhaseName, frames: number]>;
+    loop?: Array<[phase: TPhaseName, frames: number]>;
+  },
+  opts?: {
+    pause?: boolean;
+    delayFrames?: number;
+  },
+): BpxTimerSequence<TPhaseName> {
+  return BpxTimerSequence.of<TPhaseName>(
+    {
+      intro: params.intro ?? [],
+      loop: params.loop ?? [],
+    },
+    {
+      pause: opts?.pause ?? false,
+      delayFrames: opts?.delayFrames ?? 0,
+    },
+  );
 }
 
 /////////////////////////////////////////////////////////////////////////////
