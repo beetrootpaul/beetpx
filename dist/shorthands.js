@@ -7,6 +7,7 @@ import { BpxVector2d } from "./misc/Vector2d";
 import { BpxAnimatedSprite, } from "./sprite/AnimatedSprite";
 import { BpxSprite } from "./sprite/Sprite";
 import { BpxTimer } from "./timer/Timer";
+import { BpxTimerSequence } from "./timer/TimerSequence";
 
 export function aspr_(imageUrl) {
     return (w, h, xys) => {
@@ -40,6 +41,15 @@ export function timer_(frames, opts) {
     return BpxTimer.for({
         frames,
         loop: opts?.loop ?? false,
+        pause: opts?.pause ?? false,
+        delayFrames: opts?.delayFrames ?? 0,
+    });
+}
+export function timerSeq_(params, opts) {
+    return BpxTimerSequence.of({
+        intro: params.intro ?? [],
+        loop: params.loop ?? [],
+    }, {
         pause: opts?.pause ?? false,
         delayFrames: opts?.delayFrames ?? 0,
     });
