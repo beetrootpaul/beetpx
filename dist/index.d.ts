@@ -234,18 +234,18 @@ type BpxArrangedGlyph = {
 });
 declare abstract class BpxFont {
     /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
-    abstract readonly ascent: number;
+    abstract ascent: number;
     /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
-    abstract readonly descent: number;
+    abstract descent: number;
     /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and
      * the top-most pixel of the next line (excluded). */
-    abstract readonly lineGap: number;
+    abstract lineGap: number;
     /** URLs of sprite sheets used by glyphs of this font. */
-    abstract readonly spriteSheetUrls: BpxImageUrl[];
+    abstract spriteSheetUrls: BpxImageUrl[];
     /** This function is used to distinguish text from its background on a font's sprite sheet.
      *  If there is no sprite sheet in use at all, feel free to return `true` here. */
     protected abstract isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
-    protected abstract readonly glyphs: Map<string, BpxGlyph>;
+    protected abstract glyphs: Map<string, BpxGlyph>;
     protected abstract mapChar(char: string): string;
     arrangeGlyphsFor(text: string, textColor: BpxRgbColor, colorMarkers?: BpxTextColorMarkers): BpxArrangedGlyph[];
 }
