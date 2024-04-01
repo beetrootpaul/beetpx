@@ -282,18 +282,18 @@ type BpxArrangedGlyph = {
 });
 declare abstract class BpxFont {
     /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
-    abstract readonly ascent: number;
+    abstract ascent: number;
     /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
-    abstract readonly descent: number;
+    abstract descent: number;
     /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and
      * the top-most pixel of the next line (excluded). */
-    abstract readonly lineGap: number;
+    abstract lineGap: number;
     /** URLs of sprite sheets used by glyphs of this font. */
-    abstract readonly spriteSheetUrls: BpxImageUrl[];
+    abstract spriteSheetUrls: BpxImageUrl[];
     /** This function is used to distinguish text from its background on a font's sprite sheet.
      *  If there is no sprite sheet in use at all, feel free to return `true` here. */
     protected abstract isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
-    protected abstract readonly glyphs: Map<string, BpxGlyph>;
+    protected abstract glyphs: Map<string, BpxGlyph>;
     protected abstract mapChar(char: string): string;
     arrangeGlyphsFor(text: string, textColor: BpxRgbColor, colorMarkers?: BpxTextColorMarkers): BpxArrangedGlyph[];
 }
@@ -623,6 +623,31 @@ declare class BpxTimer {
     restart(): void;
 }
 
+declare class BpxTimerSequence<TPhaseName extends string> {
+    #private;
+    static of<TPhaseName extends string>(params: {
+        intro: Array<[phase: TPhaseName, frames: number]>;
+        loop: Array<[phase: TPhaseName, frames: number]>;
+    }, opts: {
+        pause: boolean;
+        delayFrames: number;
+    }): BpxTimerSequence<TPhaseName>;
+    private constructor();
+    get justFinishedPhase(): TPhaseName | null;
+    get currentPhase(): TPhaseName | null;
+    get t(): number;
+    get progress(): number;
+    get framesLeft(): number;
+    get tOverall(): number;
+    get framesLeftOverall(): number;
+    get progressOverall(): number;
+    get hasFinishedOverall(): boolean;
+    get hasJustFinishedOverall(): boolean;
+    pause(): void;
+    resume(): void;
+    restart(): void;
+}
+
 declare class DebugMode {
     #private;
     static loadFromStorage(): void;
@@ -889,6 +914,13 @@ declare function timer_(frames: number, opts?: {
     pause?: boolean;
     delayFrames?: number;
 }): BpxTimer;
+declare function timerSeq_<TPhaseName extends string>(params: {
+    intro?: Array<[phase: TPhaseName, frames: number]>;
+    loop?: Array<[phase: TPhaseName, frames: number]>;
+}, opts?: {
+    pause?: boolean;
+    delayFrames?: number;
+}): BpxTimerSequence<TPhaseName>;
 declare function v_(value: number): BpxVector2d;
 declare function v_(x: number, y: number): BpxVector2d;
 declare const v_0_0_: BpxVector2d;
@@ -923,4 +955,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timerSeq_, timer_, u_, v_, v_0_0_, v_1_1_ };
