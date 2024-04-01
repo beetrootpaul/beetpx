@@ -1,4 +1,5 @@
-import { BpxTimerSequence, timerSeq_ } from "./TimerSequence";
+import { timerSeq_ } from "../shorthands";
+import { BpxTimerSequence } from "./TimerSequence";
 
 //
 // context: phases are inferred from a construction
