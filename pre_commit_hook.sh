@@ -10,14 +10,14 @@ git_branch="$(git rev-parse --abbrev-ref HEAD)"
 
 if [ "$simulated_git_branch" = "" ]
 then
-  if [ "$git_branch" = "main" ]
+  if [ "$git_branch" = "0.37.0-fixes" ]
   then
     run_full_check="yes"
   else
     run_full_check="no"
   fi
 else
-  if [ "$simulated_git_branch" = "main" ]
+  if [ "$simulated_git_branch" = "0.37.0-fixes" ]
   then
     run_full_check="yes"
   else
