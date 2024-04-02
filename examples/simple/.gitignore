@@ -1,6 +1,8 @@
+# BeetPx: prod build
+/dist/
+
 # BeetPx: generated and temporary files
 /.beetpx/
-/dist/
 /index.html
 /public/.beetpx/
 
