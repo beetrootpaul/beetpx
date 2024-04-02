@@ -9,7 +9,7 @@
     "build": "beetpx build --htmlTitle \"Fonts | BeetPx example\" --const PREV_COMMIT=\"$(git rev-parse --verify HEAD)\"",
     "prod": "npm run build && beetpx preview --open",
     "zip": "npm run build && beetpx zip",
-    "format": "prettier --ignore-path .gitignore --write src/",
+    "format": "prettier --ignore-path .gitignore --write src/ README.md",
     "tsc": "tsc",
     "tsc:watch": "tsc --watch"
   },

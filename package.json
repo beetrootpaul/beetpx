@@ -45,7 +45,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "format": "prettier --ignore-path .gitignore --write cli/ html_templates/ src/",
+    "format": "prettier --ignore-path .gitignore --write cli/ e2e_tests/ html_templates/ scripts/ src/ README.md",
     "test:tsc": "tsc",
     "test:tsc:watch": "tsc --watch",
     "test:vitest": "vitest run",
