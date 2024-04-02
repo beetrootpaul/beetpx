@@ -1,5 +1,5 @@
 {
-  "name": "beetpx-example-const-injection",
+  "name": "beetpx-example-tests",
   "version": "0.0.0",
   "private": true,
   "author": "Beetroot Paul",
@@ -8,8 +8,9 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start": "beetpx dev --open --htmlTitle \"[dev] Fonts | BeetPx example\"",
-    "build": "beetpx build --htmlTitle \"Fonts | BeetPx example\"",
+    "test": "vitest run",
+    "start": "beetpx dev --open",
+    "build": "beetpx build",
     "prod": "npm run build && beetpx preview --open",
     "zip": "npm run build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/ README.md",
@@ -20,6 +21,7 @@
     "@beetpx/beetpx": "file:../../",
     "prettier": "3.2.5",
     "prettier-plugin-organize-imports": "3.2.4",
-    "typescript": "5.4.3"
+    "typescript": "5.4.3",
+    "vitest": "1.4.0"
   }
 }
