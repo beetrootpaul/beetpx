@@ -76,4 +76,30 @@ describe("RgbColor", () => {
       expect(BpxRgbColor.of(255, 255, 255).cssHex).toEqual("#ffffff");
     });
   });
+
+  describe("#isSameAs", () => {
+    test("comparison", () => {
+      expect(BpxRgbColor.of(0, 0, 0).isSameAs(BpxRgbColor.of(0, 0, 0))).toBe(
+        true,
+      );
+      expect(BpxRgbColor.of(1, 2, 3).isSameAs(BpxRgbColor.of(1, 2, 3))).toBe(
+        true,
+      );
+      expect(
+        BpxRgbColor.of(0xff, 0xfe, 0xfd).isSameAs(
+          BpxRgbColor.of(0xff, 0xfe, 0xfd),
+        ),
+      ).toBe(true);
+
+      expect(BpxRgbColor.of(1, 2, 3).isSameAs(BpxRgbColor.of(1, 2, 33))).toBe(
+        false,
+      );
+      expect(BpxRgbColor.of(1, 2, 3).isSameAs(BpxRgbColor.of(1, 22, 3))).toBe(
+        false,
+      );
+      expect(BpxRgbColor.of(1, 2, 3).isSameAs(BpxRgbColor.of(11, 2, 3))).toBe(
+        false,
+      );
+    });
+  });
 });

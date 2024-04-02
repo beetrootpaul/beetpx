@@ -19,6 +19,9 @@ export class BpxRgbColor {
                 g.toString(16).padStart(2, "0") +
                 b.toString(16).padStart(2, "0");
     }
+    isSameAs(another) {
+        return another.r === this.r && another.g === this.g && another.b === this.b;
+    }
     asArray() {
         return [this.r, this.g, this.b];
     }
