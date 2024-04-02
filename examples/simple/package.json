@@ -1,9 +1,12 @@
 {
-  "name": "beetpx-example-simple",
+  "name": "beetpx-example-const-injection",
   "version": "0.0.0",
   "private": true,
   "author": "Beetroot Paul",
   "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "start": "beetpx dev --open --htmlTitle \"[dev] Simple | BeetPx example\"",
     "build": "beetpx build --htmlTitle \"Simple | BeetPx example\"",
@@ -14,6 +17,9 @@
     "tsc:watch": "tsc --watch"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "file:../../"
+    "@beetpx/beetpx": "file:../../",
+    "prettier": "3.2.5",
+    "prettier-plugin-organize-imports": "3.2.4",
+    "typescript": "5.4.3"
   }
 }
