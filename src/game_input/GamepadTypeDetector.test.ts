@@ -21,7 +21,7 @@ describe("GamepadTypeDetector", () => {
     "HID-compliant game controller (STANDARD GAMEPAD Vendor: 045e Product: 02fd)",
     // Xbox One controller, Windows 10 Home 22H2 (Intel Core i7-3517U), Vivaldi 6.2.3105.58 (Stable channel) (64-bit)
     "Xbox 360 Controller (XInput STANDARD GAMEPAD)",
-  ].forEach((id) => {
+  ].forEach(id => {
     test(`Xbox (id = "${id}")`, () => {
       expect(BpxGamepadTypeDetector.detect(gamepad(id))).toEqual("xbox");
     });
@@ -47,7 +47,7 @@ describe("GamepadTypeDetector", () => {
     "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)",
     // DualSense controller, Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 118.0.2 (64-bit)
     "054c-0ce6-Wireless Controller",
-  ].forEach((id) => {
+  ].forEach(id => {
     test(`DualSense (id = "${id}")`, () => {
       expect(BpxGamepadTypeDetector.detect(gamepad(id))).toEqual("dualsense");
     });
@@ -73,7 +73,7 @@ describe("GamepadTypeDetector", () => {
     "Bluetooth Wireless Controller    (Vendor: 2dc8 Product: 5112)",
     // 8BitDo Lite 2, Windows 10 Home 22H2 (Intel Core i7-3517U), Firefox 121.0 (64 bity)
     "2dc8-5112-Bluetooth Wireless Controller   ",
-  ].forEach((id) => {
+  ].forEach(id => {
     test(`8BitDo (id = "${id}")`, () => {
       expect(BpxGamepadTypeDetector.detect(gamepad(id))).toEqual("8bitdo");
     });

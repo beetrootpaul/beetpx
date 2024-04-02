@@ -110,7 +110,7 @@ export class Engine {
     engineConfig.canvasSize ??= "128x128";
     engineConfig.fixedTimestep ??= "60fps";
 
-    window.addEventListener("error", (event) => {
+    window.addEventListener("error", event => {
       HtmlTemplate.showError(event.message);
       // Pause music. But do it after other operations, since there
       //   might be some new unexpected an error thrown here.
@@ -121,7 +121,7 @@ export class Engine {
       // returning `true` here means the error is already handled by us
       return true;
     });
-    window.addEventListener("unhandledrejection", (event) => {
+    window.addEventListener("unhandledrejection", event => {
       HtmlTemplate.showError(event.reason);
       // Pause music. But do it after other operations, since there
       //   might be some new unexpected an error thrown here.
@@ -155,26 +155,19 @@ export class Engine {
     this.#assetsToLoad.push(...font_saint11Minimal5_.spriteSheetUrls);
 
     const fixedTimestepFps =
-      engineConfig.fixedTimestep === "60fps"
-        ? 60
-        : engineConfig.fixedTimestep === "30fps"
-          ? 30
-          : throwError(
-              `Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`,
-            );
+      engineConfig.fixedTimestep === "60fps" ? 60
+      : engineConfig.fixedTimestep === "30fps" ? 30
+      : throwError(
+          `Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`,
+        );
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
     this.canvasSize =
-      engineConfig.canvasSize === "64x64"
-        ? v_(64, 64)
-        : engineConfig.canvasSize === "128x128"
-          ? v_(128, 128)
-          : engineConfig.canvasSize === "256x256"
-            ? v_(256, 256)
-            : throwError(
-                `Unsupported canvasSize: "${engineConfig.canvasSize}"`,
-              );
+      engineConfig.canvasSize === "64x64" ? v_(64, 64)
+      : engineConfig.canvasSize === "128x128" ? v_(128, 128)
+      : engineConfig.canvasSize === "256x256" ? v_(256, 256)
+      : throwError(`Unsupported canvasSize: "${engineConfig.canvasSize}"`);
 
     this.gameInput = new GameInput({
       enableDebugToggle: engineConfig.debugMode?.available ?? false,
@@ -204,7 +197,7 @@ export class Engine {
       onStartClicked: () => {
         this.audioApi
           .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
-          .then((resumed) => {
+          .then(resumed => {
             if (resumed) {
               this.#alreadyResumedAudioContext = true;
             }
@@ -284,7 +277,7 @@ export class Engine {
       //   iframe with the game in Firefox
       // - there are two ways of implementing this, because of browsers incompatibilities,
       //   therefore using both of them here (`event.returnValue =` and `return`)
-      window.addEventListener("beforeunload", (event) => {
+      window.addEventListener("beforeunload", event => {
         event.preventDefault();
         event.returnValue = "";
         return "";
@@ -328,7 +321,7 @@ export class Engine {
         if (hasAnyInteractionHappened && !this.#alreadyResumedAudioContext) {
           this.audioApi
             .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
-            .then((resumed) => {
+            .then(resumed => {
               if (resumed) {
                 this.#alreadyResumedAudioContext = true;
               }
@@ -345,12 +338,12 @@ export class Engine {
           this.#onUpdate?.();
 
           this.#currentFrameNumber =
-            this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER
-              ? 0
-              : this.#currentFrameNumber + 1;
+            this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
+              0
+            : this.#currentFrameNumber + 1;
         }
       },
-      renderFn: (renderingFps) => {
+      renderFn: renderingFps => {
         this.#renderingFps = renderingFps;
 
         this.#onDraw?.();

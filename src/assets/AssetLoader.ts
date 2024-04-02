@@ -20,26 +20,26 @@ export class AssetLoader {
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
     const unrecognizedAssetFormats = assetsToLoad.filter(
-      (url) => !this.#isImage(url) && !this.#isSound(url) && !this.#isJson(url),
+      url => !this.#isImage(url) && !this.#isSound(url) && !this.#isJson(url),
     );
     if (unrecognizedAssetFormats.length > 0) {
       throw Error(
         "Assets: following URLs don't look like any of supported formats: " +
-          unrecognizedAssetFormats.map((url) => `"${url}"`).join(", ") +
+          unrecognizedAssetFormats.map(url => `"${url}"`).join(", ") +
           '. Supported formats are: ".png", ".wav", ".flac", ".json", ".ldtk"',
       );
     }
 
     await Promise.all([
       ...assetsToLoad
-        .filter((url) => this.#isImage(url))
-        .map((url) => this.#loadImage(url)),
+        .filter(url => this.#isImage(url))
+        .map(url => this.#loadImage(url)),
       ...assetsToLoad
-        .filter((url) => this.#isSound(url))
-        .map((url) => this.#loadSound(url)),
+        .filter(url => this.#isSound(url))
+        .map(url => this.#loadSound(url)),
       ...assetsToLoad
-        .filter((url) => this.#isJson(url))
-        .map((url) => this.#loadJson(url)),
+        .filter(url => this.#isJson(url))
+        .map(url => this.#loadJson(url)),
     ]);
   }
 

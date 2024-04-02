@@ -10,4 +10,3 @@ then, after killing stopping `npm start`:
 ```
 npm run prod
 ```
-

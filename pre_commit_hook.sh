@@ -4,9 +4,15 @@
 #   in case of a failure.
 set -e
 
+set -x
+
 simulated_git_branch="$1"
 
 git_branch="$(git rev-parse --abbrev-ref HEAD)"
+
+# Assumption for all `if [ "$branch" = "main" ]` blocks:
+#   - we develop on branches other than `main`
+#   - we release new versions on `main`
 
 if [ "$simulated_git_branch" = "" ]
 then
@@ -24,10 +30,6 @@ else
     run_full_check="no"
   fi
 fi
-
-# Assumption for all `if [ "$branch" = "main" ]` blocks:
-#   - we develop on branches other than `main`
-#   - we release new versions on `main`
 
 if [ "$run_full_check" = "yes" ]; then
   # If version got bumped in package.json, update the version in package-lock.json as well

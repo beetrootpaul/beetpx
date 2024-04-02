@@ -45,7 +45,7 @@ export class GameInputMouse implements GameInputSpecialized {
 
   startListening(): void {
     GameInputMouse.mapping.forEach(({ event, selector }) => {
-      document.querySelectorAll<HTMLElement>(selector).forEach((button) => {
+      document.querySelectorAll<HTMLElement>(selector).forEach(button => {
         button.addEventListener("mousedown", () => {
           this.#eventsSinceLastUpdate.add(event);
         });

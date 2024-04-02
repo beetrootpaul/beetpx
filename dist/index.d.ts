@@ -96,6 +96,7 @@ declare class BpxRgbColor {
     readonly b: number;
     readonly cssHex: BpxRgbCssHex;
     private constructor();
+    isSameAs(another: BpxRgbColor): boolean;
     asArray(): [r: number, g: number, b: number];
 }
 

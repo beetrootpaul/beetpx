@@ -282,7 +282,7 @@ function testGameLoop(params: {
   vi.resetAllMocks();
   documentVisibilityStateProvider.visibilityState = "visible";
   let nextRafRequestId = 1;
-  rafFn.mockImplementation((_callback) => nextRafRequestId++);
+  rafFn.mockImplementation(_callback => nextRafRequestId++);
 
   // Process the sequence of events:
   let prevTickTime = -1;
@@ -295,7 +295,7 @@ function testGameLoop(params: {
 
       const prevEvent = i > 0 ? seq[i - 1]! : undefined;
 
-      rafFn.mockImplementationOnce((callback) => {
+      rafFn.mockImplementationOnce(callback => {
         if (typeof prevEvent === "function") {
           prevEvent();
         }

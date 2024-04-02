@@ -14,5 +14,5 @@ test("is _not_ prod", async ({ page }) => {
   const isProd = await page.evaluate(() => window.BEETPX__IS_PROD);
 
   expect(isProd).toBe(false);
-  expect(typeof isProd).toBe('boolean');
+  expect(typeof isProd).toBe("boolean");
 });

@@ -12,8 +12,8 @@ export class BpxPixels {
   private constructor(ascii: string) {
     this.asciiRows = ascii
       .split("\n")
-      .map((row) => row.replace(/\s/g, ""))
-      .filter((row) => row.length > 0);
+      .map(row => row.replace(/\s/g, ""))
+      .filter(row => row.length > 0);
 
     let w = 0;
     for (const row of this.asciiRows) {

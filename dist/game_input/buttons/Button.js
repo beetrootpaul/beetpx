@@ -41,11 +41,11 @@ export class Button {
         if (isPressed) {
             if (__classPrivateFieldGet(this, _Button_wasJustToggled, "f") && __classPrivateFieldGet(this, _Button_instances, "a", _Button_isRepeatingEnabled_get)) {
                 __classPrivateFieldSet(this, _Button_repeatingTimer, timerSeq_({
-                    intro: __classPrivateFieldGet(this, _Button_firstRepeatFrames, "f")
-                        ? [["first", __classPrivateFieldGet(this, _Button_firstRepeatFrames, "f")]]
+                    intro: __classPrivateFieldGet(this, _Button_firstRepeatFrames, "f") ?
+                        [["first", __classPrivateFieldGet(this, _Button_firstRepeatFrames, "f")]]
                         : undefined,
-                    loop: __classPrivateFieldGet(this, _Button_loopedRepeatFrames, "f")
-                        ? [["looped", __classPrivateFieldGet(this, _Button_loopedRepeatFrames, "f")]]
+                    loop: __classPrivateFieldGet(this, _Button_loopedRepeatFrames, "f") ?
+                        [["looped", __classPrivateFieldGet(this, _Button_loopedRepeatFrames, "f")]]
                         : undefined,
                 }), "f");
             }

@@ -39,8 +39,8 @@ export function rgb_(
   g?: number,
   b?: number,
 ): BpxRgbColor {
-  return typeof rOrCssHex === "string"
-    ? BpxRgbColor.fromCssHex(rOrCssHex)
+  return typeof rOrCssHex === "string" ?
+      BpxRgbColor.fromCssHex(rOrCssHex)
     : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
 

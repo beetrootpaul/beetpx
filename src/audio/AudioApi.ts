@@ -54,7 +54,7 @@ export class AudioApi {
       this.#audioContext.currentTime,
       0,
     );
-    this.#audioContext.resume().catch((err) => {
+    this.#audioContext.resume().catch(err => {
       Logger.errorBeetPx(err);
     });
   }
@@ -85,7 +85,7 @@ export class AudioApi {
         Logger.debugBeetPx("Audio Context got resumed");
         return true;
       })
-      .catch((err) => {
+      .catch(err => {
         Logger.errorBeetPx(err);
         return false;
       });
@@ -190,9 +190,9 @@ export class AudioApi {
     AudioHelpers.muteGain(
       this.#globalGainNode,
       this.#audioContext.currentTime,
-      this.#isPaused
-        ? 0
-        : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+      this.#isPaused ? 0 : (
+        opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
+      ),
     );
   }
 
@@ -210,9 +210,9 @@ export class AudioApi {
     AudioHelpers.unmuteGain(
       this.#globalGainNode,
       this.#audioContext.currentTime,
-      this.#isPaused
-        ? 0
-        : opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+      this.#isPaused ? 0 : (
+        opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
+      ),
     );
   }
 
@@ -227,9 +227,9 @@ export class AudioApi {
     this.#playbacks
       .get(playbackId)
       ?.mute(
-        this.#isPaused
-          ? 0
-          : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+        this.#isPaused ? 0 : (
+          opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
+        ),
       );
   }
 
@@ -244,9 +244,9 @@ export class AudioApi {
     this.#playbacks
       .get(playbackId)
       ?.unmute(
-        this.#isPaused
-          ? 0
-          : opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+        this.#isPaused ? 0 : (
+          opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
+        ),
       );
   }
 
@@ -261,7 +261,7 @@ export class AudioApi {
       this.#audioContext.currentTime,
       AudioApi.#muteUnmuteDefaultFadeMillis,
       () => {
-        this.#audioContext.suspend().catch((err) => {
+        this.#audioContext.suspend().catch(err => {
           Logger.errorBeetPx(err);
         });
       },
@@ -283,7 +283,7 @@ export class AudioApi {
           AudioApi.#muteUnmuteDefaultFadeMillis,
         );
       })
-      .catch((err) => {
+      .catch(err => {
         Logger.errorBeetPx(err);
       });
   }
@@ -295,9 +295,9 @@ export class AudioApi {
 
     for (const playback of this.#playbacks.values()) {
       playback.stop(
-        this.#isPaused || this.#isMuted
-          ? 0
-          : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+        this.#isPaused || this.#isMuted ?
+          0
+        : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
       );
     }
   }
@@ -313,9 +313,9 @@ export class AudioApi {
     this.#playbacks
       .get(playbackId)
       ?.stop(
-        this.#isPaused || this.#isMuted
-          ? 0
-          : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+        this.#isPaused || this.#isMuted ?
+          0
+        : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
       );
   }
 

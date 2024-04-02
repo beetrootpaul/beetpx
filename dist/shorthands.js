@@ -19,8 +19,8 @@ export const font_pico8_ = new BpxFontPico8();
 export const font_saint11Minimal4_ = new BpxFontSaint11Minimal4();
 export const font_saint11Minimal5_ = new BpxFontSaint11Minimal5();
 export function rgb_(rOrCssHex, g, b) {
-    return typeof rOrCssHex === "string"
-        ? BpxRgbColor.fromCssHex(rOrCssHex)
+    return typeof rOrCssHex === "string" ?
+        BpxRgbColor.fromCssHex(rOrCssHex)
         : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
 export const rgb_black_ = rgb_("#000000");

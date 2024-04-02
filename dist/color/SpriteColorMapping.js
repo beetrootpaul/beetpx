@@ -13,7 +13,7 @@ var _BpxSpriteColorMapping_mapping;
 export class BpxSpriteColorMapping {
     static from(colorMappingEntries) {
         const map = new Map(colorMappingEntries.map(([from, to]) => [from.cssHex, to]));
-        return new BpxSpriteColorMapping((spriteColor) => {
+        return new BpxSpriteColorMapping(spriteColor => {
             if (!spriteColor)
                 return spriteColor;
             const mapped = map.get(spriteColor.cssHex);
@@ -33,4 +33,4 @@ export class BpxSpriteColorMapping {
     }
 }
 _BpxSpriteColorMapping_mapping = new WeakMap();
-BpxSpriteColorMapping.noMapping = new BpxSpriteColorMapping((c) => c);
+BpxSpriteColorMapping.noMapping = new BpxSpriteColorMapping(c => c);

@@ -15,7 +15,9 @@ import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 const text = [
   "The quick [c1]brown[c0] fox jumps",
   "over the [c2]lazy[c0] dog",
-  "0123456789 -+= .,:;!? ~@#$%^&*_ ()[]{}<> /|\\ `'\"",
+  "0123456789 -+= .,:;!? ~@#$%^&*_",
+  "()[]{}<> /|\\ `'\"",
+  "⭐➡❎❤️",
 ].join("\n");
 
 const centerXy: [boolean, boolean] = [true, false];

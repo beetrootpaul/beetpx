@@ -45,9 +45,9 @@ export class CustomFont extends BpxFont {
     },
   ): BpxGlyph {
     const sprite = spr_(
-      extras?.useExternalSpriteSheet
-        ? CustomFont.#externalSpriteSheetUrl
-        : CustomFont.#internalSpriteSheetUrl,
+      extras?.useExternalSpriteSheet ?
+        CustomFont.#externalSpriteSheetUrl
+      : CustomFont.#internalSpriteSheetUrl,
     )(w, h, x, y);
     return {
       type: "sprite",
@@ -102,7 +102,7 @@ export class CustomFont extends BpxFont {
     [
       "w",
       this.#pixelsGlyph(`
-         #-#-#
+        #-#-#
         #-#-#
         #-#-#
         -#-#-
@@ -110,6 +110,19 @@ export class CustomFont extends BpxFont {
       `),
     ],
     ["x", this.#spriteGlyph(3, 5, 1, 8, { kerning: { o: 1 } })],
+    [
+      "➡",
+      this.#pixelsGlyph(`
+        ----------
+        ----------
+        -------#--
+        -------##-
+        ##########
+        -------##-
+        -------#--
+        ----------
+      `),
+    ],
   ]);
 }
 

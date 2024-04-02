@@ -21,22 +21,22 @@ export class AssetLoader {
         __classPrivateFieldSet(this, _AssetLoader_decodeAudioData, params.decodeAudioData, "f");
     }
     async loadAssets(assetsToLoad) {
-        const unrecognizedAssetFormats = assetsToLoad.filter((url) => !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isImage).call(this, url) && !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isSound).call(this, url) && !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isJson).call(this, url));
+        const unrecognizedAssetFormats = assetsToLoad.filter(url => !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isImage).call(this, url) && !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isSound).call(this, url) && !__classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isJson).call(this, url));
         if (unrecognizedAssetFormats.length > 0) {
             throw Error("Assets: following URLs don't look like any of supported formats: " +
-                unrecognizedAssetFormats.map((url) => `"${url}"`).join(", ") +
+                unrecognizedAssetFormats.map(url => `"${url}"`).join(", ") +
                 '. Supported formats are: ".png", ".wav", ".flac", ".json", ".ldtk"');
         }
         await Promise.all([
             ...assetsToLoad
-                .filter((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isImage).call(this, url))
-                .map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadImage).call(this, url)),
+                .filter(url => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isImage).call(this, url))
+                .map(url => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadImage).call(this, url)),
             ...assetsToLoad
-                .filter((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isSound).call(this, url))
-                .map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadSound).call(this, url)),
+                .filter(url => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isSound).call(this, url))
+                .map(url => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadSound).call(this, url)),
             ...assetsToLoad
-                .filter((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isJson).call(this, url))
-                .map((url) => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadJson).call(this, url)),
+                .filter(url => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_isJson).call(this, url))
+                .map(url => __classPrivateFieldGet(this, _AssetLoader_instances, "m", _AssetLoader_loadJson).call(this, url)),
         ]);
     }
 }

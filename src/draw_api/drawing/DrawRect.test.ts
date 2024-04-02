@@ -472,7 +472,7 @@ describe("DrawRect", () => {
       dts.drawApi.drawRect(
         v_(1, 1),
         v_(12, 5),
-        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );
@@ -985,7 +985,7 @@ describe("DrawRect", () => {
       dts.drawApi.drawRectFilled(
         v_(1, 1),
         v_(12, 5),
-        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );
@@ -1398,7 +1398,7 @@ describe("DrawRect", () => {
       dts.drawApi.drawRectOutsideFilled(
         v_(4, 2),
         v_(6, 3),
-        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );

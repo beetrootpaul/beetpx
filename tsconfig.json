@@ -2,23 +2,9 @@
   "compilerOptions": {
     "strict": true,
     "noUncheckedIndexedAccess": true,
-
-    "esModuleInterop": true,
-    // ES6 target and ES6 module are set instead of previous ES2020 and CommonJS,
-    //   because it seemed to fix the `undefined is not a non-null object` error,
-    //   thrown on `Object.defineProperty(DrawEllipse,"__esModule"`,
-    //   (which for some reason called before `var DrawEllipse = {}`).,
     "target": "ES2020",
-    "verbatimModuleSyntax": false,
-    "moduleDetection": "force",
-
     "moduleResolution": "bundler",
-    "module": "ES2020",
-
-    "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": true
   },
-  "include": [
-    "./src"
-  ]
+  "include": ["./src"]
 }

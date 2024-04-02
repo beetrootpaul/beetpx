@@ -42,7 +42,7 @@ export class BpxFont {
                     type: "sprite",
                     char: char,
                     sprite: glyph.sprite,
-                    spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) => this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null),
+                    spriteColorMapping: BpxSpriteColorMapping.of(sourceColor => this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null),
                     lineNumber: lineNumber,
                     leftTop: xy
                         .add(0, this.ascent)

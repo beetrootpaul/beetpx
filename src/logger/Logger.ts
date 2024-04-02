@@ -9,7 +9,7 @@ export class Logger {
   static debug(...args: any[]): void {
     if (DebugMode.enabled) {
       console.debug(
-        ...args.map((value) =>
+        ...args.map(value =>
           value.__printDebug ? value.__printDebug() : value,
         ),
       );
@@ -21,9 +21,7 @@ export class Logger {
   }
   static info(...args: any[]): void {
     console.info(
-      ...args.map((value) =>
-        value.__printDebug ? value.__printDebug() : value,
-      ),
+      ...args.map(value => (value.__printDebug ? value.__printDebug() : value)),
     );
   }
 
@@ -32,9 +30,7 @@ export class Logger {
   }
   static warn(...args: any[]): void {
     console.warn(
-      ...args.map((value) =>
-        value.__printDebug ? value.__printDebug() : value,
-      ),
+      ...args.map(value => (value.__printDebug ? value.__printDebug() : value)),
     );
   }
 
@@ -43,9 +39,7 @@ export class Logger {
   }
   static error(...args: any[]): void {
     console.error(
-      ...args.map((value) =>
-        value.__printDebug ? value.__printDebug() : value,
-      ),
+      ...args.map(value => (value.__printDebug ? value.__printDebug() : value)),
     );
   }
 }

@@ -8,6 +8,7 @@
   },
   "include": [
     "./src",
+    // Do *not* add the line below in your own project depending on beetpx published to npm
     "../../src/audio-buffer-utils.d.ts"
   ]
 }

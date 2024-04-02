@@ -7,8 +7,8 @@ const files = fs.readdirSync(".");
 
 const playwrightConfigFile = "playwright.config.ts";
 
-const devTestFiles = files.filter((f) => f.endsWith(".dev.e2e.ts"));
-const prodTestFiles = files.filter((f) => f.endsWith(".prod.e2e.ts"));
+const devTestFiles = files.filter(f => f.endsWith(".dev.e2e.ts"));
+const prodTestFiles = files.filter(f => f.endsWith(".prod.e2e.ts"));
 const allowedNonTestFiles = [
   ".beetpx",
   ".gitignore",
@@ -21,7 +21,7 @@ const allowedNonTestFiles = [
 ];
 
 const nonTestFile = files.find(
-  (f) =>
+  f =>
     !devTestFiles.includes(f) &&
     !prodTestFiles.includes(f) &&
     !allowedNonTestFiles.includes(f),
@@ -33,17 +33,21 @@ if (nonTestFile) {
 }
 
 const results = [];
-devTestFiles.forEach((devTestFile) => {
+devTestFiles.forEach(devTestFile => {
   results.push(runTest(devTestFile, false));
 });
-prodTestFiles.forEach((prodTestFile) => {
+prodTestFiles.forEach(prodTestFile => {
   results.push(runTest(prodTestFile, true));
 });
 const hasSucceeded = results.every(r => r.pass);
 if (hasSucceeded) {
-  console.log(`\n✅ ALL E2E TESTS PASSED (passed ${results.length}/${results.length})\n`);
+  console.log(
+    `\n✅ ALL E2E TESTS PASSED (passed ${results.length}/${results.length})\n`,
+  );
 } else {
-  console.log(`\n🛑 SOME E2E TESTS FAILED (passed ${results.filter(r => r.pass).length}/${results.length})\n`);
+  console.log(
+    `\n🛑 SOME E2E TESTS FAILED (passed ${results.filter(r => r.pass).length}/${results.length})\n`,
+  );
   process.exit(1);
 }
 
@@ -60,7 +64,7 @@ function runTest(testFile, isProd) {
   const commandArgsRaw = fs
     .readFileSync(testFile, { encoding: "utf8" })
     .split("\n")
-    .filter((line) => line.startsWith(commandArgsMarker));
+    .filter(line => line.startsWith(commandArgsMarker));
   if (commandArgsRaw.length <= 0) {
     throw Error(`[e2e] Missing COMMAND ARGS marker in ${testFile}`);
   }
@@ -68,9 +72,10 @@ function runTest(testFile, isProd) {
     .substring(commandArgsMarker.length)
     .trim();
 
-  const commandArgsSafe = commandArgs.replaceAll("\"", "\\\"");
-  const command = isProd
-    ? `../cli/beetpx-cli.cjs build ${commandArgsSafe} && ../cli/beetpx-cli.cjs preview --port 9999`
+  const commandArgsSafe = commandArgs.replaceAll('"', '\\"');
+  const command =
+    isProd ?
+      `../cli/beetpx-cli.cjs build ${commandArgsSafe} && ../cli/beetpx-cli.cjs preview --port 9999`
     : `../cli/beetpx-cli.cjs dev --port 9999 ${commandArgsSafe}`;
 
   fs.writeFileSync(

@@ -60,7 +60,7 @@ export class Engine {
         _Engine_alreadyResumedAudioContext.set(this, false);
         engineConfig.canvasSize ?? (engineConfig.canvasSize = "128x128");
         engineConfig.fixedTimestep ?? (engineConfig.fixedTimestep = "60fps");
-        window.addEventListener("error", (event) => {
+        window.addEventListener("error", event => {
             HtmlTemplate.showError(event.message);
             
             
@@ -71,7 +71,7 @@ export class Engine {
             
             return true;
         });
-        window.addEventListener("unhandledrejection", (event) => {
+        window.addEventListener("unhandledrejection", event => {
             HtmlTemplate.showError(event.reason);
             
             
@@ -98,19 +98,14 @@ export class Engine {
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_pico8_.spriteSheetUrls);
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal4_.spriteSheetUrls);
         __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal5_.spriteSheetUrls);
-        const fixedTimestepFps = engineConfig.fixedTimestep === "60fps"
-            ? 60
-            : engineConfig.fixedTimestep === "30fps"
-                ? 30
+        const fixedTimestepFps = engineConfig.fixedTimestep === "60fps" ? 60
+            : engineConfig.fixedTimestep === "30fps" ? 30
                 : throwError(`Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`);
         __classPrivateFieldSet(this, _Engine_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
         this.canvasSize =
-            engineConfig.canvasSize === "64x64"
-                ? v_(64, 64)
-                : engineConfig.canvasSize === "128x128"
-                    ? v_(128, 128)
-                    : engineConfig.canvasSize === "256x256"
-                        ? v_(256, 256)
+            engineConfig.canvasSize === "64x64" ? v_(64, 64)
+                : engineConfig.canvasSize === "128x128" ? v_(128, 128)
+                    : engineConfig.canvasSize === "256x256" ? v_(256, 256)
                         : throwError(`Unsupported canvasSize: "${engineConfig.canvasSize}"`);
         this.gameInput = new GameInput({
             enableDebugToggle: engineConfig.debugMode?.available ?? false,
@@ -133,7 +128,7 @@ export class Engine {
             onStartClicked: () => {
                 this.audioApi
                     .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
-                    .then((resumed) => {
+                    .then(resumed => {
                     if (resumed) {
                         __classPrivateFieldSet(this, _Engine_alreadyResumedAudioContext, true, "f");
                     }
@@ -190,7 +185,7 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
         
         
         
-        window.addEventListener("beforeunload", (event) => {
+        window.addEventListener("beforeunload", event => {
             event.preventDefault();
             event.returnValue = "";
             return "";
@@ -227,7 +222,7 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
             if (hasAnyInteractionHappened && !__classPrivateFieldGet(this, _Engine_alreadyResumedAudioContext, "f")) {
                 this.audioApi
                     .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
-                    .then((resumed) => {
+                    .then(resumed => {
                     if (resumed) {
                         __classPrivateFieldSet(this, _Engine_alreadyResumedAudioContext, true, "f");
                     }
@@ -238,12 +233,12 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                     Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Engine_currentFrameNumber, "f")}`);
                 }
                 __classPrivateFieldGet(this, _Engine_onUpdate, "f")?.call(this);
-                __classPrivateFieldSet(this, _Engine_currentFrameNumber, __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f") >= Number.MAX_SAFE_INTEGER
-                    ? 0
+                __classPrivateFieldSet(this, _Engine_currentFrameNumber, __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f") >= Number.MAX_SAFE_INTEGER ?
+                    0
                     : __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f") + 1, "f");
             }
         },
-        renderFn: (renderingFps) => {
+        renderFn: renderingFps => {
             __classPrivateFieldSet(this, _Engine_renderingFps, renderingFps, "f");
             __classPrivateFieldGet(this, _Engine_onDraw, "f")?.call(this);
             if (DebugMode.enabled) {

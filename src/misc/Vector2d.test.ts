@@ -59,10 +59,10 @@ describe("Vector2d", () => {
 
     test("#minMax", () => {
       expect(
-        BpxVector2d.minMax(v_(111, 999), v_(888, 222)).map((v) => v),
+        BpxVector2d.minMax(v_(111, 999), v_(888, 222)).map(v => v),
       ).toEqual([v_(111, 222), v_(888, 999)]);
       expect(
-        BpxVector2d.minMax(v_(-111, -999), v_(-888, -222)).map((v) => v),
+        BpxVector2d.minMax(v_(-111, -999), v_(-888, -222)).map(v => v),
       ).toEqual([v_(-888, -999), v_(-111, -222)]);
     });
 

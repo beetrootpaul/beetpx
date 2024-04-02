@@ -34,10 +34,10 @@ export class AudioPlaybackSequence extends AudioPlayback {
       throw Error("Cannot play an empty sound sequence");
     }
 
-    const intro: EntryBuffers[] = introSequence.map((entry) =>
+    const intro: EntryBuffers[] = introSequence.map(entry =>
       this.#intoEntryBuffersWithEqualDurations(entry, params.assets),
     );
-    const loop: EntryBuffers[] = loopSequence.map((entry) =>
+    const loop: EntryBuffers[] = loopSequence.map(entry =>
       this.#intoEntryBuffersWithEqualDurations(entry, params.assets),
     );
 
@@ -84,9 +84,9 @@ export class AudioPlaybackSequence extends AudioPlayback {
     const mainSoundDurationMs: number = mainSoundBuffer.duration * 1000;
 
     const durationMs: number =
-      typeof firstSound !== "string" && firstSound.durationMs
-        ? firstSound.durationMs(mainSoundDurationMs)
-        : mainSoundDurationMs;
+      typeof firstSound !== "string" && firstSound.durationMs ?
+        firstSound.durationMs(mainSoundDurationMs)
+      : mainSoundDurationMs;
 
     const firstBuffer: AudioBuffer = ABU.resize(
       mainSoundBuffer,
@@ -94,9 +94,9 @@ export class AudioPlaybackSequence extends AudioPlayback {
     );
 
     const otherBuffers: AudioBuffer[] = otherSounds
-      .map((sound) => (typeof sound === "string" ? { url: sound } : sound))
+      .map(sound => (typeof sound === "string" ? { url: sound } : sound))
       .map(({ url }) => assets.getSoundAsset(url).audioBuffer)
-      .map((originalBuffer) =>
+      .map(originalBuffer =>
         ABU.resize(
           originalBuffer,
           (durationMs / 1000) * originalBuffer.sampleRate,
@@ -109,7 +109,7 @@ export class AudioPlaybackSequence extends AudioPlayback {
   #combineBuffers(entries: EntryBuffers[]): AudioBuffer {
     const sumBuffers = (lValue: number, rValue: number): number =>
       clamp(-1, lValue + rValue, 1);
-    const mixedBuffers: AudioBuffer[] = entries.map((entry) =>
+    const mixedBuffers: AudioBuffer[] = entries.map(entry =>
       entry.otherBuffers.reduce(
         (mixedBuffer, nextBuffer) =>
           ABU.mix(mixedBuffer, nextBuffer, sumBuffers),

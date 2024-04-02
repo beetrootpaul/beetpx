@@ -4,19 +4,19 @@ import { booleanChangingEveryNthFrame } from "./booleanChangingEveryNthFrame";
 import { range } from "./range";
 
 test("booleanChangingEveryNthFrame", () => {
-  range(10).forEach((frame) => {
+  range(10).forEach(frame => {
     nextFrameNumberWillBe(frame);
     expect(booleanChangingEveryNthFrame(10)).toBe(true);
   });
-  range(10).forEach((frame) => {
+  range(10).forEach(frame => {
     nextFrameNumberWillBe(10 + frame);
     expect(booleanChangingEveryNthFrame(10)).toBe(false);
   });
-  range(10).forEach((frame) => {
+  range(10).forEach(frame => {
     nextFrameNumberWillBe(20 + frame);
     expect(booleanChangingEveryNthFrame(10)).toBe(true);
   });
-  range(10).forEach((frame) => {
+  range(10).forEach(frame => {
     nextFrameNumberWillBe(30 + frame);
     expect(booleanChangingEveryNthFrame(10)).toBe(false);
   });

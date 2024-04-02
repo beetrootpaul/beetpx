@@ -123,7 +123,7 @@ export abstract class BpxFont {
           type: "sprite",
           char: char,
           sprite: glyph.sprite,
-          spriteColorMapping: BpxSpriteColorMapping.of((sourceColor) =>
+          spriteColorMapping: BpxSpriteColorMapping.of(sourceColor =>
             this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null,
           ),
           lineNumber: lineNumber,

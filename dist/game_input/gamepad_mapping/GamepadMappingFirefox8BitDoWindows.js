@@ -69,20 +69,18 @@ export class GamepadMappingFirefox8BitDoWindows {
         switch (axisIndex) {
             case 0: 
             case 2: 
-                return axisValue >
-                    __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold)
-                    ? ["button_right"]
-                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold)
-                        ? ["button_left"]
-                        : [];
+                return (axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold) ?
+                    ["button_right"]
+                    : (axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold)) ?
+                        ["button_left"]
+                        : []);
             case 1: 
             case 5: 
-                return axisValue >
-                    __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold)
-                    ? ["button_down"]
-                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold)
-                        ? ["button_up"]
-                        : [];
+                return (axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold) ?
+                    ["button_down"]
+                    : (axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefox8BitDoWindows_stickAxisThreshold)) ?
+                        ["button_up"]
+                        : []);
             default:
                 return [];
         }
