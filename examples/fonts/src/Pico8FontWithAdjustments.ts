@@ -10,6 +10,18 @@ export class Pico8FontWithAdjustments extends BpxFontPico8 {
 
     this.glyphs = new Map<string, BpxGlyph>([
       ...this.glyphs,
+
+      //
+      // additional sprites from the spritesheet
+      //
+      [
+        "⭐",
+        {
+          type: "sprite",
+          sprite: spr_(BpxFontPico8.spriteSheetUrl)(7, 5, 16, 72),
+          advance: 8,
+        },
+      ],
       [
         "x",
         {
@@ -18,6 +30,34 @@ export class Pico8FontWithAdjustments extends BpxFontPico8 {
           advance: 4,
         },
       ],
+      [
+        "➡",
+        {
+          type: "sprite",
+          sprite: spr_(BpxFontPico8.spriteSheetUrl)(7, 5, 8, 72),
+          advance: 8,
+        },
+      ],
+      [
+        "❎",
+        {
+          type: "sprite",
+          sprite: spr_(BpxFontPico8.spriteSheetUrl)(7, 5, 56, 72),
+          advance: 8,
+        },
+      ],
+      [
+        "❤",
+        {
+          type: "sprite",
+          sprite: spr_(BpxFontPico8.spriteSheetUrl)(5, 5, 57, 64),
+          advance: 6,
+        },
+      ],
+
+      //
+      // additional manually defined sprites
+      //
       [
         "q",
         {
