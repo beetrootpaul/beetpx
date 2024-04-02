@@ -10,10 +10,10 @@ import {
 
 export class Vfx {
   static #checkersPattern = BpxDrawingPattern.from(`
-    #-#-
-    -#-#
-    #-#-
-    -#-#
+    ##--
+    ##--
+    --##
+    --##
   `);
 
   #loopFrames: number;
@@ -36,17 +36,19 @@ export class Vfx {
 
   draw() {
     b_.setDrawingPattern(Vfx.#checkersPattern);
+
+    const rectSize = 16;
     [
       v_(2, 2),
-      v_(2, b_.canvasSize.y - 8),
-      v_(b_.canvasSize.x - 8, 2),
-      v_(b_.canvasSize.x - 8, b_.canvasSize.y - 8),
+      v_(2, b_.canvasSize.y - rectSize - 2),
+      v_(b_.canvasSize.x - rectSize - 2, 2),
+      v_(b_.canvasSize.x - rectSize - 2, b_.canvasSize.y - rectSize - 2),
     ].forEach((xy) => {
       const progress =
         (this.#loopFrames - this.#timer.framesLeft) / this.#loopFrames;
       b_.drawRectFilled(
         xy,
-        v_(6, 6).mul(BpxEasing.outQuadratic(progress)),
+        v_(rectSize).mul(BpxEasing.outQuadratic(progress)),
         this.#timer.currentPhase === "a" ? rgb_p8_.moss : rgb_p8_.orange,
       );
     });
