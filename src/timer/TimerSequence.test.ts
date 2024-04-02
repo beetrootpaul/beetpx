@@ -76,7 +76,7 @@ describe("TimerSequence", () => {
   describe("intro only", () => {
     test.each(allPropertiesToTest)(
       'iterates over phases (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -110,7 +110,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesAaa - 1).forEach((i) => {
+        range(framesAaa - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -148,7 +148,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesBbb - 1).forEach((i) => {
+        range(framesBbb - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -188,7 +188,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesCcc - 1).forEach((i) => {
+        range(framesCcc - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -249,7 +249,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'pause/resume (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -487,7 +487,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'already paused (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -569,7 +569,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'restart (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -646,7 +646,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -780,7 +780,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed and already paused (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -899,7 +899,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed timer vs early restart (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1014,7 +1014,7 @@ describe("TimerSequence", () => {
   describe("loop only", () => {
     test.each(allPropertiesToTest)(
       'iterates over phases (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1052,7 +1052,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1090,7 +1090,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1130,7 +1130,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1173,7 +1173,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1211,7 +1211,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1251,7 +1251,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -1295,7 +1295,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'pause/resume (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1532,7 +1532,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'already paused (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1614,7 +1614,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'restart (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1704,7 +1704,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesDdd + framesEee + framesFff).forEach((i) => {
+        range(framesDdd + framesEee + framesFff).forEach(i => {
           incrementFrameNumber();
         });
 
@@ -1744,7 +1744,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1878,7 +1878,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed and already paused (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1999,7 +1999,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed timer vs early restart (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -2116,7 +2116,7 @@ describe("TimerSequence", () => {
   describe("intro + loop", () => {
     test.each(allPropertiesToTest)(
       'iterates over phases (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -2169,7 +2169,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesAaa - 1).forEach((i) => {
+        range(framesAaa - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2229,7 +2229,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesBbb - 1).forEach((i) => {
+        range(framesBbb - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2282,7 +2282,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesCcc - 1).forEach((i) => {
+        range(framesCcc - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2338,7 +2338,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2390,7 +2390,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2442,7 +2442,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2497,7 +2497,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesDdd - 1).forEach((i) => {
+        range(framesDdd - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2535,7 +2535,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesEee - 1).forEach((i) => {
+        range(framesEee - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2575,7 +2575,7 @@ describe("TimerSequence", () => {
           }),
         );
 
-        range(framesFff - 1).forEach((i) => {
+        range(framesFff - 1).forEach(i => {
           const t = i + 1;
 
           incrementFrameNumber();
@@ -2619,7 +2619,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'pause/resume (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -2992,7 +2992,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'already paused (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -3120,7 +3120,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'restart (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -3303,7 +3303,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -3511,7 +3511,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed and already paused (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -3693,7 +3693,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'delayed timer vs early restart (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -3871,7 +3871,7 @@ describe("TimerSequence", () => {
   describe("edge cases", () => {
     test.each(allPropertiesToTest)(
       'empty (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -3913,7 +3913,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'intro of 0 frames (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -3957,7 +3957,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'loop of 0 frames (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -4001,7 +4001,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'intro & loop of 0 frames (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -4046,7 +4046,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'intro & loop created from negative amounts of frames (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
 
         const seqZero = timerSeq_({
@@ -4084,7 +4084,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'intro of 1 frame (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -4145,7 +4145,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'loop of 1 frame (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -4206,7 +4206,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'intro & loop of 1 frame (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -4285,7 +4285,7 @@ describe("TimerSequence", () => {
 
     test.each(allPropertiesToTest)(
       'when the time moves strangely (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -4384,7 +4384,7 @@ describe("TimerSequence", () => {
   describe("rounding", () => {
     test.each(allPropertiesToTest)(
       'frames of each phase are rounded (tested property: "%s")',
-      (testedProperty) => {
+      testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 

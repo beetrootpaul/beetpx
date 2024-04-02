@@ -16,10 +16,11 @@ declare global {
 
 export abstract class FullScreen {
   // noinspection PointlessBooleanExpressionJS
-  static readonly #isFullScreenSupported: boolean = !!(typeof document ===
-  "undefined"
-    ? false
-    : document.fullscreenEnabled || document.webkitFullscreenEnabled);
+  static readonly #isFullScreenSupported: boolean = !!((
+    typeof document === "undefined"
+  ) ?
+    false
+  : document.fullscreenEnabled || document.webkitFullscreenEnabled);
 
   isFullScreenSupported(): boolean {
     return FullScreen.#isFullScreenSupported;
@@ -28,8 +29,8 @@ export abstract class FullScreen {
   abstract isInFullScreen(): boolean;
 
   static create(): FullScreen {
-    return FullScreen.#isFullScreenSupported
-      ? new FullScreenSupported()
+    return FullScreen.#isFullScreenSupported ?
+        new FullScreenSupported()
       : new FullScreenNoop();
   }
 
@@ -42,7 +43,7 @@ class FullScreenNoop extends FullScreen {
 
     document
       .querySelectorAll<HTMLElement>(HtmlTemplate.selectors.controlsFullScreen)
-      .forEach((button) => {
+      .forEach(button => {
         button.style.display = "none";
       });
   }
@@ -102,7 +103,7 @@ class FullScreenSupported extends FullScreen {
   #fullScreenOn(): void {
     const result = this.#nativeRequestFullscreen();
     if (typeof result === "object") {
-      result.catch((err) => {
+      result.catch(err => {
         Logger.errorBeetPx(err);
       });
     }
@@ -111,7 +112,7 @@ class FullScreenSupported extends FullScreen {
   #fullScreenOff(): void {
     const result = this.#nativeExitFullscreen();
     if (typeof result === "object") {
-      result.catch((err) => {
+      result.catch(err => {
         Logger.errorBeetPx(err);
       });
     }

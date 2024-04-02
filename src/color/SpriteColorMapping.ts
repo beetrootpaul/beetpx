@@ -2,7 +2,7 @@ import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor, BpxRgbCssHex } from "./RgbColor";
 
 export class BpxSpriteColorMapping {
-  static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping((c) => c);
+  static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping(c => c);
 
   static from(
     colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>,
@@ -10,7 +10,7 @@ export class BpxSpriteColorMapping {
     const map = new Map<BpxRgbCssHex, BpxRgbColor | null>(
       colorMappingEntries.map(([from, to]) => [from.cssHex, to]),
     );
-    return new BpxSpriteColorMapping((spriteColor) => {
+    return new BpxSpriteColorMapping(spriteColor => {
       if (!spriteColor) return spriteColor;
       const mapped = map.get(spriteColor.cssHex);
       return typeof mapped === "undefined" ? spriteColor : mapped;

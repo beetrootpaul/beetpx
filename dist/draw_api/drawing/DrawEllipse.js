@@ -31,8 +31,8 @@ export class DrawEllipse {
         }
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = c1?.type === "canvas_snapshot_mapping"
-            ? __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").getMostRecentSnapshot()
+        const sn = c1?.type === "canvas_snapshot_mapping" ?
+            __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").getMostRecentSnapshot()
             : null;
         const p = pattern;
         

@@ -17,23 +17,22 @@ export class FullScreen {
         return __classPrivateFieldGet(_a, _a, "f", _FullScreen_isFullScreenSupported);
     }
     static create() {
-        return __classPrivateFieldGet(_a, _a, "f", _FullScreen_isFullScreenSupported)
-            ? new FullScreenSupported()
+        return __classPrivateFieldGet(_a, _a, "f", _FullScreen_isFullScreenSupported) ?
+            new FullScreenSupported()
             : new FullScreenNoop();
     }
 }
 _a = FullScreen;
 
-_FullScreen_isFullScreenSupported = { value: !!(typeof document ===
-        "undefined"
-        ? false
+_FullScreen_isFullScreenSupported = { value: !!((typeof document === "undefined") ?
+        false
         : document.fullscreenEnabled || document.webkitFullscreenEnabled) };
 class FullScreenNoop extends FullScreen {
     constructor() {
         super();
         document
             .querySelectorAll(HtmlTemplate.selectors.controlsFullScreen)
-            .forEach((button) => {
+            .forEach(button => {
             button.style.display = "none";
         });
     }
@@ -77,14 +76,14 @@ class FullScreenSupported extends FullScreen {
 _FullScreenSupported_fullScreenSubject = new WeakMap(), _FullScreenSupported_nativeRequestFullscreen = new WeakMap(), _FullScreenSupported_nativeExitFullscreen = new WeakMap(), _FullScreenSupported_instances = new WeakSet(), _FullScreenSupported_fullScreenOn = function _FullScreenSupported_fullScreenOn() {
     const result = __classPrivateFieldGet(this, _FullScreenSupported_nativeRequestFullscreen, "f").call(this);
     if (typeof result === "object") {
-        result.catch((err) => {
+        result.catch(err => {
             Logger.errorBeetPx(err);
         });
     }
 }, _FullScreenSupported_fullScreenOff = function _FullScreenSupported_fullScreenOff() {
     const result = __classPrivateFieldGet(this, _FullScreenSupported_nativeExitFullscreen, "f").call(this);
     if (typeof result === "object") {
-        result.catch((err) => {
+        result.catch(err => {
             Logger.errorBeetPx(err);
         });
     }

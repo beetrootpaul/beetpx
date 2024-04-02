@@ -34,8 +34,8 @@ export class DrawLine {
         const whSub1 = wh.sub(wh.sign());
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = c1?.type === "canvas_snapshot_mapping"
-            ? __classPrivateFieldGet(this, _DrawLine_canvas, "f").getMostRecentSnapshot()
+        const sn = c1?.type === "canvas_snapshot_mapping" ?
+            __classPrivateFieldGet(this, _DrawLine_canvas, "f").getMostRecentSnapshot()
             : null;
         const fp = pattern;
         

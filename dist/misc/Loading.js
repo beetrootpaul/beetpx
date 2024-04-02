@@ -20,7 +20,7 @@ export class Loading {
         _Loading_startClicked.set(this, void 0);
         __classPrivateFieldSet(this, _Loading_startButton, document.querySelector(HtmlTemplate.selectors.startButton) ??
             throwError(`Unable to find a start button under a selector "${HtmlTemplate.selectors.startButton}"`), "f");
-        __classPrivateFieldSet(this, _Loading_startClicked, new Promise((resolve) => {
+        __classPrivateFieldSet(this, _Loading_startClicked, new Promise(resolve => {
             __classPrivateFieldGet(this, _Loading_startButton, "f").addEventListener("click", () => {
                 params.onStartClicked();
                 resolve();

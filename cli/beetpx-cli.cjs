@@ -192,7 +192,7 @@ if (argv._.includes("dev") || argv._.length <= 0) {
 
 function parseConstants(argvConst) {
   const result = {};
-  (argvConst ?? []).forEach((entry) => {
+  (argvConst ?? []).forEach(entry => {
     const delimiterPos = entry.indexOf("=");
     if (delimiterPos > 0) {
       result[entry.slice(0, delimiterPos)] = entry.slice(delimiterPos + 1);
@@ -232,7 +232,7 @@ function runDevCommand(params) {
     gameCodebase.generatedIndexHtml,
     gameCodebase.generatedAdditionalAssetsDir,
     gameCodebase.tmpBeetPxDir,
-  ].forEach((fileOrDir) => {
+  ].forEach(fileOrDir => {
     if (fs.existsSync(fileOrDir)) {
       fs.rmSync(fileOrDir, { recursive: true });
     }
@@ -283,12 +283,12 @@ function runDevCommand(params) {
       },
       logLevel: "info",
     })
-    .then((devServer) =>
+    .then(devServer =>
       devServer.listen().then(() => {
         devServer.printUrls();
       }),
     )
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       process.exit(1);
     });
@@ -301,7 +301,7 @@ function runBuildCommand(params) {
     gameCodebase.generatedIndexHtml,
     gameCodebase.generatedAdditionalAssetsDir,
     gameCodebase.tmpBeetPxDir,
-  ].forEach((fileOrDir) => {
+  ].forEach(fileOrDir => {
     if (fs.existsSync(fileOrDir)) {
       fs.rmSync(fileOrDir, { recursive: true });
     }
@@ -340,7 +340,7 @@ function runBuildCommand(params) {
       },
       logLevel: "info",
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       process.exit(1);
     });
@@ -371,10 +371,10 @@ function runPreviewCommand(params) {
       },
       logLevel: "info",
     })
-    .then((previewServer) => {
+    .then(previewServer => {
       previewServer.printUrls();
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
       process.exit(1);
     });
@@ -402,9 +402,9 @@ function runZipCommand() {
   const sizeKibibytes = sizeBytes / 1024;
   const sizeMebibytes = sizeKibibytes / 1024;
   const sizePart =
-    sizeKibibytes >= 1024
-      ? `${sizeMebibytes.toFixed(1)} MiB`
-      : `${sizeKibibytes.toFixed(0)} KiB`;
+    sizeKibibytes >= 1024 ?
+      `${sizeMebibytes.toFixed(1)} MiB`
+    : `${sizeKibibytes.toFixed(0)} KiB`;
   console.log(
     `Zip got created in: ${path.relative(
       process.cwd(),
@@ -480,7 +480,7 @@ function copyBeetPxAdditionalAssets() {
 
   fs.mkdirSync(gameCodebase.generatedAdditionalAssetsDir, { recursive: true });
 
-  bpxCodebase.templateFileNames.additionalPngAsset.forEach((pngAsset) => {
+  bpxCodebase.templateFileNames.additionalPngAsset.forEach(pngAsset => {
     fs.copyFileSync(
       path.resolve(bpxCodebase.templatesDir, pngAsset),
       path.resolve(gameCodebase.generatedAdditionalAssetsDir, pngAsset),

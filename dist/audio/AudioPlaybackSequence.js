@@ -25,8 +25,8 @@ export class AudioPlaybackSequence extends AudioPlayback {
         if (introSequence.length + loopSequence.length <= 0) {
             throw Error("Cannot play an empty sound sequence");
         }
-        const intro = introSequence.map((entry) => __classPrivateFieldGet(this, _AudioPlaybackSequence_instances, "m", _AudioPlaybackSequence_intoEntryBuffersWithEqualDurations).call(this, entry, params.assets));
-        const loop = loopSequence.map((entry) => __classPrivateFieldGet(this, _AudioPlaybackSequence_instances, "m", _AudioPlaybackSequence_intoEntryBuffersWithEqualDurations).call(this, entry, params.assets));
+        const intro = introSequence.map(entry => __classPrivateFieldGet(this, _AudioPlaybackSequence_instances, "m", _AudioPlaybackSequence_intoEntryBuffersWithEqualDurations).call(this, entry, params.assets));
+        const loop = loopSequence.map(entry => __classPrivateFieldGet(this, _AudioPlaybackSequence_instances, "m", _AudioPlaybackSequence_intoEntryBuffersWithEqualDurations).call(this, entry, params.assets));
         const combinedBuffer = __classPrivateFieldGet(this, _AudioPlaybackSequence_instances, "m", _AudioPlaybackSequence_combineBuffers).call(this, [
             ...intro,
             ...loop,
@@ -58,17 +58,17 @@ _AudioPlaybackSequence_sourceNode = new WeakMap(), _AudioPlaybackSequence_instan
     const mainSoundUrl = typeof firstSound !== "string" ? firstSound.url : firstSound;
     const mainSoundBuffer = assets.getSoundAsset(mainSoundUrl).audioBuffer;
     const mainSoundDurationMs = mainSoundBuffer.duration * 1000;
-    const durationMs = typeof firstSound !== "string" && firstSound.durationMs
-        ? firstSound.durationMs(mainSoundDurationMs)
+    const durationMs = typeof firstSound !== "string" && firstSound.durationMs ?
+        firstSound.durationMs(mainSoundDurationMs)
         : mainSoundDurationMs;
     const firstBuffer = ABU.resize(mainSoundBuffer, (durationMs / 1000) * mainSoundBuffer.sampleRate);
     const otherBuffers = otherSounds
-        .map((sound) => (typeof sound === "string" ? { url: sound } : sound))
+        .map(sound => (typeof sound === "string" ? { url: sound } : sound))
         .map(({ url }) => assets.getSoundAsset(url).audioBuffer)
-        .map((originalBuffer) => ABU.resize(originalBuffer, (durationMs / 1000) * originalBuffer.sampleRate));
+        .map(originalBuffer => ABU.resize(originalBuffer, (durationMs / 1000) * originalBuffer.sampleRate));
     return { firstBuffer, otherBuffers, durationMs };
 }, _AudioPlaybackSequence_combineBuffers = function _AudioPlaybackSequence_combineBuffers(entries) {
     const sumBuffers = (lValue, rValue) => clamp(-1, lValue + rValue, 1);
-    const mixedBuffers = entries.map((entry) => entry.otherBuffers.reduce((mixedBuffer, nextBuffer) => ABU.mix(mixedBuffer, nextBuffer, sumBuffers), ABU.clone(entry.firstBuffer)));
+    const mixedBuffers = entries.map(entry => entry.otherBuffers.reduce((mixedBuffer, nextBuffer) => ABU.mix(mixedBuffer, nextBuffer, sumBuffers), ABU.clone(entry.firstBuffer)));
     return ABU.concat(...mixedBuffers);
 };

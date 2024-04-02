@@ -246,9 +246,9 @@ export class DrawApi {
       maxX = Math.max(
         maxX,
         arrangedGlyph.leftTop.x +
-          (arrangedGlyph.type === "sprite"
-            ? arrangedGlyph.sprite.size.x
-            : arrangedGlyph.pixels.size.x),
+          (arrangedGlyph.type === "sprite" ?
+            arrangedGlyph.sprite.size.x
+          : arrangedGlyph.pixels.size.x),
       );
     }
 

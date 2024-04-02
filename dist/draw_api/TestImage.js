@@ -5,12 +5,12 @@ export class TestImage {
         const normalizedAsciiImageLines = asciiImage
             .trim()
             .split("\n")
-            .map((line) => line
+            .map(line => line
             .trim()
             .split("")
-            .filter((char) => char !== " ")
+            .filter(char => char !== " ")
             .join(""))
-            .filter((line) => line.length > 0);
+            .filter(line => line.length > 0);
         const normalizedAsciiImage = normalizedAsciiImageLines.join("");
         this.asset = {
             width: normalizedAsciiImageLines[0].length,

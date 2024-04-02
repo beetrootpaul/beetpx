@@ -48,12 +48,12 @@ export class CanvasForTests extends Canvas {
         const expectedAscii = expectedImageAsAscii
             .trim()
             .split("\n")
-            .map((line) => line
+            .map(line => line
             .trim()
             .split("")
-            .filter((char) => char !== " ")
+            .filter(char => char !== " ")
             .join(" "))
-            .filter((line) => line.length > 0)
+            .filter(line => line.length > 0)
             .join("\n") + "\n";
         expect(actualAscii).toEqual(expectedAscii);
     }
@@ -71,6 +71,6 @@ _CanvasForTests_length = new WeakMap(), _CanvasForTests_rgbValues = new WeakMap(
     }
     return asciiImage
         .split("\n")
-        .map((line) => line.split("").join(" "))
+        .map(line => line.split("").join(" "))
         .join("\n");
 };

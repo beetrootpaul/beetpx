@@ -60,7 +60,7 @@ describe("Timer", () => {
 
   describe.each(allPropertiesToTest)(
     'single pass (tested property: "%s")',
-    (testedProperty) => {
+    testedProperty => {
       const ppt = pickPropertyOfTimer(testedProperty);
       const ppev = pickPropertyOfExpectedValues(testedProperty);
 
@@ -1034,7 +1034,7 @@ describe("Timer", () => {
 
   describe.each(allPropertiesToTest)(
     'looped (tested property: "%s")',
-    (testedProperty) => {
+    testedProperty => {
       const ppt = pickPropertyOfTimer(testedProperty);
       const ppev = pickPropertyOfExpectedValues(testedProperty);
 

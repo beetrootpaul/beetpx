@@ -29,11 +29,11 @@ export class BpxTimerSequence {
         _BpxTimerSequence_firstIterationTimer.set(this, void 0);
         _BpxTimerSequence_loopTimer.set(this, void 0);
         _BpxTimerSequence_recentlyComputedNow.set(this, void 0);
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationPhases, [...params.intro, ...params.loop].map((entry) => ({
+        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationPhases, [...params.intro, ...params.loop].map(entry => ({
             name: entry[0],
             frames: Math.max(0, Math.round(entry[1])),
         })), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_loopPhases, params.loop.map((entry) => ({
+        __classPrivateFieldSet(this, _BpxTimerSequence_loopPhases, params.loop.map(entry => ({
             name: entry[0],
             frames: Math.max(0, Math.round(entry[1])),
         })), "f");
@@ -46,8 +46,8 @@ export class BpxTimerSequence {
             pause: opts.pause,
             delayFrames: opts.delayFrames,
         }), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_loopTimer, __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length > 0
-            ? BpxTimer.for({
+        __classPrivateFieldSet(this, _BpxTimerSequence_loopTimer, __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length > 0 ?
+            BpxTimer.for({
                 frames: __classPrivateFieldGet(this, _BpxTimerSequence_loopFrames, "f"),
                 loop: true,
                 pause: opts.pause,
@@ -60,8 +60,8 @@ export class BpxTimerSequence {
         }
     }
     get justFinishedPhase() {
-        return this.hasJustFinishedOverall || __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t === 0
-            ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinishedPhase
+        return this.hasJustFinishedOverall || __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t === 0 ?
+            __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinishedPhase
             : null;
     }
     get currentPhase() {
@@ -71,26 +71,26 @@ export class BpxTimerSequence {
         return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t;
     }
     get progress() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase && __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames > 0
-            ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t / __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames
+        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase && __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames > 0 ?
+            __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t / __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames
             : 1;
     }
     get framesLeft() {
         return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames - __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t : 0;
     }
     get tOverall() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished
-            ? __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.t ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t
+        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished ?
+            __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.t ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t
             : __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t;
     }
     get framesLeftOverall() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished
-            ? __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.framesLeft ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").framesLeft
+        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished ?
+            __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.framesLeft ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").framesLeft
             : __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").framesLeft;
     }
     get progressOverall() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished
-            ? __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.progress ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").progress
+        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished ?
+            __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.progress ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").progress
             : __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").progress;
     }
     get hasFinishedOverall() {
@@ -161,8 +161,8 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
         }
         let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i] ?? null;
         return {
-            recentlyFinishedPhase: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished
-                ? curr?.name ?? null
+            recentlyFinishedPhase: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished ?
+                curr?.name ?? null
                 : prev?.name ?? null,
             phase: curr,
             t: firstIterationT - offset,

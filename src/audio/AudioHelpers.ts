@@ -51,7 +51,7 @@ export class AudioHelpers {
       } else {
         gainNode.gain.setValueAtTime(1, audioContextCurrentTime);
       }
-    }).catch((_err) => {});
+    }).catch(_err => {});
 
     setTimeout(() => {
       onUnmuted();

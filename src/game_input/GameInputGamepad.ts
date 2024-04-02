@@ -74,7 +74,7 @@ export class GameInputGamepad implements GameInputSpecialized {
       for (let axisIndex = 0; axisIndex < gamepad.axes.length; ++axisIndex) {
         mapping
           .eventsForAxisValue(axisIndex, gamepad.axes[axisIndex]!)
-          .forEach((event) => {
+          .forEach(event => {
             eventsCollector.add(event);
             wasAnyEventDetected = true;
           });
@@ -89,7 +89,7 @@ export class GameInputGamepad implements GameInputSpecialized {
       navigator
         .getGamepads()
         .filter(isDefined)
-        .map((gamepad) => BpxGamepadTypeDetector.detect(gamepad)),
+        .map(gamepad => BpxGamepadTypeDetector.detect(gamepad)),
     );
   }
 
@@ -101,12 +101,12 @@ export class GameInputGamepad implements GameInputSpecialized {
       this.#browserType === "firefox_other"
     ) {
       if (gamepadType === "dualsense") {
-        return this.#browserType === "firefox_windows"
-          ? this.#mappings.firefoxDualSenseWindows
+        return this.#browserType === "firefox_windows" ?
+            this.#mappings.firefoxDualSenseWindows
           : this.#mappings.firefoxDualSenseOther;
       } else if (gamepadType === "8bitdo") {
-        return this.#browserType === "firefox_windows"
-          ? this.#mappings.firefox8bitdoWindows
+        return this.#browserType === "firefox_windows" ?
+            this.#mappings.firefox8bitdoWindows
           : this.#mappings.firefox8bitdoOther;
       } else {
         return this.#mappings.firefoxOther;
@@ -114,8 +114,8 @@ export class GameInputGamepad implements GameInputSpecialized {
     }
 
     if (gamepadType === "8bitdo") {
-      return this.#browserType === "safari"
-        ? this.#mappings.safari8bitdo
+      return this.#browserType === "safari" ?
+          this.#mappings.safari8bitdo
         : this.#mappings["8bitdo"];
     }
 

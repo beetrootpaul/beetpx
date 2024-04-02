@@ -65,14 +65,14 @@ export class CanvasForTests extends Canvas {
       expectedImageAsAscii
         .trim()
         .split("\n")
-        .map((line) =>
+        .map(line =>
           line
             .trim()
             .split("")
-            .filter((char) => char !== " ")
+            .filter(char => char !== " ")
             .join(" "),
         )
-        .filter((line) => line.length > 0)
+        .filter(line => line.length > 0)
         .join("\n") + "\n";
 
     expect(actualAscii).toEqual(expectedAscii);
@@ -93,7 +93,7 @@ export class CanvasForTests extends Canvas {
 
     return asciiImage
       .split("\n")
-      .map((line) => line.split("").join(" "))
+      .map(line => line.split("").join(" "))
       .join("\n");
   }
 }

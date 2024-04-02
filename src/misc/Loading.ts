@@ -15,7 +15,7 @@ export class Loading {
         `Unable to find a start button under a selector "${HtmlTemplate.selectors.startButton}"`,
       );
 
-    this.#startClicked = new Promise((resolve) => {
+    this.#startClicked = new Promise(resolve => {
       this.#startButton.addEventListener("click", () => {
         params.onStartClicked();
         resolve();

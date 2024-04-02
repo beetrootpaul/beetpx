@@ -1,4 +1,17 @@
 {
-        "plugins": ["prettier-plugin-organize-imports"],
-        "tabWidth": 2
+  "arrowParens": "avoid",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "embeddedLanguageFormatting": "off",
+  "experimentalTernaries": true,
+  "plugins": ["prettier-plugin-organize-imports"],
+  "printWidth": 80,
+  "proseWrap": "always",
+  "quoteProps": "preserve",
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false
 }

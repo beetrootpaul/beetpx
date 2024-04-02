@@ -555,7 +555,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.drawEllipse(
         v_(1, 1),
         v_(12, 5),
-        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );
@@ -1130,7 +1130,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.drawEllipseFilled(
         v_(1, 1),
         v_(12, 5),
-        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );
@@ -1705,7 +1705,7 @@ describe("DrawEllipse", () => {
       dts.drawApi.drawEllipseOutsideFilled(
         v_(1, 1),
         v_(12, 5),
-        BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
+        BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
       );

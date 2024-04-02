@@ -539,7 +539,7 @@ describe("DrawLine", () => {
     dts.drawApi.drawLine(
       v_(1, 1),
       v_(9, 7),
-      BpxCanvasSnapshotColorMapping.of((snapshotColor) =>
+      BpxCanvasSnapshotColorMapping.of(snapshotColor =>
         snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
       ),
     );

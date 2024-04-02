@@ -64,7 +64,7 @@ export class GameInputGamepad {
             for (let axisIndex = 0; axisIndex < gamepad.axes.length; ++axisIndex) {
                 mapping
                     .eventsForAxisValue(axisIndex, gamepad.axes[axisIndex])
-                    .forEach((event) => {
+                    .forEach(event => {
                     eventsCollector.add(event);
                     wasAnyEventDetected = true;
                 });
@@ -76,7 +76,7 @@ export class GameInputGamepad {
         return new Set(navigator
             .getGamepads()
             .filter(isDefined)
-            .map((gamepad) => BpxGamepadTypeDetector.detect(gamepad)));
+            .map(gamepad => BpxGamepadTypeDetector.detect(gamepad)));
     }
 }
 _GameInputGamepad_browserType = new WeakMap(), _GameInputGamepad_mappings = new WeakMap(), _GameInputGamepad_instances = new WeakSet(), _GameInputGamepad_mappingFor = function _GameInputGamepad_mappingFor(gamepad) {
@@ -84,13 +84,13 @@ _GameInputGamepad_browserType = new WeakMap(), _GameInputGamepad_mappings = new 
     if (__classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ||
         __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_other") {
         if (gamepadType === "dualsense") {
-            return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows"
-                ? __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxDualSenseWindows
+            return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ?
+                __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxDualSenseWindows
                 : __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxDualSenseOther;
         }
         else if (gamepadType === "8bitdo") {
-            return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows"
-                ? __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefox8bitdoWindows
+            return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ?
+                __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefox8bitdoWindows
                 : __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefox8bitdoOther;
         }
         else {
@@ -98,8 +98,8 @@ _GameInputGamepad_browserType = new WeakMap(), _GameInputGamepad_mappings = new 
         }
     }
     if (gamepadType === "8bitdo") {
-        return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "safari"
-            ? __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").safari8bitdo
+        return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "safari" ?
+            __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").safari8bitdo
             : __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f")["8bitdo"];
     }
     

@@ -32,11 +32,11 @@ export class BpxTimer {
         }
     }
     get t() {
-        return __classPrivateFieldGet(this, _BpxTimer_loop, "f")
-            ? __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= 0
-                ? mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
+        return (__classPrivateFieldGet(this, _BpxTimer_loop, "f") ?
+            __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= 0 ?
+                mod(__classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"))
                 : 0
-            : clamp(0, __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f"));
+            : clamp(0, __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get), __classPrivateFieldGet(this, _BpxTimer_frames, "f")));
     }
     get framesLeft() {
         return __classPrivateFieldGet(this, _BpxTimer_frames, "f") - this.t;
@@ -48,13 +48,12 @@ export class BpxTimer {
         return __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) >= __classPrivateFieldGet(this, _BpxTimer_frames, "f");
     }
     get hasJustFinished() {
-        return __classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0
-            ? __classPrivateFieldGet(this, _BpxTimer_loop, "f")
-                ? __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) > 0 && this.t === 0
+        return (__classPrivateFieldGet(this, _BpxTimer_frames, "f") > 0 ?
+            __classPrivateFieldGet(this, _BpxTimer_loop, "f") ?
+                __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) > 0 && this.t === 0
                 : __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) === __classPrivateFieldGet(this, _BpxTimer_frames, "f")
-            : __classPrivateFieldGet(this, _BpxTimer_loop, "f")
-                ? true
-                : __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) === 0;
+            : __classPrivateFieldGet(this, _BpxTimer_loop, "f") ? true
+                : __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) === 0);
     }
     pause() {
         if (__classPrivateFieldGet(this, _BpxTimer_pausedFrame, "f")) {

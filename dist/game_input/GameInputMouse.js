@@ -12,7 +12,7 @@ export class GameInputMouse {
     }
     startListening() {
         GameInputMouse.mapping.forEach(({ event, selector }) => {
-            document.querySelectorAll(selector).forEach((button) => {
+            document.querySelectorAll(selector).forEach(button => {
                 button.addEventListener("mousedown", () => {
                     __classPrivateFieldGet(this, _GameInputMouse_eventsSinceLastUpdate, "f").add(event);
                 });

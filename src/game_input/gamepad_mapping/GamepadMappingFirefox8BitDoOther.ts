@@ -129,18 +129,22 @@ export class GamepadMappingFirefox8BitDoOther implements GamepadMapping {
     switch (axisIndex) {
       case 1: // left stick, horizontal
       case 3: // right stick, horizontal
-        return axisValue > GamepadMappingFirefox8BitDoOther.#stickAxisThreshold
-          ? ["button_right"]
-          : axisValue < -GamepadMappingFirefox8BitDoOther.#stickAxisThreshold
-            ? ["button_left"]
-            : [];
+        return (
+          axisValue > GamepadMappingFirefox8BitDoOther.#stickAxisThreshold ?
+            ["button_right"]
+          : axisValue < -GamepadMappingFirefox8BitDoOther.#stickAxisThreshold ?
+            ["button_left"]
+          : []
+        );
       case 2: // left stick, vertical
       case 4: // right stick, vertical
-        return axisValue > GamepadMappingFirefox8BitDoOther.#stickAxisThreshold
-          ? ["button_down"]
-          : axisValue < -GamepadMappingFirefox8BitDoOther.#stickAxisThreshold
-            ? ["button_up"]
-            : [];
+        return (
+          axisValue > GamepadMappingFirefox8BitDoOther.#stickAxisThreshold ?
+            ["button_down"]
+          : axisValue < -GamepadMappingFirefox8BitDoOther.#stickAxisThreshold ?
+            ["button_up"]
+          : []
+        );
       default:
         return [];
     }

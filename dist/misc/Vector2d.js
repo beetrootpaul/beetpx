@@ -64,56 +64,56 @@ export class BpxVector2d {
         return trigAtan2(this.x, this.y);
     }
     eq(otherOrValue) {
-        return typeof otherOrValue !== "number"
-            ? this.x === otherOrValue.x && this.y === otherOrValue.y
+        return typeof otherOrValue !== "number" ?
+            this.x === otherOrValue.x && this.y === otherOrValue.y
             : this.x === otherOrValue && this.y === otherOrValue;
     }
     gt(otherOrValue) {
-        return typeof otherOrValue !== "number"
-            ? this.x > otherOrValue.x && this.y > otherOrValue.y
+        return typeof otherOrValue !== "number" ?
+            this.x > otherOrValue.x && this.y > otherOrValue.y
             : this.x > otherOrValue && this.y > otherOrValue;
     }
     gte(otherOrValue) {
-        return typeof otherOrValue !== "number"
-            ? this.x >= otherOrValue.x && this.y >= otherOrValue.y
+        return typeof otherOrValue !== "number" ?
+            this.x >= otherOrValue.x && this.y >= otherOrValue.y
             : this.x >= otherOrValue && this.y >= otherOrValue;
     }
     lt(otherOrValue) {
-        return typeof otherOrValue !== "number"
-            ? this.x < otherOrValue.x && this.y < otherOrValue.y
+        return typeof otherOrValue !== "number" ?
+            this.x < otherOrValue.x && this.y < otherOrValue.y
             : this.x < otherOrValue && this.y < otherOrValue;
     }
     lte(otherOrValue) {
-        return typeof otherOrValue !== "number"
-            ? this.x <= otherOrValue.x && this.y <= otherOrValue.y
+        return typeof otherOrValue !== "number" ?
+            this.x <= otherOrValue.x && this.y <= otherOrValue.y
             : this.x <= otherOrValue && this.y <= otherOrValue;
     }
     clamp(xy1, xy2) {
         return new BpxVector2d(clamp(xy1.x, this.x, xy2.x), clamp(xy1.y, this.y, xy2.y));
     }
     mod(otherOrValueOrX, maybeY) {
-        return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(mod(this.x, otherOrValueOrX.x), mod(this.y, otherOrValueOrX.y))
+        return typeof otherOrValueOrX !== "number" ?
+            new BpxVector2d(mod(this.x, otherOrValueOrX.x), mod(this.y, otherOrValueOrX.y))
             : new BpxVector2d(mod(this.x, otherOrValueOrX), mod(this.y, maybeY ?? otherOrValueOrX));
     }
     add(otherOrValueOrX, maybeY) {
-        return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
+        return typeof otherOrValueOrX !== "number" ?
+            new BpxVector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
             : new BpxVector2d(this.x + otherOrValueOrX, this.y + (maybeY ?? otherOrValueOrX));
     }
     sub(otherOrValueOrX, maybeY) {
-        return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
+        return typeof otherOrValueOrX !== "number" ?
+            new BpxVector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
             : new BpxVector2d(this.x - otherOrValueOrX, this.y - (maybeY ?? otherOrValueOrX));
     }
     mul(otherOrValueOrX, maybeY) {
-        return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
+        return typeof otherOrValueOrX !== "number" ?
+            new BpxVector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
             : new BpxVector2d(this.x * otherOrValueOrX, this.y * (maybeY ?? otherOrValueOrX));
     }
     div(otherOrValueOrX, maybeY) {
-        return typeof otherOrValueOrX !== "number"
-            ? new BpxVector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
+        return typeof otherOrValueOrX !== "number" ?
+            new BpxVector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
             : new BpxVector2d(this.x / otherOrValueOrX, this.y / (maybeY ?? otherOrValueOrX));
     }
     

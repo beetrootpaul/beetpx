@@ -122,8 +122,8 @@ export class DrawApi {
         for (const arrangedGlyph of __classPrivateFieldGet(this, _DrawApi_font, "f").arrangeGlyphsFor(text, rgb_white_)) {
             maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber);
             maxX = Math.max(maxX, arrangedGlyph.leftTop.x +
-                (arrangedGlyph.type === "sprite"
-                    ? arrangedGlyph.sprite.size.x
+                (arrangedGlyph.type === "sprite" ?
+                    arrangedGlyph.sprite.size.x
                     : arrangedGlyph.pixels.size.x));
         }
         const wh = v_(maxX, (maxLineNumber + 1) * (__classPrivateFieldGet(this, _DrawApi_font, "f").ascent + __classPrivateFieldGet(this, _DrawApi_font, "f").descent) +
