@@ -51,6 +51,19 @@ describe("DrawText", () => {
         },
       ],
       [
+        "m",
+        {
+          type: "pixels",
+          pixels: BpxPixels.from(`
+            ##-#-
+            #-#-#
+            #-#-#
+            #-#-#
+          `),
+          advance: 6,
+        },
+      ],
+      [
         "p",
         {
           type: "pixels",
@@ -528,38 +541,38 @@ describe("DrawText", () => {
 
   describe("color markers", () => {
     test("use defined color markers to affect the color of subsequent characters", () => {
-      dts = drawingTestSetup(26, 10, c0);
+      dts = drawingTestSetup(28, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(new TestFont());
-      dts.drawApi.drawText("B[x2]p[x3]x[x4],", v_(1, 1), c1, {
+      dts.drawApi.drawText("B[m2]p[m3]x[m4],", v_(1, 1), c1, {
         colorMarkers: {
-          x2: c2,
-          x4: c4,
+          m2: c2,
+          m4: c4,
         },
       });
 
       // explanation:
       //  - "B" is printed with color "c1"
-      //  - "[x2]" changes the color to "c2" and is not printed
+      //  - "[m2]" changes the color to "c2"
       //  - "p" is printed with color "c2"
-      //  - "[x3]" is not defined in "colorMarkers", therefore is printed as is (but only glyphs defined in TestFont are really printed)
-      //  - "x" is printed with color "c2", still
-      //  - "[x4]" changes the color to "c4" and is not printed
+      //  - "[m3]" is not defined in "colorMarkers", therefore is printed as is… but you see "[x]" only, because "3" is not defined in TestFont
+      //  - "x" is printed with color "c2" (continuation of the "[m2]" marker)
+      //  - "[m4]" changes the color to "c4"
       //  - "," is printed with color "c4"
       dts.canvas.expectToEqual({
-        withMapping: { "-": c0, "#": c1, "%": c2, "^": c3, "@": c4 },
+        withMapping: { "-": c0, "#": c1, "$": c2, "%": c3, "@": c4 },
         expectedImageAsAscii: `
-          - - - - - - - - - - - - - - - - - - - - - - - - - -
-          - # # - - - - - - - - - - - - - - - - - - - - - - -
-          - # - # - - % % - - % % - % - % - % % - % - % - - -
-          - # # # - - % - % - % - - % - % - - % - % - % - - -
-          - # - - # - % % - - % - - - % - - - % - - % - - - -
-          - # - - # - % - - - % - - % - % - - % - % - % - - -
-          - # # # - - % - - - % % - % - % - % % - % - % - @ -
-          - - - - - - - - - - - - - - - - - - - - - - - - @ -
-          - - - - - - - - - - - - - - - - - - - - - - - @ - -
-          - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - - - - - - - - - - - - - - - -
+          - # - # - - $ $ - - $ $ - - - - - - - $ $ - $ - $ - - -
+          - # # # - - $ - $ - $ - - $ $ - $ - - - $ - $ - $ - - -
+          - # - - # - $ $ - - $ - - $ - $ - $ - - $ - - $ - - - -
+          - # - - # - $ - - - $ - - $ - $ - $ - - $ - $ - $ - - -
+          - # # # - - $ - - - $ $ - $ - $ - $ - $ $ - $ - $ - @ -
+          - - - - - - - - - - - - - - - - - - - - - - - - - - @ -
+          - - - - - - - - - - - - - - - - - - - - - - - - - @ - -
+          - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         `,
       });
     });
