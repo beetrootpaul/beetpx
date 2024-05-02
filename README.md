@@ -4,6 +4,23 @@
 
 > A TypeScript engine for pixel art browser games.
 
+---
+
+<!-- TOC -->
+
+- [Getting Started](#getting-started)
+- [Game Controls](#game-controls)
+- [API Documentation](#api-documentation)
+- [Development Setup](#development-setup)
+- [The Origin](#the-origin)
+- [Credits](#credits)
+  - [Fonts](#fonts)
+  - [Color Palettes](#color-palettes)
+- [Random Notes](#random-notes)
+<!-- TOC -->
+
+---
+
 ## Getting Started
 
 Add it to your project with:
