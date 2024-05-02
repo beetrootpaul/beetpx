@@ -21,47 +21,32 @@ Run it as described in [its README](examples/simple/README.md).
 
 Also, you might want to take a look at how following projects are using BeetPx:
 
-- https://github.com/beetrootpaul/hat-escape
-- https://github.com/beetrootpaul/dart-07-beetpx
-- https://github.com/beetrootpaul/towers-of-survival-beetpx
-- https://github.com/beetrootpaul/avoid-your-past-beetpx
+| game                   | GitHub repository                                                                                   | screenshot                                                       |
+| ---------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **Hat Escape**         | [beetrootpaul/hat-escape](https://github.com/beetrootpaul/hat-escape)                               | <img src="misc/game-example-hat-escape.png" width="192">         |
+| **Dart-07**            | [beetrootpaul/dart-07-beetpx](https://github.com/beetrootpaul/dart-07-beetpx)                       | <img src="misc/game-example-dart-07.gif" width="192">            |
+| **Towers of Survival** | [beetrootpaul/towers-of-survival-beetpx](https://github.com/beetrootpaul/towers-of-survival-beetpx) | <img src="misc/game-example-towers-of-survival.png" width="192"> |
+| **Avoid Your Past**    | [beetrootpaul/avoid-your-past-beetpx](https://github.com/beetrootpaul/avoid-your-past-beetpx)       | <img src="misc/game-example-avoid-your-past.png" width="192">    |
 
 ## Game Controls
 
 The BeetPx engine supports a following sets of game buttons and their mappings
 from physical devices:
 
-- **A** and **B** buttons:
-  - on keyboard, variant 1: `c` and `x`
-  - on keyboard, variant 1: `j` and `k`
-  - on DualSense controller, variant 1: cross and circle
-  - on DualSense controller, variant 2: triangle and square
-  - on Xbox controller, variant 1: `A` and `B`
-  - on Xbox controller, variant 2: `Y` and `X`
-  - etc. for other controllers, e.g. 8BitDo Lite 2
-  - and rendered touch buttons on touch devices
-- **menu** button:
-  - on keyboard, variant 1: `p`
-  - on keyboard, variant 2: `return`
-  - on keyboard, variant 3: `esc`
-  - on DualSense controller: menu
-  - on Xbox controller: menu
-  - etc. for other controllers, e.g. 8BitDo Lite 2
-  - and rendered touch button on touch devices
-- **directions**:
-  - on keyboard, variant 1: arrows
-  - on keyboard, variant 2: `w`, `s`, `a`, `d`
-  - on game controllers: D-pad, sticks
-  - and rendered touch buttons on touch devices
+| game button     | keyboard               | DualSense controller | Xbox controller |
+| --------------- | ---------------------- | -------------------- | --------------- |
+| **A**           | `C` / `J`              | cross / triangle     | `A` / `Y`       |
+| **B**           | `X` / `K`              | circle / square      | `B` / `X`       |
+| **menu**        | `P` / `return` / `esc` | menu                 | menu            |
+| **directions**  | arrows / `WSAD`        | D-pad / sticks       | D-pad / sticks  |
+| **mute/unmute** | `M`                    |                      |                 |
+| **full screen** | `F`                    |                      |                 |
 
-Some additional controls meant to be used by the end user:
+Other game controllers might works as well. For example, this engine has an
+implemented support for **8BitDo Lite 2**.
 
-- **mute/unmute**:
-  - on keyboard: `m`
-  - and rendered mouse/touch button
-- **full screen**:
-  - on keyboard: `f`
-  - and rendered mouse/touch button
+There are also **touch controls** in form of GUI buttons resembling a physical
+ones. You can see and use them on touch devices like e.g. an iPhone.
 
 Dev controls meant to be used by the game developer themselves and gated behind
 related engine config fields:
@@ -74,8 +59,8 @@ related engine config fields:
   - on keyboard: `.`
 
 To check if your controls work as expected, go to `examples/input-tester`, then
-run `npm install`, then `npm start` and test your controllers in an opened
-browser tab.
+run `npm install`, then `npm start` and test your controllers in an
+automatically opened browser tab.
 
 ## API Documentation
 
