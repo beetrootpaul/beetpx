@@ -2,6 +2,23 @@
 <blockquote>
 <p>A TypeScript engine for pixel art browser games.</p>
 </blockquote>
+<hr>
+<!-- TOC -->
+
+<ul>
+<li><a href="#md:getting-started">Getting Started</a></li>
+<li><a href="#md:game-controls">Game Controls</a></li>
+<li><a href="#md:api-documentation">API Documentation</a></li>
+<li><a href="#md:development-setup">Development Setup</a></li>
+<li><a href="#md:the-origin">The Origin</a></li>
+<li><a href="#md:credits">Credits</a><ul>
+<li><a href="#md:fonts">Fonts</a></li>
+<li><a href="#md:color-palettes">Color Palettes</a></li>
+</ul>
+</li>
+<li><a href="#md:random-notes">Random Notes</a><!-- TOC --></li>
+</ul>
+<hr>
 <a id="md:getting-started" class="tsd-anchor"></a><h2><a href="#md:getting-started">Getting Started</a></h2><p>Add it to your project with:</p>
 <pre><code class="language-shell"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-3">--save-dev</span><span class="hl-1"> </span><span class="hl-3">--save-exact</span><span class="hl-1"> </span><span class="hl-2">@beetpx/beetpx</span>
 </code><button>Copy</button></pre>
@@ -11,57 +28,87 @@ evolves and quite often breaking changes are introduced.</p>
 <p>There is a simple example in <a href="examples/simple/README.md">./examples/simple/</a> .
 Run it as described in <a href="examples/simple/README.md">its README</a>.</p>
 <p>Also, you might want to take a look at how following projects are using BeetPx:</p>
-<ul>
-<li><a href="https://github.com/beetrootpaul/hat-escape">https://github.com/beetrootpaul/hat-escape</a></li>
-<li><a href="https://github.com/beetrootpaul/dart-07-beetpx">https://github.com/beetrootpaul/dart-07-beetpx</a></li>
-<li><a href="https://github.com/beetrootpaul/towers-of-survival-beetpx">https://github.com/beetrootpaul/towers-of-survival-beetpx</a></li>
-<li><a href="https://github.com/beetrootpaul/avoid-your-past-beetpx">https://github.com/beetrootpaul/avoid-your-past-beetpx</a></li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>game</th>
+<th>GitHub repository</th>
+<th>screenshot</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hat Escape</strong></td>
+<td><a href="https://github.com/beetrootpaul/hat-escape">beetrootpaul/hat-escape</a></td>
+<td><img src="misc/game-example-hat-escape.png" width="192"></td>
+</tr>
+<tr>
+<td><strong>Dart-07</strong></td>
+<td><a href="https://github.com/beetrootpaul/dart-07-beetpx">beetrootpaul/dart-07-beetpx</a></td>
+<td><img src="misc/game-example-dart-07.gif" width="192"></td>
+</tr>
+<tr>
+<td><strong>Towers of Survival</strong></td>
+<td><a href="https://github.com/beetrootpaul/towers-of-survival-beetpx">beetrootpaul/towers-of-survival-beetpx</a></td>
+<td><img src="misc/game-example-towers-of-survival.png" width="192"></td>
+</tr>
+<tr>
+<td><strong>Avoid Your Past</strong></td>
+<td><a href="https://github.com/beetrootpaul/avoid-your-past-beetpx">beetrootpaul/avoid-your-past-beetpx</a></td>
+<td><img src="misc/game-example-avoid-your-past.png" width="192"></td>
+</tr>
+</tbody></table>
 <a id="md:game-controls" class="tsd-anchor"></a><h2><a href="#md:game-controls">Game Controls</a></h2><p>The BeetPx engine supports a following sets of game buttons and their mappings
 from physical devices:</p>
-<ul>
-<li><strong>A</strong> and <strong>B</strong> buttons:<ul>
-<li>on keyboard, variant 1: <code>c</code> and <code>x</code></li>
-<li>on keyboard, variant 1: <code>j</code> and <code>k</code></li>
-<li>on DualSense controller, variant 1: cross and circle</li>
-<li>on DualSense controller, variant 2: triangle and square</li>
-<li>on Xbox controller, variant 1: <code>A</code> and <code>B</code></li>
-<li>on Xbox controller, variant 2: <code>Y</code> and <code>X</code></li>
-<li>etc. for other controllers, e.g. 8BitDo Lite 2</li>
-<li>and rendered touch buttons on touch devices</li>
-</ul>
-</li>
-<li><strong>menu</strong> button:<ul>
-<li>on keyboard, variant 1: <code>p</code></li>
-<li>on keyboard, variant 2: <code>return</code></li>
-<li>on keyboard, variant 3: <code>esc</code></li>
-<li>on DualSense controller: menu</li>
-<li>on Xbox controller: menu</li>
-<li>etc. for other controllers, e.g. 8BitDo Lite 2</li>
-<li>and rendered touch button on touch devices</li>
-</ul>
-</li>
-<li><strong>directions</strong>:<ul>
-<li>on keyboard, variant 1: arrows</li>
-<li>on keyboard, variant 2: <code>w</code>, <code>s</code>, <code>a</code>, <code>d</code></li>
-<li>on game controllers: D-pad, sticks</li>
-<li>and rendered touch buttons on touch devices</li>
-</ul>
-</li>
-</ul>
-<p>Some additional controls meant to be used by the end user:</p>
-<ul>
-<li><strong>mute/unmute</strong>:<ul>
-<li>on keyboard: <code>m</code></li>
-<li>and rendered mouse/touch button</li>
-</ul>
-</li>
-<li><strong>full screen</strong>:<ul>
-<li>on keyboard: <code>f</code></li>
-<li>and rendered mouse/touch button</li>
-</ul>
-</li>
-</ul>
+<table>
+<thead>
+<tr>
+<th>game button</th>
+<th>keyboard</th>
+<th>DualSense controller</th>
+<th>Xbox controller</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>A</strong></td>
+<td><code>C</code> / <code>J</code></td>
+<td>cross / triangle</td>
+<td><code>A</code> / <code>Y</code></td>
+</tr>
+<tr>
+<td><strong>B</strong></td>
+<td><code>X</code> / <code>K</code></td>
+<td>circle / square</td>
+<td><code>B</code> / <code>X</code></td>
+</tr>
+<tr>
+<td><strong>menu</strong></td>
+<td><code>P</code> / <code>return</code> / <code>esc</code></td>
+<td>menu</td>
+<td>menu</td>
+</tr>
+<tr>
+<td><strong>directions</strong></td>
+<td>arrows / <code>WSAD</code></td>
+<td>D-pad / sticks</td>
+<td>D-pad / sticks</td>
+</tr>
+<tr>
+<td><strong>mute/unmute</strong></td>
+<td><code>M</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>full screen</strong></td>
+<td><code>F</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>Other game controllers might works as well. For example, this engine has an
+implemented support for <strong>8BitDo Lite 2</strong>.</p>
+<p>There are also <strong>touch controls</strong> in form of GUI buttons resembling a physical
+ones. You can see and use them on touch devices like e.g. an iPhone.</p>
 <p>Dev controls meant to be used by the game developer themselves and gated behind
 related engine config fields:</p>
 <ul>
@@ -79,8 +126,8 @@ related engine config fields:</p>
 </li>
 </ul>
 <p>To check if your controls work as expected, go to <code>examples/input-tester</code>, then
-run <code>npm install</code>, then <code>npm start</code> and test your controllers in an opened
-browser tab.</p>
+run <code>npm install</code>, then <code>npm start</code> and test your controllers in an
+automatically opened browser tab.</p>
 <a id="md:api-documentation" class="tsd-anchor"></a><h2><a href="#md:api-documentation">API Documentation</a></h2><p>For a nicely formatted list of API exposed by BeetPx run:</p>
 <pre><code class="language-shell"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">docs</span>
 </code><button>Copy</button></pre>
