@@ -33,7 +33,7 @@ It might make sense in a future to drop `--save-exact` flag, but for now better
 be safe than sorry – in this early phase of development the engine constantly
 evolves and quite often breaking changes are introduced.
 
-There is a simple single-file example in
+ℹ️ 👉 There is a simple single-file example in
 [./examples/simple/src/beetpx.ts](examples/simple/src/beetpx.ts) . Run it as
 described in [its README](examples/simple/README.md).
 
