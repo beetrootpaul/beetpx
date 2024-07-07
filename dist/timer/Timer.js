@@ -1,33 +1,44 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _BpxTimer_instances, _BpxTimer_frames, _BpxTimer_loop, _BpxTimer_offsetFrame, _BpxTimer_pausedFrame, _BpxTimer_tRaw_get;
+var _BpxTimer_instances, _BpxTimer_frames, _BpxTimer_loop, _BpxTimer_pausedWithGame, _BpxTimer_pausedDirectly, _BpxTimer_offsetFrame, _BpxTimer_pausedFrame, _BpxTimer_tRaw_get, _BpxTimer_pauseDueToGamePause, _BpxTimer_resumeDueToGameResume;
 import { BeetPx } from "../BeetPx";
 import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
 export class BpxTimer {
-    static for(params) {
-        return new BpxTimer(params);
+    static for(opts) {
+        return new BpxTimer(opts);
     }
-    constructor(params) {
+    constructor(opts) {
         _BpxTimer_instances.add(this);
         _BpxTimer_frames.set(this, void 0);
         _BpxTimer_loop.set(this, void 0);
+        _BpxTimer_pausedWithGame.set(this, void 0);
+        _BpxTimer_pausedDirectly.set(this, void 0);
         _BpxTimer_offsetFrame.set(this, void 0);
         _BpxTimer_pausedFrame.set(this, void 0);
-        __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(params.frames)), "f");
-        __classPrivateFieldSet(this, _BpxTimer_loop, params.loop, "f");
-        __classPrivateFieldSet(this, _BpxTimer_offsetFrame, BeetPx.frameNumber + params.delayFrames, "f");
+        if (!opts.ignoreGamePause) {
+            BpxTimer.timersControlledByGamePause.push(new WeakRef({
+                timer: this,
+                pauseDueToGamePause: __classPrivateFieldGet(this, _BpxTimer_instances, "m", _BpxTimer_pauseDueToGamePause).bind(this),
+                resumeDueToGameResume: __classPrivateFieldGet(this, _BpxTimer_instances, "m", _BpxTimer_resumeDueToGameResume).bind(this),
+            }));
+        }
+        __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(opts.frames)), "f");
+        __classPrivateFieldSet(this, _BpxTimer_loop, opts.loop, "f");
+        __classPrivateFieldSet(this, _BpxTimer_offsetFrame, BeetPx.frameNumber + opts.delayFrames, "f");
+        __classPrivateFieldSet(this, _BpxTimer_pausedWithGame, false, "f");
+        __classPrivateFieldSet(this, _BpxTimer_pausedDirectly, false, "f");
         __classPrivateFieldSet(this, _BpxTimer_pausedFrame, null, "f");
-        if (params.pause) {
+        if (opts.pause) {
             this.pause();
         }
     }
@@ -56,16 +67,24 @@ export class BpxTimer {
                 : __classPrivateFieldGet(this, _BpxTimer_instances, "a", _BpxTimer_tRaw_get) === 0);
     }
     pause() {
-        if (__classPrivateFieldGet(this, _BpxTimer_pausedFrame, "f")) {
+        if (__classPrivateFieldGet(this, _BpxTimer_pausedDirectly, "f")) {
+            return;
+        }
+        __classPrivateFieldSet(this, _BpxTimer_pausedDirectly, true, "f");
+        if (__classPrivateFieldGet(this, _BpxTimer_pausedWithGame, "f")) {
             return;
         }
         __classPrivateFieldSet(this, _BpxTimer_pausedFrame, BeetPx.frameNumber, "f");
     }
     resume() {
-        if (!__classPrivateFieldGet(this, _BpxTimer_pausedFrame, "f")) {
+        if (!__classPrivateFieldGet(this, _BpxTimer_pausedDirectly, "f")) {
             return;
         }
-        __classPrivateFieldSet(this, _BpxTimer_offsetFrame, __classPrivateFieldGet(this, _BpxTimer_offsetFrame, "f") + (BeetPx.frameNumber - __classPrivateFieldGet(this, _BpxTimer_pausedFrame, "f")), "f");
+        __classPrivateFieldSet(this, _BpxTimer_pausedDirectly, false, "f");
+        if (__classPrivateFieldGet(this, _BpxTimer_pausedWithGame, "f")) {
+            return;
+        }
+        __classPrivateFieldSet(this, _BpxTimer_offsetFrame, __classPrivateFieldGet(this, _BpxTimer_offsetFrame, "f") + (BeetPx.frameNumber - (__classPrivateFieldGet(this, _BpxTimer_pausedFrame, "f") ?? 0)), "f");
         __classPrivateFieldSet(this, _BpxTimer_pausedFrame, null, "f");
     }
     restart() {
@@ -73,6 +92,26 @@ export class BpxTimer {
         __classPrivateFieldSet(this, _BpxTimer_pausedFrame, null, "f");
     }
 }
-_BpxTimer_frames = new WeakMap(), _BpxTimer_loop = new WeakMap(), _BpxTimer_offsetFrame = new WeakMap(), _BpxTimer_pausedFrame = new WeakMap(), _BpxTimer_instances = new WeakSet(), _BpxTimer_tRaw_get = function _BpxTimer_tRaw_get() {
+_BpxTimer_frames = new WeakMap(), _BpxTimer_loop = new WeakMap(), _BpxTimer_pausedWithGame = new WeakMap(), _BpxTimer_pausedDirectly = new WeakMap(), _BpxTimer_offsetFrame = new WeakMap(), _BpxTimer_pausedFrame = new WeakMap(), _BpxTimer_instances = new WeakSet(), _BpxTimer_tRaw_get = function _BpxTimer_tRaw_get() {
     return (__classPrivateFieldGet(this, _BpxTimer_pausedFrame, "f") ?? BeetPx.frameNumber) - __classPrivateFieldGet(this, _BpxTimer_offsetFrame, "f");
+}, _BpxTimer_pauseDueToGamePause = function _BpxTimer_pauseDueToGamePause() {
+    if (__classPrivateFieldGet(this, _BpxTimer_pausedWithGame, "f")) {
+        return;
+    }
+    __classPrivateFieldSet(this, _BpxTimer_pausedWithGame, true, "f");
+    if (__classPrivateFieldGet(this, _BpxTimer_pausedDirectly, "f")) {
+        return;
+    }
+    __classPrivateFieldSet(this, _BpxTimer_pausedFrame, BeetPx.frameNumber, "f");
+}, _BpxTimer_resumeDueToGameResume = function _BpxTimer_resumeDueToGameResume() {
+    if (!__classPrivateFieldGet(this, _BpxTimer_pausedWithGame, "f")) {
+        return;
+    }
+    __classPrivateFieldSet(this, _BpxTimer_pausedWithGame, false, "f");
+    if (__classPrivateFieldGet(this, _BpxTimer_pausedDirectly, "f")) {
+        return;
+    }
+    __classPrivateFieldSet(this, _BpxTimer_offsetFrame, __classPrivateFieldGet(this, _BpxTimer_offsetFrame, "f") + (BeetPx.frameNumber - (__classPrivateFieldGet(this, _BpxTimer_pausedFrame, "f") ?? 0)), "f");
+    __classPrivateFieldSet(this, _BpxTimer_pausedFrame, null, "f");
 };
+BpxTimer.timersControlledByGamePause = [];

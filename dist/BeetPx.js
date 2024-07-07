@@ -14,9 +14,9 @@ var _a, _BeetPx_engine, _BeetPx_tryGetEngine;
 import { Engine } from "./Engine";
 import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
+import { Pause } from "./pause/Pause";
 
 export class BeetPx {
-    
     
     
     
@@ -27,9 +27,6 @@ export class BeetPx {
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
         return { startGame };
     }
-    
-    
-    
     static get debug() {
         return DebugMode.enabled;
     }
@@ -51,6 +48,18 @@ export class BeetPx {
     }
     static get detectedBrowserType() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetEngine).call(this).detectedBrowserType;
+    }
+    
+    
+    
+    static get isPaused() {
+        return Pause.isActive;
+    }
+    static get wasJustPaused() {
+        return Pause.wasJustActivated;
+    }
+    static get wasJustResumed() {
+        return Pause.wasJustDeactivated;
     }
 }
 _a = BeetPx, _BeetPx_tryGetEngine = function _BeetPx_tryGetEngine() {

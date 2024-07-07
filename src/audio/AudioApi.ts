@@ -216,6 +216,7 @@ export class AudioApi {
     );
   }
 
+  // TODO: how symmetrical is it to the global-level API?
   mutePlayback(
     playbackId: BpxAudioPlaybackId,
     opts: { fadeOutMillis?: number } = {},
@@ -250,6 +251,7 @@ export class AudioApi {
       );
   }
 
+  // TODO: how symmetrical is it to the playback-level API?
   pauseAudio(): void {
     Logger.debugBeetPx("AudioApi.pauseAudio");
 

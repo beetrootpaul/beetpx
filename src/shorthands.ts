@@ -19,8 +19,15 @@ import { BpxTimerSequence } from "./timer/TimerSequence";
 export function aspr_(
   imageUrl: BpxImageUrl,
 ): BpxImageBoundAnimatedSpriteFactory {
-  return (w: number, h: number, xys: [x: number, y: number][]) => {
-    return BpxAnimatedSprite.from(imageUrl, w, h, xys);
+  return (
+    w: number,
+    h: number,
+    xys: [x: number, y: number][],
+    opts?: {
+      ignoreGamePause?: boolean;
+    },
+  ) => {
+    return BpxAnimatedSprite.from(imageUrl, w, h, xys, opts ?? {});
   };
 }
 
@@ -66,13 +73,19 @@ export function spr_(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory {
 
 export function timer_(
   frames: number,
-  opts?: { loop?: boolean; pause?: boolean; delayFrames?: number },
+  opts?: {
+    loop?: boolean;
+    pause?: boolean;
+    delayFrames?: number;
+    ignoreGamePause?: boolean;
+  },
 ): BpxTimer {
   return BpxTimer.for({
     frames,
     loop: opts?.loop ?? false,
     pause: opts?.pause ?? false,
     delayFrames: opts?.delayFrames ?? 0,
+    ignoreGamePause: opts?.ignoreGamePause ?? false,
   });
 }
 
@@ -84,6 +97,7 @@ export function timerSeq_<TPhaseName extends string>(
   opts?: {
     pause?: boolean;
     delayFrames?: number;
+    ignoreGamePause?: boolean;
   },
 ): BpxTimerSequence<TPhaseName> {
   return BpxTimerSequence.of<TPhaseName>(
@@ -94,6 +108,7 @@ export function timerSeq_<TPhaseName extends string>(
     {
       pause: opts?.pause ?? false,
       delayFrames: opts?.delayFrames ?? 0,
+      ignoreGamePause: opts?.ignoreGamePause ?? false,
     },
   );
 }

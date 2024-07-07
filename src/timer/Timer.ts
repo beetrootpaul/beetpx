@@ -2,35 +2,62 @@ import { BeetPx } from "../BeetPx";
 import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
 
+type TimerControlledByGamePause = {
+  timer: BpxTimer;
+  pauseDueToGamePause: () => void;
+  resumeDueToGameResume: () => void;
+};
+
 export class BpxTimer {
-  static for(params: {
+  static timersControlledByGamePause: WeakRef<TimerControlledByGamePause>[] =
+    [];
+
+  static for(opts: {
     frames: number;
     loop: boolean;
     pause: boolean;
     delayFrames: number;
+    ignoreGamePause: boolean;
   }): BpxTimer {
-    return new BpxTimer(params);
+    return new BpxTimer(opts);
   }
 
   readonly #frames: number;
   readonly #loop: boolean;
 
+  #pausedWithGame: boolean;
+  #pausedDirectly: boolean;
+
   #offsetFrame: number;
   #pausedFrame: number | null;
 
-  private constructor(params: {
+  private constructor(opts: {
     frames: number;
     loop: boolean;
     pause: boolean;
     delayFrames: number;
+    ignoreGamePause: boolean;
   }) {
-    this.#frames = Math.max(0, Math.round(params.frames));
-    this.#loop = params.loop;
+    if (!opts.ignoreGamePause) {
+      BpxTimer.timersControlledByGamePause.push(
+        new WeakRef({
+          timer: this,
+          pauseDueToGamePause: this.#pauseDueToGamePause.bind(this),
+          resumeDueToGameResume: this.#resumeDueToGameResume.bind(this),
+        }),
+      );
+    }
 
-    this.#offsetFrame = BeetPx.frameNumber + params.delayFrames;
+    this.#frames = Math.max(0, Math.round(opts.frames));
+    this.#loop = opts.loop;
 
+    this.#offsetFrame = BeetPx.frameNumber + opts.delayFrames;
+
+    this.#pausedWithGame = false;
+
+    this.#pausedDirectly = false;
     this.#pausedFrame = null;
-    if (params.pause) {
+    if (opts.pause) {
       this.pause();
     }
   }
@@ -73,17 +100,58 @@ export class BpxTimer {
   }
 
   pause(): void {
-    if (this.#pausedFrame) {
+    if (this.#pausedDirectly) {
       return;
     }
+    this.#pausedDirectly = true;
+
+    if (this.#pausedWithGame) {
+      return;
+    }
+
+    this.#pausedFrame = BeetPx.frameNumber;
+  }
+
+  // TODO: test it vs regular pause/resume
+  #pauseDueToGamePause(): void {
+    if (this.#pausedWithGame) {
+      return;
+    }
+    this.#pausedWithGame = true;
+
+    if (this.#pausedDirectly) {
+      return;
+    }
+
     this.#pausedFrame = BeetPx.frameNumber;
   }
 
   resume(): void {
-    if (!this.#pausedFrame) {
+    if (!this.#pausedDirectly) {
       return;
     }
-    this.#offsetFrame += BeetPx.frameNumber - this.#pausedFrame;
+    this.#pausedDirectly = false;
+
+    if (this.#pausedWithGame) {
+      return;
+    }
+
+    this.#offsetFrame += BeetPx.frameNumber - (this.#pausedFrame ?? 0);
+    this.#pausedFrame = null;
+  }
+
+  // TODO: test it vs regular resume/pause
+  #resumeDueToGameResume(): void {
+    if (!this.#pausedWithGame) {
+      return;
+    }
+    this.#pausedWithGame = false;
+
+    if (this.#pausedDirectly) {
+      return;
+    }
+
+    this.#offsetFrame += BeetPx.frameNumber - (this.#pausedFrame ?? 0);
     this.#pausedFrame = null;
   }
 

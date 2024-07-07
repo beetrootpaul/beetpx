@@ -72,8 +72,8 @@ export class AudioApi {
         });
     }
     startPlayback(soundUrl, opts) {
-        opts ?? (opts = {});
-        opts.muteOnStart ?? (opts.muteOnStart = false);
+        opts ??= {};
+        opts.muteOnStart ??= false;
         Logger.debugBeetPx(`AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackOnce(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
@@ -88,8 +88,8 @@ export class AudioApi {
         return playback.id;
     }
     startPlaybackLooped(soundUrl, opts) {
-        opts ?? (opts = {});
-        opts.muteOnStart ?? (opts.muteOnStart = false);
+        opts ??= {};
+        opts.muteOnStart ??= false;
         Logger.debugBeetPx(`AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackLooped(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
@@ -104,8 +104,8 @@ export class AudioApi {
         return playback.id;
     }
     startPlaybackSequence(soundSequence, opts) {
-        opts ?? (opts = {});
-        opts.muteOnStart ?? (opts.muteOnStart = false);
+        opts ??= {};
+        opts.muteOnStart ??= false;
         Logger.debugBeetPx(`AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`);
         const playback = new AudioPlaybackSequence(soundSequence, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
@@ -140,6 +140,7 @@ export class AudioApi {
         HtmlTemplate.updateMutedClass(__classPrivateFieldGet(this, _AudioApi_isMuted, "f"));
         AudioHelpers.unmuteGain(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"), __classPrivateFieldGet(this, _AudioApi_audioContext, "f").currentTime, __classPrivateFieldGet(this, _AudioApi_isPaused, "f") ? 0 : (opts.fadeInMillis ?? __classPrivateFieldGet(_a, _a, "f", _AudioApi_muteUnmuteDefaultFadeMillis)));
     }
+    
     mutePlayback(playbackId, opts = {}) {
         Logger.debugBeetPx(`AudioApi.mutePlayback (fadeOutMillis: ${opts.fadeOutMillis})`);
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f")
@@ -152,6 +153,7 @@ export class AudioApi {
             .get(playbackId)
             ?.unmute(__classPrivateFieldGet(this, _AudioApi_isPaused, "f") ? 0 : (opts.fadeInMillis ?? __classPrivateFieldGet(_a, _a, "f", _AudioApi_muteUnmuteDefaultFadeMillis)));
     }
+    
     pauseAudio() {
         Logger.debugBeetPx("AudioApi.pauseAudio");
         if (__classPrivateFieldGet(this, _AudioApi_isPaused, "f"))

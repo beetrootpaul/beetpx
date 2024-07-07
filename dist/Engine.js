@@ -27,8 +27,10 @@ import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
+import { Pause } from "./pause/Pause";
 import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxTimer } from "./timer/Timer";
 import { throwError } from "./utils/throwError";
 export class Engine {
     get frameNumber() {
@@ -58,8 +60,8 @@ export class Engine {
         _Engine_renderingFps.set(this, 1);
         
         _Engine_alreadyResumedAudioContext.set(this, false);
-        engineConfig.canvasSize ?? (engineConfig.canvasSize = "128x128");
-        engineConfig.fixedTimestep ?? (engineConfig.fixedTimestep = "60fps");
+        engineConfig.canvasSize ??= "128x128";
+        engineConfig.fixedTimestep ??= "60fps";
         window.addEventListener("error", event => {
             HtmlTemplate.showError(event.message);
             
@@ -208,11 +210,33 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                     this.audioApi.muteAudio();
                 }
             }
+            Pause.update();
+            if (this.gameInput.gameButtons.wasJustPressed("menu")) {
+                Pause.toggle();
+            }
             if (this.gameInput.buttonDebugToggle.wasJustPressed) {
                 DebugMode.enabled = !DebugMode.enabled;
             }
             if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
                 FrameByFrame.active = !FrameByFrame.active;
+            }
+            
+            console.log("#", BpxTimer.timersControlledByGamePause.length);
+            BpxTimer.timersControlledByGamePause =
+                BpxTimer.timersControlledByGamePause.filter(weakRefTimer => typeof weakRefTimer.deref() !== "undefined");
+            if (Pause.wasJustActivated) {
+                
+                console.log("was just activated", Date.now());
+                for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
+                    weakRefTimer.deref().pauseDueToGamePause();
+                }
+            }
+            else if (Pause.wasJustDeactivated) {
+                
+                console.log("was just de-activated", Date.now());
+                for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
+                    weakRefTimer.deref().resumeDueToGameResume();
+                }
             }
             const shouldUpdate = !FrameByFrame.active ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed;

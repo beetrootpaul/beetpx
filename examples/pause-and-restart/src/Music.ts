@@ -5,22 +5,14 @@ export class Music {
 
   static beatFrames = 32;
 
+  // TODO: ???
   #melodyPlaybackId?: number;
 
-  start() {
+  start(): void {
+    // TODO: do NOT pause/resume
     b_.startPlaybackLooped("music_base.flac");
+    // TODO: pause/resume
     this.#melodyPlaybackId = b_.startPlaybackLooped("music_melody.flac");
-  }
-
-  muteMelody() {
-    if (this.#melodyPlaybackId) {
-      b_.mutePlayback(this.#melodyPlaybackId);
-    }
-  }
-
-  unmuteMelody() {
-    if (this.#melodyPlaybackId) {
-      b_.unmutePlayback(this.#melodyPlaybackId);
-    }
+    // TODO: ^^^ introduce something like `onGamePage: "stop"
   }
 }

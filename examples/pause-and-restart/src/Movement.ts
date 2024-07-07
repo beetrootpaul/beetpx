@@ -13,17 +13,19 @@ export class Movement {
     ),
   );
 
-  pause() {
-    this.#timer.pause();
-    this.#animation.pause();
+  // TODO: REMOVE
+  update(): void {
+    if (b_.wasButtonJustPressed("up")) {
+      this.#timer.resume();
+      this.#animation.resume();
+    }
+    if (b_.wasButtonJustPressed("down")) {
+      this.#timer.pause();
+      this.#animation.pause();
+    }
   }
 
-  resume() {
-    this.#timer.resume();
-    this.#animation.resume();
-  }
-
-  draw() {
+  draw(): void {
     b_.drawSprite(
       this.#animation.current,
       v_(

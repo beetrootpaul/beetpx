@@ -10,6 +10,7 @@ import { GameButtons } from "./game_input/buttons/GameButtons";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { BpxVector2d } from "./misc/Vector2d";
+import { Pause } from "./pause/Pause";
 import { StorageApi } from "./storage/StorageApi";
 
 /////////////////////////////////////////////////////////////////////////////
@@ -21,32 +22,6 @@ export class BeetPx {
   // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
   //
 
-  /*
-
-  static init(initParams?: {
-    config?: BpxEngineConfig;
-    onStarted?: () => void;
-    onUpdate?: () => void;
-    onDraw?: () => void;
-  }): void {
-    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
-    this.#engine = new Engine(initParams?.config);
-    this.#engine
-      .init()
-      .then(({ startGame }) => {
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
-        this.#engine.setOnStarted(initParams?.onStarted);
-        this.#engine.setOnUpdate(initParams?.onUpdate);
-        this.#engine.setOnDraw(initParams?.onDraw);
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Starting…`);
-        return startGame();
-      })
-      .then(() => {
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Started`);
-      });
-  }
-   */
-
   static async init(config?: BpxEngineConfig): ReturnType<Engine["init"]> {
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
     this.#engine = new Engine(config);
@@ -54,10 +29,6 @@ export class BeetPx {
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
     return { startGame };
   }
-
-  //
-  // field-like getters
-  //
 
   static get debug(): typeof DebugMode.enabled {
     return DebugMode.enabled;
@@ -125,6 +96,22 @@ export class BeetPx {
   static logError: typeof Logger.error = (...args) => {
     return Logger.error(...args);
   };
+
+  //
+  // Pause
+  //
+
+  static get isPaused(): typeof Pause.isActive {
+    return Pause.isActive;
+  }
+
+  static get wasJustPaused(): typeof Pause.wasJustActivated {
+    return Pause.wasJustActivated;
+  }
+
+  static get wasJustResumed(): typeof Pause.wasJustDeactivated {
+    return Pause.wasJustDeactivated;
+  }
 
   //
   // Game Input & Buttons

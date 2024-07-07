@@ -10,8 +10,8 @@ import { BpxTimer } from "./timer/Timer";
 import { BpxTimerSequence } from "./timer/TimerSequence";
 
 export function aspr_(imageUrl) {
-    return (w, h, xys) => {
-        return BpxAnimatedSprite.from(imageUrl, w, h, xys);
+    return (w, h, xys, opts) => {
+        return BpxAnimatedSprite.from(imageUrl, w, h, xys, opts ?? {});
     };
 }
 
@@ -43,6 +43,7 @@ export function timer_(frames, opts) {
         loop: opts?.loop ?? false,
         pause: opts?.pause ?? false,
         delayFrames: opts?.delayFrames ?? 0,
+        ignoreGamePause: opts?.ignoreGamePause ?? false,
     });
 }
 export function timerSeq_(params, opts) {
@@ -52,6 +53,7 @@ export function timerSeq_(params, opts) {
     }, {
         pause: opts?.pause ?? false,
         delayFrames: opts?.delayFrames ?? 0,
+        ignoreGamePause: opts?.ignoreGamePause ?? false,
     });
 }
 export function v_(valueOrX, maybeY) {

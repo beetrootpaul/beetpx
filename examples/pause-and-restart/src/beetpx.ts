@@ -12,37 +12,29 @@ b_.init({
   const music = new Music();
   let movement: Movement;
   let vfx: Vfx;
-  let isPaused: boolean;
 
   b_.setOnStarted(() => {
+    // TODO: resume
     music.start();
     movement = new Movement();
     vfx = new Vfx({ loopFrames: Music.beatFrames });
-    isPaused = false;
   });
 
   b_.setOnUpdate(() => {
     if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
       b_.restart();
     }
-
-    if (b_.wasButtonJustPressed("menu")) {
-      isPaused = !isPaused;
-      if (isPaused) {
-        movement.pause();
-        music.muteMelody();
-      } else {
-        movement.resume();
-        music.unmuteMelody();
-      }
-    }
+    // TODO: REMOVE
+    movement.update();
   });
+
+  // TODO: describe somewhere that this example is about built-in pause which can be toggled with menu button
 
   b_.setOnDraw(() => {
     b_.clearCanvas(rgb_p8_.storm);
     vfx.draw();
     movement.draw();
-    if (isPaused) {
+    if (b_.isPaused) {
       pauseOverlay.draw();
     }
   });

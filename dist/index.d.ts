@@ -299,10 +299,16 @@ declare abstract class BpxFont {
     arrangeGlyphsFor(text: string, textColor: BpxRgbColor, colorMarkers?: BpxTextColorMarkers): BpxArrangedGlyph[];
 }
 
-type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][]) => BpxAnimatedSprite;
+type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][], opts?: {
+    pause?: boolean;
+    ignoreGamePause?: boolean;
+}) => BpxAnimatedSprite;
 declare class BpxAnimatedSprite {
     #private;
-    static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][]): BpxAnimatedSprite;
+    static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][], opts?: {
+        pause?: boolean;
+        ignoreGamePause?: boolean;
+    }): BpxAnimatedSprite;
     readonly type = "animated";
     readonly imageUrl: BpxImageUrl;
     readonly size: BpxVector2d;
@@ -605,13 +611,20 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
+type TimerControlledByGamePause = {
+    timer: BpxTimer;
+    pauseDueToGamePause: () => void;
+    resumeDueToGameResume: () => void;
+};
 declare class BpxTimer {
     #private;
-    static for(params: {
+    static timersControlledByGamePause: WeakRef<TimerControlledByGamePause>[];
+    static for(opts: {
         frames: number;
         loop: boolean;
         pause: boolean;
         delayFrames: number;
+        ignoreGamePause: boolean;
     }): BpxTimer;
     private constructor();
     get t(): number;
@@ -632,6 +645,7 @@ declare class BpxTimerSequence<TPhaseName extends string> {
     }, opts: {
         pause: boolean;
         delayFrames: number;
+        ignoreGamePause: boolean;
     }): BpxTimerSequence<TPhaseName>;
     private constructor();
     get justFinishedPhase(): TPhaseName | null;
@@ -668,6 +682,15 @@ declare class Logger {
     static error(...args: any[]): void;
 }
 
+declare class Pause {
+    #private;
+    static get isActive(): boolean;
+    static get wasJustActivated(): boolean;
+    static get wasJustDeactivated(): boolean;
+    static update(): void;
+    static toggle(): void;
+}
+
 declare class BeetPx {
     #private;
     static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
@@ -691,6 +714,9 @@ declare class BeetPx {
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;
     static logError: typeof Logger.error;
+    static get isPaused(): typeof Pause.isActive;
+    static get wasJustPaused(): typeof Pause.wasJustActivated;
+    static get wasJustResumed(): typeof Pause.wasJustDeactivated;
     static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
     static wasButtonJustPressed: GameButtons["wasJustPressed"];
     static wasButtonJustReleased: GameButtons["wasJustReleased"];
@@ -914,6 +940,7 @@ declare function timer_(frames: number, opts?: {
     loop?: boolean;
     pause?: boolean;
     delayFrames?: number;
+    ignoreGamePause?: boolean;
 }): BpxTimer;
 declare function timerSeq_<TPhaseName extends string>(params: {
     intro?: Array<[phase: TPhaseName, frames: number]>;
@@ -921,6 +948,7 @@ declare function timerSeq_<TPhaseName extends string>(params: {
 }, opts?: {
     pause?: boolean;
     delayFrames?: number;
+    ignoreGamePause?: boolean;
 }): BpxTimerSequence<TPhaseName>;
 declare function v_(value: number): BpxVector2d;
 declare function v_(x: number, y: number): BpxVector2d;

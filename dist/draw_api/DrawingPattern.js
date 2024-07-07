@@ -38,7 +38,7 @@ export class BpxDrawingPattern {
     }
     constructor(bits) {
         _BpxDrawingPattern_bits.set(this, void 0);
-        if (bits < 0 || bits > 65535) {
+        if (bits < 0b0000_0000_0000_0000 || bits > 0b1111_1111_1111_1111) {
             throw Error(`BpxPatter: bits representation of the pattern is out of range of valid values. The value should be in range of 0b0000_0000_0000_0000 to 0b1111_1111_1111_1111.`);
         }
         __classPrivateFieldSet(this, _BpxDrawingPattern_bits, bits, "f");
@@ -51,5 +51,5 @@ export class BpxDrawingPattern {
     }
 }
 _BpxDrawingPattern_bits = new WeakMap();
-BpxDrawingPattern.primaryOnly = BpxDrawingPattern.of(65535);
-BpxDrawingPattern.secondaryOnly = BpxDrawingPattern.of(0);
+BpxDrawingPattern.primaryOnly = BpxDrawingPattern.of(0b1111_1111_1111_1111);
+BpxDrawingPattern.secondaryOnly = BpxDrawingPattern.of(0b0000_0000_0000_0000);

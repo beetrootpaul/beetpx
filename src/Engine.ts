@@ -20,6 +20,7 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d } from "./misc/Vector2d";
+import { Pause } from "./pause/Pause";
 import {
   font_pico8_,
   font_saint11Minimal4_,
@@ -28,6 +29,7 @@ import {
   v_,
 } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxTimer } from "./timer/Timer";
 import { throwError } from "./utils/throwError";
 
 export type BpxEngineConfig = {
@@ -304,11 +306,37 @@ export class Engine {
             this.audioApi.muteAudio();
           }
         }
+
+        Pause.update();
+        if (this.gameInput.gameButtons.wasJustPressed("menu")) {
+          Pause.toggle();
+        }
+
         if (this.gameInput.buttonDebugToggle.wasJustPressed) {
           DebugMode.enabled = !DebugMode.enabled;
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
           FrameByFrame.active = !FrameByFrame.active;
+        }
+
+        // TODO: REMOVE
+        console.log("#", BpxTimer.timersControlledByGamePause.length);
+        BpxTimer.timersControlledByGamePause =
+          BpxTimer.timersControlledByGamePause.filter(
+            weakRefTimer => typeof weakRefTimer.deref() !== "undefined",
+          );
+        if (Pause.wasJustActivated) {
+          // TODO: REMOVE
+          console.log("was just activated", Date.now());
+          for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
+            weakRefTimer.deref()!.pauseDueToGamePause();
+          }
+        } else if (Pause.wasJustDeactivated) {
+          // TODO: REMOVE
+          console.log("was just de-activated", Date.now());
+          for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
+            weakRefTimer.deref()!.resumeDueToGameResume();
+          }
         }
 
         const shouldUpdate =

@@ -3,7 +3,7 @@ import { BpxVector2d } from "../misc/Vector2d";
 import { assertUnreachable } from "../utils/assertUnreachable";
 export class BpxFont {
     arrangeGlyphsFor(text, textColor, colorMarkers) {
-        colorMarkers ?? (colorMarkers = {});
+        colorMarkers ??= {};
         const arrangedGlyphs = [];
         let xy = BpxVector2d.of(0, 0);
         let lineNumber = 0;
