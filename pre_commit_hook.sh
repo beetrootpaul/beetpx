@@ -43,7 +43,7 @@ if [ "$run_full_check" = "yes" ]; then
   # Make sure TypeScript types and Jest tests didn't break due to most recent changes.
   # We do this on a `main` branch only in order to allow broken tests while development
   #   is in progress.
-  npm test
+  npm run test
 
   # Check examples
   for exampleProject in ./examples/*/
@@ -53,6 +53,7 @@ if [ "$run_full_check" = "yes" ]; then
     npm install
     npm run format
     npm run tsc
+    npm run test --if-present
     cd ../../
   done
 fi
