@@ -37,7 +37,6 @@ export abstract class AudioPlayback {
     onGamePause: "pause" | "mute" | "ignore",
     onEnded: () => void,
   ) {
-    // TODO: conditions for pause/mute
     if (onGamePause === "pause") {
       AudioPlayback.playbacksToPauseOnGamePause.add(this);
     } else if (onGamePause === "mute") {

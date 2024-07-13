@@ -687,13 +687,14 @@ declare class Logger {
     static error(...args: any[]): void;
 }
 
-declare class Pause {
+declare class GlobalPause {
     #private;
     static get isActive(): boolean;
     static get wasJustActivated(): boolean;
     static get wasJustDeactivated(): boolean;
     static update(): void;
-    static toggle(): void;
+    static activate(): void;
+    static deactivate(): void;
 }
 
 declare class BeetPx {
@@ -719,9 +720,9 @@ declare class BeetPx {
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;
     static logError: typeof Logger.error;
-    static get isPaused(): typeof Pause.isActive;
-    static get wasJustPaused(): typeof Pause.wasJustActivated;
-    static get wasJustResumed(): typeof Pause.wasJustDeactivated;
+    static get isPaused(): typeof GlobalPause.isActive;
+    static get wasJustPaused(): typeof GlobalPause.wasJustActivated;
+    static get wasJustResumed(): typeof GlobalPause.wasJustDeactivated;
     static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
     static wasButtonJustPressed: GameButtons["wasJustPressed"];
     static wasButtonJustReleased: GameButtons["wasJustReleased"];

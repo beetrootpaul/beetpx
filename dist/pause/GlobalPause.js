@@ -10,24 +10,27 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _a, _Pause_prevIsActive, _Pause_isActive;
-export class Pause {
+var _a, _GlobalPause_prevIsActive, _GlobalPause_isActive;
+export class GlobalPause {
     static get isActive() {
-        return __classPrivateFieldGet(this, _a, "f", _Pause_isActive);
+        return __classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive);
     }
     static get wasJustActivated() {
-        return __classPrivateFieldGet(this, _a, "f", _Pause_isActive) && !__classPrivateFieldGet(this, _a, "f", _Pause_prevIsActive);
+        return __classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive) && !__classPrivateFieldGet(this, _a, "f", _GlobalPause_prevIsActive);
     }
     static get wasJustDeactivated() {
-        return !__classPrivateFieldGet(this, _a, "f", _Pause_isActive) && __classPrivateFieldGet(this, _a, "f", _Pause_prevIsActive);
+        return !__classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive) && __classPrivateFieldGet(this, _a, "f", _GlobalPause_prevIsActive);
     }
     static update() {
-        __classPrivateFieldSet(this, _a, __classPrivateFieldGet(this, _a, "f", _Pause_isActive), "f", _Pause_prevIsActive);
+        __classPrivateFieldSet(this, _a, __classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive), "f", _GlobalPause_prevIsActive);
     }
-    static toggle() {
-        __classPrivateFieldSet(this, _a, !__classPrivateFieldGet(this, _a, "f", _Pause_isActive), "f", _Pause_isActive);
+    static activate() {
+        __classPrivateFieldSet(this, _a, true, "f", _GlobalPause_isActive);
+    }
+    static deactivate() {
+        __classPrivateFieldSet(this, _a, false, "f", _GlobalPause_isActive);
     }
 }
-_a = Pause;
-_Pause_prevIsActive = { value: false };
-_Pause_isActive = { value: false };
+_a = GlobalPause;
+_GlobalPause_prevIsActive = { value: false };
+_GlobalPause_isActive = { value: false };

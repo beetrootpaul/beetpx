@@ -21,7 +21,7 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d } from "./misc/Vector2d";
-import { Pause } from "./pause/Pause";
+import { GlobalPause } from "./pause/GlobalPause";
 import {
   font_pico8_,
   font_saint11Minimal4_,
@@ -263,6 +263,11 @@ export class Engine {
 
     BeetPx.clearCanvas(rgb_black_);
 
+    BpxTimer.timersToPauseOnGamePause = [];
+    AudioPlayback.playbacksToPauseOnGamePause.clear();
+    AudioPlayback.playbacksToMuteOnGamePause.clear();
+    GlobalPause.deactivate();
+
     this.#onStarted?.();
   }
 
@@ -308,9 +313,13 @@ export class Engine {
           }
         }
 
-        Pause.update();
+        GlobalPause.update();
         if (this.gameInput.gameButtons.wasJustPressed("menu")) {
-          Pause.toggle();
+          if (GlobalPause.isActive) {
+            GlobalPause.deactivate();
+          } else {
+            GlobalPause.activate();
+          }
         }
 
         if (this.gameInput.buttonDebugToggle.wasJustPressed) {
@@ -320,16 +329,9 @@ export class Engine {
           FrameByFrame.active = !FrameByFrame.active;
         }
 
-        // TODO: REMOVE
-        console.log(
-          "#",
-          BpxTimer.timersToPauseOnGamePause.length,
-          AudioPlayback.playbacksToPauseOnGamePause.size,
-          AudioPlayback.playbacksToMuteOnGamePause.size,
-        );
         BpxTimer.timersToPauseOnGamePause =
           BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
-        if (Pause.wasJustActivated) {
+        if (GlobalPause.wasJustActivated) {
           for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
             weakRef.deref()!.__internal__pauseByEngine();
           }
@@ -339,7 +341,7 @@ export class Engine {
           for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
             playback.muteByEngine();
           }
-        } else if (Pause.wasJustDeactivated) {
+        } else if (GlobalPause.wasJustDeactivated) {
           for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
             weakRef.deref()!.__internal__resumeDueToGameResume();
           }

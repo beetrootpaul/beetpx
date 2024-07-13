@@ -21,7 +21,6 @@ export class AudioPlayback {
         _AudioPlayback_audioContext.set(this, void 0);
         _AudioPlayback_targetNode.set(this, void 0);
         _AudioPlayback_gainNode.set(this, void 0);
-        
         if (onGamePause === "pause") {
             AudioPlayback.playbacksToPauseOnGamePause.add(this);
         }

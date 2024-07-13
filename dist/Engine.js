@@ -28,7 +28,7 @@ import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
-import { Pause } from "./pause/Pause";
+import { GlobalPause } from "./pause/GlobalPause";
 import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
 import { BpxTimer } from "./timer/Timer";
@@ -172,6 +172,10 @@ export class Engine {
         __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
         this.audioApi.restart();
         BeetPx.clearCanvas(rgb_black_);
+        BpxTimer.timersToPauseOnGamePause = [];
+        AudioPlayback.playbacksToPauseOnGamePause.clear();
+        AudioPlayback.playbacksToMuteOnGamePause.clear();
+        GlobalPause.deactivate();
         __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
     }
 }
@@ -211,9 +215,14 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                     this.audioApi.muteAudio();
                 }
             }
-            Pause.update();
+            GlobalPause.update();
             if (this.gameInput.gameButtons.wasJustPressed("menu")) {
-                Pause.toggle();
+                if (GlobalPause.isActive) {
+                    GlobalPause.deactivate();
+                }
+                else {
+                    GlobalPause.activate();
+                }
             }
             if (this.gameInput.buttonDebugToggle.wasJustPressed) {
                 DebugMode.enabled = !DebugMode.enabled;
@@ -221,11 +230,9 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
             if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
                 FrameByFrame.active = !FrameByFrame.active;
             }
-            
-            console.log("#", BpxTimer.timersToPauseOnGamePause.length, AudioPlayback.playbacksToPauseOnGamePause.size, AudioPlayback.playbacksToMuteOnGamePause.size);
             BpxTimer.timersToPauseOnGamePause =
                 BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
-            if (Pause.wasJustActivated) {
+            if (GlobalPause.wasJustActivated) {
                 for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
                     weakRef.deref().__internal__pauseByEngine();
                 }
@@ -236,7 +243,7 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                     playback.muteByEngine();
                 }
             }
-            else if (Pause.wasJustDeactivated) {
+            else if (GlobalPause.wasJustDeactivated) {
                 for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
                     weakRef.deref().__internal__resumeDueToGameResume();
                 }

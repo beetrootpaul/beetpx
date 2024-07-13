@@ -1,6 +1,6 @@
 // TODO: add a config flag that allows to skip built-in pause support
 
-export class Pause {
+export class GlobalPause {
   static #prevIsActive: boolean = false;
   static #isActive: boolean = false;
 
@@ -20,7 +20,11 @@ export class Pause {
     this.#prevIsActive = this.#isActive;
   }
 
-  static toggle(): void {
-    this.#isActive = !this.#isActive;
+  static activate(): void {
+    this.#isActive = true;
+  }
+
+  static deactivate(): void {
+    this.#isActive = false;
   }
 }

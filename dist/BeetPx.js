@@ -14,7 +14,7 @@ var _a, _BeetPx_engine, _BeetPx_tryGetEngine;
 import { Engine } from "./Engine";
 import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
-import { Pause } from "./pause/Pause";
+import { GlobalPause } from "./pause/GlobalPause";
 
 export class BeetPx {
     
@@ -53,13 +53,13 @@ export class BeetPx {
     
     
     static get isPaused() {
-        return Pause.isActive;
+        return GlobalPause.isActive;
     }
     static get wasJustPaused() {
-        return Pause.wasJustActivated;
+        return GlobalPause.wasJustActivated;
     }
     static get wasJustResumed() {
-        return Pause.wasJustDeactivated;
+        return GlobalPause.wasJustDeactivated;
     }
 }
 _a = BeetPx, _BeetPx_tryGetEngine = function _BeetPx_tryGetEngine() {

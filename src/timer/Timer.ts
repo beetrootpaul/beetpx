@@ -105,7 +105,6 @@ export class BpxTimer {
     this.#pausedFrame = BeetPx.frameNumber;
   }
 
-  // TODO: tests for it vs regular pause/resume
   #pauseByEngine(): void {
     if (this.#isPausedByEngine) return;
     this.#isPausedByEngine = true;
@@ -125,7 +124,6 @@ export class BpxTimer {
     this.#pausedFrame = null;
   }
 
-  // TODO: tests for it vs regular resume/pause
   #resumeDueToGameResume(): void {
     if (!this.#isPausedByEngine) return;
     this.#isPausedByEngine = false;

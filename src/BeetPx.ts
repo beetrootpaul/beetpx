@@ -10,7 +10,7 @@ import { GameButtons } from "./game_input/buttons/GameButtons";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { BpxVector2d } from "./misc/Vector2d";
-import { Pause } from "./pause/Pause";
+import { GlobalPause } from "./pause/GlobalPause";
 import { StorageApi } from "./storage/StorageApi";
 
 /////////////////////////////////////////////////////////////////////////////
@@ -101,16 +101,16 @@ export class BeetPx {
   // Pause
   //
 
-  static get isPaused(): typeof Pause.isActive {
-    return Pause.isActive;
+  static get isPaused(): typeof GlobalPause.isActive {
+    return GlobalPause.isActive;
   }
 
-  static get wasJustPaused(): typeof Pause.wasJustActivated {
-    return Pause.wasJustActivated;
+  static get wasJustPaused(): typeof GlobalPause.wasJustActivated {
+    return GlobalPause.wasJustActivated;
   }
 
-  static get wasJustResumed(): typeof Pause.wasJustDeactivated {
-    return Pause.wasJustDeactivated;
+  static get wasJustResumed(): typeof GlobalPause.wasJustDeactivated {
+    return GlobalPause.wasJustDeactivated;
   }
 
   //
