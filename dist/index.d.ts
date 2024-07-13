@@ -78,9 +78,6 @@ declare class AudioApi {
     }): void;
     pauseAudio(): void;
     resumeAudio(): void;
-    stopAllPlaybacks(opts?: {
-        fadeOutMillis?: number;
-    }): void;
     stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
         fadeOutMillis?: number;
     }): void;
@@ -799,7 +796,6 @@ declare class BeetPx {
     static stopPlayback: AudioApi["stopPlayback"];
     static pausePlayback: AudioApi["pausePlayback"];
     static resumePlayback: AudioApi["resumePlayback"];
-    static stopAllPlaybacks: AudioApi["stopAllPlaybacks"];
     static getAudioContext: AudioApi["getAudioContext"];
     static isFullScreenSupported: FullScreen["isFullScreenSupported"];
     static isInFullScreen: FullScreen["isInFullScreen"];

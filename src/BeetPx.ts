@@ -351,10 +351,6 @@ export class BeetPx {
     return this.#tryGetEngine().audioApi.resumePlayback(...args);
   };
 
-  static stopAllPlaybacks: AudioApi["stopAllPlaybacks"] = (...args) => {
-    return this.#tryGetEngine().audioApi.stopAllPlaybacks(...args);
-  };
-
   static getAudioContext: AudioApi["getAudioContext"] = (...args) => {
     return this.#tryGetEngine().audioApi.getAudioContext(...args);
   };

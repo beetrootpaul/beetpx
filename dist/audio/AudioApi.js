@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_pauseFadeNode, _AudioApi_playbacks, _AudioApi_isPaused, _AudioApi_isMuted, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState;
+var _AudioApi_instances, _a, _AudioApi_storageMuteUnmuteKey, _AudioApi_storageMuteUnmuteTrue, _AudioApi_assets, _AudioApi_audioContext, _AudioApi_globalGainNode, _AudioApi_pauseFadeNode, _AudioApi_playbacks, _AudioApi_isPaused, _AudioApi_isMuted, _AudioApi_stopAllPlaybacks, _AudioApi_loadStoredGlobalMuteUnmuteState, _AudioApi_storeGlobalMuteUnmuteState;
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 import { AudioHelpers } from "./AudioHelpers";
@@ -38,7 +38,7 @@ export class AudioApi {
         __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f").connect(__classPrivateFieldGet(this, _AudioApi_globalGainNode, "f"));
     }
     restart() {
-        this.stopAllPlaybacks();
+        __classPrivateFieldGet(this, _AudioApi_instances, "m", _AudioApi_stopAllPlaybacks).call(this);
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f").clear();
         
         __classPrivateFieldSet(this, _AudioApi_isPaused, false, "f");
@@ -186,14 +186,6 @@ export class AudioApi {
             Logger.errorBeetPx(err);
         });
     }
-    stopAllPlaybacks(opts = {}) {
-        Logger.debugBeetPx(`AudioApi.stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`);
-        for (const playback of __classPrivateFieldGet(this, _AudioApi_playbacks, "f").values()) {
-            playback.stop(__classPrivateFieldGet(this, _AudioApi_isPaused, "f") || __classPrivateFieldGet(this, _AudioApi_isMuted, "f") ?
-                0
-                : opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis);
-        }
-    }
     stopPlayback(playbackId, opts = {}) {
         Logger.debugBeetPx(`AudioApi.stopPlayback (fadeOutMillis: ${opts.fadeOutMillis})`);
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f")
@@ -217,7 +209,14 @@ export class AudioApi {
         return __classPrivateFieldGet(this, _AudioApi_globalGainNode, "f");
     }
 }
-_a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_pauseFadeNode = new WeakMap(), _AudioApi_playbacks = new WeakMap(), _AudioApi_isPaused = new WeakMap(), _AudioApi_isMuted = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
+_a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_pauseFadeNode = new WeakMap(), _AudioApi_playbacks = new WeakMap(), _AudioApi_isPaused = new WeakMap(), _AudioApi_isMuted = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_stopAllPlaybacks = function _AudioApi_stopAllPlaybacks(opts = {}) {
+    Logger.debugBeetPx(`AudioApi.#stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`);
+    for (const playback of __classPrivateFieldGet(this, _AudioApi_playbacks, "f").values()) {
+        playback.stop(__classPrivateFieldGet(this, _AudioApi_isPaused, "f") || __classPrivateFieldGet(this, _AudioApi_isMuted, "f") ?
+            0
+            : opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis);
+    }
+}, _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
     return (window.localStorage.getItem(__classPrivateFieldGet(_a, _a, "f", _AudioApi_storageMuteUnmuteKey)) ===
         __classPrivateFieldGet(_a, _a, "f", _AudioApi_storageMuteUnmuteTrue));
 }, _AudioApi_storeGlobalMuteUnmuteState = function _AudioApi_storeGlobalMuteUnmuteState(muted) {

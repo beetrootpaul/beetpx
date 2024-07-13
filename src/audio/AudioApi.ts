@@ -44,7 +44,7 @@ export class AudioApi {
   }
 
   restart(): void {
-    this.stopAllPlaybacks();
+    this.#stopAllPlaybacks();
     this.#playbacks.clear();
 
     // in case audio was paused
@@ -300,9 +300,9 @@ export class AudioApi {
       });
   }
 
-  stopAllPlaybacks(opts: { fadeOutMillis?: number } = {}): void {
+  #stopAllPlaybacks(opts: { fadeOutMillis?: number } = {}): void {
     Logger.debugBeetPx(
-      `AudioApi.stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`,
+      `AudioApi.#stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`,
     );
 
     for (const playback of this.#playbacks.values()) {
