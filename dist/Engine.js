@@ -15,6 +15,7 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { AudioPlayback } from "./audio/AudioPlayback";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor } from "./color/RgbColor";
@@ -27,8 +28,10 @@ import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
+import { GlobalPause } from "./pause/GlobalPause";
 import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxTimer } from "./timer/Timer";
 import { throwError } from "./utils/throwError";
 export class Engine {
     get frameNumber() {
@@ -58,8 +61,8 @@ export class Engine {
         _Engine_renderingFps.set(this, 1);
         
         _Engine_alreadyResumedAudioContext.set(this, false);
-        engineConfig.canvasSize ?? (engineConfig.canvasSize = "128x128");
-        engineConfig.fixedTimestep ?? (engineConfig.fixedTimestep = "60fps");
+        engineConfig.canvasSize ??= "128x128";
+        engineConfig.fixedTimestep ??= "60fps";
         window.addEventListener("error", event => {
             HtmlTemplate.showError(event.message);
             
@@ -80,6 +83,9 @@ export class Engine {
                 .suspend()
                 .then(() => { });
         });
+        if (engineConfig.globalPause?.available) {
+            GlobalPause.enable();
+        }
         DebugMode.loadFromStorage();
         if (!engineConfig.debugMode?.available) {
             DebugMode.enabled = false;
@@ -169,6 +175,10 @@ export class Engine {
         __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
         this.audioApi.restart();
         BeetPx.clearCanvas(rgb_black_);
+        BpxTimer.timersToPauseOnGamePause = [];
+        AudioPlayback.playbacksToPauseOnGamePause.clear();
+        AudioPlayback.playbacksToMuteOnGamePause.clear();
+        GlobalPause.deactivate();
         __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
     }
 }
@@ -208,11 +218,44 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                     this.audioApi.muteAudio();
                 }
             }
+            GlobalPause.update();
+            if (this.gameInput.gameButtons.wasJustPressed("menu")) {
+                if (GlobalPause.isActive) {
+                    GlobalPause.deactivate();
+                }
+                else {
+                    GlobalPause.activate();
+                }
+            }
             if (this.gameInput.buttonDebugToggle.wasJustPressed) {
                 DebugMode.enabled = !DebugMode.enabled;
             }
             if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
                 FrameByFrame.active = !FrameByFrame.active;
+            }
+            BpxTimer.timersToPauseOnGamePause =
+                BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+            if (GlobalPause.wasJustActivated) {
+                for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+                    weakRef.deref().__internal__pauseByEngine();
+                }
+                for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+                    playback.pauseByEngine();
+                }
+                for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+                    playback.muteByEngine();
+                }
+            }
+            else if (GlobalPause.wasJustDeactivated) {
+                for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+                    weakRef.deref().__internal__resumeDueToGameResume();
+                }
+                for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+                    playback.resumeByEngine();
+                }
+                for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+                    playback.unmuteByEngine();
+                }
             }
             const shouldUpdate = !FrameByFrame.active ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed;

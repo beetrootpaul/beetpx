@@ -14,17 +14,15 @@ export class AudioApi {
 
   // We use a short fade in/out when muting/unmuting in order to avoid some
   //   of audio artifacts that would happen on a instant volume change.
-  static readonly #muteUnmuteDefaultFadeMillis = 100;
+  static readonly muteUnmuteDefaultFadeMillis = 100;
 
   readonly #assets: Assets;
 
   readonly #audioContext: AudioContext;
   readonly #globalGainNode: GainNode;
-  readonly #pauseFadeNode: GainNode;
 
   readonly #playbacks: Map<BpxAudioPlaybackId, AudioPlayback> = new Map();
 
-  #isPaused: boolean = false;
   #isMuted: boolean;
 
   constructor(assets: Assets, audioContext: AudioContext) {
@@ -37,26 +35,11 @@ export class AudioApi {
     this.#globalGainNode = this.#audioContext.createGain();
     this.#globalGainNode.gain.value = this.#isMuted ? 0 : 1;
     this.#globalGainNode.connect(this.#audioContext.destination);
-
-    this.#pauseFadeNode = this.#audioContext.createGain();
-    this.#pauseFadeNode.gain.value = 1;
-    this.#pauseFadeNode.connect(this.#globalGainNode);
   }
 
   restart(): void {
-    this.stopAllPlaybacks();
+    this.#stopAllPlaybacks();
     this.#playbacks.clear();
-
-    // in case audio was paused
-    this.#isPaused = false;
-    AudioHelpers.unmuteGain(
-      this.#pauseFadeNode,
-      this.#audioContext.currentTime,
-      0,
-    );
-    this.#audioContext.resume().catch(err => {
-      Logger.errorBeetPx(err);
-    });
   }
 
   // In some browsers audio should start in result of user interaction (e.g. button click).
@@ -70,13 +53,6 @@ export class AudioApi {
     if (this.#audioContext.state === "running") {
       Logger.debugBeetPx("Audio Context is already running");
       return Promise.resolve(true);
-    }
-
-    if (this.#isPaused) {
-      Logger.debugBeetPx(
-        "Cannot detect if Audio Context requires resuming, because it is intentionally paused (suspended) right now",
-      );
-      return Promise.resolve(false);
     }
 
     return this.#audioContext
@@ -95,21 +71,25 @@ export class AudioApi {
     soundUrl: BpxSoundUrl,
     opts?: {
       muteOnStart?: boolean;
+      onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
     opts.muteOnStart ??= false;
+    opts.onGamePause ??= "pause";
 
     Logger.debugBeetPx(
-      `AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`,
+      `AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`,
     );
 
     const playback = new AudioPlaybackOnce(soundUrl, {
       assets: this.#assets,
       audioContext: this.#audioContext,
-      target: this.#pauseFadeNode,
+      target: this.#globalGainNode,
       muteOnStart: opts.muteOnStart,
+      onGamePause: opts.onGamePause,
       onEnded: () => {
+        Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
       },
     });
@@ -122,21 +102,25 @@ export class AudioApi {
     soundUrl: BpxSoundUrl,
     opts?: {
       muteOnStart?: boolean;
+      onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
     opts.muteOnStart ??= false;
+    opts.onGamePause ??= "pause";
 
     Logger.debugBeetPx(
-      `AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`,
+      `AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`,
     );
 
     const playback = new AudioPlaybackLooped(soundUrl, {
       assets: this.#assets,
       audioContext: this.#audioContext,
-      target: this.#pauseFadeNode,
+      target: this.#globalGainNode,
       muteOnStart: opts.muteOnStart,
+      onGamePause: opts.onGamePause,
       onEnded: () => {
+        Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
       },
     });
@@ -149,21 +133,25 @@ export class AudioApi {
     soundSequence: BpxSoundSequence,
     opts?: {
       muteOnStart?: boolean;
+      onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
     opts.muteOnStart ??= false;
+    opts.onGamePause ??= "pause";
 
     Logger.debugBeetPx(
-      `AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`,
+      `AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`,
     );
 
     const playback = new AudioPlaybackSequence(soundSequence, {
       assets: this.#assets,
       audioContext: this.#audioContext,
-      target: this.#pauseFadeNode,
+      target: this.#globalGainNode,
       muteOnStart: opts.muteOnStart,
+      onGamePause: opts.onGamePause,
       onEnded: () => {
+        Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
       },
     });
@@ -190,9 +178,7 @@ export class AudioApi {
     AudioHelpers.muteGain(
       this.#globalGainNode,
       this.#audioContext.currentTime,
-      this.#isPaused ? 0 : (
-        opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
-      ),
+      opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis,
     );
   }
 
@@ -210,9 +196,7 @@ export class AudioApi {
     AudioHelpers.unmuteGain(
       this.#globalGainNode,
       this.#audioContext.currentTime,
-      this.#isPaused ? 0 : (
-        opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
-      ),
+      opts.fadeInMillis ?? AudioApi.muteUnmuteDefaultFadeMillis,
     );
   }
 
@@ -226,11 +210,7 @@ export class AudioApi {
 
     this.#playbacks
       .get(playbackId)
-      ?.mute(
-        this.#isPaused ? 0 : (
-          opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
-        ),
-      );
+      ?.mute(opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis);
   }
 
   unmutePlayback(
@@ -243,61 +223,19 @@ export class AudioApi {
 
     this.#playbacks
       .get(playbackId)
-      ?.unmute(
-        this.#isPaused ? 0 : (
-          opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
-        ),
-      );
+      ?.unmute(opts.fadeInMillis ?? AudioApi.muteUnmuteDefaultFadeMillis);
   }
 
-  pauseAudio(): void {
-    Logger.debugBeetPx("AudioApi.pauseAudio");
-
-    if (this.#isPaused) return;
-    this.#isPaused = true;
-
-    AudioHelpers.muteGain(
-      this.#pauseFadeNode,
-      this.#audioContext.currentTime,
-      AudioApi.#muteUnmuteDefaultFadeMillis,
-      () => {
-        this.#audioContext.suspend().catch(err => {
-          Logger.errorBeetPx(err);
-        });
-      },
-    );
-  }
-
-  resumeAudio(): void {
-    Logger.debugBeetPx("AudioApi.resumeAudio");
-
-    if (!this.#isPaused) return;
-    this.#isPaused = false;
-
-    this.#audioContext
-      .resume()
-      .then(() => {
-        AudioHelpers.unmuteGain(
-          this.#pauseFadeNode,
-          this.#audioContext.currentTime,
-          AudioApi.#muteUnmuteDefaultFadeMillis,
-        );
-      })
-      .catch(err => {
-        Logger.errorBeetPx(err);
-      });
-  }
-
-  stopAllPlaybacks(opts: { fadeOutMillis?: number } = {}): void {
+  #stopAllPlaybacks(opts: { fadeOutMillis?: number } = {}): void {
     Logger.debugBeetPx(
-      `AudioApi.stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`,
+      `AudioApi.#stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`,
     );
 
     for (const playback of this.#playbacks.values()) {
       playback.stop(
-        this.#isPaused || this.#isMuted ?
-          0
-        : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+        this.#isMuted ? 0 : (
+          opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
+        ),
       );
     }
   }
@@ -313,10 +251,22 @@ export class AudioApi {
     this.#playbacks
       .get(playbackId)
       ?.stop(
-        this.#isPaused || this.#isMuted ?
-          0
-        : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
+        this.#isMuted ? 0 : (
+          opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
+        ),
       );
+  }
+
+  pausePlayback(playbackId: BpxAudioPlaybackId): void {
+    Logger.debugBeetPx(`AudioApi.pausePlayback`);
+
+    this.#playbacks.get(playbackId)?.pause();
+  }
+
+  resumePlayback(playbackId: BpxAudioPlaybackId): void {
+    Logger.debugBeetPx(`AudioApi.resumePlayback`);
+
+    this.#playbacks.get(playbackId)?.resume();
   }
 
   #loadStoredGlobalMuteUnmuteState(): boolean {

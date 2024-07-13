@@ -20,18 +20,22 @@ export class Vfx {
   #timer: BpxTimerSequence<"a" | "b">;
 
   constructor(params: { loopFrames: number }) {
-    // this.#timer = timer_(params.loopFrames, { loop: true });
     this.#loopFrames = params.loopFrames;
-    this.#timer = timerSeq_({
-      intro: [
-        ["a", params.loopFrames - 5],
-        ["b", 2],
-      ],
-      loop: [
-        ["a", params.loopFrames - 2],
-        ["b", 2],
-      ],
-    });
+    this.#timer = timerSeq_(
+      {
+        intro: [
+          ["a", params.loopFrames - 5],
+          ["b", 2],
+        ],
+        loop: [
+          ["a", params.loopFrames - 2],
+          ["b", 2],
+        ],
+      },
+      {
+        onGamePause: "ignore",
+      },
+    );
   }
 
   draw() {

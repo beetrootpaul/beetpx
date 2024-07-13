@@ -3,6 +3,7 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader, AssetsToLoad } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { AudioPlayback } from "./audio/AudioPlayback";
 import {
   BpxBrowserType,
   BrowserTypeDetector,
@@ -20,6 +21,7 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d } from "./misc/Vector2d";
+import { GlobalPause } from "./pause/GlobalPause";
 import {
   font_pico8_,
   font_saint11Minimal4_,
@@ -28,12 +30,16 @@ import {
   v_,
 } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
+import { BpxTimer } from "./timer/Timer";
 import { throwError } from "./utils/throwError";
 
 export type BpxEngineConfig = {
   canvasSize?: "64x64" | "128x128" | "256x256";
   fixedTimestep?: "30fps" | "60fps";
   assets?: AssetsToLoad;
+  globalPause?: {
+    available?: boolean;
+  };
   debugMode?: {
     /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
     available?: boolean;
@@ -130,6 +136,10 @@ export class Engine {
         .suspend()
         .then(() => {});
     });
+
+    if (engineConfig.globalPause?.available) {
+      GlobalPause.enable();
+    }
 
     DebugMode.loadFromStorage();
     if (!engineConfig.debugMode?.available) {
@@ -260,6 +270,11 @@ export class Engine {
 
     BeetPx.clearCanvas(rgb_black_);
 
+    BpxTimer.timersToPauseOnGamePause = [];
+    AudioPlayback.playbacksToPauseOnGamePause.clear();
+    AudioPlayback.playbacksToMuteOnGamePause.clear();
+    GlobalPause.deactivate();
+
     this.#onStarted?.();
   }
 
@@ -304,11 +319,45 @@ export class Engine {
             this.audioApi.muteAudio();
           }
         }
+
+        GlobalPause.update();
+        if (this.gameInput.gameButtons.wasJustPressed("menu")) {
+          if (GlobalPause.isActive) {
+            GlobalPause.deactivate();
+          } else {
+            GlobalPause.activate();
+          }
+        }
+
         if (this.gameInput.buttonDebugToggle.wasJustPressed) {
           DebugMode.enabled = !DebugMode.enabled;
         }
         if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
           FrameByFrame.active = !FrameByFrame.active;
+        }
+
+        BpxTimer.timersToPauseOnGamePause =
+          BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+        if (GlobalPause.wasJustActivated) {
+          for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+            weakRef.deref()!.__internal__pauseByEngine();
+          }
+          for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+            playback.pauseByEngine();
+          }
+          for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+            playback.muteByEngine();
+          }
+        } else if (GlobalPause.wasJustDeactivated) {
+          for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+            weakRef.deref()!.__internal__resumeDueToGameResume();
+          }
+          for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+            playback.resumeByEngine();
+          }
+          for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+            playback.unmuteByEngine();
+          }
         }
 
         const shouldUpdate =

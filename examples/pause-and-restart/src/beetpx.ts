@@ -7,34 +7,24 @@ import { Vfx } from "./Vfx";
 b_.init({
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
+  globalPause: {
+    available: true,
+  },
 }).then(async ({ startGame }) => {
   const pauseOverlay = new PauseOverlay();
-  const music = new Music();
+  let music: Music;
   let movement: Movement;
   let vfx: Vfx;
-  let isPaused: boolean;
 
   b_.setOnStarted(() => {
-    music.start();
+    music = new Music();
     movement = new Movement();
     vfx = new Vfx({ loopFrames: Music.beatFrames });
-    isPaused = false;
   });
 
   b_.setOnUpdate(() => {
-    if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
+    if (b_.wasButtonJustPressed("a")) {
       b_.restart();
-    }
-
-    if (b_.wasButtonJustPressed("menu")) {
-      isPaused = !isPaused;
-      if (isPaused) {
-        movement.pause();
-        music.muteMelody();
-      } else {
-        movement.resume();
-        music.unmuteMelody();
-      }
     }
   });
 
@@ -42,7 +32,7 @@ b_.init({
     b_.clearCanvas(rgb_p8_.storm);
     vfx.draw();
     movement.draw();
-    if (isPaused) {
+    if (b_.isPaused) {
       pauseOverlay.draw();
     }
   });

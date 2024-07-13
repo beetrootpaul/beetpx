@@ -188,13 +188,13 @@ _a = GameInputTouch, _GameInputTouch_config = new WeakMap(), _GameInputTouch_ong
     return false;
 };
 _GameInputTouch_bitMasks = { value: {
-        up: 256,
-        down: 128,
-        left: 64,
-        right: 32,
-        a: 16,
-        b: 8,
-        menu: 4,
-        muteUnmute: 2,
-        fullScreen: 1,
+        up: 0b1000_00_0_00,
+        down: 0b0100_00_0_00,
+        left: 0b0010_00_0_00,
+        right: 0b0001_00_0_00,
+        a: 0b0000_10_0_00,
+        b: 0b0000_01_0_00,
+        menu: 0b0000_00_1_00,
+        muteUnmute: 0b0000_00_0_10,
+        fullScreen: 0b0000_00_0_01,
     } };

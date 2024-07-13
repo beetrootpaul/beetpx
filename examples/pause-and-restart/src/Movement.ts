@@ -13,17 +13,7 @@ export class Movement {
     ),
   );
 
-  pause() {
-    this.#timer.pause();
-    this.#animation.pause();
-  }
-
-  resume() {
-    this.#timer.resume();
-    this.#animation.resume();
-  }
-
-  draw() {
+  draw(): void {
     b_.drawSprite(
       this.#animation.current,
       v_(

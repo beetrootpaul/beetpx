@@ -14,10 +14,13 @@ import { BpxVector2d } from "../misc/Vector2d";
 import { BpxTimer } from "../timer/Timer";
 import { BpxSprite } from "./Sprite";
 export class BpxAnimatedSprite {
-    static from(imageUrl, w, h, xys) {
-        return new BpxAnimatedSprite({ imageUrl, w, h, xys });
+    static from(imageUrl, w, h, xys, opts) {
+        return new BpxAnimatedSprite({ imageUrl, w, h, xys }, {
+            pause: opts?.pause ?? false,
+            onGamePause: opts?.onGamePause ?? "pause",
+        });
     }
-    constructor(params) {
+    constructor(params, opts) {
         this.type = "animated";
         _BpxAnimatedSprite_sprites.set(this, void 0);
         _BpxAnimatedSprite_loop.set(this, void 0);
@@ -27,8 +30,9 @@ export class BpxAnimatedSprite {
         __classPrivateFieldSet(this, _BpxAnimatedSprite_loop, BpxTimer.for({
             frames: __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length,
             loop: true,
-            pause: false,
+            pause: opts.pause ?? false,
             delayFrames: 0,
+            onGamePause: opts.onGamePause,
         }), "f");
     }
     get current() {

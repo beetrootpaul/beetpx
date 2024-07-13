@@ -21,6 +21,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
     opts: {
       pause: boolean;
       delayFrames: number;
+      onGamePause: "pause" | "ignore";
     },
   ): BpxTimerSequence<TPhaseName> {
     return new BpxTimerSequence(params, opts);
@@ -38,6 +39,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   #pausedFrame: number | null;
 
+  #onGamePause: "pause" | "ignore";
+
   readonly #firstIterationTimer: BpxTimer;
   #loopTimer: BpxTimer | null;
 
@@ -53,6 +56,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
     opts: {
       pause: boolean;
       delayFrames: number;
+      onGamePause: "pause" | "ignore";
     },
   ) {
     this.#firstIterationPhases = [...params.intro, ...params.loop].map(
@@ -79,6 +83,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       loop: false,
       pause: opts.pause,
       delayFrames: opts.delayFrames,
+      onGamePause: opts.onGamePause,
     });
     this.#loopTimer =
       this.#loopPhases.length > 0 ?
@@ -87,6 +92,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
           loop: true,
           pause: opts.pause,
           delayFrames: opts.delayFrames + this.#firstIterationFrames,
+          onGamePause: opts.onGamePause,
         })
       : null;
 
@@ -94,6 +100,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
     if (opts.pause) {
       this.pause();
     }
+
+    this.#onGamePause = opts.onGamePause;
   }
 
   get #now(): Now<TPhaseName> {
@@ -263,6 +271,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
         loop: true,
         pause: false,
         delayFrames: this.#firstIterationFrames,
+        onGamePause: this.#onGamePause,
       });
     }
   }

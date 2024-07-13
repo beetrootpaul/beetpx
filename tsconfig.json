@@ -2,7 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "target": "ES2020",
+    "target": "ES2021",
     "moduleResolution": "bundler",
     "noEmit": true
   },

@@ -47,17 +47,21 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 
 declare class AudioApi {
     #private;
+    static readonly muteUnmuteDefaultFadeMillis = 100;
     constructor(assets: Assets, audioContext: AudioContext);
     restart(): void;
     tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
     startPlayback(soundUrl: BpxSoundUrl, opts?: {
         muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
     }): BpxAudioPlaybackId;
     startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
         muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
     }): BpxAudioPlaybackId;
     startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
         muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
     }): BpxAudioPlaybackId;
     isAudioMuted(): boolean;
     muteAudio(opts?: {
@@ -72,14 +76,11 @@ declare class AudioApi {
     unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
         fadeInMillis?: number;
     }): void;
-    pauseAudio(): void;
-    resumeAudio(): void;
-    stopAllPlaybacks(opts?: {
-        fadeOutMillis?: number;
-    }): void;
     stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
         fadeOutMillis?: number;
     }): void;
+    pausePlayback(playbackId: BpxAudioPlaybackId): void;
+    resumePlayback(playbackId: BpxAudioPlaybackId): void;
     getAudioContext(): AudioContext;
     getGlobalGainNode(): GainNode;
 }
@@ -299,10 +300,16 @@ declare abstract class BpxFont {
     arrangeGlyphsFor(text: string, textColor: BpxRgbColor, colorMarkers?: BpxTextColorMarkers): BpxArrangedGlyph[];
 }
 
-type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][]) => BpxAnimatedSprite;
+type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][], opts?: {
+    pause?: boolean;
+    onGamePause?: "pause" | "ignore";
+}) => BpxAnimatedSprite;
 declare class BpxAnimatedSprite {
     #private;
-    static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][]): BpxAnimatedSprite;
+    static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][], opts?: {
+        pause?: boolean;
+        onGamePause?: "pause" | "ignore";
+    }): BpxAnimatedSprite;
     readonly type = "animated";
     readonly imageUrl: BpxImageUrl;
     readonly size: BpxVector2d;
@@ -487,6 +494,9 @@ type BpxEngineConfig = {
     canvasSize?: "64x64" | "128x128" | "256x256";
     fixedTimestep?: "30fps" | "60fps";
     assets?: AssetsToLoad;
+    globalPause?: {
+        available?: boolean;
+    };
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;
@@ -605,13 +615,19 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
+type TimerWithExposedInternals = BpxTimer & {
+    __internal__pauseByEngine: () => void;
+    __internal__resumeDueToGameResume: () => void;
+};
 declare class BpxTimer {
     #private;
-    static for(params: {
+    static timersToPauseOnGamePause: WeakRef<TimerWithExposedInternals>[];
+    static for(opts: {
         frames: number;
         loop: boolean;
         pause: boolean;
         delayFrames: number;
+        onGamePause: "pause" | "ignore";
     }): BpxTimer;
     private constructor();
     get t(): number;
@@ -632,6 +648,7 @@ declare class BpxTimerSequence<TPhaseName extends string> {
     }, opts: {
         pause: boolean;
         delayFrames: number;
+        onGamePause: "pause" | "ignore";
     }): BpxTimerSequence<TPhaseName>;
     private constructor();
     get justFinishedPhase(): TPhaseName | null;
@@ -668,6 +685,17 @@ declare class Logger {
     static error(...args: any[]): void;
 }
 
+declare class GlobalPause {
+    #private;
+    static enable(): void;
+    static get isActive(): boolean;
+    static get wasJustActivated(): boolean;
+    static get wasJustDeactivated(): boolean;
+    static update(): void;
+    static activate(): void;
+    static deactivate(): void;
+}
+
 declare class BeetPx {
     #private;
     static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
@@ -691,6 +719,9 @@ declare class BeetPx {
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;
     static logError: typeof Logger.error;
+    static get isPaused(): typeof GlobalPause.isActive;
+    static get wasJustPaused(): typeof GlobalPause.wasJustActivated;
+    static get wasJustResumed(): typeof GlobalPause.wasJustDeactivated;
     static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
     static wasButtonJustPressed: GameButtons["wasJustPressed"];
     static wasButtonJustReleased: GameButtons["wasJustReleased"];
@@ -753,15 +784,14 @@ declare class BeetPx {
     static isAudioMuted: AudioApi["isAudioMuted"];
     static muteAudio: AudioApi["muteAudio"];
     static unmuteAudio: AudioApi["unmuteAudio"];
-    static pauseAudio: AudioApi["pauseAudio"];
-    static resumeAudio: AudioApi["resumeAudio"];
     static startPlayback: AudioApi["startPlayback"];
     static startPlaybackLooped: AudioApi["startPlaybackLooped"];
     static startPlaybackSequence: AudioApi["startPlaybackSequence"];
     static mutePlayback: AudioApi["mutePlayback"];
     static unmutePlayback: AudioApi["unmutePlayback"];
     static stopPlayback: AudioApi["stopPlayback"];
-    static stopAllPlaybacks: AudioApi["stopAllPlaybacks"];
+    static pausePlayback: AudioApi["pausePlayback"];
+    static resumePlayback: AudioApi["resumePlayback"];
     static getAudioContext: AudioApi["getAudioContext"];
     static isFullScreenSupported: FullScreen["isFullScreenSupported"];
     static isInFullScreen: FullScreen["isInFullScreen"];
@@ -914,6 +944,7 @@ declare function timer_(frames: number, opts?: {
     loop?: boolean;
     pause?: boolean;
     delayFrames?: number;
+    onGamePause?: "pause" | "ignore";
 }): BpxTimer;
 declare function timerSeq_<TPhaseName extends string>(params: {
     intro?: Array<[phase: TPhaseName, frames: number]>;
@@ -921,6 +952,7 @@ declare function timerSeq_<TPhaseName extends string>(params: {
 }, opts?: {
     pause?: boolean;
     delayFrames?: number;
+    onGamePause?: "pause" | "ignore";
 }): BpxTimerSequence<TPhaseName>;
 declare function v_(value: number): BpxVector2d;
 declare function v_(x: number, y: number): BpxVector2d;

@@ -5,22 +5,12 @@ export class Music {
 
   static beatFrames = 32;
 
-  #melodyPlaybackId?: number;
-
-  start() {
-    b_.startPlaybackLooped("music_base.flac");
-    this.#melodyPlaybackId = b_.startPlaybackLooped("music_melody.flac");
-  }
-
-  muteMelody() {
-    if (this.#melodyPlaybackId) {
-      b_.mutePlayback(this.#melodyPlaybackId);
-    }
-  }
-
-  unmuteMelody() {
-    if (this.#melodyPlaybackId) {
-      b_.unmutePlayback(this.#melodyPlaybackId);
-    }
+  constructor() {
+    b_.startPlaybackLooped("music_base.flac", {
+      onGamePause: "ignore",
+    });
+    b_.startPlaybackLooped("music_melody.flac", {
+      onGamePause: "mute",
+    });
   }
 }

@@ -14,9 +14,9 @@ var _a, _BeetPx_engine, _BeetPx_tryGetEngine;
 import { Engine } from "./Engine";
 import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
+import { GlobalPause } from "./pause/GlobalPause";
 
 export class BeetPx {
-    
     
     
     
@@ -27,9 +27,6 @@ export class BeetPx {
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
         return { startGame };
     }
-    
-    
-    
     static get debug() {
         return DebugMode.enabled;
     }
@@ -51,6 +48,18 @@ export class BeetPx {
     }
     static get detectedBrowserType() {
         return __classPrivateFieldGet(this, _a, "m", _BeetPx_tryGetEngine).call(this).detectedBrowserType;
+    }
+    
+    
+    
+    static get isPaused() {
+        return GlobalPause.isActive;
+    }
+    static get wasJustPaused() {
+        return GlobalPause.wasJustActivated;
+    }
+    static get wasJustResumed() {
+        return GlobalPause.wasJustDeactivated;
     }
 }
 _a = BeetPx, _BeetPx_tryGetEngine = function _BeetPx_tryGetEngine() {
@@ -227,12 +236,6 @@ BeetPx.muteAudio = (...args) => {
 BeetPx.unmuteAudio = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.unmuteAudio(...args);
 };
-BeetPx.pauseAudio = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.pauseAudio(...args);
-};
-BeetPx.resumeAudio = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.resumeAudio(...args);
-};
 BeetPx.startPlayback = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.startPlayback(...args);
 };
@@ -251,8 +254,11 @@ BeetPx.unmutePlayback = (...args) => {
 BeetPx.stopPlayback = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.stopPlayback(...args);
 };
-BeetPx.stopAllPlaybacks = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.stopAllPlaybacks(...args);
+BeetPx.pausePlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.pausePlayback(...args);
+};
+BeetPx.resumePlayback = (...args) => {
+    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.resumePlayback(...args);
 };
 BeetPx.getAudioContext = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.getAudioContext(...args);

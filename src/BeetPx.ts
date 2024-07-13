@@ -10,6 +10,7 @@ import { GameButtons } from "./game_input/buttons/GameButtons";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { BpxVector2d } from "./misc/Vector2d";
+import { GlobalPause } from "./pause/GlobalPause";
 import { StorageApi } from "./storage/StorageApi";
 
 /////////////////////////////////////////////////////////////////////////////
@@ -21,32 +22,6 @@ export class BeetPx {
   // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
   //
 
-  /*
-
-  static init(initParams?: {
-    config?: BpxEngineConfig;
-    onStarted?: () => void;
-    onUpdate?: () => void;
-    onDraw?: () => void;
-  }): void {
-    Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
-    this.#engine = new Engine(initParams?.config);
-    this.#engine
-      .init()
-      .then(({ startGame }) => {
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
-        this.#engine.setOnStarted(initParams?.onStarted);
-        this.#engine.setOnUpdate(initParams?.onUpdate);
-        this.#engine.setOnDraw(initParams?.onDraw);
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Starting…`);
-        return startGame();
-      })
-      .then(() => {
-        Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Started`);
-      });
-  }
-   */
-
   static async init(config?: BpxEngineConfig): ReturnType<Engine["init"]> {
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
     this.#engine = new Engine(config);
@@ -54,10 +29,6 @@ export class BeetPx {
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
     return { startGame };
   }
-
-  //
-  // field-like getters
-  //
 
   static get debug(): typeof DebugMode.enabled {
     return DebugMode.enabled;
@@ -125,6 +96,22 @@ export class BeetPx {
   static logError: typeof Logger.error = (...args) => {
     return Logger.error(...args);
   };
+
+  //
+  // Pause
+  //
+
+  static get isPaused(): typeof GlobalPause.isActive {
+    return GlobalPause.isActive;
+  }
+
+  static get wasJustPaused(): typeof GlobalPause.wasJustActivated {
+    return GlobalPause.wasJustActivated;
+  }
+
+  static get wasJustResumed(): typeof GlobalPause.wasJustDeactivated {
+    return GlobalPause.wasJustDeactivated;
+  }
 
   //
   // Game Input & Buttons
@@ -322,14 +309,6 @@ export class BeetPx {
     return this.#tryGetEngine().audioApi.unmuteAudio(...args);
   };
 
-  static pauseAudio: AudioApi["pauseAudio"] = (...args) => {
-    return this.#tryGetEngine().audioApi.pauseAudio(...args);
-  };
-
-  static resumeAudio: AudioApi["resumeAudio"] = (...args) => {
-    return this.#tryGetEngine().audioApi.resumeAudio(...args);
-  };
-
   static startPlayback: AudioApi["startPlayback"] = (...args) => {
     return this.#tryGetEngine().audioApi.startPlayback(...args);
   };
@@ -356,8 +335,12 @@ export class BeetPx {
     return this.#tryGetEngine().audioApi.stopPlayback(...args);
   };
 
-  static stopAllPlaybacks: AudioApi["stopAllPlaybacks"] = (...args) => {
-    return this.#tryGetEngine().audioApi.stopAllPlaybacks(...args);
+  static pausePlayback: AudioApi["pausePlayback"] = (...args) => {
+    return this.#tryGetEngine().audioApi.pausePlayback(...args);
+  };
+
+  static resumePlayback: AudioApi["resumePlayback"] = (...args) => {
+    return this.#tryGetEngine().audioApi.resumePlayback(...args);
   };
 
   static getAudioContext: AudioApi["getAudioContext"] = (...args) => {
