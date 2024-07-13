@@ -155,5 +155,8 @@ export class BpxTimer {
   restart(): void {
     this.#offsetFrame = BeetPx.frameNumber;
     this.#pausedFrame = null;
+
+    this.#pausedDirectly = false;
+    this.#pausedWithGame = false;
   }
 }

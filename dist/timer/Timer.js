@@ -91,6 +91,8 @@ export class BpxTimer {
     restart() {
         __classPrivateFieldSet(this, _BpxTimer_offsetFrame, BeetPx.frameNumber, "f");
         __classPrivateFieldSet(this, _BpxTimer_pausedFrame, null, "f");
+        __classPrivateFieldSet(this, _BpxTimer_pausedDirectly, false, "f");
+        __classPrivateFieldSet(this, _BpxTimer_pausedWithGame, false, "f");
     }
 }
 _BpxTimer_frames = new WeakMap(), _BpxTimer_loop = new WeakMap(), _BpxTimer_pausedWithGame = new WeakMap(), _BpxTimer_pausedDirectly = new WeakMap(), _BpxTimer_offsetFrame = new WeakMap(), _BpxTimer_pausedFrame = new WeakMap(), _BpxTimer_instances = new WeakSet(), _BpxTimer_tRaw_get = function _BpxTimer_tRaw_get() {
