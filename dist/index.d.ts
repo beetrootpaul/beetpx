@@ -307,13 +307,13 @@ declare abstract class BpxFont {
 
 type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][], opts?: {
     pause?: boolean;
-    ignoreGamePause?: boolean;
+    onGamePause?: "pause" | "ignore";
 }) => BpxAnimatedSprite;
 declare class BpxAnimatedSprite {
     #private;
     static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][], opts?: {
         pause?: boolean;
-        ignoreGamePause?: boolean;
+        onGamePause?: "pause" | "ignore";
     }): BpxAnimatedSprite;
     readonly type = "animated";
     readonly imageUrl: BpxImageUrl;
@@ -629,7 +629,7 @@ declare class BpxTimer {
         loop: boolean;
         pause: boolean;
         delayFrames: number;
-        ignoreGamePause: boolean;
+        onGamePause: "pause" | "ignore";
     }): BpxTimer;
     private constructor();
     get t(): number;
@@ -650,7 +650,7 @@ declare class BpxTimerSequence<TPhaseName extends string> {
     }, opts: {
         pause: boolean;
         delayFrames: number;
-        ignoreGamePause: boolean;
+        onGamePause: "pause" | "ignore";
     }): BpxTimerSequence<TPhaseName>;
     private constructor();
     get justFinishedPhase(): TPhaseName | null;
@@ -948,7 +948,7 @@ declare function timer_(frames: number, opts?: {
     loop?: boolean;
     pause?: boolean;
     delayFrames?: number;
-    ignoreGamePause?: boolean;
+    onGamePause?: "pause" | "ignore";
 }): BpxTimer;
 declare function timerSeq_<TPhaseName extends string>(params: {
     intro?: Array<[phase: TPhaseName, frames: number]>;
@@ -956,7 +956,7 @@ declare function timerSeq_<TPhaseName extends string>(params: {
 }, opts?: {
     pause?: boolean;
     delayFrames?: number;
-    ignoreGamePause?: boolean;
+    onGamePause?: "pause" | "ignore";
 }): BpxTimerSequence<TPhaseName>;
 declare function v_(value: number): BpxVector2d;
 declare function v_(x: number, y: number): BpxVector2d;

@@ -33,7 +33,7 @@ export class Vfx {
         ],
       },
       {
-        ignoreGamePause: true,
+        onGamePause: "ignore",
       },
     );
   }

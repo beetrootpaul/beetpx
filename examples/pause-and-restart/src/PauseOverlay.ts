@@ -4,6 +4,7 @@ import {
   BpxColorMapper,
   rgb_,
   rgb_p8_,
+  v_,
   v_0_0_,
 } from "../../../src";
 
@@ -30,6 +31,7 @@ export class PauseOverlay {
     );
     b_.drawText("pause", b_.canvasSize.div(2), rgb_p8_.white, {
       centerXy: [true, true],
+      scaleXy: v_(4, 4),
     });
   }
 }

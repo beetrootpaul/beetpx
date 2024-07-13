@@ -9,7 +9,7 @@ export type BpxImageBoundAnimatedSpriteFactory = (
   xys: [x: number, y: number][],
   opts?: {
     pause?: boolean;
-    ignoreGamePause?: boolean;
+    onGamePause?: "pause" | "ignore";
   },
 ) => BpxAnimatedSprite;
 
@@ -21,14 +21,14 @@ export class BpxAnimatedSprite {
     xys: [x: number, y: number][],
     opts?: {
       pause?: boolean;
-      ignoreGamePause?: boolean;
+      onGamePause?: "pause" | "ignore";
     },
   ): BpxAnimatedSprite {
     return new BpxAnimatedSprite(
       { imageUrl, w, h, xys },
       {
         pause: opts?.pause ?? false,
-        ignoreGamePause: opts?.ignoreGamePause ?? false,
+        onGamePause: opts?.onGamePause ?? "pause",
       },
     );
   }
@@ -50,7 +50,7 @@ export class BpxAnimatedSprite {
     },
     opts: {
       pause?: boolean;
-      ignoreGamePause: boolean;
+      onGamePause: "pause" | "ignore";
     },
   ) {
     this.imageUrl = params.imageUrl;
@@ -63,7 +63,7 @@ export class BpxAnimatedSprite {
       loop: true,
       pause: opts.pause ?? false,
       delayFrames: 0,
-      ignoreGamePause: opts.ignoreGamePause,
+      onGamePause: opts.onGamePause,
     });
   }
 

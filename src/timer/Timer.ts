@@ -15,8 +15,7 @@ export class BpxTimer {
     loop: boolean;
     pause: boolean;
     delayFrames: number;
-    // TODO: consider `onGamePause: "pause" | "ignore", then for audio: "pause" | "mute" | "ignore"
-    ignoreGamePause: boolean;
+    onGamePause: "pause" | "ignore";
   }): BpxTimer {
     return new BpxTimer(opts);
   }
@@ -35,9 +34,9 @@ export class BpxTimer {
     loop: boolean;
     pause: boolean;
     delayFrames: number;
-    ignoreGamePause: boolean;
+    onGamePause: "pause" | "ignore";
   }) {
-    if (!opts.ignoreGamePause) {
+    if (opts.onGamePause === "pause") {
       const withInternals: TimerWithExposedInternals = this as any;
       withInternals.__internal__pauseByEngine =
         withInternals.#pauseByEngine.bind(withInternals);

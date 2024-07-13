@@ -25,7 +25,7 @@ export class BpxTimer {
         _BpxTimer_isPausedByGame.set(this, void 0);
         _BpxTimer_offsetFrame.set(this, void 0);
         _BpxTimer_pausedFrame.set(this, void 0);
-        if (!opts.ignoreGamePause) {
+        if (opts.onGamePause === "pause") {
             const withInternals = this;
             withInternals.__internal__pauseByEngine =
                 __classPrivateFieldGet(withInternals, _BpxTimer_instances, "m", _BpxTimer_pauseByEngine).bind(withInternals);

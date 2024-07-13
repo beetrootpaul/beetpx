@@ -17,7 +17,7 @@ export class BpxAnimatedSprite {
     static from(imageUrl, w, h, xys, opts) {
         return new BpxAnimatedSprite({ imageUrl, w, h, xys }, {
             pause: opts?.pause ?? false,
-            ignoreGamePause: opts?.ignoreGamePause ?? false,
+            onGamePause: opts?.onGamePause ?? "pause",
         });
     }
     constructor(params, opts) {
@@ -32,7 +32,7 @@ export class BpxAnimatedSprite {
             loop: true,
             pause: opts.pause ?? false,
             delayFrames: 0,
-            ignoreGamePause: opts.ignoreGamePause,
+            onGamePause: opts.onGamePause,
         }), "f");
     }
     get current() {

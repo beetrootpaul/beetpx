@@ -24,10 +24,10 @@ export function aspr_(
     h: number,
     xys: [x: number, y: number][],
     opts?: {
-      ignoreGamePause?: boolean;
+      onGamePause?: "pause" | "ignore";
     },
   ) => {
-    return BpxAnimatedSprite.from(imageUrl, w, h, xys, opts ?? {});
+    return BpxAnimatedSprite.from(imageUrl, w, h, xys, opts);
   };
 }
 
@@ -77,7 +77,7 @@ export function timer_(
     loop?: boolean;
     pause?: boolean;
     delayFrames?: number;
-    ignoreGamePause?: boolean;
+    onGamePause?: "pause" | "ignore";
   },
 ): BpxTimer {
   return BpxTimer.for({
@@ -85,7 +85,7 @@ export function timer_(
     loop: opts?.loop ?? false,
     pause: opts?.pause ?? false,
     delayFrames: opts?.delayFrames ?? 0,
-    ignoreGamePause: opts?.ignoreGamePause ?? false,
+    onGamePause: opts?.onGamePause ?? "pause",
   });
 }
 
@@ -97,7 +97,7 @@ export function timerSeq_<TPhaseName extends string>(
   opts?: {
     pause?: boolean;
     delayFrames?: number;
-    ignoreGamePause?: boolean;
+    onGamePause?: "pause" | "ignore";
   },
 ): BpxTimerSequence<TPhaseName> {
   return BpxTimerSequence.of<TPhaseName>(
@@ -108,7 +108,7 @@ export function timerSeq_<TPhaseName extends string>(
     {
       pause: opts?.pause ?? false,
       delayFrames: opts?.delayFrames ?? 0,
-      ignoreGamePause: opts?.ignoreGamePause ?? false,
+      onGamePause: opts?.onGamePause ?? "pause",
     },
   );
 }
