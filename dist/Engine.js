@@ -225,17 +225,13 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
             BpxTimer.timersControlledByGamePause =
                 BpxTimer.timersControlledByGamePause.filter(weakRefTimer => typeof weakRefTimer.deref() !== "undefined");
             if (Pause.wasJustActivated) {
-                
-                console.log("was just activated", Date.now());
                 for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
-                    weakRefTimer.deref().pauseDueToGamePause();
+                    weakRefTimer.deref().__internal__pauseDueToGamePause();
                 }
             }
             else if (Pause.wasJustDeactivated) {
-                
-                console.log("was just de-activated", Date.now());
                 for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
-                    weakRefTimer.deref().resumeDueToGameResume();
+                    weakRefTimer.deref().__internal__resumeDueToGameResume();
                 }
             }
             const shouldUpdate = !FrameByFrame.active ||

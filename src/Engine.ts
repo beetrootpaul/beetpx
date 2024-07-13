@@ -326,16 +326,12 @@ export class Engine {
             weakRefTimer => typeof weakRefTimer.deref() !== "undefined",
           );
         if (Pause.wasJustActivated) {
-          // TODO: REMOVE
-          console.log("was just activated", Date.now());
           for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
-            weakRefTimer.deref()!.pauseDueToGamePause();
+            weakRefTimer.deref()!.__internal__pauseDueToGamePause();
           }
         } else if (Pause.wasJustDeactivated) {
-          // TODO: REMOVE
-          console.log("was just de-activated", Date.now());
           for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
-            weakRefTimer.deref()!.resumeDueToGameResume();
+            weakRefTimer.deref()!.__internal__resumeDueToGameResume();
           }
         }
 

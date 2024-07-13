@@ -26,11 +26,12 @@ export class BpxTimer {
         _BpxTimer_offsetFrame.set(this, void 0);
         _BpxTimer_pausedFrame.set(this, void 0);
         if (!opts.ignoreGamePause) {
-            BpxTimer.timersControlledByGamePause.push(new WeakRef({
-                timer: this,
-                pauseDueToGamePause: __classPrivateFieldGet(this, _BpxTimer_instances, "m", _BpxTimer_pauseDueToGamePause).bind(this),
-                resumeDueToGameResume: __classPrivateFieldGet(this, _BpxTimer_instances, "m", _BpxTimer_resumeDueToGameResume).bind(this),
-            }));
+            const withInternals = this;
+            withInternals.__internal__pauseDueToGamePause =
+                __classPrivateFieldGet(withInternals, _BpxTimer_instances, "m", _BpxTimer_pauseDueToGamePause).bind(withInternals);
+            withInternals.__internal__resumeDueToGameResume =
+                __classPrivateFieldGet(withInternals, _BpxTimer_instances, "m", _BpxTimer_resumeDueToGameResume).bind(withInternals);
+            BpxTimer.timersControlledByGamePause.push(new WeakRef(withInternals));
         }
         __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(opts.frames)), "f");
         __classPrivateFieldSet(this, _BpxTimer_loop, opts.loop, "f");

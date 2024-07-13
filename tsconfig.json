@@ -4,7 +4,6 @@
     "noUncheckedIndexedAccess": true,
     "target": "ES2021",
     "moduleResolution": "bundler",
-//    "lib": ["ES2021", "ES2021.WeakRef"],
     "noEmit": true
   },
   "include": ["./src"]

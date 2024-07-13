@@ -611,14 +611,13 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-type TimerControlledByGamePause = {
-    timer: BpxTimer;
-    pauseDueToGamePause: () => void;
-    resumeDueToGameResume: () => void;
+type TimerWithExposedInternals = BpxTimer & {
+    __internal__pauseDueToGamePause: () => void;
+    __internal__resumeDueToGameResume: () => void;
 };
 declare class BpxTimer {
     #private;
-    static timersControlledByGamePause: WeakRef<TimerControlledByGamePause>[];
+    static timersControlledByGamePause: WeakRef<TimerWithExposedInternals>[];
     static for(opts: {
         frames: number;
         loop: boolean;
