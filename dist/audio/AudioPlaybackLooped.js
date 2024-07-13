@@ -13,7 +13,7 @@ var _AudioPlaybackLooped_soundAsset, _AudioPlaybackLooped_sourceNode, _AudioPlay
 import { AudioPlayback } from "./AudioPlayback";
 export class AudioPlaybackLooped extends AudioPlayback {
     constructor(soundUrl, params) {
-        super(params.audioContext, params.target, params.muteOnStart, params.onEnded);
+        super(params.audioContext, params.target, params.muteOnStart, params.onGamePause, params.onEnded);
         this.id = AudioPlayback.nextPlaybackId++;
         this.type = "looped";
         _AudioPlaybackLooped_soundAsset.set(this, void 0);
@@ -37,7 +37,7 @@ export class AudioPlaybackLooped extends AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").addEventListener("ended", () => {
             __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").disconnect();
             this.disconnectFromOutput();
-            if (!this.isPaused) {
+            if (!this.isPausedByGame && !this.isPausedByEngine) {
                 this.onEnded();
             }
         });

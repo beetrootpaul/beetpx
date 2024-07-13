@@ -15,7 +15,7 @@ import { clamp } from "../utils/clamp";
 import { AudioPlayback } from "./AudioPlayback";
 export class AudioPlaybackSequence extends AudioPlayback {
     constructor(soundSequence, params) {
-        super(params.audioContext, params.target, params.muteOnStart, params.onEnded);
+        super(params.audioContext, params.target, params.muteOnStart, params.onGamePause, params.onEnded);
         _AudioPlaybackSequence_instances.add(this);
         this.id = AudioPlayback.nextPlaybackId++;
         this.type = "sequence";
@@ -53,7 +53,7 @@ export class AudioPlaybackSequence extends AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlaybackSequence_sourceNode, "f").addEventListener("ended", () => {
             __classPrivateFieldGet(this, _AudioPlaybackSequence_sourceNode, "f").disconnect();
             this.disconnectFromOutput();
-            if (!this.isPaused) {
+            if (!this.isPausedByGame && !this.isPausedByEngine) {
                 this.onEnded();
             }
         });

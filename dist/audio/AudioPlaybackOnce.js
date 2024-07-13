@@ -13,7 +13,7 @@ var _AudioPlaybackOnce_soundAsset, _AudioPlaybackOnce_sourceNode;
 import { AudioPlayback } from "./AudioPlayback";
 export class AudioPlaybackOnce extends AudioPlayback {
     constructor(soundUrl, params) {
-        super(params.audioContext, params.target, params.muteOnStart, params.onEnded);
+        super(params.audioContext, params.target, params.muteOnStart, params.onGamePause, params.onEnded);
         this.id = AudioPlayback.nextPlaybackId++;
         this.type = "once";
         _AudioPlaybackOnce_soundAsset.set(this, void 0);
@@ -34,6 +34,9 @@ export class AudioPlaybackOnce extends AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlaybackOnce_sourceNode, "f").addEventListener("ended", () => {
             __classPrivateFieldGet(this, _AudioPlaybackOnce_sourceNode, "f").disconnect();
             this.disconnectFromOutput();
+            if (!this.isPausedByGame && !this.isPausedByEngine) {
+                this.onEnded();
+            }
         });
         const offsetMs = this.pausedAtMs ?
             this.pausedAtMs - this.startedAtMs - this.accumulatedPauseMs

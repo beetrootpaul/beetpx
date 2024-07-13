@@ -74,12 +74,14 @@ export class AudioApi {
     startPlayback(soundUrl, opts) {
         opts ??= {};
         opts.muteOnStart ??= false;
-        Logger.debugBeetPx(`AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`);
+        opts.onGamePause ??= "pause";
+        Logger.debugBeetPx(`AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`);
         const playback = new AudioPlaybackOnce(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
             audioContext: __classPrivateFieldGet(this, _AudioApi_audioContext, "f"),
             target: __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f"),
             muteOnStart: opts.muteOnStart,
+            onGamePause: opts.onGamePause,
             onEnded: () => {
                 Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
                 __classPrivateFieldGet(this, _AudioApi_playbacks, "f").delete(playback.id);
@@ -91,12 +93,14 @@ export class AudioApi {
     startPlaybackLooped(soundUrl, opts) {
         opts ??= {};
         opts.muteOnStart ??= false;
-        Logger.debugBeetPx(`AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`);
+        opts.onGamePause ??= "pause";
+        Logger.debugBeetPx(`AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`);
         const playback = new AudioPlaybackLooped(soundUrl, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
             audioContext: __classPrivateFieldGet(this, _AudioApi_audioContext, "f"),
             target: __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f"),
             muteOnStart: opts.muteOnStart,
+            onGamePause: opts.onGamePause,
             onEnded: () => {
                 Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
                 __classPrivateFieldGet(this, _AudioApi_playbacks, "f").delete(playback.id);
@@ -108,12 +112,14 @@ export class AudioApi {
     startPlaybackSequence(soundSequence, opts) {
         opts ??= {};
         opts.muteOnStart ??= false;
-        Logger.debugBeetPx(`AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`);
+        opts.onGamePause ??= "pause";
+        Logger.debugBeetPx(`AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`);
         const playback = new AudioPlaybackSequence(soundSequence, {
             assets: __classPrivateFieldGet(this, _AudioApi_assets, "f"),
             audioContext: __classPrivateFieldGet(this, _AudioApi_audioContext, "f"),
             target: __classPrivateFieldGet(this, _AudioApi_pauseFadeNode, "f"),
             muteOnStart: opts.muteOnStart,
+            onGamePause: opts.onGamePause,
             onEnded: () => {
                 Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
                 __classPrivateFieldGet(this, _AudioApi_playbacks, "f").delete(playback.id);

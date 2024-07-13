@@ -95,13 +95,15 @@ export class AudioApi {
     soundUrl: BpxSoundUrl,
     opts?: {
       muteOnStart?: boolean;
+      onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
     opts.muteOnStart ??= false;
+    opts.onGamePause ??= "pause";
 
     Logger.debugBeetPx(
-      `AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart})`,
+      `AudioApi.startPlayback (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`,
     );
 
     const playback = new AudioPlaybackOnce(soundUrl, {
@@ -109,6 +111,7 @@ export class AudioApi {
       audioContext: this.#audioContext,
       target: this.#pauseFadeNode,
       muteOnStart: opts.muteOnStart,
+      onGamePause: opts.onGamePause,
       onEnded: () => {
         Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
@@ -123,13 +126,15 @@ export class AudioApi {
     soundUrl: BpxSoundUrl,
     opts?: {
       muteOnStart?: boolean;
+      onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
     opts.muteOnStart ??= false;
+    opts.onGamePause ??= "pause";
 
     Logger.debugBeetPx(
-      `AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart})`,
+      `AudioApi.startPlaybackLooped (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`,
     );
 
     const playback = new AudioPlaybackLooped(soundUrl, {
@@ -137,6 +142,7 @@ export class AudioApi {
       audioContext: this.#audioContext,
       target: this.#pauseFadeNode,
       muteOnStart: opts.muteOnStart,
+      onGamePause: opts.onGamePause,
       onEnded: () => {
         Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
@@ -151,13 +157,15 @@ export class AudioApi {
     soundSequence: BpxSoundSequence,
     opts?: {
       muteOnStart?: boolean;
+      onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
     opts ??= {};
     opts.muteOnStart ??= false;
+    opts.onGamePause ??= "pause";
 
     Logger.debugBeetPx(
-      `AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart})`,
+      `AudioApi.startPlaybackSequence (muteOnStart: ${opts.muteOnStart}, onGamePause: ${opts.onGamePause})`,
     );
 
     const playback = new AudioPlaybackSequence(soundSequence, {
@@ -165,6 +173,7 @@ export class AudioApi {
       audioContext: this.#audioContext,
       target: this.#pauseFadeNode,
       muteOnStart: opts.muteOnStart,
+      onGamePause: opts.onGamePause,
       onEnded: () => {
         Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);

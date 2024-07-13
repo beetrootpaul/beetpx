@@ -27,6 +27,7 @@ export class AudioPlaybackSequence extends AudioPlayback {
       audioContext: AudioContext;
       target: AudioNode;
       muteOnStart: boolean;
+      onGamePause: "pause" | "mute" | "ignore";
       onEnded: () => void;
     },
   ) {
@@ -34,6 +35,7 @@ export class AudioPlaybackSequence extends AudioPlayback {
       params.audioContext,
       params.target,
       params.muteOnStart,
+      params.onGamePause,
       params.onEnded,
     );
 
@@ -83,7 +85,7 @@ export class AudioPlaybackSequence extends AudioPlayback {
     this.#sourceNode.addEventListener("ended", () => {
       this.#sourceNode.disconnect();
       this.disconnectFromOutput();
-      if (!this.isPaused) {
+      if (!this.isPausedByGame && !this.isPausedByEngine) {
         this.onEnded();
       }
     });

@@ -53,12 +53,15 @@ declare class AudioApi {
     tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
     startPlayback(soundUrl: BpxSoundUrl, opts?: {
         muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
     }): BpxAudioPlaybackId;
     startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
         muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
     }): BpxAudioPlaybackId;
     startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
         muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
     }): BpxAudioPlaybackId;
     isAudioMuted(): boolean;
     muteAudio(opts?: {
@@ -615,12 +618,12 @@ declare class BpxEasing {
 }
 
 type TimerWithExposedInternals = BpxTimer & {
-    __internal__pauseDueToGamePause: () => void;
+    __internal__pauseByEngine: () => void;
     __internal__resumeDueToGameResume: () => void;
 };
 declare class BpxTimer {
     #private;
-    static timersControlledByGamePause: WeakRef<TimerWithExposedInternals>[];
+    static timersToPauseOnGamePause: WeakRef<TimerWithExposedInternals>[];
     static for(opts: {
         frames: number;
         loop: boolean;

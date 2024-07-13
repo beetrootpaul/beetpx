@@ -25,7 +25,7 @@ b_.init({
   });
 
   b_.setOnUpdate(() => {
-    if (b_.wasButtonJustPressed("a") || b_.wasButtonJustPressed("b")) {
+    if (b_.wasButtonJustPressed("a")) {
       b_.restart();
     }
     // TODO: REMOVE

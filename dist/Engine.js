@@ -15,6 +15,7 @@ import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { AudioPlayback } from "./audio/AudioPlayback";
 import { BrowserTypeDetector, } from "./browser/BrowserTypeDetector";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor } from "./color/RgbColor";
@@ -221,17 +222,29 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                 FrameByFrame.active = !FrameByFrame.active;
             }
             
-            console.log("#", BpxTimer.timersControlledByGamePause.length);
-            BpxTimer.timersControlledByGamePause =
-                BpxTimer.timersControlledByGamePause.filter(weakRefTimer => typeof weakRefTimer.deref() !== "undefined");
+            console.log("#", BpxTimer.timersToPauseOnGamePause.length, AudioPlayback.playbacksToPauseOnGamePause.size, AudioPlayback.playbacksToMuteOnGamePause.size);
+            BpxTimer.timersToPauseOnGamePause =
+                BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
             if (Pause.wasJustActivated) {
-                for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
-                    weakRefTimer.deref().__internal__pauseDueToGamePause();
+                for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+                    weakRef.deref().__internal__pauseByEngine();
+                }
+                for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+                    playback.pauseByEngine();
+                }
+                for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+                    playback.muteByEngine();
                 }
             }
             else if (Pause.wasJustDeactivated) {
-                for (const weakRefTimer of BpxTimer.timersControlledByGamePause) {
-                    weakRefTimer.deref().__internal__resumeDueToGameResume();
+                for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+                    weakRef.deref().__internal__resumeDueToGameResume();
+                }
+                for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+                    playback.resumeByEngine();
+                }
+                for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+                    playback.unmuteByEngine();
                 }
             }
             const shouldUpdate = !FrameByFrame.active ||

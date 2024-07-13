@@ -5,6 +5,9 @@ import { AudioHelpers } from "./AudioHelpers";
 export type BpxAudioPlaybackId = number;
 
 export abstract class AudioPlayback {
+  static playbacksToPauseOnGamePause: Set<AudioPlayback> = new Set();
+  static playbacksToMuteOnGamePause: Set<AudioPlayback> = new Set();
+
   // start from 1 to avoid a case when someone checks for ID being truthy and gets `false`, because of value `0`
   protected static nextPlaybackId = 1;
 
@@ -14,8 +17,10 @@ export abstract class AudioPlayback {
   protected pausedAtMs: number | null;
   protected accumulatedPauseMs: number;
 
-  protected isPaused: boolean;
-  #isMuted: boolean;
+  protected isPausedByEngine: boolean;
+  protected isPausedByGame: boolean;
+  #isMutedByEngine: boolean;
+  #isMutedByGame: boolean;
 
   abstract readonly id: BpxAudioPlaybackId;
   abstract readonly type: string;
@@ -29,9 +34,21 @@ export abstract class AudioPlayback {
     audioContext: AudioContext,
     target: AudioNode,
     muteOnStart: boolean,
+    onGamePause: "pause" | "mute" | "ignore",
     onEnded: () => void,
   ) {
-    this.onEnded = onEnded;
+    // TODO: conditions for pause/mute
+    if (onGamePause === "pause") {
+      AudioPlayback.playbacksToPauseOnGamePause.add(this);
+    } else if (onGamePause === "mute") {
+      AudioPlayback.playbacksToMuteOnGamePause.add(this);
+    }
+
+    this.onEnded = () => {
+      onEnded();
+      AudioPlayback.playbacksToPauseOnGamePause.delete(this);
+      AudioPlayback.playbacksToMuteOnGamePause.delete(this);
+    };
 
     this.#audioContext = audioContext;
 
@@ -41,8 +58,10 @@ export abstract class AudioPlayback {
     this.#gainNode.gain.value = muteOnStart ? 0 : 1;
     this.#gainNode.connect(this.#targetNode);
 
-    this.isPaused = false;
-    this.#isMuted = false;
+    this.isPausedByGame = false;
+    this.isPausedByEngine = false;
+    this.#isMutedByGame = false;
+    this.#isMutedByEngine = false;
 
     this.startedAtMs = this.#audioContext.currentTime * 1000;
     this.pausedAtMs = null;
@@ -54,13 +73,36 @@ export abstract class AudioPlayback {
       `AudioPlayback.mute (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`,
     );
 
-    if (this.#isMuted) return;
-    this.#isMuted = true;
+    if (this.#isMutedByGame) return;
+    this.#isMutedByGame = true;
 
-    if (this.isPaused) {
+    if (this.#isMutedByEngine) return;
+
+    if (this.isPausedByGame || this.isPausedByEngine) {
       return;
     }
 
+    this.#muteImpl(fadeOutMillis);
+  }
+
+  muteByEngine(): void {
+    Logger.debugBeetPx(
+      `AudioPlayback.muteByEngine (id: ${this.id}, type: ${this.type})`,
+    );
+
+    if (this.#isMutedByEngine) return;
+    this.#isMutedByEngine = true;
+
+    if (this.#isMutedByGame) return;
+
+    if (this.isPausedByGame || this.isPausedByEngine) {
+      return;
+    }
+
+    this.#muteImpl(AudioApi.muteUnmuteDefaultFadeMillis);
+  }
+
+  #muteImpl(fadeOutMillis: number): void {
     AudioHelpers.muteGain(
       this.#gainNode,
       this.#audioContext.currentTime,
@@ -73,13 +115,36 @@ export abstract class AudioPlayback {
       `AudioPlayback.unmute (id: ${this.id}, type: ${this.type}, fadeInMillis: ${fadeInMillis})`,
     );
 
-    if (!this.#isMuted) return;
-    this.#isMuted = false;
+    if (!this.#isMutedByGame) return;
+    this.#isMutedByGame = false;
 
-    if (this.isPaused) {
+    if (this.#isMutedByEngine) return;
+
+    if (this.isPausedByGame || this.isPausedByEngine) {
       return;
     }
 
+    this.#unmuteImpl(fadeInMillis);
+  }
+
+  unmuteByEngine(): void {
+    Logger.debugBeetPx(
+      `AudioPlayback.unmuteByEngine (id: ${this.id}, type: ${this.type})`,
+    );
+
+    if (!this.#isMutedByEngine) return;
+    this.#isMutedByEngine = false;
+
+    if (this.#isMutedByGame) return;
+
+    if (this.isPausedByGame || this.isPausedByEngine) {
+      return;
+    }
+
+    this.#unmuteImpl(AudioApi.muteUnmuteDefaultFadeMillis);
+  }
+
+  #unmuteImpl(fadeInMillis: number): void {
     AudioHelpers.unmuteGain(
       this.#gainNode,
       this.#audioContext.currentTime,
@@ -92,7 +157,7 @@ export abstract class AudioPlayback {
       `AudioPlayback.stop (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`,
     );
 
-    if (this.isPaused) {
+    if (this.isPausedByGame || this.isPausedByEngine) {
       this.onEnded();
       return;
     }
@@ -103,7 +168,7 @@ export abstract class AudioPlayback {
       fadeOutMillis,
       () => {
         this.stopAllNodes();
-        if (!this.isPaused) {
+        if (!this.isPausedByGame && !this.isPausedByEngine) {
           this.onEnded();
         }
       },
@@ -115,8 +180,28 @@ export abstract class AudioPlayback {
       `AudioPlayback.pause (id: ${this.id}, type: ${this.type}})`,
     );
 
-    if (this.isPaused) return;
+    if (this.isPausedByGame) return;
+    this.isPausedByGame = true;
 
+    if (this.isPausedByEngine) return;
+
+    this.#pauseImpl();
+  }
+
+  pauseByEngine(): void {
+    Logger.debugBeetPx(
+      `AudioPlayback.pauseByEngine (id: ${this.id}, type: ${this.type}})`,
+    );
+
+    if (this.isPausedByEngine) return;
+    this.isPausedByEngine = true;
+
+    if (this.isPausedByGame) return;
+
+    this.#pauseImpl();
+  }
+
+  #pauseImpl(): void {
     this.pausedAtMs = this.#audioContext.currentTime * 1000;
 
     AudioHelpers.muteGain(
@@ -124,7 +209,6 @@ export abstract class AudioPlayback {
       this.#audioContext.currentTime,
       AudioApi.muteUnmuteDefaultFadeMillis,
       () => {
-        this.isPaused = true;
         this.stopAllNodes();
       },
     );
@@ -135,11 +219,31 @@ export abstract class AudioPlayback {
       `AudioPlayback.resume (id: ${this.id}, type: ${this.type})`,
     );
 
-    if (!this.isPaused) return;
-    this.isPaused = false;
+    if (!this.isPausedByGame) return;
+    this.isPausedByGame = false;
 
+    if (this.isPausedByEngine) return;
+
+    this.#resumeImpl();
+  }
+
+  resumeByEngine(): void {
+    Logger.debugBeetPx(
+      `AudioPlayback.resumeByEngine (id: ${this.id}, type: ${this.type})`,
+    );
+
+    if (!this.isPausedByEngine) return;
+    this.isPausedByEngine = false;
+
+    if (this.isPausedByGame) return;
+
+    this.#resumeImpl();
+  }
+
+  #resumeImpl(): void {
     this.#gainNode = this.#audioContext.createGain();
-    this.#gainNode.gain.value = this.#isMuted ? 0 : 1;
+    this.#gainNode.gain.value =
+      this.#isMutedByGame || this.isPausedByEngine ? 0 : 1;
     this.#gainNode.connect(this.#targetNode);
 
     this.setupAndStartNodes();
@@ -150,7 +254,7 @@ export abstract class AudioPlayback {
       this.pausedAtMs = null;
     }
 
-    if (!this.#isMuted) {
+    if (!this.#isMutedByGame && !this.isPausedByEngine) {
       AudioHelpers.unmuteGain(
         this.#gainNode,
         this.#audioContext.currentTime,

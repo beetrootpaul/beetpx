@@ -16,6 +16,7 @@ export class AudioPlaybackOnce extends AudioPlayback {
       audioContext: AudioContext;
       target: AudioNode;
       muteOnStart: boolean;
+      onGamePause: "pause" | "mute" | "ignore";
       onEnded: () => void;
     },
   ) {
@@ -23,6 +24,7 @@ export class AudioPlaybackOnce extends AudioPlayback {
       params.audioContext,
       params.target,
       params.muteOnStart,
+      params.onGamePause,
       params.onEnded,
     );
 
@@ -46,6 +48,9 @@ export class AudioPlaybackOnce extends AudioPlayback {
     this.#sourceNode.addEventListener("ended", () => {
       this.#sourceNode.disconnect();
       this.disconnectFromOutput();
+      if (!this.isPausedByGame && !this.isPausedByEngine) {
+        this.onEnded();
+      }
     });
 
     const offsetMs =
