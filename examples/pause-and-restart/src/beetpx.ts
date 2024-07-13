@@ -7,6 +7,9 @@ import { Vfx } from "./Vfx";
 b_.init({
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
+  globalPause: {
+    available: true,
+  },
 }).then(async ({ startGame }) => {
   const pauseOverlay = new PauseOverlay();
   let music: Music;

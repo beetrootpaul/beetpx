@@ -499,6 +499,9 @@ type BpxEngineConfig = {
     canvasSize?: "64x64" | "128x128" | "256x256";
     fixedTimestep?: "30fps" | "60fps";
     assets?: AssetsToLoad;
+    globalPause?: {
+        available?: boolean;
+    };
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;
@@ -689,6 +692,7 @@ declare class Logger {
 
 declare class GlobalPause {
     #private;
+    static enable(): void;
     static get isActive(): boolean;
     static get wasJustActivated(): boolean;
     static get wasJustDeactivated(): boolean;

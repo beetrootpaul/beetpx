@@ -83,6 +83,9 @@ export class Engine {
                 .suspend()
                 .then(() => { });
         });
+        if (engineConfig.globalPause?.available) {
+            GlobalPause.enable();
+        }
         DebugMode.loadFromStorage();
         if (!engineConfig.debugMode?.available) {
             DebugMode.enabled = false;

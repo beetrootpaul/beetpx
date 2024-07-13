@@ -1,19 +1,23 @@
-// TODO: add a config flag that allows to skip built-in pause support
-
 export class GlobalPause {
+  static #isEnabled: boolean = false;
+
   static #prevIsActive: boolean = false;
   static #isActive: boolean = false;
 
+  static enable(): void {
+    this.#isEnabled = true;
+  }
+
   static get isActive(): boolean {
-    return this.#isActive;
+    return this.#isEnabled ? this.#isActive : false;
   }
 
   static get wasJustActivated(): boolean {
-    return this.#isActive && !this.#prevIsActive;
+    return this.#isEnabled ? this.#isActive && !this.#prevIsActive : false;
   }
 
   static get wasJustDeactivated(): boolean {
-    return !this.#isActive && this.#prevIsActive;
+    return this.#isEnabled ? !this.#isActive && this.#prevIsActive : false;
   }
 
   static update(): void {

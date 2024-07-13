@@ -37,6 +37,9 @@ export type BpxEngineConfig = {
   canvasSize?: "64x64" | "128x128" | "256x256";
   fixedTimestep?: "30fps" | "60fps";
   assets?: AssetsToLoad;
+  globalPause?: {
+    available?: boolean;
+  };
   debugMode?: {
     /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
     available?: boolean;
@@ -133,6 +136,10 @@ export class Engine {
         .suspend()
         .then(() => {});
     });
+
+    if (engineConfig.globalPause?.available) {
+      GlobalPause.enable();
+    }
 
     DebugMode.loadFromStorage();
     if (!engineConfig.debugMode?.available) {
