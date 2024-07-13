@@ -14,7 +14,7 @@ export class AudioApi {
 
   // We use a short fade in/out when muting/unmuting in order to avoid some
   //   of audio artifacts that would happen on a instant volume change.
-  static readonly #muteUnmuteDefaultFadeMillis = 100;
+  static readonly muteUnmuteDefaultFadeMillis = 100;
 
   readonly #assets: Assets;
 
@@ -110,6 +110,7 @@ export class AudioApi {
       target: this.#pauseFadeNode,
       muteOnStart: opts.muteOnStart,
       onEnded: () => {
+        Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
       },
     });
@@ -137,6 +138,7 @@ export class AudioApi {
       target: this.#pauseFadeNode,
       muteOnStart: opts.muteOnStart,
       onEnded: () => {
+        Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
       },
     });
@@ -164,6 +166,7 @@ export class AudioApi {
       target: this.#pauseFadeNode,
       muteOnStart: opts.muteOnStart,
       onEnded: () => {
+        Logger.debugBeetPx(`AudioApi: deleting playback ${playback.id}`);
         this.#playbacks.delete(playback.id);
       },
     });
@@ -172,6 +175,7 @@ export class AudioApi {
     return playback.id;
   }
 
+  // TODO: consider "isPlaybackMuted" as well
   isAudioMuted(): boolean {
     return this.#isMuted;
   }
@@ -190,8 +194,9 @@ export class AudioApi {
     AudioHelpers.muteGain(
       this.#globalGainNode,
       this.#audioContext.currentTime,
+      // TODO: How to use guardedFadeMillis here?
       this.#isPaused ? 0 : (
-        opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
+        opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
       ),
     );
   }
@@ -210,13 +215,13 @@ export class AudioApi {
     AudioHelpers.unmuteGain(
       this.#globalGainNode,
       this.#audioContext.currentTime,
+      // TODO: How to use guardedFadeMillis here?
       this.#isPaused ? 0 : (
-        opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
+        opts.fadeInMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
       ),
     );
   }
 
-  // TODO: how symmetrical is it to the global-level API?
   mutePlayback(
     playbackId: BpxAudioPlaybackId,
     opts: { fadeOutMillis?: number } = {},
@@ -225,13 +230,12 @@ export class AudioApi {
       `AudioApi.mutePlayback (fadeOutMillis: ${opts.fadeOutMillis})`,
     );
 
-    this.#playbacks
-      .get(playbackId)
-      ?.mute(
-        this.#isPaused ? 0 : (
-          opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
-        ),
-      );
+    this.#playbacks.get(playbackId)?.mute(
+      // TODO: How to use guardedFadeMillis here?
+      this.#isPaused ? 0 : (
+        opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
+      ),
+    );
   }
 
   unmutePlayback(
@@ -242,16 +246,14 @@ export class AudioApi {
       `AudioApi.unmutePlayback (fadeInMillis: ${opts.fadeInMillis})`,
     );
 
-    this.#playbacks
-      .get(playbackId)
-      ?.unmute(
-        this.#isPaused ? 0 : (
-          opts.fadeInMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis
-        ),
-      );
+    this.#playbacks.get(playbackId)?.unmute(
+      // TODO: How to use guardedFadeMillis here?
+      this.#isPaused ? 0 : (
+        opts.fadeInMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
+      ),
+    );
   }
 
-  // TODO: how symmetrical is it to the playback-level API?
   pauseAudio(): void {
     Logger.debugBeetPx("AudioApi.pauseAudio");
 
@@ -261,7 +263,7 @@ export class AudioApi {
     AudioHelpers.muteGain(
       this.#pauseFadeNode,
       this.#audioContext.currentTime,
-      AudioApi.#muteUnmuteDefaultFadeMillis,
+      AudioApi.muteUnmuteDefaultFadeMillis,
       () => {
         this.#audioContext.suspend().catch(err => {
           Logger.errorBeetPx(err);
@@ -282,7 +284,7 @@ export class AudioApi {
         AudioHelpers.unmuteGain(
           this.#pauseFadeNode,
           this.#audioContext.currentTime,
-          AudioApi.#muteUnmuteDefaultFadeMillis,
+          AudioApi.muteUnmuteDefaultFadeMillis,
         );
       })
       .catch(err => {
@@ -296,11 +298,7 @@ export class AudioApi {
     );
 
     for (const playback of this.#playbacks.values()) {
-      playback.stop(
-        this.#isPaused || this.#isMuted ?
-          0
-        : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
-      );
+      playback.stop(this.#guardedFadeMillis(opts.fadeOutMillis));
     }
   }
 
@@ -314,11 +312,19 @@ export class AudioApi {
 
     this.#playbacks
       .get(playbackId)
-      ?.stop(
-        this.#isPaused || this.#isMuted ?
-          0
-        : opts.fadeOutMillis ?? AudioApi.#muteUnmuteDefaultFadeMillis,
-      );
+      ?.stop(this.#guardedFadeMillis(opts.fadeOutMillis));
+  }
+
+  pausePlayback(playbackId: BpxAudioPlaybackId): void {
+    Logger.debugBeetPx(`AudioApi.pausePlayback`);
+
+    this.#playbacks.get(playbackId)?.pause();
+  }
+
+  resumePlayback(playbackId: BpxAudioPlaybackId): void {
+    Logger.debugBeetPx(`AudioApi.resumePlayback`);
+
+    this.#playbacks.get(playbackId)?.resume();
   }
 
   #loadStoredGlobalMuteUnmuteState(): boolean {
@@ -345,5 +351,11 @@ export class AudioApi {
 
   getGlobalGainNode(): GainNode {
     return this.#globalGainNode;
+  }
+
+  #guardedFadeMillis(fadeMillis: number | undefined): number {
+    return this.#isPaused || this.#isMuted ?
+        0
+      : fadeMillis ?? AudioApi.muteUnmuteDefaultFadeMillis;
   }
 }

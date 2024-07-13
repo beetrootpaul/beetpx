@@ -343,6 +343,14 @@ export class BeetPx {
     return this.#tryGetEngine().audioApi.stopPlayback(...args);
   };
 
+  static pausePlayback: AudioApi["pausePlayback"] = (...args) => {
+    return this.#tryGetEngine().audioApi.pausePlayback(...args);
+  };
+
+  static resumePlayback: AudioApi["resumePlayback"] = (...args) => {
+    return this.#tryGetEngine().audioApi.resumePlayback(...args);
+  };
+
   static stopAllPlaybacks: AudioApi["stopAllPlaybacks"] = (...args) => {
     return this.#tryGetEngine().audioApi.stopAllPlaybacks(...args);
   };

@@ -5,6 +5,10 @@ import { PauseOverlay } from "./PauseOverlay";
 import { Vfx } from "./Vfx";
 
 b_.init({
+  // TODO: REMOVE
+  debugMode: {
+    available: true,
+  },
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
 }).then(async ({ startGame }) => {
@@ -26,6 +30,8 @@ b_.init({
     }
     // TODO: REMOVE
     movement.update();
+    // TODO: REMOVE
+    music.update();
   });
 
   // TODO: describe somewhere that this example is about built-in pause which can be toggled with menu button

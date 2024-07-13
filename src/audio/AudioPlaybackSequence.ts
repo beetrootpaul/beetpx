@@ -14,7 +14,11 @@ export class AudioPlaybackSequence extends AudioPlayback {
   readonly id: BpxAudioPlaybackId = AudioPlayback.nextPlaybackId++;
   readonly type: string = "sequence";
 
-  readonly #sourceNode: AudioBufferSourceNode;
+  readonly #combinedBuffer: AudioBuffer;
+  readonly #introDurationMs: number;
+  readonly #loopDurationMs: number;
+
+  #sourceNode: AudioBufferSourceNode;
 
   constructor(
     soundSequence: BpxSoundSequence,
@@ -26,7 +30,12 @@ export class AudioPlaybackSequence extends AudioPlayback {
       onEnded: () => void;
     },
   ) {
-    super(params.audioContext, params.target, params.muteOnStart);
+    super(
+      params.audioContext,
+      params.target,
+      params.muteOnStart,
+      params.onEnded,
+    );
 
     const introSequence = soundSequence.intro ?? [];
     const loopSequence = soundSequence.loop ?? [];
@@ -41,31 +50,54 @@ export class AudioPlaybackSequence extends AudioPlayback {
       this.#intoEntryBuffersWithEqualDurations(entry, params.assets),
     );
 
-    const combinedBuffer: AudioBuffer = this.#combineBuffers([
-      ...intro,
-      ...loop,
-    ]);
+    this.#combinedBuffer = this.#combineBuffers([...intro, ...loop]);
+    this.#introDurationMs = intro.reduce(
+      (total, nextEntry) => total + nextEntry.durationMs,
+      0,
+    );
+    this.#loopDurationMs = loop.reduce(
+      (total, nextEntry) => total + nextEntry.durationMs,
+      0,
+    );
 
     this.#sourceNode = this.createSourceNode();
-    this.#sourceNode.buffer = combinedBuffer;
-    this.#sourceNode.loop = true;
-    this.#sourceNode.loopStart =
-      intro.reduce((total, nextEntry) => total + nextEntry.durationMs, 0) /
-      1000;
-    this.#sourceNode.loopEnd = combinedBuffer.duration;
+    this.setupAndStartNodes();
+  }
+
+  protected stopAllNodes(): void {
+    this.#sourceNode.stop();
+  }
+
+  protected setupAndStartNodes(): void {
+    if (this.pausedAtMs != null) {
+      this.#sourceNode = this.createSourceNode();
+    }
+    this.#sourceNode.buffer = this.#combinedBuffer;
+    if (this.#loopDurationMs > 0) {
+      this.#sourceNode.loop = true;
+      this.#sourceNode.loopStart = this.#introDurationMs / 1000;
+      this.#sourceNode.loopEnd = this.#combinedBuffer.duration;
+    }
     this.connectToMainGainNode(this.#sourceNode);
 
     this.#sourceNode.addEventListener("ended", () => {
       this.#sourceNode.disconnect();
       this.disconnectFromOutput();
-      params.onEnded();
+      if (!this.isPaused) {
+        this.onEnded();
+      }
     });
 
-    this.#sourceNode.start();
-  }
-
-  protected stopAllNodes(): void {
-    this.#sourceNode.stop();
+    let offsetMs =
+      this.pausedAtMs ?
+        this.pausedAtMs - this.startedAtMs - this.accumulatedPauseMs
+      : 0;
+    if (offsetMs > this.#introDurationMs) {
+      offsetMs =
+        ((offsetMs - this.#introDurationMs) % this.#loopDurationMs) +
+        this.#introDurationMs;
+    }
+    this.#sourceNode.start(0, offsetMs / 1000);
   }
 
   #intoEntryBuffersWithEqualDurations(

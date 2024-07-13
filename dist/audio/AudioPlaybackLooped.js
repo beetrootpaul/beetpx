@@ -9,27 +9,43 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _AudioPlaybackLooped_sourceNode;
+var _AudioPlaybackLooped_soundAsset, _AudioPlaybackLooped_sourceNode, _AudioPlaybackLooped_loopDurationMs;
 import { AudioPlayback } from "./AudioPlayback";
 export class AudioPlaybackLooped extends AudioPlayback {
     constructor(soundUrl, params) {
-        super(params.audioContext, params.target, params.muteOnStart);
+        super(params.audioContext, params.target, params.muteOnStart, params.onEnded);
         this.id = AudioPlayback.nextPlaybackId++;
         this.type = "looped";
+        _AudioPlaybackLooped_soundAsset.set(this, void 0);
         _AudioPlaybackLooped_sourceNode.set(this, void 0);
+        _AudioPlaybackLooped_loopDurationMs.set(this, void 0);
+        __classPrivateFieldSet(this, _AudioPlaybackLooped_soundAsset, params.assets.getSoundAsset(soundUrl), "f");
+        __classPrivateFieldSet(this, _AudioPlaybackLooped_loopDurationMs, __classPrivateFieldGet(this, _AudioPlaybackLooped_soundAsset, "f").audioBuffer.duration * 1000, "f");
         __classPrivateFieldSet(this, _AudioPlaybackLooped_sourceNode, this.createSourceNode(), "f");
-        __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").buffer = params.assets.getSoundAsset(soundUrl).audioBuffer;
+        this.setupAndStartNodes();
+    }
+    stopAllNodes() {
+        __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").stop();
+    }
+    setupAndStartNodes() {
+        if (this.pausedAtMs != null) {
+            __classPrivateFieldSet(this, _AudioPlaybackLooped_sourceNode, this.createSourceNode(), "f");
+        }
+        __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").buffer = __classPrivateFieldGet(this, _AudioPlaybackLooped_soundAsset, "f").audioBuffer;
         __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").loop = true;
         this.connectToMainGainNode(__classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f"));
         __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").addEventListener("ended", () => {
             __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").disconnect();
             this.disconnectFromOutput();
-            params.onEnded();
+            if (!this.isPaused) {
+                this.onEnded();
+            }
         });
-        __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").start();
-    }
-    stopAllNodes() {
-        __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").stop();
+        const offsetMs = this.pausedAtMs ?
+            (this.pausedAtMs - this.startedAtMs - this.accumulatedPauseMs) %
+                __classPrivateFieldGet(this, _AudioPlaybackLooped_loopDurationMs, "f")
+            : 0;
+        __classPrivateFieldGet(this, _AudioPlaybackLooped_sourceNode, "f").start(0, offsetMs / 1000);
     }
 }
-_AudioPlaybackLooped_sourceNode = new WeakMap();
+_AudioPlaybackLooped_soundAsset = new WeakMap(), _AudioPlaybackLooped_sourceNode = new WeakMap(), _AudioPlaybackLooped_loopDurationMs = new WeakMap();

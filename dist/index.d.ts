@@ -47,6 +47,7 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 
 declare class AudioApi {
     #private;
+    static readonly muteUnmuteDefaultFadeMillis = 100;
     constructor(assets: Assets, audioContext: AudioContext);
     restart(): void;
     tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
@@ -80,6 +81,8 @@ declare class AudioApi {
     stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
         fadeOutMillis?: number;
     }): void;
+    pausePlayback(playbackId: BpxAudioPlaybackId): void;
+    resumePlayback(playbackId: BpxAudioPlaybackId): void;
     getAudioContext(): AudioContext;
     getGlobalGainNode(): GainNode;
 }
@@ -786,6 +789,8 @@ declare class BeetPx {
     static mutePlayback: AudioApi["mutePlayback"];
     static unmutePlayback: AudioApi["unmutePlayback"];
     static stopPlayback: AudioApi["stopPlayback"];
+    static pausePlayback: AudioApi["pausePlayback"];
+    static resumePlayback: AudioApi["resumePlayback"];
     static stopAllPlaybacks: AudioApi["stopAllPlaybacks"];
     static getAudioContext: AudioApi["getAudioContext"];
     static isFullScreenSupported: FullScreen["isFullScreenSupported"];

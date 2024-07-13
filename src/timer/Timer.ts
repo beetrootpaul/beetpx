@@ -15,6 +15,7 @@ export class BpxTimer {
     loop: boolean;
     pause: boolean;
     delayFrames: number;
+    // TODO: consider `onGamePause: "pause" | "ignore", then for audio: "pause" | "mute" | "ignore"
     ignoreGamePause: boolean;
   }): BpxTimer {
     return new BpxTimer(opts);
