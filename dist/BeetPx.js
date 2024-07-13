@@ -236,12 +236,6 @@ BeetPx.muteAudio = (...args) => {
 BeetPx.unmuteAudio = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.unmuteAudio(...args);
 };
-BeetPx.pauseAudio = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.pauseAudio(...args);
-};
-BeetPx.resumeAudio = (...args) => {
-    return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.resumeAudio(...args);
-};
 BeetPx.startPlayback = (...args) => {
     return __classPrivateFieldGet(_a, _a, "m", _BeetPx_tryGetEngine).call(_a).audioApi.startPlayback(...args);
 };

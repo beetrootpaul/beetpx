@@ -76,8 +76,6 @@ declare class AudioApi {
     unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
         fadeInMillis?: number;
     }): void;
-    pauseAudio(): void;
-    resumeAudio(): void;
     stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
         fadeOutMillis?: number;
     }): void;
@@ -786,8 +784,6 @@ declare class BeetPx {
     static isAudioMuted: AudioApi["isAudioMuted"];
     static muteAudio: AudioApi["muteAudio"];
     static unmuteAudio: AudioApi["unmuteAudio"];
-    static pauseAudio: AudioApi["pauseAudio"];
-    static resumeAudio: AudioApi["resumeAudio"];
     static startPlayback: AudioApi["startPlayback"];
     static startPlaybackLooped: AudioApi["startPlaybackLooped"];
     static startPlaybackSequence: AudioApi["startPlaybackSequence"];

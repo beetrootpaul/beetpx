@@ -309,14 +309,6 @@ export class BeetPx {
     return this.#tryGetEngine().audioApi.unmuteAudio(...args);
   };
 
-  static pauseAudio: AudioApi["pauseAudio"] = (...args) => {
-    return this.#tryGetEngine().audioApi.pauseAudio(...args);
-  };
-
-  static resumeAudio: AudioApi["resumeAudio"] = (...args) => {
-    return this.#tryGetEngine().audioApi.resumeAudio(...args);
-  };
-
   static startPlayback: AudioApi["startPlayback"] = (...args) => {
     return this.#tryGetEngine().audioApi.startPlayback(...args);
   };
