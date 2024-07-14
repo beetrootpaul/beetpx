@@ -94,6 +94,7 @@ export class Engine {
   #onDraw?: () => void;
 
   #currentFrameNumber: number = 0;
+  #currentFrameNumberOutsidePause: number = 0;
   #renderingFps: number = 1;
 
   // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
@@ -101,6 +102,10 @@ export class Engine {
 
   get frameNumber(): number {
     return this.#currentFrameNumber;
+  }
+
+  get frameNumberOutsidePause(): number {
+    return this.#currentFrameNumberOutsidePause;
   }
 
   get renderingFps(): number {
@@ -264,6 +269,7 @@ export class Engine {
 
   restart() {
     this.#currentFrameNumber = 0;
+    this.#currentFrameNumberOutsidePause = 0;
 
     this.audioApi.restart();
 
@@ -298,6 +304,7 @@ export class Engine {
     }
 
     this.#currentFrameNumber = 0;
+    this.#currentFrameNumberOutsidePause = 0;
 
     await this.#loading.showStartScreen();
 
@@ -364,6 +371,13 @@ export class Engine {
             this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
               0
             : this.#currentFrameNumber + 1;
+
+          if (!GlobalPause.isActive) {
+            this.#currentFrameNumberOutsidePause =
+              this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER ?
+                0
+              : this.#currentFrameNumberOutsidePause + 1;
+          }
         }
       },
       renderFn: renderingFps => {

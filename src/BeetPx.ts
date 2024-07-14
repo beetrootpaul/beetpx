@@ -3,6 +3,7 @@
 import { Engine, type BpxEngineConfig } from "./Engine";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
+import { BpxBrowserType } from "./browser/BrowserTypeDetector";
 import { DebugMode } from "./debug/DebugMode";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
@@ -45,15 +46,19 @@ export class BeetPx {
    *
    * @return number
    */
-  static get frameNumber(): Engine["frameNumber"] {
+  static get frameNumber(): number {
     return this.#tryGetEngine().frameNumber;
   }
 
-  static get renderingFps(): Engine["renderingFps"] {
+  static get frameNumberOutsidePause(): number {
+    return this.#tryGetEngine().frameNumberOutsidePause;
+  }
+
+  static get renderingFps(): number {
     return this.#tryGetEngine().renderingFps;
   }
 
-  static get detectedBrowserType(): Engine["detectedBrowserType"] {
+  static get detectedBrowserType(): BpxBrowserType {
     return this.#tryGetEngine().detectedBrowserType;
   }
 

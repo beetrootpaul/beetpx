@@ -47,7 +47,7 @@ export class Button {
                     loop: __classPrivateFieldGet(this, _Button_loopedRepeatFrames, "f") ?
                         [["looped", __classPrivateFieldGet(this, _Button_loopedRepeatFrames, "f")]]
                         : undefined,
-                }), "f");
+                }, { onGamePause: "ignore" }), "f");
             }
         }
         else {

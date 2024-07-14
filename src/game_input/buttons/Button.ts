@@ -44,16 +44,19 @@ export class Button {
   update(isPressed: boolean): void {
     if (isPressed) {
       if (this.#wasJustToggled && this.#isRepeatingEnabled) {
-        this.#repeatingTimer = timerSeq_({
-          intro:
-            this.#firstRepeatFrames ?
-              [["first", this.#firstRepeatFrames]]
-            : undefined,
-          loop:
-            this.#loopedRepeatFrames ?
-              [["looped", this.#loopedRepeatFrames]]
-            : undefined,
-        });
+        this.#repeatingTimer = timerSeq_(
+          {
+            intro:
+              this.#firstRepeatFrames ?
+                [["first", this.#firstRepeatFrames]]
+              : undefined,
+            loop:
+              this.#loopedRepeatFrames ?
+                [["looped", this.#loopedRepeatFrames]]
+              : undefined,
+          },
+          { onGamePause: "ignore" },
+        );
       }
     } else {
       this.#repeatingTimer = null;

@@ -528,6 +528,7 @@ declare class Engine {
     readonly assets: Assets;
     readonly drawApi: DrawApi;
     get frameNumber(): number;
+    get frameNumberOutsidePause(): number;
     get renderingFps(): number;
     get detectedBrowserType(): BpxBrowserType;
     constructor(engineConfig?: BpxEngineConfig);
@@ -615,13 +616,8 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-type TimerControlledByEngined = {
-    __internal__pauseByEngine: () => void;
-    __internal__resumeByEngine: () => void;
-};
 declare class BpxTimer {
     #private;
-    static timersToPauseOnGamePause: WeakRef<TimerControlledByEngined>[];
     static for(opts: {
         frames: number;
         loop: boolean;
@@ -697,9 +693,10 @@ declare class BeetPx {
      *
      * @return number
      */
-    static get frameNumber(): Engine["frameNumber"];
-    static get renderingFps(): Engine["renderingFps"];
-    static get detectedBrowserType(): Engine["detectedBrowserType"];
+    static get frameNumber(): number;
+    static get frameNumberOutsidePause(): number;
+    static get renderingFps(): number;
+    static get detectedBrowserType(): BpxBrowserType;
     static setOnStarted: Engine["setOnStarted"];
     static setOnUpdate: Engine["setOnUpdate"];
     static setOnDraw: Engine["setOnDraw"];
@@ -808,7 +805,9 @@ declare const b_: typeof BeetPx;
  */
 declare function assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
 
-declare function booleanChangingEveryNthFrame(n: number): boolean;
+declare function booleanChangingEveryNthFrame(n: number, opts?: {
+    onGamePause?: "pause" | "ignore";
+}): boolean;
 
 declare function clamp(a: number, b: number, c: number): number;
 

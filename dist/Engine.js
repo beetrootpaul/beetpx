@@ -9,7 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _Engine_instances, _Engine_assetsToLoad, _Engine_browserType, _Engine_htmlCanvasBackground, _Engine_loading, _Engine_gameLoop, _Engine_assetLoader, _Engine_canvas, _Engine_fpsDisplay, _Engine_isStarted, _Engine_onStarted, _Engine_onUpdate, _Engine_onDraw, _Engine_currentFrameNumber, _Engine_renderingFps, _Engine_alreadyResumedAudioContext, _Engine_startGame;
+var _Engine_instances, _Engine_assetsToLoad, _Engine_browserType, _Engine_htmlCanvasBackground, _Engine_loading, _Engine_gameLoop, _Engine_assetLoader, _Engine_canvas, _Engine_fpsDisplay, _Engine_isStarted, _Engine_onStarted, _Engine_onUpdate, _Engine_onDraw, _Engine_currentFrameNumber, _Engine_currentFrameNumberOutsidePause, _Engine_renderingFps, _Engine_alreadyResumedAudioContext, _Engine_startGame;
 import { BeetPx } from "./BeetPx";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader } from "./assets/AssetLoader";
@@ -36,6 +36,9 @@ export class Engine {
     get frameNumber() {
         return __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f");
     }
+    get frameNumberOutsidePause() {
+        return __classPrivateFieldGet(this, _Engine_currentFrameNumberOutsidePause, "f");
+    }
     get renderingFps() {
         return __classPrivateFieldGet(this, _Engine_renderingFps, "f");
     }
@@ -57,6 +60,7 @@ export class Engine {
         _Engine_onUpdate.set(this, void 0);
         _Engine_onDraw.set(this, void 0);
         _Engine_currentFrameNumber.set(this, 0);
+        _Engine_currentFrameNumberOutsidePause.set(this, 0);
         _Engine_renderingFps.set(this, 1);
         
         _Engine_alreadyResumedAudioContext.set(this, false);
@@ -172,6 +176,7 @@ export class Engine {
     }
     restart() {
         __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
+        __classPrivateFieldSet(this, _Engine_currentFrameNumberOutsidePause, 0, "f");
         this.audioApi.restart();
         BeetPx.clearCanvas(rgb_black_);
         AudioPlayback.playbacksToPauseOnGamePause.clear();
@@ -180,7 +185,7 @@ export class Engine {
         __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
     }
 }
-_Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engine_htmlCanvasBackground = new WeakMap(), _Engine_loading = new WeakMap(), _Engine_gameLoop = new WeakMap(), _Engine_assetLoader = new WeakMap(), _Engine_canvas = new WeakMap(), _Engine_fpsDisplay = new WeakMap(), _Engine_isStarted = new WeakMap(), _Engine_onStarted = new WeakMap(), _Engine_onUpdate = new WeakMap(), _Engine_onDraw = new WeakMap(), _Engine_currentFrameNumber = new WeakMap(), _Engine_renderingFps = new WeakMap(), _Engine_alreadyResumedAudioContext = new WeakMap(), _Engine_instances = new WeakSet(), _Engine_startGame = async function _Engine_startGame() {
+_Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engine_htmlCanvasBackground = new WeakMap(), _Engine_loading = new WeakMap(), _Engine_gameLoop = new WeakMap(), _Engine_assetLoader = new WeakMap(), _Engine_canvas = new WeakMap(), _Engine_fpsDisplay = new WeakMap(), _Engine_isStarted = new WeakMap(), _Engine_onStarted = new WeakMap(), _Engine_onUpdate = new WeakMap(), _Engine_onDraw = new WeakMap(), _Engine_currentFrameNumber = new WeakMap(), _Engine_currentFrameNumberOutsidePause = new WeakMap(), _Engine_renderingFps = new WeakMap(), _Engine_alreadyResumedAudioContext = new WeakMap(), _Engine_instances = new WeakSet(), _Engine_startGame = async function _Engine_startGame() {
     if (__classPrivateFieldGet(this, _Engine_isStarted, "f")) {
         throw Error("Tried to start a game, but it is already started");
     }
@@ -200,6 +205,7 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
         });
     }
     __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
+    __classPrivateFieldSet(this, _Engine_currentFrameNumberOutsidePause, 0, "f");
     await __classPrivateFieldGet(this, _Engine_loading, "f").showStartScreen();
     __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
     this.gameInput.startListening();
@@ -253,6 +259,11 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                 __classPrivateFieldSet(this, _Engine_currentFrameNumber, __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f") >= Number.MAX_SAFE_INTEGER ?
                     0
                     : __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f") + 1, "f");
+                if (!GlobalPause.isActive) {
+                    __classPrivateFieldSet(this, _Engine_currentFrameNumberOutsidePause, __classPrivateFieldGet(this, _Engine_currentFrameNumberOutsidePause, "f") >= Number.MAX_SAFE_INTEGER ?
+                        0
+                        : __classPrivateFieldGet(this, _Engine_currentFrameNumberOutsidePause, "f") + 1, "f");
+                }
             }
         },
         renderFn: renderingFps => {
