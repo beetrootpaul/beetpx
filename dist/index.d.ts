@@ -528,6 +528,7 @@ declare class Engine {
     readonly assets: Assets;
     readonly drawApi: DrawApi;
     get frameNumber(): number;
+    get frameNumberOutsidePause(): number;
     get renderingFps(): number;
     get detectedBrowserType(): BpxBrowserType;
     constructor(engineConfig?: BpxEngineConfig);
@@ -697,9 +698,10 @@ declare class BeetPx {
      *
      * @return number
      */
-    static get frameNumber(): Engine["frameNumber"];
-    static get renderingFps(): Engine["renderingFps"];
-    static get detectedBrowserType(): Engine["detectedBrowserType"];
+    static get frameNumber(): number;
+    static get frameNumberOutsidePause(): number;
+    static get renderingFps(): number;
+    static get detectedBrowserType(): BpxBrowserType;
     static setOnStarted: Engine["setOnStarted"];
     static setOnUpdate: Engine["setOnUpdate"];
     static setOnDraw: Engine["setOnDraw"];
