@@ -1,4 +1,10 @@
 import { BeetPx } from "../BeetPx";
-export function booleanChangingEveryNthFrame(n) {
-    return n > 0 ? BeetPx.frameNumber % (n * 2) < n : true;
+export function booleanChangingEveryNthFrame(n, opts) {
+    return n > 0 ?
+        (opts?.onGamePause === "ignore" ?
+            BeetPx.frameNumber
+            : BeetPx.frameNumberOutsidePause) %
+            (n * 2) <
+            n
+        : true;
 }

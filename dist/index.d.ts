@@ -805,7 +805,9 @@ declare const b_: typeof BeetPx;
  */
 declare function assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
 
-declare function booleanChangingEveryNthFrame(n: number): boolean;
+declare function booleanChangingEveryNthFrame(n: number, opts?: {
+    onGamePause?: "pause" | "ignore";
+}): boolean;
 
 declare function clamp(a: number, b: number, c: number): number;
 
