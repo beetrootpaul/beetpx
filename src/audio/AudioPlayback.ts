@@ -59,7 +59,7 @@ export abstract class AudioPlayback {
 
     this.isPausedByGame = false;
     this.isPausedByEngine = false;
-    this.#isMutedByGame = false;
+    this.#isMutedByGame = muteOnStart;
     this.#isMutedByEngine = false;
 
     this.startedAtMs = this.#audioContext.currentTime * 1000;

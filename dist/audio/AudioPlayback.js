@@ -39,7 +39,7 @@ export class AudioPlayback {
         __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").connect(__classPrivateFieldGet(this, _AudioPlayback_targetNode, "f"));
         this.isPausedByGame = false;
         this.isPausedByEngine = false;
-        __classPrivateFieldSet(this, _AudioPlayback_isMutedByGame, false, "f");
+        __classPrivateFieldSet(this, _AudioPlayback_isMutedByGame, muteOnStart, "f");
         __classPrivateFieldSet(this, _AudioPlayback_isMutedByEngine, false, "f");
         this.startedAtMs = __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime * 1000;
         this.pausedAtMs = null;
