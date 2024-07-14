@@ -685,17 +685,6 @@ declare class Logger {
     static error(...args: any[]): void;
 }
 
-declare class GlobalPause {
-    #private;
-    static enable(): void;
-    static get isActive(): boolean;
-    static get wasJustActivated(): boolean;
-    static get wasJustDeactivated(): boolean;
-    static update(): void;
-    static activate(): void;
-    static deactivate(): void;
-}
-
 declare class BeetPx {
     #private;
     static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
@@ -719,9 +708,11 @@ declare class BeetPx {
     static logInfo: typeof Logger.info;
     static logWarn: typeof Logger.warn;
     static logError: typeof Logger.error;
-    static get isPaused(): typeof GlobalPause.isActive;
-    static get wasJustPaused(): typeof GlobalPause.wasJustActivated;
-    static get wasJustResumed(): typeof GlobalPause.wasJustDeactivated;
+    static get isPaused(): boolean;
+    static get wasJustPaused(): boolean;
+    static get wasJustResumed(): boolean;
+    static pause(): void;
+    static resume(): void;
     static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
     static wasButtonJustPressed: GameButtons["wasJustPressed"];
     static wasButtonJustReleased: GameButtons["wasJustReleased"];

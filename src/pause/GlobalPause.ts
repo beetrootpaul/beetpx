@@ -1,3 +1,6 @@
+import { AudioPlayback } from "../audio/AudioPlayback";
+import { BpxTimer } from "../timer/Timer";
+
 export class GlobalPause {
   static #isEnabled: boolean = false;
 
@@ -21,6 +24,33 @@ export class GlobalPause {
   }
 
   static update(): void {
+    if (!this.#isEnabled) return;
+
+    BpxTimer.timersToPauseOnGamePause =
+      BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+
+    if (GlobalPause.wasJustActivated) {
+      for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+        weakRef.deref()!.__internal__pauseByEngine();
+      }
+      for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+        playback.pauseByEngine();
+      }
+      for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+        playback.muteByEngine();
+      }
+    } else if (GlobalPause.wasJustDeactivated) {
+      for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+        weakRef.deref()!.__internal__resumeDueToGameResume();
+      }
+      for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+        playback.resumeByEngine();
+      }
+      for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+        playback.unmuteByEngine();
+      }
+    }
+
     this.#prevIsActive = this.#isActive;
   }
 

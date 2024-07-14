@@ -61,6 +61,12 @@ export class BeetPx {
     static get wasJustResumed() {
         return GlobalPause.wasJustDeactivated;
     }
+    static pause() {
+        GlobalPause.activate();
+    }
+    static resume() {
+        GlobalPause.deactivate();
+    }
 }
 _a = BeetPx, _BeetPx_tryGetEngine = function _BeetPx_tryGetEngine() {
     if (!__classPrivateFieldGet(this, _a, "f", _BeetPx_engine)) {

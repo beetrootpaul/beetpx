@@ -218,7 +218,6 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                     this.audioApi.muteAudio();
                 }
             }
-            GlobalPause.update();
             if (this.gameInput.gameButtons.wasJustPressed("menu")) {
                 if (GlobalPause.isActive) {
                     GlobalPause.deactivate();
@@ -227,35 +226,12 @@ _Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engi
                     GlobalPause.activate();
                 }
             }
+            GlobalPause.update();
             if (this.gameInput.buttonDebugToggle.wasJustPressed) {
                 DebugMode.enabled = !DebugMode.enabled;
             }
             if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
                 FrameByFrame.active = !FrameByFrame.active;
-            }
-            BpxTimer.timersToPauseOnGamePause =
-                BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
-            if (GlobalPause.wasJustActivated) {
-                for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
-                    weakRef.deref().__internal__pauseByEngine();
-                }
-                for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
-                    playback.pauseByEngine();
-                }
-                for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
-                    playback.muteByEngine();
-                }
-            }
-            else if (GlobalPause.wasJustDeactivated) {
-                for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
-                    weakRef.deref().__internal__resumeDueToGameResume();
-                }
-                for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
-                    playback.resumeByEngine();
-                }
-                for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
-                    playback.unmuteByEngine();
-                }
             }
             const shouldUpdate = !FrameByFrame.active ||
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed;
