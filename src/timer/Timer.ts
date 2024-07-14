@@ -2,13 +2,13 @@ import { BeetPx } from "../BeetPx";
 import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
 
-export type TimerWithExposedInternals = BpxTimer & {
+export type TimerControlledByEngined = {
   __internal__pauseByEngine: () => void;
-  __internal__resumeDueToGameResume: () => void;
+  __internal__resumeByEngine: () => void;
 };
 
 export class BpxTimer {
-  static timersToPauseOnGamePause: WeakRef<TimerWithExposedInternals>[] = [];
+  static timersToPauseOnGamePause: WeakRef<TimerControlledByEngined>[] = [];
 
   static for(opts: {
     frames: number;
@@ -37,12 +37,12 @@ export class BpxTimer {
     onGamePause: "pause" | "ignore";
   }) {
     if (opts.onGamePause === "pause") {
-      const withInternals: TimerWithExposedInternals = this as any;
-      withInternals.__internal__pauseByEngine =
-        withInternals.#pauseByEngine.bind(withInternals);
-      withInternals.__internal__resumeDueToGameResume =
-        withInternals.#resumeDueToGameResume.bind(withInternals);
-      BpxTimer.timersToPauseOnGamePause.push(new WeakRef(withInternals));
+      const controlledByEngined: TimerControlledByEngined = this as any;
+      controlledByEngined.__internal__pauseByEngine =
+        this.#pauseByEngine.bind(controlledByEngined);
+      controlledByEngined.__internal__resumeByEngine =
+        this.#resumeByEngine.bind(controlledByEngined);
+      BpxTimer.timersToPauseOnGamePause.push(new WeakRef(controlledByEngined));
     }
 
     this.#frames = Math.max(0, Math.round(opts.frames));
@@ -123,7 +123,7 @@ export class BpxTimer {
     this.#pausedFrame = null;
   }
 
-  #resumeDueToGameResume(): void {
+  #resumeByEngine(): void {
     if (!this.#isPausedByEngine) return;
     this.#isPausedByEngine = false;
 

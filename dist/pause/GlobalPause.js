@@ -9,7 +9,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _a, _GlobalPause_isEnabled, _GlobalPause_prevIsActive, _GlobalPause_isActive;
+var _a, _GlobalPause_isEnabled, _GlobalPause_prevIsActive, _GlobalPause_isActive, _GlobalPause_weakRefsFilterOutCounter;
 import { AudioPlayback } from "../audio/AudioPlayback";
 import { BpxTimer } from "../timer/Timer";
 export class GlobalPause {
@@ -28,11 +28,15 @@ export class GlobalPause {
     static update() {
         if (!__classPrivateFieldGet(this, _a, "f", _GlobalPause_isEnabled))
             return;
-        BpxTimer.timersToPauseOnGamePause =
-            BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+        if (__classPrivateFieldGet(this, _a, "f", _GlobalPause_weakRefsFilterOutCounter) <= 0) {
+            __classPrivateFieldSet(this, _a, 30, "f", _GlobalPause_weakRefsFilterOutCounter);
+            BpxTimer.timersToPauseOnGamePause =
+                BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+        }
+        __classPrivateFieldSet(this, _a, __classPrivateFieldGet(this, _a, "f", _GlobalPause_weakRefsFilterOutCounter) - 1, "f", _GlobalPause_weakRefsFilterOutCounter);
         if (_a.wasJustActivated) {
             for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
-                weakRef.deref().__internal__pauseByEngine();
+                weakRef.deref()?.__internal__pauseByEngine();
             }
             for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
                 playback.pauseByEngine();
@@ -43,7 +47,7 @@ export class GlobalPause {
         }
         else if (_a.wasJustDeactivated) {
             for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
-                weakRef.deref().__internal__resumeDueToGameResume();
+                weakRef.deref()?.__internal__resumeByEngine();
             }
             for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
                 playback.resumeByEngine();
@@ -65,3 +69,5 @@ _a = GlobalPause;
 _GlobalPause_isEnabled = { value: false };
 _GlobalPause_prevIsActive = { value: false };
 _GlobalPause_isActive = { value: false };
+
+_GlobalPause_weakRefsFilterOutCounter = { value: 0 };

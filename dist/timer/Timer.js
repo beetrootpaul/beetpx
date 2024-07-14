@@ -9,7 +9,7 @@ var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var _BpxTimer_instances, _BpxTimer_frames, _BpxTimer_loop, _BpxTimer_isPausedByEngine, _BpxTimer_isPausedByGame, _BpxTimer_offsetFrame, _BpxTimer_pausedFrame, _BpxTimer_tRaw_get, _BpxTimer_pauseByEngine, _BpxTimer_resumeDueToGameResume;
+var _BpxTimer_instances, _BpxTimer_frames, _BpxTimer_loop, _BpxTimer_isPausedByEngine, _BpxTimer_isPausedByGame, _BpxTimer_offsetFrame, _BpxTimer_pausedFrame, _BpxTimer_tRaw_get, _BpxTimer_pauseByEngine, _BpxTimer_resumeByEngine;
 import { BeetPx } from "../BeetPx";
 import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
@@ -26,12 +26,12 @@ export class BpxTimer {
         _BpxTimer_offsetFrame.set(this, void 0);
         _BpxTimer_pausedFrame.set(this, void 0);
         if (opts.onGamePause === "pause") {
-            const withInternals = this;
-            withInternals.__internal__pauseByEngine =
-                __classPrivateFieldGet(withInternals, _BpxTimer_instances, "m", _BpxTimer_pauseByEngine).bind(withInternals);
-            withInternals.__internal__resumeDueToGameResume =
-                __classPrivateFieldGet(withInternals, _BpxTimer_instances, "m", _BpxTimer_resumeDueToGameResume).bind(withInternals);
-            BpxTimer.timersToPauseOnGamePause.push(new WeakRef(withInternals));
+            const controlledByEngined = this;
+            controlledByEngined.__internal__pauseByEngine =
+                __classPrivateFieldGet(this, _BpxTimer_instances, "m", _BpxTimer_pauseByEngine).bind(controlledByEngined);
+            controlledByEngined.__internal__resumeByEngine =
+                __classPrivateFieldGet(this, _BpxTimer_instances, "m", _BpxTimer_resumeByEngine).bind(controlledByEngined);
+            BpxTimer.timersToPauseOnGamePause.push(new WeakRef(controlledByEngined));
         }
         __classPrivateFieldSet(this, _BpxTimer_frames, Math.max(0, Math.round(opts.frames)), "f");
         __classPrivateFieldSet(this, _BpxTimer_loop, opts.loop, "f");
@@ -100,7 +100,7 @@ _BpxTimer_frames = new WeakMap(), _BpxTimer_loop = new WeakMap(), _BpxTimer_isPa
     if (__classPrivateFieldGet(this, _BpxTimer_isPausedByGame, "f"))
         return;
     __classPrivateFieldSet(this, _BpxTimer_pausedFrame, BeetPx.frameNumber, "f");
-}, _BpxTimer_resumeDueToGameResume = function _BpxTimer_resumeDueToGameResume() {
+}, _BpxTimer_resumeByEngine = function _BpxTimer_resumeByEngine() {
     if (!__classPrivateFieldGet(this, _BpxTimer_isPausedByEngine, "f"))
         return;
     __classPrivateFieldSet(this, _BpxTimer_isPausedByEngine, false, "f");

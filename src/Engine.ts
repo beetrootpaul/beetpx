@@ -30,7 +30,6 @@ import {
   v_,
 } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxTimer } from "./timer/Timer";
 import { throwError } from "./utils/throwError";
 
 export type BpxEngineConfig = {
@@ -270,7 +269,6 @@ export class Engine {
 
     BeetPx.clearCanvas(rgb_black_);
 
-    BpxTimer.timersToPauseOnGamePause = [];
     AudioPlayback.playbacksToPauseOnGamePause.clear();
     AudioPlayback.playbacksToMuteOnGamePause.clear();
     GlobalPause.deactivate();

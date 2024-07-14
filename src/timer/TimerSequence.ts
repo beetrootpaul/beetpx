@@ -1,5 +1,5 @@
 import { BeetPx } from "../BeetPx";
-import { BpxTimer } from "./Timer";
+import { BpxTimer, TimerControlledByEngined } from "./Timer";
 
 type Phase<TPhaseName extends string> = {
   name: TPhaseName;
@@ -37,9 +37,10 @@ export class BpxTimerSequence<TPhaseName extends string> {
   // the frame the counting should start at
   #firstIterationOffset: number;
 
-  #pausedFrame: number | null;
+  #isPausedByEngine: boolean;
+  #isPausedByGame: boolean;
 
-  #onGamePause: "pause" | "ignore";
+  #pausedFrame: number | null;
 
   readonly #firstIterationTimer: BpxTimer;
   #loopTimer: BpxTimer | null;
@@ -59,6 +60,15 @@ export class BpxTimerSequence<TPhaseName extends string> {
       onGamePause: "pause" | "ignore";
     },
   ) {
+    if (opts.onGamePause === "pause") {
+      const controlledByEngined: TimerControlledByEngined = this as any;
+      controlledByEngined.__internal__pauseByEngine =
+        this.#pauseByEngine.bind(controlledByEngined);
+      controlledByEngined.__internal__resumeByEngine =
+        this.#resumeByEngine.bind(controlledByEngined);
+      BpxTimer.timersToPauseOnGamePause.push(new WeakRef(controlledByEngined));
+    }
+
     this.#firstIterationPhases = [...params.intro, ...params.loop].map(
       entry => ({
         name: entry[0],
@@ -83,7 +93,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       loop: false,
       pause: opts.pause,
       delayFrames: opts.delayFrames,
-      onGamePause: opts.onGamePause,
+      onGamePause: "ignore",
     });
     this.#loopTimer =
       this.#loopPhases.length > 0 ?
@@ -92,16 +102,16 @@ export class BpxTimerSequence<TPhaseName extends string> {
           loop: true,
           pause: opts.pause,
           delayFrames: opts.delayFrames + this.#firstIterationFrames,
-          onGamePause: opts.onGamePause,
+          onGamePause: "ignore",
         })
       : null;
 
+    this.#isPausedByEngine = false;
+    this.#isPausedByGame = false;
     this.#pausedFrame = null;
     if (opts.pause) {
       this.pause();
     }
-
-    this.#onGamePause = opts.onGamePause;
   }
 
   get #now(): Now<TPhaseName> {
@@ -237,10 +247,24 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   pause(): void {
-    if (this.#pausedFrame) {
-      return;
-    }
+    if (this.#isPausedByGame) return;
+    this.#isPausedByGame = true;
 
+    if (this.#isPausedByEngine) return;
+
+    this.#pauseImpl();
+  }
+
+  #pauseByEngine(): void {
+    if (this.#isPausedByEngine) return;
+    this.#isPausedByEngine = true;
+
+    if (this.#isPausedByGame) return;
+
+    this.#pauseImpl();
+  }
+
+  #pauseImpl(): void {
     this.#pausedFrame = BeetPx.frameNumber;
 
     this.#firstIterationTimer.pause();
@@ -248,11 +272,25 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   resume(): void {
-    if (!this.#pausedFrame) {
-      return;
-    }
+    if (!this.#isPausedByGame) return;
+    this.#isPausedByGame = false;
 
-    this.#firstIterationOffset += BeetPx.frameNumber - this.#pausedFrame;
+    if (this.#isPausedByEngine) return;
+
+    this.#resumeImpl();
+  }
+
+  #resumeByEngine(): void {
+    if (!this.#isPausedByEngine) return;
+    this.#isPausedByEngine = false;
+
+    if (this.#isPausedByGame) return;
+
+    this.#resumeImpl();
+  }
+
+  #resumeImpl(): void {
+    this.#firstIterationOffset += BeetPx.frameNumber - (this.#pausedFrame ?? 0);
     this.#pausedFrame = null;
 
     this.#firstIterationTimer.resume();
@@ -262,6 +300,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
   restart(): void {
     this.#firstIterationOffset = BeetPx.frameNumber;
 
+    this.#isPausedByEngine = false;
+    this.#isPausedByGame = false;
     this.#pausedFrame = null;
 
     this.#firstIterationTimer.restart();
@@ -271,7 +311,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
         loop: true,
         pause: false,
         delayFrames: this.#firstIterationFrames,
-        onGamePause: this.#onGamePause,
+        onGamePause: "ignore",
       });
     }
   }

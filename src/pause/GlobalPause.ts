@@ -7,6 +7,9 @@ export class GlobalPause {
   static #prevIsActive: boolean = false;
   static #isActive: boolean = false;
 
+  // Used to avoid full array reassignment on every frame. So instead we do it every N frames only.
+  static #weakRefsFilterOutCounter = 0;
+
   static enable(): void {
     this.#isEnabled = true;
   }
@@ -26,12 +29,16 @@ export class GlobalPause {
   static update(): void {
     if (!this.#isEnabled) return;
 
-    BpxTimer.timersToPauseOnGamePause =
-      BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+    if (this.#weakRefsFilterOutCounter <= 0) {
+      this.#weakRefsFilterOutCounter = 30;
+      BpxTimer.timersToPauseOnGamePause =
+        BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+    }
+    this.#weakRefsFilterOutCounter -= 1;
 
     if (GlobalPause.wasJustActivated) {
       for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
-        weakRef.deref()!.__internal__pauseByEngine();
+        weakRef.deref()?.__internal__pauseByEngine();
       }
       for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
         playback.pauseByEngine();
@@ -41,7 +48,7 @@ export class GlobalPause {
       }
     } else if (GlobalPause.wasJustDeactivated) {
       for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
-        weakRef.deref()!.__internal__resumeDueToGameResume();
+        weakRef.deref()?.__internal__resumeByEngine();
       }
       for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
         playback.resumeByEngine();

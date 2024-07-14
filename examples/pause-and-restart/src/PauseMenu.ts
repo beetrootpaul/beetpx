@@ -4,6 +4,7 @@ import {
   BpxColorMapper,
   rgb_,
   rgb_p8_,
+  u_,
   v_,
   v_0_0_,
 } from "../../../src";
@@ -45,6 +46,7 @@ export class PauseMenu {
     if (b_.wasButtonJustPressed("up")) {
       this.#selectedItem -= 1;
     }
+    this.#selectedItem = u_.mod(this.#selectedItem, 3);
   }
 
   draw() {

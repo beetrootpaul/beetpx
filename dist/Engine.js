@@ -31,7 +31,6 @@ import { Loading } from "./misc/Loading";
 import { GlobalPause } from "./pause/GlobalPause";
 import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
-import { BpxTimer } from "./timer/Timer";
 import { throwError } from "./utils/throwError";
 export class Engine {
     get frameNumber() {
@@ -175,7 +174,6 @@ export class Engine {
         __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
         this.audioApi.restart();
         BeetPx.clearCanvas(rgb_black_);
-        BpxTimer.timersToPauseOnGamePause = [];
         AudioPlayback.playbacksToPauseOnGamePause.clear();
         AudioPlayback.playbacksToMuteOnGamePause.clear();
         GlobalPause.deactivate();

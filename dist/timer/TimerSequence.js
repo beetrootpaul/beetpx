@@ -1,15 +1,15 @@
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
 var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
     if (kind === "m") throw new TypeError("Private method is not writable");
     if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
     return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
 };
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_pausedFrame, _BpxTimerSequence_onGamePause, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get;
+var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_isPausedByEngine, _BpxTimerSequence_isPausedByGame, _BpxTimerSequence_pausedFrame, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get, _BpxTimerSequence_pauseByEngine, _BpxTimerSequence_pauseImpl, _BpxTimerSequence_resumeByEngine, _BpxTimerSequence_resumeImpl;
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
 export class BpxTimerSequence {
@@ -25,11 +25,20 @@ export class BpxTimerSequence {
         _BpxTimerSequence_loopFrames.set(this, void 0);
         
         _BpxTimerSequence_firstIterationOffset.set(this, void 0);
+        _BpxTimerSequence_isPausedByEngine.set(this, void 0);
+        _BpxTimerSequence_isPausedByGame.set(this, void 0);
         _BpxTimerSequence_pausedFrame.set(this, void 0);
-        _BpxTimerSequence_onGamePause.set(this, void 0);
         _BpxTimerSequence_firstIterationTimer.set(this, void 0);
         _BpxTimerSequence_loopTimer.set(this, void 0);
         _BpxTimerSequence_recentlyComputedNow.set(this, void 0);
+        if (opts.onGamePause === "pause") {
+            const controlledByEngined = this;
+            controlledByEngined.__internal__pauseByEngine =
+                __classPrivateFieldGet(this, _BpxTimerSequence_instances, "m", _BpxTimerSequence_pauseByEngine).bind(controlledByEngined);
+            controlledByEngined.__internal__resumeByEngine =
+                __classPrivateFieldGet(this, _BpxTimerSequence_instances, "m", _BpxTimerSequence_resumeByEngine).bind(controlledByEngined);
+            BpxTimer.timersToPauseOnGamePause.push(new WeakRef(controlledByEngined));
+        }
         __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationPhases, [...params.intro, ...params.loop].map(entry => ({
             name: entry[0],
             frames: Math.max(0, Math.round(entry[1])),
@@ -46,7 +55,7 @@ export class BpxTimerSequence {
             loop: false,
             pause: opts.pause,
             delayFrames: opts.delayFrames,
-            onGamePause: opts.onGamePause,
+            onGamePause: "ignore",
         }), "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_loopTimer, __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length > 0 ?
             BpxTimer.for({
@@ -54,14 +63,15 @@ export class BpxTimerSequence {
                 loop: true,
                 pause: opts.pause,
                 delayFrames: opts.delayFrames + __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"),
-                onGamePause: opts.onGamePause,
+                onGamePause: "ignore",
             })
             : null, "f");
+        __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByEngine, false, "f");
+        __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByGame, false, "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
         if (opts.pause) {
             this.pause();
         }
-        __classPrivateFieldSet(this, _BpxTimerSequence_onGamePause, opts.onGamePause, "f");
     }
     get justFinishedPhase() {
         return this.hasJustFinishedOverall || __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t === 0 ?
@@ -105,24 +115,25 @@ export class BpxTimerSequence {
             __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished);
     }
     pause() {
-        if (__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f")) {
+        if (__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByGame, "f"))
             return;
-        }
-        __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, BeetPx.frameNumber, "f");
-        __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").pause();
-        __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.pause();
+        __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByGame, true, "f");
+        if (__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByEngine, "f"))
+            return;
+        __classPrivateFieldGet(this, _BpxTimerSequence_instances, "m", _BpxTimerSequence_pauseImpl).call(this);
     }
     resume() {
-        if (!__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f")) {
+        if (!__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByGame, "f"))
             return;
-        }
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationOffset, __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationOffset, "f") + (BeetPx.frameNumber - __classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f")), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
-        __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").resume();
-        __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.resume();
+        __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByGame, false, "f");
+        if (__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByEngine, "f"))
+            return;
+        __classPrivateFieldGet(this, _BpxTimerSequence_instances, "m", _BpxTimerSequence_resumeImpl).call(this);
     }
     restart() {
         __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationOffset, BeetPx.frameNumber, "f");
+        __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByEngine, false, "f");
+        __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByGame, false, "f");
         __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
         __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").restart();
         if (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")) {
@@ -131,12 +142,12 @@ export class BpxTimerSequence {
                 loop: true,
                 pause: false,
                 delayFrames: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"),
-                onGamePause: __classPrivateFieldGet(this, _BpxTimerSequence_onGamePause, "f"),
+                onGamePause: "ignore",
             }), "f");
         }
     }
 }
-_BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPhases = new WeakMap(), _BpxTimerSequence_firstIterationFrames = new WeakMap(), _BpxTimerSequence_loopFrames = new WeakMap(), _BpxTimerSequence_firstIterationOffset = new WeakMap(), _BpxTimerSequence_pausedFrame = new WeakMap(), _BpxTimerSequence_onGamePause = new WeakMap(), _BpxTimerSequence_firstIterationTimer = new WeakMap(), _BpxTimerSequence_loopTimer = new WeakMap(), _BpxTimerSequence_recentlyComputedNow = new WeakMap(), _BpxTimerSequence_instances = new WeakSet(), _BpxTimerSequence_now_get = function _BpxTimerSequence_now_get() {
+_BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPhases = new WeakMap(), _BpxTimerSequence_firstIterationFrames = new WeakMap(), _BpxTimerSequence_loopFrames = new WeakMap(), _BpxTimerSequence_firstIterationOffset = new WeakMap(), _BpxTimerSequence_isPausedByEngine = new WeakMap(), _BpxTimerSequence_isPausedByGame = new WeakMap(), _BpxTimerSequence_pausedFrame = new WeakMap(), _BpxTimerSequence_firstIterationTimer = new WeakMap(), _BpxTimerSequence_loopTimer = new WeakMap(), _BpxTimerSequence_recentlyComputedNow = new WeakMap(), _BpxTimerSequence_instances = new WeakSet(), _BpxTimerSequence_now_get = function _BpxTimerSequence_now_get() {
     if (__classPrivateFieldGet(this, _BpxTimerSequence_recentlyComputedNow, "f")?.frameNumber ===
         (__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f") ?? BeetPx.frameNumber)) {
         return __classPrivateFieldGet(this, _BpxTimerSequence_recentlyComputedNow, "f").value;
@@ -199,4 +210,27 @@ _BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPh
         phase: curr,
         t: loopT - offset,
     };
+}, _BpxTimerSequence_pauseByEngine = function _BpxTimerSequence_pauseByEngine() {
+    if (__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByEngine, "f"))
+        return;
+    __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByEngine, true, "f");
+    if (__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByGame, "f"))
+        return;
+    __classPrivateFieldGet(this, _BpxTimerSequence_instances, "m", _BpxTimerSequence_pauseImpl).call(this);
+}, _BpxTimerSequence_pauseImpl = function _BpxTimerSequence_pauseImpl() {
+    __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, BeetPx.frameNumber, "f");
+    __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").pause();
+    __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.pause();
+}, _BpxTimerSequence_resumeByEngine = function _BpxTimerSequence_resumeByEngine() {
+    if (!__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByEngine, "f"))
+        return;
+    __classPrivateFieldSet(this, _BpxTimerSequence_isPausedByEngine, false, "f");
+    if (__classPrivateFieldGet(this, _BpxTimerSequence_isPausedByGame, "f"))
+        return;
+    __classPrivateFieldGet(this, _BpxTimerSequence_instances, "m", _BpxTimerSequence_resumeImpl).call(this);
+}, _BpxTimerSequence_resumeImpl = function _BpxTimerSequence_resumeImpl() {
+    __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationOffset, __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationOffset, "f") + (BeetPx.frameNumber - (__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f") ?? 0)), "f");
+    __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
+    __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").resume();
+    __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.resume();
 };
