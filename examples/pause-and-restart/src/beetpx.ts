@@ -1,7 +1,7 @@
 import { b_, rgb_p8_ } from "../../../src";
 import { Movement } from "./Movement";
 import { Music } from "./Music";
-import { PauseOverlay } from "./PauseOverlay";
+import { PauseMenu } from "./PauseMenu";
 import { Vfx } from "./Vfx";
 
 b_.init({
@@ -11,7 +11,8 @@ b_.init({
     available: true,
   },
 }).then(async ({ startGame }) => {
-  const pauseOverlay = new PauseOverlay();
+  const pauseMenu = new PauseMenu();
+
   let music: Music;
   let movement: Movement;
   let vfx: Vfx;
@@ -23,17 +24,19 @@ b_.init({
   });
 
   b_.setOnUpdate(() => {
-    if (b_.wasButtonJustPressed("a")) {
-      b_.restart();
+    if (b_.isPaused) {
+      pauseMenu.update();
     }
   });
 
   b_.setOnDraw(() => {
     b_.clearCanvas(rgb_p8_.storm);
+
     vfx.draw();
     movement.draw();
+
     if (b_.isPaused) {
-      pauseOverlay.draw();
+      pauseMenu.draw();
     }
   });
 
