@@ -616,13 +616,8 @@ declare class BpxEasing {
     static outQuartic: BpxEasingFn;
 }
 
-type TimerControlledByEngined = {
-    __internal__pauseByEngine: () => void;
-    __internal__resumeByEngine: () => void;
-};
 declare class BpxTimer {
     #private;
-    static timersToPauseOnGamePause: WeakRef<TimerControlledByEngined>[];
     static for(opts: {
         frames: number;
         loop: boolean;

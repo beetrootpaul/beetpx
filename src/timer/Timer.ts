@@ -2,14 +2,7 @@ import { BeetPx } from "../BeetPx";
 import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
 
-export type TimerControlledByEngined = {
-  __internal__pauseByEngine: () => void;
-  __internal__resumeByEngine: () => void;
-};
-
 export class BpxTimer {
-  static timersToPauseOnGamePause: WeakRef<TimerControlledByEngined>[] = [];
-
   static for(opts: {
     frames: number;
     loop: boolean;
@@ -23,8 +16,8 @@ export class BpxTimer {
   readonly #frames: number;
   readonly #loop: boolean;
 
-  #isPausedByEngine: boolean;
-  #isPausedByGame: boolean;
+  readonly #ignoreGlobalPause: boolean;
+  #isPaused: boolean;
 
   #offsetFrame: number;
   #pausedFrame: number | null;
@@ -36,30 +29,28 @@ export class BpxTimer {
     delayFrames: number;
     onGamePause: "pause" | "ignore";
   }) {
-    if (opts.onGamePause === "pause") {
-      const controlledByEngined: TimerControlledByEngined = this as any;
-      controlledByEngined.__internal__pauseByEngine =
-        this.#pauseByEngine.bind(controlledByEngined);
-      controlledByEngined.__internal__resumeByEngine =
-        this.#resumeByEngine.bind(controlledByEngined);
-      BpxTimer.timersToPauseOnGamePause.push(new WeakRef(controlledByEngined));
-    }
+    this.#ignoreGlobalPause = opts.onGamePause === "ignore";
 
     this.#frames = Math.max(0, Math.round(opts.frames));
     this.#loop = opts.loop;
 
-    this.#offsetFrame = BeetPx.frameNumber + opts.delayFrames;
+    this.#offsetFrame = this.#fn + opts.delayFrames;
 
-    this.#isPausedByEngine = false;
-    this.#isPausedByGame = false;
+    this.#isPaused = false;
     this.#pausedFrame = null;
     if (opts.pause) {
       this.pause();
     }
   }
 
+  get #fn(): number {
+    return this.#ignoreGlobalPause ?
+        BeetPx.frameNumber
+      : BeetPx.frameNumberOutsidePause;
+  }
+
   get #tRaw(): number {
-    return (this.#pausedFrame ?? BeetPx.frameNumber) - this.#offsetFrame;
+    return (this.#pausedFrame ?? this.#fn) - this.#offsetFrame;
   }
 
   get t(): number {
@@ -96,48 +87,24 @@ export class BpxTimer {
   }
 
   pause(): void {
-    if (this.#isPausedByGame) return;
-    this.#isPausedByGame = true;
+    if (this.#isPaused) return;
+    this.#isPaused = true;
 
-    if (this.#isPausedByEngine) return;
-
-    this.#pausedFrame = BeetPx.frameNumber;
-  }
-
-  #pauseByEngine(): void {
-    if (this.#isPausedByEngine) return;
-    this.#isPausedByEngine = true;
-
-    if (this.#isPausedByGame) return;
-
-    this.#pausedFrame = BeetPx.frameNumber;
+    this.#pausedFrame = this.#fn;
   }
 
   resume(): void {
-    if (!this.#isPausedByGame) return;
-    this.#isPausedByGame = false;
+    if (!this.#isPaused) return;
+    this.#isPaused = false;
 
-    if (this.#isPausedByEngine) return;
-
-    this.#offsetFrame += BeetPx.frameNumber - (this.#pausedFrame ?? 0);
-    this.#pausedFrame = null;
-  }
-
-  #resumeByEngine(): void {
-    if (!this.#isPausedByEngine) return;
-    this.#isPausedByEngine = false;
-
-    if (this.#isPausedByGame) return;
-
-    this.#offsetFrame += BeetPx.frameNumber - (this.#pausedFrame ?? 0);
+    this.#offsetFrame += this.#fn - (this.#pausedFrame ?? 0);
     this.#pausedFrame = null;
   }
 
   restart(): void {
-    this.#offsetFrame = BeetPx.frameNumber;
+    this.#offsetFrame = this.#fn;
     this.#pausedFrame = null;
 
-    this.#isPausedByGame = false;
-    this.#isPausedByEngine = false;
+    this.#isPaused = false;
   }
 }

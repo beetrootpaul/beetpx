@@ -5,7 +5,7 @@ import { range } from "../utils/range";
 
 describe("AnimatedSprite", () => {
   beforeEach(() => {
-    vi.spyOn(BeetPx, "frameNumber", "get").mockImplementation(
+    vi.spyOn(BeetPx, "frameNumberOutsidePause", "get").mockImplementation(
       () => stubbedFrameNumber,
     );
     nextFrameNumberWillBe(501);
