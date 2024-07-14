@@ -98,19 +98,27 @@ export class BeetPx {
   };
 
   //
-  // Pause
+  // Global Pause
   //
 
-  static get isPaused(): typeof GlobalPause.isActive {
+  static get isPaused(): boolean {
     return GlobalPause.isActive;
   }
 
-  static get wasJustPaused(): typeof GlobalPause.wasJustActivated {
+  static get wasJustPaused(): boolean {
     return GlobalPause.wasJustActivated;
   }
 
-  static get wasJustResumed(): typeof GlobalPause.wasJustDeactivated {
+  static get wasJustResumed(): boolean {
     return GlobalPause.wasJustDeactivated;
+  }
+
+  static pause(): void {
+    GlobalPause.activate();
+  }
+
+  static resume(): void {
+    GlobalPause.deactivate();
   }
 
   //
