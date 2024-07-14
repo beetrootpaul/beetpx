@@ -17,6 +17,10 @@ export class PauseMenu {
   #selectedItem = 0;
 
   update() {
+    if (b_.wasJustPaused) {
+      this.#selectedItem = 0;
+    }
+
     if (b_.wasButtonJustPressed("a")) {
       if (this.#selectedItem === 0) {
         b_.resume();
@@ -30,9 +34,11 @@ export class PauseMenu {
         b_.restart();
       }
     }
+
     if (b_.wasButtonJustPressed("b")) {
       b_.resume();
     }
+
     if (b_.wasButtonJustPressed("down")) {
       this.#selectedItem += 1;
     }

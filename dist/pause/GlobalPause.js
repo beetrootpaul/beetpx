@@ -10,6 +10,8 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a, _GlobalPause_isEnabled, _GlobalPause_prevIsActive, _GlobalPause_isActive;
+import { AudioPlayback } from "../audio/AudioPlayback";
+import { BpxTimer } from "../timer/Timer";
 export class GlobalPause {
     static enable() {
         __classPrivateFieldSet(this, _a, true, "f", _GlobalPause_isEnabled);
@@ -24,6 +26,32 @@ export class GlobalPause {
         return __classPrivateFieldGet(this, _a, "f", _GlobalPause_isEnabled) ? !__classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive) && __classPrivateFieldGet(this, _a, "f", _GlobalPause_prevIsActive) : false;
     }
     static update() {
+        if (!__classPrivateFieldGet(this, _a, "f", _GlobalPause_isEnabled))
+            return;
+        BpxTimer.timersToPauseOnGamePause =
+            BpxTimer.timersToPauseOnGamePause.filter(weakRef => weakRef.deref());
+        if (_a.wasJustActivated) {
+            for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+                weakRef.deref().__internal__pauseByEngine();
+            }
+            for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+                playback.pauseByEngine();
+            }
+            for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+                playback.muteByEngine();
+            }
+        }
+        else if (_a.wasJustDeactivated) {
+            for (const weakRef of BpxTimer.timersToPauseOnGamePause) {
+                weakRef.deref().__internal__resumeDueToGameResume();
+            }
+            for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
+                playback.resumeByEngine();
+            }
+            for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
+                playback.unmuteByEngine();
+            }
+        }
         __classPrivateFieldSet(this, _a, __classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive), "f", _GlobalPause_prevIsActive);
     }
     static activate() {
