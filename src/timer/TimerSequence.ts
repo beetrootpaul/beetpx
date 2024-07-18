@@ -147,8 +147,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
       return {
         recentlyFinishedPhase:
           this.#firstIterationTimer.hasJustFinished ?
-            curr?.name ?? null
-          : prev?.name ?? null,
+            (curr?.name ?? null)
+          : (prev?.name ?? null),
         phase: curr,
         t: firstIterationT - offset,
       };
@@ -218,19 +218,19 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   get tOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
-        this.#loopTimer?.t ?? this.#firstIterationTimer.t
+        (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
       : this.#firstIterationTimer.t;
   }
 
   get framesLeftOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
-        this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft
+        (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
       : this.#firstIterationTimer.framesLeft;
   }
 
   get progressOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
-        this.#loopTimer?.progress ?? this.#firstIterationTimer.progress
+        (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
       : this.#firstIterationTimer.progress;
   }
 
