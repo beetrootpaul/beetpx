@@ -1,23 +1,29 @@
 import { BpxPalettePico8 } from "./color/PalettePico8";
 import { BpxRgbColor } from "./color/RgbColor";
-import { BpxFontPico8 } from "./font/FontPico8";
-import { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";
-import { BpxFontSaint11Minimal5 } from "./font/FontSaint11Minimal5";
+import { BpxFont } from "./font/Font";
+import { BpxFontConfigPico8 } from "./font/FontConfigPico8";
+import { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
+import { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
 import { BpxVector2d } from "./misc/Vector2d";
 import { BpxAnimatedSprite, } from "./sprite/AnimatedSprite";
 import { BpxSprite } from "./sprite/Sprite";
 import { BpxTimer } from "./timer/Timer";
 import { BpxTimerSequence } from "./timer/TimerSequence";
+import { identity } from "./utils/identity";
 
 export function aspr_(imageUrl) {
     return (w, h, xys, opts) => {
         return BpxAnimatedSprite.from(imageUrl, w, h, xys, opts);
     };
 }
-
-export const font_pico8_ = new BpxFontPico8();
-export const font_saint11Minimal4_ = new BpxFontSaint11Minimal4();
-export const font_saint11Minimal5_ = new BpxFontSaint11Minimal5();
+export function font_(baseFontOrConfig, extendedConfig) {
+    return baseFontOrConfig instanceof BpxFont ?
+        BpxFont.basedOn(baseFontOrConfig, extendedConfig ?? identity)
+        : BpxFont.of(baseFontOrConfig);
+}
+export const font_pico8_ = font_(new BpxFontConfigPico8());
+export const font_saint11Minimal4_ = font_(new BpxFontConfigSaint11Minimal4());
+export const font_saint11Minimal5_ = font_(new BpxFontConfigSaint11Minimal5());
 export function rgb_(rOrCssHex, g, b) {
     return typeof rOrCssHex === "string" ?
         BpxRgbColor.fromCssHex(rOrCssHex)

@@ -19,7 +19,11 @@ export class AssetLoader {
   }
 
   async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
-    const unrecognizedAssetFormats = assetsToLoad.filter(
+    const normalizedAssetsToLoad: AssetsToLoad = assetsToLoad
+      .map(url => url.trim())
+      .filter(url => url.length > 0);
+
+    const unrecognizedAssetFormats = normalizedAssetsToLoad.filter(
       url => !this.#isImage(url) && !this.#isSound(url) && !this.#isJson(url),
     );
     if (unrecognizedAssetFormats.length > 0) {
@@ -31,13 +35,13 @@ export class AssetLoader {
     }
 
     await Promise.all([
-      ...assetsToLoad
+      ...normalizedAssetsToLoad
         .filter(url => this.#isImage(url))
         .map(url => this.#loadImage(url)),
-      ...assetsToLoad
+      ...normalizedAssetsToLoad
         .filter(url => this.#isSound(url))
         .map(url => this.#loadSound(url)),
-      ...assetsToLoad
+      ...normalizedAssetsToLoad
         .filter(url => this.#isJson(url))
         .map(url => this.#loadJson(url)),
     ]);

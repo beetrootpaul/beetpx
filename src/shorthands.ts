@@ -1,10 +1,10 @@
 import { BpxImageUrl } from "./assets/Assets";
 import { BpxPalettePico8 } from "./color/PalettePico8";
 import { BpxRgbColor } from "./color/RgbColor";
-import { BpxFont } from "./font/Font";
-import { BpxFontPico8 } from "./font/FontPico8";
-import { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";
-import { BpxFontSaint11Minimal5 } from "./font/FontSaint11Minimal5";
+import { BpxFont, BpxFontConfig } from "./font/Font";
+import { BpxFontConfigPico8 } from "./font/FontConfigPico8";
+import { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
+import { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
 import { BpxVector2d } from "./misc/Vector2d";
 import {
   BpxAnimatedSprite,
@@ -13,6 +13,7 @@ import {
 import { BpxImageBoundSpriteFactory, BpxSprite } from "./sprite/Sprite";
 import { BpxTimer } from "./timer/Timer";
 import { BpxTimerSequence } from "./timer/TimerSequence";
+import { identity } from "./utils/identity";
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -33,9 +34,23 @@ export function aspr_(
 
 /////////////////////////////////////////////////////////////////////////////
 
-export const font_pico8_: BpxFont = new BpxFontPico8();
-export const font_saint11Minimal4_: BpxFont = new BpxFontSaint11Minimal4();
-export const font_saint11Minimal5_: BpxFont = new BpxFontSaint11Minimal5();
+export function font_(config: Partial<BpxFontConfig>): BpxFont;
+export function font_(
+  baseFont: BpxFont,
+  extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
+): BpxFont;
+export function font_(
+  baseFontOrConfig: BpxFont | Partial<BpxFontConfig>,
+  extendedConfig?: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
+): BpxFont {
+  return baseFontOrConfig instanceof BpxFont ?
+      BpxFont.basedOn(baseFontOrConfig, extendedConfig ?? identity)
+    : BpxFont.of(baseFontOrConfig);
+}
+
+export const font_pico8_ = font_(new BpxFontConfigPico8());
+export const font_saint11Minimal4_ = font_(new BpxFontConfigSaint11Minimal4());
+export const font_saint11Minimal5_ = font_(new BpxFontConfigSaint11Minimal5());
 
 /////////////////////////////////////////////////////////////////////////////
 

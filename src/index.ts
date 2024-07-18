@@ -57,9 +57,9 @@ export {
   type BpxKerningPrevCharMap,
   type BpxTextColorMarkers,
 } from "./font/Font";
-export { BpxFontPico8 } from "./font/FontPico8";
-export { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";
-export { BpxFontSaint11Minimal5 } from "./font/FontSaint11Minimal5";
+export { BpxFontConfigPico8 } from "./font/FontConfigPico8";
+export { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
+export { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
 export { type BpxGameButtonName } from "./game_input/buttons/GameButtons";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
 export { type BpxGamepadType } from "./game_input/GameInputGamepad";

@@ -269,6 +269,8 @@ type BpxTextColorMarkers = {
 type BpxGlyph = {
     type: "sprite";
     sprite: BpxSprite;
+    /** This function is used to distinguish text from its background on a font's sprite sheet. */
+    isTextColor: (colorFromSpriteSheet: BpxRgbColor | null) => boolean;
     advance: number;
     offset?: BpxVector2d;
     kerning?: BpxKerningPrevCharMap;
@@ -297,21 +299,26 @@ type BpxArrangedGlyph = {
     pixels: BpxPixels;
     color: BpxRgbColor;
 });
-declare abstract class BpxFont {
+type BpxFontConfig = {
     /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
-    abstract ascent: number;
+    ascent: number;
     /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
-    abstract descent: number;
+    descent: number;
     /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and
-     * the top-most pixel of the next line (excluded). */
-    abstract lineGap: number;
-    /** URLs of sprite sheets used by glyphs of this font. */
-    abstract spriteSheetUrls: BpxImageUrl[];
-    /** This function is used to distinguish text from its background on a font's sprite sheet.
-     *  If there is no sprite sheet in use at all, feel free to return `true` here. */
-    protected abstract isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
-    protected abstract glyphs: Map<string, BpxGlyph>;
-    protected abstract mapChar(char: string): string;
+     *  the top-most pixel of the next line (excluded). */
+    lineGap: number;
+    mapChar: (char: string) => string;
+    glyphs: Map<string, BpxGlyph>;
+};
+declare class BpxFont {
+    #private;
+    static of(config: Partial<BpxFontConfig>): BpxFont;
+    static basedOn(baseFont: BpxFont, extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig): BpxFont;
+    constructor(config: BpxFontConfig);
+    get spriteSheetUrls(): string[];
+    get ascent(): number;
+    get descent(): number;
+    get lineGap(): number;
     arrangeGlyphsFor(text: string, textColor: BpxRgbColor, colorMarkers?: BpxTextColorMarkers): BpxArrangedGlyph[];
 }
 
@@ -545,15 +552,12 @@ declare class Engine {
  * Links:
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the font being available under a CC-0 license
  */
-declare class BpxFontPico8 extends BpxFont {
+declare class BpxFontConfigPico8 implements BpxFontConfig {
     #private;
-    static spriteSheetUrl: string;
     ascent: number;
     descent: number;
     lineGap: number;
-    spriteSheetUrls: string[];
-    protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
-    protected mapChar(char: string): string;
+    mapChar(char: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
 
@@ -569,13 +573,11 @@ declare class BpxFontPico8 extends BpxFont {
  *   a b c d e f g h i j k l m      (note: both upper- and lower-case
  *   n o p q r s t u v w x y z             characters use same glyphs)
  */
-declare class BpxFontSaint11Minimal4 extends BpxFont {
+declare class BpxFontConfigSaint11Minimal4 implements BpxFontConfig {
     #private;
     ascent: number;
     descent: number;
     lineGap: number;
-    spriteSheetUrls: never[];
-    protected isSpriteSheetTextColor(_color: BpxRgbColor | null): boolean;
     mapChar(char: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
@@ -592,13 +594,11 @@ declare class BpxFontSaint11Minimal4 extends BpxFont {
  *   a b c d e f g h i j k l m
  *   n o p q r s t u v w x y z
  */
-declare class BpxFontSaint11Minimal5 extends BpxFont {
+declare class BpxFontConfigSaint11Minimal5 implements BpxFontConfig {
     #private;
     ascent: number;
     descent: number;
     lineGap: number;
-    spriteSheetUrls: never[];
-    protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
     mapChar(char: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
@@ -915,6 +915,8 @@ declare class BpxPalettePico8 {
 }
 
 declare function aspr_(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;
+declare function font_(config: Partial<BpxFontConfig>): BpxFont;
+declare function font_(baseFont: BpxFont, extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig): BpxFont;
 declare const font_pico8_: BpxFont;
 declare const font_saint11Minimal4_: BpxFont;
 declare const font_saint11Minimal5_: BpxFont;
@@ -978,4 +980,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontPico8, BpxFontSaint11Minimal4, BpxFontSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxUtils, BpxVector2d, aspr_, b_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timerSeq_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxUtils, BpxVector2d, aspr_, b_, font_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timerSeq_, timer_, u_, v_, v_0_0_, v_1_1_ };

@@ -1,10 +1,10 @@
-import { type BpxImageUrl } from "../assets/Assets";
-import { type BpxRgbColor } from "../color/RgbColor";
+import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { type BpxPixels } from "../draw_api/Pixels";
+import { BpxPixels } from "../draw_api/Pixels";
 import { BpxVector2d } from "../misc/Vector2d";
-import { type BpxSprite } from "../sprite/Sprite";
+import { BpxSprite } from "../sprite/Sprite";
 import { assertUnreachable } from "../utils/assertUnreachable";
+import { identity } from "../utils/identity";
 
 export type BpxKerningPrevCharMap = { [prevChar: string]: number };
 
@@ -14,6 +14,8 @@ export type BpxGlyph =
   | {
       type: "sprite";
       sprite: BpxSprite;
+      /** This function is used to distinguish text from its background on a font's sprite sheet. */
+      isTextColor: (colorFromSpriteSheet: BpxRgbColor | null) => boolean;
       advance: number;
       offset?: BpxVector2d;
       kerning?: BpxKerningPrevCharMap;
@@ -49,25 +51,64 @@ export type BpxArrangedGlyph = {
     }
 );
 
-export abstract class BpxFont {
+export type BpxFontConfig = {
   /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
-  abstract ascent: number;
+  ascent: number;
   /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
-  abstract descent: number;
+  descent: number;
   /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and
-   * the top-most pixel of the next line (excluded). */
-  abstract lineGap: number;
+   *  the top-most pixel of the next line (excluded). */
+  lineGap: number;
 
-  /** URLs of sprite sheets used by glyphs of this font. */
-  abstract spriteSheetUrls: BpxImageUrl[];
+  mapChar: (char: string) => string;
 
-  /** This function is used to distinguish text from its background on a font's sprite sheet.
-   *  If there is no sprite sheet in use at all, feel free to return `true` here. */
-  protected abstract isSpriteSheetTextColor(color: BpxRgbColor | null): boolean;
+  glyphs: Map<string, BpxGlyph>;
+};
 
-  protected abstract glyphs: Map<string, BpxGlyph>;
+export class BpxFont {
+  static of(config: Partial<BpxFontConfig>) {
+    return new BpxFont({
+      ascent: config.ascent ?? 8,
+      descent: config.descent ?? 8,
+      lineGap: config.lineGap ?? 1,
+      mapChar: config.mapChar ?? identity,
+      glyphs: config.glyphs ?? new Map<string, BpxGlyph>(),
+    });
+  }
 
-  protected abstract mapChar(char: string): string;
+  static basedOn(
+    baseFont: BpxFont,
+    extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
+  ) {
+    const config = extendedConfig(baseFont.#config);
+    return new BpxFont(config);
+  }
+
+  readonly #config: BpxFontConfig;
+
+  readonly #computedSpriteSheetUrls: string[];
+
+  constructor(config: BpxFontConfig) {
+    this.#config = config;
+
+    this.#computedSpriteSheetUrls = Array.from(config.glyphs.values())
+      .filter(glyph => glyph.type === "sprite")
+      .map(glyph => glyph.sprite.imageUrl);
+  }
+
+  get spriteSheetUrls(): string[] {
+    return this.#computedSpriteSheetUrls;
+  }
+
+  get ascent(): number {
+    return this.#config.ascent;
+  }
+  get descent(): number {
+    return this.#config.descent;
+  }
+  get lineGap(): number {
+    return this.#config.lineGap;
+  }
 
   arrangeGlyphsFor(
     text: string,
@@ -82,13 +123,16 @@ export abstract class BpxFont {
     let prevChar = "\n";
 
     for (let i = 0; i < text.length; i++) {
-      const char = this.mapChar(text[i]!);
+      const char = this.#config.mapChar(text[i]!);
 
       if (char === "\n") {
         prevChar = "\n";
         xy = BpxVector2d.of(
           0,
-          xy.y + this.ascent + this.descent + this.lineGap,
+          xy.y +
+            this.#config.ascent +
+            this.#config.descent +
+            this.#config.lineGap,
         );
         lineNumber += 1;
         continue;
@@ -110,7 +154,7 @@ export abstract class BpxFont {
         }
       }
 
-      const glyph = this.glyphs.get(char);
+      const glyph = this.#config.glyphs.get(char);
       if (!glyph) {
         continue;
       }
@@ -123,12 +167,12 @@ export abstract class BpxFont {
           type: "sprite",
           char: char,
           sprite: glyph.sprite,
-          spriteColorMapping: BpxSpriteColorMapping.of(sourceColor =>
-            this.isSpriteSheetTextColor(sourceColor) ? glyphColor : null,
+          spriteColorMapping: BpxSpriteColorMapping.of(colorFromSpriteSheet =>
+            glyph.isTextColor(colorFromSpriteSheet) ? glyphColor : null,
           ),
           lineNumber: lineNumber,
           leftTop: xy
-            .add(0, this.ascent)
+            .add(0, this.#config.ascent)
             .sub(0, glyph.sprite.size.y)
             .add(glyph.offset ?? BpxVector2d.of(0, 0))
             .add(kerning, 0),

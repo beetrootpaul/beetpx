@@ -1,6 +1,5 @@
 import {
   b_,
-  BpxFont,
   BpxVector2d,
   font_pico8_,
   font_saint11Minimal4_,
@@ -9,6 +8,7 @@ import {
   v_,
   v_0_0_,
 } from "../../../src";
+import { BpxFont } from "../../../src/font/Font";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
