@@ -33,23 +33,29 @@ export type BpxGlyph =
       kerning?: BpxKerningPrevCharMap;
     };
 
-export type BpxArrangedGlyph = {
-  /** Left-top position of a glyph in relation to the left-top of the entire text. */
-  leftTop: BpxVector2d;
-  lineNumber: number;
-  char: string;
-} & (
+export type BpxArrangedGlyph =
   | {
       type: "sprite";
+      char: string;
+      /** Left-top position of a glyph in relation to the left-top of the entire text. */
+      leftTop: BpxVector2d;
+      lineNumber: number;
       sprite: BpxSprite;
       spriteColorMapping: BpxSpriteColorMapping;
     }
   | {
       type: "pixels";
+      char: string;
+      /** Left-top position of a glyph in relation to the left-top of the entire text. */
+      leftTop: BpxVector2d;
+      lineNumber: number;
       pixels: BpxPixels;
       color: BpxRgbColor;
     }
-);
+  | {
+      type: "line_break";
+      lineNumber: number;
+    };
 
 export type BpxFontConfig = {
   /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
@@ -126,6 +132,11 @@ export class BpxFont {
       const char = this.#config.mapChar(text[i]!);
 
       if (char === "\n") {
+        arrangedGlyphs.push({
+          type: "line_break",
+          lineNumber: lineNumber,
+        });
+
         prevChar = "\n";
         xy = BpxVector2d.of(
           0,

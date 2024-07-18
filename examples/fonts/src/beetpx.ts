@@ -1,5 +1,6 @@
 import {
   b_,
+  BpxFont,
   BpxVector2d,
   font_pico8_,
   font_saint11Minimal4_,
@@ -8,16 +9,18 @@ import {
   v_,
   v_0_0_,
 } from "../../../src";
-import { BpxFont } from "../../../src/font/Font";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
+// Lines below are arranged in a way which allows to visually see how
+// treated are lines effectively blank, because all of they characters
+// have no corresponding glyphs in a given font.
 const text = [
   "The quick [c1]brown[c0] fox jumps",
   "over the [c2]lazy[c0] dog",
   "0123456789 -+= .,:;!? ~@#$%^&*_",
-  "()[]{}<> /|\\ `'\"",
   "⭐➡❎❤️",
+  "()[]{}<> /|\\ `'\"",
 ].join("\n");
 
 const minScaleXy = v_(1);

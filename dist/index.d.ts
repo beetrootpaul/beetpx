@@ -286,19 +286,25 @@ type BpxGlyph = {
     kerning?: BpxKerningPrevCharMap;
 };
 type BpxArrangedGlyph = {
+    type: "sprite";
+    char: string;
     /** Left-top position of a glyph in relation to the left-top of the entire text. */
     leftTop: BpxVector2d;
     lineNumber: number;
-    char: string;
-} & ({
-    type: "sprite";
     sprite: BpxSprite;
     spriteColorMapping: BpxSpriteColorMapping;
 } | {
     type: "pixels";
+    char: string;
+    /** Left-top position of a glyph in relation to the left-top of the entire text. */
+    leftTop: BpxVector2d;
+    lineNumber: number;
     pixels: BpxPixels;
     color: BpxRgbColor;
-});
+} | {
+    type: "line_break";
+    lineNumber: number;
+};
 type BpxFontConfig = {
     /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
     ascent: number;

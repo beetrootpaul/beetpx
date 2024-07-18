@@ -1,4 +1,4 @@
-import { describe, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxGlyph } from "../../font/Font";
 import { font_, spr_, v_ } from "../../shorthands";
@@ -123,27 +123,177 @@ describe("DrawText", () => {
 
   let dts: DrawingTestSetup;
 
-  test("simple printing", () => {
-    dts = drawingTestSetup(16, 10, c0);
-    dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+  describe("simple printing", () => {
+    test("single line", () => {
+      dts = drawingTestSetup(16, 10, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
-    dts.drawApi.drawText("Bpx,", v_(1, 1), c1);
+      dts.drawApi.useFont(testFont);
+      const text = "Bpx,";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
 
-    dts.canvas.expectToEqual({
-      withMapping: { "-": c0, "#": c1 },
-      expectedImageAsAscii: `
-        - - - - - - - - - - - - - - - -
-        - # # - - - - - - - - - - - - -
-        - # - # - - # # - - # - # - - -
-        - # # # - - # - # - # - # - - -
-        - # - - # - # # - - - # - - - -
-        - # - - # - # - - - # - # - - -
-        - # # # - - # - - - # - # - # -
-        - - - - - - - - - - - - - - # -
-        - - - - - - - - - - - - - # - -
-        - - - - - - - - - - - - - - - -
-      `,
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - - - -
+          - # - # - - # # - - # - # - - -
+          - # # # - - # - # - # - # - - -
+          - # - - # - # # - - - # - - - -
+          - # - - # - # - - - # - # - - -
+          - # # # - - # - - - # - # - # -
+          - - - - - - - - - - - - - - # -
+          - - - - - - - - - - - - - # - -
+          - - - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3 + 2);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(6 + 2);
+    });
+
+    test("lines made entirely of missing glyph still occupy a vertical space", () => {
+      dts = drawingTestSetup(14, 38, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+      dts.drawApi.useFont(testFont);
+      const text = "Bpx\n\nBpx\n";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(
+        3 * (6 + 2 + 1) + (6 + 2),
+      );
+    });
+  });
+
+  describe("missing glyphs", () => {
+    test("missing glyphs don't occupy a horizontal space", () => {
+      dts = drawingTestSetup(20, 8, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+      dts.drawApi.useFont(testFont);
+      const text = "111B222p333x444";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - - - - - - - -
+          - # - # - - # # - - # - # - - - - - - -
+          - # # # - - # - # - # - # - - - - - - -
+          - # - - # - # # - - - # - - - - - - - -
+          - # - - # - # - - - # - # - - - - - - -
+          - # # # - - # - - - # - # - - - - - - -
+          - - - - - - - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(6 + 2);
+    });
+
+    test("lines made entirely of missing glyph still occupy a vertical space", () => {
+      dts = drawingTestSetup(14, 38, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+      dts.drawApi.useFont(testFont);
+      const text = "Bpx\n111222333\nBpx\n111222333";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(
+        3 * (6 + 2 + 1) + (6 + 2),
+      );
     });
   });
 

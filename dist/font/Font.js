@@ -57,6 +57,10 @@ export class BpxFont {
         for (let i = 0; i < text.length; i++) {
             const char = __classPrivateFieldGet(this, _BpxFont_config, "f").mapChar(text[i]);
             if (char === "\n") {
+                arrangedGlyphs.push({
+                    type: "line_break",
+                    lineNumber: lineNumber,
+                });
                 prevChar = "\n";
                 xy = BpxVector2d.of(0, xy.y +
                     __classPrivateFieldGet(this, _BpxFont_config, "f").ascent +
