@@ -3,6 +3,8 @@ export class BpxPixels {
     static from(ascii) {
         return new BpxPixels(ascii);
     }
+    asciiRows;
+    size;
     constructor(ascii) {
         this.asciiRows = ascii
             .split("\n")

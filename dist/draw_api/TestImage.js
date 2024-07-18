@@ -1,4 +1,6 @@
 export class TestImage {
+    asset;
+    uniqueUrl;
     constructor(params) {
         const asciiImage = params.image;
         const asciiToColor = params.withMapping;

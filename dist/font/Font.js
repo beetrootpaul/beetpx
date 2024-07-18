@@ -1,19 +1,8 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var _BpxFont_config, _BpxFont_computedSpriteSheetUrls;
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxVector2d } from "../misc/Vector2d";
 import { assertUnreachable } from "../utils/assertUnreachable";
 import { identity } from "../utils/identity";
+import { range } from "../utils/range";
 export class BpxFont {
     static of(config) {
         return new BpxFont({
@@ -25,57 +14,68 @@ export class BpxFont {
         });
     }
     static basedOn(baseFont, extendedConfig) {
-        const config = extendedConfig(__classPrivateFieldGet(baseFont, _BpxFont_config, "f"));
+        const config = extendedConfig(baseFont.#config);
         return new BpxFont(config);
     }
+    static #segmenter = new Intl.Segmenter("en", {
+        granularity: "grapheme",
+        localeMatcher: "best fit",
+    });
+    #config;
+    #computedSpriteSheetUrls;
     constructor(config) {
-        _BpxFont_config.set(this, void 0);
-        _BpxFont_computedSpriteSheetUrls.set(this, void 0);
-        __classPrivateFieldSet(this, _BpxFont_config, config, "f");
-        __classPrivateFieldSet(this, _BpxFont_computedSpriteSheetUrls, Array.from(config.glyphs.values())
+        this.#config = config;
+        this.#computedSpriteSheetUrls = Array.from(config.glyphs.values())
             .filter(glyph => glyph.type === "sprite")
-            .map(glyph => glyph.sprite.imageUrl), "f");
+            .map(glyph => glyph.sprite.imageUrl);
     }
     get spriteSheetUrls() {
-        return __classPrivateFieldGet(this, _BpxFont_computedSpriteSheetUrls, "f");
+        return this.#computedSpriteSheetUrls;
     }
     get ascent() {
-        return __classPrivateFieldGet(this, _BpxFont_config, "f").ascent;
+        return this.#config.ascent;
     }
     get descent() {
-        return __classPrivateFieldGet(this, _BpxFont_config, "f").descent;
+        return this.#config.descent;
     }
     get lineGap() {
-        return __classPrivateFieldGet(this, _BpxFont_config, "f").lineGap;
+        return this.#config.lineGap;
     }
     arrangeGlyphsFor(text, textColor, colorMarkers) {
         colorMarkers ??= {};
         const arrangedGlyphs = [];
         let xy = BpxVector2d.of(0, 0);
         let lineNumber = 0;
-        let prevChar = "\n";
-        for (let i = 0; i < text.length; i++) {
-            const char = __classPrivateFieldGet(this, _BpxFont_config, "f").mapChar(text[i]);
-            if (char === "\n") {
+        let prevSegment = "\n";
+        const segmentsIterator = BpxFont.#segmenter
+            .segment(text)[Symbol.iterator]();
+        for (let iteratorResult = segmentsIterator.next(); !iteratorResult.done; iteratorResult = segmentsIterator.next()) {
+            const segment = iteratorResult.value.segment;
+            const index = iteratorResult.value.index;
+            if (segment === "\n") {
                 arrangedGlyphs.push({
                     type: "line_break",
                     lineNumber: lineNumber,
                 });
-                prevChar = "\n";
+                prevSegment = "\n";
                 xy = BpxVector2d.of(0, xy.y +
-                    __classPrivateFieldGet(this, _BpxFont_config, "f").ascent +
-                    __classPrivateFieldGet(this, _BpxFont_config, "f").descent +
-                    __classPrivateFieldGet(this, _BpxFont_config, "f").lineGap);
+                    this.#config.ascent +
+                    this.#config.descent +
+                    this.#config.lineGap);
                 lineNumber += 1;
                 continue;
             }
-            if (char === "[") {
+            if (segment === "[") {
                 let newColor;
                 for (const [marker, markedColor] of Object.entries(colorMarkers)) {
                     const markerText = `[${marker}]`;
-                    if (text.slice(i, i + markerText.length) === markerText) {
+                    if (text.slice(index, index + markerText.length) === markerText) {
                         newColor = markedColor;
-                        i += markerText.length - 1;
+                        
+                        const segmentsToSkip = [...BpxFont.#segmenter.segment(markerText)].length - 1;
+                        range(segmentsToSkip).forEach(() => {
+                            segmentsIterator.next();
+                        });
                         break;
                     }
                 }
@@ -84,33 +84,33 @@ export class BpxFont {
                     continue;
                 }
             }
-            const glyph = __classPrivateFieldGet(this, _BpxFont_config, "f").glyphs.get(char);
+            const glyph = this.#config.glyphs.get(segment);
             if (!glyph) {
                 continue;
             }
-            const kerning = glyph.kerning?.[prevChar] ?? 0;
+            const kerning = glyph.kerning?.[prevSegment] ?? 0;
             const glyphColor = textColor;
             if (glyph.type === "sprite") {
                 arrangedGlyphs.push({
                     type: "sprite",
-                    char: char,
+                    char: segment,
                     sprite: glyph.sprite,
                     spriteColorMapping: BpxSpriteColorMapping.of(colorFromSpriteSheet => glyph.isTextColor(colorFromSpriteSheet) ? glyphColor : null),
                     lineNumber: lineNumber,
                     leftTop: xy
-                        .add(0, __classPrivateFieldGet(this, _BpxFont_config, "f").ascent)
+                        .add(0, this.#config.ascent)
                         .sub(0, glyph.sprite.size.y)
                         .add(glyph.offset ?? BpxVector2d.of(0, 0))
                         .add(kerning, 0),
                 });
-                prevChar = char;
+                prevSegment = segment;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
             if (glyph.type === "pixels") {
                 arrangedGlyphs.push({
                     type: "pixels",
-                    char: char,
+                    char: segment,
                     pixels: glyph.pixels,
                     color: glyphColor,
                     lineNumber: lineNumber,
@@ -120,12 +120,12 @@ export class BpxFont {
                         .add(glyph.offset ?? BpxVector2d.of(0, 0))
                         .add(kerning, 0),
                 });
-                prevChar = char;
+                prevSegment = segment;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
             if (glyph.type === "whitespace") {
-                prevChar = char;
+                prevSegment = segment;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
@@ -134,4 +134,3 @@ export class BpxFont {
         return arrangedGlyphs;
     }
 }
-_BpxFont_config = new WeakMap(), _BpxFont_computedSpriteSheetUrls = new WeakMap();

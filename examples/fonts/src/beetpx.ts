@@ -16,10 +16,10 @@ import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 // treated are lines effectively blank, because all of they characters
 // have no corresponding glyphs in a given font.
 const text = [
-  "The quick [c1]brown[c0] fox jumps",
-  "over the [c2]lazy[c0] dog",
+  "The quick [brown]brown[_] fox jumps",
+  "over the [🟦]lazy[_] dog",
   "0123456789 -+= .,:;!? ~@#$%^&*_",
-  "⭐➡❎❤️",
+  "⭐❤️⬅➡⬆⬇⭕❎♪⏏️",
   "()[]{}<> /|\\ `'\"",
 ].join("\n");
 
@@ -81,9 +81,9 @@ b_.init({
       b_.drawText(text, cursor, rgb_p8_.peach, {
         scaleXy,
         colorMarkers: {
-          c0: rgb_p8_.peach,
-          c1: rgb_p8_.tan,
-          c2: rgb_p8_.sky,
+          _: rgb_p8_.peach,
+          brown: rgb_p8_.tan,
+          "🟦": rgb_p8_.sky,
         },
       });
       drawMarkers(font, cursor.add(textOffset), scaleXy);

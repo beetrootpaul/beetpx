@@ -5,6 +5,7 @@ import { BpxVector2d } from "../misc/Vector2d";
 import { BpxSprite } from "../sprite/Sprite";
 import { assertUnreachable } from "../utils/assertUnreachable";
 import { identity } from "../utils/identity";
+import { range } from "../utils/range";
 
 export type BpxKerningPrevCharMap = { [prevChar: string]: number };
 
@@ -90,6 +91,11 @@ export class BpxFont {
     return new BpxFont(config);
   }
 
+  static readonly #segmenter: Intl.Segmenter = new Intl.Segmenter("en", {
+    granularity: "grapheme",
+    localeMatcher: "best fit",
+  });
+
   readonly #config: BpxFontConfig;
 
   readonly #computedSpriteSheetUrls: string[];
@@ -126,18 +132,26 @@ export class BpxFont {
     const arrangedGlyphs: BpxArrangedGlyph[] = [];
     let xy = BpxVector2d.of(0, 0);
     let lineNumber = 0;
-    let prevChar = "\n";
+    let prevSegment = "\n";
 
-    for (let i = 0; i < text.length; i++) {
-      const char = this.#config.mapChar(text[i]!);
+    const segmentsIterator = BpxFont.#segmenter
+      .segment(text)
+      [Symbol.iterator]();
+    for (
+      let iteratorResult = segmentsIterator.next();
+      !iteratorResult.done;
+      iteratorResult = segmentsIterator.next()
+    ) {
+      const segment = iteratorResult.value.segment;
+      const index = iteratorResult.value.index;
 
-      if (char === "\n") {
+      if (segment === "\n") {
         arrangedGlyphs.push({
           type: "line_break",
           lineNumber: lineNumber,
         });
 
-        prevChar = "\n";
+        prevSegment = "\n";
         xy = BpxVector2d.of(
           0,
           xy.y +
@@ -149,13 +163,20 @@ export class BpxFont {
         continue;
       }
 
-      if (char === "[") {
+      if (segment === "[") {
         let newColor: BpxRgbColor | undefined;
         for (const [marker, markedColor] of Object.entries(colorMarkers)) {
           const markerText = `[${marker}]`;
-          if (text.slice(i, i + markerText.length) === markerText) {
+          if (text.slice(index, index + markerText.length) === markerText) {
             newColor = markedColor;
-            i += markerText.length - 1;
+
+            // "- 1", because one segments is already processed right now, since we encountered "["
+            const segmentsToSkip =
+              [...BpxFont.#segmenter.segment(markerText)].length - 1;
+            range(segmentsToSkip).forEach(() => {
+              segmentsIterator.next();
+            });
+
             break;
           }
         }
@@ -165,18 +186,18 @@ export class BpxFont {
         }
       }
 
-      const glyph = this.#config.glyphs.get(char);
+      const glyph = this.#config.glyphs.get(segment);
       if (!glyph) {
         continue;
       }
 
-      const kerning = glyph.kerning?.[prevChar] ?? 0;
+      const kerning = glyph.kerning?.[prevSegment] ?? 0;
       const glyphColor = textColor;
 
       if (glyph.type === "sprite") {
         arrangedGlyphs.push({
           type: "sprite",
-          char: char,
+          char: segment,
           sprite: glyph.sprite,
           spriteColorMapping: BpxSpriteColorMapping.of(colorFromSpriteSheet =>
             glyph.isTextColor(colorFromSpriteSheet) ? glyphColor : null,
@@ -189,7 +210,7 @@ export class BpxFont {
             .add(kerning, 0),
         });
 
-        prevChar = char;
+        prevSegment = segment;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }
@@ -197,7 +218,7 @@ export class BpxFont {
       if (glyph.type === "pixels") {
         arrangedGlyphs.push({
           type: "pixels",
-          char: char,
+          char: segment,
           pixels: glyph.pixels,
           color: glyphColor,
           lineNumber: lineNumber,
@@ -208,13 +229,13 @@ export class BpxFont {
             .add(kerning, 0),
         });
 
-        prevChar = char;
+        prevSegment = segment;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }
 
       if (glyph.type === "whitespace") {
-        prevChar = char;
+        prevSegment = segment;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }

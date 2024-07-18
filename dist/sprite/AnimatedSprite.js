@@ -1,15 +1,3 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _BpxAnimatedSprite_sprites, _BpxAnimatedSprite_loop;
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxTimer } from "../timer/Timer";
 import { BpxSprite } from "./Sprite";
@@ -20,32 +8,33 @@ export class BpxAnimatedSprite {
             onGamePause: opts?.onGamePause ?? "pause",
         });
     }
+    type = "animated";
+    imageUrl;
+    size;
+    #sprites;
+    #loop;
     constructor(params, opts) {
-        this.type = "animated";
-        _BpxAnimatedSprite_sprites.set(this, void 0);
-        _BpxAnimatedSprite_loop.set(this, void 0);
         this.imageUrl = params.imageUrl;
         this.size = BpxVector2d.of(params.w, params.h).abs().round();
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_sprites, params.xys.map(([x, y]) => BpxSprite.from(params.imageUrl, params.w, params.h, x, y)), "f");
-        __classPrivateFieldSet(this, _BpxAnimatedSprite_loop, BpxTimer.for({
-            frames: __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f").length,
+        this.#sprites = params.xys.map(([x, y]) => BpxSprite.from(params.imageUrl, params.w, params.h, x, y));
+        this.#loop = BpxTimer.for({
+            frames: this.#sprites.length,
             loop: true,
             pause: opts.pause ?? false,
             delayFrames: 0,
             onGamePause: opts.onGamePause,
-        }), "f");
+        });
     }
     get current() {
-        return __classPrivateFieldGet(this, _BpxAnimatedSprite_sprites, "f")[__classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").t];
+        return this.#sprites[this.#loop.t];
     }
     pause() {
-        __classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").pause();
+        this.#loop.pause();
     }
     resume() {
-        __classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").resume();
+        this.#loop.resume();
     }
     restart() {
-        __classPrivateFieldGet(this, _BpxAnimatedSprite_loop, "f").restart();
+        this.#loop.restart();
     }
 }
-_BpxAnimatedSprite_sprites = new WeakMap(), _BpxAnimatedSprite_loop = new WeakMap();

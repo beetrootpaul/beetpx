@@ -1,26 +1,23 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _AudioPlayback_instances, _AudioPlayback_isMutedByEngine, _AudioPlayback_isMutedByGame, _AudioPlayback_audioContext, _AudioPlayback_targetNode, _AudioPlayback_gainNode, _AudioPlayback_muteImpl, _AudioPlayback_unmuteImpl, _AudioPlayback_pauseImpl, _AudioPlayback_resumeImpl;
 import { Logger } from "../logger/Logger";
 import { AudioApi } from "./AudioApi";
 import { AudioHelpers } from "./AudioHelpers";
 export class AudioPlayback {
+    static playbacksToPauseOnGamePause = new Set();
+    static playbacksToMuteOnGamePause = new Set();
+    
+    static nextPlaybackId = 1;
+    onEnded;
+    startedAtMs;
+    pausedAtMs;
+    accumulatedPauseMs;
+    isPausedByEngine;
+    isPausedByGame;
+    #isMutedByEngine;
+    #isMutedByGame;
+    #audioContext;
+    #targetNode;
+    #gainNode;
     constructor(audioContext, target, muteOnStart, onGamePause, onEnded) {
-        _AudioPlayback_instances.add(this);
-        _AudioPlayback_isMutedByEngine.set(this, void 0);
-        _AudioPlayback_isMutedByGame.set(this, void 0);
-        _AudioPlayback_audioContext.set(this, void 0);
-        _AudioPlayback_targetNode.set(this, void 0);
-        _AudioPlayback_gainNode.set(this, void 0);
         if (onGamePause === "pause") {
             AudioPlayback.playbacksToPauseOnGamePause.add(this);
         }
@@ -32,66 +29,72 @@ export class AudioPlayback {
             AudioPlayback.playbacksToPauseOnGamePause.delete(this);
             AudioPlayback.playbacksToMuteOnGamePause.delete(this);
         };
-        __classPrivateFieldSet(this, _AudioPlayback_audioContext, audioContext, "f");
-        __classPrivateFieldSet(this, _AudioPlayback_targetNode, target, "f");
-        __classPrivateFieldSet(this, _AudioPlayback_gainNode, __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").createGain(), "f");
-        __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").gain.value = muteOnStart ? 0 : 1;
-        __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").connect(__classPrivateFieldGet(this, _AudioPlayback_targetNode, "f"));
+        this.#audioContext = audioContext;
+        this.#targetNode = target;
+        this.#gainNode = this.#audioContext.createGain();
+        this.#gainNode.gain.value = muteOnStart ? 0 : 1;
+        this.#gainNode.connect(this.#targetNode);
         this.isPausedByGame = false;
         this.isPausedByEngine = false;
-        __classPrivateFieldSet(this, _AudioPlayback_isMutedByGame, muteOnStart, "f");
-        __classPrivateFieldSet(this, _AudioPlayback_isMutedByEngine, false, "f");
-        this.startedAtMs = __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime * 1000;
+        this.#isMutedByGame = muteOnStart;
+        this.#isMutedByEngine = false;
+        this.startedAtMs = this.#audioContext.currentTime * 1000;
         this.pausedAtMs = null;
         this.accumulatedPauseMs = 0;
     }
     mute(fadeOutMillis) {
         Logger.debugBeetPx(`AudioPlayback.mute (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`);
-        if (__classPrivateFieldGet(this, _AudioPlayback_isMutedByGame, "f"))
+        if (this.#isMutedByGame)
             return;
-        __classPrivateFieldSet(this, _AudioPlayback_isMutedByGame, true, "f");
-        if (__classPrivateFieldGet(this, _AudioPlayback_isMutedByEngine, "f"))
+        this.#isMutedByGame = true;
+        if (this.#isMutedByEngine)
             return;
         if (this.isPausedByGame || this.isPausedByEngine) {
             return;
         }
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_muteImpl).call(this, fadeOutMillis);
+        this.#muteImpl(fadeOutMillis);
     }
     muteByEngine() {
         Logger.debugBeetPx(`AudioPlayback.muteByEngine (id: ${this.id}, type: ${this.type})`);
-        if (__classPrivateFieldGet(this, _AudioPlayback_isMutedByEngine, "f"))
+        if (this.#isMutedByEngine)
             return;
-        __classPrivateFieldSet(this, _AudioPlayback_isMutedByEngine, true, "f");
-        if (__classPrivateFieldGet(this, _AudioPlayback_isMutedByGame, "f"))
+        this.#isMutedByEngine = true;
+        if (this.#isMutedByGame)
             return;
         if (this.isPausedByGame || this.isPausedByEngine) {
             return;
         }
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_muteImpl).call(this, AudioApi.muteUnmuteDefaultFadeMillis);
+        this.#muteImpl(AudioApi.muteUnmuteDefaultFadeMillis);
+    }
+    #muteImpl(fadeOutMillis) {
+        AudioHelpers.muteGain(this.#gainNode, this.#audioContext.currentTime, fadeOutMillis);
     }
     unmute(fadeInMillis) {
         Logger.debugBeetPx(`AudioPlayback.unmute (id: ${this.id}, type: ${this.type}, fadeInMillis: ${fadeInMillis})`);
-        if (!__classPrivateFieldGet(this, _AudioPlayback_isMutedByGame, "f"))
+        if (!this.#isMutedByGame)
             return;
-        __classPrivateFieldSet(this, _AudioPlayback_isMutedByGame, false, "f");
-        if (__classPrivateFieldGet(this, _AudioPlayback_isMutedByEngine, "f"))
+        this.#isMutedByGame = false;
+        if (this.#isMutedByEngine)
             return;
         if (this.isPausedByGame || this.isPausedByEngine) {
             return;
         }
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_unmuteImpl).call(this, fadeInMillis);
+        this.#unmuteImpl(fadeInMillis);
     }
     unmuteByEngine() {
         Logger.debugBeetPx(`AudioPlayback.unmuteByEngine (id: ${this.id}, type: ${this.type})`);
-        if (!__classPrivateFieldGet(this, _AudioPlayback_isMutedByEngine, "f"))
+        if (!this.#isMutedByEngine)
             return;
-        __classPrivateFieldSet(this, _AudioPlayback_isMutedByEngine, false, "f");
-        if (__classPrivateFieldGet(this, _AudioPlayback_isMutedByGame, "f"))
+        this.#isMutedByEngine = false;
+        if (this.#isMutedByGame)
             return;
         if (this.isPausedByGame || this.isPausedByEngine) {
             return;
         }
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_unmuteImpl).call(this, AudioApi.muteUnmuteDefaultFadeMillis);
+        this.#unmuteImpl(AudioApi.muteUnmuteDefaultFadeMillis);
+    }
+    #unmuteImpl(fadeInMillis) {
+        AudioHelpers.unmuteGain(this.#gainNode, this.#audioContext.currentTime, fadeInMillis);
     }
     stop(fadeOutMillis) {
         Logger.debugBeetPx(`AudioPlayback.stop (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`);
@@ -99,7 +102,7 @@ export class AudioPlayback {
             this.onEnded();
             return;
         }
-        AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis, () => {
+        AudioHelpers.muteGain(this.#gainNode, this.#audioContext.currentTime, fadeOutMillis, () => {
             this.stopAllNodes();
             if (!this.isPausedByGame && !this.isPausedByEngine) {
                 this.onEnded();
@@ -113,7 +116,7 @@ export class AudioPlayback {
         this.isPausedByGame = true;
         if (this.isPausedByEngine)
             return;
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_pauseImpl).call(this);
+        this.#pauseImpl();
     }
     pauseByEngine() {
         Logger.debugBeetPx(`AudioPlayback.pauseByEngine (id: ${this.id}, type: ${this.type}})`);
@@ -122,7 +125,13 @@ export class AudioPlayback {
         this.isPausedByEngine = true;
         if (this.isPausedByGame)
             return;
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_pauseImpl).call(this);
+        this.#pauseImpl();
+    }
+    #pauseImpl() {
+        this.pausedAtMs = this.#audioContext.currentTime * 1000;
+        AudioHelpers.muteGain(this.#gainNode, this.#audioContext.currentTime, AudioApi.muteUnmuteDefaultFadeMillis, () => {
+            this.stopAllNodes();
+        });
     }
     resume() {
         Logger.debugBeetPx(`AudioPlayback.resume (id: ${this.id}, type: ${this.type})`);
@@ -131,7 +140,7 @@ export class AudioPlayback {
         this.isPausedByGame = false;
         if (this.isPausedByEngine)
             return;
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_resumeImpl).call(this);
+        this.#resumeImpl();
     }
     resumeByEngine() {
         Logger.debugBeetPx(`AudioPlayback.resumeByEngine (id: ${this.id}, type: ${this.type})`);
@@ -140,43 +149,30 @@ export class AudioPlayback {
         this.isPausedByEngine = false;
         if (this.isPausedByGame)
             return;
-        __classPrivateFieldGet(this, _AudioPlayback_instances, "m", _AudioPlayback_resumeImpl).call(this);
+        this.#resumeImpl();
+    }
+    #resumeImpl() {
+        this.#gainNode = this.#audioContext.createGain();
+        this.#gainNode.gain.value =
+            this.#isMutedByGame || this.isPausedByEngine ? 0 : 1;
+        this.#gainNode.connect(this.#targetNode);
+        this.setupAndStartNodes();
+        if (this.pausedAtMs != null) {
+            this.accumulatedPauseMs +=
+                this.#audioContext.currentTime * 1000 - this.pausedAtMs;
+            this.pausedAtMs = null;
+        }
+        if (!this.#isMutedByGame && !this.isPausedByEngine) {
+            AudioHelpers.unmuteGain(this.#gainNode, this.#audioContext.currentTime, AudioApi.muteUnmuteDefaultFadeMillis, () => { });
+        }
     }
     createSourceNode() {
-        return __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").createBufferSource();
+        return this.#audioContext.createBufferSource();
     }
     connectToMainGainNode(audioNode) {
-        audioNode.connect(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"));
+        audioNode.connect(this.#gainNode);
     }
     disconnectFromOutput() {
-        __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").disconnect();
+        this.#gainNode.disconnect();
     }
 }
-_AudioPlayback_isMutedByEngine = new WeakMap(), _AudioPlayback_isMutedByGame = new WeakMap(), _AudioPlayback_audioContext = new WeakMap(), _AudioPlayback_targetNode = new WeakMap(), _AudioPlayback_gainNode = new WeakMap(), _AudioPlayback_instances = new WeakSet(), _AudioPlayback_muteImpl = function _AudioPlayback_muteImpl(fadeOutMillis) {
-    AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeOutMillis);
-}, _AudioPlayback_unmuteImpl = function _AudioPlayback_unmuteImpl(fadeInMillis) {
-    AudioHelpers.unmuteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, fadeInMillis);
-}, _AudioPlayback_pauseImpl = function _AudioPlayback_pauseImpl() {
-    this.pausedAtMs = __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime * 1000;
-    AudioHelpers.muteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, AudioApi.muteUnmuteDefaultFadeMillis, () => {
-        this.stopAllNodes();
-    });
-}, _AudioPlayback_resumeImpl = function _AudioPlayback_resumeImpl() {
-    __classPrivateFieldSet(this, _AudioPlayback_gainNode, __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").createGain(), "f");
-    __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").gain.value =
-        __classPrivateFieldGet(this, _AudioPlayback_isMutedByGame, "f") || this.isPausedByEngine ? 0 : 1;
-    __classPrivateFieldGet(this, _AudioPlayback_gainNode, "f").connect(__classPrivateFieldGet(this, _AudioPlayback_targetNode, "f"));
-    this.setupAndStartNodes();
-    if (this.pausedAtMs != null) {
-        this.accumulatedPauseMs +=
-            __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime * 1000 - this.pausedAtMs;
-        this.pausedAtMs = null;
-    }
-    if (!__classPrivateFieldGet(this, _AudioPlayback_isMutedByGame, "f") && !this.isPausedByEngine) {
-        AudioHelpers.unmuteGain(__classPrivateFieldGet(this, _AudioPlayback_gainNode, "f"), __classPrivateFieldGet(this, _AudioPlayback_audioContext, "f").currentTime, AudioApi.muteUnmuteDefaultFadeMillis, () => { });
-    }
-};
-AudioPlayback.playbacksToPauseOnGamePause = new Set();
-AudioPlayback.playbacksToMuteOnGamePause = new Set();
-
-AudioPlayback.nextPlaybackId = 1;

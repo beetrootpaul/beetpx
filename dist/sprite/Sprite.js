@@ -3,8 +3,11 @@ export class BpxSprite {
     static from(imageUrl, w, h, x, y) {
         return new BpxSprite(imageUrl, w, h, x, y);
     }
+    type = "static";
+    imageUrl;
+    size;
+    xy;
     constructor(imageUrl, w, h, x, y) {
-        this.type = "static";
         if (w < 0) {
             w = -w;
             x -= w;

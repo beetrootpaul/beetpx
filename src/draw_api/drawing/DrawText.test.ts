@@ -118,6 +118,20 @@ describe("DrawText", () => {
           advance: 3,
         },
       ],
+      [
+        "⏏️",
+        {
+          type: "pixels",
+          pixels: BpxPixels.from(`
+            --#--
+            -###-
+            #####
+            -----
+            #####
+          `),
+          advance: 6,
+        },
+      ],
     ]),
   });
 
@@ -208,6 +222,29 @@ describe("DrawText", () => {
       expect(dts.drawApi.measureText(text).wh.y).toEqual(
         3 * (6 + 2 + 1) + (6 + 2),
       );
+    });
+  });
+
+  test("multi-character emojis", () => {
+    dts = drawingTestSetup(15, 8, c0);
+    dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+    dts.drawApi.useFont(testFont);
+    const text = "x⏏️x";
+    dts.drawApi.drawText(text, v_(1, 1), c1);
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1 },
+      expectedImageAsAscii: `
+          - - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - - -
+          - # - # - - - # - - - # - # -
+          - # - # - - # # # - - # - # -
+          - - # - - # # # # # - - # - -
+          - # - # - - - - - - - # - # -
+          - # - # - # # # # # - # - # -
+          - - - - - - - - - - - - - - -
+        `,
     });
   });
 

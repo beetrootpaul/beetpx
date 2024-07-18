@@ -1,11 +1,6 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _a, _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold;
 
 export class GamepadMappingFirefoxDualSenseWindows {
+    static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
@@ -26,19 +21,19 @@ export class GamepadMappingFirefoxDualSenseWindows {
             case 0: 
             case 2: 
                 return ((axisValue >
-                    __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)) ?
+                    GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold) ?
                     ["button_right"]
                     : (axisValue <
-                        -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)) ?
+                        -GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold) ?
                         ["button_left"]
                         : []);
             case 1: 
             case 5: 
                 return ((axisValue >
-                    __classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)) ?
+                    GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold) ?
                     ["button_down"]
                     : (axisValue <
-                        -__classPrivateFieldGet(_a, _a, "f", _GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold)) ?
+                        -GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold) ?
                         ["button_up"]
                         : []);
             default:
@@ -46,5 +41,3 @@ export class GamepadMappingFirefoxDualSenseWindows {
         }
     }
 }
-_a = GamepadMappingFirefoxDualSenseWindows;
-_GamepadMappingFirefoxDualSenseWindows_stickAxisThreshold = { value: 0.6 };

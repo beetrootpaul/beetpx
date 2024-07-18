@@ -1,9 +1,3 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _BpxFontConfigSaint11Minimal4_instances, _BpxFontConfigSaint11Minimal4_pixelsGlyph;
 import { BpxPixels } from "../draw_api/Pixels";
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https:
@@ -18,540 +12,537 @@ import { BpxPixels } from "../draw_api/Pixels";
  *   n o p q r s t u v w x y z             characters use same glyphs)
  */
 export class BpxFontConfigSaint11Minimal4 {
-    constructor() {
-        _BpxFontConfigSaint11Minimal4_instances.add(this);
-        this.ascent = 4;
-        this.descent = 0;
-        this.lineGap = 2;
-        this.glyphs = new Map([
-            [
-                " ",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+    ascent = 4;
+    descent = 0;
+    lineGap = 2;
+    mapChar(char) {
+        return char.toLowerCase();
+    }
+    #pixelsGlyph(ascii) {
+        const pixels = BpxPixels.from(ascii);
+        return {
+            type: "pixels",
+            pixels: pixels,
+            advance: pixels.size.x + 1,
+        };
+    }
+    glyphs = new Map([
+        [
+            " ",
+            this.#pixelsGlyph(`
         ----
         ----
         ----
         ----
       `),
-            ],
-            [
-                ".",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            ".",
+            this.#pixelsGlyph(`
         -
         -
         -
         #
       `),
-            ],
-            [
-                ":",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            ":",
+            this.#pixelsGlyph(`
         #
         -
         -
         #
       `),
-            ],
-            [
-                "!",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "!",
+            this.#pixelsGlyph(`
         #
         #
         #
         -
         #
       `),
-            ],
-            [
-                "?",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "?",
+            this.#pixelsGlyph(`
         -#-
         #-#
         --#
         -#-
         -#-
       `),
-            ],
-            [
-                "'",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "'",
+            this.#pixelsGlyph(`
         #
         #
         -
         -
         -
       `),
-            ],
-            [
-                '"',
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            '"',
+            this.#pixelsGlyph(`
         #-#
         #-#
         ---
         ---
         ---
       `),
-            ],
-            [
-                "*",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "*",
+            this.#pixelsGlyph(`
         #-#
         -#-
         #-#
         ---
       `),
-            ],
-            [
-                "/",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "/",
+            this.#pixelsGlyph(`
         --#
         -#-
         -#-
         #--
       `),
-            ],
-            [
-                "+",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "+",
+            this.#pixelsGlyph(`
         ---
         -#-
         ###
         -#-
       `),
-            ],
-            [
-                "-",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "-",
+            this.#pixelsGlyph(`
         ---
         ---
         ###
         ---
       `),
-            ],
-            [
-                "0",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "0",
+            this.#pixelsGlyph(`
         -#-
         #-#
         #-#
         -#-
       `),
-            ],
-            [
-                "1",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "1",
+            this.#pixelsGlyph(`
         -#-
         ##-
         -#-
         -#-
       `),
-            ],
-            [
-                "2",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "2",
+            this.#pixelsGlyph(`
         ##-
         -##
         #--
         ###
       `),
-            ],
-            [
-                "3",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "3",
+            this.#pixelsGlyph(`
         ###
         -##
         --#
         ###
       `),
-            ],
-            [
-                "4",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "4",
+            this.#pixelsGlyph(`
         #-#
         #-#
         ###
         --#
       `),
-            ],
-            [
-                "5",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "5",
+            this.#pixelsGlyph(`
         ###
         ##-
         --#
         ##-
       `),
-            ],
-            [
-                "6",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "6",
+            this.#pixelsGlyph(`
         -#-
         #--
         ###
         -#-
       `),
-            ],
-            [
-                "7",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "7",
+            this.#pixelsGlyph(`
         ###
         --#
         -#-
         #--
       `),
-            ],
-            [
-                "8",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "8",
+            this.#pixelsGlyph(`
         ###
         -#-
         #-#
         -#-
       `),
-            ],
-            [
-                "9",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "9",
+            this.#pixelsGlyph(`
         ###
         ###
         --#
         ##-
       `),
-            ],
-            [
-                "%",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "%",
+            this.#pixelsGlyph(`
         #--#
         --#-
         -#--
         #--#
       `),
-            ],
-            [
-                "$",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "$",
+            this.#pixelsGlyph(`
         -##
         ##-
         -##
         ##-
       `),
-            ],
-            [
-                "(",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "(",
+            this.#pixelsGlyph(`
         -#
         #-
         #-
         -#
       `),
-            ],
-            [
-                ")",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            ")",
+            this.#pixelsGlyph(`
         #-
         -#
         -#
         #-
       `),
-            ],
-            [
-                "[",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "[",
+            this.#pixelsGlyph(`
         ##
         #-
         #-
         ##
       `),
-            ],
-            [
-                "]",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "]",
+            this.#pixelsGlyph(`
         ##
         -#
         -#
         ##
       `),
-            ],
-            [
-                "{",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "{",
+            this.#pixelsGlyph(`
         -#
         ##
         ##
         -#
       `),
-            ],
-            [
-                "}",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "}",
+            this.#pixelsGlyph(`
         #-
         ##
         ##
         #-
       `),
-            ],
-            [
-                "<",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "<",
+            this.#pixelsGlyph(`
         ---
         -##
         #--
         -##
       `),
-            ],
-            [
-                ">",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            ">",
+            this.#pixelsGlyph(`
         ##-
         --#
         ##-
         ---
       `),
-            ],
-            [
-                "a",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "a",
+            this.#pixelsGlyph(`
         ##-
         #-#
         ###
         #-#
       `),
-            ],
-            [
-                "b",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "b",
+            this.#pixelsGlyph(`
         #--
         ##-
         #-#
         ###
       `),
-            ],
-            [
-                "c",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "c",
+            this.#pixelsGlyph(`
         -##
         #--
         #--
         -##
       `),
-            ],
-            [
-                "d",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "d",
+            this.#pixelsGlyph(`
         ##-
         #-#
         #-#
         ##-
       `),
-            ],
-            [
-                "e",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "e",
+            this.#pixelsGlyph(`
         ###
         ##-
         #--
         ###
       `),
-            ],
-            [
-                "f",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "f",
+            this.#pixelsGlyph(`
         ###
         #--
         ##-
         #--
       `),
-            ],
-            [
-                "g",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "g",
+            this.#pixelsGlyph(`
         -##
         #--
         #-#
         -##
       `),
-            ],
-            [
-                "h",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "h",
+            this.#pixelsGlyph(`
         #--
         ##-
         #-#
         #-#
       `),
-            ],
-            [
-                "i",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "i",
+            this.#pixelsGlyph(`
         #
         #
         #
         #
       `),
-            ],
-            [
-                "j",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "j",
+            this.#pixelsGlyph(`
         ##
         -#
         -#
         #-
       `),
-            ],
-            [
-                "k",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "k",
+            this.#pixelsGlyph(`
         #-#
         ##-
         #-#
         #-#
       `),
-            ],
-            [
-                "l",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "l",
+            this.#pixelsGlyph(`
         #-
         #-
         #-
         ##
       `),
-            ],
-            [
-                "m",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "m",
+            this.#pixelsGlyph(`
         #-#
         ###
         #-#
         #-#
       `),
-            ],
-            [
-                "n",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "n",
+            this.#pixelsGlyph(`
         ##-
         #-#
         #-#
         #-#
       `),
-            ],
-            [
-                "o",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "o",
+            this.#pixelsGlyph(`
         -##
         #-#
         #-#
         ##-
       `),
-            ],
-            [
-                "p",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "p",
+            this.#pixelsGlyph(`
         ###
         #-#
         ##-
         #--
       `),
-            ],
-            [
-                "q",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "q",
+            this.#pixelsGlyph(`
         -#-
         #-#
         ###
         -#-
       `),
-            ],
-            [
-                "r",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "r",
+            this.#pixelsGlyph(`
         ##-
         #-#
         ##-
         #-#
       `),
-            ],
-            [
-                "s",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "s",
+            this.#pixelsGlyph(`
         -##
         ##-
         --#
         ##-
       `),
-            ],
-            [
-                "t",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "t",
+            this.#pixelsGlyph(`
         ###
         -#-
         -#-
         -#-
       `),
-            ],
-            [
-                "u",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "u",
+            this.#pixelsGlyph(`
         #-#
         #-#
         #-#
         ##-
       `),
-            ],
-            [
-                "v",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "v",
+            this.#pixelsGlyph(`
         #-#
         #-#
         #-#
         -#-
       `),
-            ],
-            [
-                "w",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "w",
+            this.#pixelsGlyph(`
         #-#
         #-#
         ###
         #-#
       `),
-            ],
-            [
-                "x",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "x",
+            this.#pixelsGlyph(`
         #-#
         -#-
         #-#
         #-#
       `),
-            ],
-            [
-                "y",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "y",
+            this.#pixelsGlyph(`
         #-#
         #-#
         -#-
         -#-
       `),
-            ],
-            [
-                "z",
-                __classPrivateFieldGet(this, _BpxFontConfigSaint11Minimal4_instances, "m", _BpxFontConfigSaint11Minimal4_pixelsGlyph).call(this, `
+        ],
+        [
+            "z",
+            this.#pixelsGlyph(`
         ###
         -#-
         #--
         ###
       `),
-            ],
-        ]);
-    }
-    mapChar(char) {
-        return char.toLowerCase();
-    }
+        ],
+    ]);
 }
-_BpxFontConfigSaint11Minimal4_instances = new WeakSet(), _BpxFontConfigSaint11Minimal4_pixelsGlyph = function _BpxFontConfigSaint11Minimal4_pixelsGlyph(ascii) {
-    const pixels = BpxPixels.from(ascii);
-    return {
-        type: "pixels",
-        pixels: pixels,
-        advance: pixels.size.x + 1,
-    };
-};

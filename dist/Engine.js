@@ -1,15 +1,3 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var _Engine_instances, _Engine_assetsToLoad, _Engine_browserType, _Engine_htmlCanvasBackground, _Engine_loading, _Engine_gameLoop, _Engine_assetLoader, _Engine_canvas, _Engine_fpsDisplay, _Engine_isStarted, _Engine_onStarted, _Engine_onUpdate, _Engine_onDraw, _Engine_currentFrameNumber, _Engine_currentFrameNumberOutsidePause, _Engine_renderingFps, _Engine_alreadyResumedAudioContext, _Engine_startGame;
 import { BeetPx } from "./BeetPx";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader } from "./assets/AssetLoader";
@@ -33,37 +21,43 @@ import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, 
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 export class Engine {
+    #assetsToLoad;
+    #browserType;
+    canvasSize;
+    #htmlCanvasBackground = BpxRgbColor.fromCssHex("#000000");
+    #loading;
+    gameInput;
+    #gameLoop;
+    audioApi;
+    fullScreen;
+    storageApi;
+    #assetLoader;
+    assets;
+    #canvas;
+    drawApi;
+    #fpsDisplay;
+    #isStarted = false;
+    #onStarted;
+    #onUpdate;
+    #onDraw;
+    #currentFrameNumber = 0;
+    #currentFrameNumberOutsidePause = 0;
+    #renderingFps = 1;
+    
+    #alreadyResumedAudioContext = false;
     get frameNumber() {
-        return __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f");
+        return this.#currentFrameNumber;
     }
     get frameNumberOutsidePause() {
-        return __classPrivateFieldGet(this, _Engine_currentFrameNumberOutsidePause, "f");
+        return this.#currentFrameNumberOutsidePause;
     }
     get renderingFps() {
-        return __classPrivateFieldGet(this, _Engine_renderingFps, "f");
+        return this.#renderingFps;
     }
     get detectedBrowserType() {
-        return __classPrivateFieldGet(this, _Engine_browserType, "f");
+        return this.#browserType;
     }
     constructor(engineConfig = {}) {
-        _Engine_instances.add(this);
-        _Engine_assetsToLoad.set(this, void 0);
-        _Engine_browserType.set(this, void 0);
-        _Engine_htmlCanvasBackground.set(this, BpxRgbColor.fromCssHex("#000000"));
-        _Engine_loading.set(this, void 0);
-        _Engine_gameLoop.set(this, void 0);
-        _Engine_assetLoader.set(this, void 0);
-        _Engine_canvas.set(this, void 0);
-        _Engine_fpsDisplay.set(this, void 0);
-        _Engine_isStarted.set(this, false);
-        _Engine_onStarted.set(this, void 0);
-        _Engine_onUpdate.set(this, void 0);
-        _Engine_onDraw.set(this, void 0);
-        _Engine_currentFrameNumber.set(this, 0);
-        _Engine_currentFrameNumberOutsidePause.set(this, 0);
-        _Engine_renderingFps.set(this, 1);
-        
-        _Engine_alreadyResumedAudioContext.set(this, false);
         engineConfig.canvasSize ??= "128x128";
         engineConfig.fixedTimestep ??= "60fps";
         window.addEventListener("error", event => {
@@ -103,14 +97,14 @@ export class Engine {
             FrameByFrame.active = true;
         }
         Logger.debugBeetPx("Engine init params:", engineConfig);
-        __classPrivateFieldSet(this, _Engine_assetsToLoad, engineConfig.assets ?? [], "f");
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_pico8_.spriteSheetUrls);
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal4_.spriteSheetUrls);
-        __classPrivateFieldGet(this, _Engine_assetsToLoad, "f").push(...font_saint11Minimal5_.spriteSheetUrls);
+        this.#assetsToLoad = engineConfig.assets ?? [];
+        this.#assetsToLoad.push(...font_pico8_.spriteSheetUrls);
+        this.#assetsToLoad.push(...font_saint11Minimal4_.spriteSheetUrls);
+        this.#assetsToLoad.push(...font_saint11Minimal5_.spriteSheetUrls);
         const fixedTimestepFps = engineConfig.fixedTimestep === "60fps" ? 60
             : engineConfig.fixedTimestep === "30fps" ? 30
                 : throwError(`Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`);
-        __classPrivateFieldSet(this, _Engine_browserType, BrowserTypeDetector.detect(navigator.userAgent), "f");
+        this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
         this.canvasSize =
             engineConfig.canvasSize === "64x64" ? v_(64, 64)
                 : engineConfig.canvasSize === "128x128" ? v_(128, 128)
@@ -119,160 +113,162 @@ export class Engine {
         this.gameInput = new GameInput({
             enableDebugToggle: engineConfig.debugMode?.available ?? false,
             enableFrameByFrameControls: engineConfig.frameByFrame?.available ?? false,
-            browserType: __classPrivateFieldGet(this, _Engine_browserType, "f"),
+            browserType: this.#browserType,
         });
-        __classPrivateFieldSet(this, _Engine_gameLoop, new GameLoop({
+        this.#gameLoop = new GameLoop({
             fixedTimestepFps: fixedTimestepFps,
             rafFn: window.requestAnimationFrame.bind(window),
             documentVisibilityStateProvider: document,
-        }), "f");
+        });
         this.storageApi = new StorageApi();
         const audioContext = new AudioContext();
         this.assets = new Assets();
-        __classPrivateFieldSet(this, _Engine_assetLoader, new AssetLoader(this.assets, {
+        this.#assetLoader = new AssetLoader(this.assets, {
             decodeAudioData: (arrayBuffer) => audioContext.decodeAudioData(arrayBuffer),
-        }), "f");
+        });
         this.audioApi = new AudioApi(this.assets, audioContext);
-        __classPrivateFieldSet(this, _Engine_loading, new Loading({
+        this.#loading = new Loading({
             onStartClicked: () => {
                 this.audioApi
                     .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
                     .then(resumed => {
                     if (resumed) {
-                        __classPrivateFieldSet(this, _Engine_alreadyResumedAudioContext, true, "f");
+                        this.#alreadyResumedAudioContext = true;
                     }
                 });
             },
-        }), "f");
+        });
         this.fullScreen = FullScreen.create();
         const htmlCanvas = document.querySelector(HtmlTemplate.selectors.canvas) ??
             throwError(`Was unable to find <canvas> by selector '${HtmlTemplate.selectors.canvas}'`);
-        __classPrivateFieldSet(this, _Engine_canvas, new CanvasForProduction(this.canvasSize, htmlCanvas, __classPrivateFieldGet(this, _Engine_htmlCanvasBackground, "f")), "f");
+        this.#canvas = new CanvasForProduction(this.canvasSize, htmlCanvas, this.#htmlCanvasBackground);
         this.drawApi = new DrawApi({
-            canvas: __classPrivateFieldGet(this, _Engine_canvas, "f"),
+            canvas: this.#canvas,
             assets: this.assets,
         });
         if (engineConfig.debugMode?.fpsDisplay?.enabled) {
-            __classPrivateFieldSet(this, _Engine_fpsDisplay, new FpsDisplay(this.drawApi, this.canvasSize, {
+            this.#fpsDisplay = new FpsDisplay(this.drawApi, this.canvasSize, {
                 color: engineConfig.debugMode.fpsDisplay.color,
                 placement: engineConfig.debugMode.fpsDisplay.placement,
-            }), "f");
+            });
         }
     }
     async init() {
-        await __classPrivateFieldGet(this, _Engine_assetLoader, "f").loadAssets(__classPrivateFieldGet(this, _Engine_assetsToLoad, "f"));
+        await this.#assetLoader.loadAssets(this.#assetsToLoad);
         return {
-            startGame: __classPrivateFieldGet(this, _Engine_instances, "m", _Engine_startGame).bind(this),
+            startGame: this.#startGame.bind(this),
         };
     }
     setOnStarted(onStarted) {
-        __classPrivateFieldSet(this, _Engine_onStarted, onStarted, "f");
+        this.#onStarted = onStarted;
     }
     setOnUpdate(onUpdate) {
-        __classPrivateFieldSet(this, _Engine_onUpdate, onUpdate, "f");
+        this.#onUpdate = onUpdate;
     }
     setOnDraw(onDraw) {
-        __classPrivateFieldSet(this, _Engine_onDraw, onDraw, "f");
+        this.#onDraw = onDraw;
     }
     restart() {
-        __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
-        __classPrivateFieldSet(this, _Engine_currentFrameNumberOutsidePause, 0, "f");
+        this.#currentFrameNumber = 0;
+        this.#currentFrameNumberOutsidePause = 0;
         this.audioApi.restart();
         BeetPx.clearCanvas(rgb_black_);
         AudioPlayback.playbacksToPauseOnGamePause.clear();
         AudioPlayback.playbacksToMuteOnGamePause.clear();
         GlobalPause.deactivate();
-        __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
+        this.#onStarted?.();
     }
-}
-_Engine_assetsToLoad = new WeakMap(), _Engine_browserType = new WeakMap(), _Engine_htmlCanvasBackground = new WeakMap(), _Engine_loading = new WeakMap(), _Engine_gameLoop = new WeakMap(), _Engine_assetLoader = new WeakMap(), _Engine_canvas = new WeakMap(), _Engine_fpsDisplay = new WeakMap(), _Engine_isStarted = new WeakMap(), _Engine_onStarted = new WeakMap(), _Engine_onUpdate = new WeakMap(), _Engine_onDraw = new WeakMap(), _Engine_currentFrameNumber = new WeakMap(), _Engine_currentFrameNumberOutsidePause = new WeakMap(), _Engine_renderingFps = new WeakMap(), _Engine_alreadyResumedAudioContext = new WeakMap(), _Engine_instances = new WeakSet(), _Engine_startGame = async function _Engine_startGame() {
-    if (__classPrivateFieldGet(this, _Engine_isStarted, "f")) {
-        throw Error("Tried to start a game, but it is already started");
-    }
-    __classPrivateFieldSet(this, _Engine_isStarted, true, "f");
-    if (window.BEETPX__IS_PROD) {
-        
-        
-        
-        
-        
-        
-        
-        window.addEventListener("beforeunload", event => {
-            event.preventDefault();
-            event.returnValue = "";
-            return "";
+    async #startGame() {
+        if (this.#isStarted) {
+            throw Error("Tried to start a game, but it is already started");
+        }
+        this.#isStarted = true;
+        if (window.BEETPX__IS_PROD) {
+            
+            
+            
+            
+            
+            
+            
+            window.addEventListener("beforeunload", event => {
+                event.preventDefault();
+                event.returnValue = "";
+                return "";
+            });
+        }
+        this.#currentFrameNumber = 0;
+        this.#currentFrameNumberOutsidePause = 0;
+        await this.#loading.showStartScreen();
+        this.#onStarted?.();
+        this.gameInput.startListening();
+        this.#gameLoop.start({
+            updateFn: () => {
+                if (this.gameInput.buttonFullScreen.wasJustPressed) {
+                    this.fullScreen.toggleFullScreen();
+                }
+                if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
+                    if (this.audioApi.isAudioMuted()) {
+                        this.audioApi.unmuteAudio();
+                    }
+                    else {
+                        this.audioApi.muteAudio();
+                    }
+                }
+                if (this.gameInput.gameButtons.wasJustPressed("menu")) {
+                    if (GlobalPause.isActive) {
+                        GlobalPause.deactivate();
+                    }
+                    else {
+                        GlobalPause.activate();
+                    }
+                }
+                GlobalPause.update();
+                if (this.gameInput.buttonDebugToggle.wasJustPressed) {
+                    DebugMode.enabled = !DebugMode.enabled;
+                }
+                if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
+                    FrameByFrame.active = !FrameByFrame.active;
+                }
+                const shouldUpdate = !FrameByFrame.active ||
+                    this.gameInput.buttonFrameByFrameStep.wasJustPressed;
+                const hasAnyInteractionHappened = this.gameInput.update({
+                    skipGameButtons: !shouldUpdate,
+                });
+                if (hasAnyInteractionHappened && !this.#alreadyResumedAudioContext) {
+                    this.audioApi
+                        .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+                        .then(resumed => {
+                        if (resumed) {
+                            this.#alreadyResumedAudioContext = true;
+                        }
+                    });
+                }
+                if (shouldUpdate) {
+                    if (FrameByFrame.active) {
+                        Logger.infoBeetPx(`Running onUpdate for frame: ${this.#currentFrameNumber}`);
+                    }
+                    this.#onUpdate?.();
+                    this.#currentFrameNumber =
+                        this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
+                            0
+                            : this.#currentFrameNumber + 1;
+                    if (!GlobalPause.isActive) {
+                        this.#currentFrameNumberOutsidePause =
+                            this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER ?
+                                0
+                                : this.#currentFrameNumberOutsidePause + 1;
+                    }
+                }
+            },
+            renderFn: renderingFps => {
+                this.#renderingFps = renderingFps;
+                this.#onDraw?.();
+                if (DebugMode.enabled) {
+                    this.#fpsDisplay?.drawRenderingFps(renderingFps);
+                }
+                this.#canvas.render();
+            },
         });
     }
-    __classPrivateFieldSet(this, _Engine_currentFrameNumber, 0, "f");
-    __classPrivateFieldSet(this, _Engine_currentFrameNumberOutsidePause, 0, "f");
-    await __classPrivateFieldGet(this, _Engine_loading, "f").showStartScreen();
-    __classPrivateFieldGet(this, _Engine_onStarted, "f")?.call(this);
-    this.gameInput.startListening();
-    __classPrivateFieldGet(this, _Engine_gameLoop, "f").start({
-        updateFn: () => {
-            if (this.gameInput.buttonFullScreen.wasJustPressed) {
-                this.fullScreen.toggleFullScreen();
-            }
-            if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
-                if (this.audioApi.isAudioMuted()) {
-                    this.audioApi.unmuteAudio();
-                }
-                else {
-                    this.audioApi.muteAudio();
-                }
-            }
-            if (this.gameInput.gameButtons.wasJustPressed("menu")) {
-                if (GlobalPause.isActive) {
-                    GlobalPause.deactivate();
-                }
-                else {
-                    GlobalPause.activate();
-                }
-            }
-            GlobalPause.update();
-            if (this.gameInput.buttonDebugToggle.wasJustPressed) {
-                DebugMode.enabled = !DebugMode.enabled;
-            }
-            if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
-                FrameByFrame.active = !FrameByFrame.active;
-            }
-            const shouldUpdate = !FrameByFrame.active ||
-                this.gameInput.buttonFrameByFrameStep.wasJustPressed;
-            const hasAnyInteractionHappened = this.gameInput.update({
-                skipGameButtons: !shouldUpdate,
-            });
-            if (hasAnyInteractionHappened && !__classPrivateFieldGet(this, _Engine_alreadyResumedAudioContext, "f")) {
-                this.audioApi
-                    .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
-                    .then(resumed => {
-                    if (resumed) {
-                        __classPrivateFieldSet(this, _Engine_alreadyResumedAudioContext, true, "f");
-                    }
-                });
-            }
-            if (shouldUpdate) {
-                if (FrameByFrame.active) {
-                    Logger.infoBeetPx(`Running onUpdate for frame: ${__classPrivateFieldGet(this, _Engine_currentFrameNumber, "f")}`);
-                }
-                __classPrivateFieldGet(this, _Engine_onUpdate, "f")?.call(this);
-                __classPrivateFieldSet(this, _Engine_currentFrameNumber, __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f") >= Number.MAX_SAFE_INTEGER ?
-                    0
-                    : __classPrivateFieldGet(this, _Engine_currentFrameNumber, "f") + 1, "f");
-                if (!GlobalPause.isActive) {
-                    __classPrivateFieldSet(this, _Engine_currentFrameNumberOutsidePause, __classPrivateFieldGet(this, _Engine_currentFrameNumberOutsidePause, "f") >= Number.MAX_SAFE_INTEGER ?
-                        0
-                        : __classPrivateFieldGet(this, _Engine_currentFrameNumberOutsidePause, "f") + 1, "f");
-                }
-            }
-        },
-        renderFn: renderingFps => {
-            __classPrivateFieldSet(this, _Engine_renderingFps, renderingFps, "f");
-            __classPrivateFieldGet(this, _Engine_onDraw, "f")?.call(this);
-            if (DebugMode.enabled) {
-                __classPrivateFieldGet(this, _Engine_fpsDisplay, "f")?.drawRenderingFps(renderingFps);
-            }
-            __classPrivateFieldGet(this, _Engine_canvas, "f").render();
-        },
-    });
-};
+}

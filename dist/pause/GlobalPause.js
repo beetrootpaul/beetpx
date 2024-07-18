@@ -1,33 +1,24 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _a, _GlobalPause_isEnabled, _GlobalPause_prevIsActive, _GlobalPause_isActive;
 import { AudioPlayback } from "../audio/AudioPlayback";
 export class GlobalPause {
+    static #isEnabled = false;
+    static #prevIsActive = false;
+    static #isActive = false;
     static enable() {
-        __classPrivateFieldSet(this, _a, true, "f", _GlobalPause_isEnabled);
+        this.#isEnabled = true;
     }
     static get isActive() {
-        return __classPrivateFieldGet(this, _a, "f", _GlobalPause_isEnabled) ? __classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive) : false;
+        return this.#isEnabled ? this.#isActive : false;
     }
     static get wasJustActivated() {
-        return __classPrivateFieldGet(this, _a, "f", _GlobalPause_isEnabled) ? __classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive) && !__classPrivateFieldGet(this, _a, "f", _GlobalPause_prevIsActive) : false;
+        return this.#isEnabled ? this.#isActive && !this.#prevIsActive : false;
     }
     static get wasJustDeactivated() {
-        return __classPrivateFieldGet(this, _a, "f", _GlobalPause_isEnabled) ? !__classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive) && __classPrivateFieldGet(this, _a, "f", _GlobalPause_prevIsActive) : false;
+        return this.#isEnabled ? !this.#isActive && this.#prevIsActive : false;
     }
     static update() {
-        if (!__classPrivateFieldGet(this, _a, "f", _GlobalPause_isEnabled))
+        if (!this.#isEnabled)
             return;
-        if (_a.wasJustActivated) {
+        if (GlobalPause.wasJustActivated) {
             for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
                 playback.pauseByEngine();
             }
@@ -35,7 +26,7 @@ export class GlobalPause {
                 playback.muteByEngine();
             }
         }
-        else if (_a.wasJustDeactivated) {
+        else if (GlobalPause.wasJustDeactivated) {
             for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
                 playback.resumeByEngine();
             }
@@ -43,16 +34,12 @@ export class GlobalPause {
                 playback.unmuteByEngine();
             }
         }
-        __classPrivateFieldSet(this, _a, __classPrivateFieldGet(this, _a, "f", _GlobalPause_isActive), "f", _GlobalPause_prevIsActive);
+        this.#prevIsActive = this.#isActive;
     }
     static activate() {
-        __classPrivateFieldSet(this, _a, true, "f", _GlobalPause_isActive);
+        this.#isActive = true;
     }
     static deactivate() {
-        __classPrivateFieldSet(this, _a, false, "f", _GlobalPause_isActive);
+        this.#isActive = false;
     }
 }
-_a = GlobalPause;
-_GlobalPause_isEnabled = { value: false };
-_GlobalPause_prevIsActive = { value: false };
-_GlobalPause_isActive = { value: false };

@@ -1,21 +1,8 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _DrawLine_instances, _DrawLine_canvas, _DrawLine_drawPixel;
 import { v_ } from "../../shorthands";
 export class DrawLine {
+    #canvas;
     constructor(canvas) {
-        _DrawLine_instances.add(this);
-        _DrawLine_canvas.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawLine_canvas, canvas, "f");
+        this.#canvas = canvas;
     }
     
     draw(xy, wh, color, pattern) {
@@ -35,7 +22,7 @@ export class DrawLine {
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
         const sn = c1?.type === "canvas_snapshot_mapping" ?
-            __classPrivateFieldGet(this, _DrawLine_canvas, "f").getMostRecentSnapshot()
+            this.#canvas.getMostRecentSnapshot()
             : null;
         const fp = pattern;
         
@@ -50,7 +37,7 @@ export class DrawLine {
             
             
             
-            __classPrivateFieldGet(this, _DrawLine_instances, "m", _DrawLine_drawPixel).call(this, currentXy.x, currentXy.y, c1, c2, fp, sn);
+            this.#drawPixel(currentXy.x, currentXy.y, c1, c2, fp, sn);
             if (currentXy.eq(targetXy))
                 break;
             
@@ -67,27 +54,27 @@ export class DrawLine {
             }
         }
     }
-}
-_DrawLine_canvas = new WeakMap(), _DrawLine_instances = new WeakSet(), _DrawLine_drawPixel = function _DrawLine_drawPixel(x, y, c1, c2, pattern, snapshot) {
-    if (!__classPrivateFieldGet(this, _DrawLine_canvas, "f").canSetAt(x, y)) {
-        return;
-    }
-    if (pattern.hasPrimaryColorAt(x, y)) {
-        if (!c1) {
+    #drawPixel(x, y, c1, c2, pattern, snapshot) {
+        if (!this.#canvas.canSetAt(x, y)) {
+            return;
         }
-        else if (c1.type === "rgb") {
-            __classPrivateFieldGet(this, _DrawLine_canvas, "f").set(c1, x, y);
+        if (pattern.hasPrimaryColorAt(x, y)) {
+            if (!c1) {
+            }
+            else if (c1.type === "rgb") {
+                this.#canvas.set(c1, x, y);
+            }
+            else {
+                const mapped = c1.getMappedColor(snapshot, y * this.#canvas.canvasSize.x + x);
+                if (mapped) {
+                    this.#canvas.set(mapped, x, y);
+                }
+            }
         }
         else {
-            const mapped = c1.getMappedColor(snapshot, y * __classPrivateFieldGet(this, _DrawLine_canvas, "f").canvasSize.x + x);
-            if (mapped) {
-                __classPrivateFieldGet(this, _DrawLine_canvas, "f").set(mapped, x, y);
+            if (c2 != null) {
+                this.#canvas.set(c2, x, y);
             }
         }
     }
-    else {
-        if (c2 != null) {
-            __classPrivateFieldGet(this, _DrawLine_canvas, "f").set(c2, x, y);
-        }
-    }
-};
+}

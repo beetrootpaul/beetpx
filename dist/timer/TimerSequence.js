@@ -1,210 +1,199 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _BpxTimerSequence_instances, _BpxTimerSequence_firstIterationPhases, _BpxTimerSequence_loopPhases, _BpxTimerSequence_firstIterationFrames, _BpxTimerSequence_loopFrames, _BpxTimerSequence_firstIterationOffset, _BpxTimerSequence_ignoreGlobalPause, _BpxTimerSequence_onGamePause, _BpxTimerSequence_isPaused, _BpxTimerSequence_pausedFrame, _BpxTimerSequence_firstIterationTimer, _BpxTimerSequence_loopTimer, _BpxTimerSequence_recentlyComputedNow, _BpxTimerSequence_now_get, _BpxTimerSequence_fn_get;
 import { BeetPx } from "../BeetPx";
 import { BpxTimer } from "./Timer";
 export class BpxTimerSequence {
     static of(params, opts) {
         return new BpxTimerSequence(params, opts);
     }
+    
+    #firstIterationPhases;
+    #loopPhases;
+    #firstIterationFrames;
+    #loopFrames;
+    
+    #firstIterationOffset;
+    #ignoreGlobalPause;
+    #onGamePause;
+    #isPaused;
+    #pausedFrame;
+    #firstIterationTimer;
+    #loopTimer;
+    #recentlyComputedNow;
     constructor(params, opts) {
-        _BpxTimerSequence_instances.add(this);
-        
-        _BpxTimerSequence_firstIterationPhases.set(this, void 0);
-        _BpxTimerSequence_loopPhases.set(this, void 0);
-        _BpxTimerSequence_firstIterationFrames.set(this, void 0);
-        _BpxTimerSequence_loopFrames.set(this, void 0);
-        
-        _BpxTimerSequence_firstIterationOffset.set(this, void 0);
-        _BpxTimerSequence_ignoreGlobalPause.set(this, void 0);
-        _BpxTimerSequence_onGamePause.set(this, void 0);
-        _BpxTimerSequence_isPaused.set(this, void 0);
-        _BpxTimerSequence_pausedFrame.set(this, void 0);
-        _BpxTimerSequence_firstIterationTimer.set(this, void 0);
-        _BpxTimerSequence_loopTimer.set(this, void 0);
-        _BpxTimerSequence_recentlyComputedNow.set(this, void 0);
-        __classPrivateFieldSet(this, _BpxTimerSequence_ignoreGlobalPause, opts.onGamePause === "ignore", "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_onGamePause, opts.onGamePause, "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationPhases, [...params.intro, ...params.loop].map(entry => ({
+        this.#ignoreGlobalPause = opts.onGamePause === "ignore";
+        this.#onGamePause = opts.onGamePause;
+        this.#firstIterationPhases = [...params.intro, ...params.loop].map(entry => ({
             name: entry[0],
             frames: Math.max(0, Math.round(entry[1])),
-        })), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_loopPhases, params.loop.map(entry => ({
+        }));
+        this.#loopPhases = params.loop.map(entry => ({
             name: entry[0],
             frames: Math.max(0, Math.round(entry[1])),
-        })), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationFrames, __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").reduce((acc, p) => acc + p.frames, 0), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_loopFrames, __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").reduce((acc, p) => acc + p.frames, 0), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationOffset, __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_fn_get) + opts.delayFrames, "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationTimer, BpxTimer.for({
-            frames: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"),
+        }));
+        this.#firstIterationFrames = this.#firstIterationPhases.reduce((acc, p) => acc + p.frames, 0);
+        this.#loopFrames = this.#loopPhases.reduce((acc, p) => acc + p.frames, 0);
+        this.#firstIterationOffset = this.#fn + opts.delayFrames;
+        this.#firstIterationTimer = BpxTimer.for({
+            frames: this.#firstIterationFrames,
             loop: false,
             pause: opts.pause,
             delayFrames: opts.delayFrames,
-            onGamePause: __classPrivateFieldGet(this, _BpxTimerSequence_onGamePause, "f"),
-        }), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_loopTimer, __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length > 0 ?
-            BpxTimer.for({
-                frames: __classPrivateFieldGet(this, _BpxTimerSequence_loopFrames, "f"),
-                loop: true,
-                pause: opts.pause,
-                delayFrames: opts.delayFrames + __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"),
-                onGamePause: __classPrivateFieldGet(this, _BpxTimerSequence_onGamePause, "f"),
-            })
-            : null, "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_isPaused, false, "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
+            onGamePause: this.#onGamePause,
+        });
+        this.#loopTimer =
+            this.#loopPhases.length > 0 ?
+                BpxTimer.for({
+                    frames: this.#loopFrames,
+                    loop: true,
+                    pause: opts.pause,
+                    delayFrames: opts.delayFrames + this.#firstIterationFrames,
+                    onGamePause: this.#onGamePause,
+                })
+                : null;
+        this.#isPaused = false;
+        this.#pausedFrame = null;
         if (opts.pause) {
             this.pause();
         }
     }
-    get justFinishedPhase() {
-        return this.hasJustFinishedOverall || __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t === 0 ?
-            __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).recentlyFinishedPhase
-            : null;
-    }
-    get currentPhase() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase?.name ?? null;
-    }
-    get t() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t;
-    }
-    get progress() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase && __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames > 0 ?
-            __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t / __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames
-            : 1;
-    }
-    get framesLeft() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase ? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).phase.frames - __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_now_get).t : 0;
-    }
-    get tOverall() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished ?
-            (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.t ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t)
-            : __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t;
-    }
-    get framesLeftOverall() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished ?
-            (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.framesLeft ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").framesLeft)
-            : __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").framesLeft;
-    }
-    get progressOverall() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished ?
-            (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.progress ?? __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").progress)
-            : __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").progress;
-    }
-    get hasFinishedOverall() {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasFinished;
-    }
-    get hasJustFinishedOverall() {
-        return (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.hasJustFinished ||
-            __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished);
-    }
-    pause() {
-        if (__classPrivateFieldGet(this, _BpxTimerSequence_isPaused, "f"))
-            return;
-        __classPrivateFieldSet(this, _BpxTimerSequence_isPaused, true, "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_fn_get), "f");
-        __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").pause();
-        __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.pause();
-    }
-    resume() {
-        if (!__classPrivateFieldGet(this, _BpxTimerSequence_isPaused, "f"))
-            return;
-        __classPrivateFieldSet(this, _BpxTimerSequence_isPaused, false, "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationOffset, __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationOffset, "f") + (__classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_fn_get) - (__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f") ?? 0)), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
-        __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").resume();
-        __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")?.resume();
-    }
-    restart() {
-        __classPrivateFieldSet(this, _BpxTimerSequence_firstIterationOffset, __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_fn_get), "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_isPaused, false, "f");
-        __classPrivateFieldSet(this, _BpxTimerSequence_pausedFrame, null, "f");
-        __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").restart();
-        if (__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f")) {
-            __classPrivateFieldSet(this, _BpxTimerSequence_loopTimer, BpxTimer.for({
-                frames: __classPrivateFieldGet(this, _BpxTimerSequence_loopFrames, "f"),
-                loop: true,
-                pause: false,
-                delayFrames: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f"),
-                onGamePause: __classPrivateFieldGet(this, _BpxTimerSequence_onGamePause, "f"),
-            }), "f");
+    get #now() {
+        if (this.#recentlyComputedNow?.frameNumber === (this.#pausedFrame ?? this.#fn)) {
+            return this.#recentlyComputedNow.value;
         }
-    }
-}
-_BpxTimerSequence_firstIterationPhases = new WeakMap(), _BpxTimerSequence_loopPhases = new WeakMap(), _BpxTimerSequence_firstIterationFrames = new WeakMap(), _BpxTimerSequence_loopFrames = new WeakMap(), _BpxTimerSequence_firstIterationOffset = new WeakMap(), _BpxTimerSequence_ignoreGlobalPause = new WeakMap(), _BpxTimerSequence_onGamePause = new WeakMap(), _BpxTimerSequence_isPaused = new WeakMap(), _BpxTimerSequence_pausedFrame = new WeakMap(), _BpxTimerSequence_firstIterationTimer = new WeakMap(), _BpxTimerSequence_loopTimer = new WeakMap(), _BpxTimerSequence_recentlyComputedNow = new WeakMap(), _BpxTimerSequence_instances = new WeakSet(), _BpxTimerSequence_now_get = function _BpxTimerSequence_now_get() {
-    if (__classPrivateFieldGet(this, _BpxTimerSequence_recentlyComputedNow, "f")?.frameNumber === (__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f") ?? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_fn_get))) {
-        return __classPrivateFieldGet(this, _BpxTimerSequence_recentlyComputedNow, "f").value;
-    }
-    
-    
-    
-    if (!__classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f") ||
-        (__classPrivateFieldGet(this, _BpxTimerSequence_pausedFrame, "f") ?? __classPrivateFieldGet(this, _BpxTimerSequence_instances, "a", _BpxTimerSequence_fn_get)) <
-            __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationOffset, "f") + __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationFrames, "f")) {
-        const firstIterationT = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").t;
+        
+        
+        
+        if (!this.#loopTimer ||
+            (this.#pausedFrame ?? this.#fn) <
+                this.#firstIterationOffset + this.#firstIterationFrames) {
+            const firstIterationT = this.#firstIterationTimer.t;
+            let offset = 0;
+            let prev = null;
+            let i = 0;
+            while (i < this.#firstIterationPhases.length - 1) {
+                let curr = this.#firstIterationPhases[i];
+                if (firstIterationT < offset + curr.frames) {
+                    return {
+                        recentlyFinishedPhase: prev?.name ?? null,
+                        phase: curr,
+                        t: firstIterationT - offset,
+                    };
+                }
+                offset += curr.frames;
+                prev = curr;
+                i += 1;
+            }
+            let curr = this.#firstIterationPhases[i] ?? null;
+            return {
+                recentlyFinishedPhase: this.#firstIterationTimer.hasJustFinished ?
+                    (curr?.name ?? null)
+                    : (prev?.name ?? null),
+                phase: curr,
+                t: firstIterationT - offset,
+            };
+        }
+        
+        
+        
+        const loopT = this.#loopTimer.t;
         let offset = 0;
-        let prev = null;
+        let prev = this.#firstIterationPhases[this.#firstIterationPhases.length - 1] ?? null;
         let i = 0;
-        while (i < __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").length - 1) {
-            let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i];
-            if (firstIterationT < offset + curr.frames) {
+        while (i < this.#loopPhases.length - 1) {
+            let curr = this.#loopPhases[i];
+            if (loopT < offset + curr.frames) {
                 return {
                     recentlyFinishedPhase: prev?.name ?? null,
                     phase: curr,
-                    t: firstIterationT - offset,
+                    t: loopT - offset,
                 };
             }
             offset += curr.frames;
             prev = curr;
             i += 1;
         }
-        let curr = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[i] ?? null;
+        let curr = this.#loopPhases[i] ?? null;
         return {
-            recentlyFinishedPhase: __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationTimer, "f").hasJustFinished ?
-                (curr?.name ?? null)
-                : (prev?.name ?? null),
+            recentlyFinishedPhase: prev?.name ?? null,
             phase: curr,
-            t: firstIterationT - offset,
+            t: loopT - offset,
         };
     }
-    
-    
-    
-    const loopT = __classPrivateFieldGet(this, _BpxTimerSequence_loopTimer, "f").t;
-    let offset = 0;
-    let prev = __classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f")[__classPrivateFieldGet(this, _BpxTimerSequence_firstIterationPhases, "f").length - 1] ?? null;
-    let i = 0;
-    while (i < __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f").length - 1) {
-        let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i];
-        if (loopT < offset + curr.frames) {
-            return {
-                recentlyFinishedPhase: prev?.name ?? null,
-                phase: curr,
-                t: loopT - offset,
-            };
-        }
-        offset += curr.frames;
-        prev = curr;
-        i += 1;
+    get justFinishedPhase() {
+        return this.hasJustFinishedOverall || this.#now.t === 0 ?
+            this.#now.recentlyFinishedPhase
+            : null;
     }
-    let curr = __classPrivateFieldGet(this, _BpxTimerSequence_loopPhases, "f")[i] ?? null;
-    return {
-        recentlyFinishedPhase: prev?.name ?? null,
-        phase: curr,
-        t: loopT - offset,
-    };
-}, _BpxTimerSequence_fn_get = function _BpxTimerSequence_fn_get() {
-    return __classPrivateFieldGet(this, _BpxTimerSequence_ignoreGlobalPause, "f") ?
-        BeetPx.frameNumber
-        : BeetPx.frameNumberOutsidePause;
-};
+    get currentPhase() {
+        return this.#now.phase?.name ?? null;
+    }
+    get #fn() {
+        return this.#ignoreGlobalPause ?
+            BeetPx.frameNumber
+            : BeetPx.frameNumberOutsidePause;
+    }
+    get t() {
+        return this.#now.t;
+    }
+    get progress() {
+        return this.#now.phase && this.#now.phase.frames > 0 ?
+            this.#now.t / this.#now.phase.frames
+            : 1;
+    }
+    get framesLeft() {
+        return this.#now.phase ? this.#now.phase.frames - this.#now.t : 0;
+    }
+    get tOverall() {
+        return this.#firstIterationTimer.hasFinished ?
+            (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
+            : this.#firstIterationTimer.t;
+    }
+    get framesLeftOverall() {
+        return this.#firstIterationTimer.hasFinished ?
+            (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
+            : this.#firstIterationTimer.framesLeft;
+    }
+    get progressOverall() {
+        return this.#firstIterationTimer.hasFinished ?
+            (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
+            : this.#firstIterationTimer.progress;
+    }
+    get hasFinishedOverall() {
+        return this.#firstIterationTimer.hasFinished;
+    }
+    get hasJustFinishedOverall() {
+        return (this.#loopTimer?.hasJustFinished ||
+            this.#firstIterationTimer.hasJustFinished);
+    }
+    pause() {
+        if (this.#isPaused)
+            return;
+        this.#isPaused = true;
+        this.#pausedFrame = this.#fn;
+        this.#firstIterationTimer.pause();
+        this.#loopTimer?.pause();
+    }
+    resume() {
+        if (!this.#isPaused)
+            return;
+        this.#isPaused = false;
+        this.#firstIterationOffset += this.#fn - (this.#pausedFrame ?? 0);
+        this.#pausedFrame = null;
+        this.#firstIterationTimer.resume();
+        this.#loopTimer?.resume();
+    }
+    restart() {
+        this.#firstIterationOffset = this.#fn;
+        this.#isPaused = false;
+        this.#pausedFrame = null;
+        this.#firstIterationTimer.restart();
+        if (this.#loopTimer) {
+            this.#loopTimer = BpxTimer.for({
+                frames: this.#loopFrames,
+                loop: true,
+                pause: false,
+                delayFrames: this.#firstIterationFrames,
+                onGamePause: this.#onGamePause,
+            });
+        }
+    }
+}

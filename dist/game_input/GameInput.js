@@ -1,15 +1,3 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var _GameInput_eventsCapturedInLastUpdate, _GameInput_mostRecentInputMethods;
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Button } from "./buttons/Button";
 import { GameButtons } from "./buttons/GameButtons";
@@ -18,9 +6,17 @@ import { GameInputKeyboard } from "./GameInputKeyboard";
 import { GameInputMouse } from "./GameInputMouse";
 import { GameInputTouch } from "./GameInputTouch";
 export class GameInput {
+    gameInputsSpecialized;
+    gameInputGamepad;
+    gameButtons;
+    buttonFullScreen;
+    buttonMuteUnmute;
+    buttonDebugToggle;
+    buttonFrameByFrameToggle;
+    buttonFrameByFrameStep;
+    #eventsCapturedInLastUpdate = new Set();
+    #mostRecentInputMethods = new Set();
     constructor(params) {
-        _GameInput_eventsCapturedInLastUpdate.set(this, new Set());
-        _GameInput_mostRecentInputMethods.set(this, new Set());
         this.gameInputGamepad = new GameInputGamepad({
             browserType: params.browserType,
         });
@@ -49,16 +45,16 @@ export class GameInput {
      * @return If any interaction happened.
      */
     update(params) {
-        __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").clear();
+        this.#mostRecentInputMethods.clear();
         const events = new Set();
         for (const sgi of this.gameInputsSpecialized) {
             if (sgi.update(events)) {
                 
                 
-                __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f").add(sgi.inputMethod);
+                this.#mostRecentInputMethods.add(sgi.inputMethod);
             }
         }
-        __classPrivateFieldSet(this, _GameInput_eventsCapturedInLastUpdate, events, "f");
+        this.#eventsCapturedInLastUpdate = events;
         if (!params.skipGameButtons) {
             this.gameButtons.update(events);
         }
@@ -81,13 +77,12 @@ export class GameInput {
         return events.size > 0;
     }
     getRecentInputMethods() {
-        return __classPrivateFieldGet(this, _GameInput_mostRecentInputMethods, "f");
+        return this.#mostRecentInputMethods;
     }
     getConnectedGamepadTypes() {
         return this.gameInputGamepad.connectedGamepadTypes();
     }
     getEventsCapturedInLastUpdate() {
-        return __classPrivateFieldGet(this, _GameInput_eventsCapturedInLastUpdate, "f");
+        return this.#eventsCapturedInLastUpdate;
     }
 }
-_GameInput_eventsCapturedInLastUpdate = new WeakMap(), _GameInput_mostRecentInputMethods = new WeakMap();

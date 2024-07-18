@@ -95,12 +95,22 @@ export class BpxFontConfigPico8 implements BpxFontConfig {
     ["x", this.#spriteGlyph(8, 7)],
     ["y", this.#spriteGlyph(9, 7)],
     ["z", this.#spriteGlyph(10, 7)],
+    //
+    ["⬅", this.#spriteGlyph(11, 8, 7)],
+    ["➡", this.#spriteGlyph(1, 9, 7)],
+    ["⬆", this.#spriteGlyph(4, 9, 7)],
+    ["⬇", this.#spriteGlyph(3, 8, 7)],
+    ["⭐", this.#spriteGlyph(2, 9, 7)],
+    ["❤️", this.#spriteGlyph(7, 8, 7)],
+    ["❎", this.#spriteGlyph(7, 9, 7)],
+    ["⭕", this.#spriteGlyph(14, 8, 7)],
+    ["♪", this.#spriteGlyph(13, 8, 7)],
   ]);
 
-  #spriteGlyph(tileX: number, tileY: number): BpxGlyph {
+  #spriteGlyph(tileX: number, tileY: number, w: number = 3): BpxGlyph {
     const sprite = BpxSprite.from(
       ".beetpx/pico-8-font.png",
-      3,
+      w,
       5,
       tileX * 8,
       tileY * 8,
