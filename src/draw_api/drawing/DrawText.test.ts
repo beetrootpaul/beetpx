@@ -1,7 +1,7 @@
-import { describe, test } from "vitest";
+import { describe, expect, test } from "vitest";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { BpxFont, BpxGlyph } from "../../font/Font";
-import { spr_, v_ } from "../../shorthands";
+import { BpxGlyph } from "../../font/Font";
+import { font_, spr_, v_ } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { DrawingTestSetup, drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPixels } from "../Pixels";
@@ -19,34 +19,27 @@ describe("DrawText", () => {
   const fontImage = new TestImage({
     withMapping: { _: cFontBg, X: cFontFg },
     image: `
-        X X _ _ X X X _ _ _ 
-        X _ X _ X X X X _ X 
-        X X X _ X X X X _ X 
-        X _ _ X X X X _ X _ 
-        X _ _ X X X X X _ X 
-        X X X _ X X X X _ X 
-      `,
+      X X _ _ X X X _ _ _ 
+      X _ X _ X X X X _ X 
+      X X X _ X X X X _ X 
+      X _ _ X X X X _ X _ 
+      X _ _ X X X X X _ X 
+      X X X _ X X X X _ X 
+    `,
   });
 
-  class TestFont extends BpxFont {
-    readonly ascent = 6;
+  const testFont = font_({
+    ascent: 6,
+    descent: 2,
+    lineGap: 1,
 
-    readonly descent = 2;
-
-    readonly lineGap = 1;
-
-    readonly spriteSheetUrls = [fontImage.uniqueUrl];
-
-    protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean {
-      return color?.cssHex === cFontFg.cssHex;
-    }
-
-    protected readonly glyphs = new Map<string, BpxGlyph>([
+    glyphs: new Map<string, BpxGlyph>([
       [
         "B",
         {
           type: "sprite",
           sprite: spr_(fontImage.uniqueUrl)(4, 6, 0, 0),
+          isTextColor: sc => sc?.cssHex === cFontFg.cssHex,
           advance: 5,
         },
       ],
@@ -82,6 +75,7 @@ describe("DrawText", () => {
         {
           type: "sprite",
           sprite: spr_(fontImage.uniqueUrl)(3, 5, 7, 1),
+          isTextColor: sc => sc?.cssHex === cFontFg.cssHex,
           advance: 4,
         },
       ],
@@ -90,6 +84,7 @@ describe("DrawText", () => {
         {
           type: "sprite",
           sprite: spr_(fontImage.uniqueUrl)(2, 3, 8, 1),
+          isTextColor: sc => sc?.cssHex === cFontFg.cssHex,
           advance: 4,
           offset: v_(0, 2),
           kerning: { B: -1, x: -1 },
@@ -123,36 +118,182 @@ describe("DrawText", () => {
           advance: 3,
         },
       ],
-    ]);
-
-    protected mapChar(char: string): string {
-      return char;
-    }
-  }
+    ]),
+  });
 
   let dts: DrawingTestSetup;
 
-  test("simple printing", () => {
-    dts = drawingTestSetup(16, 10, c0);
-    dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+  describe("simple printing", () => {
+    test("single line", () => {
+      dts = drawingTestSetup(16, 10, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(new TestFont());
-    dts.drawApi.drawText("Bpx,", v_(1, 1), c1);
+      dts.drawApi.useFont(testFont);
+      const text = "Bpx,";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
 
-    dts.canvas.expectToEqual({
-      withMapping: { "-": c0, "#": c1 },
-      expectedImageAsAscii: `
-        - - - - - - - - - - - - - - - -
-        - # # - - - - - - - - - - - - -
-        - # - # - - # # - - # - # - - -
-        - # # # - - # - # - # - # - - -
-        - # - - # - # # - - - # - - - -
-        - # - - # - # - - - # - # - - -
-        - # # # - - # - - - # - # - # -
-        - - - - - - - - - - - - - - # -
-        - - - - - - - - - - - - - # - -
-        - - - - - - - - - - - - - - - -
-      `,
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - - - -
+          - # - # - - # # - - # - # - - -
+          - # # # - - # - # - # - # - - -
+          - # - - # - # # - - - # - - - -
+          - # - - # - # - - - # - # - - -
+          - # # # - - # - - - # - # - # -
+          - - - - - - - - - - - - - - # -
+          - - - - - - - - - - - - - # - -
+          - - - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3 + 2);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(6 + 2);
+    });
+
+    test("lines made entirely of missing glyph still occupy a vertical space", () => {
+      dts = drawingTestSetup(14, 38, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+      dts.drawApi.useFont(testFont);
+      const text = "Bpx\n\nBpx\n";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(
+        3 * (6 + 2 + 1) + (6 + 2),
+      );
+    });
+  });
+
+  describe("missing glyphs", () => {
+    test("missing glyphs don't occupy a horizontal space", () => {
+      dts = drawingTestSetup(20, 8, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+      dts.drawApi.useFont(testFont);
+      const text = "111B222p333x444";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - - - - - - - -
+          - # - # - - # # - - # - # - - - - - - -
+          - # # # - - # - # - # - # - - - - - - -
+          - # - - # - # # - - - # - - - - - - - -
+          - # - - # - # - - - # - # - - - - - - -
+          - # # # - - # - - - # - # - - - - - - -
+          - - - - - - - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(6 + 2);
+    });
+
+    test("lines made entirely of missing glyph still occupy a vertical space", () => {
+      dts = drawingTestSetup(14, 38, c0);
+      dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
+
+      dts.drawApi.useFont(testFont);
+      const text = "Bpx\n111222333\nBpx\n111222333";
+      dts.drawApi.drawText(text, v_(1, 1), c1);
+
+      dts.canvas.expectToEqual({
+        withMapping: { "-": c0, "#": c1 },
+        expectedImageAsAscii: `
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - # # - - - - - - - - - - -
+          - # - # - - # # - - # - # -
+          - # # # - - # - # - # - # -
+          - # - - # - # # - - - # - -
+          - # - - # - # - - - # - # -
+          - # # # - - # - - - # - # -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+          - - - - - - - - - - - - - -
+        `,
+      });
+
+      expect(dts.drawApi.measureText(text).wh.x).toEqual(4 + 1 + 3 + 1 + 3);
+      expect(dts.drawApi.measureText(text).wh.y).toEqual(
+        3 * (6 + 2 + 1) + (6 + 2),
+      );
     });
   });
 
@@ -161,7 +302,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [false, false] });
 
       dts.canvas.expectToEqual({
@@ -189,7 +330,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [true, false] });
 
       dts.canvas.expectToEqual({
@@ -217,7 +358,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [false, true] });
 
       dts.canvas.expectToEqual({
@@ -245,7 +386,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [true, true] });
 
       dts.canvas.expectToEqual({
@@ -274,7 +415,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(18, 12, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(new TestFont());
+    dts.drawApi.useFont(testFont);
     dts.drawApi.drawText("Bpx,", v_(2.49, 1.51), c1);
 
     dts.canvas.expectToEqual({
@@ -301,7 +442,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(44, 18, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("Bpx,", v_(1, 1), c1, { scaleXy: v_(3, 2) });
 
       dts.canvas.expectToEqual({
@@ -333,7 +474,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(16, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("Bpx,", v_(1, 1), c1, { scaleXy: v_(-3, -2) });
 
       dts.canvas.expectToEqual({
@@ -357,7 +498,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(16, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("Bpx,", v_(1, 1), c1, { scaleXy: v_(0.9, 0.9) });
 
       dts.canvas.expectToEqual({
@@ -401,7 +542,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(26, 18, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(new TestFont());
+    dts.drawApi.useFont(testFont);
     dts.drawApi.drawText("B,", v_(13, 9), c1, {
       centerXy: [true, true],
       scaleXy: v_(4, 2),
@@ -436,7 +577,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(7, 3, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(new TestFont());
+    dts.drawApi.useFont(testFont);
     dts.drawApi.drawText("Bpx,", v_(-3, -2), c1);
 
     dts.canvas.expectToEqual({
@@ -453,7 +594,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(16, 10, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(new TestFont());
+    dts.drawApi.useFont(testFont);
     dts.drawApi.setCameraXy(v_(2, -5));
     dts.drawApi.drawText("Bpx,", v_(1, 1), c1);
 
@@ -478,7 +619,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(16, 10, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(new TestFont());
+    dts.drawApi.useFont(testFont);
     dts.drawApi.setDrawingPattern(
       BpxDrawingPattern.from(`
         ##--
@@ -510,7 +651,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(16, 10, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(new TestFont());
+    dts.drawApi.useFont(testFont);
     dts.drawApi.setCameraXy(v_(2, -3));
     dts.drawApi.setDrawingPattern(
       BpxDrawingPattern.from(`
@@ -544,7 +685,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(28, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(new TestFont());
+      dts.drawApi.useFont(testFont);
       dts.drawApi.drawText("B[m2]p[m3]x[m4],", v_(1, 1), c1, {
         colorMarkers: {
           m2: c2,

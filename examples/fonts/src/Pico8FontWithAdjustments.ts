@@ -1,115 +1,129 @@
-import { BpxFontPico8, BpxGlyph, BpxPixels, spr_, v_ } from "../../../src";
+import {
+  BpxGlyph,
+  BpxPixels,
+  BpxRgbColor,
+  font_,
+  font_pico8_,
+  spr_,
+  v_,
+} from "../../../src";
+import { BpxPalettePico8 } from "../../../src/color/PalettePico8";
 
-export class Pico8FontWithAdjustments extends BpxFontPico8 {
-  constructor() {
-    super();
+const s = spr_(".beetpx/pico-8-font.png");
 
-    this.ascent = 6;
-    this.descent = 1;
-    this.lineGap = 1;
+const isTextColor = (colorFromSpriteSheet: BpxRgbColor | null) =>
+  colorFromSpriteSheet?.cssHex === BpxPalettePico8.white.cssHex;
 
-    this.glyphs = new Map<string, BpxGlyph>([
-      ...this.glyphs,
+export const pico8FontWithAdjustments = font_(font_pico8_, baseFontConfig => ({
+  ...baseFontConfig,
 
-      //
-      // additional sprites from the spritesheet
-      //
-      [
-        "⭐",
-        {
-          type: "sprite",
-          sprite: spr_(BpxFontPico8.spriteSheetUrl)(7, 5, 16, 72),
-          advance: 8,
-        },
-      ],
-      [
-        "x",
-        {
-          type: "sprite",
-          sprite: spr_(BpxFontPico8.spriteSheetUrl)(5, 5, 57, 72),
-          advance: 4,
-        },
-      ],
-      [
-        "➡",
-        {
-          type: "sprite",
-          sprite: spr_(BpxFontPico8.spriteSheetUrl)(7, 5, 8, 72),
-          advance: 8,
-        },
-      ],
-      [
-        "❎",
-        {
-          type: "sprite",
-          sprite: spr_(BpxFontPico8.spriteSheetUrl)(7, 5, 56, 72),
-          advance: 8,
-        },
-      ],
-      [
-        "❤",
-        {
-          type: "sprite",
-          sprite: spr_(BpxFontPico8.spriteSheetUrl)(5, 5, 57, 64),
-          advance: 6,
-        },
-      ],
+  ascent: 6,
+  descent: 1,
 
-      //
-      // additional manually defined sprites
-      //
-      [
-        "q",
-        {
-          type: "pixels",
-          pixels: BpxPixels.from(`
-            -#-
-            #-#
-            #-#
-            #-#
-            -#-
-            -##
-          `),
-          advance: 4,
-          offset: v_(0, 1),
-        },
-      ],
-      [
-        "[",
-        {
-          type: "pixels",
-          pixels: BpxPixels.from(`
-            ##
-            #-
-            #-
-            #-
-            #-
-            #-
-            ##
-          `),
-          advance: 3,
-          offset: v_(0, 1),
-        },
-      ],
-      [
-        "]",
-        {
-          type: "pixels",
-          pixels: BpxPixels.from(`
-            ##
-            -#
-            -#
-            -#
-            -#
-            -#
-            ##
-          `),
-          advance: 3,
-          offset: v_(0, 1),
-        },
-      ],
-    ]);
-  }
-}
+  glyphs: new Map<string, BpxGlyph>([
+    ...baseFontConfig.glyphs,
 
-export const pico8FontWithAdjustments = new Pico8FontWithAdjustments();
+    //
+    // additional sprites from the spritesheet
+    //
+    [
+      "⭐",
+      {
+        type: "sprite",
+        sprite: s(7, 5, 16, 72),
+        isTextColor,
+        advance: 8,
+      },
+    ],
+    [
+      "x",
+      {
+        type: "sprite",
+        sprite: s(5, 5, 57, 72),
+        isTextColor,
+        advance: 4,
+      },
+    ],
+    [
+      "➡",
+      {
+        type: "sprite",
+        sprite: s(7, 5, 8, 72),
+        isTextColor,
+        advance: 8,
+      },
+    ],
+    [
+      "❎",
+      {
+        type: "sprite",
+        sprite: s(7, 5, 56, 72),
+        isTextColor,
+        advance: 8,
+      },
+    ],
+    [
+      "❤",
+      {
+        type: "sprite",
+        sprite: s(5, 5, 57, 64),
+        isTextColor,
+        advance: 6,
+      },
+    ],
+
+    //
+    // additional manually defined sprites
+    //
+    [
+      "q",
+      {
+        type: "pixels",
+        pixels: BpxPixels.from(`
+          -#-
+          #-#
+          #-#
+          #-#
+          -#-
+          -##
+        `),
+        advance: 4,
+        offset: v_(0, 1),
+      },
+    ],
+    [
+      "[",
+      {
+        type: "pixels",
+        pixels: BpxPixels.from(`
+          ##
+          #-
+          #-
+          #-
+          #-
+          #-
+          ##
+        `),
+        advance: 3,
+        offset: v_(0, 1),
+      },
+    ],
+    [
+      "]",
+      {
+        type: "pixels",
+        pixels: BpxPixels.from(`
+          ##
+          -#
+          -#
+          -#
+          -#
+          -#
+          ##
+        `),
+        advance: 3,
+        offset: v_(0, 1),
+      },
+    ],
+  ]),
+}));

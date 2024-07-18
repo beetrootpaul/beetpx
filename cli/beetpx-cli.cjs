@@ -2,8 +2,7 @@
 
 const path = require("path");
 const fs = require("fs");
-const removeHtmlComments = require("remove-html-comments");
-const removeCssComments = require("strip-comments");
+const removeCssAndJsComments = require("strip-comments");
 
 const yargsBuilderConstants = {
   const: {
@@ -459,9 +458,8 @@ function generateHtmlFile(params) {
     content = content.replace(htmlWindowConstantsSlot, htmlWindowConstants);
   }
 
-  content = removeHtmlComments(content).data;
-  // NOTE: This one also removes JS block comments!
-  content = removeCssComments(content, {
+  content = removeHtmlComments(content);
+  content = removeCssAndJsComments(content, {
     line: true,
     block: true,
     keepProtected: false,
@@ -471,6 +469,10 @@ function generateHtmlFile(params) {
   fs.writeFileSync(gameCodebase.generatedIndexHtml, content, {
     encoding: "utf8",
   });
+}
+
+function removeHtmlComments(content) {
+  return content.replace(/<!--[\s\S]*?-->/g, "");
 }
 
 function copyBeetPxAdditionalAssets() {

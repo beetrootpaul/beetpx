@@ -47,6 +47,8 @@ export class DrawText {
       color,
       colorMarkers,
     )) {
+      if (arrangedGlyph.type === "line_break") continue;
+
       const xy = canvasXy.add(arrangedGlyph.leftTop.mul(scaleXy));
       if (arrangedGlyph.type === "sprite") {
         this.#sprite.draw(

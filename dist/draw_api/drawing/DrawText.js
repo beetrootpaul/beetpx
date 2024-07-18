@@ -34,6 +34,8 @@ export class DrawText {
         canvasXy = canvasXy.round();
         scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
         for (const arrangedGlyph of font.arrangeGlyphsFor(text, color, colorMarkers)) {
+            if (arrangedGlyph.type === "line_break")
+                continue;
             const xy = canvasXy.add(arrangedGlyph.leftTop.mul(scaleXy));
             if (arrangedGlyph.type === "sprite") {
                 __classPrivateFieldGet(this, _DrawText_sprite, "f").draw(arrangedGlyph.sprite, __classPrivateFieldGet(this, _DrawText_assets, "f").getImageAsset(arrangedGlyph.sprite.imageUrl), xy, scaleXy, [false, false], arrangedGlyph.spriteColorMapping, pattern);

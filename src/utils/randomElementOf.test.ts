@@ -14,7 +14,7 @@ test("randomElementOf", () => {
   range(elements.length * expectedSamplesPerElement).forEach(() => {
     const pickedElement =
       randomElementOf(elements) ?? throwError("element should be defined");
-    results[pickedElement] += 1;
+    results[pickedElement]! += 1;
   });
   const acceptedDiff = 0.3 * expectedSamplesPerElement;
   expect(results[0]).toBeGreaterThanOrEqual(

@@ -1,7 +1,6 @@
 import { BpxPalettePico8 } from "../color/PalettePico8";
-import { type BpxRgbColor } from "../color/RgbColor";
 import { BpxSprite } from "../sprite/Sprite";
-import { BpxFont, type BpxGlyph } from "./Font";
+import { BpxFontConfig, BpxGlyph } from "./Font";
 
 /**
  * A free to use (CC-0) font created by zep and distributed as part of PICO-8 fantasy console.
@@ -9,20 +8,12 @@ import { BpxFont, type BpxGlyph } from "./Font";
  * Links:
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the font being available under a CC-0 license
  */
-export class BpxFontPico8 extends BpxFont {
-  static spriteSheetUrl = ".beetpx/pico-8-font.png";
-
+export class BpxFontConfigPico8 implements BpxFontConfig {
   ascent = 5;
   descent = 0;
   lineGap = 1;
 
-  spriteSheetUrls = [BpxFontPico8.spriteSheetUrl];
-
-  protected isSpriteSheetTextColor(color: BpxRgbColor | null): boolean {
-    return color?.cssHex === BpxPalettePico8.white.cssHex;
-  }
-
-  protected mapChar(char: string): string {
+  mapChar(char: string): string {
     return char.toLowerCase();
   }
 
@@ -108,7 +99,7 @@ export class BpxFontPico8 extends BpxFont {
 
   #spriteGlyph(tileX: number, tileY: number): BpxGlyph {
     const sprite = BpxSprite.from(
-      BpxFontPico8.spriteSheetUrl,
+      ".beetpx/pico-8-font.png",
       3,
       5,
       tileX * 8,
@@ -117,6 +108,8 @@ export class BpxFontPico8 extends BpxFont {
     return {
       type: "sprite",
       sprite: sprite,
+      isTextColor: colorFromSpriteSheet =>
+        colorFromSpriteSheet?.cssHex === BpxPalettePico8.white.cssHex,
       advance: sprite.size.x + 1,
     };
   }

@@ -1,6 +1,5 @@
-import { BpxRgbColor } from "../color/RgbColor";
 import { BpxPixels } from "../draw_api/Pixels";
-import { BpxFont, BpxGlyph } from "./Font";
+import { BpxFontConfig, BpxGlyph } from "./Font";
 
 /**
  * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
@@ -11,22 +10,16 @@ import { BpxFont, BpxGlyph } from "./Font";
  *   % $ ( ) [ ] { } < >
  *   A B C D E F G H I J K L M
  *   N O P Q R S T U V W X Y Z
- *   a b c d e f g h i j k l m      (note: both upper- and lower-case
- *   n o p q r s t u v w x y z             characters use same glyphs)
+ *   a b c d e f g h i j k l m
+ *   n o p q r s t u v w x y z
  */
-export class BpxFontSaint11Minimal4 extends BpxFont {
-  ascent = 4;
+export class BpxFontConfigSaint11Minimal5 implements BpxFontConfig {
+  ascent = 5;
   descent = 0;
   lineGap = 2;
 
-  spriteSheetUrls = [];
-
-  protected isSpriteSheetTextColor(_color: BpxRgbColor | null): boolean {
-    return true;
-  }
-
   mapChar(char: string): string {
-    return char.toLowerCase();
+    return char;
   }
 
   #pixelsGlyph(ascii: string): BpxGlyph {
@@ -46,15 +39,17 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         ----
         ----
         ----
+        ----
       `),
     ],
     [
       ".",
       this.#pixelsGlyph(`
-        -
-        -
-        -
-        #
+        --
+        --
+        --
+        ##
+        ##
       `),
     ],
     [
@@ -64,34 +59,35 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         -
         -
         #
+        -
       `),
     ],
     [
       "!",
       this.#pixelsGlyph(`
-        #
-        #
-        #
-        -
-        #
+        ###
+        ###
+        -#-
+        ---
+        -#-
       `),
     ],
     [
       "?",
       this.#pixelsGlyph(`
-        -#-
-        #-#
+        ###
         --#
         -#-
+        ---
         -#-
       `),
     ],
     [
       "'",
       this.#pixelsGlyph(`
-        #
-        #
         -
+        #
+        #
         -
         -
       `),
@@ -109,18 +105,20 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
     [
       "*",
       this.#pixelsGlyph(`
-        #-#
-        -#-
-        #-#
-        ---
+        --
+        ##
+        ##
+        --
+        --
       `),
     ],
     [
       "/",
       this.#pixelsGlyph(`
         --#
+        --#
         -#-
-        -#-
+        #--
         #--
       `),
     ],
@@ -131,6 +129,7 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         -#-
         ###
         -#-
+        ---
       `),
     ],
     [
@@ -140,12 +139,14 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         ---
         ###
         ---
+        ---
       `),
     ],
     [
       "0",
       this.#pixelsGlyph(`
         -#-
+        #-#
         #-#
         #-#
         -#-
@@ -158,14 +159,16 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         ##-
         -#-
         -#-
+        ###
       `),
     ],
     [
       "2",
       this.#pixelsGlyph(`
-        ##-
-        -##
-        #--
+        -#-
+        #-#
+        --#
+        -#-
         ###
       `),
     ],
@@ -173,15 +176,17 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
       "3",
       this.#pixelsGlyph(`
         ###
+        --#
         -##
         --#
-        ###
+        ##-
       `),
     ],
     [
       "4",
       this.#pixelsGlyph(`
-        #-#
+        --#
+        -##
         #-#
         ###
         --#
@@ -191,7 +196,8 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
       "5",
       this.#pixelsGlyph(`
         ###
-        ##-
+        #--
+        ###
         --#
         ##-
       `),
@@ -199,10 +205,11 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
     [
       "6",
       this.#pixelsGlyph(`
-        -#-
+        ###
         #--
         ###
-        -#-
+        #-#
+        ###
       `),
     ],
     [
@@ -211,49 +218,55 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         ###
         --#
         -#-
-        #--
+        -#-
+        -#-
       `),
     ],
     [
       "8",
       this.#pixelsGlyph(`
         ###
-        -#-
         #-#
         -#-
+        #-#
+        ###
       `),
     ],
     [
       "9",
       this.#pixelsGlyph(`
         ###
+        #-#
         ###
         --#
-        ##-
+        ###
       `),
     ],
     [
       "%",
       this.#pixelsGlyph(`
-        #--#
-        --#-
-        -#--
-        #--#
+        #-#
+        --#
+        -#-
+        #--
+        #-#
       `),
     ],
     [
       "$",
       this.#pixelsGlyph(`
-        -##
+        ###
         ##-
         -##
-        ##-
+        ###
+        -#-
       `),
     ],
     [
       "(",
       this.#pixelsGlyph(`
         -#
+        #-
         #-
         #-
         -#
@@ -265,6 +278,7 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         #-
         -#
         -#
+        -#
         #-
       `),
     ],
@@ -272,6 +286,7 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
       "[",
       this.#pixelsGlyph(`
         ##
+        #-
         #-
         #-
         ##
@@ -283,49 +298,315 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         ##
         -#
         -#
+        -#
         ##
       `),
     ],
     [
       "{",
       this.#pixelsGlyph(`
-        -#
-        ##
-        ##
-        -#
+        -##
+        -#-
+        #--
+        -#-
+        -##
       `),
     ],
     [
       "}",
       this.#pixelsGlyph(`
-        #-
-        ##
-        ##
-        #-
+        ##-
+        -#-
+        --#
+        -#-
+        ##-
       `),
     ],
     [
       "<",
       this.#pixelsGlyph(`
-        ---
-        -##
+        --#
+        -#-
         #--
-        -##
+        -#-
+        --#
       `),
     ],
     [
       ">",
       this.#pixelsGlyph(`
+        #--
+        -#-
+        --#
+        -#-
+        #--
+      `),
+    ],
+    [
+      "A",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        ###
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "B",
+      this.#pixelsGlyph(`
         ##-
+        #-#
+        ##-
+        #-#
+        ###
+      `),
+    ],
+    [
+      "C",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        #--
+        #-#
+        -#-
+      `),
+    ],
+    [
+      "D",
+      this.#pixelsGlyph(`
+        ##-
+        #-#
+        #-#
+        #-#
+        ##-
+      `),
+    ],
+    [
+      "E",
+      this.#pixelsGlyph(`
+        ###
+        #--
+        ##-
+        #--
+        ###
+      `),
+    ],
+    [
+      "F",
+      this.#pixelsGlyph(`
+        ###
+        #--
+        ##-
+        #--
+        #--
+      `),
+    ],
+    [
+      "G",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        #--
+        #-#
+        -##
+      `),
+    ],
+    [
+      "H",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        ###
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "I",
+      this.#pixelsGlyph(`
+        ###
+        -#-
+        -#-
+        -#-
+        ###
+      `),
+    ],
+    [
+      "J",
+      this.#pixelsGlyph(`
+        --#
+        --#
+        --#
+        #-#
+        -#-
+      `),
+    ],
+    [
+      "K",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        ##-
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "L",
+      this.#pixelsGlyph(`
+        #--
+        #--
+        #--
+        #--
+        ###
+      `),
+    ],
+    [
+      "M",
+      this.#pixelsGlyph(`
+        #-#
+        ###
+        ###
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "N",
+      this.#pixelsGlyph(`
+        ##-
+        ###
+        #-#
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "O",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        #-#
+        #-#
+        -#-
+      `),
+    ],
+    [
+      "P",
+      this.#pixelsGlyph(`
+        ##-
+        #-#
+        ###
+        #--
+        #--
+      `),
+    ],
+    [
+      "Q",
+      this.#pixelsGlyph(`
+        -#-
+        #-#
+        #-#
+        ###
+        -##
+      `),
+    ],
+    [
+      "R",
+      this.#pixelsGlyph(`
+        ##-
+        #-#
+        ##-
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "S",
+      this.#pixelsGlyph(`
+        ###
+        #--
+        -#-
         --#
         ##-
-        ---
+      `),
+    ],
+    [
+      "T",
+      this.#pixelsGlyph(`
+        ###
+        -#-
+        -#-
+        -#-
+        -#-
+      `),
+    ],
+    [
+      "U",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        #-#
+        #-#
+        ###
+      `),
+    ],
+    [
+      "V",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        #-#
+        -#-
+        -#-
+      `),
+    ],
+    [
+      "W",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        ###
+        ###
+        #-#
+      `),
+    ],
+    [
+      "X",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        -#-
+        #-#
+        #-#
+      `),
+    ],
+    [
+      "Y",
+      this.#pixelsGlyph(`
+        #-#
+        #-#
+        -#-
+        -#-
+        -#-
+      `),
+    ],
+    [
+      "Z",
+      this.#pixelsGlyph(`
+        ###
+        --#
+        -#-
+        #--
+        ###
       `),
     ],
     [
       "a",
       this.#pixelsGlyph(`
-        ##-
+        -#-
+        #-#
         #-#
         ###
         #-#
@@ -335,9 +616,10 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
       "b",
       this.#pixelsGlyph(`
         #--
+        #--
         ##-
         #-#
-        ###
+        ##-
       `),
     ],
     [
@@ -346,40 +628,45 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         -##
         #--
         #--
+        #--
         -##
       `),
     ],
     [
       "d",
       this.#pixelsGlyph(`
-        ##-
+        --#
+        --#
+        -##
         #-#
-        #-#
-        ##-
+        ###
       `),
     ],
     [
       "e",
       this.#pixelsGlyph(`
+        -#-
+        #-#
         ###
-        ##-
         #--
-        ###
+        -##
       `),
     ],
     [
       "f",
       this.#pixelsGlyph(`
+        -##
+        -#-
         ###
-        #--
-        ##-
-        #--
+        -#-
+        -#-
       `),
     ],
     [
       "g",
       this.#pixelsGlyph(`
-        -##
+        -#-
+        #-#
         #--
         #-#
         -##
@@ -389,6 +676,7 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
       "h",
       this.#pixelsGlyph(`
         #--
+        #--
         ##-
         #-#
         #-#
@@ -397,24 +685,27 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
     [
       "i",
       this.#pixelsGlyph(`
-        #
-        #
-        #
-        #
+        -#
+        --
+        -#
+        -#
+        -#
       `),
     ],
     [
       "j",
       this.#pixelsGlyph(`
-        ##
-        -#
-        -#
-        #-
+        -##
+        --#
+        --#
+        #-#
+        -#-
       `),
     ],
     [
       "k",
       this.#pixelsGlyph(`
+        #-#
         #-#
         ##-
         #-#
@@ -424,16 +715,18 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
     [
       "l",
       this.#pixelsGlyph(`
-        #-
-        #-
-        #-
-        ##
+        #
+        #
+        #
+        #
+        #
       `),
     ],
     [
       "m",
       this.#pixelsGlyph(`
         #-#
+        ###
         ###
         #-#
         #-#
@@ -446,23 +739,26 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         #-#
         #-#
         #-#
+        #-#
       `),
     ],
     [
       "o",
       this.#pixelsGlyph(`
-        -##
+        -#-
         #-#
         #-#
-        ##-
+        #-#
+        -#-
       `),
     ],
     [
       "p",
       this.#pixelsGlyph(`
-        ###
-        #-#
         ##-
+        #-#
+        ###
+        #--
         #--
       `),
     ],
@@ -471,24 +767,27 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
       this.#pixelsGlyph(`
         -#-
         #-#
+        #-#
         ###
-        -#-
+        -##
       `),
     ],
     [
       "r",
       this.#pixelsGlyph(`
-        ##-
+        -#-
         #-#
-        ##-
-        #-#
+        #--
+        #--
+        #--
       `),
     ],
     [
       "s",
       this.#pixelsGlyph(`
         -##
-        ##-
+        #--
+        -#-
         --#
         ##-
       `),
@@ -496,10 +795,11 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
     [
       "t",
       this.#pixelsGlyph(`
+        -#-
         ###
         -#-
         -#-
-        -#-
+        -##
       `),
     ],
     [
@@ -508,7 +808,8 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         #-#
         #-#
         #-#
-        ##-
+        #-#
+        -#-
       `),
     ],
     [
@@ -518,6 +819,7 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         #-#
         #-#
         -#-
+        -#-
       `),
     ],
     [
@@ -526,12 +828,14 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         #-#
         #-#
         ###
+        ###
         #-#
       `),
     ],
     [
       "x",
       this.#pixelsGlyph(`
+        #-#
         #-#
         -#-
         #-#
@@ -545,12 +849,14 @@ export class BpxFontSaint11Minimal4 extends BpxFont {
         #-#
         -#-
         -#-
+        -#-
       `),
     ],
     [
       "z",
       this.#pixelsGlyph(`
         ###
+        --#
         -#-
         #--
         ###

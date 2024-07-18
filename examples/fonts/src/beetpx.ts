@@ -6,27 +6,28 @@ import {
   font_saint11Minimal4_,
   font_saint11Minimal5_,
   rgb_p8_,
-  u_,
   v_,
+  v_0_0_,
 } from "../../../src";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
+// Lines below are arranged in a way which allows to visually see how
+// treated are lines effectively blank, because all of they characters
+// have no corresponding glyphs in a given font.
 const text = [
   "The quick [c1]brown[c0] fox jumps",
   "over the [c2]lazy[c0] dog",
   "0123456789 -+= .,:;!? ~@#$%^&*_",
-  "()[]{}<> /|\\ `'\"",
   "⭐➡❎❤️",
+  "()[]{}<> /|\\ `'\"",
 ].join("\n");
-
-const centerXy: [boolean, boolean] = [true, false];
 
 const minScaleXy = v_(1);
 const maxScaleXy = v_(8);
 let scaleXy = minScaleXy;
 
-let cameraXy = u_.offset4Directions()[0]!;
+let cameraXy = v_0_0_;
 
 b_.init({
   canvasSize: "256x256",
@@ -47,6 +48,10 @@ b_.init({
       cameraXy = cameraXy.mul(newScale.div(scaleXy));
       scaleXy = newScale;
     }
+    if (b_.wasButtonJustPressed("menu")) {
+      cameraXy = v_0_0_;
+      scaleXy = minScaleXy;
+    }
     cameraXy = cameraXy.sub(b_.getPressedDirection().mul(2).mul(scaleXy));
   });
 
@@ -55,37 +60,34 @@ b_.init({
 
     b_.clearCanvas(rgb_p8_.wine);
 
-    let cursor = v_(128, 8).mul(scaleXy);
+    let cursor = v_(8, 4).mul(scaleXy);
 
-    for (const font of [
-      font_pico8_,
-      pico8FontWithAdjustments,
-      font_saint11Minimal4_,
-      font_saint11Minimal5_,
-      customFont,
-    ]) {
+    for (const [font, label] of [
+      [font_pico8_, "font_pico8_"],
+      [pico8FontWithAdjustments, "pico8FontWithAdjustments"],
+      [font_saint11Minimal4_, "font_saint11Minimal4_"],
+      [font_saint11Minimal5_, "font_saint11Minimal5_"],
+      [customFont, "customFont"],
+    ] as const) {
+      b_.useFont(font_pico8_);
+      b_.drawText(label, cursor, rgb_p8_.dusk, { scaleXy });
+      cursor = cursor.add(scaleXy.mul(0, 8));
+
       b_.useFont(font);
-
       const { wh: textWh, offset: textOffset } = b_.measureText(text, {
         scaleXy,
-        centerXy,
       });
-
       drawBox(textWh, cursor.add(textOffset), scaleXy);
-
       b_.drawText(text, cursor, rgb_p8_.peach, {
         scaleXy,
-        centerXy,
         colorMarkers: {
           c0: rgb_p8_.peach,
           c1: rgb_p8_.tan,
           c2: rgb_p8_.sky,
         },
       });
-
       drawMarkers(font, cursor.add(textOffset), scaleXy);
-
-      cursor = cursor.add(0, textWh.y).add(v_(0, 4).mul(scaleXy));
+      cursor = cursor.add(0, textWh.y).add(scaleXy.mul(0, 4));
     }
   });
 

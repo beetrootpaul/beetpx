@@ -64,7 +64,6 @@
     "audio-buffer-utils": "5.1.2",
     "cross-zip": "4.0.1",
     "fast-png": "6.2.0",
-    "remove-html-comments": "1.0.2",
     "strip-comments": "2.0.1",
     "vite": "5.2.7",
     "yargs": "17.7.2"
@@ -72,19 +71,19 @@
   "devDependencies": {
     "@playwright/test": "1.42.1",
     "@rollup/plugin-typescript": "11.1.6",
-    "@zamiell/typedoc-plugin-not-exported": "0.2.0",
+    "@zamiell/typedoc-plugin-not-exported": "0.3.0",
     "glob": "10.3.12",
     "husky": "9.0.11",
     "npm-run-all": "4.1.5",
     "open-cli": "8.0.0",
-    "prettier": "3.2.5",
-    "prettier-plugin-organize-imports": "3.2.4",
+    "prettier": "3.3.3",
+    "prettier-plugin-organize-imports": "4.0.0",
     "rimraf": "5.0.5",
     "rollup": "4.13.2",
     "rollup-plugin-dts": "6.1.0",
-    "tslib": "2.6.2",
-    "typedoc": "0.25.12",
-    "typescript": "5.4.3",
+    "tslib": "2.6.3",
+    "typedoc": "0.26.4",
+    "typescript": "5.5.3",
     "vitest": "1.4.0"
   }
 }

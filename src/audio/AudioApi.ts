@@ -234,7 +234,7 @@ export class AudioApi {
     for (const playback of this.#playbacks.values()) {
       playback.stop(
         this.#isMuted ? 0 : (
-          opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
+          (opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis)
         ),
       );
     }
@@ -252,7 +252,7 @@ export class AudioApi {
       .get(playbackId)
       ?.stop(
         this.#isMuted ? 0 : (
-          opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis
+          (opts.fadeOutMillis ?? AudioApi.muteUnmuteDefaultFadeMillis)
         ),
       );
   }

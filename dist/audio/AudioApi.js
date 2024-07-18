@@ -150,7 +150,7 @@ export class AudioApi {
         Logger.debugBeetPx(`AudioApi.stopPlayback (fadeOutMillis: ${opts.fadeOutMillis})`);
         __classPrivateFieldGet(this, _AudioApi_playbacks, "f")
             .get(playbackId)
-            ?.stop(__classPrivateFieldGet(this, _AudioApi_isMuted, "f") ? 0 : (opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis));
+            ?.stop(__classPrivateFieldGet(this, _AudioApi_isMuted, "f") ? 0 : ((opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis)));
     }
     pausePlayback(playbackId) {
         Logger.debugBeetPx(`AudioApi.pausePlayback`);
@@ -170,7 +170,7 @@ export class AudioApi {
 _a = AudioApi, _AudioApi_assets = new WeakMap(), _AudioApi_audioContext = new WeakMap(), _AudioApi_globalGainNode = new WeakMap(), _AudioApi_playbacks = new WeakMap(), _AudioApi_isMuted = new WeakMap(), _AudioApi_instances = new WeakSet(), _AudioApi_stopAllPlaybacks = function _AudioApi_stopAllPlaybacks(opts = {}) {
     Logger.debugBeetPx(`AudioApi.#stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`);
     for (const playback of __classPrivateFieldGet(this, _AudioApi_playbacks, "f").values()) {
-        playback.stop(__classPrivateFieldGet(this, _AudioApi_isMuted, "f") ? 0 : (opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis));
+        playback.stop(__classPrivateFieldGet(this, _AudioApi_isMuted, "f") ? 0 : ((opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis)));
     }
 }, _AudioApi_loadStoredGlobalMuteUnmuteState = function _AudioApi_loadStoredGlobalMuteUnmuteState() {
     return (window.localStorage.getItem(__classPrivateFieldGet(_a, _a, "f", _AudioApi_storageMuteUnmuteKey)) ===
