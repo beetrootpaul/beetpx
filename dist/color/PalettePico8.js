@@ -7,20 +7,20 @@ import { BpxRgbColor } from "./RgbColor";
  *  - https:
  */
 export class BpxPalettePico8 {
+    static black = BpxRgbColor.fromCssHex("#000000");
+    static storm = BpxRgbColor.fromCssHex("#1D2B53");
+    static wine = BpxRgbColor.fromCssHex("#7E2553");
+    static moss = BpxRgbColor.fromCssHex("#008751");
+    static tan = BpxRgbColor.fromCssHex("#AB5236");
+    static slate = BpxRgbColor.fromCssHex("#5F574F");
+    static silver = BpxRgbColor.fromCssHex("#C2C3C7");
+    static white = BpxRgbColor.fromCssHex("#FFF1E8");
+    static ember = BpxRgbColor.fromCssHex("#FF004D");
+    static orange = BpxRgbColor.fromCssHex("#FFA300");
+    static lemon = BpxRgbColor.fromCssHex("#FFEC27");
+    static lime = BpxRgbColor.fromCssHex("#00E436");
+    static sky = BpxRgbColor.fromCssHex("#29ADFF");
+    static dusk = BpxRgbColor.fromCssHex("#83769C");
+    static pink = BpxRgbColor.fromCssHex("#FF77A8");
+    static peach = BpxRgbColor.fromCssHex("#FFCCAA");
 }
-BpxPalettePico8.black = BpxRgbColor.fromCssHex("#000000");
-BpxPalettePico8.storm = BpxRgbColor.fromCssHex("#1D2B53");
-BpxPalettePico8.wine = BpxRgbColor.fromCssHex("#7E2553");
-BpxPalettePico8.moss = BpxRgbColor.fromCssHex("#008751");
-BpxPalettePico8.tan = BpxRgbColor.fromCssHex("#AB5236");
-BpxPalettePico8.slate = BpxRgbColor.fromCssHex("#5F574F");
-BpxPalettePico8.silver = BpxRgbColor.fromCssHex("#C2C3C7");
-BpxPalettePico8.white = BpxRgbColor.fromCssHex("#FFF1E8");
-BpxPalettePico8.ember = BpxRgbColor.fromCssHex("#FF004D");
-BpxPalettePico8.orange = BpxRgbColor.fromCssHex("#FFA300");
-BpxPalettePico8.lemon = BpxRgbColor.fromCssHex("#FFEC27");
-BpxPalettePico8.lime = BpxRgbColor.fromCssHex("#00E436");
-BpxPalettePico8.sky = BpxRgbColor.fromCssHex("#29ADFF");
-BpxPalettePico8.dusk = BpxRgbColor.fromCssHex("#83769C");
-BpxPalettePico8.pink = BpxRgbColor.fromCssHex("#FF77A8");
-BpxPalettePico8.peach = BpxRgbColor.fromCssHex("#FFCCAA");

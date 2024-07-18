@@ -1,21 +1,8 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _DrawEllipse_instances, _DrawEllipse_canvas, _DrawEllipse_drawPixel;
 import { BpxVector2d } from "../../misc/Vector2d";
 export class DrawEllipse {
+    #canvas;
     constructor(canvas) {
-        _DrawEllipse_instances.add(this);
-        _DrawEllipse_canvas.set(this, void 0);
-        __classPrivateFieldSet(this, _DrawEllipse_canvas, canvas, "f");
+        this.#canvas = canvas;
     }
     
     draw(xy, wh, color, fill, pattern) {
@@ -26,13 +13,13 @@ export class DrawEllipse {
             return;
         }
         
-        if (!__classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
+        if (!this.#canvas.canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
         const sn = c1?.type === "canvas_snapshot_mapping" ?
-            __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").getMostRecentSnapshot()
+            this.#canvas.getMostRecentSnapshot()
             : null;
         const p = pattern;
         
@@ -54,24 +41,24 @@ export class DrawEllipse {
             
             
             
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, top, c1, c2, p, sn);
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, top, c1, c2, p, sn);
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right, bottom, c1, c2, p, sn);
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left, bottom, c1, c2, p, sn);
+            this.#drawPixel(left, top, c1, c2, p, sn);
+            this.#drawPixel(right, top, c1, c2, p, sn);
+            this.#drawPixel(right, bottom, c1, c2, p, sn);
+            this.#drawPixel(left, bottom, c1, c2, p, sn);
             if (fill === "inside") {
                 for (let x = left + 1; x < right; ++x) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                    this.#drawPixel(x, top, c1, c2, p, sn);
+                    this.#drawPixel(x, bottom, c1, c2, p, sn);
                 }
             }
             else if (fill === "outside") {
                 for (let x = 0; x < left; ++x) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                    this.#drawPixel(x, top, c1, c2, p, sn);
+                    this.#drawPixel(x, bottom, c1, c2, p, sn);
                 }
-                for (let x = right + 1; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                for (let x = right + 1; x < this.#canvas.canvasSize.x; ++x) {
+                    this.#drawPixel(x, top, c1, c2, p, sn);
+                    this.#drawPixel(x, bottom, c1, c2, p, sn);
                 }
             }
             
@@ -96,25 +83,25 @@ export class DrawEllipse {
         
         
         while (bottom - top <= b) {
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, bottom, c1, c2, p, sn);
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, bottom, c1, c2, p, sn);
+            this.#drawPixel(left - 1, bottom, c1, c2, p, sn);
+            this.#drawPixel(right + 1, bottom, c1, c2, p, sn);
             if (fill === "outside") {
                 for (let x = 0; x < left - 1; ++x) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                    this.#drawPixel(x, bottom, c1, c2, p, sn);
                 }
-                for (let x = right + 2; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, bottom, c1, c2, p, sn);
+                for (let x = right + 2; x < this.#canvas.canvasSize.x; ++x) {
+                    this.#drawPixel(x, bottom, c1, c2, p, sn);
                 }
             }
             bottom += 1;
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, left - 1, top, c1, c2, p, sn);
-            __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, right + 1, top, c1, c2, p, sn);
+            this.#drawPixel(left - 1, top, c1, c2, p, sn);
+            this.#drawPixel(right + 1, top, c1, c2, p, sn);
             if (fill === "outside") {
                 for (let x = 0; x < left - 1; ++x) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
+                    this.#drawPixel(x, top, c1, c2, p, sn);
                 }
-                for (let x = right + 2; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, top, c1, c2, p, sn);
+                for (let x = right + 2; x < this.#canvas.canvasSize.x; ++x) {
+                    this.#drawPixel(x, top, c1, c2, p, sn);
                 }
             }
             top -= 1;
@@ -123,37 +110,37 @@ export class DrawEllipse {
         
         
         if (fill === "outside") {
-            for (let x = 0; x < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x; ++x) {
+            for (let x = 0; x < this.#canvas.canvasSize.x; ++x) {
                 for (let y = 0; y < top + 1; ++y) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, y, c1, c2, p, sn);
+                    this.#drawPixel(x, y, c1, c2, p, sn);
                 }
-                for (let y = bottom; y < __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.y; ++y) {
-                    __classPrivateFieldGet(this, _DrawEllipse_instances, "m", _DrawEllipse_drawPixel).call(this, x, y, c1, c2, p, sn);
+                for (let y = bottom; y < this.#canvas.canvasSize.y; ++y) {
+                    this.#drawPixel(x, y, c1, c2, p, sn);
                 }
+            }
+        }
+    }
+    #drawPixel(x, y, c1, c2, pattern, snapshot) {
+        if (!this.#canvas.canSetAt(x, y)) {
+            return;
+        }
+        if (pattern.hasPrimaryColorAt(x, y)) {
+            if (!c1) {
+            }
+            else if (c1.type === "rgb") {
+                this.#canvas.set(c1, x, y);
+            }
+            else {
+                const mapped = c1.getMappedColor(snapshot, y * this.#canvas.canvasSize.x + x);
+                if (mapped) {
+                    this.#canvas.set(mapped, x, y);
+                }
+            }
+        }
+        else {
+            if (c2 != null) {
+                this.#canvas.set(c2, x, y);
             }
         }
     }
 }
-_DrawEllipse_canvas = new WeakMap(), _DrawEllipse_instances = new WeakSet(), _DrawEllipse_drawPixel = function _DrawEllipse_drawPixel(x, y, c1, c2, pattern, snapshot) {
-    if (!__classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canSetAt(x, y)) {
-        return;
-    }
-    if (pattern.hasPrimaryColorAt(x, y)) {
-        if (!c1) {
-        }
-        else if (c1.type === "rgb") {
-            __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").set(c1, x, y);
-        }
-        else {
-            const mapped = c1.getMappedColor(snapshot, y * __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").canvasSize.x + x);
-            if (mapped) {
-                __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").set(mapped, x, y);
-            }
-        }
-    }
-    else {
-        if (c2 != null) {
-            __classPrivateFieldGet(this, _DrawEllipse_canvas, "f").set(c2, x, y);
-        }
-    }
-};

@@ -19,25 +19,25 @@ import { trigSin } from "./trigSin";
 import { wait } from "./wait";
 
 export class BpxUtils {
+    static assertUnreachable = assertUnreachable;
+    static booleanChangingEveryNthFrame = booleanChangingEveryNthFrame;
+    static clamp = clamp;
+    static drawTextWithOutline = drawTextWithOutline;
+    static identity = identity;
+    static isDefined = isDefined;
+    static lerp = lerp;
+    static mod = mod;
+    static noop = noop;
+    static offset4Directions = offset4Directions;
+    static offset8Directions = offset8Directions;
+    static randomElementOf = randomElementOf;
+    static range = range;
+    static repeatEachElement = repeatEachElement;
+    static throwError = throwError;
+    static trigAtan2 = trigAtan2;
+    static trigCos = trigCos;
+    static trigSin = trigSin;
+    static wait = wait;
 }
-BpxUtils.assertUnreachable = assertUnreachable;
-BpxUtils.booleanChangingEveryNthFrame = booleanChangingEveryNthFrame;
-BpxUtils.clamp = clamp;
-BpxUtils.drawTextWithOutline = drawTextWithOutline;
-BpxUtils.identity = identity;
-BpxUtils.isDefined = isDefined;
-BpxUtils.lerp = lerp;
-BpxUtils.mod = mod;
-BpxUtils.noop = noop;
-BpxUtils.offset4Directions = offset4Directions;
-BpxUtils.offset8Directions = offset8Directions;
-BpxUtils.randomElementOf = randomElementOf;
-BpxUtils.range = range;
-BpxUtils.repeatEachElement = repeatEachElement;
-BpxUtils.throwError = throwError;
-BpxUtils.trigAtan2 = trigAtan2;
-BpxUtils.trigCos = trigCos;
-BpxUtils.trigSin = trigSin;
-BpxUtils.wait = wait;
 
 export const u_ = BpxUtils;

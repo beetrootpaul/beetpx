@@ -1,15 +1,3 @@
-var __classPrivateFieldSet = (this && this.__classPrivateFieldSet) || function (receiver, state, value, kind, f) {
-    if (kind === "m") throw new TypeError("Private method is not writable");
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
-    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
-};
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _GameInputGamepad_instances, _GameInputGamepad_browserType, _GameInputGamepad_mappings, _GameInputGamepad_mappingFor;
 import { isDefined } from "../utils/isDefined";
 import { GamepadMapping8BitDo } from "./gamepad_mapping/GamepadMapping8BitDo";
 import { GamepadMappingFallback } from "./gamepad_mapping/GamepadMappingFallback";
@@ -28,22 +16,21 @@ export const supportedGamepadTypes = [
     "other",
 ];
 export class GameInputGamepad {
+    inputMethod = "gamepad";
+    #browserType;
+    #mappings = {
+        standard: new GamepadMappingStandard(),
+        firefoxDualSenseWindows: new GamepadMappingFirefoxDualSenseWindows(),
+        firefoxDualSenseOther: new GamepadMappingFirefoxDualSenseOther(),
+        firefox8bitdoWindows: new GamepadMappingFirefox8BitDoWindows(),
+        firefox8bitdoOther: new GamepadMappingFirefox8BitDoOther(),
+        firefoxOther: new GamepadMappingFirefoxFallback(),
+        safari8bitdo: new GamepadMappingSafari8BitDo(),
+        "8bitdo": new GamepadMapping8BitDo(),
+        other: new GamepadMappingFallback(),
+    };
     constructor(params) {
-        _GameInputGamepad_instances.add(this);
-        this.inputMethod = "gamepad";
-        _GameInputGamepad_browserType.set(this, void 0);
-        _GameInputGamepad_mappings.set(this, {
-            standard: new GamepadMappingStandard(),
-            firefoxDualSenseWindows: new GamepadMappingFirefoxDualSenseWindows(),
-            firefoxDualSenseOther: new GamepadMappingFirefoxDualSenseOther(),
-            firefox8bitdoWindows: new GamepadMappingFirefox8BitDoWindows(),
-            firefox8bitdoOther: new GamepadMappingFirefox8BitDoOther(),
-            firefoxOther: new GamepadMappingFirefoxFallback(),
-            safari8bitdo: new GamepadMappingSafari8BitDo(),
-            "8bitdo": new GamepadMapping8BitDo(),
-            other: new GamepadMappingFallback(),
-        });
-        __classPrivateFieldSet(this, _GameInputGamepad_browserType, params.browserType, "f");
+        this.#browserType = params.browserType;
     }
     startListening() {
         
@@ -53,7 +40,7 @@ export class GameInputGamepad {
         for (const gamepad of navigator.getGamepads()) {
             if (!gamepad)
                 continue;
-            const mapping = __classPrivateFieldGet(this, _GameInputGamepad_instances, "m", _GameInputGamepad_mappingFor).call(this, gamepad);
+            const mapping = this.#mappingFor(gamepad);
             for (let buttonIndex = 0; buttonIndex < gamepad.buttons.length; ++buttonIndex) {
                 const event = mapping.eventForButton(buttonIndex, gamepad.buttons[buttonIndex]);
                 if (event) {
@@ -78,37 +65,37 @@ export class GameInputGamepad {
             .filter(isDefined)
             .map(gamepad => BpxGamepadTypeDetector.detect(gamepad)));
     }
-}
-_GameInputGamepad_browserType = new WeakMap(), _GameInputGamepad_mappings = new WeakMap(), _GameInputGamepad_instances = new WeakSet(), _GameInputGamepad_mappingFor = function _GameInputGamepad_mappingFor(gamepad) {
-    const gamepadType = BpxGamepadTypeDetector.detect(gamepad);
-    if (__classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ||
-        __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_other") {
-        if (gamepadType === "dualsense") {
-            return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ?
-                __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxDualSenseWindows
-                : __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxDualSenseOther;
+    #mappingFor(gamepad) {
+        const gamepadType = BpxGamepadTypeDetector.detect(gamepad);
+        if (this.#browserType === "firefox_windows" ||
+            this.#browserType === "firefox_other") {
+            if (gamepadType === "dualsense") {
+                return this.#browserType === "firefox_windows" ?
+                    this.#mappings.firefoxDualSenseWindows
+                    : this.#mappings.firefoxDualSenseOther;
+            }
+            else if (gamepadType === "8bitdo") {
+                return this.#browserType === "firefox_windows" ?
+                    this.#mappings.firefox8bitdoWindows
+                    : this.#mappings.firefox8bitdoOther;
+            }
+            else {
+                return this.#mappings.firefoxOther;
+            }
         }
-        else if (gamepadType === "8bitdo") {
-            return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "firefox_windows" ?
-                __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefox8bitdoWindows
-                : __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefox8bitdoOther;
+        if (gamepadType === "8bitdo") {
+            return this.#browserType === "safari" ?
+                this.#mappings.safari8bitdo
+                : this.#mappings["8bitdo"];
+        }
+        
+        
+        
+        if (gamepad.mapping === "standard") {
+            return this.#mappings.standard;
         }
         else {
-            return __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").firefoxOther;
+            return this.#mappings.other;
         }
     }
-    if (gamepadType === "8bitdo") {
-        return __classPrivateFieldGet(this, _GameInputGamepad_browserType, "f") === "safari" ?
-            __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").safari8bitdo
-            : __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f")["8bitdo"];
-    }
-    
-    
-    
-    if (gamepad.mapping === "standard") {
-        return __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").standard;
-    }
-    else {
-        return __classPrivateFieldGet(this, _GameInputGamepad_mappings, "f").other;
-    }
-};
+}

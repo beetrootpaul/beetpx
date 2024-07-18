@@ -8,8 +8,13 @@ export class BpxRgbColor {
         }
         return new BpxRgbColor(parseInt(cssHex.slice(1, 3), 16), parseInt(cssHex.slice(3, 5), 16), parseInt(cssHex.slice(5, 7), 16));
     }
+    type = "rgb";
+    
+    r;
+    g;
+    b;
+    cssHex;
     constructor(r, g, b) {
-        this.type = "rgb";
         this.r = Math.min(Math.max(0x00, Math.round(r)), 0xff);
         this.g = Math.min(Math.max(0x00, Math.round(g)), 0xff);
         this.b = Math.min(Math.max(0x00, Math.round(b)), 0xff);

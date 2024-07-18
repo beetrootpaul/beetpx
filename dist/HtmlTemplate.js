@@ -1,4 +1,22 @@
 export class HtmlTemplate {
+    static selectors = {
+        fullScreenSubject: "body",
+        canvas: "#game_canvas",
+        startButton: "#screen_start_game__button",
+        controlsLeft: "#dpad_l",
+        controlsRight: "#dpad_r",
+        controlsUp: "#dpad_u",
+        controlsDown: "#dpad_d",
+        controlsUpLeft: "#dpad_ul",
+        controlsUpRight: "#dpad_ur",
+        controlsDownLeft: "#dpad_dl",
+        controlsDownRight: "#dpad_dr",
+        controlsA: "#button_a",
+        controlsB: "#button_b",
+        controlsMenu: "#button_menu",
+        controlsFullScreen: "#button_fullscreen",
+        controlsMuteToggle: "#button_mute",
+    };
     static addLoadedClass() {
         document.body.classList.add("loaded");
     }
@@ -28,21 +46,3 @@ export class HtmlTemplate {
         document.body.classList[isPressed.fullscreen ? "add" : "remove"]("pressed_fullscreen");
     }
 }
-HtmlTemplate.selectors = {
-    fullScreenSubject: "body",
-    canvas: "#game_canvas",
-    startButton: "#screen_start_game__button",
-    controlsLeft: "#dpad_l",
-    controlsRight: "#dpad_r",
-    controlsUp: "#dpad_u",
-    controlsDown: "#dpad_d",
-    controlsUpLeft: "#dpad_ul",
-    controlsUpRight: "#dpad_ur",
-    controlsDownLeft: "#dpad_dl",
-    controlsDownRight: "#dpad_dr",
-    controlsA: "#button_a",
-    controlsB: "#button_b",
-    controlsMenu: "#button_menu",
-    controlsFullScreen: "#button_fullscreen",
-    controlsMuteToggle: "#button_mute",
-};

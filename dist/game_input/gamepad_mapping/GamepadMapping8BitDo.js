@@ -1,11 +1,6 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _a, _GamepadMapping8BitDo_stickAxisThreshold;
 
 export class GamepadMapping8BitDo {
+    static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
@@ -69,15 +64,15 @@ export class GamepadMapping8BitDo {
         switch (axisIndex) {
             case 0: 
             case 2: 
-                return (axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMapping8BitDo_stickAxisThreshold) ?
+                return (axisValue > GamepadMapping8BitDo.#stickAxisThreshold ?
                     ["button_right"]
-                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMapping8BitDo_stickAxisThreshold) ?
+                    : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold ?
                         ["button_left"]
                         : []);
             case 1: 
             case 5: 
-                return (axisValue > __classPrivateFieldGet(_a, _a, "f", _GamepadMapping8BitDo_stickAxisThreshold) ? ["button_down"]
-                    : axisValue < -__classPrivateFieldGet(_a, _a, "f", _GamepadMapping8BitDo_stickAxisThreshold) ?
+                return (axisValue > GamepadMapping8BitDo.#stickAxisThreshold ? ["button_down"]
+                    : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold ?
                         ["button_up"]
                         : []);
             default:
@@ -85,5 +80,3 @@ export class GamepadMapping8BitDo {
         }
     }
 }
-_a = GamepadMapping8BitDo;
-_GamepadMapping8BitDo_stickAxisThreshold = { value: 0.6 };

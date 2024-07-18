@@ -1,15 +1,7 @@
-var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
-    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
-    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
-    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
-};
-var _PreparedSprites_cache;
 import { rgb_ } from "../shorthands";
 import { range } from "../utils/range";
 export class PreparedSprites {
-    constructor() {
-        _PreparedSprites_cache.set(this, new Map());
-    }
+    #cache = new Map();
     prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels) {
         const key = sprite.imageUrl +
             "::" +
@@ -20,8 +12,8 @@ export class PreparedSprites {
             sprite.size.x.toString() +
             ":" +
             sprite.size.y.toString();
-        if (__classPrivateFieldGet(this, _PreparedSprites_cache, "f").has(key)) {
-            return __classPrivateFieldGet(this, _PreparedSprites_cache, "f").get(key);
+        if (this.#cache.has(key)) {
+            return this.#cache.get(key);
         }
         const w = sprite.size.x;
         const h = sprite.size.y;
@@ -45,8 +37,7 @@ export class PreparedSprites {
             colors: colors,
             cacheHit: true,
         };
-        __classPrivateFieldGet(this, _PreparedSprites_cache, "f").set(key, preparedSprite);
+        this.#cache.set(key, preparedSprite);
         return { ...preparedSprite, cacheHit: false };
     }
 }
-_PreparedSprites_cache = new WeakMap();
