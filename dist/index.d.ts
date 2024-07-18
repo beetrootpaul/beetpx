@@ -73,6 +73,32 @@ declare class BpxCanvasSnapshotColorMapping {
     getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
 }
 
+/**
+ * A free to use (CC-0) color palette created by zep and distributed as part of PICO-8 fantasy console.
+ *
+ * Links:
+ *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
+ *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from here
+ */
+declare class BpxPalettePico8 {
+    static black: BpxRgbColor;
+    static storm: BpxRgbColor;
+    static wine: BpxRgbColor;
+    static moss: BpxRgbColor;
+    static tan: BpxRgbColor;
+    static slate: BpxRgbColor;
+    static silver: BpxRgbColor;
+    static white: BpxRgbColor;
+    static ember: BpxRgbColor;
+    static orange: BpxRgbColor;
+    static lemon: BpxRgbColor;
+    static lime: BpxRgbColor;
+    static sky: BpxRgbColor;
+    static dusk: BpxRgbColor;
+    static pink: BpxRgbColor;
+    static peach: BpxRgbColor;
+}
+
 declare class BpxPatternColors {
     readonly primary: BpxRgbColor | null;
     readonly secondary: BpxRgbColor | null;
@@ -560,6 +586,7 @@ declare class Engine {
  */
 declare class BpxFontConfigPico8 implements BpxFontConfig {
     #private;
+    static readonly spriteSheetUrl = ".beetpx/pico-8-font.png";
     ascent: number;
     descent: number;
     lineGap: number;
@@ -894,32 +921,6 @@ declare class BpxUtils {
 }
 declare const u_: typeof BpxUtils;
 
-/**
- * A free to use (CC-0) color palette created by zep and distributed as part of PICO-8 fantasy console.
- *
- * Links:
- *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
- *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from here
- */
-declare class BpxPalettePico8 {
-    static black: BpxRgbColor;
-    static storm: BpxRgbColor;
-    static wine: BpxRgbColor;
-    static moss: BpxRgbColor;
-    static tan: BpxRgbColor;
-    static slate: BpxRgbColor;
-    static silver: BpxRgbColor;
-    static white: BpxRgbColor;
-    static ember: BpxRgbColor;
-    static orange: BpxRgbColor;
-    static lemon: BpxRgbColor;
-    static lime: BpxRgbColor;
-    static sky: BpxRgbColor;
-    static dusk: BpxRgbColor;
-    static pink: BpxRgbColor;
-    static peach: BpxRgbColor;
-}
-
 declare function aspr_(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;
 declare function font_(config: Partial<BpxFontConfig>): BpxFont;
 declare function font_(baseFont: BpxFont, extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig): BpxFont;
@@ -986,4 +987,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxUtils, BpxVector2d, aspr_, b_, font_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timerSeq_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxUtils, BpxVector2d, aspr_, b_, font_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timerSeq_, timer_, u_, v_, v_0_0_, v_1_1_ };

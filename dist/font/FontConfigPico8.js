@@ -1,3 +1,4 @@
+var _a;
 import { BpxPalettePico8 } from "../color/PalettePico8";
 import { BpxSprite } from "../sprite/Sprite";
 /**
@@ -7,6 +8,7 @@ import { BpxSprite } from "../sprite/Sprite";
  *  - https:
  */
 export class BpxFontConfigPico8 {
+    static spriteSheetUrl = ".beetpx/pico-8-font.png";
     ascent = 5;
     descent = 0;
     lineGap = 1;
@@ -103,7 +105,7 @@ export class BpxFontConfigPico8 {
         ["♪", this.#spriteGlyph(13, 8, 7)],
     ]);
     #spriteGlyph(tileX, tileY, w = 3) {
-        const sprite = BpxSprite.from(".beetpx/pico-8-font.png", w, 5, tileX * 8, tileY * 8);
+        const sprite = BpxSprite.from(_a.spriteSheetUrl, w, 5, tileX * 8, tileY * 8);
         return {
             type: "sprite",
             sprite: sprite,
@@ -112,3 +114,4 @@ export class BpxFontConfigPico8 {
         };
     }
 }
+_a = BpxFontConfigPico8;
