@@ -134,7 +134,7 @@ const gameCodebase = {
     "public",
     ".beetpx",
   ),
-  tsEntrypoint: path.resolve(_gameCodebaseRoot, "src", "beetpx.ts"),
+  tsEntrypoint: path.resolve(_gameCodebaseRoot, "src", "main.ts"),
   distZipDir: path.resolve(_gameCodebaseRoot, "dist"),
 };
 
