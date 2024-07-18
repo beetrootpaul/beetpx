@@ -95,8 +95,7 @@ function spriteGlyph(
   return {
     type: "sprite",
     sprite: sprite,
-    isTextColor: colorFromSpriteSheet =>
-      colorFromSpriteSheet?.cssHex === "#99e550",
+    isTextColor: color => color?.cssHex === "#99e550",
     advance: sprite.size.x + 1,
     offset: extras?.offsetY ? v_(0, extras.offsetY) : undefined,
     kerning: extras?.kerning,

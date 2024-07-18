@@ -107,7 +107,7 @@ export class BpxFontConfigPico8 {
         return {
             type: "sprite",
             sprite: sprite,
-            isTextColor: colorFromSpriteSheet => colorFromSpriteSheet?.cssHex === BpxPalettePico8.white.cssHex,
+            isTextColor: color => color?.cssHex === BpxPalettePico8.white.cssHex,
             advance: sprite.size.x + 1,
         };
     }

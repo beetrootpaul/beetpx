@@ -10,8 +10,8 @@ import { BpxPalettePico8 } from "../../../src/color/PalettePico8";
 
 const s = spr_(".beetpx/pico-8-font.png");
 
-const isTextColor = (colorFromSpriteSheet: BpxRgbColor | null) =>
-  colorFromSpriteSheet?.cssHex === BpxPalettePico8.white.cssHex;
+const isTextColor = (color: BpxRgbColor | null) =>
+  color?.cssHex === BpxPalettePico8.white.cssHex;
 
 export const pico8FontWithAdjustments = font_(font_pico8_, baseFontConfig => ({
   ...baseFontConfig,

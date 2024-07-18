@@ -270,7 +270,7 @@ type BpxGlyph = {
     type: "sprite";
     sprite: BpxSprite;
     /** This function is used to distinguish text from its background on a font's sprite sheet. */
-    isTextColor: (colorFromSpriteSheet: BpxRgbColor | null) => boolean;
+    isTextColor: (color: BpxRgbColor | null) => boolean;
     advance: number;
     offset?: BpxVector2d;
     kerning?: BpxKerningPrevCharMap;
