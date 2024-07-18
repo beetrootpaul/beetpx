@@ -28,7 +28,6 @@ declare global {
   const BEETPX__VERSION: string;
 }
 
-export { type BpxEngineConfig } from "./Engine";
 export {
   type BpxImageAsset,
   type BpxImageUrl,
@@ -50,6 +49,7 @@ export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxDrawingPattern } from "./draw_api/DrawingPattern";
 export { BpxPixels } from "./draw_api/Pixels";
+export { type BpxEngineConfig } from "./Engine";
 export {
   BpxFont,
   type BpxArrangedGlyph,
@@ -60,10 +60,10 @@ export {
 export { BpxFontPico8 } from "./font/FontPico8";
 export { BpxFontSaint11Minimal4 } from "./font/FontSaint11Minimal4";
 export { BpxFontSaint11Minimal5 } from "./font/FontSaint11Minimal5";
+export { type BpxGameButtonName } from "./game_input/buttons/GameButtons";
 export { type BpxGameInputEvent } from "./game_input/GameInput";
 export { type BpxGamepadType } from "./game_input/GameInputGamepad";
 export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
-export { type BpxGameButtonName } from "./game_input/buttons/GameButtons";
 export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
 export { BpxVector2d } from "./misc/Vector2d";
 export {

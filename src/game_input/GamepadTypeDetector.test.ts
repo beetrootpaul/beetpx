@@ -89,12 +89,13 @@ describe("GamepadTypeDetector", () => {
 function gamepad(id: string): Gamepad {
   return {
     id,
+    timestamp: 1,
     index: 0,
     connected: true,
     mapping: "",
     axes: [],
     buttons: [],
+    // @ts-expect-error TS2322: Type null is not assignable to type GamepadHapticActuator
     vibrationActuator: null,
-    timestamp: 1,
   };
 }

@@ -25,8 +25,6 @@ declare class Assets {
     getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
 }
 
-type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
-
 type BpxAudioPlaybackId = number;
 
 type BpxSoundSequence = {
@@ -45,46 +43,6 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
     url: BpxSoundUrl;
 };
 
-declare class AudioApi {
-    #private;
-    static readonly muteUnmuteDefaultFadeMillis = 100;
-    constructor(assets: Assets, audioContext: AudioContext);
-    restart(): void;
-    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
-    startPlayback(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    isAudioMuted(): boolean;
-    muteAudio(opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmuteAudio(opts?: {
-        fadeInMillis?: number;
-    }): void;
-    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeInMillis?: number;
-    }): void;
-    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    pausePlayback(playbackId: BpxAudioPlaybackId): void;
-    resumePlayback(playbackId: BpxAudioPlaybackId): void;
-    getAudioContext(): AudioContext;
-    getGlobalGainNode(): GainNode;
-}
-
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
 type BpxRgbCssHex = string;
@@ -99,6 +57,53 @@ declare class BpxRgbColor {
     private constructor();
     isSameAs(another: BpxRgbColor): boolean;
     asArray(): [r: number, g: number, b: number];
+}
+
+interface CanvasSnapshot {
+    getColorAtIndex(index: number): BpxRgbColor;
+}
+
+type BpxColorMapper = (sourceColor: BpxRgbColor | null) => BpxRgbColor | null;
+
+declare class BpxCanvasSnapshotColorMapping {
+    #private;
+    static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping;
+    readonly type = "canvas_snapshot_mapping";
+    private constructor();
+    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
+}
+
+declare class BpxPatternColors {
+    readonly primary: BpxRgbColor | null;
+    readonly secondary: BpxRgbColor | null;
+    static of(primary: BpxRgbColor | null, secondary: BpxRgbColor | null): BpxPatternColors;
+    readonly type = "pattern";
+    private constructor();
+}
+
+declare class BpxSpriteColorMapping {
+    #private;
+    static noMapping: BpxSpriteColorMapping;
+    static from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>): BpxSpriteColorMapping;
+    static of(mapping: BpxColorMapper): BpxSpriteColorMapping;
+    readonly type = "sprite_mapping";
+    private constructor();
+    getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
+}
+
+declare class BpxDrawingPattern {
+    #private;
+    /**
+     * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
+     *   (designated by new lines) where `#` and `-` stand for a primary and
+     *   a secondary color. Whitespaces are ignored.
+     */
+    static from(ascii: string): BpxDrawingPattern;
+    static of(bits: number): BpxDrawingPattern;
+    static primaryOnly: BpxDrawingPattern;
+    static secondaryOnly: BpxDrawingPattern;
+    private constructor();
+    hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
 interface PrintDebug {
@@ -173,8 +178,53 @@ declare class BpxVector2d implements PrintDebug {
     __printDebug(): string;
 }
 
-interface CanvasSnapshot {
-    getColorAtIndex(index: number): BpxRgbColor;
+declare class BpxPixels {
+    static from(ascii: string): BpxPixels;
+    readonly asciiRows: string[];
+    readonly size: BpxVector2d;
+    private constructor();
+}
+
+type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
+
+declare class AudioApi {
+    #private;
+    static readonly muteUnmuteDefaultFadeMillis = 100;
+    constructor(assets: Assets, audioContext: AudioContext);
+    restart(): void;
+    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
+    startPlayback(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    isAudioMuted(): boolean;
+    muteAudio(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteAudio(opts?: {
+        fadeInMillis?: number;
+    }): void;
+    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeInMillis?: number;
+    }): void;
+    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    pausePlayback(playbackId: BpxAudioPlaybackId): void;
+    resumePlayback(playbackId: BpxAudioPlaybackId): void;
+    getAudioContext(): AudioContext;
+    getGlobalGainNode(): GainNode;
 }
 
 declare abstract class Canvas {
@@ -197,41 +247,6 @@ declare abstract class Canvas {
     protected abstract newSnapshot(): CanvasSnapshot;
     render(): void;
     protected abstract doRender(): void;
-}
-
-type BpxColorMapper = (sourceColor: BpxRgbColor | null) => BpxRgbColor | null;
-
-declare class BpxCanvasSnapshotColorMapping {
-    #private;
-    static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping;
-    readonly type = "canvas_snapshot_mapping";
-    private constructor();
-    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
-}
-
-declare class BpxPatternColors {
-    readonly primary: BpxRgbColor | null;
-    readonly secondary: BpxRgbColor | null;
-    static of(primary: BpxRgbColor | null, secondary: BpxRgbColor | null): BpxPatternColors;
-    readonly type = "pattern";
-    private constructor();
-}
-
-declare class BpxSpriteColorMapping {
-    #private;
-    static noMapping: BpxSpriteColorMapping;
-    static from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>): BpxSpriteColorMapping;
-    static of(mapping: BpxColorMapper): BpxSpriteColorMapping;
-    readonly type = "sprite_mapping";
-    private constructor();
-    getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
-}
-
-declare class BpxPixels {
-    static from(ascii: string): BpxPixels;
-    readonly asciiRows: string[];
-    readonly size: BpxVector2d;
-    private constructor();
 }
 
 type BpxImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
@@ -318,21 +333,6 @@ declare class BpxAnimatedSprite {
     pause(): void;
     resume(): void;
     restart(): void;
-}
-
-declare class BpxDrawingPattern {
-    #private;
-    /**
-     * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
-     *   (designated by new lines) where `#` and `-` stand for a primary and
-     *   a secondary color. Whitespaces are ignored.
-     */
-    static from(ascii: string): BpxDrawingPattern;
-    static of(bits: number): BpxDrawingPattern;
-    static primaryOnly: BpxDrawingPattern;
-    static secondaryOnly: BpxDrawingPattern;
-    private constructor();
-    hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
 type DrawApiOptions = {
