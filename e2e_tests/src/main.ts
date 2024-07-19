@@ -1,5 +1,5 @@
-import { b_ } from "../../src";
+import { $ } from "../../src";
 
-b_.init().then(async ({ startGame }) => {
+$.init().then(async ({ startGame }) => {
   await startGame();
 });

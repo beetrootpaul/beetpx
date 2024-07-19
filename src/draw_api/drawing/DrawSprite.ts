@@ -2,7 +2,7 @@ import { BpxImageAsset } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_, v_0_0_ } from "../../shorthands";
+import { $v, $v_0_0 } from "../../shorthands";
 import { BpxSprite } from "../../sprite/Sprite";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { PreparedSprites } from "../PreparedSprites";
@@ -28,7 +28,7 @@ export class DrawSprite {
     pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-    scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+    scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
 
     const {
       width: imgW,
@@ -37,7 +37,7 @@ export class DrawSprite {
       rgba8bitData: imgBytes,
     } = sourceImageAsset;
 
-    sprite = sprite.clipBy(v_0_0_, v_(imgW, imgH));
+    sprite = sprite.clipBy($v_0_0, $v(imgW, imgH));
 
     // avoid all computations if the whole sprite is outside the canvas
     if (

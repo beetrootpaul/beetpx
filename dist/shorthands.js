@@ -11,39 +11,39 @@ import { BpxTimer } from "./timer/Timer";
 import { BpxTimerSequence } from "./timer/TimerSequence";
 import { identity } from "./utils/identity";
 
-export function aspr_(imageUrl) {
+export function $aspr(imageUrl) {
     return (w, h, xys, opts) => {
         return BpxAnimatedSprite.from(imageUrl, w, h, xys, opts);
     };
 }
-export function font_(baseFontOrConfig, extendedConfig) {
+export function $font(baseFontOrConfig, extendedConfig) {
     return baseFontOrConfig instanceof BpxFont ?
         BpxFont.basedOn(baseFontOrConfig, extendedConfig ?? identity)
         : BpxFont.of(baseFontOrConfig);
 }
-export const font_pico8_ = font_(new BpxFontConfigPico8());
-export const font_saint11Minimal4_ = font_(new BpxFontConfigSaint11Minimal4());
-export const font_saint11Minimal5_ = font_(new BpxFontConfigSaint11Minimal5());
-export function rgb_(rOrCssHex, g, b) {
+export const $font_pico8 = $font(new BpxFontConfigPico8());
+export const $font_saint11Minimal4 = $font(new BpxFontConfigSaint11Minimal4());
+export const $font_saint11Minimal5 = $font(new BpxFontConfigSaint11Minimal5());
+export function $rgb(rOrCssHex, g, b) {
     return typeof rOrCssHex === "string" ?
         BpxRgbColor.fromCssHex(rOrCssHex)
         : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
-export const rgb_black_ = rgb_("#000000");
-export const rgb_white_ = rgb_("#ffffff");
-export const rgb_red_ = rgb_("#ff0000");
-export const rgb_green_ = rgb_("#00ff00");
-export const rgb_blue_ = rgb_("#0000ff");
-export const rgb_cyan_ = rgb_("#00ffff");
-export const rgb_magenta_ = rgb_("#ff00ff");
-export const rgb_yellow_ = rgb_("#ffff00");
-export const rgb_p8_ = BpxPalettePico8;
+export const $rgb_black = $rgb("#000000");
+export const $rgb_white = $rgb("#ffffff");
+export const $rgb_red = $rgb("#ff0000");
+export const $rgb_green = $rgb("#00ff00");
+export const $rgb_blue = $rgb("#0000ff");
+export const $rgb_cyan = $rgb("#00ffff");
+export const $rgb_magenta = $rgb("#ff00ff");
+export const $rgb_yellow = $rgb("#ffff00");
+export const $rgb_p8 = BpxPalettePico8;
 
-export function spr_(imageUrl) {
+export function $spr(imageUrl) {
     return (w, h, x, y) => BpxSprite.from(imageUrl, w, h, x, y);
 }
 
-export function timer_(frames, opts) {
+export function $timer(frames, opts) {
     return BpxTimer.for({
         frames,
         loop: opts?.loop ?? false,
@@ -52,7 +52,7 @@ export function timer_(frames, opts) {
         onGamePause: opts?.onGamePause ?? "pause",
     });
 }
-export function timerSeq_(params, opts) {
+export function $timerSeq(params, opts) {
     return BpxTimerSequence.of({
         intro: params.intro ?? [],
         loop: params.loop ?? [],
@@ -62,9 +62,9 @@ export function timerSeq_(params, opts) {
         onGamePause: opts?.onGamePause ?? "pause",
     });
 }
-export function v_(valueOrX, maybeY) {
+export function $v(valueOrX, maybeY) {
     return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
 }
-export const v_0_0_ = v_(0, 0);
-export const v_1_1_ = v_(1, 1);
+export const $v_0_0 = $v(0, 0);
+export const $v_1_1 = $v(1, 1);
 

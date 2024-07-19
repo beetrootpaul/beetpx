@@ -1,6 +1,6 @@
 import { PngDataArray } from "fast-png";
 import { describe, expect, test } from "vitest";
-import { spr_ } from "../shorthands";
+import { $spr } from "../shorthands";
 import { range } from "../utils/range";
 import { PreparedSprites } from "./PreparedSprites";
 
@@ -24,7 +24,7 @@ describe("PreparedSprites", () => {
     // first time using a sprite
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(20, 30, 0, 1),
+        $spr("image1")(20, 30, 0, 1),
         pngData1,
         imgW1,
         imgChannels1,
@@ -34,7 +34,7 @@ describe("PreparedSprites", () => {
     // the same sprite again
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(20, 30, 0, 1),
+        $spr("image1")(20, 30, 0, 1),
         pngData1,
         imgW1,
         imgChannels1,
@@ -44,7 +44,7 @@ describe("PreparedSprites", () => {
     // another sprites of the same image
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(20, 30, 1, 1),
+        $spr("image1")(20, 30, 1, 1),
         pngData1,
         imgW1,
         imgChannels1,
@@ -52,7 +52,7 @@ describe("PreparedSprites", () => {
     ).toBe(false);
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(20, 30, 0, 2),
+        $spr("image1")(20, 30, 0, 2),
         pngData1,
         imgW1,
         imgChannels1,
@@ -60,7 +60,7 @@ describe("PreparedSprites", () => {
     ).toBe(false);
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(21, 30, 0, 1),
+        $spr("image1")(21, 30, 0, 1),
         pngData1,
         imgW1,
         imgChannels1,
@@ -68,7 +68,7 @@ describe("PreparedSprites", () => {
     ).toBe(false);
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(20, 31, 0, 1),
+        $spr("image1")(20, 31, 0, 1),
         pngData1,
         imgW1,
         imgChannels1,
@@ -78,7 +78,7 @@ describe("PreparedSprites", () => {
     // the previous sprite again
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(20, 30, 0, 1),
+        $spr("image1")(20, 30, 0, 1),
         pngData1,
         imgW1,
         imgChannels1,
@@ -88,7 +88,7 @@ describe("PreparedSprites", () => {
     // a sprite of same xy and wh, but from another image
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image2")(20, 30, 0, 1),
+        $spr("image2")(20, 30, 0, 1),
         pngData2,
         imgW2,
         imgChannels2,
@@ -96,7 +96,7 @@ describe("PreparedSprites", () => {
     ).toBe(false);
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image2")(20, 30, 0, 1),
+        $spr("image2")(20, 30, 0, 1),
         pngData2,
         imgW2,
         imgChannels2,
@@ -106,7 +106,7 @@ describe("PreparedSprites", () => {
     // and the first sprite once again
     expect(
       preparedSprites.prepareOrGetFromCache(
-        spr_("image1")(20, 30, 0, 1),
+        $spr("image1")(20, 30, 0, 1),
         pngData1,
         imgW1,
         imgChannels1,

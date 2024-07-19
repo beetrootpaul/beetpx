@@ -3,6 +3,25 @@ import { Engine } from "./Engine";
 import { DebugMode } from "./debug/DebugMode";
 import { Logger } from "./logger/Logger";
 import { GlobalPause } from "./pause/GlobalPause";
+import { assertUnreachable } from "./utils/assertUnreachable";
+import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFrame";
+import { clamp } from "./utils/clamp";
+import { drawTextWithOutline } from "./utils/drawTextWithOutline";
+import { identity } from "./utils/identity";
+import { isDefined } from "./utils/isDefined";
+import { lerp } from "./utils/lerp";
+import { mod } from "./utils/mod";
+import { noop } from "./utils/noop";
+import { offset4Directions } from "./utils/offset4Directions";
+import { offset8Directions } from "./utils/offset8Directions";
+import { randomElementOf } from "./utils/randomElementOf";
+import { range } from "./utils/range";
+import { repeatEachElement } from "./utils/repeatEachElement";
+import { throwError } from "./utils/throwError";
+import { trigAtan2 } from "./utils/trigAtan2";
+import { trigCos } from "./utils/trigCos";
+import { trigSin } from "./utils/trigSin";
+import { wait } from "./utils/wait";
 
 export class BeetPx {
     static #engine;
@@ -125,98 +144,6 @@ export class BeetPx {
     
     
     
-    static clearCanvas = (...args) => {
-        return this.#tryGetEngine().drawApi.clearCanvas(...args);
-    };
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    static setClippingRegion = (...args) => {
-        return this.#tryGetEngine().drawApi.setClippingRegion(...args);
-    };
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    static removeClippingRegion = (...args) => {
-        return this.#tryGetEngine().drawApi.removeClippingRegion(...args);
-    };
-    /**
-     * Sets a new XY (left-top corner) of a camera's viewport
-     *
-     * @returns previous camera XY
-     */
-    static setCameraXy = (...args) => {
-        return this.#tryGetEngine().drawApi.setCameraXy(...args);
-    };
-    /**
-     * @returns previous pattern
-     */
-    static setDrawingPattern = (...args) => {
-        return this.#tryGetEngine().drawApi.setDrawingPattern(...args);
-    };
-    static drawPixel = (...args) => {
-        return this.#tryGetEngine().drawApi.drawPixel(...args);
-    };
-    /**
-     * @param {BpxVector2d} xy - sd
-     * @param {BpxRgbColor} color - sd
-     * @param {string[]} bits - an array representing rows from top to bottom,
-     *        where each array element is a text sequence of `0` and `1` to
-     *        represent drawn and skipped pixels from left to right.
-     */
-    /**
-     * Draws pixels based on a visual 2d representation in form of rows
-     *   (designated by new lines) where `#` and `-` stand for a colored
-     *   pixel and a lack of a pixel. Whitespaces are ignored.
-     */
-    static drawPixels = (...args) => {
-        return this.#tryGetEngine().drawApi.drawPixels(...args);
-    };
-    static drawLine = (...args) => {
-        return this.#tryGetEngine().drawApi.drawLine(...args);
-    };
-    static drawRect = (...args) => {
-        return this.#tryGetEngine().drawApi.drawRect(...args);
-    };
-    static drawRectFilled = (...args) => {
-        return this.#tryGetEngine().drawApi.drawRectFilled(...args);
-    };
-    static drawRectOutsideFilled = (...args) => {
-        return this.#tryGetEngine().drawApi.drawRectOutsideFilled(...args);
-    };
-    static drawEllipse = (...args) => {
-        return this.#tryGetEngine().drawApi.drawEllipse(...args);
-    };
-    static drawEllipseFilled = (...args) => {
-        return this.#tryGetEngine().drawApi.drawEllipseFilled(...args);
-    };
-    static drawEllipseOutsideFilled = (...args) => {
-        return this.#tryGetEngine().drawApi.drawEllipseOutsideFilled(...args);
-    };
-    /**
-     * @returns previous sprite color mapping
-     */
-    static setSpriteColorMapping = (...args) => {
-        return this.#tryGetEngine().drawApi.setSpriteColorMapping(...args);
-    };
-    static drawSprite = (...args) => {
-        return this.#tryGetEngine().drawApi.drawSprite(...args);
-    };
-    static useFont = (...args) => {
-        return this.#tryGetEngine().drawApi.useFont(...args);
-    };
-    static measureText = (...args) => {
-        return this.#tryGetEngine().drawApi.measureText(...args);
-    };
-    static drawText = (...args) => {
-        return this.#tryGetEngine().drawApi.drawText(...args);
-    };
-    static takeCanvasSnapshot = (...args) => {
-        return this.#tryGetEngine().drawApi.takeCanvasSnapshot(...args);
-    };
-    
-    
-    
     static isAudioMuted = (...args) => {
         return this.#tryGetEngine().audioApi.isAudioMuted(...args);
     };
@@ -292,12 +219,132 @@ export class BeetPx {
     
     
     
-    static #tryGetEngine() {
+    static #tryGetEngine(drawFnNameToLogIfOutsideDrawCallback) {
         if (!this.#engine) {
             throw Error(`Tried to access BeetPx API without calling BeetPx.init(…) first.`);
         }
+        if (drawFnNameToLogIfOutsideDrawCallback &&
+            !this.#engine.isInsideDrawOrStartedCallback) {
+            Logger.warnBeetPx(`Used "${drawFnNameToLogIfOutsideDrawCallback}" outside of either "setOnDraw" or "setOnStarted" callback.`);
+        }
         return this.#engine;
     }
+    
+    
+    
+    static draw = {
+        clearCanvas(color) {
+            BeetPx.#tryGetEngine("clearCanvas").drawApi.clearCanvas(color);
+        },
+        /**
+         * @returns - previous clipping region in form of an array: [xy, wh]
+         */
+        setClippingRegion(xy, wh) {
+            return BeetPx.#tryGetEngine("setClippingRegion").drawApi.setClippingRegion(xy, wh);
+        },
+        /**
+         * @returns - previous clipping region in form of an array: [xy, wh]
+         */
+        removeClippingRegion() {
+            return BeetPx.#tryGetEngine("removeClippingRegion").drawApi.removeClippingRegion();
+        },
+        /**
+         * Sets a new XY (left-top corner) of a camera's viewport
+         *
+         * @returns previous camera XY
+         */
+        setCameraXy(xy) {
+            return BeetPx.#tryGetEngine("setCameraXy").drawApi.setCameraXy(xy);
+        },
+        /**
+         * @returns previous pattern
+         */
+        setDrawingPattern(pattern) {
+            return BeetPx.#tryGetEngine("setDrawingPattern").drawApi.setDrawingPattern(pattern);
+        },
+        pixel(xy, color) {
+            BeetPx.#tryGetEngine("pixel").drawApi.drawPixel(xy, color);
+        },
+        /**
+         * Draws pixels based on a visual 2d representation in form of rows
+         *   (designated by new lines) where `#` and `-` stand for a colored
+         *   pixel and a lack of a pixel. Whitespaces are ignored.
+         */
+        pixels(pixels, xy, color, opts) {
+            BeetPx.#tryGetEngine("pixels").drawApi.drawPixels(pixels, xy, color, opts);
+        },
+        line(xy, wh, color) {
+            BeetPx.#tryGetEngine("line").drawApi.drawLine(xy, wh, color);
+        },
+        rect(xy, wh, color) {
+            BeetPx.#tryGetEngine("rect").drawApi.drawRect(xy, wh, color);
+        },
+        rectFilled(xy, wh, color) {
+            BeetPx.#tryGetEngine("rectFilled").drawApi.drawRectFilled(xy, wh, color);
+        },
+        rectOutsideFilled(xy, wh, color) {
+            BeetPx.#tryGetEngine("rectOutsideFilled").drawApi.drawRectOutsideFilled(xy, wh, color);
+        },
+        ellipse(xy, wh, color) {
+            BeetPx.#tryGetEngine("ellipse").drawApi.drawEllipse(xy, wh, color);
+        },
+        ellipseFilled(xy, wh, color) {
+            BeetPx.#tryGetEngine("ellipseFilled").drawApi.drawEllipseFilled(xy, wh, color);
+        },
+        ellipseOutsideFilled(xy, wh, color) {
+            BeetPx.#tryGetEngine("ellipseOutsideFilled").drawApi.drawEllipseOutsideFilled(xy, wh, color);
+        },
+        /**
+         * @returns previous sprite color mapping
+         */
+        setSpriteColorMapping(spriteColorMapping) {
+            return BeetPx.#tryGetEngine("setSpriteColorMapping").drawApi.setSpriteColorMapping(spriteColorMapping);
+        },
+        sprite(sprite, xy, opts) {
+            BeetPx.#tryGetEngine("sprite").drawApi.drawSprite(sprite, xy, opts);
+        },
+        /**
+         * @returns - previously used font
+         */
+        useFont(font) {
+            return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
+        },
+        measureText(text, opts) {
+            return BeetPx.#tryGetEngine("measureText").drawApi.measureText(text, opts);
+        },
+        text(text, xy, color, opts) {
+            BeetPx.#tryGetEngine("text").drawApi.drawText(text, xy, color, opts);
+        },
+        takeCanvasSnapshot() {
+            BeetPx.#tryGetEngine("takeCanvasSnapshot").drawApi.takeCanvasSnapshot();
+        },
+    };
+    
+    
+    
+    static utils = {
+        assertUnreachable,
+        booleanChangingEveryNthFrame,
+        clamp,
+        drawTextWithOutline,
+        identity,
+        isDefined,
+        lerp,
+        mod,
+        noop,
+        offset4Directions,
+        offset8Directions,
+        randomElementOf,
+        range,
+        repeatEachElement,
+        throwError,
+        trigAtan2,
+        trigCos,
+        trigSin,
+        wait,
+    };
 }
 
-export const b_ = BeetPx;
+export const $ = BeetPx;
+export const $d = BeetPx.draw;
+export const $u = BeetPx.utils;

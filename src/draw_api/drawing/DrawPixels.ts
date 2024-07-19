@@ -1,7 +1,7 @@
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_0_0_ } from "../../shorthands";
+import { $v_0_0 } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { BpxPixels } from "../Pixels";
 
@@ -23,7 +23,7 @@ export class DrawPixels {
     pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-    scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+    scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
 
     for (let bitsY = 0; bitsY < pixels.asciiRows.length; bitsY += 1) {
       const yBase =

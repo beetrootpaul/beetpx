@@ -1,4 +1,4 @@
-import { b_, rgb_p8_, v_ } from "../../../src";
+import { $, $d, $rgb_p8, $v } from "../../../src";
 
 declare global {
   interface Window {
@@ -7,11 +7,11 @@ declare global {
   }
 }
 
-b_.init().then(async ({ startGame }) => {
-  b_.setOnDraw(() => {
-    b_.clearCanvas(window.envType === "prod" ? rgb_p8_.wine : rgb_p8_.storm);
-    b_.drawText(`PREV_COMMIT=${window.PREV_COMMIT}`, v_(1, 1), rgb_p8_.silver);
-    b_.drawText(`envType=${window.envType}`, v_(1, 8), rgb_p8_.silver);
+$.init().then(async ({ startGame }) => {
+  $.setOnDraw(() => {
+    $d.clearCanvas(window.envType === "prod" ? $rgb_p8.wine : $rgb_p8.storm);
+    $d.text(`PREV_COMMIT=${window.PREV_COMMIT}`, $v(1, 1), $rgb_p8.silver);
+    $d.text(`envType=${window.envType}`, $v(1, 8), $rgb_p8.silver);
   });
 
   await startGame();

@@ -1,11 +1,11 @@
-import { BpxRgbColor, rgb_ } from "../../../src";
+import { $rgb, BpxRgbColor } from "../../../src";
 
 export class ColorSequence {
   #current: BpxRgbColor;
   #directionUp: boolean;
 
   constructor(initialColor?: BpxRgbColor) {
-    this.#current = initialColor ?? rgb_(0, 0, 0);
+    this.#current = initialColor ?? $rgb(0, 0, 0);
     this.#directionUp = true;
   }
 
@@ -27,6 +27,6 @@ export class ColorSequence {
       nextCombined += 0x020202;
       this.#directionUp = true;
     }
-    this.#current = rgb_("#" + nextCombined.toString(16).padStart(6, "0"));
+    this.#current = $rgb("#" + nextCombined.toString(16).padStart(6, "0"));
   }
 }

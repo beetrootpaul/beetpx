@@ -1,4 +1,4 @@
-import { rgb_ } from "../shorthands";
+import { $rgb } from "../shorthands";
 import { range } from "../utils/range";
 export class PreparedSprites {
     #cache = new Map();
@@ -25,9 +25,9 @@ export class PreparedSprites {
                 const imgIndex = (imgY * imgW + imgX) * imgChannels;
                 colors[spriteX][spriteY] =
                     imgChannels === 3 ?
-                        rgb_(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                        $rgb(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                         : imgBytes[imgIndex + 3] >= 0xff / 2 ?
-                            rgb_(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
+                            $rgb(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                             : null;
             }
         }

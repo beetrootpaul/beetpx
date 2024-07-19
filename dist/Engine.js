@@ -1,4 +1,3 @@
-import { BeetPx } from "./BeetPx";
 import { HtmlTemplate } from "./HtmlTemplate";
 import { AssetLoader } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
@@ -17,7 +16,7 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { GlobalPause } from "./pause/GlobalPause";
-import { font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_black_, v_, } from "./shorthands";
+import { $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb_black, $v, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 export class Engine {
@@ -37,6 +36,7 @@ export class Engine {
     drawApi;
     #fpsDisplay;
     #isStarted = false;
+    isInsideDrawOrStartedCallback = false;
     #onStarted;
     #onUpdate;
     #onDraw;
@@ -98,17 +98,17 @@ export class Engine {
         }
         Logger.debugBeetPx("Engine init params:", engineConfig);
         this.#assetsToLoad = engineConfig.assets ?? [];
-        this.#assetsToLoad.push(...font_pico8_.spriteSheetUrls);
-        this.#assetsToLoad.push(...font_saint11Minimal4_.spriteSheetUrls);
-        this.#assetsToLoad.push(...font_saint11Minimal5_.spriteSheetUrls);
+        this.#assetsToLoad.push(...$font_pico8.spriteSheetUrls);
+        this.#assetsToLoad.push(...$font_saint11Minimal4.spriteSheetUrls);
+        this.#assetsToLoad.push(...$font_saint11Minimal5.spriteSheetUrls);
         const fixedTimestepFps = engineConfig.fixedTimestep === "60fps" ? 60
             : engineConfig.fixedTimestep === "30fps" ? 30
                 : throwError(`Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`);
         this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
         this.canvasSize =
-            engineConfig.canvasSize === "64x64" ? v_(64, 64)
-                : engineConfig.canvasSize === "128x128" ? v_(128, 128)
-                    : engineConfig.canvasSize === "256x256" ? v_(256, 256)
+            engineConfig.canvasSize === "64x64" ? $v(64, 64)
+                : engineConfig.canvasSize === "128x128" ? $v(128, 128)
+                    : engineConfig.canvasSize === "256x256" ? $v(256, 256)
                         : throwError(`Unsupported canvasSize: "${engineConfig.canvasSize}"`);
         this.gameInput = new GameInput({
             enableDebugToggle: engineConfig.debugMode?.available ?? false,
@@ -172,11 +172,13 @@ export class Engine {
         this.#currentFrameNumber = 0;
         this.#currentFrameNumberOutsidePause = 0;
         this.audioApi.restart();
-        BeetPx.clearCanvas(rgb_black_);
+        this.drawApi.clearCanvas($rgb_black);
         AudioPlayback.playbacksToPauseOnGamePause.clear();
         AudioPlayback.playbacksToMuteOnGamePause.clear();
         GlobalPause.deactivate();
+        this.isInsideDrawOrStartedCallback = true;
         this.#onStarted?.();
+        this.isInsideDrawOrStartedCallback = false;
     }
     async #startGame() {
         if (this.#isStarted) {
@@ -200,7 +202,9 @@ export class Engine {
         this.#currentFrameNumber = 0;
         this.#currentFrameNumberOutsidePause = 0;
         await this.#loading.showStartScreen();
+        this.isInsideDrawOrStartedCallback = true;
         this.#onStarted?.();
+        this.isInsideDrawOrStartedCallback = false;
         this.gameInput.startListening();
         this.#gameLoop.start({
             updateFn: () => {
@@ -263,10 +267,12 @@ export class Engine {
             },
             renderFn: renderingFps => {
                 this.#renderingFps = renderingFps;
+                this.isInsideDrawOrStartedCallback = true;
                 this.#onDraw?.();
                 if (DebugMode.enabled) {
                     this.#fpsDisplay?.drawRenderingFps(renderingFps);
                 }
+                this.isInsideDrawOrStartedCallback = false;
                 this.#canvas.render();
             },
         });

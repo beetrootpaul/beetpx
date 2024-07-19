@@ -1,12 +1,11 @@
 import { describe, test } from "vitest";
-import { BpxRgbColor } from "../../color/RgbColor";
-import { v_ } from "../../shorthands";
+import { $rgb, $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 
 describe("DrawClear", () => {
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
 
   test("clear the whole canvas with a given color", () => {
     const dts = drawingTestSetup(4, 3, c0);
@@ -26,7 +25,7 @@ describe("DrawClear", () => {
   test("clipping region does not affect the canvas clearing", () => {
     const dts = drawingTestSetup(4, 3, c0);
 
-    dts.drawApi.setClippingRegion(v_(1, 1), v_(2, 2));
+    dts.drawApi.setClippingRegion($v(1, 1), $v(2, 2));
     dts.drawApi.clearCanvas(c1);
 
     dts.canvas.expectToEqual({
@@ -42,7 +41,7 @@ describe("DrawClear", () => {
   test("camera XY does not affect the canvas clearing", () => {
     const dts = drawingTestSetup(4, 3, c0);
 
-    dts.drawApi.setCameraXy(v_(2, 2));
+    dts.drawApi.setCameraXy($v(2, 2));
     dts.drawApi.clearCanvas(c1);
 
     dts.canvas.expectToEqual({

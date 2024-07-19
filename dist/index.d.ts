@@ -59,77 +59,48 @@ declare class BpxRgbColor {
     asArray(): [r: number, g: number, b: number];
 }
 
-interface CanvasSnapshot {
-    getColorAtIndex(index: number): BpxRgbColor;
-}
-
 type BpxColorMapper = (sourceColor: BpxRgbColor | null) => BpxRgbColor | null;
 
-declare class BpxCanvasSnapshotColorMapping {
+type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
+
+declare class AudioApi {
     #private;
-    static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping;
-    readonly type = "canvas_snapshot_mapping";
-    private constructor();
-    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
-}
-
-/**
- * A free to use (CC-0) color palette created by zep and distributed as part of PICO-8 fantasy console.
- *
- * Links:
- *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
- *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from here
- */
-declare class BpxPalettePico8 {
-    static black: BpxRgbColor;
-    static storm: BpxRgbColor;
-    static wine: BpxRgbColor;
-    static moss: BpxRgbColor;
-    static tan: BpxRgbColor;
-    static slate: BpxRgbColor;
-    static silver: BpxRgbColor;
-    static white: BpxRgbColor;
-    static ember: BpxRgbColor;
-    static orange: BpxRgbColor;
-    static lemon: BpxRgbColor;
-    static lime: BpxRgbColor;
-    static sky: BpxRgbColor;
-    static dusk: BpxRgbColor;
-    static pink: BpxRgbColor;
-    static peach: BpxRgbColor;
-}
-
-declare class BpxPatternColors {
-    readonly primary: BpxRgbColor | null;
-    readonly secondary: BpxRgbColor | null;
-    static of(primary: BpxRgbColor | null, secondary: BpxRgbColor | null): BpxPatternColors;
-    readonly type = "pattern";
-    private constructor();
-}
-
-declare class BpxSpriteColorMapping {
-    #private;
-    static noMapping: BpxSpriteColorMapping;
-    static from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>): BpxSpriteColorMapping;
-    static of(mapping: BpxColorMapper): BpxSpriteColorMapping;
-    readonly type = "sprite_mapping";
-    private constructor();
-    getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
-}
-
-declare class BpxDrawingPattern {
-    #private;
-    /**
-     * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
-     *   (designated by new lines) where `#` and `-` stand for a primary and
-     *   a secondary color. Whitespaces are ignored.
-     */
-    static from(ascii: string): BpxDrawingPattern;
-    static of(bits: number): BpxDrawingPattern;
-    static primaryOnly: BpxDrawingPattern;
-    static secondaryOnly: BpxDrawingPattern;
-    private constructor();
-    hasPrimaryColorAt(x: number, y: number): boolean;
+    static readonly muteUnmuteDefaultFadeMillis = 100;
+    constructor(assets: Assets, audioContext: AudioContext);
+    restart(): void;
+    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
+    startPlayback(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    isAudioMuted(): boolean;
+    muteAudio(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteAudio(opts?: {
+        fadeInMillis?: number;
+    }): void;
+    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeInMillis?: number;
+    }): void;
+    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    pausePlayback(playbackId: BpxAudioPlaybackId): void;
+    resumePlayback(playbackId: BpxAudioPlaybackId): void;
+    getAudioContext(): AudioContext;
+    getGlobalGainNode(): GainNode;
 }
 
 interface PrintDebug {
@@ -204,53 +175,8 @@ declare class BpxVector2d implements PrintDebug {
     __printDebug(): string;
 }
 
-declare class BpxPixels {
-    static from(ascii: string): BpxPixels;
-    readonly asciiRows: string[];
-    readonly size: BpxVector2d;
-    private constructor();
-}
-
-type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
-
-declare class AudioApi {
-    #private;
-    static readonly muteUnmuteDefaultFadeMillis = 100;
-    constructor(assets: Assets, audioContext: AudioContext);
-    restart(): void;
-    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
-    startPlayback(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    isAudioMuted(): boolean;
-    muteAudio(opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmuteAudio(opts?: {
-        fadeInMillis?: number;
-    }): void;
-    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeInMillis?: number;
-    }): void;
-    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    pausePlayback(playbackId: BpxAudioPlaybackId): void;
-    resumePlayback(playbackId: BpxAudioPlaybackId): void;
-    getAudioContext(): AudioContext;
-    getGlobalGainNode(): GainNode;
+interface CanvasSnapshot {
+    getColorAtIndex(index: number): BpxRgbColor;
 }
 
 declare abstract class Canvas {
@@ -273,6 +199,39 @@ declare abstract class Canvas {
     protected abstract newSnapshot(): CanvasSnapshot;
     render(): void;
     protected abstract doRender(): void;
+}
+
+declare class BpxCanvasSnapshotColorMapping {
+    #private;
+    static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping;
+    readonly type = "canvas_snapshot_mapping";
+    private constructor();
+    getMappedColor(snapshot: CanvasSnapshot | null, index: number): BpxRgbColor | null;
+}
+
+declare class BpxPatternColors {
+    readonly primary: BpxRgbColor | null;
+    readonly secondary: BpxRgbColor | null;
+    static of(primary: BpxRgbColor | null, secondary: BpxRgbColor | null): BpxPatternColors;
+    readonly type = "pattern";
+    private constructor();
+}
+
+declare class BpxSpriteColorMapping {
+    #private;
+    static noMapping: BpxSpriteColorMapping;
+    static from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>): BpxSpriteColorMapping;
+    static of(mapping: BpxColorMapper): BpxSpriteColorMapping;
+    readonly type = "sprite_mapping";
+    private constructor();
+    getMappedColor(spriteColor: BpxRgbColor | null): BpxRgbColor | null;
+}
+
+declare class BpxPixels {
+    static from(ascii: string): BpxPixels;
+    readonly asciiRows: string[];
+    readonly size: BpxVector2d;
+    private constructor();
 }
 
 type BpxImageBoundSpriteFactory = (w: number, h: number, x: number, y: number) => BpxSprite;
@@ -383,6 +342,21 @@ declare class BpxAnimatedSprite {
     pause(): void;
     resume(): void;
     restart(): void;
+}
+
+declare class BpxDrawingPattern {
+    #private;
+    /**
+     * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
+     *   (designated by new lines) where `#` and `-` stand for a primary and
+     *   a secondary color. Whitespaces are ignored.
+     */
+    static from(ascii: string): BpxDrawingPattern;
+    static of(bits: number): BpxDrawingPattern;
+    static primaryOnly: BpxDrawingPattern;
+    static secondaryOnly: BpxDrawingPattern;
+    private constructor();
+    hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
 type DrawApiOptions = {
@@ -577,6 +551,7 @@ declare class Engine {
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
+    isInsideDrawOrStartedCallback: boolean;
     get frameNumber(): number;
     get frameNumberOutsidePause(): number;
     get renderingFps(): number;
@@ -587,6 +562,41 @@ declare class Engine {
     setOnUpdate(onUpdate?: () => void): void;
     setOnDraw(onDraw?: () => void): void;
     restart(): void;
+}
+
+type BpxEasingFn = (t: number) => number;
+declare class BpxEasing {
+    static linear: BpxEasingFn;
+    static inQuadratic: BpxEasingFn;
+    static outQuadratic: BpxEasingFn;
+    static inQuartic: BpxEasingFn;
+    static outQuartic: BpxEasingFn;
+}
+
+/**
+ * A free to use (CC-0) color palette created by zep and distributed as part of PICO-8 fantasy console.
+ *
+ * Links:
+ *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
+ *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from here
+ */
+declare class BpxPalettePico8 {
+    static black: BpxRgbColor;
+    static storm: BpxRgbColor;
+    static wine: BpxRgbColor;
+    static moss: BpxRgbColor;
+    static tan: BpxRgbColor;
+    static slate: BpxRgbColor;
+    static silver: BpxRgbColor;
+    static white: BpxRgbColor;
+    static ember: BpxRgbColor;
+    static orange: BpxRgbColor;
+    static lemon: BpxRgbColor;
+    static lime: BpxRgbColor;
+    static sky: BpxRgbColor;
+    static dusk: BpxRgbColor;
+    static pink: BpxRgbColor;
+    static peach: BpxRgbColor;
 }
 
 /**
@@ -649,15 +659,6 @@ declare class BpxFontConfigSaint11Minimal5 implements BpxFontConfig {
 
 declare class BpxGamepadTypeDetector {
     static detect(gamepad: Gamepad): BpxGamepadType;
-}
-
-type BpxEasingFn = (t: number) => number;
-declare class BpxEasing {
-    static linear: BpxEasingFn;
-    static inQuadratic: BpxEasingFn;
-    static outQuadratic: BpxEasingFn;
-    static inQuartic: BpxEasingFn;
-    static outQuartic: BpxEasingFn;
 }
 
 declare class BpxTimer {
@@ -724,118 +725,6 @@ declare class Logger {
     static errorBeetPx(...args: any[]): void;
     static error(...args: any[]): void;
 }
-
-declare class BeetPx {
-    #private;
-    static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
-    static get debug(): typeof DebugMode.enabled;
-    static get canvasSize(): BpxVector2d;
-    /**
-     * Number of frames processed since game started.
-     * It gets reset to 0 when `BeetPx.restart()` is called.
-     * It counts update calls, not draw calls.
-     *
-     * @return number
-     */
-    static get frameNumber(): number;
-    static get frameNumberOutsidePause(): number;
-    static get renderingFps(): number;
-    static get detectedBrowserType(): BpxBrowserType;
-    static setOnStarted: Engine["setOnStarted"];
-    static setOnUpdate: Engine["setOnUpdate"];
-    static setOnDraw: Engine["setOnDraw"];
-    static restart: Engine["restart"];
-    static logDebug: typeof Logger.debug;
-    static logInfo: typeof Logger.info;
-    static logWarn: typeof Logger.warn;
-    static logError: typeof Logger.error;
-    static get isPaused(): boolean;
-    static get wasJustPaused(): boolean;
-    static get wasJustResumed(): boolean;
-    static pause(): void;
-    static resume(): void;
-    static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
-    static wasButtonJustPressed: GameButtons["wasJustPressed"];
-    static wasButtonJustReleased: GameButtons["wasJustReleased"];
-    static isAnyButtonPressed: GameButtons["isAnyPressed"];
-    static isButtonPressed: GameButtons["isPressed"];
-    static getPressedDirection: GameButtons["getPressedDirection"];
-    static setButtonRepeating: GameButtons["setButtonRepeating"];
-    static getRecentInputMethods: GameInput["getRecentInputMethods"];
-    static getConnectedGamepadTypes: GameInput["getConnectedGamepadTypes"];
-    static getEventsCapturedInLastUpdate: GameInput["getEventsCapturedInLastUpdate"];
-    static clearCanvas: DrawApi["clearCanvas"];
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    static setClippingRegion: DrawApi["setClippingRegion"];
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    static removeClippingRegion: DrawApi["removeClippingRegion"];
-    /**
-     * Sets a new XY (left-top corner) of a camera's viewport
-     *
-     * @returns previous camera XY
-     */
-    static setCameraXy: DrawApi["setCameraXy"];
-    /**
-     * @returns previous pattern
-     */
-    static setDrawingPattern: DrawApi["setDrawingPattern"];
-    static drawPixel: DrawApi["drawPixel"];
-    /**
-     * @param {BpxVector2d} xy - sd
-     * @param {BpxRgbColor} color - sd
-     * @param {string[]} bits - an array representing rows from top to bottom,
-     *        where each array element is a text sequence of `0` and `1` to
-     *        represent drawn and skipped pixels from left to right.
-     */
-    /**
-     * Draws pixels based on a visual 2d representation in form of rows
-     *   (designated by new lines) where `#` and `-` stand for a colored
-     *   pixel and a lack of a pixel. Whitespaces are ignored.
-     */
-    static drawPixels: DrawApi["drawPixels"];
-    static drawLine: DrawApi["drawLine"];
-    static drawRect: DrawApi["drawRect"];
-    static drawRectFilled: DrawApi["drawRectFilled"];
-    static drawRectOutsideFilled: DrawApi["drawRectOutsideFilled"];
-    static drawEllipse: DrawApi["drawEllipse"];
-    static drawEllipseFilled: DrawApi["drawEllipseFilled"];
-    static drawEllipseOutsideFilled: DrawApi["drawEllipseOutsideFilled"];
-    /**
-     * @returns previous sprite color mapping
-     */
-    static setSpriteColorMapping: DrawApi["setSpriteColorMapping"];
-    static drawSprite: DrawApi["drawSprite"];
-    static useFont: DrawApi["useFont"];
-    static measureText: DrawApi["measureText"];
-    static drawText: DrawApi["drawText"];
-    static takeCanvasSnapshot: DrawApi["takeCanvasSnapshot"];
-    static isAudioMuted: AudioApi["isAudioMuted"];
-    static muteAudio: AudioApi["muteAudio"];
-    static unmuteAudio: AudioApi["unmuteAudio"];
-    static startPlayback: AudioApi["startPlayback"];
-    static startPlaybackLooped: AudioApi["startPlaybackLooped"];
-    static startPlaybackSequence: AudioApi["startPlaybackSequence"];
-    static mutePlayback: AudioApi["mutePlayback"];
-    static unmutePlayback: AudioApi["unmutePlayback"];
-    static stopPlayback: AudioApi["stopPlayback"];
-    static pausePlayback: AudioApi["pausePlayback"];
-    static resumePlayback: AudioApi["resumePlayback"];
-    static getAudioContext: AudioApi["getAudioContext"];
-    static isFullScreenSupported: FullScreen["isFullScreenSupported"];
-    static isInFullScreen: FullScreen["isInFullScreen"];
-    static toggleFullScreen: FullScreen["toggleFullScreen"];
-    static savePersistedState: StorageApi["savePersistedState"];
-    static loadPersistedState: StorageApi["loadPersistedState"];
-    static clearPersistedState: StorageApi["clearPersistedState"];
-    static getImageAsset: Assets["getImageAsset"];
-    static getSoundAsset: Assets["getSoundAsset"];
-    static getJsonAsset: Assets["getJsonAsset"];
-}
-declare const b_: typeof BeetPx;
 
 /**
  * This function is meant to be used in a last branch of `if - else if - … - else`
@@ -909,54 +798,266 @@ declare function trigSin(turnAngle: number): number;
 
 declare function wait(millis: number): Promise<void>;
 
-declare class BpxUtils {
-    static assertUnreachable: typeof assertUnreachable;
-    static booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
-    static clamp: typeof clamp;
-    static drawTextWithOutline: typeof drawTextWithOutline;
-    static identity: typeof identity;
-    static isDefined: typeof isDefined;
-    static lerp: typeof lerp;
-    static mod: typeof mod;
-    static noop: typeof noop;
-    static offset4Directions: typeof offset4Directions;
-    static offset8Directions: typeof offset8Directions;
-    static randomElementOf: typeof randomElementOf;
-    static range: typeof range;
-    static repeatEachElement: typeof repeatEachElement;
-    static throwError: typeof throwError;
-    static trigAtan2: typeof trigAtan2;
-    static trigCos: typeof trigCos;
-    static trigSin: typeof trigSin;
-    static wait: typeof wait;
+declare class BeetPx {
+    #private;
+    static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
+    static get debug(): typeof DebugMode.enabled;
+    static get canvasSize(): BpxVector2d;
+    /**
+     * Number of frames processed since game started.
+     * It gets reset to 0 when `BeetPx.restart()` is called.
+     * It counts update calls, not draw calls.
+     *
+     * @return number
+     */
+    static get frameNumber(): number;
+    static get frameNumberOutsidePause(): number;
+    static get renderingFps(): number;
+    static get detectedBrowserType(): BpxBrowserType;
+    static setOnStarted: Engine["setOnStarted"];
+    static setOnUpdate: Engine["setOnUpdate"];
+    static setOnDraw: Engine["setOnDraw"];
+    static restart: Engine["restart"];
+    static logDebug: typeof Logger.debug;
+    static logInfo: typeof Logger.info;
+    static logWarn: typeof Logger.warn;
+    static logError: typeof Logger.error;
+    static get isPaused(): boolean;
+    static get wasJustPaused(): boolean;
+    static get wasJustResumed(): boolean;
+    static pause(): void;
+    static resume(): void;
+    static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
+    static wasButtonJustPressed: GameButtons["wasJustPressed"];
+    static wasButtonJustReleased: GameButtons["wasJustReleased"];
+    static isAnyButtonPressed: GameButtons["isAnyPressed"];
+    static isButtonPressed: GameButtons["isPressed"];
+    static getPressedDirection: GameButtons["getPressedDirection"];
+    static setButtonRepeating: GameButtons["setButtonRepeating"];
+    static getRecentInputMethods: GameInput["getRecentInputMethods"];
+    static getConnectedGamepadTypes: GameInput["getConnectedGamepadTypes"];
+    static getEventsCapturedInLastUpdate: GameInput["getEventsCapturedInLastUpdate"];
+    static isAudioMuted: AudioApi["isAudioMuted"];
+    static muteAudio: AudioApi["muteAudio"];
+    static unmuteAudio: AudioApi["unmuteAudio"];
+    static startPlayback: AudioApi["startPlayback"];
+    static startPlaybackLooped: AudioApi["startPlaybackLooped"];
+    static startPlaybackSequence: AudioApi["startPlaybackSequence"];
+    static mutePlayback: AudioApi["mutePlayback"];
+    static unmutePlayback: AudioApi["unmutePlayback"];
+    static stopPlayback: AudioApi["stopPlayback"];
+    static pausePlayback: AudioApi["pausePlayback"];
+    static resumePlayback: AudioApi["resumePlayback"];
+    static getAudioContext: AudioApi["getAudioContext"];
+    static isFullScreenSupported: FullScreen["isFullScreenSupported"];
+    static isInFullScreen: FullScreen["isInFullScreen"];
+    static toggleFullScreen: FullScreen["toggleFullScreen"];
+    static savePersistedState: StorageApi["savePersistedState"];
+    static loadPersistedState: StorageApi["loadPersistedState"];
+    static clearPersistedState: StorageApi["clearPersistedState"];
+    static getImageAsset: Assets["getImageAsset"];
+    static getSoundAsset: Assets["getSoundAsset"];
+    static getJsonAsset: Assets["getJsonAsset"];
+    static draw: {
+        clearCanvas(color: BpxRgbColor): void;
+        /**
+         * @returns - previous clipping region in form of an array: [xy, wh]
+         */
+        setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
+        /**
+         * @returns - previous clipping region in form of an array: [xy, wh]
+         */
+        removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
+        /**
+         * Sets a new XY (left-top corner) of a camera's viewport
+         *
+         * @returns previous camera XY
+         */
+        setCameraXy(xy: BpxVector2d): BpxVector2d;
+        /**
+         * @returns previous pattern
+         */
+        setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
+        pixel(xy: BpxVector2d, color: BpxRgbColor): void;
+        /**
+         * Draws pixels based on a visual 2d representation in form of rows
+         *   (designated by new lines) where `#` and `-` stand for a colored
+         *   pixel and a lack of a pixel. Whitespaces are ignored.
+         */
+        pixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+            centerXy?: [boolean, boolean];
+            scaleXy?: BpxVector2d;
+            flipXy?: [boolean, boolean];
+        }): void;
+        line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+        rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+        rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+        rectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+        ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+        ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+        ellipseOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+        /**
+         * @returns previous sprite color mapping
+         */
+        setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
+        sprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
+            centerXy?: [boolean, boolean];
+            scaleXy?: BpxVector2d;
+            flipXy?: [boolean, boolean];
+        }): void;
+        /**
+         * @returns - previously used font
+         */
+        useFont(font: BpxFont): BpxFont;
+        measureText(text: string, opts?: {
+            centerXy?: [boolean, boolean];
+            scaleXy?: BpxVector2d;
+        }): {
+            wh: BpxVector2d;
+            offset: BpxVector2d;
+        };
+        text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+            centerXy?: [boolean, boolean];
+            scaleXy?: BpxVector2d;
+            colorMarkers?: BpxTextColorMarkers;
+        }): void;
+        takeCanvasSnapshot(): void;
+    };
+    static utils: {
+        assertUnreachable: typeof assertUnreachable;
+        booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
+        clamp: typeof clamp;
+        drawTextWithOutline: typeof drawTextWithOutline;
+        identity: typeof identity;
+        isDefined: typeof isDefined;
+        lerp: typeof lerp;
+        mod: typeof mod;
+        noop: typeof noop;
+        offset4Directions: typeof offset4Directions;
+        offset8Directions: typeof offset8Directions;
+        randomElementOf: typeof randomElementOf;
+        range: typeof range;
+        repeatEachElement: typeof repeatEachElement;
+        throwError: typeof throwError;
+        trigAtan2: typeof trigAtan2;
+        trigCos: typeof trigCos;
+        trigSin: typeof trigSin;
+        wait: typeof wait;
+    };
 }
-declare const u_: typeof BpxUtils;
+declare const $: typeof BeetPx;
+declare const $d: {
+    clearCanvas(color: BpxRgbColor): void;
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
+    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
+    removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
+    /**
+     * Sets a new XY (left-top corner) of a camera's viewport
+     *
+     * @returns previous camera XY
+     */
+    setCameraXy(xy: BpxVector2d): BpxVector2d;
+    /**
+     * @returns previous pattern
+     */
+    setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
+    pixel(xy: BpxVector2d, color: BpxRgbColor): void;
+    /**
+     * Draws pixels based on a visual 2d representation in form of rows
+     *   (designated by new lines) where `#` and `-` stand for a colored
+     *   pixel and a lack of a pixel. Whitespaces are ignored.
+     */
+    pixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
+    }): void;
+    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    rectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    ellipseOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    /**
+     * @returns previous sprite color mapping
+     */
+    setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
+    sprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
+    }): void;
+    /**
+     * @returns - previously used font
+     */
+    useFont(font: BpxFont): BpxFont;
+    measureText(text: string, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+    }): {
+        wh: BpxVector2d;
+        offset: BpxVector2d;
+    };
+    text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+        colorMarkers?: BpxTextColorMarkers;
+    }): void;
+    takeCanvasSnapshot(): void;
+};
+declare const $u: {
+    assertUnreachable: typeof assertUnreachable;
+    booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
+    clamp: typeof clamp;
+    drawTextWithOutline: typeof drawTextWithOutline;
+    identity: typeof identity;
+    isDefined: typeof isDefined;
+    lerp: typeof lerp;
+    mod: typeof mod;
+    noop: typeof noop;
+    offset4Directions: typeof offset4Directions;
+    offset8Directions: typeof offset8Directions;
+    randomElementOf: typeof randomElementOf;
+    range: typeof range;
+    repeatEachElement: typeof repeatEachElement;
+    throwError: typeof throwError;
+    trigAtan2: typeof trigAtan2;
+    trigCos: typeof trigCos;
+    trigSin: typeof trigSin;
+    wait: typeof wait;
+};
 
-declare function aspr_(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;
-declare function font_(config: Partial<BpxFontConfig>): BpxFont;
-declare function font_(baseFont: BpxFont, extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig): BpxFont;
-declare const font_pico8_: BpxFont;
-declare const font_saint11Minimal4_: BpxFont;
-declare const font_saint11Minimal5_: BpxFont;
-declare function rgb_(r: number, g: number, b: number): BpxRgbColor;
-declare function rgb_(cssHex: string): BpxRgbColor;
-declare const rgb_black_: BpxRgbColor;
-declare const rgb_white_: BpxRgbColor;
-declare const rgb_red_: BpxRgbColor;
-declare const rgb_green_: BpxRgbColor;
-declare const rgb_blue_: BpxRgbColor;
-declare const rgb_cyan_: BpxRgbColor;
-declare const rgb_magenta_: BpxRgbColor;
-declare const rgb_yellow_: BpxRgbColor;
-declare const rgb_p8_: typeof BpxPalettePico8;
-declare function spr_(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory;
-declare function timer_(frames: number, opts?: {
+declare function $aspr(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;
+declare function $font(config: Partial<BpxFontConfig>): BpxFont;
+declare function $font(baseFont: BpxFont, extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig): BpxFont;
+declare const $font_pico8: BpxFont;
+declare const $font_saint11Minimal4: BpxFont;
+declare const $font_saint11Minimal5: BpxFont;
+declare function $rgb(r: number, g: number, b: number): BpxRgbColor;
+declare function $rgb(cssHex: string): BpxRgbColor;
+declare const $rgb_black: BpxRgbColor;
+declare const $rgb_white: BpxRgbColor;
+declare const $rgb_red: BpxRgbColor;
+declare const $rgb_green: BpxRgbColor;
+declare const $rgb_blue: BpxRgbColor;
+declare const $rgb_cyan: BpxRgbColor;
+declare const $rgb_magenta: BpxRgbColor;
+declare const $rgb_yellow: BpxRgbColor;
+declare const $rgb_p8: typeof BpxPalettePico8;
+declare function $spr(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory;
+declare function $timer(frames: number, opts?: {
     loop?: boolean;
     pause?: boolean;
     delayFrames?: number;
     onGamePause?: "pause" | "ignore";
 }): BpxTimer;
-declare function timerSeq_<TPhaseName extends string>(params: {
+declare function $timerSeq<TPhaseName extends string>(params: {
     intro?: Array<[phase: TPhaseName, frames: number]>;
     loop?: Array<[phase: TPhaseName, frames: number]>;
 }, opts?: {
@@ -964,10 +1065,10 @@ declare function timerSeq_<TPhaseName extends string>(params: {
     delayFrames?: number;
     onGamePause?: "pause" | "ignore";
 }): BpxTimerSequence<TPhaseName>;
-declare function v_(value: number): BpxVector2d;
-declare function v_(x: number, y: number): BpxVector2d;
-declare const v_0_0_: BpxVector2d;
-declare const v_1_1_: BpxVector2d;
+declare function $v(value: number): BpxVector2d;
+declare function $v(x: number, y: number): BpxVector2d;
+declare const $v_0_0: BpxVector2d;
+declare const $v_1_1: BpxVector2d;
 
 declare global {
     /**
@@ -998,4 +1099,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxUtils, BpxVector2d, aspr_, b_, font_, font_pico8_, font_saint11Minimal4_, font_saint11Minimal5_, rgb_, rgb_black_, rgb_blue_, rgb_cyan_, rgb_green_, rgb_magenta_, rgb_p8_, rgb_red_, rgb_white_, rgb_yellow_, spr_, timerSeq_, timer_, u_, v_, v_0_0_, v_1_1_ };
+export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_1_1, BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxVector2d };

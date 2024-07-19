@@ -1,16 +1,16 @@
-import { b_, rgb_p8_, spr_, v_, v_0_0_ } from "../../../src";
+import { $, $d, $rgb_p8, $spr, $u, $v, $v_0_0 } from "../../../src";
 
-const logoSprite = spr_("logo.png")(16, 16, 0, 0);
-let circleMovementCenter = v_0_0_;
-let logoPosition = v_0_0_;
+const logoSprite = $spr("logo.png")(16, 16, 0, 0);
+let circleMovementCenter = $v_0_0;
+let logoPosition = $v_0_0;
 
 /**
  * `init` is used to configure BeetPx app and initialize underlying
  *  singleton used later to access the whole API (drawing functions etc.)
  *
- *  `b_` is a shorter way of accessing `BeetPx`.
+ *  `$` is a shorter way of accessing `BeetPx`.
  */
-b_.init({
+$.init({
   /**
    * Here are names of asset files to be fetched by the BeetPx on load
    * for further use. They are located in `../public/`.
@@ -29,7 +29,6 @@ b_.init({
    */
   debugMode: {
     available: true,
-    forceEnabledOnStart: true,
     fpsDisplay: { enabled: true },
   },
 
@@ -50,22 +49,22 @@ b_.init({
    *
    * Press Enter on your keyboard (or menu on your gamepad) to test it.
    */
-  b_.setOnStarted(() => {
-    b_.startPlaybackLooped("music_melody.flac");
-    circleMovementCenter = b_.canvasSize.div(2);
+  $.setOnStarted(() => {
+    $.startPlaybackLooped("music_melody.flac");
+    circleMovementCenter = $.canvasSize.div(2);
   });
 
   /**
    * `setOnUpdate` is used for a logic to be run in a fixed timestep
    * game loop.
    */
-  b_.setOnUpdate(() => {
+  $.setOnUpdate(() => {
     /**
      * `getPressedDirection` returns a 2D vector representing the pressed
      * state of directional buttons. For example: "right" is (1,0).
      */
     circleMovementCenter = circleMovementCenter.add(
-      b_.getPressedDirection().mul(3),
+      $.getPressedDirection().mul(3),
     );
 
     /**
@@ -73,17 +72,17 @@ b_.init({
      * counted from the moment the game (re)started.
      */
     logoPosition = circleMovementCenter.add(
-      v_(32).mul(
-        Math.cos((b_.frameNumber / 120) * Math.PI),
-        Math.sin((b_.frameNumber / 120) * Math.PI),
+      $v(32).mul(
+        Math.cos(($.frameNumber / 120) * Math.PI),
+        Math.sin(($.frameNumber / 120) * Math.PI),
       ),
     );
 
     /**
      * (see comments above `setOnStarted`)
      */
-    if (b_.isButtonPressed("menu")) {
-      b_.restart();
+    if ($.isButtonPressed("menu")) {
+      $.restart();
     }
   });
 
@@ -93,11 +92,17 @@ b_.init({
    *
    * The callback passed here is *not* guaranteed to be called on a fixed
    * timestamp, in a contrary to the one passed to `setOnUpdated`.
+   *
+   * `$d` used inside is a shorter way of accessing `BeetPx.draw`.
+   *
+   * `$u` used inside is a shorter way of accessing `BeetPx.helpers`.
    */
-  b_.setOnDraw(() => {
-    b_.clearCanvas(rgb_p8_.storm);
-    b_.drawPixel(circleMovementCenter, rgb_p8_.ember);
-    b_.drawSprite(logoSprite, logoPosition, { centerXy: [true, true] });
+  $.setOnDraw(() => {
+    $d.clearCanvas($rgb_p8.storm);
+    if ($u.booleanChangingEveryNthFrame(30)) {
+      $d.pixel(circleMovementCenter, $rgb_p8.ember);
+    }
+    $d.sprite(logoSprite, logoPosition, { centerXy: [true, true] });
   });
 
   /**

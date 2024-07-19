@@ -1,6 +1,6 @@
 import { type PngDataArray } from "fast-png";
 import { BpxRgbColor } from "../color/RgbColor";
-import { rgb_ } from "../shorthands";
+import { $rgb } from "../shorthands";
 import { BpxSprite } from "../sprite/Sprite";
 import { range } from "../utils/range";
 
@@ -53,13 +53,13 @@ export class PreparedSprites {
 
         colors[spriteX]![spriteY] =
           imgChannels === 3 ?
-            rgb_(
+            $rgb(
               imgBytes[imgIndex]!,
               imgBytes[imgIndex + 1]!,
               imgBytes[imgIndex + 2]!,
             )
           : imgBytes[imgIndex + 3]! >= 0xff / 2 ?
-            rgb_(
+            $rgb(
               imgBytes[imgIndex]!,
               imgBytes[imgIndex + 1]!,
               imgBytes[imgIndex + 2]!,

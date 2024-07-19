@@ -1,10 +1,10 @@
-import { b_, rgb_p8_ } from "../../../src";
+import { $, $d, $rgb_p8 } from "../../../src";
 import { Movement } from "./Movement";
 import { Music } from "./Music";
 import { PauseMenu } from "./PauseMenu";
 import { Vfx } from "./Vfx";
 
-b_.init({
+$.init({
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
   globalPause: {
@@ -17,25 +17,25 @@ b_.init({
   let movement: Movement;
   let vfx: Vfx;
 
-  b_.setOnStarted(() => {
+  $.setOnStarted(() => {
     music = new Music();
     movement = new Movement();
     vfx = new Vfx({ loopFrames: Music.beatFrames });
   });
 
-  b_.setOnUpdate(() => {
-    if (b_.isPaused) {
+  $.setOnUpdate(() => {
+    if ($.isPaused) {
       pauseMenu.update();
     }
   });
 
-  b_.setOnDraw(() => {
-    b_.clearCanvas(rgb_p8_.storm);
+  $.setOnDraw(() => {
+    $d.clearCanvas($rgb_p8.storm);
 
     vfx.draw();
     movement.draw();
 
-    if (b_.isPaused) {
+    if ($.isPaused) {
       pauseMenu.draw();
     }
   });

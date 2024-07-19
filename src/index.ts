@@ -28,54 +28,63 @@ declare global {
   const BEETPX__VERSION: string;
 }
 
-export {
-  type BpxImageAsset,
-  type BpxImageUrl,
-  type BpxJsonAsset,
-  type BpxJsonUrl,
-  type BpxSoundAsset,
-  type BpxSoundUrl,
+/////////////////////////////////////////////////////////////////////////////
+
+export type {
+  BpxImageAsset,
+  BpxImageUrl,
+  BpxJsonAsset,
+  BpxJsonUrl,
+  BpxSoundAsset,
+  BpxSoundUrl,
 } from "./assets/Assets";
-export { type BpxAudioPlaybackId } from "./audio/AudioPlayback";
-export {
-  type BpxSoundSequence,
-  type BpxSoundSequenceEntry,
+export type { BpxAudioPlaybackId } from "./audio/AudioPlayback";
+export type {
+  BpxSoundSequence,
+  BpxSoundSequenceEntry,
 } from "./audio/SoundSequence";
-export { type BpxBrowserType } from "./browser/BrowserTypeDetector";
+export type { BpxBrowserType } from "./browser/BrowserTypeDetector";
+export type { BpxColorMapper } from "./color/ColorMapper";
+export type { BpxRgbCssHex } from "./color/RgbColor";
+export type { BpxEngineConfig } from "./Engine";
+export type {
+  BpxArrangedGlyph,
+  BpxGlyph,
+  BpxKerningPrevCharMap,
+  BpxTextColorMarkers,
+} from "./font/Font";
+export type { BpxGameButtonName } from "./game_input/buttons/GameButtons";
+export type { BpxGameInputEvent } from "./game_input/GameInput";
+export type { BpxGamepadType } from "./game_input/GameInputGamepad";
+export type { BpxEasingFn } from "./misc/Easing";
+export type { BpxImageBoundAnimatedSpriteFactory } from "./sprite/AnimatedSprite";
+export type { BpxImageBoundSpriteFactory } from "./sprite/Sprite";
+
+/////////////////////////////////////////////////////////////////////////////
+
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
-export { type BpxColorMapper } from "./color/ColorMapper";
 export { BpxPalettePico8 } from "./color/PalettePico8";
 export { BpxPatternColors } from "./color/PatternColors";
-export { BpxRgbColor, type BpxRgbCssHex } from "./color/RgbColor";
+export { BpxRgbColor } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxDrawingPattern } from "./draw_api/DrawingPattern";
 export { BpxPixels } from "./draw_api/Pixels";
-export { type BpxEngineConfig } from "./Engine";
-export {
-  BpxFont,
-  type BpxArrangedGlyph,
-  type BpxGlyph,
-  type BpxKerningPrevCharMap,
-  type BpxTextColorMarkers,
-} from "./font/Font";
+export { BpxFont } from "./font/Font";
 export { BpxFontConfigPico8 } from "./font/FontConfigPico8";
 export { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
 export { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
-export { type BpxGameButtonName } from "./game_input/buttons/GameButtons";
-export { type BpxGameInputEvent } from "./game_input/GameInput";
-export { type BpxGamepadType } from "./game_input/GameInputGamepad";
 export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
-export { BpxEasing, type BpxEasingFn } from "./misc/Easing";
+export { BpxEasing } from "./misc/Easing";
 export { BpxVector2d } from "./misc/Vector2d";
-export {
-  BpxAnimatedSprite,
-  type BpxImageBoundAnimatedSpriteFactory,
-} from "./sprite/AnimatedSprite";
-export { BpxSprite, type BpxImageBoundSpriteFactory } from "./sprite/Sprite";
+export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
+export { BpxSprite } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
 export { BpxTimerSequence } from "./timer/TimerSequence";
 
-export { BeetPx, b_ } from "./BeetPx";
-export { BpxUtils, u_ } from "./utils/Utils";
+/////////////////////////////////////////////////////////////////////////////
+
+export { $, $d, $u, BeetPx } from "./BeetPx";
+
+/////////////////////////////////////////////////////////////////////////////
 
 export * from "./shorthands";

@@ -1,20 +1,19 @@
 import { describe, expect, test } from "vitest";
-import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxGlyph } from "../../font/Font";
-import { font_, spr_, v_ } from "../../shorthands";
+import { $font, $rgb, $spr, $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { DrawingTestSetup, drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPixels } from "../Pixels";
 import { TestImage } from "../TestImage";
 
 describe("DrawText", () => {
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
-  const c2 = BpxRgbColor.fromCssHex("#212223");
-  const c3 = BpxRgbColor.fromCssHex("#313233");
-  const c4 = BpxRgbColor.fromCssHex("#414243");
-  const cFontBg = BpxRgbColor.fromCssHex("#818283");
-  const cFontFg = BpxRgbColor.fromCssHex("#919293");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
+  const c2 = $rgb("#212223");
+  const c3 = $rgb("#313233");
+  const c4 = $rgb("#414243");
+  const cFontBg = $rgb("#818283");
+  const cFontFg = $rgb("#919293");
 
   const fontImage = new TestImage({
     withMapping: { _: cFontBg, X: cFontFg },
@@ -28,7 +27,7 @@ describe("DrawText", () => {
     `,
   });
 
-  const testFont = font_({
+  const testFont = $font({
     ascent: 6,
     descent: 2,
     lineGap: 1,
@@ -38,7 +37,7 @@ describe("DrawText", () => {
         "B",
         {
           type: "sprite",
-          sprite: spr_(fontImage.uniqueUrl)(4, 6, 0, 0),
+          sprite: $spr(fontImage.uniqueUrl)(4, 6, 0, 0),
           isTextColor: sc => sc?.cssHex === cFontFg.cssHex,
           advance: 5,
         },
@@ -74,7 +73,7 @@ describe("DrawText", () => {
         "x",
         {
           type: "sprite",
-          sprite: spr_(fontImage.uniqueUrl)(3, 5, 7, 1),
+          sprite: $spr(fontImage.uniqueUrl)(3, 5, 7, 1),
           isTextColor: sc => sc?.cssHex === cFontFg.cssHex,
           advance: 4,
         },
@@ -83,10 +82,10 @@ describe("DrawText", () => {
         ",",
         {
           type: "sprite",
-          sprite: spr_(fontImage.uniqueUrl)(2, 3, 8, 1),
+          sprite: $spr(fontImage.uniqueUrl)(2, 3, 8, 1),
           isTextColor: sc => sc?.cssHex === cFontFg.cssHex,
           advance: 4,
-          offset: v_(0, 2),
+          offset: $v(0, 2),
           kerning: { B: -1, x: -1 },
         },
       ],
@@ -144,7 +143,7 @@ describe("DrawText", () => {
 
       dts.drawApi.useFont(testFont);
       const text = "Bpx,";
-      dts.drawApi.drawText(text, v_(1, 1), c1);
+      dts.drawApi.drawText(text, $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -172,7 +171,7 @@ describe("DrawText", () => {
 
       dts.drawApi.useFont(testFont);
       const text = "Bpx\n\nBpx\n";
-      dts.drawApi.drawText(text, v_(1, 1), c1);
+      dts.drawApi.drawText(text, $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -231,7 +230,7 @@ describe("DrawText", () => {
 
     dts.drawApi.useFont(testFont);
     const text = "x⏏️x";
-    dts.drawApi.drawText(text, v_(1, 1), c1);
+    dts.drawApi.drawText(text, $v(1, 1), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -255,7 +254,7 @@ describe("DrawText", () => {
 
       dts.drawApi.useFont(testFont);
       const text = "111B222p333x444";
-      dts.drawApi.drawText(text, v_(1, 1), c1);
+      dts.drawApi.drawText(text, $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -281,7 +280,7 @@ describe("DrawText", () => {
 
       dts.drawApi.useFont(testFont);
       const text = "Bpx\n111222333\nBpx\n111222333";
-      dts.drawApi.drawText(text, v_(1, 1), c1);
+      dts.drawApi.drawText(text, $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -340,7 +339,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [false, false] });
+      dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [false, false] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -368,7 +367,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [true, false] });
+      dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [true, false] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -396,7 +395,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [false, true] });
+      dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [false, true] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -424,7 +423,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("Bpx,", v_(8, 5), c1, { centerXy: [true, true] });
+      dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [true, true] });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -453,7 +452,7 @@ describe("DrawText", () => {
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
     dts.drawApi.useFont(testFont);
-    dts.drawApi.drawText("Bpx,", v_(2.49, 1.51), c1);
+    dts.drawApi.drawText("Bpx,", $v(2.49, 1.51), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -480,7 +479,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("Bpx,", v_(1, 1), c1, { scaleXy: v_(3, 2) });
+      dts.drawApi.drawText("Bpx,", $v(1, 1), c1, { scaleXy: $v(3, 2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -512,7 +511,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("Bpx,", v_(1, 1), c1, { scaleXy: v_(-3, -2) });
+      dts.drawApi.drawText("Bpx,", $v(1, 1), c1, { scaleXy: $v(-3, -2) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -536,7 +535,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("Bpx,", v_(1, 1), c1, { scaleXy: v_(0.9, 0.9) });
+      dts.drawApi.drawText("Bpx,", $v(1, 1), c1, { scaleXy: $v(0.9, 0.9) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -555,7 +554,7 @@ describe("DrawText", () => {
       });
 
       dts.drawApi.clearCanvas(c0);
-      dts.drawApi.drawText("Bpx,", v_(1, 1), c1, { scaleXy: v_(1.9, 1.9) });
+      dts.drawApi.drawText("Bpx,", $v(1, 1), c1, { scaleXy: $v(1.9, 1.9) });
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -580,9 +579,9 @@ describe("DrawText", () => {
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
     dts.drawApi.useFont(testFont);
-    dts.drawApi.drawText("B,", v_(13, 9), c1, {
+    dts.drawApi.drawText("B,", $v(13, 9), c1, {
       centerXy: [true, true],
-      scaleXy: v_(4, 2),
+      scaleXy: $v(4, 2),
     });
 
     dts.canvas.expectToEqual({
@@ -615,7 +614,7 @@ describe("DrawText", () => {
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
     dts.drawApi.useFont(testFont);
-    dts.drawApi.drawText("Bpx,", v_(-3, -2), c1);
+    dts.drawApi.drawText("Bpx,", $v(-3, -2), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -632,8 +631,8 @@ describe("DrawText", () => {
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
     dts.drawApi.useFont(testFont);
-    dts.drawApi.setCameraXy(v_(2, -5));
-    dts.drawApi.drawText("Bpx,", v_(1, 1), c1);
+    dts.drawApi.setCameraXy($v(2, -5));
+    dts.drawApi.drawText("Bpx,", $v(1, 1), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -665,7 +664,7 @@ describe("DrawText", () => {
         --##
       `),
     );
-    dts.drawApi.drawText("Bpx,", v_(1, 1), c1);
+    dts.drawApi.drawText("Bpx,", $v(1, 1), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -689,7 +688,7 @@ describe("DrawText", () => {
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
     dts.drawApi.useFont(testFont);
-    dts.drawApi.setCameraXy(v_(2, -3));
+    dts.drawApi.setCameraXy($v(2, -3));
     dts.drawApi.setDrawingPattern(
       BpxDrawingPattern.from(`
         ##--
@@ -698,7 +697,7 @@ describe("DrawText", () => {
         --##
       `),
     );
-    dts.drawApi.drawText("Bpx,", v_(1, 1), c1);
+    dts.drawApi.drawText("Bpx,", $v(1, 1), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -723,7 +722,7 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("B[m2]p[m3]x[m4],", v_(1, 1), c1, {
+      dts.drawApi.drawText("B[m2]p[m3]x[m4],", $v(1, 1), c1, {
         colorMarkers: {
           m2: c2,
           m4: c4,

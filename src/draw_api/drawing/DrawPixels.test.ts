@@ -1,18 +1,17 @@
 import { describe, test } from "vitest";
-import { BpxRgbColor } from "../../color/RgbColor";
-import { v_ } from "../../shorthands";
+import { $rgb, $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPixels } from "../Pixels";
 
 describe("DrawPixels", () => {
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
 
   test("1x1", () => {
     const dts = drawingTestSetup(3, 3, c0);
 
-    dts.drawApi.drawPixels(BpxPixels.from("#"), v_(1, 1), c1);
+    dts.drawApi.drawPixels(BpxPixels.from("#"), $v(1, 1), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -38,7 +37,7 @@ describe("DrawPixels", () => {
         ----------##
         #
       `),
-      v_(1, 1),
+      $v(1, 1),
       c1,
     );
 
@@ -76,7 +75,7 @@ describe("DrawPixels", () => {
         
         
       `),
-      v_(1, 1),
+      $v(1, 1),
       c1,
     );
 
@@ -95,7 +94,7 @@ describe("DrawPixels", () => {
   test("0-size", () => {
     const dts = drawingTestSetup(9, 9, c0);
 
-    dts.drawApi.drawPixels(BpxPixels.from(""), v_(1, 1), c1);
+    dts.drawApi.drawPixels(BpxPixels.from(""), $v(1, 1), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -114,7 +113,7 @@ describe("DrawPixels", () => {
 
     dts.drawApi.drawPixels(
       BpxPixels.from("    \n  \n \n\n   \n   "),
-      v_(1, 1),
+      $v(1, 1),
       c1,
     );
 
@@ -137,7 +136,7 @@ describe("DrawPixels", () => {
   test("rounding", () => {
     const dts = drawingTestSetup(7, 6, c0);
 
-    dts.drawApi.drawPixels(BpxPixels.from("###\n###"), v_(2.49, 1.51), c1);
+    dts.drawApi.drawPixels(BpxPixels.from("###\n###"), $v(2.49, 1.51), c1);
 
     dts.canvas.expectToEqual({
       withMapping: { "-": c0, "#": c1 },
@@ -156,7 +155,7 @@ describe("DrawPixels", () => {
     test("no centering", () => {
       const dts = drawingTestSetup(10, 6, c0);
 
-      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), $v(5, 3), c1, {
         centerXy: [false, false],
       });
 
@@ -176,7 +175,7 @@ describe("DrawPixels", () => {
     test("X centering", () => {
       const dts = drawingTestSetup(10, 6, c0);
 
-      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), $v(5, 3), c1, {
         centerXy: [true, false],
       });
 
@@ -196,7 +195,7 @@ describe("DrawPixels", () => {
     test("Y centering", () => {
       const dts = drawingTestSetup(10, 6, c0);
 
-      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), $v(5, 3), c1, {
         centerXy: [false, true],
       });
 
@@ -216,7 +215,7 @@ describe("DrawPixels", () => {
     test("XY centering", () => {
       const dts = drawingTestSetup(10, 6, c0);
 
-      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), v_(5, 3), c1, {
+      dts.drawApi.drawPixels(BpxPixels.from("###\n####"), $v(5, 3), c1, {
         centerXy: [true, true],
       });
 
@@ -243,9 +242,9 @@ describe("DrawPixels", () => {
           ##
           #-
         `),
-        v_(2, 1),
+        $v(2, 1),
         c1,
-        { scaleXy: v_(3, 2) },
+        { scaleXy: $v(3, 2) },
       );
 
       dts.canvas.expectToEqual({
@@ -269,9 +268,9 @@ describe("DrawPixels", () => {
           ##
           #-
         `),
-        v_(2, 1),
+        $v(2, 1),
         c1,
-        { scaleXy: v_(-3, -2) },
+        { scaleXy: $v(-3, -2) },
       );
 
       dts.canvas.expectToEqual({
@@ -295,9 +294,9 @@ describe("DrawPixels", () => {
           ##
           #-
         `),
-        v_(2, 1),
+        $v(2, 1),
         c1,
-        { scaleXy: v_(0.9, 0.9) },
+        { scaleXy: $v(0.9, 0.9) },
       );
 
       dts.canvas.expectToEqual({
@@ -318,9 +317,9 @@ describe("DrawPixels", () => {
           ##
           #-
         `),
-        v_(2, 1),
+        $v(2, 1),
         c1,
-        { scaleXy: v_(1.9, 1.9) },
+        { scaleXy: $v(1.9, 1.9) },
       );
 
       dts.canvas.expectToEqual({
@@ -341,9 +340,9 @@ describe("DrawPixels", () => {
           ##
           #-
         `),
-        v_(2, 1),
+        $v(2, 1),
         c1,
-        { scaleXy: v_(3.9, 2.9) },
+        { scaleXy: $v(3.9, 2.9) },
       );
 
       dts.canvas.expectToEqual({
@@ -369,7 +368,7 @@ describe("DrawPixels", () => {
           ###
           #--
         `),
-        v_(1, 1),
+        $v(1, 1),
         c1,
         { flipXy: [false, false] },
       );
@@ -393,7 +392,7 @@ describe("DrawPixels", () => {
           ###
           #--
         `),
-        v_(1, 1),
+        $v(1, 1),
         c1,
         { flipXy: [true, false] },
       );
@@ -417,7 +416,7 @@ describe("DrawPixels", () => {
           ###
           #--
         `),
-        v_(1, 1),
+        $v(1, 1),
         c1,
         { flipXy: [false, true] },
       );
@@ -441,7 +440,7 @@ describe("DrawPixels", () => {
           ###
           #--
         `),
-        v_(1, 1),
+        $v(1, 1),
         c1,
         { flipXy: [true, true] },
       );
@@ -466,9 +465,9 @@ describe("DrawPixels", () => {
           ###
           #--
         `),
-      v_(5, 4),
+      $v(5, 4),
       c1,
-      { scaleXy: v_(2, 3), centerXy: [true, true], flipXy: [true, true] },
+      { scaleXy: $v(2, 3), centerXy: [true, true], flipXy: [true, true] },
     );
 
     dts.canvas.expectToEqual({
@@ -491,7 +490,7 @@ describe("DrawPixels", () => {
 
     dts.drawApi.drawPixels(
       BpxPixels.from("####\n####\n####\n####"),
-      v_(-2, 1),
+      $v(-2, 1),
       c1,
     );
 
@@ -513,7 +512,7 @@ describe("DrawPixels", () => {
 
     dts.drawApi.drawPixels(
       BpxPixels.from("####\n####\n####\n####"),
-      v_(4, 1),
+      $v(4, 1),
       c1,
     );
 
@@ -535,7 +534,7 @@ describe("DrawPixels", () => {
 
     dts.drawApi.drawPixels(
       BpxPixels.from("####\n####\n####\n####"),
-      v_(1, -2),
+      $v(1, -2),
       c1,
     );
 
@@ -557,7 +556,7 @@ describe("DrawPixels", () => {
 
     dts.drawApi.drawPixels(
       BpxPixels.from("####\n####\n####\n####"),
-      v_(1, 4),
+      $v(1, 4),
       c1,
     );
 
@@ -577,10 +576,10 @@ describe("DrawPixels", () => {
   test("camera XY", () => {
     const dts = drawingTestSetup(6, 6, c0);
 
-    dts.drawApi.setCameraXy(v_(3, -2));
+    dts.drawApi.setCameraXy($v(3, -2));
     dts.drawApi.drawPixels(
       BpxPixels.from("####\n####\n####\n####"),
-      v_(1, 1),
+      $v(1, 1),
       c1,
     );
 
@@ -610,7 +609,7 @@ describe("DrawPixels", () => {
     );
     dts.drawApi.drawPixels(
       BpxPixels.from("####\n####\n####\n####"),
-      v_(1, 1),
+      $v(1, 1),
       c1,
     );
 
@@ -630,7 +629,7 @@ describe("DrawPixels", () => {
   test("camera XY + pattern", () => {
     const dts = drawingTestSetup(6, 6, c0);
 
-    dts.drawApi.setCameraXy(v_(3, -2));
+    dts.drawApi.setCameraXy($v(3, -2));
     dts.drawApi.setDrawingPattern(
       BpxDrawingPattern.from(`
         ##--
@@ -641,7 +640,7 @@ describe("DrawPixels", () => {
     );
     dts.drawApi.drawPixels(
       BpxPixels.from("####\n####\n####\n####"),
-      v_(1, 1),
+      $v(1, 1),
       c1,
     );
 

@@ -1,4 +1,4 @@
-import { timerSeq_ } from "../../shorthands";
+import { $timerSeq } from "../../shorthands";
 export class Button {
     #isPressed = false;
     #wasJustToggled = false;
@@ -28,7 +28,7 @@ export class Button {
     update(isPressed) {
         if (isPressed) {
             if (this.#wasJustToggled && this.#isRepeatingEnabled) {
-                this.#repeatingTimer = timerSeq_({
+                this.#repeatingTimer = $timerSeq({
                     intro: this.#firstRepeatFrames ?
                         [["first", this.#firstRepeatFrames]]
                         : undefined,

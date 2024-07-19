@@ -1,15 +1,15 @@
 import {
+  $font,
+  $spr,
+  $v,
   BpxGlyph,
   BpxKerningPrevCharMap,
   BpxPixels,
-  font_,
-  spr_,
-  v_,
 } from "../../../src";
 
 const descent = 3;
 
-export const customFont = font_({
+export const customFont = $font({
   ascent: 8,
   descent,
   lineGap: 3,
@@ -84,7 +84,7 @@ function spriteGlyph(
     useExternalSpriteSheet?: boolean;
   },
 ): BpxGlyph {
-  const sprite = spr_(
+  const sprite = $spr(
     // We use two sprite sheets in order to make an example of:
     //   - using more than 1 sprite sheet for a single font,
     //   - using both local (deployed together with the game) and external sprite sheets.
@@ -97,7 +97,7 @@ function spriteGlyph(
     sprite: sprite,
     isTextColor: color => color?.cssHex === "#99e550",
     advance: sprite.size.x + 1,
-    offset: extras?.offsetY ? v_(0, extras.offsetY) : undefined,
+    offset: extras?.offsetY ? $v(0, extras.offsetY) : undefined,
     kerning: extras?.kerning,
   };
 }

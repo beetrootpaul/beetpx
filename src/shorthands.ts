@@ -17,7 +17,7 @@ import { identity } from "./utils/identity";
 
 /////////////////////////////////////////////////////////////////////////////
 
-export function aspr_(
+export function $aspr(
   imageUrl: BpxImageUrl,
 ): BpxImageBoundAnimatedSpriteFactory {
   return (
@@ -34,12 +34,12 @@ export function aspr_(
 
 /////////////////////////////////////////////////////////////////////////////
 
-export function font_(config: Partial<BpxFontConfig>): BpxFont;
-export function font_(
+export function $font(config: Partial<BpxFontConfig>): BpxFont;
+export function $font(
   baseFont: BpxFont,
   extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
 ): BpxFont;
-export function font_(
+export function $font(
   baseFontOrConfig: BpxFont | Partial<BpxFontConfig>,
   extendedConfig?: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
 ): BpxFont {
@@ -48,15 +48,15 @@ export function font_(
     : BpxFont.of(baseFontOrConfig);
 }
 
-export const font_pico8_ = font_(new BpxFontConfigPico8());
-export const font_saint11Minimal4_ = font_(new BpxFontConfigSaint11Minimal4());
-export const font_saint11Minimal5_ = font_(new BpxFontConfigSaint11Minimal5());
+export const $font_pico8 = $font(new BpxFontConfigPico8());
+export const $font_saint11Minimal4 = $font(new BpxFontConfigSaint11Minimal4());
+export const $font_saint11Minimal5 = $font(new BpxFontConfigSaint11Minimal5());
 
 /////////////////////////////////////////////////////////////////////////////
 
-export function rgb_(r: number, g: number, b: number): BpxRgbColor;
-export function rgb_(cssHex: string): BpxRgbColor;
-export function rgb_(
+export function $rgb(r: number, g: number, b: number): BpxRgbColor;
+export function $rgb(cssHex: string): BpxRgbColor;
+export function $rgb(
   rOrCssHex: string | number,
   g?: number,
   b?: number,
@@ -66,27 +66,27 @@ export function rgb_(
     : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
 
-export const rgb_black_ = rgb_("#000000");
-export const rgb_white_ = rgb_("#ffffff");
-export const rgb_red_ = rgb_("#ff0000");
-export const rgb_green_ = rgb_("#00ff00");
-export const rgb_blue_ = rgb_("#0000ff");
-export const rgb_cyan_ = rgb_("#00ffff");
-export const rgb_magenta_ = rgb_("#ff00ff");
-export const rgb_yellow_ = rgb_("#ffff00");
+export const $rgb_black = $rgb("#000000");
+export const $rgb_white = $rgb("#ffffff");
+export const $rgb_red = $rgb("#ff0000");
+export const $rgb_green = $rgb("#00ff00");
+export const $rgb_blue = $rgb("#0000ff");
+export const $rgb_cyan = $rgb("#00ffff");
+export const $rgb_magenta = $rgb("#ff00ff");
+export const $rgb_yellow = $rgb("#ffff00");
 
-export const rgb_p8_ = BpxPalettePico8;
+export const $rgb_p8 = BpxPalettePico8;
 
 /////////////////////////////////////////////////////////////////////////////
 
-export function spr_(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory {
+export function $spr(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory {
   return (w: number, h: number, x: number, y: number) =>
     BpxSprite.from(imageUrl, w, h, x, y);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 
-export function timer_(
+export function $timer(
   frames: number,
   opts?: {
     loop?: boolean;
@@ -104,7 +104,7 @@ export function timer_(
   });
 }
 
-export function timerSeq_<TPhaseName extends string>(
+export function $timerSeq<TPhaseName extends string>(
   params: {
     intro?: Array<[phase: TPhaseName, frames: number]>;
     loop?: Array<[phase: TPhaseName, frames: number]>;
@@ -130,13 +130,13 @@ export function timerSeq_<TPhaseName extends string>(
 
 /////////////////////////////////////////////////////////////////////////////
 
-export function v_(value: number): BpxVector2d;
-export function v_(x: number, y: number): BpxVector2d;
-export function v_(valueOrX: number, maybeY?: number): BpxVector2d {
+export function $v(value: number): BpxVector2d;
+export function $v(x: number, y: number): BpxVector2d;
+export function $v(valueOrX: number, maybeY?: number): BpxVector2d {
   return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
 }
 
-export const v_0_0_ = v_(0, 0);
-export const v_1_1_ = v_(1, 1);
+export const $v_0_0 = $v(0, 0);
+export const $v_1_1 = $v(1, 1);
 
 /////////////////////////////////////////////////////////////////////////////

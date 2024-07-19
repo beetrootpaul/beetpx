@@ -1,5 +1,5 @@
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
-import { font_pico8_, rgb_white_, v_, v_1_1_ } from "../shorthands";
+import { $font_pico8, $rgb_white, $v, $v_1_1 } from "../shorthands";
 import { DrawClear } from "./drawing/DrawClear";
 import { DrawEllipse } from "./drawing/DrawEllipse";
 import { DrawLine } from "./drawing/DrawLine";
@@ -20,10 +20,10 @@ export class DrawApi {
     #ellipse;
     #sprite;
     #text;
-    cameraXy = v_(0, 0);
+    cameraXy = $v(0, 0);
     #pattern = BpxDrawingPattern.primaryOnly;
     #spriteColorMapping = BpxSpriteColorMapping.noMapping;
-    #font = font_pico8_;
+    #font = $font_pico8;
     constructor(options) {
         this.#assets = options.assets;
         this.#canvas = options.canvas;
@@ -63,7 +63,7 @@ export class DrawApi {
         if (centerXy[0] || centerXy[1]) {
             xy = xy.sub(centerXy[0] ? (pixels.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0, centerXy[1] ? (pixels.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0);
         }
-        this.#pixels.draw(pixels, xy.sub(this.cameraXy), color, opts?.scaleXy ?? v_1_1_, opts?.flipXy ?? [false, false], this.#pattern);
+        this.#pixels.draw(pixels, xy.sub(this.cameraXy), color, opts?.scaleXy ?? $v_1_1, opts?.flipXy ?? [false, false], this.#pattern);
     }
     drawLine(xy, wh, color) {
         this.#line.draw(xy.sub(this.cameraXy), wh, color, this.#pattern);
@@ -97,7 +97,7 @@ export class DrawApi {
             xy = xy.sub(centerXy[0] ? (sprite.size.x * (opts?.scaleXy?.x ?? 1)) / 2 : 0, centerXy[1] ? (sprite.size.y * (opts?.scaleXy?.y ?? 1)) / 2 : 0);
         }
         const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
-        this.#sprite.draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? v_1_1_, opts?.flipXy ?? [false, false], this.#spriteColorMapping, this.#pattern);
+        this.#sprite.draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? $v_1_1, opts?.flipXy ?? [false, false], this.#spriteColorMapping, this.#pattern);
     }
     useFont(font) {
         const prev = this.#font;
@@ -107,7 +107,7 @@ export class DrawApi {
     measureText(text, opts) {
         let maxLineNumber = 0;
         let maxX = 0;
-        for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, rgb_white_)) {
+        for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, $rgb_white)) {
             if (arrangedGlyph.type === "line_break") {
                 maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber + 1);
             }
@@ -119,9 +119,9 @@ export class DrawApi {
                         : arrangedGlyph.pixels.size.x));
             }
         }
-        const wh = v_(maxX, (maxLineNumber + 1) * (this.#font.ascent + this.#font.descent) +
-            maxLineNumber * this.#font.lineGap).mul(opts?.scaleXy ?? v_1_1_);
-        const offset = v_(opts?.centerXy?.[0] ? -wh.x / 2 : 0, opts?.centerXy?.[1] ? -wh.y / 2 : 0);
+        const wh = $v(maxX, (maxLineNumber + 1) * (this.#font.ascent + this.#font.descent) +
+            maxLineNumber * this.#font.lineGap).mul(opts?.scaleXy ?? $v_1_1);
+        const offset = $v(opts?.centerXy?.[0] ? -wh.x / 2 : 0, opts?.centerXy?.[1] ? -wh.y / 2 : 0);
         return { wh, offset };
     }
     drawText(text, xy, color, opts) {
@@ -133,7 +133,7 @@ export class DrawApi {
             });
             xy = xy.add(offset);
         }
-        this.#text.draw(text, this.#font, xy.sub(this.cameraXy), color, opts?.colorMarkers ?? {}, opts?.scaleXy ?? v_1_1_, this.#pattern);
+        this.#text.draw(text, this.#font, xy.sub(this.cameraXy), color, opts?.colorMarkers ?? {}, opts?.scaleXy ?? $v_1_1, this.#pattern);
     }
     takeCanvasSnapshot() {
         return this.#canvas.takeSnapshot();

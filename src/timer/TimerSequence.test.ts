@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
 import { range } from "../utils/range";
 
-import { timerSeq_ } from "../shorthands";
+import { $timerSeq } from "../shorthands";
 import { BpxTimerSequence } from "./TimerSequence";
 
 let stubbedFrameNumber = 1;
@@ -87,7 +87,7 @@ describe("TimerSequence", () => {
         const framesBbb = 20;
         const framesCcc = 40;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [
             ["aaa", framesAaa],
             ["bbb", framesBbb],
@@ -257,7 +257,7 @@ describe("TimerSequence", () => {
         const framesBbb = 50;
         const framesCcc = 20;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [
             ["aaa", framesAaa],
             ["bbb", framesBbb],
@@ -495,7 +495,7 @@ describe("TimerSequence", () => {
         const framesBbb = 50;
         const framesCcc = 20;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -577,7 +577,7 @@ describe("TimerSequence", () => {
         const framesBbb = 50;
         const framesCcc = 20;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [
             ["aaa", framesAaa],
             ["bbb", framesBbb],
@@ -654,7 +654,7 @@ describe("TimerSequence", () => {
         const framesBbb = 50;
         const framesCcc = 20;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -788,7 +788,7 @@ describe("TimerSequence", () => {
         const framesBbb = 50;
         const framesCcc = 20;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -907,7 +907,7 @@ describe("TimerSequence", () => {
         const framesBbb = 50;
         const framesCcc = 20;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -1025,7 +1025,7 @@ describe("TimerSequence", () => {
         const framesEee = 20;
         const framesFff = 40;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           loop: [
             ["ddd", framesDdd],
             ["eee", framesEee],
@@ -1303,7 +1303,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           loop: [
             ["ddd", framesDdd],
             ["eee", framesEee],
@@ -1540,7 +1540,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             loop: [
               ["ddd", framesDdd],
@@ -1622,7 +1622,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           loop: [
             ["ddd", framesDdd],
             ["eee", framesEee],
@@ -1752,7 +1752,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             loop: [
               ["ddd", framesDdd],
@@ -1886,7 +1886,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             loop: [
               ["ddd", framesDdd],
@@ -2007,7 +2007,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             loop: [
               ["ddd", framesDdd],
@@ -2131,7 +2131,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [
             ["aaa", framesAaa],
             ["bbb", framesBbb],
@@ -2634,7 +2634,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [
             ["aaa", framesAaa],
             ["bbb", framesBbb],
@@ -3007,7 +3007,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -3135,7 +3135,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [
             ["aaa", framesAaa],
             ["bbb", framesBbb],
@@ -3318,7 +3318,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -3526,7 +3526,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -3708,7 +3708,7 @@ describe("TimerSequence", () => {
         const framesEee = 40;
         const framesFff = 80;
 
-        const seq = timerSeq_(
+        const seq = $timerSeq(
           {
             intro: [
               ["aaa", framesAaa],
@@ -3875,7 +3875,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({});
+        const seq = $timerSeq({});
 
         expect(ppt(seq)).toEqual(
           ppev({
@@ -3917,7 +3917,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [["aaa", 0]],
         });
 
@@ -3961,7 +3961,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           loop: [["ddd", 0]],
         });
 
@@ -4005,7 +4005,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [["aaa", 0]],
           loop: [["ddd", 0]],
         });
@@ -4049,7 +4049,7 @@ describe("TimerSequence", () => {
       testedProperty => {
         const ppt = pickPropertyOfTimer(testedProperty);
 
-        const seqZero = timerSeq_({
+        const seqZero = $timerSeq({
           intro: [
             ["aaa", 0],
             ["bbb", 0],
@@ -4061,7 +4061,7 @@ describe("TimerSequence", () => {
             ["fff", 0],
           ],
         });
-        const seqNegative = timerSeq_({
+        const seqNegative = $timerSeq({
           intro: [
             ["aaa", -1],
             ["bbb", -2],
@@ -4088,7 +4088,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [["aaa", 1]],
         });
 
@@ -4149,7 +4149,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           loop: [["ddd", 1]],
         });
 
@@ -4210,7 +4210,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [["aaa", 1]],
           loop: [["ddd", 1]],
         });
@@ -4290,7 +4290,7 @@ describe("TimerSequence", () => {
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
         nextFrameNumberWillBe(500);
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [["aaa", 2]],
           loop: [["ddd", 8]],
         });
@@ -4388,7 +4388,7 @@ describe("TimerSequence", () => {
         const ppt = pickPropertyOfTimer(testedProperty);
         const ppev = pickPropertyOfExpectedValues(testedProperty);
 
-        const seq = timerSeq_({
+        const seq = $timerSeq({
           intro: [["aaa", 5.4]],
           loop: [["ddd", 4.6]],
         });
