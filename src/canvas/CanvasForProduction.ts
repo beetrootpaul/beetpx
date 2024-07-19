@@ -1,6 +1,6 @@
 import { BpxRgbColor } from "../color/RgbColor";
-import { throwError } from "../helpers/throwError";
 import { BpxVector2d } from "../misc/Vector2d";
+import { throwError } from "../utils/throwError";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";

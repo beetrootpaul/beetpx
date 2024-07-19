@@ -1,5 +1,5 @@
-import { noop } from "../helpers/noop";
 import { Logger } from "../logger/Logger";
+import { noop } from "../utils/noop";
 export class AudioHelpers {
     static muteGain(gainNode, audioContextCurrentTime, fadeOutMillis, onMuted = noop) {
         fadeOutMillis = Math.max(0, fadeOutMillis);

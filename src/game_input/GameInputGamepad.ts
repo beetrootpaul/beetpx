@@ -1,5 +1,5 @@
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
-import { isDefined } from "../helpers/isDefined";
+import { isDefined } from "../utils/isDefined";
 import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
 import { GameInputSpecialized } from "./GameInputSpecialized";
 import { GamepadMapping } from "./gamepad_mapping/GamepadMapping";

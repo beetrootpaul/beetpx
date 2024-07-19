@@ -1,6 +1,6 @@
 import { BeetPx } from "../BeetPx";
-import { clamp } from "../helpers/clamp";
-import { mod } from "../helpers/mod";
+import { clamp } from "../utils/clamp";
+import { mod } from "../utils/mod";
 
 export class BpxTimer {
   static for(opts: {

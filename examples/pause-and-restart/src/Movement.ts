@@ -1,4 +1,4 @@
-import { $, $aspr, $d, $h, $timer, $v } from "../../../src";
+import { $, $aspr, $d, $timer, $u, $v } from "../../../src";
 
 export class Movement {
   static assetUrls = ["animation.png"];
@@ -7,9 +7,9 @@ export class Movement {
   #animation = $aspr("animation.png")(
     48,
     48,
-    $h.repeatEachElement(
+    $u.repeatEachElement(
       4,
-      $h.range(12).map((i) => [48 * i, 0]),
+      $u.range(12).map((i) => [48 * i, 0]),
     ),
   );
 
@@ -18,7 +18,7 @@ export class Movement {
       this.#animation.current,
       $v(
         this.#timer.t,
-        $.canvasSize.y * (0.5 + 0.5 * $h.trigCos(this.#timer.progress)),
+        $.canvasSize.y * (0.5 + 0.5 * $u.trigCos(this.#timer.progress)),
       ),
       { centerXy: [true, true] },
     );

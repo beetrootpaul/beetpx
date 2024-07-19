@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
-import { range } from "../helpers/range";
+import { range } from "../utils/range";
 
 import { $timerSeq } from "../shorthands";
 import { BpxTimerSequence } from "./TimerSequence";

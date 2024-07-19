@@ -12,13 +12,13 @@ import { FrameByFrame } from "./debug/FrameByFrame";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
-import { throwError } from "./helpers/throwError";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { GlobalPause } from "./pause/GlobalPause";
 import { $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb_black, $v, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
+import { throwError } from "./utils/throwError";
 export class Engine {
     #assetsToLoad;
     #browserType;

@@ -1,9 +1,9 @@
 import { $ } from "../BeetPx";
 import { BpxRgbColor } from "../color/RgbColor";
 import { DrawApi } from "../draw_api/DrawApi";
-import { mod } from "../helpers/mod";
 import { BpxVector2d } from "../misc/Vector2d";
 import { $font_pico8, $rgb_p8 } from "../shorthands";
+import { mod } from "../utils/mod";
 
 export type FpsDisplayPlacement =
   | "top-left"

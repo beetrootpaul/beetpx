@@ -1,6 +1,6 @@
 import { expect } from "vitest";
-import { range } from "../helpers/range";
 import { BpxVector2d } from "../misc/Vector2d";
+import { range } from "../utils/range";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";
 export class CanvasForTests extends Canvas {

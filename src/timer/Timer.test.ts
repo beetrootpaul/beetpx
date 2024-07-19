@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
-import { range } from "../helpers/range";
 import { $timer } from "../shorthands";
+import { range } from "../utils/range";
 import { BpxTimer } from "./Timer";
 
 let stubbedFrameNumber = 1;

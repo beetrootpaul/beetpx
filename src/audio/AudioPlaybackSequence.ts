@@ -1,6 +1,6 @@
 import * as ABU from "audio-buffer-utils";
 import { Assets } from "../assets/Assets";
-import { clamp } from "../helpers/clamp";
+import { clamp } from "../utils/clamp";
 import { AudioPlayback, BpxAudioPlaybackId } from "./AudioPlayback";
 import { BpxSoundSequence, BpxSoundSequenceEntry } from "./SoundSequence";
 

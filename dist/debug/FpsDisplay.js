@@ -1,6 +1,6 @@
 import { $ } from "../BeetPx";
-import { mod } from "../helpers/mod";
 import { $font_pico8, $rgb_p8 } from "../shorthands";
+import { mod } from "../utils/mod";
 export class FpsDisplay {
     #drawApi;
     #color;

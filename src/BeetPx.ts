@@ -15,25 +15,6 @@ import { BpxPixels } from "./draw_api/Pixels";
 import { BpxTextColorMarkers } from "./font/Font";
 import { GameInput } from "./game_input/GameInput";
 import { GameButtons } from "./game_input/buttons/GameButtons";
-import { assertUnreachable } from "./helpers/assertUnreachable";
-import { booleanChangingEveryNthFrame } from "./helpers/booleanChangingEveryNthFrame";
-import { clamp } from "./helpers/clamp";
-import { drawTextWithOutline } from "./helpers/drawTextWithOutline";
-import { identity } from "./helpers/identity";
-import { isDefined } from "./helpers/isDefined";
-import { lerp } from "./helpers/lerp";
-import { mod } from "./helpers/mod";
-import { noop } from "./helpers/noop";
-import { offset4Directions } from "./helpers/offset4Directions";
-import { offset8Directions } from "./helpers/offset8Directions";
-import { randomElementOf } from "./helpers/randomElementOf";
-import { range } from "./helpers/range";
-import { repeatEachElement } from "./helpers/repeatEachElement";
-import { throwError } from "./helpers/throwError";
-import { trigAtan2 } from "./helpers/trigAtan2";
-import { trigCos } from "./helpers/trigCos";
-import { trigSin } from "./helpers/trigSin";
-import { wait } from "./helpers/wait";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { BpxVector2d } from "./misc/Vector2d";
@@ -41,6 +22,25 @@ import { GlobalPause } from "./pause/GlobalPause";
 import { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
 import { BpxSprite } from "./sprite/Sprite";
 import { StorageApi } from "./storage/StorageApi";
+import { assertUnreachable } from "./utils/assertUnreachable";
+import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFrame";
+import { clamp } from "./utils/clamp";
+import { drawTextWithOutline } from "./utils/drawTextWithOutline";
+import { identity } from "./utils/identity";
+import { isDefined } from "./utils/isDefined";
+import { lerp } from "./utils/lerp";
+import { mod } from "./utils/mod";
+import { noop } from "./utils/noop";
+import { offset4Directions } from "./utils/offset4Directions";
+import { offset8Directions } from "./utils/offset8Directions";
+import { randomElementOf } from "./utils/randomElementOf";
+import { range } from "./utils/range";
+import { repeatEachElement } from "./utils/repeatEachElement";
+import { throwError } from "./utils/throwError";
+import { trigAtan2 } from "./utils/trigAtan2";
+import { trigCos } from "./utils/trigCos";
+import { trigSin } from "./utils/trigSin";
+import { wait } from "./utils/wait";
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -535,10 +535,10 @@ export class BeetPx {
   };
 
   //
-  // Helpers
+  // Utils
   //
 
-  static helpers = {
+  static utils = {
     assertUnreachable,
     booleanChangingEveryNthFrame,
     clamp,
@@ -565,4 +565,4 @@ export class BeetPx {
 
 export const $ = BeetPx;
 export const $d = BeetPx.draw;
-export const $h = BeetPx.helpers;
+export const $u = BeetPx.utils;

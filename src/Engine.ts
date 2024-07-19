@@ -16,7 +16,6 @@ import { FrameByFrame } from "./debug/FrameByFrame";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
 import { GameLoop } from "./game_loop/GameLoop";
-import { throwError } from "./helpers/throwError";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
@@ -30,6 +29,7 @@ import {
   $v,
 } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
+import { throwError } from "./utils/throwError";
 
 export type BpxEngineConfig = {
   canvasSize?: "64x64" | "128x128" | "256x256";

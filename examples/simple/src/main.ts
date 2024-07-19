@@ -1,4 +1,4 @@
-import { $, $d, $h, $rgb_p8, $spr, $v, $v_0_0 } from "../../../src";
+import { $, $d, $rgb_p8, $spr, $u, $v, $v_0_0 } from "../../../src";
 
 const logoSprite = $spr("logo.png")(16, 16, 0, 0);
 let circleMovementCenter = $v_0_0;
@@ -96,11 +96,11 @@ $.init({
    *
    * `$d` used inside is a shorter way of accessing `BeetPx.draw`.
    *
-   * `$h` used inside is a shorter way of accessing `BeetPx.helpers`.
+   * `$u` used inside is a shorter way of accessing `BeetPx.helpers`.
    */
   $.setOnDraw(() => {
     $d.clearCanvas($rgb_p8.storm);
-    if ($h.booleanChangingEveryNthFrame(30)) {
+    if ($u.booleanChangingEveryNthFrame(30)) {
       $d.pixel(circleMovementCenter, $rgb_p8.ember);
     }
     $d.sprite(logoSprite, logoPosition, { centerXy: [true, true] });

@@ -1,1 +1,0 @@
-{"version":3,"file":"trigAtan2.js","sourceRoot":"","sources":["../../src/helpers/trigAtan2.ts"],"names":[],"mappings":"AAAA;;GAEG;AACH,MAAM,UAAU,SAAS,CAAC,CAAS,EAAE,CAAS;IAC5C,OAAO,CAAC,IAAI,CAAC,KAAK,CAAC,CAAC,EAAE,CAAC,CAAC,GAAG,IAAI,CAAC,EAAE,GAAG,CAAC,GAAG,CAAC,CAAC,GAAG,CAAC,CAAC;AAClD,CAAC"}

@@ -1,7 +1,7 @@
 import { PngDataArray } from "fast-png";
 import { describe, expect, test } from "vitest";
-import { range } from "../helpers/range";
 import { $spr } from "../shorthands";
+import { range } from "../utils/range";
 import { PreparedSprites } from "./PreparedSprites";
 
 const imgW1: number = 100;

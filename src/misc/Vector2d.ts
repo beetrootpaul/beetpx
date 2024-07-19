@@ -1,10 +1,10 @@
 import { PrintDebug } from "../debug/PrintDebug";
-import { clamp } from "../helpers/clamp";
-import { lerp } from "../helpers/lerp";
-import { mod } from "../helpers/mod";
-import { trigAtan2 } from "../helpers/trigAtan2";
-import { trigCos } from "../helpers/trigCos";
-import { trigSin } from "../helpers/trigSin";
+import { clamp } from "../utils/clamp";
+import { lerp } from "../utils/lerp";
+import { mod } from "../utils/mod";
+import { trigAtan2 } from "../utils/trigAtan2";
+import { trigCos } from "../utils/trigCos";
+import { trigSin } from "../utils/trigSin";
 
 export class BpxVector2d implements PrintDebug {
   /**

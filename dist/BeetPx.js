@@ -1,27 +1,27 @@
 
 import { Engine } from "./Engine";
 import { DebugMode } from "./debug/DebugMode";
-import { assertUnreachable } from "./helpers/assertUnreachable";
-import { booleanChangingEveryNthFrame } from "./helpers/booleanChangingEveryNthFrame";
-import { clamp } from "./helpers/clamp";
-import { drawTextWithOutline } from "./helpers/drawTextWithOutline";
-import { identity } from "./helpers/identity";
-import { isDefined } from "./helpers/isDefined";
-import { lerp } from "./helpers/lerp";
-import { mod } from "./helpers/mod";
-import { noop } from "./helpers/noop";
-import { offset4Directions } from "./helpers/offset4Directions";
-import { offset8Directions } from "./helpers/offset8Directions";
-import { randomElementOf } from "./helpers/randomElementOf";
-import { range } from "./helpers/range";
-import { repeatEachElement } from "./helpers/repeatEachElement";
-import { throwError } from "./helpers/throwError";
-import { trigAtan2 } from "./helpers/trigAtan2";
-import { trigCos } from "./helpers/trigCos";
-import { trigSin } from "./helpers/trigSin";
-import { wait } from "./helpers/wait";
 import { Logger } from "./logger/Logger";
 import { GlobalPause } from "./pause/GlobalPause";
+import { assertUnreachable } from "./utils/assertUnreachable";
+import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFrame";
+import { clamp } from "./utils/clamp";
+import { drawTextWithOutline } from "./utils/drawTextWithOutline";
+import { identity } from "./utils/identity";
+import { isDefined } from "./utils/isDefined";
+import { lerp } from "./utils/lerp";
+import { mod } from "./utils/mod";
+import { noop } from "./utils/noop";
+import { offset4Directions } from "./utils/offset4Directions";
+import { offset8Directions } from "./utils/offset8Directions";
+import { randomElementOf } from "./utils/randomElementOf";
+import { range } from "./utils/range";
+import { repeatEachElement } from "./utils/repeatEachElement";
+import { throwError } from "./utils/throwError";
+import { trigAtan2 } from "./utils/trigAtan2";
+import { trigCos } from "./utils/trigCos";
+import { trigSin } from "./utils/trigSin";
+import { wait } from "./utils/wait";
 
 export class BeetPx {
     static #engine;
@@ -322,7 +322,7 @@ export class BeetPx {
     
     
     
-    static helpers = {
+    static utils = {
         assertUnreachable,
         booleanChangingEveryNthFrame,
         clamp,
@@ -347,4 +347,4 @@ export class BeetPx {
 
 export const $ = BeetPx;
 export const $d = BeetPx.draw;
-export const $h = BeetPx.helpers;
+export const $u = BeetPx.utils;

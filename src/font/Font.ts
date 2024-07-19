@@ -1,11 +1,11 @@
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxPixels } from "../draw_api/Pixels";
-import { assertUnreachable } from "../helpers/assertUnreachable";
-import { identity } from "../helpers/identity";
-import { range } from "../helpers/range";
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxSprite } from "../sprite/Sprite";
+import { assertUnreachable } from "../utils/assertUnreachable";
+import { identity } from "../utils/identity";
+import { range } from "../utils/range";
 
 export type BpxKerningPrevCharMap = { [prevChar: string]: number };
 

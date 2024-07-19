@@ -1,9 +1,9 @@
 import {
   $,
   $d,
-  $h,
   $rgb,
   $rgb_p8,
+  $u,
   $v,
   $v_0_0,
   BpxCanvasSnapshotColorMapping,
@@ -47,7 +47,7 @@ export class PauseMenu {
     if ($.wasButtonJustPressed("up")) {
       this.#selectedItem -= 1;
     }
-    this.#selectedItem = $h.mod(this.#selectedItem, 3);
+    this.#selectedItem = $u.mod(this.#selectedItem, 3);
   }
 
   draw() {

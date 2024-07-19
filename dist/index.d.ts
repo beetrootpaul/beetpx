@@ -714,6 +714,18 @@ declare class DebugMode {
     static set enabled(value: boolean);
 }
 
+declare class Logger {
+    #private;
+    static debugBeetPx(...args: any[]): void;
+    static debug(...args: any[]): void;
+    static infoBeetPx(...args: any[]): void;
+    static info(...args: any[]): void;
+    static warnBeetPx(...args: any[]): void;
+    static warn(...args: any[]): void;
+    static errorBeetPx(...args: any[]): void;
+    static error(...args: any[]): void;
+}
+
 /**
  * This function is meant to be used in a last branch of `if - else if - … - else`
  *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
@@ -785,18 +797,6 @@ declare function trigCos(turnAngle: number): number;
 declare function trigSin(turnAngle: number): number;
 
 declare function wait(millis: number): Promise<void>;
-
-declare class Logger {
-    #private;
-    static debugBeetPx(...args: any[]): void;
-    static debug(...args: any[]): void;
-    static infoBeetPx(...args: any[]): void;
-    static info(...args: any[]): void;
-    static warnBeetPx(...args: any[]): void;
-    static warn(...args: any[]): void;
-    static errorBeetPx(...args: any[]): void;
-    static error(...args: any[]): void;
-}
 
 declare class BeetPx {
     #private;
@@ -914,7 +914,7 @@ declare class BeetPx {
         }): void;
         takeCanvasSnapshot(): void;
     };
-    static helpers: {
+    static utils: {
         assertUnreachable: typeof assertUnreachable;
         booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
         clamp: typeof clamp;
@@ -991,7 +991,7 @@ declare const $d: {
     }): void;
     takeCanvasSnapshot(): void;
 };
-declare const $h: {
+declare const $u: {
     assertUnreachable: typeof assertUnreachable;
     booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
     clamp: typeof clamp;
@@ -1079,4 +1079,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $h, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $v, $v_0_0, $v_1_1, BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxVector2d };
+export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_1_1, BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxVector2d };

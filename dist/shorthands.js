@@ -4,12 +4,12 @@ import { BpxFont } from "./font/Font";
 import { BpxFontConfigPico8 } from "./font/FontConfigPico8";
 import { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
 import { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
-import { identity } from "./helpers/identity";
 import { BpxVector2d } from "./misc/Vector2d";
 import { BpxAnimatedSprite, } from "./sprite/AnimatedSprite";
 import { BpxSprite } from "./sprite/Sprite";
 import { BpxTimer } from "./timer/Timer";
 import { BpxTimerSequence } from "./timer/TimerSequence";
+import { identity } from "./utils/identity";
 
 export function $aspr(imageUrl) {
     return (w, h, xys, opts) => {

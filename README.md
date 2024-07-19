@@ -98,7 +98,7 @@ be improved before 1.0 release.
 ℹ️ For a quick start you can start by typing either `BeetPx.` and checking what
 your IDE suggests. The BeetPx follows a convention of having all functions and
 constants exposed through `BeetPx.`, `BeetPx.draw.`, and `BeetPx.helpers.`.
-Their shorthands are `$`, `$d`, and `$h`.
+Their shorthands are `$`, `$d`, and `$u`.
 
 ## Development Setup
 

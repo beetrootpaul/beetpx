@@ -1,6 +1,6 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { throwError } from "../helpers/throwError";
-import { wait } from "../helpers/wait";
+import { throwError } from "../utils/throwError";
+import { wait } from "../utils/wait";
 export class Loading {
     #minWaitToAvoidFlicker = wait(750);
     #startButton;

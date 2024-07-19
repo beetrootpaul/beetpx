@@ -1,9 +1,9 @@
 import {
   $,
   $d,
-  $h,
   $rgb,
   $spr,
+  $u,
   $v,
   $v_0_0,
   BpxGamepadType,
@@ -18,19 +18,19 @@ const pink = $rgb("#ff77a8");
 export class DebugView {
   private readonly gamepadsN = 3;
 
-  private readonly gamepadTypes: (null | BpxGamepadType)[] = $h
+  private readonly gamepadTypes: (null | BpxGamepadType)[] = $u
     .range(this.gamepadsN)
     .map(() => null);
 
   private readonly buttonsN = 20;
-  private readonly buttons: (null | "touched" | "pressed")[][] = $h
+  private readonly buttons: (null | "touched" | "pressed")[][] = $u
     .range(this.buttonsN)
-    .map(() => $h.range(this.gamepadsN).map(() => null));
+    .map(() => $u.range(this.gamepadsN).map(() => null));
 
   private readonly axesN = 7;
-  private readonly axes: (null | number)[][] = $h
+  private readonly axes: (null | number)[][] = $u
     .range(this.axesN)
-    .map(() => $h.range(this.gamepadsN).map(() => null));
+    .map(() => $u.range(this.gamepadsN).map(() => null));
 
   constructor() {
     document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) => {
@@ -98,14 +98,14 @@ export class DebugView {
   update(): void {
     navigator.getGamepads().forEach((gamepad) => {
       if (gamepad && gamepad.index < this.gamepadsN) {
-        $h.range(this.buttonsN).forEach((i) => {
+        $u.range(this.buttonsN).forEach((i) => {
           this.buttons[i]![gamepad.index] = gamepad.buttons[i]?.pressed
             ? "pressed"
             : gamepad.buttons[i]?.touched
               ? "touched"
               : null;
         });
-        $h.range(this.axesN).forEach((i) => {
+        $u.range(this.axesN).forEach((i) => {
           this.axes[i]![gamepad.index] = gamepad.axes[i] ?? null;
         });
       }
@@ -156,7 +156,7 @@ export class DebugView {
     });
 
     // gamepad types
-    $h.range(this.gamepadsN).forEach((gamepadIndex) => {
+    $u.range(this.gamepadsN).forEach((gamepadIndex) => {
       const gamepadType = this.gamepadTypes[gamepadIndex];
       if (gamepadType) {
         $d.rectFilled(

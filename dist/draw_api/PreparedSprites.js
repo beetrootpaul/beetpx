@@ -1,5 +1,5 @@
-import { range } from "../helpers/range";
 import { $rgb } from "../shorthands";
+import { range } from "../utils/range";
 export class PreparedSprites {
     #cache = new Map();
     prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels) {
