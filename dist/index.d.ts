@@ -395,6 +395,7 @@ declare class DrawApi {
     measureText(text: string, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        colorMarkers?: BpxTextColorMarkers;
     }): {
         wh: BpxVector2d;
         offset: BpxVector2d;
