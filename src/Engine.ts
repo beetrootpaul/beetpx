@@ -97,6 +97,11 @@ export class Engine {
   #currentFrameNumberOutsidePause: number = 0;
   #renderingFps: number = 1;
 
+  // Used to prevent a situation when there is a strange state of game drawn before the very first
+  // update call. It happens, when initial game state (e.g. positions) are set to values different
+  // than what is assigned to them in the update call.
+  #wasUpdateCalledAtLeastOnce: boolean = false;
+
   // used to indicate whether the AudioContext resume succeeded. It might have been false for the entire
   #alreadyResumedAudioContext: boolean = false;
 
@@ -370,6 +375,7 @@ export class Engine {
           }
 
           this.#onUpdate?.();
+          this.#wasUpdateCalledAtLeastOnce = true;
 
           this.#currentFrameNumber =
             this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
@@ -388,9 +394,11 @@ export class Engine {
         this.#renderingFps = renderingFps;
 
         this.isInsideDrawOrStartedCallback = true;
-        this.#onDraw?.();
-        if (DebugMode.enabled) {
-          this.#fpsDisplay?.drawRenderingFps(renderingFps);
+        if (this.#wasUpdateCalledAtLeastOnce) {
+          this.#onDraw?.();
+          if (DebugMode.enabled) {
+            this.#fpsDisplay?.drawRenderingFps(renderingFps);
+          }
         }
         this.isInsideDrawOrStartedCallback = false;
 
