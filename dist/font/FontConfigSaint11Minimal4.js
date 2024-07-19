@@ -15,8 +15,8 @@ export class BpxFontConfigSaint11Minimal4 {
     ascent = 4;
     descent = 0;
     lineGap = 2;
-    mapChar(char) {
-        return char.toLowerCase();
+    mapGrapheme(grapheme) {
+        return grapheme.toLowerCase();
     }
     #pixelsGlyph(ascii) {
         const pixels = BpxPixels.from(ascii);

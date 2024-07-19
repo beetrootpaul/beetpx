@@ -61,14 +61,27 @@ export type BpxArrangedGlyph =
 export type BpxFontConfig = {
   /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
   ascent: number;
+
   /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
   descent: number;
+
   /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and
    *  the top-most pixel of the next line (excluded). */
   lineGap: number;
 
-  mapChar: (char: string) => string;
+  /** This functions maps the text grapheme (a user-perceived character like `a` or a
+   *  multi-character emoji like `❤️`) before trying to find its corresponding glyph
+   *  in a `glyphs` map. It would be typically used to call `grapheme.toLowerCase()`
+   *  in fonts which have glyphs defined for lower-case characters only. */
+  mapGrapheme: (grapheme: string) => string;
 
+  /** A map which contains the glyphs for specified graphemes (keys of the map).
+   *  Grapheme is a user-perceived character like `a` or a multi-character emoji
+   *  like `❤️`. Before retrieving a glyph from this map, a grapheme is normalized
+   *  with use of `mapGrapheme` function. Typically, it would be useful when you
+   *  want to specify same glyphs for both upper-case and lower-case characters,
+   *  so you are able to define lower-case ones only and then implement
+   *  `mapGrapheme` as `grapheme.toLowerCase()`. */
   glyphs: Map<string, BpxGlyph>;
 };
 
@@ -78,7 +91,7 @@ export class BpxFont {
       ascent: config.ascent ?? 8,
       descent: config.descent ?? 8,
       lineGap: config.lineGap ?? 1,
-      mapChar: config.mapChar ?? identity,
+      mapGrapheme: config.mapGrapheme ?? identity,
       glyphs: config.glyphs ?? new Map<string, BpxGlyph>(),
     });
   }
@@ -142,10 +155,10 @@ export class BpxFont {
       !iteratorResult.done;
       iteratorResult = segmentsIterator.next()
     ) {
-      const segment = iteratorResult.value.segment;
+      const grapheme = this.#config.mapGrapheme(iteratorResult.value.segment);
       const index = iteratorResult.value.index;
 
-      if (segment === "\n") {
+      if (grapheme === "\n") {
         arrangedGlyphs.push({
           type: "line_break",
           lineNumber: lineNumber,
@@ -163,7 +176,7 @@ export class BpxFont {
         continue;
       }
 
-      if (segment === "[") {
+      if (grapheme === "[") {
         let newColor: BpxRgbColor | undefined;
         for (const [marker, markedColor] of Object.entries(colorMarkers)) {
           const markerText = `[${marker}]`;
@@ -186,7 +199,7 @@ export class BpxFont {
         }
       }
 
-      const glyph = this.#config.glyphs.get(segment);
+      const glyph = this.#config.glyphs.get(grapheme);
       if (!glyph) {
         continue;
       }
@@ -197,7 +210,7 @@ export class BpxFont {
       if (glyph.type === "sprite") {
         arrangedGlyphs.push({
           type: "sprite",
-          char: segment,
+          char: grapheme,
           sprite: glyph.sprite,
           spriteColorMapping: BpxSpriteColorMapping.of(colorFromSpriteSheet =>
             glyph.isTextColor(colorFromSpriteSheet) ? glyphColor : null,
@@ -210,7 +223,7 @@ export class BpxFont {
             .add(kerning, 0),
         });
 
-        prevSegment = segment;
+        prevSegment = grapheme;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }
@@ -218,7 +231,7 @@ export class BpxFont {
       if (glyph.type === "pixels") {
         arrangedGlyphs.push({
           type: "pixels",
-          char: segment,
+          char: grapheme,
           pixels: glyph.pixels,
           color: glyphColor,
           lineNumber: lineNumber,
@@ -229,13 +242,13 @@ export class BpxFont {
             .add(kerning, 0),
         });
 
-        prevSegment = segment;
+        prevSegment = grapheme;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }
 
       if (glyph.type === "whitespace") {
-        prevSegment = segment;
+        prevSegment = grapheme;
         xy = xy.add(glyph.advance + kerning, 0);
         continue;
       }

@@ -9,7 +9,7 @@ export class BpxFont {
             ascent: config.ascent ?? 8,
             descent: config.descent ?? 8,
             lineGap: config.lineGap ?? 1,
-            mapChar: config.mapChar ?? identity,
+            mapGrapheme: config.mapGrapheme ?? identity,
             glyphs: config.glyphs ?? new Map(),
         });
     }
@@ -50,9 +50,9 @@ export class BpxFont {
         const segmentsIterator = BpxFont.#segmenter
             .segment(text)[Symbol.iterator]();
         for (let iteratorResult = segmentsIterator.next(); !iteratorResult.done; iteratorResult = segmentsIterator.next()) {
-            const segment = iteratorResult.value.segment;
+            const grapheme = this.#config.mapGrapheme(iteratorResult.value.segment);
             const index = iteratorResult.value.index;
-            if (segment === "\n") {
+            if (grapheme === "\n") {
                 arrangedGlyphs.push({
                     type: "line_break",
                     lineNumber: lineNumber,
@@ -65,7 +65,7 @@ export class BpxFont {
                 lineNumber += 1;
                 continue;
             }
-            if (segment === "[") {
+            if (grapheme === "[") {
                 let newColor;
                 for (const [marker, markedColor] of Object.entries(colorMarkers)) {
                     const markerText = `[${marker}]`;
@@ -84,7 +84,7 @@ export class BpxFont {
                     continue;
                 }
             }
-            const glyph = this.#config.glyphs.get(segment);
+            const glyph = this.#config.glyphs.get(grapheme);
             if (!glyph) {
                 continue;
             }
@@ -93,7 +93,7 @@ export class BpxFont {
             if (glyph.type === "sprite") {
                 arrangedGlyphs.push({
                     type: "sprite",
-                    char: segment,
+                    char: grapheme,
                     sprite: glyph.sprite,
                     spriteColorMapping: BpxSpriteColorMapping.of(colorFromSpriteSheet => glyph.isTextColor(colorFromSpriteSheet) ? glyphColor : null),
                     lineNumber: lineNumber,
@@ -103,14 +103,14 @@ export class BpxFont {
                         .add(glyph.offset ?? BpxVector2d.of(0, 0))
                         .add(kerning, 0),
                 });
-                prevSegment = segment;
+                prevSegment = grapheme;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
             if (glyph.type === "pixels") {
                 arrangedGlyphs.push({
                     type: "pixels",
-                    char: segment,
+                    char: grapheme,
                     pixels: glyph.pixels,
                     color: glyphColor,
                     lineNumber: lineNumber,
@@ -120,12 +120,12 @@ export class BpxFont {
                         .add(glyph.offset ?? BpxVector2d.of(0, 0))
                         .add(kerning, 0),
                 });
-                prevSegment = segment;
+                prevSegment = grapheme;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }
             if (glyph.type === "whitespace") {
-                prevSegment = segment;
+                prevSegment = grapheme;
                 xy = xy.add(glyph.advance + kerning, 0);
                 continue;
             }

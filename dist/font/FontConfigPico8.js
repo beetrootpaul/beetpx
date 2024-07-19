@@ -10,8 +10,8 @@ export class BpxFontConfigPico8 {
     ascent = 5;
     descent = 0;
     lineGap = 1;
-    mapChar(char) {
-        return char.toLowerCase();
+    mapGrapheme(grapheme) {
+        return grapheme.toLowerCase();
     }
     glyphs = new Map([
         [" ", { type: "whitespace", advance: 4 }],

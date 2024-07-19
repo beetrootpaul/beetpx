@@ -18,8 +18,8 @@ export class BpxFontConfigSaint11Minimal5 implements BpxFontConfig {
   descent = 0;
   lineGap = 2;
 
-  mapChar(char: string): string {
-    return char;
+  mapGrapheme(grapheme: string): string {
+    return grapheme;
   }
 
   #pixelsGlyph(ascii: string): BpxGlyph {
