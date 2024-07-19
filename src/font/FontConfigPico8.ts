@@ -9,6 +9,8 @@ import { BpxFontConfig, BpxGlyph } from "./Font";
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the font being available under a CC-0 license
  */
 export class BpxFontConfigPico8 implements BpxFontConfig {
+  static readonly spriteSheetUrl = ".beetpx/pico-8-font.png";
+
   ascent = 5;
   descent = 0;
   lineGap = 1;
@@ -109,7 +111,7 @@ export class BpxFontConfigPico8 implements BpxFontConfig {
 
   #spriteGlyph(tileX: number, tileY: number, w: number = 3): BpxGlyph {
     const sprite = BpxSprite.from(
-      ".beetpx/pico-8-font.png",
+      BpxFontConfigPico8.spriteSheetUrl,
       w,
       5,
       tileX * 8,
@@ -118,8 +120,7 @@ export class BpxFontConfigPico8 implements BpxFontConfig {
     return {
       type: "sprite",
       sprite: sprite,
-      isTextColor: colorFromSpriteSheet =>
-        colorFromSpriteSheet?.cssHex === BpxPalettePico8.white.cssHex,
+      isTextColor: color => color?.cssHex === BpxPalettePico8.white.cssHex,
       advance: sprite.size.x + 1,
     };
   }

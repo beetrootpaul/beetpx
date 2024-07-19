@@ -95,7 +95,7 @@ export class BpxFont {
                     type: "sprite",
                     char: grapheme,
                     sprite: glyph.sprite,
-                    spriteColorMapping: BpxSpriteColorMapping.of(colorFromSpriteSheet => glyph.isTextColor(colorFromSpriteSheet) ? glyphColor : null),
+                    spriteColorMapping: BpxSpriteColorMapping.of(color => glyph.isTextColor(color) ? glyphColor : null),
                     lineNumber: lineNumber,
                     leftTop: xy
                         .add(0, this.#config.ascent)

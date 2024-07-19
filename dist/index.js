@@ -1,4 +1,5 @@
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
+export { BpxPalettePico8 } from "./color/PalettePico8";
 export { BpxPatternColors } from "./color/PatternColors";
 export { BpxRgbColor } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
