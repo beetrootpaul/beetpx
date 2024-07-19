@@ -1,20 +1,19 @@
 import { describe, expect, test } from "vitest";
-import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxGlyph } from "../../font/Font";
-import { $font, $spr, $v } from "../../shorthands";
+import { $font, $rgb, $spr, $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { DrawingTestSetup, drawingTestSetup } from "../DrawingTestSetup";
 import { BpxPixels } from "../Pixels";
 import { TestImage } from "../TestImage";
 
 describe("DrawText", () => {
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
-  const c2 = BpxRgbColor.fromCssHex("#212223");
-  const c3 = BpxRgbColor.fromCssHex("#313233");
-  const c4 = BpxRgbColor.fromCssHex("#414243");
-  const cFontBg = BpxRgbColor.fromCssHex("#818283");
-  const cFontFg = BpxRgbColor.fromCssHex("#919293");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
+  const c2 = $rgb("#212223");
+  const c3 = $rgb("#313233");
+  const c4 = $rgb("#414243");
+  const cFontBg = $rgb("#818283");
+  const cFontFg = $rgb("#919293");
 
   const fontImage = new TestImage({
     withMapping: { _: cFontBg, X: cFontFg },

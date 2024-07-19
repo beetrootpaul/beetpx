@@ -1,22 +1,22 @@
 import {
   $,
   $d,
+  $rgb,
   $spr,
   $v,
   $v_0_0,
-  BpxRgbColor,
   BpxSpriteColorMapping,
 } from "../../../src";
 
 const spr = $spr("spritesheet.png");
 
-const lime = BpxRgbColor.fromCssHex("#a8e72e");
-const pink = BpxRgbColor.fromCssHex("#ff77a8");
-const yellow = BpxRgbColor.fromCssHex("#f3ef7d");
-const darkGreen = BpxRgbColor.fromCssHex("#125359");
-const darkBlue = BpxRgbColor.fromCssHex("#1d2b53");
-const lightGrey = BpxRgbColor.fromCssHex("#c2c3c7");
-const darkGrey = BpxRgbColor.fromCssHex("#83769c");
+const lime = $rgb("#a8e72e");
+const pink = $rgb("#ff77a8");
+const yellow = $rgb("#f3ef7d");
+const darkGreen = $rgb("#125359");
+const darkBlue = $rgb("#1d2b53");
+const lightGrey = $rgb("#c2c3c7");
+const darkGrey = $rgb("#83769c");
 
 export class StandardView {
   // ps = pressed sprite

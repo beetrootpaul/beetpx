@@ -1,19 +1,18 @@
 import { describe, test } from "vitest";
-import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxSpriteColorMapping } from "../../color/SpriteColorMapping";
-import { $spr, $v } from "../../shorthands";
+import { $rgb, $spr, $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 import { TestImage } from "../TestImage";
 
 describe("DrawSprite", () => {
   const ct = null;
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
-  const c2 = BpxRgbColor.fromCssHex("#212223");
-  const c3 = BpxRgbColor.fromCssHex("#313233");
-  const c4 = BpxRgbColor.fromCssHex("#414243");
-  const c5 = BpxRgbColor.fromCssHex("#515253");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
+  const c2 = $rgb("#212223");
+  const c3 = $rgb("#313233");
+  const c4 = $rgb("#414243");
+  const c5 = $rgb("#515253");
 
   test("1x1 image", () => {
     const dts = drawingTestSetup(3, 3, c0);

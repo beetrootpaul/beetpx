@@ -1,17 +1,16 @@
 import { describe, test } from "vitest";
 import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../../color/PatternColors";
-import { BpxRgbColor } from "../../color/RgbColor";
-import { $v } from "../../shorthands";
+import { $rgb, $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 
 describe("DrawLine", () => {
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
-  const c2 = BpxRgbColor.fromCssHex("#212223");
-  const c3 = BpxRgbColor.fromCssHex("#313233");
-  const c4 = BpxRgbColor.fromCssHex("#414243");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
+  const c2 = $rgb("#212223");
+  const c3 = $rgb("#313233");
+  const c4 = $rgb("#414243");
 
   test("1x1", () => {
     const dts = drawingTestSetup(3, 3, c0);

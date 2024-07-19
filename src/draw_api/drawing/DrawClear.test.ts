@@ -1,12 +1,11 @@
 import { describe, test } from "vitest";
-import { BpxRgbColor } from "../../color/RgbColor";
-import { $v } from "../../shorthands";
+import { $rgb, $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 
 describe("DrawClear", () => {
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
 
   test("clear the whole canvas with a given color", () => {
     const dts = drawingTestSetup(4, 3, c0);

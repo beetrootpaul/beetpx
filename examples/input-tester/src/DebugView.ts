@@ -2,18 +2,18 @@ import {
   $,
   $d,
   $h,
+  $rgb,
   $spr,
   $v,
   $v_0_0,
   BpxGamepadType,
   BpxGamepadTypeDetector,
-  BpxRgbColor,
 } from "../../../src";
 
-const orange = BpxRgbColor.fromCssHex("#ffa300");
-const blue = BpxRgbColor.fromCssHex("#29adff");
-const lime = BpxRgbColor.fromCssHex("#00e436");
-const pink = BpxRgbColor.fromCssHex("#ff77a8");
+const orange = $rgb("#ffa300");
+const blue = $rgb("#29adff");
+const lime = $rgb("#00e436");
+const pink = $rgb("#ff77a8");
 
 export class DebugView {
   private readonly gamepadsN = 3;

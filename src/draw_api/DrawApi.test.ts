@@ -1,14 +1,13 @@
 import { describe, test } from "vitest";
-import { BpxRgbColor } from "../color/RgbColor";
-import { $v } from "../shorthands";
+import { $rgb, $v } from "../shorthands";
 import { BpxDrawingPattern } from "./DrawingPattern";
 import { drawingTestSetup } from "./DrawingTestSetup";
 
 // Most of the DrawApi is tested in specialized tests for e.g. ellipse,
 //   sprite, etc. Here we cover only some other, common bits.
 describe("DrawApi", () => {
-  const c0 = BpxRgbColor.fromCssHex("#010203");
-  const c1 = BpxRgbColor.fromCssHex("#111213");
+  const c0 = $rgb("#010203");
+  const c1 = $rgb("#111213");
 
   test("clipping region", () => {
     const dts = drawingTestSetup(27, 15, c0);
