@@ -17,13 +17,13 @@ export function drawTextWithOutline(
   },
 ): void {
   for (const offset of offset8Directions()) {
-    BeetPx.drawText(text, canvasXy1.add(offset), outlineColor, {
+    BeetPx.draw.text(text, canvasXy1.add(offset), outlineColor, {
       centerXy: opts?.centerXy,
       scaleXy: opts?.scaleXy,
       colorMarkers: opts?.outlineColorMarkers,
     });
   }
-  BeetPx.drawText(text, canvasXy1, textColor, {
+  BeetPx.draw.text(text, canvasXy1, textColor, {
     centerXy: opts?.centerXy,
     scaleXy: opts?.scaleXy,
     colorMarkers: opts?.textColorMarkers,

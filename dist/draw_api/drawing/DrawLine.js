@@ -1,4 +1,4 @@
-import { v_ } from "../../shorthands";
+import { $v } from "../../shorthands";
 export class DrawLine {
     #canvas;
     constructor(canvas) {
@@ -28,7 +28,7 @@ export class DrawLine {
         
         
         
-        let dXy = whSub1.abs().mul(v_(1, -1));
+        let dXy = whSub1.abs().mul($v(1, -1));
         let currentXy = xyStart;
         const targetXy = xyStart.add(whSub1);
         const step = whSub1.sign();
@@ -45,11 +45,11 @@ export class DrawLine {
             
             const errBeforeStep = err;
             if (2 * errBeforeStep >= dXy.y) {
-                currentXy = currentXy.add(v_(step.x, 0));
+                currentXy = currentXy.add($v(step.x, 0));
                 err += dXy.y;
             }
             if (2 * errBeforeStep <= dXy.x) {
-                currentXy = currentXy.add(v_(0, step.y));
+                currentXy = currentXy.add($v(0, step.y));
                 err += dXy.x;
             }
         }

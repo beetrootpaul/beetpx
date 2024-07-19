@@ -1,5 +1,5 @@
+import { throwError } from "../helpers/throwError";
 import { BpxVector2d } from "../misc/Vector2d";
-import { throwError } from "../utils/throwError";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
 export class CanvasForProduction extends Canvas {

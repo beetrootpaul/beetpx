@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../BeetPx";
-import { timer_ } from "../shorthands";
-import { range } from "../utils/range";
+import { range } from "../helpers/range";
+import { $timer } from "../shorthands";
 import { BpxTimer } from "./Timer";
 
 let stubbedFrameNumber = 1;
@@ -65,8 +65,8 @@ describe("Timer", () => {
       const ppev = pickPropertyOfExpectedValues(testedProperty);
 
       test("rounding", () => {
-        const timer1 = timer_(4.4);
-        const timer2 = timer_(4.6);
+        const timer1 = $timer(4.4);
+        const timer2 = $timer(4.6);
 
         expect(ppt(timer1)).toEqual(
           ppev({
@@ -112,7 +112,7 @@ describe("Timer", () => {
       });
 
       test("0 frames long timer", () => {
-        const timer = timer_(0);
+        const timer = $timer(0);
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -138,8 +138,8 @@ describe("Timer", () => {
       });
 
       test("0 frames long timer - created from a negative frames as the param", () => {
-        const timerNegative = timer_(-3);
-        const timerZero = timer_(0);
+        const timerNegative = $timer(-3);
+        const timerZero = $timer(0);
 
         range(5).forEach(() => {
           expect(ppt(timerNegative)).toEqual(ppt(timerZero));
@@ -149,7 +149,7 @@ describe("Timer", () => {
       });
 
       test("1 frame long timer", () => {
-        const timer = timer_(1);
+        const timer = $timer(1);
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -187,7 +187,7 @@ describe("Timer", () => {
       });
 
       test("2 frames long timer", () => {
-        const timer = timer_(2);
+        const timer = $timer(2);
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -237,7 +237,7 @@ describe("Timer", () => {
       });
 
       test("many frames long timer", () => {
-        const timer = timer_(100);
+        const timer = $timer(100);
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -324,7 +324,7 @@ describe("Timer", () => {
 
       test("when the time moves strangely", () => {
         nextFrameNumberWillBe(500);
-        const timer = timer_(8);
+        const timer = $timer(8);
 
         range(6).forEach(() => {
           incrementFrameNumber();
@@ -407,7 +407,7 @@ describe("Timer", () => {
       });
 
       test("pause/resume", () => {
-        const timer = timer_(5);
+        const timer = $timer(5);
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -582,7 +582,7 @@ describe("Timer", () => {
       });
 
       test("already paused timer", () => {
-        const timer = timer_(5, { pause: true });
+        const timer = $timer(5, { pause: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -654,7 +654,7 @@ describe("Timer", () => {
       });
 
       test("restart", () => {
-        const timer = timer_(5);
+        const timer = $timer(5);
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -807,7 +807,7 @@ describe("Timer", () => {
       });
 
       test("delayed timer", () => {
-        const timer = timer_(5, { delayFrames: 3 });
+        const timer = $timer(5, { delayFrames: 3 });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -929,7 +929,7 @@ describe("Timer", () => {
       });
 
       test("delayed and already paused timer", () => {
-        const timer = timer_(5, { delayFrames: 3, pause: true });
+        const timer = $timer(5, { delayFrames: 3, pause: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -992,7 +992,7 @@ describe("Timer", () => {
       });
 
       test("delayed timer vs early restart", () => {
-        const timer = timer_(5, { delayFrames: 3 });
+        const timer = $timer(5, { delayFrames: 3 });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1039,8 +1039,8 @@ describe("Timer", () => {
       const ppev = pickPropertyOfExpectedValues(testedProperty);
 
       test("rounding", () => {
-        const timer1 = timer_(4.4, { loop: true });
-        const timer2 = timer_(4.6, { loop: true });
+        const timer1 = $timer(4.4, { loop: true });
+        const timer2 = $timer(4.6, { loop: true });
 
         expect(ppt(timer1)).toEqual(
           ppev({
@@ -1086,7 +1086,7 @@ describe("Timer", () => {
       });
 
       test("0 frames long timer", () => {
-        const timer = timer_(0, { loop: true });
+        const timer = $timer(0, { loop: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1112,8 +1112,8 @@ describe("Timer", () => {
       });
 
       test("0 frames long timer - created from a negative frames as the param", () => {
-        const timerNegative = timer_(-3, { loop: true });
-        const timerZero = timer_(0, { loop: true });
+        const timerNegative = $timer(-3, { loop: true });
+        const timerZero = $timer(0, { loop: true });
 
         range(5).forEach(() => {
           expect(ppt(timerNegative)).toEqual(ppt(timerZero));
@@ -1123,7 +1123,7 @@ describe("Timer", () => {
       });
 
       test("1 frame long timer", () => {
-        const timer = timer_(1, { loop: true });
+        const timer = $timer(1, { loop: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1159,7 +1159,7 @@ describe("Timer", () => {
       });
 
       test("2 frames long timer", () => {
-        const timer = timer_(2, { loop: true });
+        const timer = $timer(2, { loop: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1217,7 +1217,7 @@ describe("Timer", () => {
       });
 
       test("many frames long timer", () => {
-        const timer = timer_(100, { loop: true });
+        const timer = $timer(100, { loop: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1335,7 +1335,7 @@ describe("Timer", () => {
 
       test("when the time moves strangely", () => {
         nextFrameNumberWillBe(500);
-        const timer = timer_(8, { loop: true });
+        const timer = $timer(8, { loop: true });
 
         range(6).forEach(() => {
           incrementFrameNumber();
@@ -1451,7 +1451,7 @@ describe("Timer", () => {
       });
 
       test("pause/resume", () => {
-        const timer = timer_(5, { loop: true });
+        const timer = $timer(5, { loop: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1632,7 +1632,7 @@ describe("Timer", () => {
       });
 
       test("already paused timer", () => {
-        const timer = timer_(5, { loop: true, pause: true });
+        const timer = $timer(5, { loop: true, pause: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1715,7 +1715,7 @@ describe("Timer", () => {
       });
 
       test("restart", () => {
-        const timer = timer_(5, { loop: true });
+        const timer = $timer(5, { loop: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1884,7 +1884,7 @@ describe("Timer", () => {
       });
 
       test("delayed timer", () => {
-        const timer = timer_(5, { loop: true, delayFrames: 3 });
+        const timer = $timer(5, { loop: true, delayFrames: 3 });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -2006,7 +2006,7 @@ describe("Timer", () => {
       });
 
       test("delayed and already paused timer", () => {
-        const timer = timer_(5, {
+        const timer = $timer(5, {
           loop: true,
           delayFrames: 3,
           pause: true,
@@ -2098,7 +2098,7 @@ describe("Timer", () => {
       });
 
       test("delayed timer vs early restart", () => {
-        const timer = timer_(5, { loop: true, delayFrames: 3 });
+        const timer = $timer(5, { loop: true, delayFrames: 3 });
 
         expect(ppt(timer)).toEqual(
           ppev({

@@ -1,4 +1,4 @@
-import { timerSeq_ } from "../shorthands";
+import { $timerSeq } from "../shorthands";
 import { BpxTimerSequence } from "./TimerSequence";
 
 //
@@ -43,7 +43,7 @@ import { BpxTimerSequence } from "./TimerSequence";
 //
 
 {
-  const ts = timerSeq_({
+  const ts = $timerSeq({
     intro: [
       ["aaa", 111],
       ["bbb", 222],
@@ -76,7 +76,7 @@ import { BpxTimerSequence } from "./TimerSequence";
 //
 
 {
-  const ts = timerSeq_({
+  const ts = $timerSeq({
     intro: [
       ["aaa", 111],
       ["bbb", 222],
@@ -107,7 +107,7 @@ import { BpxTimerSequence } from "./TimerSequence";
 //
 
 {
-  const ts = timerSeq_({
+  const ts = $timerSeq({
     loop: [
       ["aaa", 111],
       ["bbb", 222],

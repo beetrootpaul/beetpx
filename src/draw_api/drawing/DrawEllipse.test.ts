@@ -2,7 +2,7 @@ import { describe, test } from "vitest";
 import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { v_ } from "../../shorthands";
+import { $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 
@@ -16,7 +16,7 @@ describe("DrawEllipse", () => {
     test("0-size", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(0, 0), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(0, 0), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -31,7 +31,7 @@ describe("DrawEllipse", () => {
     test("1x1", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(1, 1), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -46,7 +46,7 @@ describe("DrawEllipse", () => {
     test("2x2", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(2, 2), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(2, 2), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -62,7 +62,7 @@ describe("DrawEllipse", () => {
     test("3x3", () => {
       const dts = drawingTestSetup(5, 5, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(3, 3), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(3, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -79,7 +79,7 @@ describe("DrawEllipse", () => {
     test("4x3", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(4, 3), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -96,7 +96,7 @@ describe("DrawEllipse", () => {
     test("4x4", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(4, 4), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -114,7 +114,7 @@ describe("DrawEllipse", () => {
     test("5x5", () => {
       const dts = drawingTestSetup(7, 7, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(5, 5), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(5, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -133,7 +133,7 @@ describe("DrawEllipse", () => {
     test("6x6", () => {
       const dts = drawingTestSetup(8, 8, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(6, 6), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(6, 6), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -153,7 +153,7 @@ describe("DrawEllipse", () => {
     test("7x7", () => {
       const dts = drawingTestSetup(9, 9, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(7, 7), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(7, 7), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -174,7 +174,7 @@ describe("DrawEllipse", () => {
     test("12x5", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -193,7 +193,7 @@ describe("DrawEllipse", () => {
     test("negative 12x5", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipse(v_(13, 6), v_(-12, -5), c1);
+      dts.drawApi.drawEllipse($v(13, 6), $v(-12, -5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -215,7 +215,7 @@ describe("DrawEllipse", () => {
       // These numbers are chosen in away which should test whether rounding
       //   is performed before on initial values of xy and wh (which is *not*
       //   what we want here) or rather on calculated xy1 and x2.
-      dts.drawApi.drawEllipse(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+      dts.drawApi.drawEllipse($v(1.6, 2.4), $v(12.6, 4.4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -236,7 +236,7 @@ describe("DrawEllipse", () => {
     test("tall: 1x13", () => {
       const dts = drawingTestSetup(3, 15, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(1, 13), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(1, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -263,7 +263,7 @@ describe("DrawEllipse", () => {
     test("tall: 2x13", () => {
       const dts = drawingTestSetup(4, 15, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(2, 13), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(2, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -290,7 +290,7 @@ describe("DrawEllipse", () => {
     test("tall: 3x13", () => {
       const dts = drawingTestSetup(5, 15, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(3, 13), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(3, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -317,7 +317,7 @@ describe("DrawEllipse", () => {
     test("tall: 4x13", () => {
       const dts = drawingTestSetup(6, 15, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(4, 13), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(4, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -344,7 +344,7 @@ describe("DrawEllipse", () => {
     test("tall: 5x13", () => {
       const dts = drawingTestSetup(7, 15, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 1), v_(5, 13), c1);
+      dts.drawApi.drawEllipse($v(1, 1), $v(5, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -371,7 +371,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the left edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipse(v_(-6, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipse($v(-6, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -390,7 +390,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the right edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipse(v_(8, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipse($v(8, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -409,7 +409,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the top edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipse(v_(1, -2), v_(12, 5), c1);
+      dts.drawApi.drawEllipse($v(1, -2), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -428,7 +428,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the bottom edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipse(v_(1, 4), v_(12, 5), c1);
+      dts.drawApi.drawEllipse($v(1, 4), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -447,8 +447,8 @@ describe("DrawEllipse", () => {
     test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.drawEllipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
+      dts.drawApi.setCameraXy($v(3, -2));
+      dts.drawApi.drawEllipse($v(1, 1), $v(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -475,7 +475,7 @@ describe("DrawEllipse", () => {
           --##
         `),
       );
-      dts.drawApi.drawEllipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
+      dts.drawApi.drawEllipse($v(1, 1), $v(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -494,7 +494,7 @@ describe("DrawEllipse", () => {
     test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.setDrawingPattern(
         BpxDrawingPattern.from(`
           ##--
@@ -503,7 +503,7 @@ describe("DrawEllipse", () => {
           --##
         `),
       );
-      dts.drawApi.drawEllipse(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
+      dts.drawApi.drawEllipse($v(1, 1), $v(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -522,7 +522,7 @@ describe("DrawEllipse", () => {
     test("canvas snapshot color mapping", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawRectFilled(v_(0, 2), v_(14, 3), c1);
+      dts.drawApi.drawRectFilled($v(0, 2), $v(14, 3), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -538,7 +538,7 @@ describe("DrawEllipse", () => {
 
       dts.drawApi.takeCanvasSnapshot();
 
-      dts.drawApi.drawRectFilled(v_(5, 0), v_(4, 7), c1);
+      dts.drawApi.drawRectFilled($v(5, 0), $v(4, 7), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -553,8 +553,8 @@ describe("DrawEllipse", () => {
       });
 
       dts.drawApi.drawEllipse(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
@@ -579,7 +579,7 @@ describe("DrawEllipse", () => {
     test("0-size", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(0, 0), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(0, 0), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -594,7 +594,7 @@ describe("DrawEllipse", () => {
     test("1x1", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(1, 1), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -609,7 +609,7 @@ describe("DrawEllipse", () => {
     test("2x2", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(2, 2), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(2, 2), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -625,7 +625,7 @@ describe("DrawEllipse", () => {
     test("3x3", () => {
       const dts = drawingTestSetup(5, 5, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(3, 3), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(3, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -642,7 +642,7 @@ describe("DrawEllipse", () => {
     test("4x3", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(4, 3), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -659,7 +659,7 @@ describe("DrawEllipse", () => {
     test("4x4", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(4, 4), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -677,7 +677,7 @@ describe("DrawEllipse", () => {
     test("5x5", () => {
       const dts = drawingTestSetup(7, 7, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(5, 5), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(5, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -696,7 +696,7 @@ describe("DrawEllipse", () => {
     test("6x6", () => {
       const dts = drawingTestSetup(8, 8, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(6, 6), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(6, 6), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -716,7 +716,7 @@ describe("DrawEllipse", () => {
     test("7x7", () => {
       const dts = drawingTestSetup(9, 9, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(7, 7), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(7, 7), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -737,7 +737,7 @@ describe("DrawEllipse", () => {
     test("12x5", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -756,7 +756,7 @@ describe("DrawEllipse", () => {
     test("negative 12x5", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(13, 6), v_(-12, -5), c1);
+      dts.drawApi.drawEllipseFilled($v(13, 6), $v(-12, -5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -778,7 +778,7 @@ describe("DrawEllipse", () => {
       // These numbers are chosen in away which should test whether rounding
       //   is performed before on initial values of xy and wh (which is *not*
       //   what we want here) or rather on calculated xy1 and x2.
-      dts.drawApi.drawEllipseFilled(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+      dts.drawApi.drawEllipseFilled($v(1.6, 2.4), $v(12.6, 4.4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -799,7 +799,7 @@ describe("DrawEllipse", () => {
     test("tall: 1x13", () => {
       const dts = drawingTestSetup(3, 15, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(1, 13), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(1, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -826,7 +826,7 @@ describe("DrawEllipse", () => {
     test("tall: 2x13", () => {
       const dts = drawingTestSetup(4, 15, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(2, 13), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(2, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -853,7 +853,7 @@ describe("DrawEllipse", () => {
     test("tall: 3x13", () => {
       const dts = drawingTestSetup(5, 15, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(3, 13), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(3, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -880,7 +880,7 @@ describe("DrawEllipse", () => {
     test("tall: 4x13", () => {
       const dts = drawingTestSetup(6, 15, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(4, 13), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(4, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -907,7 +907,7 @@ describe("DrawEllipse", () => {
     test("tall: 5x13", () => {
       const dts = drawingTestSetup(7, 15, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 1), v_(5, 13), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 1), $v(5, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -934,7 +934,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the left edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(-6, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipseFilled($v(-6, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -953,7 +953,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the right edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(8, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipseFilled($v(8, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -972,7 +972,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the top edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, -2), v_(12, 5), c1);
+      dts.drawApi.drawEllipseFilled($v(1, -2), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -991,7 +991,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the bottom edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseFilled(v_(1, 4), v_(12, 5), c1);
+      dts.drawApi.drawEllipseFilled($v(1, 4), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1010,10 +1010,10 @@ describe("DrawEllipse", () => {
     test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.drawEllipseFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1043,8 +1043,8 @@ describe("DrawEllipse", () => {
         `),
       );
       dts.drawApi.drawEllipseFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1065,7 +1065,7 @@ describe("DrawEllipse", () => {
     test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.setDrawingPattern(
         BpxDrawingPattern.from(`
           ##--
@@ -1075,8 +1075,8 @@ describe("DrawEllipse", () => {
         `),
       );
       dts.drawApi.drawEllipseFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1097,7 +1097,7 @@ describe("DrawEllipse", () => {
     test("canvas snapshot color mapping", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawRectFilled(v_(0, 2), v_(14, 3), c1);
+      dts.drawApi.drawRectFilled($v(0, 2), $v(14, 3), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -1113,7 +1113,7 @@ describe("DrawEllipse", () => {
 
       dts.drawApi.takeCanvasSnapshot();
 
-      dts.drawApi.drawRectFilled(v_(5, 0), v_(4, 7), c1);
+      dts.drawApi.drawRectFilled($v(5, 0), $v(4, 7), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -1128,8 +1128,8 @@ describe("DrawEllipse", () => {
       });
 
       dts.drawApi.drawEllipseFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
@@ -1154,7 +1154,7 @@ describe("DrawEllipse", () => {
     test("0-size", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(0, 0), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(0, 0), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1169,7 +1169,7 @@ describe("DrawEllipse", () => {
     test("1x1", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(1, 1), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1184,7 +1184,7 @@ describe("DrawEllipse", () => {
     test("2x2", () => {
       const dts = drawingTestSetup(4, 4, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(2, 2), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(2, 2), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1200,7 +1200,7 @@ describe("DrawEllipse", () => {
     test("3x3", () => {
       const dts = drawingTestSetup(5, 5, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(3, 3), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(3, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1217,7 +1217,7 @@ describe("DrawEllipse", () => {
     test("4x3", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(4, 3), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1234,7 +1234,7 @@ describe("DrawEllipse", () => {
     test("4x4", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(4, 4), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1252,7 +1252,7 @@ describe("DrawEllipse", () => {
     test("5x5", () => {
       const dts = drawingTestSetup(7, 7, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(5, 5), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(5, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1271,7 +1271,7 @@ describe("DrawEllipse", () => {
     test("6x6", () => {
       const dts = drawingTestSetup(8, 8, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(6, 6), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(6, 6), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1291,7 +1291,7 @@ describe("DrawEllipse", () => {
     test("7x7", () => {
       const dts = drawingTestSetup(9, 9, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(7, 7), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(7, 7), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1312,7 +1312,7 @@ describe("DrawEllipse", () => {
     test("12x5", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1331,7 +1331,7 @@ describe("DrawEllipse", () => {
     test("negative 12x5", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(13, 6), v_(-12, -5), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(13, 6), $v(-12, -5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1353,7 +1353,7 @@ describe("DrawEllipse", () => {
       // These numbers are chosen in away which should test whether rounding
       //   is performed before on initial values of xy and wh (which is *not*
       //   what we want here) or rather on calculated xy1 and x2.
-      dts.drawApi.drawEllipseOutsideFilled(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1.6, 2.4), $v(12.6, 4.4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1374,7 +1374,7 @@ describe("DrawEllipse", () => {
     test("tall: 1x13", () => {
       const dts = drawingTestSetup(3, 15, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(1, 13), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(1, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1401,7 +1401,7 @@ describe("DrawEllipse", () => {
     test("tall: 2x13", () => {
       const dts = drawingTestSetup(4, 15, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(2, 13), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(2, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1428,7 +1428,7 @@ describe("DrawEllipse", () => {
     test("tall: 3x13", () => {
       const dts = drawingTestSetup(5, 15, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(3, 13), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(3, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1455,7 +1455,7 @@ describe("DrawEllipse", () => {
     test("tall: 4x13", () => {
       const dts = drawingTestSetup(6, 15, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(4, 13), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(4, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1482,7 +1482,7 @@ describe("DrawEllipse", () => {
     test("tall: 5x13", () => {
       const dts = drawingTestSetup(7, 15, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 1), v_(5, 13), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 1), $v(5, 13), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1509,7 +1509,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the left edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(-6, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(-6, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1528,7 +1528,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the right edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(8, 1), v_(12, 5), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(8, 1), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1547,7 +1547,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the top edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, -2), v_(12, 5), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, -2), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1566,7 +1566,7 @@ describe("DrawEllipse", () => {
     test("clipping: over the bottom edge", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawEllipseOutsideFilled(v_(1, 4), v_(12, 5), c1);
+      dts.drawApi.drawEllipseOutsideFilled($v(1, 4), $v(12, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1585,10 +1585,10 @@ describe("DrawEllipse", () => {
     test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.drawEllipseOutsideFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1618,8 +1618,8 @@ describe("DrawEllipse", () => {
         `),
       );
       dts.drawApi.drawEllipseOutsideFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1640,7 +1640,7 @@ describe("DrawEllipse", () => {
     test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.setDrawingPattern(
         BpxDrawingPattern.from(`
           ##--
@@ -1650,8 +1650,8 @@ describe("DrawEllipse", () => {
         `),
       );
       dts.drawApi.drawEllipseOutsideFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1672,7 +1672,7 @@ describe("DrawEllipse", () => {
     test("canvas snapshot color mapping", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawRectFilled(v_(0, 3), v_(14, 1), c1);
+      dts.drawApi.drawRectFilled($v(0, 3), $v(14, 1), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -1688,7 +1688,7 @@ describe("DrawEllipse", () => {
 
       dts.drawApi.takeCanvasSnapshot();
 
-      dts.drawApi.drawRectFilled(v_(5, 0), v_(4, 7), c1);
+      dts.drawApi.drawRectFilled($v(5, 0), $v(4, 7), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -1703,8 +1703,8 @@ describe("DrawEllipse", () => {
       });
 
       dts.drawApi.drawEllipseOutsideFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),

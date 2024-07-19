@@ -1,13 +1,14 @@
 import {
-  b_,
+  $,
+  $d,
+  $font_pico8,
+  $font_saint11Minimal4,
+  $font_saint11Minimal5,
+  $rgb_p8,
+  $v,
+  $v_0_0,
   BpxFont,
   BpxVector2d,
-  font_pico8_,
-  font_saint11Minimal4_,
-  font_saint11Minimal5_,
-  rgb_p8_,
-  v_,
-  v_0_0_,
 } from "../../../src";
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
@@ -23,13 +24,13 @@ const text = [
   "()[]{}<> /|\\ `'\"",
 ].join("\n");
 
-const minScaleXy = v_(1);
-const maxScaleXy = v_(8);
+const minScaleXy = $v(1);
+const maxScaleXy = $v(8);
 let scaleXy = minScaleXy;
 
-let cameraXy = v_0_0_;
+let cameraXy = $v_0_0;
 
-b_.init({
+$.init({
   canvasSize: "256x256",
   assets: [...customFont.spriteSheetUrls],
   debugMode: {
@@ -37,53 +38,53 @@ b_.init({
     fpsDisplay: { enabled: true },
   },
 }).then(async ({ startGame }) => {
-  b_.setOnUpdate(() => {
-    if (b_.wasButtonJustPressed("a")) {
+  $.setOnUpdate(() => {
+    if ($.wasButtonJustPressed("a")) {
       const newScale = scaleXy.mul(2).clamp(minScaleXy, maxScaleXy);
       cameraXy = cameraXy.mul(newScale.div(scaleXy));
       scaleXy = newScale;
     }
-    if (b_.wasButtonJustPressed("b")) {
+    if ($.wasButtonJustPressed("b")) {
       const newScale = scaleXy.div(2).clamp(minScaleXy, maxScaleXy);
       cameraXy = cameraXy.mul(newScale.div(scaleXy));
       scaleXy = newScale;
     }
-    if (b_.wasButtonJustPressed("menu")) {
-      cameraXy = v_0_0_;
+    if ($.wasButtonJustPressed("menu")) {
+      cameraXy = $v_0_0;
       scaleXy = minScaleXy;
     }
-    cameraXy = cameraXy.sub(b_.getPressedDirection().mul(2).mul(scaleXy));
+    cameraXy = cameraXy.sub($.getPressedDirection().mul(2).mul(scaleXy));
   });
 
-  b_.setOnDraw(() => {
-    b_.setCameraXy(cameraXy);
+  $.setOnDraw(() => {
+    $d.setCameraXy(cameraXy);
 
-    b_.clearCanvas(rgb_p8_.wine);
+    $d.clearCanvas($rgb_p8.wine);
 
-    let cursor = v_(8, 4).mul(scaleXy);
+    let cursor = $v(8, 4).mul(scaleXy);
 
     for (const [font, label] of [
-      [font_pico8_, "font_pico8_"],
+      [$font_pico8, "$font_pico8"],
       [pico8FontWithAdjustments, "pico8FontWithAdjustments"],
-      [font_saint11Minimal4_, "font_saint11Minimal4_"],
-      [font_saint11Minimal5_, "font_saint11Minimal5_"],
+      [$font_saint11Minimal4, "$font_saint11Minimal4"],
+      [$font_saint11Minimal5, "$font_saint11Minimal5"],
       [customFont, "customFont"],
     ] as const) {
-      b_.useFont(font_pico8_);
-      b_.drawText(label, cursor, rgb_p8_.dusk, { scaleXy });
+      $.useFont($font_pico8);
+      $d.text(label, cursor, $rgb_p8.dusk, { scaleXy });
       cursor = cursor.add(scaleXy.mul(0, 8));
 
-      b_.useFont(font);
-      const { wh: textWh, offset: textOffset } = b_.measureText(text, {
+      $.useFont(font);
+      const { wh: textWh, offset: textOffset } = $.measureText(text, {
         scaleXy,
       });
       drawBox(textWh, cursor.add(textOffset), scaleXy);
-      b_.drawText(text, cursor, rgb_p8_.peach, {
+      $d.text(text, cursor, $rgb_p8.peach, {
         scaleXy,
         colorMarkers: {
-          _: rgb_p8_.peach,
-          brown: rgb_p8_.tan,
-          "🟦": rgb_p8_.sky,
+          _: $rgb_p8.peach,
+          brown: $rgb_p8.tan,
+          "🟦": $rgb_p8.sky,
         },
       });
       drawMarkers(font, cursor.add(textOffset), scaleXy);
@@ -102,16 +103,16 @@ function drawBox(
   //
   // a border
   //
-  b_.drawRectFilled(
+  $d.rectFilled(
     cursor.sub(scaleXy),
-    textWh.add(v_(2).mul(scaleXy)),
-    rgb_p8_.dusk,
+    textWh.add($v(2).mul(scaleXy)),
+    $rgb_p8.dusk,
   );
 
   //
   // a background
   //
-  b_.drawRectFilled(cursor, textWh, rgb_p8_.storm);
+  $d.rectFilled(cursor, textWh, $rgb_p8.storm);
 }
 
 function drawMarkers(
@@ -122,50 +123,50 @@ function drawMarkers(
   //
   // the highest pixel of the ascent
   //
-  b_.drawRectFilled(cursor.add(v_(-3, 0).mul(scaleXy)), scaleXy, rgb_p8_.pink);
+  $d.rectFilled(cursor.add($v(-3, 0).mul(scaleXy)), scaleXy, $rgb_p8.pink);
 
   //
   // the ascent
   //
-  b_.drawRectFilled(
-    cursor.add(v_(-4, 0).mul(scaleXy)),
-    v_(1, font.ascent).mul(scaleXy),
-    rgb_p8_.pink,
+  $d.rectFilled(
+    cursor.add($v(-4, 0).mul(scaleXy)),
+    $v(1, font.ascent).mul(scaleXy),
+    $rgb_p8.pink,
   );
 
   //
   // the lowest pixel of the ascent
   //
-  b_.drawRectFilled(
-    cursor.add(v_(-3, font.ascent - 1).mul(scaleXy)),
+  $d.rectFilled(
+    cursor.add($v(-3, font.ascent - 1).mul(scaleXy)),
     scaleXy,
-    rgb_p8_.pink,
+    $rgb_p8.pink,
   );
 
   //
   // the descent
   //
-  b_.drawRectFilled(
-    cursor.add(v_(-4, font.ascent).mul(scaleXy)),
-    v_(1, font.descent).mul(scaleXy),
-    rgb_p8_.pink,
+  $d.rectFilled(
+    cursor.add($v(-4, font.ascent).mul(scaleXy)),
+    $v(1, font.descent).mul(scaleXy),
+    $rgb_p8.pink,
   );
 
   //
   // the lowest pixel of the descent
   //
-  b_.drawRectFilled(
-    cursor.add(v_(-3, font.ascent + font.descent - 1).mul(scaleXy)),
+  $d.rectFilled(
+    cursor.add($v(-3, font.ascent + font.descent - 1).mul(scaleXy)),
     scaleXy,
-    rgb_p8_.pink,
+    $rgb_p8.pink,
   );
 
   //
   // the line gap
   //
-  b_.drawRectFilled(
-    cursor.add(v_(-4, font.ascent + font.descent).mul(scaleXy)),
-    v_(1, font.lineGap).mul(scaleXy),
-    rgb_p8_.pink,
+  $d.rectFilled(
+    cursor.add($v(-4, font.ascent + font.descent).mul(scaleXy)),
+    $v(1, font.lineGap).mul(scaleXy),
+    $rgb_p8.pink,
   );
 }

@@ -1,13 +1,14 @@
 import {
-  b_,
+  $,
+  $d,
+  $spr,
+  $v,
+  $v_0_0,
   BpxRgbColor,
   BpxSpriteColorMapping,
-  spr_,
-  v_,
-  v_0_0_,
 } from "../../../src";
 
-const spr = spr_("spritesheet.png");
+const spr = $spr("spritesheet.png");
 
 const lime = BpxRgbColor.fromCssHex("#a8e72e");
 const pink = BpxRgbColor.fromCssHex("#ff77a8");
@@ -102,7 +103,7 @@ export class StandardView {
   update(): void {
     const { ip } = this;
 
-    const events = b_.getEventsCapturedInLastUpdate();
+    const events = $.getEventsCapturedInLastUpdate();
     ip.up = events.has("button_up");
     ip.down = events.has("button_down");
     ip.left = events.has("button_left");
@@ -116,9 +117,9 @@ export class StandardView {
     ip.frameByFrameToggle = events.has("frame_by_frame_toggle");
     ip.frameByFrameStep = events.has("frame_by_frame_step");
 
-    if (b_.getRecentInputMethods().has("keyboard")) {
+    if ($.getRecentInputMethods().has("keyboard")) {
       this.highlightKeyboard = true;
-    } else if (b_.getRecentInputMethods().has("gamepad")) {
+    } else if ($.getRecentInputMethods().has("gamepad")) {
       this.highlightKeyboard = false;
     }
   }
@@ -127,118 +128,118 @@ export class StandardView {
     const { ip, ps } = this;
 
     // background: base
-    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
+    $d.sprite(spr(128, 128, 0, 0), $v_0_0);
 
     // background: keyboard vs gamepad
-    let prevMapping = b_.setSpriteColorMapping(
+    let prevMapping = $d.setSpriteColorMapping(
       this.highlightKeyboard
         ? BpxSpriteColorMapping.from([[pink, darkGreen]])
         : BpxSpriteColorMapping.from([[yellow, darkBlue]]),
     );
-    b_.setClippingRegion(v_(0, 0), v_(128, 3));
-    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
-    b_.setClippingRegion(v_(126, 0), v_(126, 128));
-    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
-    b_.setClippingRegion(v_(0, 126), v_(128, 128));
-    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
-    b_.setClippingRegion(v_(0, 0), v_(2, 128));
-    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
-    b_.setClippingRegion(v_(64, 77), v_(64, 6));
-    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
-    b_.setSpriteColorMapping(prevMapping);
-    prevMapping = b_.setSpriteColorMapping(
+    $d.setClippingRegion($v(0, 0), $v(128, 3));
+    $d.sprite(spr(128, 128, 0, 0), $v_0_0);
+    $d.setClippingRegion($v(126, 0), $v(126, 128));
+    $d.sprite(spr(128, 128, 0, 0), $v_0_0);
+    $d.setClippingRegion($v(0, 126), $v(128, 128));
+    $d.sprite(spr(128, 128, 0, 0), $v_0_0);
+    $d.setClippingRegion($v(0, 0), $v(2, 128));
+    $d.sprite(spr(128, 128, 0, 0), $v_0_0);
+    $d.setClippingRegion($v(64, 77), $v(64, 6));
+    $d.sprite(spr(128, 128, 0, 0), $v_0_0);
+    $d.setSpriteColorMapping(prevMapping);
+    prevMapping = $d.setSpriteColorMapping(
       BpxSpriteColorMapping.from([[lightGrey, darkGrey]]),
     );
-    b_.setClippingRegion(
-      this.highlightKeyboard ? v_(110, 3) : v_(3, 3),
-      v_(15, 11),
+    $d.setClippingRegion(
+      this.highlightKeyboard ? $v(110, 3) : $v(3, 3),
+      $v(15, 11),
     );
-    b_.drawSprite(spr(128, 128, 0, 0), v_0_0_);
-    b_.removeClippingRegion();
-    b_.setSpriteColorMapping(prevMapping);
+    $d.sprite(spr(128, 128, 0, 0), $v_0_0);
+    $d.removeClippingRegion();
+    $d.setSpriteColorMapping(prevMapping);
 
     // pressed buttons
-    prevMapping = b_.setSpriteColorMapping(
+    prevMapping = $d.setSpriteColorMapping(
       BpxSpriteColorMapping.from([[lime, null]]),
     );
     if (ip.up) {
-      b_.drawSprite(ps.k_w, v_(21, 17));
-      b_.drawSprite(ps.k_up, v_(47, 17));
-      b_.drawSprite(ps.g_dpad_up, v_(74, 16));
-      b_.drawSprite(ps.g_stick_up, v_(97, 16));
+      $d.sprite(ps.k_w, $v(21, 17));
+      $d.sprite(ps.k_up, $v(47, 17));
+      $d.sprite(ps.g_dpad_up, $v(74, 16));
+      $d.sprite(ps.g_stick_up, $v(97, 16));
     }
     if (ip.down) {
-      b_.drawSprite(ps.k_s, v_(22, 24));
-      b_.drawSprite(ps.k_down, v_(47, 24));
-      b_.drawSprite(ps.g_dpad_down, v_(74, 16));
-      b_.drawSprite(ps.g_stick_down, v_(97, 16));
+      $d.sprite(ps.k_s, $v(22, 24));
+      $d.sprite(ps.k_down, $v(47, 24));
+      $d.sprite(ps.g_dpad_down, $v(74, 16));
+      $d.sprite(ps.g_stick_down, $v(97, 16));
     }
     if (ip.left) {
-      b_.drawSprite(ps.k_a, v_(15, 24));
-      b_.drawSprite(ps.k_left, v_(40, 24));
-      b_.drawSprite(ps.g_dpad_left, v_(74, 16));
-      b_.drawSprite(ps.g_stick_left, v_(97, 16));
+      $d.sprite(ps.k_a, $v(15, 24));
+      $d.sprite(ps.k_left, $v(40, 24));
+      $d.sprite(ps.g_dpad_left, $v(74, 16));
+      $d.sprite(ps.g_stick_left, $v(97, 16));
     }
     if (ip.right) {
-      b_.drawSprite(ps.k_d, v_(29, 24));
-      b_.drawSprite(ps.k_right, v_(54, 24));
-      b_.drawSprite(ps.g_dpad_right, v_(74, 16));
-      b_.drawSprite(ps.g_stick_right, v_(97, 16));
+      $d.sprite(ps.k_d, $v(29, 24));
+      $d.sprite(ps.k_right, $v(54, 24));
+      $d.sprite(ps.g_dpad_right, $v(74, 16));
+      $d.sprite(ps.g_stick_right, $v(97, 16));
     }
     if (ip.up && ip.left) {
-      b_.drawSprite(ps.g_dpad_up_left, v_(74, 16));
-      b_.drawSprite(ps.g_stick_up_left, v_(97, 16));
+      $d.sprite(ps.g_dpad_up_left, $v(74, 16));
+      $d.sprite(ps.g_stick_up_left, $v(97, 16));
     }
     if (ip.up && ip.right) {
-      b_.drawSprite(ps.g_dpad_up_right, v_(74, 16));
-      b_.drawSprite(ps.g_stick_up_right, v_(97, 16));
+      $d.sprite(ps.g_dpad_up_right, $v(74, 16));
+      $d.sprite(ps.g_stick_up_right, $v(97, 16));
     }
     if (ip.down && ip.left) {
-      b_.drawSprite(ps.g_dpad_down_left, v_(74, 16));
-      b_.drawSprite(ps.g_stick_down_left, v_(97, 16));
+      $d.sprite(ps.g_dpad_down_left, $v(74, 16));
+      $d.sprite(ps.g_stick_down_left, $v(97, 16));
     }
     if (ip.down && ip.right) {
-      b_.drawSprite(ps.g_dpad_down_right, v_(74, 16));
-      b_.drawSprite(ps.g_stick_down_right, v_(97, 16));
+      $d.sprite(ps.g_dpad_down_right, $v(74, 16));
+      $d.sprite(ps.g_stick_down_right, $v(97, 16));
     }
     if (ip.a) {
-      b_.drawSprite(ps.k_c, v_(37, 40));
-      b_.drawSprite(ps.k_j, v_(49, 40));
-      b_.drawSprite(ps.g_a, v_(73, 40));
-      b_.drawSprite(ps.g_y, v_(84, 40));
-      b_.drawSprite(ps.g_dualsense_cross, v_(100, 40));
-      b_.drawSprite(ps.g_dualsense_triangle, v_(111, 40));
+      $d.sprite(ps.k_c, $v(37, 40));
+      $d.sprite(ps.k_j, $v(49, 40));
+      $d.sprite(ps.g_a, $v(73, 40));
+      $d.sprite(ps.g_y, $v(84, 40));
+      $d.sprite(ps.g_dualsense_cross, $v(100, 40));
+      $d.sprite(ps.g_dualsense_triangle, $v(111, 40));
     }
     if (ip.b) {
-      b_.drawSprite(ps.k_x, v_(37, 51));
-      b_.drawSprite(ps.k_k, v_(49, 51));
-      b_.drawSprite(ps.g_b, v_(73, 51));
-      b_.drawSprite(ps.g_x, v_(84, 51));
-      b_.drawSprite(ps.g_dualsense_circle, v_(100, 51));
-      b_.drawSprite(ps.g_dualsense_square, v_(111, 51));
+      $d.sprite(ps.k_x, $v(37, 51));
+      $d.sprite(ps.k_k, $v(49, 51));
+      $d.sprite(ps.g_b, $v(73, 51));
+      $d.sprite(ps.g_x, $v(84, 51));
+      $d.sprite(ps.g_dualsense_circle, $v(100, 51));
+      $d.sprite(ps.g_dualsense_square, $v(111, 51));
     }
     if (ip.menu) {
-      b_.drawSprite(ps.k_p, v_(6, 65));
-      b_.drawSprite(ps.k_esc, v_(16, 65));
-      b_.drawSprite(ps.k_enter, v_(34, 61));
-      b_.drawSprite(ps.g_xbox_menu, v_(84, 65));
-      b_.drawSprite(ps.g_ps_menu, v_(100, 65));
+      $d.sprite(ps.k_p, $v(6, 65));
+      $d.sprite(ps.k_esc, $v(16, 65));
+      $d.sprite(ps.k_enter, $v(34, 61));
+      $d.sprite(ps.g_xbox_menu, $v(84, 65));
+      $d.sprite(ps.g_ps_menu, $v(100, 65));
     }
     if (ip.muteUnmute) {
-      b_.drawSprite(ps.k_m, v_(5, 85));
+      $d.sprite(ps.k_m, $v(5, 85));
     }
     if (ip.fullScreen) {
-      b_.drawSprite(ps.k_f, v_(5, 95));
+      $d.sprite(ps.k_f, $v(5, 95));
     }
     if (ip.debugToggle) {
-      b_.drawSprite(ps.k_semicolon, v_(118, 100));
+      $d.sprite(ps.k_semicolon, $v(118, 100));
     }
     if (ip.frameByFrameToggle) {
-      b_.drawSprite(ps.k_coma, v_(118, 110));
+      $d.sprite(ps.k_coma, $v(118, 110));
     }
     if (ip.frameByFrameStep) {
-      b_.drawSprite(ps.k_period, v_(118, 118));
+      $d.sprite(ps.k_period, $v(118, 118));
     }
-    b_.setSpriteColorMapping(prevMapping);
+    $d.setSpriteColorMapping(prevMapping);
   }
 }

@@ -1,6 +1,6 @@
+import { assertUnreachable } from "../../helpers/assertUnreachable";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_0_0_ } from "../../shorthands";
-import { assertUnreachable } from "../../utils/assertUnreachable";
+import { $v_0_0 } from "../../shorthands";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
 export class DrawText {
@@ -20,7 +20,7 @@ export class DrawText {
     }
     draw(text, font, canvasXy, color, colorMarkers, scaleXy, pattern) {
         canvasXy = canvasXy.round();
-        scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+        scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
         for (const arrangedGlyph of font.arrangeGlyphsFor(text, color, colorMarkers)) {
             if (arrangedGlyph.type === "line_break")
                 continue;

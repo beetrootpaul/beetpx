@@ -1,20 +1,20 @@
 import {
+  $font,
+  $font_pico8,
+  $spr,
   BpxFontConfigPico8,
   BpxGlyph,
   BpxPalettePico8,
   BpxPixels,
   BpxRgbColor,
-  font_,
-  font_pico8_,
-  spr_,
 } from "../../../src";
 
-const s = spr_(BpxFontConfigPico8.spriteSheetUrl);
+const s = $spr(BpxFontConfigPico8.spriteSheetUrl);
 
 const isTextColor = (color: BpxRgbColor | null) =>
   color?.cssHex === BpxPalettePico8.white.cssHex;
 
-export const pico8FontWithAdjustments = font_(font_pico8_, baseFontConfig => ({
+export const pico8FontWithAdjustments = $font($font_pico8, baseFontConfig => ({
   ...baseFontConfig,
 
   ascent: 6,

@@ -1,5 +1,5 @@
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_, v_0_0_ } from "../../shorthands";
+import { $v, $v_0_0 } from "../../shorthands";
 import { PreparedSprites } from "../PreparedSprites";
 export class DrawSprite {
     #preparedSprites = new PreparedSprites();
@@ -11,9 +11,9 @@ export class DrawSprite {
     }
     draw(sprite, sourceImageAsset, targetXy, scaleXy, flipXy, colorMapping, pattern) {
         targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-        scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+        scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
-        sprite = sprite.clipBy(v_0_0_, v_(imgW, imgH));
+        sprite = sprite.clipBy($v_0_0, $v(imgW, imgH));
         
         if (!this.#canvas.canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size.x * scaleXy.x - 1, targetXy.y + sprite.size.y * scaleXy.y - 1)) {
             return;

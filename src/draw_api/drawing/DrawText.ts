@@ -2,9 +2,9 @@ import { Assets } from "../../assets/Assets";
 import { Canvas } from "../../canvas/Canvas";
 import { BpxRgbColor } from "../../color/RgbColor";
 import { BpxFont, BpxTextColorMarkers } from "../../font/Font";
+import { assertUnreachable } from "../../helpers/assertUnreachable";
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_0_0_ } from "../../shorthands";
-import { assertUnreachable } from "../../utils/assertUnreachable";
+import { $v_0_0 } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { DrawPixels } from "./DrawPixels";
 import { DrawSprite } from "./DrawSprite";
@@ -40,7 +40,7 @@ export class DrawText {
     pattern: BpxDrawingPattern,
   ): void {
     canvasXy = canvasXy.round();
-    scaleXy = BpxVector2d.max(scaleXy.floor(), v_0_0_);
+    scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
 
     for (const arrangedGlyph of font.arrangeGlyphsFor(
       text,

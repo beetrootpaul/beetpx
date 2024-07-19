@@ -80,7 +80,7 @@ To check if your controls work as expected, go to `examples/input-tester`, then
 run `npm install`, then `npm start` and test your controllers in an
 automatically opened browser tab.
 
-## API Documentation
+### API Documentation
 
 For a nicely formatted list of API exposed by BeetPx run:
 
@@ -94,6 +94,11 @@ supposed to open is located under [docs/index.html](./docs/index.html)
 ⚠️ Please be aware the docs are very raw so far. There are mostly just a list of
 exposed types and classes and constants, and nothing more. This is something to
 be improved before 1.0 release.
+
+ℹ️ For a quick start you can start by typing either `BeetPx.` and checking what
+your IDE suggests. The BeetPx follows a convention of having all functions and
+constants exposed through `BeetPx.`, `BeetPx.draw.`, and `BeetPx.helpers.`.
+Their shorthands are `$`, `$d`, and `$h`.
 
 ## Development Setup
 
@@ -150,9 +155,9 @@ While you are able (and encouraged) to define your own font (as an
 implementation of `BpxFont` interface), there are 3 fonts ready to use in BeetPx
 out of the box:
 
-- `font_pico8_` (the default one)
-- `font_saint11Minimal4_`
-- `font_saint11Minimal5_`
+- `$font_pico8` (the default one)
+- `$font_saint11Minimal4`
+- `$font_saint11Minimal5`
 
 The first one is a font from PICO-8 fantasy console, available under a CC-0
 license (public domain, free to use). For more info see:
@@ -164,7 +169,7 @@ domain, free to use).
 
 ### Color Palettes
 
-There is a PICO-8 color palette ready to use, exported as `rgb_p8_`. That
+There is a PICO-8 color palette ready to use, exported as `$rgb_p8`. That
 palette is created by zep and available under a CC-0 license (public domain,
 free to use). For more info see: https://www.lexaloffle.com/pico-8.php?page=faq
 

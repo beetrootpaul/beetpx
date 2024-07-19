@@ -1,69 +1,70 @@
 import {
-  b_,
+  $,
+  $d,
+  $h,
+  $rgb,
+  $rgb_p8,
+  $v,
+  $v_0_0,
   BpxCanvasSnapshotColorMapping,
   BpxColorMapper,
-  rgb_,
-  rgb_p8_,
-  u_,
-  v_,
-  v_0_0_,
 } from "../../../src";
 
 export class PauseMenu {
   static #dimColors: BpxColorMapper = (sourceColor) =>
     !sourceColor
       ? null
-      : rgb_(sourceColor.r * 0.35, sourceColor.g * 0.35, sourceColor.b * 0.35);
+      : $rgb(sourceColor.r * 0.35, sourceColor.g * 0.35, sourceColor.b * 0.35);
 
   #selectedItem = 0;
 
   update() {
-    if (b_.wasJustPaused) {
+    if ($.wasJustPaused) {
       this.#selectedItem = 0;
     }
 
-    if (b_.wasButtonJustPressed("a")) {
+    if ($.wasButtonJustPressed("a")) {
       if (this.#selectedItem === 0) {
-        b_.resume();
+        $.resume();
       } else if (this.#selectedItem === 1) {
-        if (b_.isAudioMuted()) {
-          b_.unmuteAudio();
+        if ($.isAudioMuted()) {
+          $.unmuteAudio();
         } else {
-          b_.muteAudio();
+          $.muteAudio();
         }
       } else if (this.#selectedItem === 2) {
-        b_.restart();
+        $.restart();
       }
     }
 
-    if (b_.wasButtonJustPressed("b")) {
-      b_.resume();
+    if ($.wasButtonJustPressed("b")) {
+      $.resume();
     }
 
-    if (b_.wasButtonJustPressed("down")) {
+    if ($.wasButtonJustPressed("down")) {
       this.#selectedItem += 1;
     }
-    if (b_.wasButtonJustPressed("up")) {
+    if ($.wasButtonJustPressed("up")) {
       this.#selectedItem -= 1;
     }
-    this.#selectedItem = u_.mod(this.#selectedItem, 3);
+    this.#selectedItem = $h.mod(this.#selectedItem, 3);
   }
 
   draw() {
-    b_.takeCanvasSnapshot();
-    b_.drawRectFilled(
-      v_0_0_,
-      b_.canvasSize,
+    $d.takeCanvasSnapshot();
+    $d.rectFilled(
+      $v_0_0,
+      $.canvasSize,
       BpxCanvasSnapshotColorMapping.of(PauseMenu.#dimColors),
     );
 
     const xy = (itemIndex: number) =>
-      v_(8 + (this.#selectedItem === itemIndex ? 4 : 0), 8 + itemIndex * 20);
+      $v(8 + (this.#selectedItem === itemIndex ? 4 : 0), 8 + itemIndex * 20);
     const color = (itemIndex: number) =>
-      this.#selectedItem === itemIndex ? rgb_p8_.white : rgb_p8_.slate;
-    const opts = { scaleXy: v_(3, 3) };
-    b_.drawText("resume", xy(0), color(0), opts);
-    b_.drawText(b_.isAudioMuted() ? "unmute" : "mute", xy(1), color(1), opts);
-    b_.drawText("restart", xy(2), color(2), opts);
+      this.#selectedItem === itemIndex ? $rgb_p8.white : $rgb_p8.slate;
+    const opts = { scaleXy: $v(3, 3) };
+    $d.text("resume", xy(0), color(0), opts);
+    $d.text($.isAudioMuted() ? "unmute" : "mute", xy(1), color(1), opts);
+    $d.text("restart", xy(2), color(2), opts);
   }
 }

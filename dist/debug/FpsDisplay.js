@@ -1,6 +1,6 @@
-import { b_ } from "../BeetPx";
-import { font_pico8_, rgb_p8_ } from "../shorthands";
-import { BpxUtils } from "../utils/Utils";
+import { $ } from "../BeetPx";
+import { mod } from "../helpers/mod";
+import { $font_pico8, $rgb_p8 } from "../shorthands";
 export class FpsDisplay {
     #drawApi;
     #color;
@@ -9,7 +9,7 @@ export class FpsDisplay {
     #alignLeft;
     constructor(drawApi, canvasSize, params) {
         this.#drawApi = drawApi;
-        this.#color = params.color ?? rgb_p8_.orange;
+        this.#color = params.color ?? $rgb_p8.orange;
         this.#canvasSize = canvasSize;
         const placement = params.placement ?? "top-right";
         this.#alignLeft = placement.endsWith("-left");
@@ -24,7 +24,7 @@ export class FpsDisplay {
     
     drawRenderingFps(renderingFps) {
         this.#recentSamples[this.#nextSampleIndex] = renderingFps;
-        this.#nextSampleIndex = BpxUtils.mod(this.#nextSampleIndex + 1, this.#recentSamples.length);
+        this.#nextSampleIndex = mod(this.#nextSampleIndex + 1, this.#recentSamples.length);
         if (this.#nextSampleIndex === 0) {
             this.#lastCalculatedAverageFps = 0;
             for (const sample of this.#recentSamples) {
@@ -32,9 +32,9 @@ export class FpsDisplay {
             }
             this.#lastCalculatedAverageFps /= this.#recentSamples.length;
         }
-        const prevFont = this.#drawApi.useFont(font_pico8_);
+        const prevFont = this.#drawApi.useFont($font_pico8);
         const text = this.#lastCalculatedAverageFps.toFixed();
-        const wh = b_.measureText(text).wh;
+        const wh = $.measureText(text).wh;
         this.#drawApi.drawText(text, this.#drawApi.cameraXy.add(this.#alignLeft ? 1 : this.#canvasSize.x - wh.x - 1, this.#alignTop ? 1 : this.#canvasSize.y - wh.y - 1), this.#color);
         this.#drawApi.useFont(prevFont);
     }

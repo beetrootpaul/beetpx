@@ -1,4 +1,4 @@
-import { timerSeq_ } from "../../shorthands";
+import { $timerSeq } from "../../shorthands";
 import { BpxTimerSequence } from "../../timer/TimerSequence";
 
 export class Button {
@@ -44,7 +44,7 @@ export class Button {
   update(isPressed: boolean): void {
     if (isPressed) {
       if (this.#wasJustToggled && this.#isRepeatingEnabled) {
-        this.#repeatingTimer = timerSeq_(
+        this.#repeatingTimer = $timerSeq(
           {
             intro:
               this.#firstRepeatFrames ?

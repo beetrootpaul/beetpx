@@ -1,5 +1,5 @@
 import { BpxVector2d } from "../../misc/Vector2d";
-import { v_ } from "../../shorthands";
+import { $v } from "../../shorthands";
 import { BpxGameInputEvent } from "../GameInput";
 import { Button } from "./Button";
 
@@ -63,7 +63,7 @@ export class GameButtons {
   }
 
   getPressedDirection(): BpxVector2d {
-    return v_(
+    return $v(
       (this.#left.isPressed ? -1 : 0) + (this.#right.isPressed ? 1 : 0),
       (this.#up.isPressed ? -1 : 0) + (this.#down.isPressed ? 1 : 0),
     );

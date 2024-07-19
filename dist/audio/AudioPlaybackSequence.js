@@ -1,5 +1,5 @@
 import * as ABU from "audio-buffer-utils";
-import { clamp } from "../utils/clamp";
+import { clamp } from "../helpers/clamp";
 import { AudioPlayback } from "./AudioPlayback";
 export class AudioPlaybackSequence extends AudioPlayback {
     id = AudioPlayback.nextPlaybackId++;

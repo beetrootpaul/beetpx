@@ -1,8 +1,8 @@
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
+import { assertUnreachable } from "../helpers/assertUnreachable";
+import { identity } from "../helpers/identity";
+import { range } from "../helpers/range";
 import { BpxVector2d } from "../misc/Vector2d";
-import { assertUnreachable } from "../utils/assertUnreachable";
-import { identity } from "../utils/identity";
-import { range } from "../utils/range";
 export class BpxFont {
     static of(config) {
         return new BpxFont({

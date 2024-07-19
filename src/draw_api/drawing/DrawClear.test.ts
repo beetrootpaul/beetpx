@@ -1,6 +1,6 @@
 import { describe, test } from "vitest";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { v_ } from "../../shorthands";
+import { $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 
@@ -26,7 +26,7 @@ describe("DrawClear", () => {
   test("clipping region does not affect the canvas clearing", () => {
     const dts = drawingTestSetup(4, 3, c0);
 
-    dts.drawApi.setClippingRegion(v_(1, 1), v_(2, 2));
+    dts.drawApi.setClippingRegion($v(1, 1), $v(2, 2));
     dts.drawApi.clearCanvas(c1);
 
     dts.canvas.expectToEqual({
@@ -42,7 +42,7 @@ describe("DrawClear", () => {
   test("camera XY does not affect the canvas clearing", () => {
     const dts = drawingTestSetup(4, 3, c0);
 
-    dts.drawApi.setCameraXy(v_(2, 2));
+    dts.drawApi.setCameraXy($v(2, 2));
     dts.drawApi.clearCanvas(c1);
 
     dts.canvas.expectToEqual({

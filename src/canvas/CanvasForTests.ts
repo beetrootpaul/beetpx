@@ -1,7 +1,7 @@
 import { expect } from "vitest";
 import { BpxRgbColor, BpxRgbCssHex } from "../color/RgbColor";
+import { range } from "../helpers/range";
 import { BpxVector2d } from "../misc/Vector2d";
-import { range } from "../utils/range";
 import { Canvas } from "./Canvas";
 import { CanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";

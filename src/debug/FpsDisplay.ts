@@ -1,9 +1,9 @@
-import { b_ } from "../BeetPx";
+import { $ } from "../BeetPx";
 import { BpxRgbColor } from "../color/RgbColor";
 import { DrawApi } from "../draw_api/DrawApi";
+import { mod } from "../helpers/mod";
 import { BpxVector2d } from "../misc/Vector2d";
-import { font_pico8_, rgb_p8_ } from "../shorthands";
-import { BpxUtils } from "../utils/Utils";
+import { $font_pico8, $rgb_p8 } from "../shorthands";
 
 export type FpsDisplayPlacement =
   | "top-left"
@@ -28,7 +28,7 @@ export class FpsDisplay {
   ) {
     this.#drawApi = drawApi;
 
-    this.#color = params.color ?? rgb_p8_.orange;
+    this.#color = params.color ?? $rgb_p8.orange;
 
     this.#canvasSize = canvasSize;
 
@@ -48,7 +48,7 @@ export class FpsDisplay {
   // Assumption: this method is called every frame, therefore averaging over N frames makes sense.
   drawRenderingFps(renderingFps: number): void {
     this.#recentSamples[this.#nextSampleIndex] = renderingFps;
-    this.#nextSampleIndex = BpxUtils.mod(
+    this.#nextSampleIndex = mod(
       this.#nextSampleIndex + 1,
       this.#recentSamples.length,
     );
@@ -61,10 +61,10 @@ export class FpsDisplay {
       this.#lastCalculatedAverageFps /= this.#recentSamples.length;
     }
 
-    const prevFont = this.#drawApi.useFont(font_pico8_);
+    const prevFont = this.#drawApi.useFont($font_pico8);
 
     const text = this.#lastCalculatedAverageFps.toFixed();
-    const wh = b_.measureText(text).wh;
+    const wh = $.measureText(text).wh;
     this.#drawApi.drawText(
       text,
       this.#drawApi.cameraXy.add(

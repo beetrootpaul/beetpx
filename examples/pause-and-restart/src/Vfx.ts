@@ -1,11 +1,12 @@
 import {
-  b_,
+  $,
+  $d,
+  $rgb_p8,
+  $timerSeq,
+  $v,
   BpxDrawingPattern,
   BpxEasing,
   BpxTimerSequence,
-  rgb_p8_,
-  timerSeq_,
-  v_,
 } from "../../../src";
 
 export class Vfx {
@@ -21,7 +22,7 @@ export class Vfx {
 
   constructor(params: { loopFrames: number }) {
     this.#loopFrames = params.loopFrames;
-    this.#timer = timerSeq_(
+    this.#timer = $timerSeq(
       {
         intro: [
           ["a", params.loopFrames - 5],
@@ -39,23 +40,23 @@ export class Vfx {
   }
 
   draw() {
-    b_.setDrawingPattern(Vfx.#checkersPattern);
+    $d.setDrawingPattern(Vfx.#checkersPattern);
 
     const rectSize = 16;
     [
-      v_(2, 2),
-      v_(2, b_.canvasSize.y - rectSize - 2),
-      v_(b_.canvasSize.x - rectSize - 2, 2),
-      v_(b_.canvasSize.x - rectSize - 2, b_.canvasSize.y - rectSize - 2),
+      $v(2, 2),
+      $v(2, $.canvasSize.y - rectSize - 2),
+      $v($.canvasSize.x - rectSize - 2, 2),
+      $v($.canvasSize.x - rectSize - 2, $.canvasSize.y - rectSize - 2),
     ].forEach((xy) => {
       const progress =
         (this.#loopFrames - this.#timer.framesLeft) / this.#loopFrames;
-      b_.drawRectFilled(
+      $d.rectFilled(
         xy,
-        v_(rectSize).mul(BpxEasing.outQuadratic(progress)),
-        this.#timer.currentPhase === "a" ? rgb_p8_.moss : rgb_p8_.orange,
+        $v(rectSize).mul(BpxEasing.outQuadratic(progress)),
+        this.#timer.currentPhase === "a" ? $rgb_p8.moss : $rgb_p8.orange,
       );
     });
-    b_.setDrawingPattern(BpxDrawingPattern.primaryOnly);
+    $d.setDrawingPattern(BpxDrawingPattern.primaryOnly);
   }
 }

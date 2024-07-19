@@ -6,7 +6,7 @@ import { BpxRgbColor } from "../color/RgbColor";
 import { BpxSpriteColorMapping } from "../color/SpriteColorMapping";
 import { BpxFont, BpxTextColorMarkers } from "../font/Font";
 import { BpxVector2d } from "../misc/Vector2d";
-import { font_pico8_, rgb_white_, v_, v_1_1_ } from "../shorthands";
+import { $font_pico8, $rgb_white, $v, $v_1_1 } from "../shorthands";
 import { BpxAnimatedSprite } from "../sprite/AnimatedSprite";
 import { BpxSprite } from "../sprite/Sprite";
 import { DrawClear } from "./drawing/DrawClear";
@@ -39,12 +39,12 @@ export class DrawApi {
   readonly #sprite: DrawSprite;
   readonly #text: DrawText;
 
-  cameraXy: BpxVector2d = v_(0, 0);
+  cameraXy: BpxVector2d = $v(0, 0);
   #pattern: BpxDrawingPattern = BpxDrawingPattern.primaryOnly;
 
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
-  #font: BpxFont = font_pico8_;
+  #font: BpxFont = $font_pico8;
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -114,7 +114,7 @@ export class DrawApi {
       pixels,
       xy.sub(this.cameraXy),
       color,
-      opts?.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? $v_1_1,
       opts?.flipXy ?? [false, false],
       this.#pattern,
     );
@@ -218,7 +218,7 @@ export class DrawApi {
       sprite.type === "static" ? sprite : sprite.current,
       sourceImageAsset,
       xy.sub(this.cameraXy),
-      opts?.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? $v_1_1,
       opts?.flipXy ?? [false, false],
       this.#spriteColorMapping,
       this.#pattern,
@@ -241,7 +241,7 @@ export class DrawApi {
     let maxLineNumber = 0;
     let maxX = 0;
 
-    for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, rgb_white_)) {
+    for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, $rgb_white)) {
       if (arrangedGlyph.type === "line_break") {
         maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber + 1);
       } else {
@@ -256,13 +256,13 @@ export class DrawApi {
       }
     }
 
-    const wh = v_(
+    const wh = $v(
       maxX,
       (maxLineNumber + 1) * (this.#font.ascent + this.#font.descent) +
         maxLineNumber * this.#font.lineGap,
-    ).mul(opts?.scaleXy ?? v_1_1_);
+    ).mul(opts?.scaleXy ?? $v_1_1);
 
-    const offset = v_(
+    const offset = $v(
       opts?.centerXy?.[0] ? -wh.x / 2 : 0,
       opts?.centerXy?.[1] ? -wh.y / 2 : 0,
     );
@@ -294,7 +294,7 @@ export class DrawApi {
       xy.sub(this.cameraXy),
       color,
       opts?.colorMarkers ?? {},
-      opts?.scaleXy ?? v_1_1_,
+      opts?.scaleXy ?? $v_1_1,
       this.#pattern,
     );
   }

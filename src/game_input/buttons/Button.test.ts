@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { BeetPx } from "../../BeetPx";
-import { range } from "../../utils/range";
+import { range } from "../../helpers/range";
 
 import { Button } from "./Button";
 

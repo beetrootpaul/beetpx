@@ -1,4 +1,4 @@
-import { b_ } from "../../../src";
+import { $ } from "../../../src";
 
 export class Music {
   static assetUrls = ["music_base.flac", "music_melody.flac"];
@@ -6,10 +6,10 @@ export class Music {
   static beatFrames = 32;
 
   constructor() {
-    b_.startPlaybackLooped("music_base.flac", {
+    $.startPlaybackLooped("music_base.flac", {
       onGamePause: "ignore",
     });
-    b_.startPlaybackLooped("music_melody.flac", {
+    $.startPlaybackLooped("music_melody.flac", {
       onGamePause: "mute",
     });
   }

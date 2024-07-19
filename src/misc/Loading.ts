@@ -1,6 +1,6 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { throwError } from "../utils/throwError";
-import { wait } from "../utils/wait";
+import { throwError } from "../helpers/throwError";
+import { wait } from "../helpers/wait";
 
 export class Loading {
   readonly #minWaitToAvoidFlicker: Promise<void> = wait(750);

@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { v_ } from "../shorthands";
+import { $v } from "../shorthands";
 import { BpxPixels } from "./Pixels";
 
 describe("Pixels", () => {
@@ -73,6 +73,6 @@ describe("Pixels", () => {
       ----------##
       #
     `);
-    expect(pixels.size).toEqual(v_(16, 8));
+    expect(pixels.size).toEqual($v(16, 8));
   });
 });

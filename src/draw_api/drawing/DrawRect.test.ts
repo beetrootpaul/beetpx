@@ -2,7 +2,7 @@ import { describe, test } from "vitest";
 import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
-import { v_ } from "../../shorthands";
+import { $v } from "../../shorthands";
 import { BpxDrawingPattern } from "../DrawingPattern";
 import { drawingTestSetup } from "../DrawingTestSetup";
 
@@ -19,7 +19,7 @@ describe("DrawRect", () => {
     test("simple 1x1", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRect(v_(1, 1), v_(1, 1), c1);
+      dts.drawApi.drawRect($v(1, 1), $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -34,7 +34,7 @@ describe("DrawRect", () => {
     test("simple 4x3", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawRect(v_(1, 1), v_(4, 3), c1);
+      dts.drawApi.drawRect($v(1, 1), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -51,7 +51,7 @@ describe("DrawRect", () => {
     test("drawing on very edges of a canvas", () => {
       const dts = drawingTestSetup(4, 3, c0);
 
-      dts.drawApi.drawRect(v_(0, 0), v_(4, 3), c1);
+      dts.drawApi.drawRect($v(0, 0), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -66,7 +66,7 @@ describe("DrawRect", () => {
     test("0-size", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRect(v_(1, 1), v_(0, 0), c1);
+      dts.drawApi.drawRect($v(1, 1), $v(0, 0), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -81,7 +81,7 @@ describe("DrawRect", () => {
     test("negative left-top corner", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRect(v_(-1, -1), v_(3, 3), c1);
+      dts.drawApi.drawRect($v(-1, -1), $v(3, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -96,7 +96,7 @@ describe("DrawRect", () => {
     test("negative size", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawRect(v_(5, 4), v_(-4, -3), c1);
+      dts.drawApi.drawRect($v(5, 4), $v(-4, -3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -116,7 +116,7 @@ describe("DrawRect", () => {
       // These numbers are chosen in away which should test whether rounding
       //   is performed before on initial values of xy and wh (which is *not*
       //   what we want here) or rather on calculated xy1 and x2.
-      dts.drawApi.drawRect(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+      dts.drawApi.drawRect($v(1.6, 2.4), $v(12.6, 4.4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -137,7 +137,7 @@ describe("DrawRect", () => {
     test("clipping: over the left edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRect(v_(-2, 1), v_(4, 4), c1);
+      dts.drawApi.drawRect($v(-2, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -155,7 +155,7 @@ describe("DrawRect", () => {
     test("clipping: over the right edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRect(v_(4, 1), v_(4, 4), c1);
+      dts.drawApi.drawRect($v(4, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -173,7 +173,7 @@ describe("DrawRect", () => {
     test("clipping: over the top edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRect(v_(1, -2), v_(4, 4), c1);
+      dts.drawApi.drawRect($v(1, -2), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -191,7 +191,7 @@ describe("DrawRect", () => {
     test("clipping: over the bottom edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRect(v_(1, 4), v_(4, 4), c1);
+      dts.drawApi.drawRect($v(1, 4), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -217,7 +217,7 @@ describe("DrawRect", () => {
           #---
         `),
       );
-      dts.drawApi.drawRect(v_(0, 0), v_(4, 4), c1);
+      dts.drawApi.drawRect($v(0, 0), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -241,7 +241,7 @@ describe("DrawRect", () => {
           #---
         `),
       );
-      dts.drawApi.drawRect(v_(0, 0), v_(4, 4), BpxPatternColors.of(c1, c2));
+      dts.drawApi.drawRect($v(0, 0), $v(4, 4), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2 },
@@ -258,7 +258,7 @@ describe("DrawRect", () => {
       const dts = drawingTestSetup(10, 10, c0);
 
       dts.drawApi.setDrawingPattern(BpxDrawingPattern.primaryOnly);
-      dts.drawApi.drawRect(v_(0, 0), v_(10, 10), BpxPatternColors.of(c4, c1));
+      dts.drawApi.drawRect($v(0, 0), $v(10, 10), BpxPatternColors.of(c4, c1));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -277,7 +277,7 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.setDrawingPattern(BpxDrawingPattern.secondaryOnly);
-      dts.drawApi.drawRect(v_(2, 2), v_(6, 6), BpxPatternColors.of(c4, c2));
+      dts.drawApi.drawRect($v(2, 2), $v(6, 6), BpxPatternColors.of(c4, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -303,7 +303,7 @@ describe("DrawRect", () => {
           #---
         `),
       );
-      dts.drawApi.drawRect(v_(0, 0), v_(10, 10), BpxPatternColors.of(c3, ct));
+      dts.drawApi.drawRect($v(0, 0), $v(10, 10), BpxPatternColors.of(c3, ct));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -329,7 +329,7 @@ describe("DrawRect", () => {
           ##--
         `),
       );
-      dts.drawApi.drawRect(v_(0, 0), v_(10, 5), BpxPatternColors.of(c5, ct));
+      dts.drawApi.drawRect($v(0, 0), $v(10, 5), BpxPatternColors.of(c5, ct));
       dts.drawApi.setDrawingPattern(
         BpxDrawingPattern.from(`
           --##
@@ -338,7 +338,7 @@ describe("DrawRect", () => {
           --##
         `),
       );
-      dts.drawApi.drawRect(v_(0, 5), v_(10, 5), BpxPatternColors.of(c5, c1));
+      dts.drawApi.drawRect($v(0, 5), $v(10, 5), BpxPatternColors.of(c5, c1));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, "^": c5 },
@@ -368,7 +368,7 @@ describe("DrawRect", () => {
           #---
         `),
       );
-      dts.drawApi.drawRect(v_(1, 1), v_(9, 9), BpxPatternColors.of(c1, ct));
+      dts.drawApi.drawRect($v(1, 1), $v(9, 9), BpxPatternColors.of(c1, ct));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -391,8 +391,8 @@ describe("DrawRect", () => {
     test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
-      dts.drawApi.drawRect(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
+      dts.drawApi.setCameraXy($v(3, -2));
+      dts.drawApi.drawRect($v(1, 1), $v(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -411,7 +411,7 @@ describe("DrawRect", () => {
     test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.setDrawingPattern(
         BpxDrawingPattern.from(`
           ##--
@@ -420,7 +420,7 @@ describe("DrawRect", () => {
           --##
         `),
       );
-      dts.drawApi.drawRect(v_(1, 1), v_(12, 5), BpxPatternColors.of(c1, c2));
+      dts.drawApi.drawRect($v(1, 1), $v(12, 5), BpxPatternColors.of(c1, c2));
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1, "@": c2 },
@@ -439,7 +439,7 @@ describe("DrawRect", () => {
     test("canvas snapshot color mapping", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawRectFilled(v_(0, 2), v_(14, 3), c1);
+      dts.drawApi.drawRectFilled($v(0, 2), $v(14, 3), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -455,7 +455,7 @@ describe("DrawRect", () => {
 
       dts.drawApi.takeCanvasSnapshot();
 
-      dts.drawApi.drawRectFilled(v_(5, 0), v_(4, 7), c1);
+      dts.drawApi.drawRectFilled($v(5, 0), $v(4, 7), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -470,8 +470,8 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.drawRect(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
@@ -496,7 +496,7 @@ describe("DrawRect", () => {
     test("simple 1x1", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRectFilled(v_(1, 1), v_(1, 1), c1);
+      dts.drawApi.drawRectFilled($v(1, 1), $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -511,7 +511,7 @@ describe("DrawRect", () => {
     test("simple 4x3", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawRectFilled(v_(1, 1), v_(4, 3), c1);
+      dts.drawApi.drawRectFilled($v(1, 1), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -528,7 +528,7 @@ describe("DrawRect", () => {
     test("drawing on very edges of a canvas", () => {
       const dts = drawingTestSetup(4, 3, c0);
 
-      dts.drawApi.drawRectFilled(v_(0, 0), v_(4, 3), c1);
+      dts.drawApi.drawRectFilled($v(0, 0), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -543,7 +543,7 @@ describe("DrawRect", () => {
     test("0-size", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRectFilled(v_(1, 1), v_(0, 0), c1);
+      dts.drawApi.drawRectFilled($v(1, 1), $v(0, 0), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -558,7 +558,7 @@ describe("DrawRect", () => {
     test("negative left-top corner", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRectFilled(v_(-1, -1), v_(3, 3), c1);
+      dts.drawApi.drawRectFilled($v(-1, -1), $v(3, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -573,7 +573,7 @@ describe("DrawRect", () => {
     test("negative size", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawRectFilled(v_(5, 4), v_(-4, -3), c1);
+      dts.drawApi.drawRectFilled($v(5, 4), $v(-4, -3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -593,7 +593,7 @@ describe("DrawRect", () => {
       // These numbers are chosen in away which should test whether rounding
       //   is performed before on initial values of xy and wh (which is *not*
       //   what we want here) or rather on calculated xy1 and x2.
-      dts.drawApi.drawRectFilled(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+      dts.drawApi.drawRectFilled($v(1.6, 2.4), $v(12.6, 4.4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -614,7 +614,7 @@ describe("DrawRect", () => {
     test("clipping: over the left edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectFilled(v_(-2, 1), v_(4, 4), c1);
+      dts.drawApi.drawRectFilled($v(-2, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -632,7 +632,7 @@ describe("DrawRect", () => {
     test("clipping: over the right edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectFilled(v_(4, 1), v_(4, 4), c1);
+      dts.drawApi.drawRectFilled($v(4, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -650,7 +650,7 @@ describe("DrawRect", () => {
     test("clipping: over the top edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectFilled(v_(1, -2), v_(4, 4), c1);
+      dts.drawApi.drawRectFilled($v(1, -2), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -668,7 +668,7 @@ describe("DrawRect", () => {
     test("clipping: over the bottom edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectFilled(v_(1, 4), v_(4, 4), c1);
+      dts.drawApi.drawRectFilled($v(1, 4), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -694,7 +694,7 @@ describe("DrawRect", () => {
           #---
         `),
       );
-      dts.drawApi.drawRectFilled(v_(0, 0), v_(4, 4), c1);
+      dts.drawApi.drawRectFilled($v(0, 0), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -719,8 +719,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectFilled(
-        v_(0, 0),
-        v_(4, 4),
+        $v(0, 0),
+        $v(4, 4),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -740,8 +740,8 @@ describe("DrawRect", () => {
 
       dts.drawApi.setDrawingPattern(BpxDrawingPattern.primaryOnly);
       dts.drawApi.drawRectFilled(
-        v_(0, 0),
-        v_(10, 10),
+        $v(0, 0),
+        $v(10, 10),
         BpxPatternColors.of(c4, c1),
       );
 
@@ -763,8 +763,8 @@ describe("DrawRect", () => {
 
       dts.drawApi.setDrawingPattern(BpxDrawingPattern.secondaryOnly);
       dts.drawApi.drawRectFilled(
-        v_(2, 2),
-        v_(6, 6),
+        $v(2, 2),
+        $v(6, 6),
         BpxPatternColors.of(c4, c2),
       );
 
@@ -793,8 +793,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectFilled(
-        v_(0, 0),
-        v_(10, 10),
+        $v(0, 0),
+        $v(10, 10),
         BpxPatternColors.of(c3, ct),
       );
 
@@ -823,8 +823,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectFilled(
-        v_(0, 0),
-        v_(10, 5),
+        $v(0, 0),
+        $v(10, 5),
         BpxPatternColors.of(c5, ct),
       );
       dts.drawApi.setDrawingPattern(
@@ -836,8 +836,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectFilled(
-        v_(0, 5),
-        v_(10, 5),
+        $v(0, 5),
+        $v(10, 5),
         BpxPatternColors.of(c5, c1),
       );
 
@@ -870,8 +870,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectFilled(
-        v_(1, 1),
-        v_(9, 9),
+        $v(1, 1),
+        $v(9, 9),
         BpxPatternColors.of(c1, ct),
       );
 
@@ -896,10 +896,10 @@ describe("DrawRect", () => {
     test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.drawRectFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -920,7 +920,7 @@ describe("DrawRect", () => {
     test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.setDrawingPattern(
         BpxDrawingPattern.from(`
           ##--
@@ -930,8 +930,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -952,7 +952,7 @@ describe("DrawRect", () => {
     test("canvas snapshot color mapping", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawRectFilled(v_(0, 2), v_(14, 3), c1);
+      dts.drawApi.drawRectFilled($v(0, 2), $v(14, 3), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -968,7 +968,7 @@ describe("DrawRect", () => {
 
       dts.drawApi.takeCanvasSnapshot();
 
-      dts.drawApi.drawRectFilled(v_(5, 0), v_(4, 7), c1);
+      dts.drawApi.drawRectFilled($v(5, 0), $v(4, 7), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -983,8 +983,8 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.drawRectFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),
@@ -1009,7 +1009,7 @@ describe("DrawRect", () => {
     test("simple 1x1", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(1, 1), v_(1, 1), c1);
+      dts.drawApi.drawRectOutsideFilled($v(1, 1), $v(1, 1), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1024,7 +1024,7 @@ describe("DrawRect", () => {
     test("simple 4x3", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(1, 1), v_(4, 3), c1);
+      dts.drawApi.drawRectOutsideFilled($v(1, 1), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1041,7 +1041,7 @@ describe("DrawRect", () => {
     test("drawing on very edges of a canvas", () => {
       const dts = drawingTestSetup(4, 3, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(0, 0), v_(4, 3), c1);
+      dts.drawApi.drawRectOutsideFilled($v(0, 0), $v(4, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1056,7 +1056,7 @@ describe("DrawRect", () => {
     test("drawing outside edges of a canvas", () => {
       const dts = drawingTestSetup(4, 3, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(-1, -1), v_(6, 5), c1);
+      dts.drawApi.drawRectOutsideFilled($v(-1, -1), $v(6, 5), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1071,7 +1071,7 @@ describe("DrawRect", () => {
     test("0-size", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(1, 1), v_(0, 0), c1);
+      dts.drawApi.drawRectOutsideFilled($v(1, 1), $v(0, 0), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1086,7 +1086,7 @@ describe("DrawRect", () => {
     test("negative left-top corner", () => {
       const dts = drawingTestSetup(3, 3, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(-1, -1), v_(3, 3), c1);
+      dts.drawApi.drawRectOutsideFilled($v(-1, -1), $v(3, 3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1101,7 +1101,7 @@ describe("DrawRect", () => {
     test("negative size", () => {
       const dts = drawingTestSetup(6, 5, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(5, 4), v_(-4, -3), c1);
+      dts.drawApi.drawRectOutsideFilled($v(5, 4), $v(-4, -3), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1121,7 +1121,7 @@ describe("DrawRect", () => {
       // These numbers are chosen in away which should test whether rounding
       //   is performed before on initial values of xy and wh (which is *not*
       //   what we want here) or rather on calculated xy1 and x2.
-      dts.drawApi.drawRectOutsideFilled(v_(1.6, 2.4), v_(12.6, 4.4), c1);
+      dts.drawApi.drawRectOutsideFilled($v(1.6, 2.4), $v(12.6, 4.4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1142,7 +1142,7 @@ describe("DrawRect", () => {
     test("clipping: over the left edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(-2, 1), v_(4, 4), c1);
+      dts.drawApi.drawRectOutsideFilled($v(-2, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1160,7 +1160,7 @@ describe("DrawRect", () => {
     test("clipping: over the right edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(4, 1), v_(4, 4), c1);
+      dts.drawApi.drawRectOutsideFilled($v(4, 1), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1178,7 +1178,7 @@ describe("DrawRect", () => {
     test("clipping: over the top edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(1, -2), v_(4, 4), c1);
+      dts.drawApi.drawRectOutsideFilled($v(1, -2), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1196,7 +1196,7 @@ describe("DrawRect", () => {
     test("clipping: over the bottom edge", () => {
       const dts = drawingTestSetup(6, 6, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(1, 4), v_(4, 4), c1);
+      dts.drawApi.drawRectOutsideFilled($v(1, 4), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1222,7 +1222,7 @@ describe("DrawRect", () => {
           #---
         `),
       );
-      dts.drawApi.drawRectOutsideFilled(v_(2, 2), v_(4, 4), c1);
+      dts.drawApi.drawRectOutsideFilled($v(2, 2), $v(4, 4), c1);
 
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
@@ -1251,8 +1251,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectOutsideFilled(
-        v_(2, 2),
-        v_(4, 4),
+        $v(2, 2),
+        $v(4, 4),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1283,8 +1283,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectOutsideFilled(
-        v_(1, 1),
-        v_(9, 9),
+        $v(1, 1),
+        $v(9, 9),
         BpxPatternColors.of(c1, ct),
       );
 
@@ -1309,10 +1309,10 @@ describe("DrawRect", () => {
     test("camera XY", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.drawRectOutsideFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1333,7 +1333,7 @@ describe("DrawRect", () => {
     test("camera XY + pattern", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.setCameraXy(v_(3, -2));
+      dts.drawApi.setCameraXy($v(3, -2));
       dts.drawApi.setDrawingPattern(
         BpxDrawingPattern.from(`
           ##--
@@ -1343,8 +1343,8 @@ describe("DrawRect", () => {
         `),
       );
       dts.drawApi.drawRectOutsideFilled(
-        v_(1, 1),
-        v_(12, 5),
+        $v(1, 1),
+        $v(12, 5),
         BpxPatternColors.of(c1, c2),
       );
 
@@ -1365,7 +1365,7 @@ describe("DrawRect", () => {
     test("canvas snapshot color mapping", () => {
       const dts = drawingTestSetup(14, 7, c0);
 
-      dts.drawApi.drawRectOutsideFilled(v_(-1, 1), v_(16, 5), c1);
+      dts.drawApi.drawRectOutsideFilled($v(-1, 1), $v(16, 5), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -1381,7 +1381,7 @@ describe("DrawRect", () => {
 
       dts.drawApi.takeCanvasSnapshot();
 
-      dts.drawApi.drawRectOutsideFilled(v_(3, -1), v_(8, 9), c1);
+      dts.drawApi.drawRectOutsideFilled($v(3, -1), $v(8, 9), c1);
       dts.canvas.expectToEqual({
         withMapping: { "-": c0, "#": c1 },
         expectedImageAsAscii: `
@@ -1396,8 +1396,8 @@ describe("DrawRect", () => {
       });
 
       dts.drawApi.drawRectOutsideFilled(
-        v_(4, 2),
-        v_(6, 3),
+        $v(4, 2),
+        $v(6, 3),
         BpxCanvasSnapshotColorMapping.of(snapshotColor =>
           snapshotColor?.cssHex === c1.cssHex ? c2 : c3,
         ),

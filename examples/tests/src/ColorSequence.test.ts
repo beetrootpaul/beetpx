@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { u_ } from "../../../src";
+import { $h } from "../../../src";
 import { ColorSequence } from "./ColorSequence";
 
 describe("ColorSequence", () => {
@@ -12,7 +12,7 @@ describe("ColorSequence", () => {
     expect(cs.current.cssHex).toBe("#010101");
     cs.next();
     expect(cs.current.cssHex).toBe("#020202");
-    u_.range(0xff - 3).forEach(() => {
+    $h.range(0xff - 3).forEach(() => {
       cs.next();
     });
     expect(cs.current.cssHex).toBe("#fefefe");
@@ -24,7 +24,7 @@ describe("ColorSequence", () => {
     cs.next();
     expect(cs.current.cssHex).toBe("#fdfdfd");
 
-    u_.range(0xff - 4).forEach(() => {
+    $h.range(0xff - 4).forEach(() => {
       cs.next();
     });
     expect(cs.current.cssHex).toBe("#020202");

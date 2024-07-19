@@ -1,12 +1,13 @@
 import {
-  b_,
+  $,
+  $d,
+  $h,
+  $spr,
+  $v,
+  $v_0_0,
   BpxGamepadType,
   BpxGamepadTypeDetector,
   BpxRgbColor,
-  spr_,
-  u_,
-  v_,
-  v_0_0_,
 } from "../../../src";
 
 const orange = BpxRgbColor.fromCssHex("#ffa300");
@@ -17,19 +18,19 @@ const pink = BpxRgbColor.fromCssHex("#ff77a8");
 export class DebugView {
   private readonly gamepadsN = 3;
 
-  private readonly gamepadTypes: (null | BpxGamepadType)[] = u_
+  private readonly gamepadTypes: (null | BpxGamepadType)[] = $h
     .range(this.gamepadsN)
     .map(() => null);
 
   private readonly buttonsN = 20;
-  private readonly buttons: (null | "touched" | "pressed")[][] = u_
+  private readonly buttons: (null | "touched" | "pressed")[][] = $h
     .range(this.buttonsN)
-    .map(() => u_.range(this.gamepadsN).map(() => null));
+    .map(() => $h.range(this.gamepadsN).map(() => null));
 
   private readonly axesN = 7;
-  private readonly axes: (null | number)[][] = u_
+  private readonly axes: (null | number)[][] = $h
     .range(this.axesN)
-    .map(() => u_.range(this.gamepadsN).map(() => null));
+    .map(() => $h.range(this.gamepadsN).map(() => null));
 
   constructor() {
     document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) => {
@@ -97,14 +98,14 @@ export class DebugView {
   update(): void {
     navigator.getGamepads().forEach((gamepad) => {
       if (gamepad && gamepad.index < this.gamepadsN) {
-        u_.range(this.buttonsN).forEach((i) => {
+        $h.range(this.buttonsN).forEach((i) => {
           this.buttons[i]![gamepad.index] = gamepad.buttons[i]?.pressed
             ? "pressed"
             : gamepad.buttons[i]?.touched
               ? "touched"
               : null;
         });
-        u_.range(this.axesN).forEach((i) => {
+        $h.range(this.axesN).forEach((i) => {
           this.axes[i]![gamepad.index] = gamepad.axes[i] ?? null;
         });
       }
@@ -113,27 +114,27 @@ export class DebugView {
 
   draw() {
     // background
-    b_.drawSprite(spr_("spritesheet.png")(128, 128, 160, 0), v_0_0_);
+    $d.sprite($spr("spritesheet.png")(128, 128, 160, 0), $v_0_0);
 
     // buttons
     this.buttons.forEach((buttonXGamepads, buttonIndex) => {
       buttonXGamepads.forEach((button, gamepadIndex) => {
         if (button === "pressed") {
-          b_.drawRectFilled(
-            v_(
+          $d.rectFilled(
+            $v(
               17 + (buttonIndex % 10) * 10,
               12 + Math.floor(buttonIndex / 10) * 20 + gamepadIndex * 3,
             ),
-            v_(3, 3),
+            $v(3, 3),
             gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
           );
         } else if (button === "touched") {
-          b_.drawEllipseFilled(
-            v_(
+          $d.ellipseFilled(
+            $v(
               17 + (buttonIndex % 10) * 10,
               12 + Math.floor(buttonIndex / 10) * 20 + gamepadIndex * 3,
             ),
-            v_(3, 3),
+            $v(3, 3),
             gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
           );
         }
@@ -145,9 +146,9 @@ export class DebugView {
       axisXGamepad.forEach((axis, gamepadIndex) => {
         if (axis != null) {
           const offset = 20 * axis;
-          b_.drawRectFilled(
-            v_(48 + offset, 51 + axisIndex * 11 + gamepadIndex * 3),
-            v_(3, 3),
+          $d.rectFilled(
+            $v(48 + offset, 51 + axisIndex * 11 + gamepadIndex * 3),
+            $v(3, 3),
             gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
           );
         }
@@ -155,11 +156,11 @@ export class DebugView {
     });
 
     // gamepad types
-    u_.range(this.gamepadsN).forEach((gamepadIndex) => {
+    $h.range(this.gamepadsN).forEach((gamepadIndex) => {
       const gamepadType = this.gamepadTypes[gamepadIndex];
       if (gamepadType) {
-        b_.drawRectFilled(
-          v_(
+        $d.rectFilled(
+          $v(
             97 +
               (gamepadType === "xbox"
                 ? 0
@@ -168,28 +169,28 @@ export class DebugView {
                   : 20),
             61 + gamepadIndex * 3,
           ),
-          v_(3, 3),
+          $v(3, 3),
           gamepadIndex === 0 ? orange : gamepadIndex === 1 ? blue : lime,
         );
       }
     });
 
     // browser type
-    b_.drawRectFilled(
-      v_(
+    $d.rectFilled(
+      $v(
         117,
         78 +
-          (b_.detectedBrowserType === "chromium"
+          ($.detectedBrowserType === "chromium"
             ? 0
-            : b_.detectedBrowserType === "safari"
+            : $.detectedBrowserType === "safari"
               ? 10
-              : b_.detectedBrowserType === "firefox_windows"
+              : $.detectedBrowserType === "firefox_windows"
                 ? 20
-                : b_.detectedBrowserType === "firefox_other"
+                : $.detectedBrowserType === "firefox_other"
                   ? 30
                   : 40),
       ),
-      v_(3, 3),
+      $v(3, 3),
       pink,
     );
   }
