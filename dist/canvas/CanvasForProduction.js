@@ -49,7 +49,7 @@ export class CanvasForProduction extends Canvas {
         this.#offscreenImageData.data[dataIndex + 2] = color.b;
     }
     newSnapshot() {
-        return new CanvasSnapshotForProduction(this.#offscreenImageData.data.slice());
+        return new CanvasSnapshotForProduction(this.#offscreenImageData.data.slice(), this.canvasSize.x);
     }
     doRender() {
         this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);

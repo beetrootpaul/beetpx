@@ -88,7 +88,7 @@ export class DrawRect {
                 this.#canvas.set(c1, x, y);
             }
             else {
-                const mapped = c1.getMappedColor(snapshot, y * this.#canvas.canvasSize.x + x);
+                const mapped = c1.getMappedColor(snapshot, x, y);
                 if (mapped) {
                     this.#canvas.set(mapped, x, y);
                 }

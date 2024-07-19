@@ -1,10 +1,13 @@
 import { BpxRgbColor } from "../color/RgbColor";
 export class CanvasSnapshotForProduction {
     #imageDataData;
-    constructor(imageDataData) {
+    #canvasWidth;
+    constructor(imageDataData, canvasWidth) {
         this.#imageDataData = imageDataData;
+        this.#canvasWidth = canvasWidth;
     }
-    getColorAtIndex(index) {
+    getColorAt(x, y) {
+        const index = y * this.#canvasWidth + x;
         if (index >= this.#imageDataData.length / 4) {
             throw Error(`index out of bounds: index = ${index}, max allowed index = ${this.#imageDataData.length / 4 - 1}`);
         }

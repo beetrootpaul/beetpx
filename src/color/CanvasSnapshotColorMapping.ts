@@ -1,4 +1,5 @@
 import { CanvasSnapshot } from "../canvas/CanvasSnapshot";
+import { $v } from "../shorthands";
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor } from "./RgbColor";
 
@@ -17,8 +18,14 @@ export class BpxCanvasSnapshotColorMapping {
 
   getMappedColor(
     snapshot: CanvasSnapshot | null,
-    index: number,
+    canvasX: number,
+    canvasY: number,
   ): BpxRgbColor | null {
-    return snapshot ? this.#mapping(snapshot.getColorAtIndex(index)) : null;
+    return snapshot ?
+        this.#mapping(
+          snapshot.getColorAt(canvasX, canvasY),
+          $v(canvasX, canvasY),
+        )
+      : null;
   }
 }
