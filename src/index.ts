@@ -49,6 +49,7 @@ export type { BpxRgbCssHex } from "./color/RgbColor";
 export type { BpxEngineConfig } from "./Engine";
 export type {
   BpxArrangedGlyph,
+  BpxFontConfig,
   BpxGlyph,
   BpxKerningPrevCharMap,
   BpxTextColorMarkers,
