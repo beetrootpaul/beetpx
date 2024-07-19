@@ -837,8 +837,6 @@ declare class BeetPx {
     static getRecentInputMethods: GameInput["getRecentInputMethods"];
     static getConnectedGamepadTypes: GameInput["getConnectedGamepadTypes"];
     static getEventsCapturedInLastUpdate: GameInput["getEventsCapturedInLastUpdate"];
-    static useFont: DrawApi["useFont"];
-    static measureText: DrawApi["measureText"];
     static isAudioMuted: AudioApi["isAudioMuted"];
     static muteAudio: AudioApi["muteAudio"];
     static unmuteAudio: AudioApi["unmuteAudio"];
@@ -907,6 +905,17 @@ declare class BeetPx {
             scaleXy?: BpxVector2d;
             flipXy?: [boolean, boolean];
         }): void;
+        /**
+         * @returns - previously used font
+         */
+        useFont(font: BpxFont): BpxFont;
+        measureText(text: string, opts?: {
+            centerXy?: [boolean, boolean];
+            scaleXy?: BpxVector2d;
+        }): {
+            wh: BpxVector2d;
+            offset: BpxVector2d;
+        };
         text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
             centerXy?: [boolean, boolean];
             scaleXy?: BpxVector2d;
@@ -984,6 +993,17 @@ declare const $d: {
         scaleXy?: BpxVector2d;
         flipXy?: [boolean, boolean];
     }): void;
+    /**
+     * @returns - previously used font
+     */
+    useFont(font: BpxFont): BpxFont;
+    measureText(text: string, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+    }): {
+        wh: BpxVector2d;
+        offset: BpxVector2d;
+    };
     text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;

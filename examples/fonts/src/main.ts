@@ -70,12 +70,12 @@ $.init({
       [$font_saint11Minimal5, "$font_saint11Minimal5"],
       [customFont, "customFont"],
     ] as const) {
-      $.useFont($font_pico8);
+      $d.useFont($font_pico8);
       $d.text(label, cursor, $rgb_p8.dusk, { scaleXy });
       cursor = cursor.add(scaleXy.mul(0, 8));
 
-      $.useFont(font);
-      const { wh: textWh, offset: textOffset } = $.measureText(text, {
+      $d.useFont(font);
+      const { wh: textWh, offset: textOffset } = $d.measureText(text, {
         scaleXy,
       });
       drawBox(textWh, cursor.add(textOffset), scaleXy);

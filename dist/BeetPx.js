@@ -144,15 +144,6 @@ export class BeetPx {
     
     
     
-    static useFont = (...args) => {
-        return this.#tryGetEngine().drawApi.useFont(...args);
-    };
-    static measureText = (...args) => {
-        return this.#tryGetEngine().drawApi.measureText(...args);
-    };
-    
-    
-    
     static isAudioMuted = (...args) => {
         return this.#tryGetEngine().audioApi.isAudioMuted(...args);
     };
@@ -311,6 +302,15 @@ export class BeetPx {
         },
         sprite(sprite, xy, opts) {
             BeetPx.#tryGetEngine("sprite").drawApi.drawSprite(sprite, xy, opts);
+        },
+        /**
+         * @returns - previously used font
+         */
+        useFont(font) {
+            return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
+        },
+        measureText(text, opts) {
+            return BeetPx.#tryGetEngine("measureText").drawApi.measureText(text, opts);
         },
         text(text, xy, color, opts) {
             BeetPx.#tryGetEngine("text").drawApi.drawText(text, xy, color, opts);

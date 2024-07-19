@@ -269,10 +269,10 @@ export class Engine {
                 this.#renderingFps = renderingFps;
                 this.isInsideDrawOrStartedCallback = true;
                 this.#onDraw?.();
-                this.isInsideDrawOrStartedCallback = false;
                 if (DebugMode.enabled) {
                     this.#fpsDisplay?.drawRenderingFps(renderingFps);
                 }
+                this.isInsideDrawOrStartedCallback = false;
                 this.#canvas.render();
             },
         });

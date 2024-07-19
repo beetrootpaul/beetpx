@@ -1,4 +1,4 @@
-import { $ } from "../BeetPx";
+import { $d } from "../BeetPx";
 import { BpxRgbColor } from "../color/RgbColor";
 import { DrawApi } from "../draw_api/DrawApi";
 import { BpxVector2d } from "../misc/Vector2d";
@@ -64,7 +64,7 @@ export class FpsDisplay {
     const prevFont = this.#drawApi.useFont($font_pico8);
 
     const text = this.#lastCalculatedAverageFps.toFixed();
-    const wh = $.measureText(text).wh;
+    const wh = $d.measureText(text).wh;
     this.#drawApi.drawText(
       text,
       this.#drawApi.cameraXy.add(

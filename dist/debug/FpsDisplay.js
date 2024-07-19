@@ -1,4 +1,4 @@
-import { $ } from "../BeetPx";
+import { $d } from "../BeetPx";
 import { $font_pico8, $rgb_p8 } from "../shorthands";
 import { mod } from "../utils/mod";
 export class FpsDisplay {
@@ -34,7 +34,7 @@ export class FpsDisplay {
         }
         const prevFont = this.#drawApi.useFont($font_pico8);
         const text = this.#lastCalculatedAverageFps.toFixed();
-        const wh = $.measureText(text).wh;
+        const wh = $d.measureText(text).wh;
         this.#drawApi.drawText(text, this.#drawApi.cameraXy.add(this.#alignLeft ? 1 : this.#canvasSize.x - wh.x - 1, this.#alignTop ? 1 : this.#canvasSize.y - wh.y - 1), this.#color);
         this.#drawApi.useFont(prevFont);
     }

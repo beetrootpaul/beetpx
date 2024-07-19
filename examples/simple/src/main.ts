@@ -29,7 +29,6 @@ $.init({
    */
   debugMode: {
     available: true,
-    forceEnabledOnStart: true,
     fpsDisplay: { enabled: true },
   },
 

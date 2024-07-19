@@ -9,10 +9,9 @@ import { BpxPatternColors } from "./color/PatternColors";
 import { BpxRgbColor } from "./color/RgbColor";
 import { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 import { DebugMode } from "./debug/DebugMode";
-import { DrawApi } from "./draw_api/DrawApi";
 import { BpxDrawingPattern } from "./draw_api/DrawingPattern";
 import { BpxPixels } from "./draw_api/Pixels";
-import { BpxTextColorMarkers } from "./font/Font";
+import { BpxFont, BpxTextColorMarkers } from "./font/Font";
 import { GameInput } from "./game_input/GameInput";
 import { GameButtons } from "./game_input/buttons/GameButtons";
 import { Logger } from "./logger/Logger";
@@ -216,18 +215,6 @@ export class BeetPx {
     };
 
   //
-  // Draw API
-  //
-
-  static useFont: DrawApi["useFont"] = (...args) => {
-    return this.#tryGetEngine().drawApi.useFont(...args);
-  };
-
-  static measureText: DrawApi["measureText"] = (...args) => {
-    return this.#tryGetEngine().drawApi.measureText(...args);
-  };
-
-  //
   // Audio API
   //
 
@@ -353,7 +340,7 @@ export class BeetPx {
   }
 
   //
-  // Draw API – methods recommended to me called inside `setOnDraw` callback
+  // Draw API
   //
 
   static draw = {
@@ -514,6 +501,26 @@ export class BeetPx {
       },
     ): void {
       BeetPx.#tryGetEngine("sprite").drawApi.drawSprite(sprite, xy, opts);
+    },
+
+    /**
+     * @returns - previously used font
+     */
+    useFont(font: BpxFont): BpxFont {
+      return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
+    },
+
+    measureText(
+      text: string,
+      opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+      },
+    ): { wh: BpxVector2d; offset: BpxVector2d } {
+      return BeetPx.#tryGetEngine("measureText").drawApi.measureText(
+        text,
+        opts,
+      );
     },
 
     text(
