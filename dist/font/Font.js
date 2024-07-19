@@ -9,7 +9,7 @@ export class BpxFont {
             ascent: config.ascent ?? 8,
             descent: config.descent ?? 8,
             lineGap: config.lineGap ?? 1,
-            mapGrapheme: config.mapGrapheme ?? identity,
+            mapChar: config.mapChar ?? identity,
             glyphs: config.glyphs ?? new Map(),
         });
     }
@@ -50,7 +50,7 @@ export class BpxFont {
         const segmentsIterator = BpxFont.#segmenter
             .segment(text)[Symbol.iterator]();
         for (let iteratorResult = segmentsIterator.next(); !iteratorResult.done; iteratorResult = segmentsIterator.next()) {
-            const grapheme = this.#config.mapGrapheme(iteratorResult.value.segment);
+            const grapheme = this.#config.mapChar(iteratorResult.value.segment);
             const index = iteratorResult.value.index;
             if (grapheme === "\n") {
                 arrangedGlyphs.push({

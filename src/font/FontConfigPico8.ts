@@ -13,7 +13,7 @@ export class BpxFontConfigPico8 implements BpxFontConfig {
   descent = 0;
   lineGap = 1;
 
-  mapGrapheme(grapheme: string): string {
+  mapChar(grapheme: string): string {
     return grapheme.toLowerCase();
   }
 

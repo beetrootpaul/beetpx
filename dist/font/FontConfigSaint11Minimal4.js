@@ -15,7 +15,7 @@ export class BpxFontConfigSaint11Minimal4 {
     ascent = 4;
     descent = 0;
     lineGap = 2;
-    mapGrapheme(grapheme) {
+    mapChar(grapheme) {
         return grapheme.toLowerCase();
     }
     #pixelsGlyph(ascii) {

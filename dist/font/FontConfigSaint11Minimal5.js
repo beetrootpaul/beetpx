@@ -15,7 +15,7 @@ export class BpxFontConfigSaint11Minimal5 {
     ascent = 5;
     descent = 0;
     lineGap = 2;
-    mapGrapheme(grapheme) {
+    mapChar(grapheme) {
         return grapheme;
     }
     #pixelsGlyph(ascii) {
