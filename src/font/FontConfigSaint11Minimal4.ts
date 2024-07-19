@@ -18,7 +18,7 @@ export class BpxFontConfigSaint11Minimal4 implements BpxFontConfig {
   descent = 0;
   lineGap = 2;
 
-  mapChar(grapheme: string): string {
+  mapGrapheme(grapheme: string): string {
     return grapheme.toLowerCase();
   }
 

@@ -317,14 +317,14 @@ type BpxFontConfig = {
      *  multi-character emoji like `❤️`) before trying to find its corresponding glyph
      *  in a `glyphs` map. It would be typically used to call `grapheme.toLowerCase()`
      *  in fonts which have glyphs defined for lower-case characters only. */
-    mapChar: (grapheme: string) => string;
+    mapGrapheme: (grapheme: string) => string;
     /** A map which contains the glyphs for specified graphemes (keys of the map).
      *  Grapheme is a user-perceived character like `a` or a multi-character emoji
      *  like `❤️`. Before retrieving a glyph from this map, a grapheme is normalized
-     *  with use of `mapChar` function. Typically, it would be useful when you
+     *  with use of `mapGrapheme` function. Typically, it would be useful when you
      *  want to specify same glyphs for both upper-case and lower-case characters,
      *  so you are able to define lower-case ones only and then implement
-     *  `mapChar` as `grapheme.toLowerCase()`. */
+     *  `mapGrapheme` as `grapheme.toLowerCase()`. */
     glyphs: Map<string, BpxGlyph>;
 };
 declare class BpxFont {
@@ -574,7 +574,7 @@ declare class BpxFontConfigPico8 implements BpxFontConfig {
     ascent: number;
     descent: number;
     lineGap: number;
-    mapChar(grapheme: string): string;
+    mapGrapheme(grapheme: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
 
@@ -595,7 +595,7 @@ declare class BpxFontConfigSaint11Minimal4 implements BpxFontConfig {
     ascent: number;
     descent: number;
     lineGap: number;
-    mapChar(grapheme: string): string;
+    mapGrapheme(grapheme: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
 
@@ -616,7 +616,7 @@ declare class BpxFontConfigSaint11Minimal5 implements BpxFontConfig {
     ascent: number;
     descent: number;
     lineGap: number;
-    mapChar(grapheme: string): string;
+    mapGrapheme(grapheme: string): string;
     glyphs: Map<string, BpxGlyph>;
 }
 

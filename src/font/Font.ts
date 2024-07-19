@@ -73,15 +73,15 @@ export type BpxFontConfig = {
    *  multi-character emoji like `❤️`) before trying to find its corresponding glyph
    *  in a `glyphs` map. It would be typically used to call `grapheme.toLowerCase()`
    *  in fonts which have glyphs defined for lower-case characters only. */
-  mapChar: (grapheme: string) => string;
+  mapGrapheme: (grapheme: string) => string;
 
   /** A map which contains the glyphs for specified graphemes (keys of the map).
    *  Grapheme is a user-perceived character like `a` or a multi-character emoji
    *  like `❤️`. Before retrieving a glyph from this map, a grapheme is normalized
-   *  with use of `mapChar` function. Typically, it would be useful when you
+   *  with use of `mapGrapheme` function. Typically, it would be useful when you
    *  want to specify same glyphs for both upper-case and lower-case characters,
    *  so you are able to define lower-case ones only and then implement
-   *  `mapChar` as `grapheme.toLowerCase()`. */
+   *  `mapGrapheme` as `grapheme.toLowerCase()`. */
   glyphs: Map<string, BpxGlyph>;
 };
 
@@ -91,7 +91,7 @@ export class BpxFont {
       ascent: config.ascent ?? 8,
       descent: config.descent ?? 8,
       lineGap: config.lineGap ?? 1,
-      mapChar: config.mapChar ?? identity,
+      mapGrapheme: config.mapGrapheme ?? identity,
       glyphs: config.glyphs ?? new Map<string, BpxGlyph>(),
     });
   }
@@ -155,7 +155,7 @@ export class BpxFont {
       !iteratorResult.done;
       iteratorResult = segmentsIterator.next()
     ) {
-      const grapheme = this.#config.mapChar(iteratorResult.value.segment);
+      const grapheme = this.#config.mapGrapheme(iteratorResult.value.segment);
       const index = iteratorResult.value.index;
 
       if (grapheme === "\n") {
