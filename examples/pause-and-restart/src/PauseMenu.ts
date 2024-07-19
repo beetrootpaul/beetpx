@@ -11,7 +11,7 @@ import {
 } from "../../../src";
 
 export class PauseMenu {
-  static #dimColors: BpxColorMapper = (sourceColor) =>
+  static #dimColors: BpxColorMapper = (sourceColor, _xy) =>
     !sourceColor
       ? null
       : $rgb(sourceColor.r * 0.35, sourceColor.g * 0.35, sourceColor.b * 0.35);

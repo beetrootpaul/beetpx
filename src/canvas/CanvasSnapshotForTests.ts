@@ -3,12 +3,16 @@ import { CanvasSnapshot } from "./CanvasSnapshot";
 
 export class CanvasSnapshotForTests implements CanvasSnapshot {
   readonly #rgbValues: number[];
+  readonly #canvasWidth: number;
 
-  constructor(rgbValues: number[]) {
+  constructor(rgbValues: number[], canvasWidth: number) {
     this.#rgbValues = rgbValues;
+    this.#canvasWidth = canvasWidth;
   }
 
-  getColorAtIndex(index: number): BpxRgbColor {
+  getColorAt(x: number, y: number): BpxRgbColor {
+    const index = y * this.#canvasWidth + x;
+
     if (index >= this.#rgbValues.length) {
       throw Error(
         `index out of bounds: index = ${index}, max allowed index = ${

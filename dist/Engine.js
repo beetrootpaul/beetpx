@@ -44,6 +44,10 @@ export class Engine {
     #currentFrameNumberOutsidePause = 0;
     #renderingFps = 1;
     
+    
+    
+    #wasUpdateCalledAtLeastOnce = false;
+    
     #alreadyResumedAudioContext = false;
     get frameNumber() {
         return this.#currentFrameNumber;
@@ -253,6 +257,7 @@ export class Engine {
                         Logger.infoBeetPx(`Running onUpdate for frame: ${this.#currentFrameNumber}`);
                     }
                     this.#onUpdate?.();
+                    this.#wasUpdateCalledAtLeastOnce = true;
                     this.#currentFrameNumber =
                         this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
                             0
@@ -268,9 +273,11 @@ export class Engine {
             renderFn: renderingFps => {
                 this.#renderingFps = renderingFps;
                 this.isInsideDrawOrStartedCallback = true;
-                this.#onDraw?.();
-                if (DebugMode.enabled) {
-                    this.#fpsDisplay?.drawRenderingFps(renderingFps);
+                if (this.#wasUpdateCalledAtLeastOnce) {
+                    this.#onDraw?.();
+                    if (DebugMode.enabled) {
+                        this.#fpsDisplay?.drawRenderingFps(renderingFps);
+                    }
                 }
                 this.isInsideDrawOrStartedCallback = false;
                 this.#canvas.render();

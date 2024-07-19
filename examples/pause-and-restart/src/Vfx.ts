@@ -25,7 +25,7 @@ export class Vfx {
     this.#timer = $timerSeq(
       {
         intro: [
-          ["a", params.loopFrames - 5],
+          ["a", params.loopFrames - 9],
           ["b", 2],
         ],
         loop: [

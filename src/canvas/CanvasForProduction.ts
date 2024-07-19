@@ -85,6 +85,7 @@ export class CanvasForProduction extends Canvas {
   newSnapshot(): CanvasSnapshot {
     return new CanvasSnapshotForProduction(
       this.#offscreenImageData.data.slice(),
+      this.canvasSize.x,
     );
   }
 

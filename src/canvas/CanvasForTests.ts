@@ -8,11 +8,14 @@ import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";
 
 export class CanvasForTests extends Canvas {
   readonly #length: number;
+  readonly #width: number;
+
   readonly #rgbValues: number[];
 
   constructor(width: number, height: number, initialColor: BpxRgbColor) {
     super(BpxVector2d.of(width, height));
     this.#length = width * height;
+    this.#width = width;
     this.#rgbValues = range(this.#length).map(
       () => (initialColor.r << 16) + (initialColor.g << 8) + initialColor.b,
     );
@@ -41,7 +44,7 @@ export class CanvasForTests extends Canvas {
   }
 
   newSnapshot(): CanvasSnapshot {
-    return new CanvasSnapshotForTests(this.#rgbValues.slice());
+    return new CanvasSnapshotForTests(this.#rgbValues.slice(), this.#width);
   }
 
   doRender(): void {}
@@ -81,11 +84,13 @@ export class CanvasForTests extends Canvas {
   #asAscii(colorToAscii: Map<BpxRgbCssHex, string>): string {
     let asciiImage = "";
 
-    const snapshot = new CanvasSnapshotForTests(this.#rgbValues.slice());
+    const snapshot = new CanvasSnapshotForTests(
+      this.#rgbValues.slice(),
+      this.canvasSize.x,
+    );
     for (let y = 0; y < this.canvasSize.y; y += 1) {
       for (let x = 0; x < this.canvasSize.x; x += 1) {
-        const index = y * this.canvasSize.x + x;
-        const color = snapshot.getColorAtIndex(index);
+        const color = snapshot.getColorAt(x, y);
         asciiImage += colorToAscii.get(color.cssHex) ?? "?";
       }
       asciiImage += "\n";

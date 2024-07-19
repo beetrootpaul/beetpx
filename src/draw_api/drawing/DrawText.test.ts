@@ -722,12 +722,12 @@ describe("DrawText", () => {
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
       dts.drawApi.useFont(testFont);
-      dts.drawApi.drawText("B[m2]p[m3]x[m4],", $v(1, 1), c1, {
-        colorMarkers: {
-          m2: c2,
-          m4: c4,
-        },
-      });
+      const text = "B[m2]p[m3]x[m4],";
+      const colorMarkers = {
+        m2: c2,
+        m4: c4,
+      };
+      dts.drawApi.drawText(text, $v(1, 1), c1, { colorMarkers });
 
       // explanation:
       //  - "B" is printed with color "c1"
@@ -752,6 +752,13 @@ describe("DrawText", () => {
           - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         `,
       });
+
+      expect(dts.drawApi.measureText(text, { colorMarkers }).wh.x).toEqual(
+        4 + 1 + 3 + 1 + 2 + 1 + 5 + 1 + 2 + 1 + 3 + 2,
+      );
+      expect(dts.drawApi.measureText(text, { colorMarkers }).wh.y).toEqual(
+        6 + 2,
+      );
     });
   });
 });
