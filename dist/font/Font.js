@@ -25,9 +25,11 @@ export class BpxFont {
     #computedSpriteSheetUrls;
     constructor(config) {
         this.#config = config;
-        this.#computedSpriteSheetUrls = Array.from(config.glyphs.values())
-            .filter(glyph => glyph.type === "sprite")
-            .map(glyph => glyph.sprite.imageUrl);
+        this.#computedSpriteSheetUrls = [
+            ...new Set(Array.from(config.glyphs.values())
+                .filter(glyph => glyph.type === "sprite")
+                .map(glyph => glyph.sprite.imageUrl)),
+        ];
     }
     get spriteSheetUrls() {
         return this.#computedSpriteSheetUrls;
