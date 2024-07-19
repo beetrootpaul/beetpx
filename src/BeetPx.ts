@@ -343,10 +343,10 @@ export class BeetPx {
     }
     if (
       drawFnNameToLogIfOutsideDrawCallback &&
-      !this.#engine.isInsideDrawCallback
+      !this.#engine.isInsideDrawOrStartedCallback
     ) {
       Logger.warnBeetPx(
-        `Used "${drawFnNameToLogIfOutsideDrawCallback}" outside of "setOnDraw" callback.`,
+        `Used "${drawFnNameToLogIfOutsideDrawCallback}" outside of either "setOnDraw" or "setOnStarted" callback.`,
       );
     }
     return this.#engine;

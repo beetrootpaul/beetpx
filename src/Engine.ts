@@ -87,7 +87,7 @@ export class Engine {
   readonly #fpsDisplay?: FpsDisplay;
 
   #isStarted: boolean = false;
-  isInsideDrawCallback: boolean = false;
+  isInsideDrawOrStartedCallback: boolean = false;
 
   #onStarted?: () => void;
   #onUpdate?: () => void;
@@ -279,7 +279,9 @@ export class Engine {
     AudioPlayback.playbacksToMuteOnGamePause.clear();
     GlobalPause.deactivate();
 
+    this.isInsideDrawOrStartedCallback = true;
     this.#onStarted?.();
+    this.isInsideDrawOrStartedCallback = false;
   }
 
   async #startGame(): Promise<void> {
@@ -308,7 +310,9 @@ export class Engine {
 
     await this.#loading.showStartScreen();
 
+    this.isInsideDrawOrStartedCallback = true;
     this.#onStarted?.();
+    this.isInsideDrawOrStartedCallback = false;
 
     this.gameInput.startListening();
 
@@ -383,9 +387,9 @@ export class Engine {
       renderFn: renderingFps => {
         this.#renderingFps = renderingFps;
 
-        this.isInsideDrawCallback = true;
+        this.isInsideDrawOrStartedCallback = true;
         this.#onDraw?.();
-        this.isInsideDrawCallback = false;
+        this.isInsideDrawOrStartedCallback = false;
 
         if (DebugMode.enabled) {
           this.#fpsDisplay?.drawRenderingFps(renderingFps);

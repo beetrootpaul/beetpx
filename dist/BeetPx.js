@@ -233,8 +233,8 @@ export class BeetPx {
             throw Error(`Tried to access BeetPx API without calling BeetPx.init(…) first.`);
         }
         if (drawFnNameToLogIfOutsideDrawCallback &&
-            !this.#engine.isInsideDrawCallback) {
-            Logger.warnBeetPx(`Used "${drawFnNameToLogIfOutsideDrawCallback}" outside of "setOnDraw" callback.`);
+            !this.#engine.isInsideDrawOrStartedCallback) {
+            Logger.warnBeetPx(`Used "${drawFnNameToLogIfOutsideDrawCallback}" outside of either "setOnDraw" or "setOnStarted" callback.`);
         }
         return this.#engine;
     }

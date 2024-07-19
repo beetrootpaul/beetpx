@@ -551,7 +551,7 @@ declare class Engine {
     readonly storageApi: StorageApi;
     readonly assets: Assets;
     readonly drawApi: DrawApi;
-    isInsideDrawCallback: boolean;
+    isInsideDrawOrStartedCallback: boolean;
     get frameNumber(): number;
     get frameNumberOutsidePause(): number;
     get renderingFps(): number;
