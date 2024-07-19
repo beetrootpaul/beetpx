@@ -4,10 +4,10 @@ import {
   BpxGamepadTypeDetector,
   BpxRgbColor,
   spr_,
+  u_,
   v_,
   v_0_0_,
 } from "../../../src";
-import { range } from "../../../src/utils/range";
 
 const orange = BpxRgbColor.fromCssHex("#ffa300");
 const blue = BpxRgbColor.fromCssHex("#29adff");
@@ -17,19 +17,19 @@ const pink = BpxRgbColor.fromCssHex("#ff77a8");
 export class DebugView {
   private readonly gamepadsN = 3;
 
-  private readonly gamepadTypes: (null | BpxGamepadType)[] = range(
-    this.gamepadsN,
-  ).map(() => null);
+  private readonly gamepadTypes: (null | BpxGamepadType)[] = u_
+    .range(this.gamepadsN)
+    .map(() => null);
 
   private readonly buttonsN = 20;
-  private readonly buttons: (null | "touched" | "pressed")[][] = range(
-    this.buttonsN,
-  ).map(() => range(this.gamepadsN).map(() => null));
+  private readonly buttons: (null | "touched" | "pressed")[][] = u_
+    .range(this.buttonsN)
+    .map(() => u_.range(this.gamepadsN).map(() => null));
 
   private readonly axesN = 7;
-  private readonly axes: (null | number)[][] = range(this.axesN).map(() =>
-    range(this.gamepadsN).map(() => null),
-  );
+  private readonly axes: (null | number)[][] = u_
+    .range(this.axesN)
+    .map(() => u_.range(this.gamepadsN).map(() => null));
 
   constructor() {
     document.addEventListener("keydown", (keyboardEvent: KeyboardEvent) => {
@@ -97,14 +97,14 @@ export class DebugView {
   update(): void {
     navigator.getGamepads().forEach((gamepad) => {
       if (gamepad && gamepad.index < this.gamepadsN) {
-        range(this.buttonsN).forEach((i) => {
+        u_.range(this.buttonsN).forEach((i) => {
           this.buttons[i]![gamepad.index] = gamepad.buttons[i]?.pressed
             ? "pressed"
             : gamepad.buttons[i]?.touched
               ? "touched"
               : null;
         });
-        range(this.axesN).forEach((i) => {
+        u_.range(this.axesN).forEach((i) => {
           this.axes[i]![gamepad.index] = gamepad.axes[i] ?? null;
         });
       }
@@ -155,7 +155,7 @@ export class DebugView {
     });
 
     // gamepad types
-    range(this.gamepadsN).forEach((gamepadIndex) => {
+    u_.range(this.gamepadsN).forEach((gamepadIndex) => {
       const gamepadType = this.gamepadTypes[gamepadIndex];
       if (gamepadType) {
         b_.drawRectFilled(
