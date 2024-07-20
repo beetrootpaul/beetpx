@@ -1,10 +1,9 @@
-import { $v } from "../shorthands";
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor, BpxRgbCssHex } from "./RgbColor";
 
 export class BpxSpriteColorMapping {
   static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping(
-    (c, _xy) => c,
+    (c, _x, _y) => c,
   );
 
   static from(
@@ -13,7 +12,7 @@ export class BpxSpriteColorMapping {
     const map = new Map<BpxRgbCssHex, BpxRgbColor | null>(
       colorMappingEntries.map(([from, to]) => [from.cssHex, to]),
     );
-    return new BpxSpriteColorMapping((spriteColor, _xy) => {
+    return new BpxSpriteColorMapping((spriteColor, _x, _y) => {
       if (!spriteColor) return spriteColor;
       const mapped = map.get(spriteColor.cssHex);
       return typeof mapped === "undefined" ? spriteColor : mapped;
@@ -37,6 +36,6 @@ export class BpxSpriteColorMapping {
     spriteX: number,
     spriteY: number,
   ): BpxRgbColor | null {
-    return this.#mapping(spriteColor, $v(spriteX, spriteY));
+    return this.#mapping(spriteColor, spriteX, spriteY);
   }
 }

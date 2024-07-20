@@ -1,4 +1,3 @@
-import { $v } from "../shorthands";
 export class BpxCanvasSnapshotColorMapping {
     static of(mapping) {
         return new BpxCanvasSnapshotColorMapping(mapping);
@@ -10,7 +9,7 @@ export class BpxCanvasSnapshotColorMapping {
     }
     getMappedColor(snapshot, canvasX, canvasY) {
         return snapshot ?
-            this.#mapping(snapshot.getColorAt(canvasX, canvasY), $v(canvasX, canvasY))
+            this.#mapping(snapshot.getColorAt(canvasX, canvasY), canvasX, canvasY)
             : null;
     }
 }

@@ -6,7 +6,6 @@ import {
   $v,
   BpxCanvasSnapshotColorMapping,
   BpxRgbColor,
-  BpxVector2d,
 } from "../../../src";
 import { Fire } from "./Fire";
 import { Room } from "./Room";
@@ -34,8 +33,9 @@ $.init({
 
   const colorMapperReachableOnly = (
     color: BpxRgbColor | null,
-    xy: BpxVector2d,
-  ): BpxRgbColor | null => (room.isReachableByLight(xy) ? color : null);
+    x: number,
+    y: number,
+  ): BpxRgbColor | null => (room.isReachableByLight(x, y) ? color : null);
 
   $.setOnUpdate(() => {
     fire1.setPosition(
@@ -59,8 +59,8 @@ $.init({
     $d.ellipseFilled(
       fire.position.sub(lightRadius),
       $v(lightRadius * 2),
-      BpxCanvasSnapshotColorMapping.of((color, xy) =>
-        colorMapperLighten(colorMapperReachableOnly(color, xy)),
+      BpxCanvasSnapshotColorMapping.of((color, x, y) =>
+        colorMapperLighten(colorMapperReachableOnly(color, x, y)),
       ),
     );
   }

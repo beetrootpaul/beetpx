@@ -45,6 +45,64 @@ type SoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 
 type BpxBrowserType = "chromium" | "firefox_windows" | "firefox_other" | "safari" | "other";
 
+type BpxRgbCssHex = string;
+declare class BpxRgbColor {
+    static of(r: number, g: number, b: number): BpxRgbColor;
+    static fromCssHex(cssHex: string): BpxRgbColor;
+    readonly type = "rgb";
+    readonly r: number;
+    readonly g: number;
+    readonly b: number;
+    readonly cssHex: BpxRgbCssHex;
+    private constructor();
+    isSameAs(another: BpxRgbColor): boolean;
+    asArray(): [r: number, g: number, b: number];
+}
+
+type BpxColorMapper = (sourceColor: BpxRgbColor | null, x: number, y: number) => BpxRgbColor | null;
+
+type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
+
+declare class AudioApi {
+    #private;
+    static readonly muteUnmuteDefaultFadeMillis = 100;
+    constructor(assets: Assets, audioContext: AudioContext);
+    restart(): void;
+    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
+    startPlayback(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    isAudioMuted(): boolean;
+    muteAudio(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmuteAudio(opts?: {
+        fadeInMillis?: number;
+    }): void;
+    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeInMillis?: number;
+    }): void;
+    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    pausePlayback(playbackId: BpxAudioPlaybackId): void;
+    resumePlayback(playbackId: BpxAudioPlaybackId): void;
+    getAudioContext(): AudioContext;
+    getGlobalGainNode(): GainNode;
+}
+
 interface PrintDebug {
     __printDebug(): string;
 }
@@ -115,64 +173,6 @@ declare class BpxVector2d implements PrintDebug {
     [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number;
     get [Symbol.toStringTag](): string;
     __printDebug(): string;
-}
-
-type BpxRgbCssHex = string;
-declare class BpxRgbColor {
-    static of(r: number, g: number, b: number): BpxRgbColor;
-    static fromCssHex(cssHex: string): BpxRgbColor;
-    readonly type = "rgb";
-    readonly r: number;
-    readonly g: number;
-    readonly b: number;
-    readonly cssHex: BpxRgbCssHex;
-    private constructor();
-    isSameAs(another: BpxRgbColor): boolean;
-    asArray(): [r: number, g: number, b: number];
-}
-
-type BpxColorMapper = (sourceColor: BpxRgbColor | null, xy: BpxVector2d) => BpxRgbColor | null;
-
-type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
-
-declare class AudioApi {
-    #private;
-    static readonly muteUnmuteDefaultFadeMillis = 100;
-    constructor(assets: Assets, audioContext: AudioContext);
-    restart(): void;
-    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
-    startPlayback(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    isAudioMuted(): boolean;
-    muteAudio(opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmuteAudio(opts?: {
-        fadeInMillis?: number;
-    }): void;
-    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeInMillis?: number;
-    }): void;
-    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    pausePlayback(playbackId: BpxAudioPlaybackId): void;
-    resumePlayback(playbackId: BpxAudioPlaybackId): void;
-    getAudioContext(): AudioContext;
-    getGlobalGainNode(): GainNode;
 }
 
 interface CanvasSnapshot {

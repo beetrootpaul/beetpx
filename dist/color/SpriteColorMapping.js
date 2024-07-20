@@ -1,9 +1,8 @@
-import { $v } from "../shorthands";
 export class BpxSpriteColorMapping {
-    static noMapping = new BpxSpriteColorMapping((c, _xy) => c);
+    static noMapping = new BpxSpriteColorMapping((c, _x, _y) => c);
     static from(colorMappingEntries) {
         const map = new Map(colorMappingEntries.map(([from, to]) => [from.cssHex, to]));
-        return new BpxSpriteColorMapping((spriteColor, _xy) => {
+        return new BpxSpriteColorMapping((spriteColor, _x, _y) => {
             if (!spriteColor)
                 return spriteColor;
             const mapped = map.get(spriteColor.cssHex);
@@ -19,6 +18,6 @@ export class BpxSpriteColorMapping {
         this.#mapping = mapping;
     }
     getMappedColor(spriteColor, spriteX, spriteY) {
-        return this.#mapping(spriteColor, $v(spriteX, spriteY));
+        return this.#mapping(spriteColor, spriteX, spriteY);
     }
 }
