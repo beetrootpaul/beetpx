@@ -21,5 +21,5 @@ npx typedoc \
 cp ./docs/index.template.html ./docs/index.html
 cp ./docs/robots.template.txt ./docs/robots.txt
 
-npx replace-in-file __BEETPX_VERSION__ "${BEETPX_VERSION}" ./docs/index.html
-npx replace-in-file __BEETPX_VERSION__ "${BEETPX_VERSION}" ./docs/robots.txt
+npx replace-in-file "/__BEETPX_VERSION__/g" "${BEETPX_VERSION}" ./docs/index.html
+npx replace-in-file "/__BEETPX_VERSION__/g" "${BEETPX_VERSION}" ./docs/robots.txt
