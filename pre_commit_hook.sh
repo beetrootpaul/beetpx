@@ -72,10 +72,5 @@ fi
 #   repository.
 npm run compile
 
-if [ "$check_mode" == "full" ]; then
-  # Generate up-to-date HTML documentation
-  npm run docs:generate
-fi
-
 # Whatever was changed due to commands above, let's add it to the commit
 git add --all .
