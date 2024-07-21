@@ -78,6 +78,7 @@
     "open-cli": "8.0.0",
     "prettier": "3.3.3",
     "prettier-plugin-organize-imports": "4.0.0",
+    "replace-in-file": "8.1.0",
     "rimraf": "5.0.5",
     "rollup": "4.13.2",
     "rollup-plugin-dts": "6.1.0",
