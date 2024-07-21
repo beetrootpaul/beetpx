@@ -56,8 +56,8 @@
     "compile": "tsc --project tsconfig.compile.json",
     "compile:watch": "tsc --project tsconfig.compile.json --watch",
     "postcompile": "node ./scripts/removeJsCommentFromDist.cjs && rollup --config ./rollup.config.ts --configPlugin typescript",
-    "docs:generate": "typedoc --entryPoints src/index.ts --out ./website/ --includeVersion --plugin @zamiell/typedoc-plugin-not-exported",
-    "docs:open": "open-cli ./website/index.html",
+    "docs:generate": "typedoc --entryPoints src/index.ts --out ./docs/ --includeVersion --plugin @zamiell/typedoc-plugin-not-exported",
+    "docs:open": "open-cli ./docs/index.html",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "dependencies": {
