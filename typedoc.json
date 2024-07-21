@@ -1,5 +1,6 @@
 {
   "sidebarLinks": {
     "v0.41.4": "https://beetpx.dev/docs/0.41.4/"
-  }
+  },
+  "visibilityFilters": {}
 }
