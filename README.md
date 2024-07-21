@@ -34,8 +34,8 @@ be safe than sorry – in this early phase of development the engine constantly
 evolves and quite often breaking changes are introduced.
 
 ℹ️ 👉 There is a simple single-file example in
-[./examples/simple/src/main.ts](examples/simple/src/main.ts) . Run it as
-described in [its README](examples/simple/README.md).
+[examples/simple/src/main.ts](https://github.com/beetrootpaul/beetpx/blob/main/examples/simple/src/main.ts) . Run it as
+described in its README.
 
 Also, you might want to take a look at how following projects are using BeetPx:
 
