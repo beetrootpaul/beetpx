@@ -14,24 +14,29 @@ git_branch="$(git rev-parse --abbrev-ref HEAD)"
 #   - we develop on branches other than `main`
 #   - we release new versions on `main`
 
-if [ "$simulated_git_branch" = "" ]
-then
-  if [ "$git_branch" = "main" ]
-  then
-    run_full_check="yes"
+if [ "$simulated_git_branch" == "" ]; then
+  if [ "$git_branch" = "main" ]; then
+    check_mode="full"
+  elif [ "$git_branch" == "beetpx.dev" ]; then
+    check_mode="none"
   else
-    run_full_check="no"
+    check_mode="dev"
   fi
 else
-  if [ "$simulated_git_branch" = "main" ]
-  then
-    run_full_check="yes"
+  if [ "$simulated_git_branch" == "main" ]; then
+    check_mode="full"
+  elif [ "$simulated_git_branch" == "beetpx.dev" ]; then
+    check_mode="none"
   else
-    run_full_check="no"
+    check_mode="dev"
   fi
 fi
 
-if [ "$run_full_check" = "yes" ]; then
+if [ "$check_mode" == "none" ]; then
+  exit 0
+fi
+
+if [ "$check_mode" == "full" ]; then
   # If version got bumped in package.json, update the version in package-lock.json as well
   npm install
 fi
@@ -39,7 +44,7 @@ fi
 # Make sure everything is formatted as desired
 npm run format
 
-if [ "$run_full_check" = "yes" ]; then
+if [ "$check_mode" == "full" ]; then
   # Make sure TypeScript types and Jest tests didn't break due to most recent changes.
   # We do this on a `main` branch only in order to allow broken tests while development
   #   is in progress.
@@ -67,7 +72,7 @@ fi
 #   repository.
 npm run compile
 
-if [ "$run_full_check" = "yes" ]; then
+if [ "$check_mode" == "full" ]; then
   # Generate up-to-date HTML documentation
   npm run docs:generate
 fi
