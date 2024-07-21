@@ -7,7 +7,8 @@ set -x
 
 npx typedoc \
   --entryPoints src/index.ts \
-  --out ./docs/ \
   --includeVersion \
-  --plugin @zamiell/typedoc-plugin-not-exported \
-  && echo "beetpx.dev" > docs/CNAME
+  --out ./docs/ \
+  --cname "beetpx.dev" \
+  --plugin @zamiell/typedoc-plugin-not-exported
+
