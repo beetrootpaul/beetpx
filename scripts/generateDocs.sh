@@ -9,8 +9,9 @@ BEETPX_VERSION="$(node -p -e "require('./package.json').version")"
 
 npx typedoc \
   --entryPoints src/index.ts \
-  --includeVersion \
   --lang en \
+  --includeVersion \
+  --titleLink "https://beetpx.dev" \
   --basePath "./docs/${BEETPX_VERSION}" \
   --hostedBaseUrl "https://beetpx.dev/docs/${BEETPX_VERSION}" \
   --out "./docs/docs/${BEETPX_VERSION}" \
