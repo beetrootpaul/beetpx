@@ -1,6 +1,6 @@
 # BeetPx
 
-![BeetPx logo](<./logo/BeetPx%20logo%20(x5).png>)
+<img src="logo/BeetPx_logo_x5.png" width="80" alt="BeetP logo">
 
 > A TypeScript engine for pixel art browser games.
 
