@@ -9,17 +9,93 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>BeetPx</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400..900&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-      nav {
-        border-bottom: 1px solid black;
+      html {
+        margin: 0;
+        padding: 0;
       }
 
-      nav > ol {
-        list-style-type: none;
-        padding-left: 0;
+      body {
+        margin: 0;
+        padding: 0;
+
+        background-color: rgb(25, 48, 67);
+
+        font-size: 20px;
+      }
+
+      * {
+        color: rgb(255, 255, 255);
+
+        font-family: "Maven Pro", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      a {
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      nav {
+        background-color: rgb(254, 203, 176);
+
+        padding: 0.1rem 2rem;
+
+        & ol {
+          list-style-type: none;
+          padding-left: 0;
+          display: flex;
+          flex-direction: row;
+          gap: 3rem;
+          align-items: center;
+          justify-content: center;
+        }
+
+        & a {
+          color: rgb(167, 64,105);
+        }
+      }
+
+      main {
+        margin: 6rem 1rem;
+
         display: flex;
-        flex-direction: row;
-        gap: 1rem
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+
+        & h1 {
+          margin-top: 3rem;
+
+          font-size: 2.6rem;
+          font-weight: 500;
+        }
+
+        & h2 {
+          margin-bottom: 5rem;
+
+          font-size: 1.6rem;
+        }
+
+        & a {
+          background-color: rgb(254, 203, 176);
+          padding: 1rem;
+          border-radius: 0.7rem;
+
+          color: rgb(167, 64, 105);
+        }
       }
     </style>
   </head>
@@ -32,6 +108,7 @@
       </ol>
     </nav>
     <main>
+      <img src="./BeetPx_logo_x5.png" alt="BeetPx logo" />
       <h1>BeetPx</h1>
       <h2>A TypeScript engine for pixel art browser games.</h2>
       <p><a href="/docs/__BEETPX_VERSION__">Go to docs</a></p>
