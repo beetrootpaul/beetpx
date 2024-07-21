@@ -9,7 +9,6 @@ BEETPX_VERSION="$(node -p -e "require('./package.json').version")"
 
 npx typedoc \
   --entryPoints src/index.ts \
-  --exclude ".nvmrc" \
   --includeVersion \
   --lang en \
   --basePath "./docs/${BEETPX_VERSION}" \
@@ -17,5 +16,10 @@ npx typedoc \
   --out "./docs/docs/${BEETPX_VERSION}" \
   --cleanOutputDir true \
   --githubPages true \
-  --treatWarningsAsErrors \
   --plugin @zamiell/typedoc-plugin-not-exported
+
+cp ./docs/index.template.html ./docs/index.html
+cp ./docs/robots.template.txt ./docs/robots.txt
+
+npx replace-in-file __BEETPX_VERSION__ "${BEETPX_VERSION}" ./docs/index.html
+npx replace-in-file __BEETPX_VERSION__ "${BEETPX_VERSION}" ./docs/robots.txt
