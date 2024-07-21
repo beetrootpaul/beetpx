@@ -80,16 +80,9 @@ To check if your controls work as expected, go to `examples/input-tester`, then
 run `npm install`, then `npm start` and test your controllers in an
 automatically opened browser tab.
 
-### API Documentation
+### API
 
-For a nicely formatted list of API exposed by BeetPx run:
-
-```shell
-npm run docs
-```
-
-to open it in your default browser. In case of any issues, the website which is
-supposed to open is located under [docs/index.html](./docs/index.html)
+You can find docs at https://beetpx.dev .
 
 ⚠️ Please be aware the docs are very raw so far. There are mostly just a list of
 exposed types and classes and constants, and nothing more. This is something to
@@ -107,11 +100,10 @@ This projects is developed on
 
 You might find it helpful to use
 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) in order to make
-sure you use the same Node.js version as which is specified in [.nvmrc](.nvmrc).
+sure you use the same Node.js version as which is specified in `.nvmrc` file.
 
 There is no CI configured for this project. For now, it is developed by me only,
-and all tests as well as the compilation happen in a
-[pre-commit hook](.husky/pre-commit).
+and all tests as well as the compilation happen in a pre-commit hook.
 
 ## The Origin
 
