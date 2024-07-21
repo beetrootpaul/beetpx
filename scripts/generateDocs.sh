@@ -8,7 +8,8 @@ set -x
 npx typedoc \
   --entryPoints src/index.ts \
   --includeVersion \
+  --githubPages true \
   --out ./docs/ \
+  --cleanOutputDir true \
   --cname "beetpx.dev" \
   --plugin @zamiell/typedoc-plugin-not-exported
-
