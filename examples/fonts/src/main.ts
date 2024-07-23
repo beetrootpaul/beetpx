@@ -13,23 +13,6 @@ import {
 import { customFont } from "./CustomFont";
 import { pico8FontWithAdjustments } from "./Pico8FontWithAdjustments";
 
-// Lines below are arranged in a way which allows to visually see how
-// treated are lines effectively blank, because all of they characters
-// have no corresponding glyphs in a given font.
-const text = [
-  "The quick [brown]brown[_] fox jumps",
-  "over the [🟦]lazy[_] dog",
-  "0123456789 -+= .,:;!? ~@#$%^&*_",
-  "⭐❤️⬅➡⬆⬇⭕❎♪⏏️",
-  "()[]{}<> /|\\ `'\"",
-].join("\n");
-
-const minScaleXy = $v(1);
-const maxScaleXy = $v(8);
-let scaleXy = minScaleXy;
-
-let cameraXy = $v_0_0;
-
 $.init({
   canvasSize: "256x256",
   assets: [...customFont.spriteSheetUrls],
@@ -38,6 +21,31 @@ $.init({
     fpsDisplay: { enabled: true },
   },
 }).then(async ({ startGame }) => {
+  // Lines below are arranged in a way which allows to visually see how
+  // treated are lines effectively blank, because all of they characters
+  // have no corresponding glyphs in a given font.
+  const text = [
+    "The quick [brown]brown[_] fox jumps",
+    "over the [🟦]lazy[_] dog",
+    "0123456789 -+= .,:;!? ~@#$%^&*_",
+    "⭐❤️⬅➡⬆⬇⭕❎♪⏏️",
+    "()[]{}<> /|\\ `'\"",
+  ].join("\n");
+
+  const minScaleXy = $v(1);
+  const maxScaleXy = $v(8);
+  let scaleXy = minScaleXy;
+
+  let cameraXy = $v_0_0;
+
+  $.setOnStarted(() => {
+    $d.setTextColorMarkers({
+      _: $rgb_p8.peach,
+      brown: $rgb_p8.tan,
+      "🟦": $rgb_p8.sky,
+    });
+  });
+
   $.setOnUpdate(() => {
     if ($.wasButtonJustPressed("a")) {
       const newScale = scaleXy.mul(2).clamp(minScaleXy, maxScaleXy);
@@ -79,14 +87,7 @@ $.init({
         scaleXy,
       });
       drawBox(textWh, cursor.add(textOffset), scaleXy);
-      $d.text(text, cursor, $rgb_p8.peach, {
-        scaleXy,
-        colorMarkers: {
-          _: $rgb_p8.peach,
-          brown: $rgb_p8.tan,
-          "🟦": $rgb_p8.sky,
-        },
-      });
+      $d.text(text, cursor, $rgb_p8.peach, { scaleXy });
       drawMarkers(font, cursor.add(textOffset), scaleXy);
       cursor = cursor.add(0, textWh.y).add(scaleXy.mul(0, 4));
     }

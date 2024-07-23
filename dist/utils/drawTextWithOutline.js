@@ -5,12 +5,10 @@ export function drawTextWithOutline(text, canvasXy1, textColor, outlineColor, op
         BeetPx.draw.text(text, canvasXy1.add(offset), outlineColor, {
             centerXy: opts?.centerXy,
             scaleXy: opts?.scaleXy,
-            colorMarkers: opts?.outlineColorMarkers,
         });
     }
     BeetPx.draw.text(text, canvasXy1, textColor, {
         centerXy: opts?.centerXy,
         scaleXy: opts?.scaleXy,
-        colorMarkers: opts?.textColorMarkers,
     });
 }

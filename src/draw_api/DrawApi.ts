@@ -45,6 +45,7 @@ export class DrawApi {
   #spriteColorMapping: BpxSpriteColorMapping = BpxSpriteColorMapping.noMapping;
 
   #font: BpxFont = $font_pico8;
+  #textColorMarkers: BpxTextColorMarkers = {};
 
   constructor(options: DrawApiOptions) {
     this.#assets = options.assets;
@@ -231,12 +232,19 @@ export class DrawApi {
     return prev;
   }
 
+  setTextColorMarkers(
+    textColorMarkers: BpxTextColorMarkers,
+  ): BpxTextColorMarkers {
+    const prev = this.#textColorMarkers;
+    this.#textColorMarkers = textColorMarkers;
+    return prev;
+  }
+
   measureText(
     text: string,
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      colorMarkers?: BpxTextColorMarkers;
     },
   ): { wh: BpxVector2d; offset: BpxVector2d } {
     let maxLineNumber = 0;
@@ -245,7 +253,7 @@ export class DrawApi {
     for (const arrangedGlyph of this.#font.arrangeGlyphsFor(
       text,
       $rgb_white,
-      opts?.colorMarkers,
+      this.#textColorMarkers,
     )) {
       if (arrangedGlyph.type === "line_break") {
         maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber + 1);
@@ -282,7 +290,6 @@ export class DrawApi {
     opts?: {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
-      colorMarkers?: BpxTextColorMarkers;
     },
   ): void {
     const centerXy = opts?.centerXy ?? [false, false];
@@ -290,7 +297,6 @@ export class DrawApi {
       const { offset } = this.measureText(text, {
         scaleXy: opts?.scaleXy,
         centerXy: opts?.centerXy,
-        colorMarkers: opts?.colorMarkers,
       });
       xy = xy.add(offset);
     }
@@ -299,7 +305,7 @@ export class DrawApi {
       this.#font,
       xy.sub(this.cameraXy),
       color,
-      opts?.colorMarkers ?? {},
+      this.#textColorMarkers,
       opts?.scaleXy ?? $v_1_1,
       this.#pattern,
     );
