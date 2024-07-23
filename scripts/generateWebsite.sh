@@ -43,6 +43,9 @@ do
   cd ../../
 done
 
+cp ./docs/examples/index.template.html ./docs/examples/index.html
+npx replace-in-file "/__BEETPX_VERSION__/g" "${BEETPX_VERSION}" ./docs/examples/index.html
+
 #
 # Main page
 #
@@ -50,7 +53,7 @@ done
 echo "Generating the main page ..."
 
 cp ./docs/index.template.html ./docs/index.html
-cp ./docs/robots.template.txt ./docs/robots.txt
-
 npx replace-in-file "/__BEETPX_VERSION__/g" "${BEETPX_VERSION}" ./docs/index.html
+
+cp ./docs/robots.template.txt ./docs/robots.txt
 npx replace-in-file "/__BEETPX_VERSION__/g" "${BEETPX_VERSION}" ./docs/robots.txt
