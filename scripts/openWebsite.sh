@@ -8,3 +8,4 @@ set -x
 BEETPX_VERSION="$(node -p -e "require('./package.json').version")"
 
 npx open-cli "./docs/docs/${BEETPX_VERSION}/index.html"
+npx open-cli "./docs/index.html"

@@ -5,7 +5,15 @@
 set -e
 set -x
 
+npm install
+
 BEETPX_VERSION="$(node -p -e "require('./package.json').version")"
+
+#
+# Docs
+#
+
+echo "Generating the docs ..."
 
 npx typedoc \
   --entryPoints src/index.ts \
@@ -17,6 +25,29 @@ npx typedoc \
   --cleanOutputDir true \
   --githubPages true \
   --plugin @zamiell/typedoc-plugin-not-exported
+
+#
+# Examples
+#
+
+for EXAMPLE_PROJECT in ./examples/*/
+do
+  echo "Building example project: ${EXAMPLE_PROJECT} ..."
+  cd $EXAMPLE_PROJECT
+  npm install
+  npm run tsc
+  npm run test --if-present
+  npm run build
+  mkdir -p ../../docs/examples/canvas-snapshot/
+  cp -R ./.beetpx/dist/ "../../docs/$EXAMPLE_PROJECT"
+  cd ../../
+done
+
+#
+# Main page
+#
+
+echo "Generating the main page ..."
 
 cp ./docs/index.template.html ./docs/index.html
 cp ./docs/robots.template.txt ./docs/robots.txt

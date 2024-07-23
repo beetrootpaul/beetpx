@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="80x80"
+      href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAAAXNSR0IArs4c6QAAAVdJREFUeJzt3MFNw0AQQFFAdMCRymiCrjlSQyiAPVh5o7Uh/x2jCIevlQd7Y55vnx+3pwfy9vX7te/3+9/34h/psRUQFRAVEL2uXlydQP8z+X1bgaiAqICogKiAqICogKiAqIBoeSXyF61uNR3VlciJCogKiAqItgyR6RP80T2M6c+y0gpEBUQFRAVE40Pk6gNj+hitQFRAVEBUQERDZPqveiGDQLQCUQFRAVEB0eEhsmNgHD2GXGGstCdyogKiAqICosNDZMctpOnPMn3clVYgKiAqICogGt8T2TEw5NZVeyIXU0BUQFRAtOXbWdN7E2dd2ay0AlEBUQFRAdGWPZHpfzWyet9ZT9m3AlEBUQFRAdFpDxtO31Y6SysQFRAVEBUQ0RCRE/yOZzh2aAWiAqICogKi8W9nTf+8Kw2MlVYgKiAqICogWg6RKz1EeHWtQFRAVEBUQPQDHRdHQWx83G0AAAAASUVORK5CYII="
+    />
+
+    <title>BeetPx game</title>
+
+    
+    <style>
+      :root {
+        --color-bg-loading: #4b4158;
+        --color-bg-gui: #4b4158;
+
+        --color-screen: #000000;
+
+        --color-error-screen: #000000;
+        --color-error-screen-text: #b8b5b9;
+        --color-error-screen-border: #ff004d;
+
+        --color-debug-border: #e8632c;
+      }
+
+      * {
+        margin: 0;
+        box-sizing: border-box;
+        image-rendering: pixelated;
+
+        
+
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      html {
+        width: 100dvw;
+        height: 100dvh;
+      }
+
+      body {
+        width: 100dvw;
+        height: 100dvh;
+        overflow: hidden;
+
+        font-family: monospace;
+
+        background-color: var(--color-bg-gui);
+      }
+
+      * {
+        
+
+
+
+        touch-action: none;
+      }
+
+      #screen_loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100dvw;
+        height: 100dvh;
+
+        background-color: var(--color-bg-loading);
+
+        display: grid;
+        grid-template-areas:
+          ".       . ."
+          ". spinner ."
+          ".       . .";
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-rows: 1fr 3fr 1fr;
+      }
+
+      .loaded #screen_loading {
+        display: none;
+      }
+
+      #screen_loading__spinner {
+        grid-area: spinner;
+
+        
+        background-color: transparent;
+        border: none;
+
+        
+        background-image: url(.beetpx/loading.gif);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      #screen_start_game {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100dvw;
+        height: 100dvh;
+
+        background-color: var(--color-bg-loading);
+
+        display: grid;
+        grid-template-areas:
+          ".     . ."
+          ". start ."
+          ".     . .";
+        grid-template-columns: 1fr 3fr 1fr;
+        grid-template-rows: 1fr 3fr 1fr;
+      }
+
+      .started #screen_start_game {
+        display: none;
+      }
+
+      #screen_start_game__button {
+        grid-area: start;
+
+        
+        background-color: transparent;
+        border: none;
+
+        
+        background-image: url(.beetpx/start.png);
+        background-size: contain;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      #screen_error {
+        display: none;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100dvw;
+        height: 100dvh;
+
+        background-color: var(--color-bg-gui);
+      }
+
+      .error #screen_error {
+        display: block;
+      }
+
+      #screen_error__message {
+        --margin: 16px;
+
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: calc(100dvw - 2 * var(--margin));
+        height: calc(100dvh - 2 * var(--margin));
+
+        margin: var(--margin);
+        border-radius: 8px;
+        border: 1px solid var(--color-error-screen-border);
+        background-color: var(--color-error-screen);
+        padding: 16px;
+
+        color: var(--color-error-screen-text);
+        font-size: 16px;
+        white-space: pre-wrap;
+      }
+
+      #game_display {
+        width: 100dvw;
+        height: 100dvh;
+
+        
+
+
+
+
+        background-color: var(--color-bg-gui);
+
+        display: grid;
+        gap: 0 0;
+      }
+
+      #game_canvas {
+        width: 100%;
+        height: 100%;
+
+        background-color: var(--color-screen);
+        border: 1px solid var(--color-screen);
+        box-sizing: border-box;
+      }
+
+      .debug #game_canvas {
+        border-color: var(--color-debug-border);
+      }
+
+      #game_canvas {
+        grid-area: canv;
+      }
+
+      
+
+
+
+      #edge_tl {
+        grid-area: e_TL;
+        background-image: url(.beetpx/edge_tl.png);
+        background-size: var(--scs);
+        background-repeat: no-repeat;
+      }
+
+      #edge_t {
+        grid-area: e_t_;
+        background-image: url(.beetpx/edge_t.png);
+        background-size: var(--scs);
+        background-repeat: repeat-x;
+      }
+
+      #edge_tr {
+        grid-area: e_TR;
+        background-image: url(.beetpx/edge_tr.png);
+        background-size: var(--scs);
+        background-repeat: no-repeat;
+        background-position-x: right;
+      }
+
+      #edge_l {
+        grid-area: e__l;
+        background-image: url(.beetpx/edge_l.png);
+        background-size: var(--scs);
+        background-repeat: repeat-y;
+      }
+
+      #edge_r {
+        grid-area: e__r;
+        background-image: url(.beetpx/edge_r.png);
+        background-size: var(--scs);
+        background-repeat: repeat-y;
+        background-position-x: right;
+      }
+
+      #edge_bl {
+        grid-area: e_BL;
+        background-image: url(.beetpx/edge_bl.png);
+        background-size: var(--scs);
+        background-repeat: no-repeat;
+        background-position-y: bottom;
+      }
+
+      #edge_b {
+        grid-area: e_b_;
+        background-image: url(.beetpx/edge_b.png);
+        background-size: var(--scs);
+        background-repeat: repeat-x;
+        background-position-y: bottom;
+      }
+
+      #edge_br {
+        grid-area: e_BR;
+        background-image: url(.beetpx/edge_br.png);
+        background-size: var(--scs);
+        background-repeat: no-repeat;
+        background-position-x: right;
+        background-position-y: bottom;
+      }
+
+      
+
+
+
+      .gui_sprite {
+        background-image: url(.beetpx/gui.png);
+        background-size: calc(var(--scs) * 17);
+      }
+
+      
+
+
+
+      #dpad_u {
+        grid-area: d_u_;
+        background-position: calc(var(--scs) * -10) calc(var(--scs) * -9);
+      }
+
+      .pressed_u #dpad_u {
+        background-position-y: calc(var(--scs) * -5);
+      }
+
+      .pressed_d #dpad_u {
+        background-position-y: calc(var(--scs) * -13);
+      }
+
+      .pressed_l #dpad_u {
+        background-position-x: calc(var(--scs) * -6);
+      }
+
+      .pressed_r #dpad_u {
+        background-position-x: calc(var(--scs) * -14);
+      }
+
+      #dpad_d {
+        grid-area: d_d_;
+        background-position: calc(var(--scs) * -10) calc(var(--scs) * -11);
+      }
+
+      .pressed_u #dpad_d {
+        background-position-y: calc(var(--scs) * -7);
+      }
+
+      .pressed_d #dpad_d {
+        background-position-y: calc(var(--scs) * -15);
+      }
+
+      .pressed_l #dpad_d {
+        background-position-x: calc(var(--scs) * -6);
+      }
+
+      .pressed_r #dpad_d {
+        background-position-x: calc(var(--scs) * -14);
+      }
+
+      #dpad_l {
+        grid-area: d__l;
+        background-position: calc(var(--scs) * -9) calc(var(--scs) * -10);
+      }
+
+      .pressed_u #dpad_l {
+        background-position-y: calc(var(--scs) * -6);
+      }
+
+      .pressed_d #dpad_l {
+        background-position-y: calc(var(--scs) * -14);
+      }
+
+      .pressed_l #dpad_l {
+        background-position-x: calc(var(--scs) * -5);
+      }
+
+      .pressed_r #dpad_l {
+        background-position-x: calc(var(--scs) * -13);
+      }
+
+      #dpad_r {
+        grid-area: d__r;
+        background-position: calc(var(--scs) * -11) calc(var(--scs) * -10);
+      }
+
+      .pressed_u #dpad_r {
+        background-position-y: calc(var(--scs) * -6);
+      }
+
+      .pressed_d #dpad_r {
+        background-position-y: calc(var(--scs) * -14);
+      }
+
+      .pressed_l #dpad_r {
+        background-position-x: calc(var(--scs) * -7);
+      }
+
+      .pressed_r #dpad_r {
+        background-position-x: calc(var(--scs) * -15);
+      }
+
+      #dpad_center {
+        grid-area: d___;
+        background-position: calc(var(--scs) * -10) calc(var(--scs) * -10);
+      }
+
+      .pressed_u #dpad_center {
+        background-position-y: calc(var(--scs) * -6);
+      }
+
+      .pressed_d #dpad_center {
+        background-position-y: calc(var(--scs) * -14);
+      }
+
+      .pressed_l #dpad_center {
+        background-position-x: calc(var(--scs) * -6);
+      }
+
+      .pressed_r #dpad_center {
+        background-position-x: calc(var(--scs) * -14);
+      }
+
+      #dpad_ul {
+        grid-area: d_ul;
+      }
+
+      #dpad_ur {
+        grid-area: d_ur;
+      }
+
+      #dpad_dl {
+        grid-area: d_dl;
+      }
+
+      #dpad_dr {
+        grid-area: d_dr;
+      }
+
+      
+
+
+
+      #button_a {
+        grid-area: bt_a;
+        background-position: 0 0;
+      }
+
+      .pressed_a #button_a {
+        background-position-y: calc(var(--scs) * -3);
+      }
+
+      #button_b {
+        grid-area: bt_b;
+        background-position: calc(var(--scs) * -3) 0;
+      }
+
+      .pressed_b #button_b {
+        background-position-y: calc(var(--scs) * -3);
+      }
+
+      #button_menu {
+        grid-area: menu;
+        background-position: calc(var(--scs) * -6) 0;
+      }
+
+      .pressed_menu #button_menu {
+        background-position-y: calc(var(--scs) * -3);
+      }
+
+      #button_mute {
+        grid-area: b_mu;
+        background-position: calc(var(--scs) * -9) 0;
+      }
+
+      .pressed_mute #button_mute {
+        background-position-y: calc(var(--scs) * -3);
+      }
+
+      #button_fullscreen {
+        grid-area: full;
+        background-position: calc(var(--scs) * -11) 0;
+      }
+
+      .pressed_fullscreen #button_fullscreen {
+        background-position-y: calc(var(--scs) * -3);
+      }
+
+      #indicator_mute {
+        grid-area: i_mu;
+        background-position: calc(var(--scs) * -10) calc(var(--scs) * -1);
+      }
+
+      .muted #indicator_mute {
+        grid-area: i_mu;
+        background-position-x: calc(var(--scs) * -14);
+      }
+
+      @media not (pointer: coarse) {
+        #button_mute {
+          background-position-x: calc(var(--scs) * -13);
+        }
+
+        #button_fullscreen {
+          background-position-x: calc(var(--scs) * -15);
+        }
+      }
+
+      
+
+
+      :root {
+        
+        --scs: 10dvw;
+      }
+
+      #game_display {
+        grid-template-areas:
+          "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+          "e__l    .    . full    . b_mu b_mu e__r"
+          "e__l    .    .    .    . i_mu i_mu e__r"
+          "e__l    .    .    .    .    .    . e__r"
+          "e__l canv canv canv canv canv canv e__r"
+          "e__l    .    .    .    .    .    . e__r"
+          "e__l    .    .    .    .    .    . e__r"
+          "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+        grid-template-columns: 5dvw 5dvw 1fr 10dvw 5dvw 5dvw 5dvw 5dvw;
+        grid-template-rows: 5dvw 10dvw 10dvw 1fr 90dvw 1fr 20dvw 5dvw;
+      }
+
+      #game_canvas {
+        border-width: 1dvw;
+      }
+
+      
+
+
+      @media (min-aspect-ratio: 250/360) {
+        :root {
+          --scs: 10dvw;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    .    .    . e__r"
+            "e__l canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    . e__r"
+            "e__l    .    . full    . b_mu b_mu e__r"
+            "e__l    .    .    .    . i_mu i_mu e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5dvw 5dvw 1fr 10dvw 5dvw 5dvw 5dvw 5dvw;
+          grid-template-rows: 5dvw 1fr 90dvw 10dvw 10dvw 5dvw 5dvw;
+        }
+
+        #game_canvas {
+          border-width: 1dvw;
+        }
+      }
+
+      
+
+
+      @media (min-aspect-ratio: 250/310) {
+        :root {
+          --scs: 8dvw;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    . e__r"
+            "e__l    .    . full    . b_mu b_mu e__r"
+            "e__l    .    .    .    . i_mu i_mu e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4dvw 4dvw 1fr 8dvw 4dvw 4dvw 4dvw 4dvw;
+          grid-template-rows: 4dvw 92dvw 1fr 8dvw 4dvw 4dvw;
+        }
+
+        #game_canvas {
+          border-width: 1dvw;
+        }
+      }
+
+      
+
+
+      @media (min-aspect-ratio: 250/290) {
+        :root {
+          --scs: 6dvw;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l b_mu b_mu    . canv    . full full e__r"
+            "e__l i_mu i_mu    . canv    .    .    . e__r"
+            "e__l    .    .    . canv    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 3dvw 3dvw 3dvw 3dvw 76dvw 3dvw 3dvw 3dvw 3dvw;
+          grid-template-rows: 3dvw 6dvw 6dvw 64dvw 1fr 3dvw;
+        }
+
+        #game_canvas {
+          border-width: 1dvw;
+        }
+      }
+
+      
+
+
+      @media (min-aspect-ratio: 250/210) {
+        :root {
+          --scs: 8dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    . b_mu    . canv    . full    . e__r"
+            "e__l    . i_mu    . canv    .    .    . e__r"
+            "e__l    .    .    . canv    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4dvh 4dvh 8dvh 1fr 80dvh 1fr 8dvh 4dvh 4dvh;
+          grid-template-rows: 4dvh 8dvh 8dvh 64dvh 1fr 4dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+        }
+      }
+
+      
+
+
+      @media (min-aspect-ratio: 250/170) {
+        :root {
+          --scs: 10dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    . b_mu    . canv    . full    .    . e__r"
+            "e__l    .    . i_mu    . canv    .    .    .    . e__r"
+            "e__l    .    .    .    . canv    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5dvh 5dvh 1fr 10dvh 5dvh 90dvh 5dvh 10dvh 1fr 5dvh 5dvh;
+          grid-template-rows: 5dvh 10dvh 10dvh 1fr 5dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+        }
+      }
+
+      
+
+
+      @media (pointer: coarse) {
+        :root {
+          --scs: 10dvw;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    . menu menu menu    . bt_b bt_b bt_b e__r"
+            "e__l d_ul d_ul d_u_ d_ur    .    .    .    .    . bt_b bt_b bt_b e__r"
+            "e__l d_ul d_ul d_u_ d_ur    . full    .    .    . bt_b bt_b bt_b e__r"
+            "e__l d__l d__l d___ d__r    . full    . bt_a bt_a bt_a    .    . e__r"
+            "e__l d__l d__l d___ d__r    .    .    . bt_a bt_a bt_a    .    . e__r"
+            "e__l d_dl d_dl d_d_ d_dr    . b_mu    . bt_a bt_a bt_a    .    . e__r"
+            "e__l    .    .    .    .    . i_mu    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5dvw 5dvw 5dvw 10dvw 10dvw 12dvw 10dvw 8dvw 2dvw 8dvw 10dvw 5dvw 5dvw 5dvw;
+          grid-template-rows: 5dvw 92dvw 1fr 10dvw 7dvw 3dvw 7dvw 3dvw 10dvw 5dvw 2fr 5dvw;
+        }
+
+        #game_canvas {
+          border-width: 1dvw;
+        }
+      }
+
+      
+
+
+      @media (pointer: coarse) and (min-aspect-ratio: 250/370) {
+        :root {
+          --scs: 8dvw;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l d_ul d_ul d_u_ d_ur    .    .    . menu menu    . bt_b bt_b e__r"
+            "e__l d__l d__l d___ d__r    .    .    .    .    . bt_a bt_b bt_b e__r"
+            "e__l d_dl d_dl d_d_ d_dr    . full    . b_mu    . bt_a    .    . e__r"
+            "e__l    .    .    .    .    .    .    . i_mu    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4dvw 4dvw 4dvw 8dvw 8dvw 3fr 8dvw 4dvw 8dvw 8dvw 16dvw 12dvw 4dvw 4dvw;
+          grid-template-rows: 4dvw 92dvw 4dvw 8dvw 8dvw 8dvw 1fr 4dvw;
+        }
+
+        #game_canvas {
+          border-width: 1dvw;
+        }
+      }
+
+      
+
+
+      @media (pointer: coarse) and (min-aspect-ratio: 250/330) {
+        :root {
+          --scs: 6dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    . canv canv canv canv canv canv canv canv canv    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    . menu menu    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    . full    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    . full    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    .    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    . b_mu    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    .     .   .    .    . i_mu    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 3dvh 3dvh 1fr 6dvh 6dvh 6dvh 12dvh 6dvh 6dvh 6dvh 6dvh 6dvh 1fr 3dvh 3dvh;
+          grid-template-rows: 3dvh 60dvh 1fr 6dvh 4dvh 2dvh 4dvh 2dvh 6dvh 1fr 3dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+        }
+      }
+
+      
+
+
+      @media (pointer: coarse) and (min-aspect-ratio: 250/250) {
+        :root {
+          --scs: 6dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    . b_mu    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    . i_mu    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    . full    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    .    .    . canv canv canv canv canv canv canv    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_u_ d_ur    . menu menu    . bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d___ d__r    .    . bt_a bt_a bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_d_ d_dr    .    . bt_a bt_a    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 3dvh 3dvh 1fr 6dvh 2dvh 4dvh 6dvh 37dvh 8dvh 4dvh 8dvh 4dvh 2dvh 6dvh 1fr 3dvh 3dvh;
+          grid-template-rows: 3dvh 3dvh 6dvh 6dvh 6dvh 50dvh 2dvh 6dvh 6dvh 6dvh 1fr 3dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+        }
+      }
+
+      
+
+
+      @media (pointer: coarse) and (min-aspect-ratio: 250/180) {
+        :root {
+          --scs: 10dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    .    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    . b_mu    .    . canv    .    . menu menu    .    . e__r"
+            "e__l    .    .    . i_mu    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    . full    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    . canv    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    . canv    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    . canv    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    .    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    .    .    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5dvh 5dvh 1fr 10dvh 10dvh 10dvh 1fr 58dvh 1fr 10dvh 10dvh 10dvh 1fr 5dvh 5dvh;
+          grid-template-rows: 5dvh 5dvh 10dvh 10dvh 10dvh 8dvh 10dvh 5dvh 5dvh 10dvh 10dvh 1fr 5dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+        }
+      }
+
+      
+
+
+      @media (pointer: coarse) and (min-aspect-ratio: 250/130) {
+        :root {
+          --scs: 12dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    . b_mu    . full    .    . canv    .    .    . menu menu menu    .    . e__r"
+            "e__l    .    . i_mu    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    . bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    . canv    .    .    . bt_b bt_b bt_b    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 6dvh 6dvh 1fr 12dvh 12dvh 12dvh 3dvh 3fr 88dvh 3fr 12dvh 3dvh 9dvh 3dvh 12dvh 1fr 6dvh 6dvh;
+          grid-template-rows: 6dvh 6dvh 12dvh 12dvh 4dvh 12dvh 12dvh 12dvh 12dvh 6dvh 6dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-DTtHHQVu.js"></script>
+  </head>
+  <body>
+    <main id="game_display">
+      <div id="edge_tl"></div>
+      <div id="edge_t"></div>
+      <div id="edge_tr"></div>
+      <div id="edge_l"></div>
+      <div id="edge_r"></div>
+      <div id="edge_bl"></div>
+      <div id="edge_b"></div>
+      <div id="edge_br"></div>
+
+      <canvas id="game_canvas" width="256" height="256"></canvas>
+
+      <div id="dpad_u" class="gui_sprite"></div>
+      <div id="dpad_d" class="gui_sprite"></div>
+      <div id="dpad_l" class="gui_sprite"></div>
+      <div id="dpad_r" class="gui_sprite"></div>
+      <div id="dpad_center" class="gui_sprite"></div>
+      <div id="dpad_ul"></div>
+      <div id="dpad_ur"></div>
+      <div id="dpad_dl"></div>
+      <div id="dpad_dr"></div>
+
+      <div id="button_a" class="gui_sprite"></div>
+      <div id="button_b" class="gui_sprite"></div>
+
+      <div id="button_menu" class="gui_sprite"></div>
+
+      <div id="button_mute" class="gui_sprite"></div>
+      <div id="indicator_mute" class="gui_sprite"></div>
+      <div id="button_fullscreen" class="gui_sprite"></div>
+    </main>
+
+    <div id="screen_start_game">
+      <button id="screen_start_game__button" tabindex="0"></button>
+    </div>
+
+    
+    <div id="screen_loading">
+      <div id="screen_loading__spinner"></div>
+    </div>
+
+    <div id="screen_error">
+      <pre id="screen_error__message"></pre>
+    </div>
+  </body>
+
+  <script>
+    
+window["BEETPX__IS_PROD"] = true;
+window["BEETPX__VERSION"] = "0.42.0";
+
+  </script>
+
+</html>

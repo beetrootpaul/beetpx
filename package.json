@@ -56,8 +56,8 @@
     "compile": "tsc --project tsconfig.compile.json",
     "compile:watch": "tsc --project tsconfig.compile.json --watch",
     "postcompile": "node ./scripts/removeJsCommentFromDist.cjs && rollup --config ./rollup.config.ts --configPlugin typescript",
-    "docs:generate": "./scripts/generateDocs.sh",
-    "docs:open": "./scripts/openDocs.sh",
+    "website:generate": "./scripts/generateWebsite.sh",
+    "website:open": "./scripts/openWebsite.sh",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "dependencies": {

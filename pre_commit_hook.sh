@@ -51,10 +51,10 @@ if [ "$check_mode" == "full" ]; then
   npm run test
 
   # Check examples
-  for exampleProject in ./examples/*/
+  for EXAMPLE_PROJECT in ./examples/*/
   do
-    echo "Checking example project: ${exampleProject} ..."
-    cd $exampleProject
+    echo "Checking example project: ${EXAMPLE_PROJECT} ..."
+    cd $EXAMPLE_PROJECT
     npm install
     npm run format
     npm run tsc
