@@ -510,12 +510,22 @@ export class BeetPx {
       return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
     },
 
+    /**
+     * @returns - previously used color markers
+     */
+    setTextColorMarkers(
+      textColorMarkers: BpxTextColorMarkers,
+    ): BpxTextColorMarkers {
+      return BeetPx.#tryGetEngine(
+        "setTextColorMarkers",
+      ).drawApi.setTextColorMarkers(textColorMarkers);
+    },
+
     measureText(
       text: string,
       opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        colorMarkers?: BpxTextColorMarkers;
       },
     ): { wh: BpxVector2d; offset: BpxVector2d } {
       return BeetPx.#tryGetEngine("measureText").drawApi.measureText(
@@ -531,7 +541,6 @@ export class BeetPx {
       opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        colorMarkers?: BpxTextColorMarkers;
       },
     ): void {
       BeetPx.#tryGetEngine("text").drawApi.drawText(text, xy, color, opts);

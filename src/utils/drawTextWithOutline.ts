@@ -1,6 +1,5 @@
 import { BeetPx } from "../BeetPx";
 import type { BpxRgbColor } from "../color/RgbColor";
-import { BpxTextColorMarkers } from "../font/Font";
 import type { BpxVector2d } from "../misc/Vector2d";
 import { offset8Directions } from "./offset8Directions";
 
@@ -12,20 +11,16 @@ export function drawTextWithOutline(
   opts?: {
     centerXy?: [boolean, boolean];
     scaleXy?: BpxVector2d;
-    textColorMarkers?: BpxTextColorMarkers;
-    outlineColorMarkers?: BpxTextColorMarkers;
   },
 ): void {
   for (const offset of offset8Directions()) {
     BeetPx.draw.text(text, canvasXy1.add(offset), outlineColor, {
       centerXy: opts?.centerXy,
       scaleXy: opts?.scaleXy,
-      colorMarkers: opts?.outlineColorMarkers,
     });
   }
   BeetPx.draw.text(text, canvasXy1, textColor, {
     centerXy: opts?.centerXy,
     scaleXy: opts?.scaleXy,
-    colorMarkers: opts?.textColorMarkers,
   });
 }

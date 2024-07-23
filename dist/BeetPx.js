@@ -309,6 +309,12 @@ export class BeetPx {
         useFont(font) {
             return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
         },
+        /**
+         * @returns - previously used color markers
+         */
+        setTextColorMarkers(textColorMarkers) {
+            return BeetPx.#tryGetEngine("setTextColorMarkers").drawApi.setTextColorMarkers(textColorMarkers);
+        },
         measureText(text, opts) {
             return BeetPx.#tryGetEngine("measureText").drawApi.measureText(text, opts);
         },

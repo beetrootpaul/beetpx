@@ -24,6 +24,7 @@ export class DrawApi {
     #pattern = BpxDrawingPattern.primaryOnly;
     #spriteColorMapping = BpxSpriteColorMapping.noMapping;
     #font = $font_pico8;
+    #textColorMarkers = {};
     constructor(options) {
         this.#assets = options.assets;
         this.#canvas = options.canvas;
@@ -104,10 +105,15 @@ export class DrawApi {
         this.#font = font;
         return prev;
     }
+    setTextColorMarkers(textColorMarkers) {
+        const prev = this.#textColorMarkers;
+        this.#textColorMarkers = textColorMarkers;
+        return prev;
+    }
     measureText(text, opts) {
         let maxLineNumber = 0;
         let maxX = 0;
-        for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, $rgb_white, opts?.colorMarkers)) {
+        for (const arrangedGlyph of this.#font.arrangeGlyphsFor(text, $rgb_white, this.#textColorMarkers)) {
             if (arrangedGlyph.type === "line_break") {
                 maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber + 1);
             }
@@ -130,11 +136,10 @@ export class DrawApi {
             const { offset } = this.measureText(text, {
                 scaleXy: opts?.scaleXy,
                 centerXy: opts?.centerXy,
-                colorMarkers: opts?.colorMarkers,
             });
             xy = xy.add(offset);
         }
-        this.#text.draw(text, this.#font, xy.sub(this.cameraXy), color, opts?.colorMarkers ?? {}, opts?.scaleXy ?? $v_1_1, this.#pattern);
+        this.#text.draw(text, this.#font, xy.sub(this.cameraXy), color, this.#textColorMarkers, opts?.scaleXy ?? $v_1_1, this.#pattern);
     }
     takeCanvasSnapshot() {
         return this.#canvas.takeSnapshot();

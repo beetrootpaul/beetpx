@@ -392,10 +392,10 @@ declare class DrawApi {
         flipXy?: [boolean, boolean];
     }): void;
     useFont(font: BpxFont): BpxFont;
+    setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
     measureText(text: string, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        colorMarkers?: BpxTextColorMarkers;
     }): {
         wh: BpxVector2d;
         offset: BpxVector2d;
@@ -403,7 +403,6 @@ declare class DrawApi {
     drawText(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        colorMarkers?: BpxTextColorMarkers;
     }): void;
     takeCanvasSnapshot(): void;
 }
@@ -748,8 +747,6 @@ declare function clamp(a: number, b: number, c: number): number;
 declare function drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, opts?: {
     centerXy?: [boolean, boolean];
     scaleXy?: BpxVector2d;
-    textColorMarkers?: BpxTextColorMarkers;
-    outlineColorMarkers?: BpxTextColorMarkers;
 }): void;
 
 declare function identity<Param>(param: Param): Param;
@@ -910,10 +907,13 @@ declare class BeetPx {
          * @returns - previously used font
          */
         useFont(font: BpxFont): BpxFont;
+        /**
+         * @returns - previously used color markers
+         */
+        setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
         measureText(text: string, opts?: {
             centerXy?: [boolean, boolean];
             scaleXy?: BpxVector2d;
-            colorMarkers?: BpxTextColorMarkers;
         }): {
             wh: BpxVector2d;
             offset: BpxVector2d;
@@ -921,7 +921,6 @@ declare class BeetPx {
         text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
             centerXy?: [boolean, boolean];
             scaleXy?: BpxVector2d;
-            colorMarkers?: BpxTextColorMarkers;
         }): void;
         takeCanvasSnapshot(): void;
     };
@@ -999,10 +998,13 @@ declare const $d: {
      * @returns - previously used font
      */
     useFont(font: BpxFont): BpxFont;
+    /**
+     * @returns - previously used color markers
+     */
+    setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
     measureText(text: string, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        colorMarkers?: BpxTextColorMarkers;
     }): {
         wh: BpxVector2d;
         offset: BpxVector2d;
@@ -1010,7 +1012,6 @@ declare const $d: {
     text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-        colorMarkers?: BpxTextColorMarkers;
     }): void;
     takeCanvasSnapshot(): void;
 };
