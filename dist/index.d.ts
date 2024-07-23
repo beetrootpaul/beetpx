@@ -913,6 +913,7 @@ declare class BeetPx {
         measureText(text: string, opts?: {
             centerXy?: [boolean, boolean];
             scaleXy?: BpxVector2d;
+            colorMarkers?: BpxTextColorMarkers;
         }): {
             wh: BpxVector2d;
             offset: BpxVector2d;
@@ -1001,6 +1002,7 @@ declare const $d: {
     measureText(text: string, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        colorMarkers?: BpxTextColorMarkers;
     }): {
         wh: BpxVector2d;
         offset: BpxVector2d;

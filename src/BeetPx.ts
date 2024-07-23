@@ -515,6 +515,7 @@ export class BeetPx {
       opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
+        colorMarkers?: BpxTextColorMarkers;
       },
     ): { wh: BpxVector2d; offset: BpxVector2d } {
       return BeetPx.#tryGetEngine("measureText").drawApi.measureText(
