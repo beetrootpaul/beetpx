@@ -27,26 +27,6 @@ npx typedoc \
   --plugin @zamiell/typedoc-plugin-not-exported
 
 #
-# Examples
-#
-
-for EXAMPLE_PROJECT in ./examples/*/
-do
-  echo "Building example project: ${EXAMPLE_PROJECT} ..."
-  cd $EXAMPLE_PROJECT
-  npm install
-  npm run tsc
-  npm run test --if-present
-  npm run build
-  mkdir -p ../../docs/examples/canvas-snapshot/
-  cp -R ./.beetpx/dist/ "../../docs/$EXAMPLE_PROJECT"
-  cd ../../
-done
-
-cp ./docs/examples/index.template.html ./docs/examples/index.html
-npx replace-in-file "/__BEETPX_VERSION__/g" "${BEETPX_VERSION}" ./docs/examples/index.html
-
-#
 # Main page
 #
 
