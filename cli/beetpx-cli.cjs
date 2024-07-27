@@ -384,10 +384,7 @@ function runZipCommand() {
     recursive: true,
   });
 
-  const inputDir = path.resolve(
-    gameCodebase.tmpBeetPxDir,
-    gameCodebase.distZipDir,
-  );
+  const inputDir = path.resolve(gameCodebase.tmpBeetPxDir, "dist");
   const outputZip = path.resolve(gameCodebase.distZipDir, "game.zip");
 
   // Remove the ZIP file first, otherwise its old content will get merged with the new one
