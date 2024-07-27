@@ -1,0 +1,24 @@
+{
+  "name": "beetpx-playground",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "beetpx dev --open",
+    "prod": "beetpx build && beetpx preview --open",
+    "zip": "beetpx build && beetpx zip",
+    "format": "prettier --ignore-path .gitignore --write src/",
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "file:../",
+    "prettier": "3.3.3",
+    "prettier-plugin-organize-imports": "4.0.0",
+    "typescript": "5.5.3"
+  }
+}
