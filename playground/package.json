@@ -1,5 +1,5 @@
 {
-  "name": "beetpx-example-simple",
+  "name": "beetpx-playground",
   "version": "0.0.0",
   "private": true,
   "author": "Beetroot Paul",
@@ -9,15 +9,14 @@
   },
   "scripts": {
     "start": "beetpx dev --open",
-    "build": "beetpx build",
-    "prod": "npm run build && beetpx preview --open",
-    "zip": "npm run build && beetpx zip",
-    "format": "prettier --ignore-path .gitignore --write src/ README.md",
+    "prod": "beetpx build && beetpx preview --open",
+    "zip": "beetpx build && beetpx zip",
+    "format": "prettier --ignore-path .gitignore --write src/",
     "tsc": "tsc",
     "tsc:watch": "tsc --watch"
   },
   "devDependencies": {
-    "@beetpx/beetpx": "file:../../",
+    "@beetpx/beetpx": "file:../",
     "prettier": "3.3.3",
     "prettier-plugin-organize-imports": "4.0.0",
     "typescript": "5.5.3"

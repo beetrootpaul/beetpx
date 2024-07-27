@@ -1,4 +1,4 @@
-import { $, $d, $rgb_p8 } from "../../../src";
+import { $, $d, $rgb_p8 } from "../../src";
 import { Movement } from "./Movement";
 import { Music } from "./Music";
 import { PauseMenu } from "./PauseMenu";

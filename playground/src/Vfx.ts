@@ -7,7 +7,7 @@ import {
   BpxDrawingPattern,
   BpxEasing,
   BpxTimerSequence,
-} from "../../../src";
+} from "../../src";
 
 export class Vfx {
   static #checkersPattern = BpxDrawingPattern.from(`

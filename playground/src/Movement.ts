@@ -1,4 +1,4 @@
-import { $, $aspr, $d, $timer, $u, $v } from "../../../src";
+import { $, $aspr, $d, $timer, $u, $v } from "../../src";
 
 export class Movement {
   static assetUrls = ["animation.png"];

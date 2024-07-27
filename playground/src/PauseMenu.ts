@@ -8,7 +8,7 @@ import {
   $v_0_0,
   BpxCanvasSnapshotColorMapping,
   BpxColorMapper,
-} from "../../../src";
+} from "../../src";
 
 export class PauseMenu {
   static #dimColors: BpxColorMapper = (sourceColor, _x, _y) =>

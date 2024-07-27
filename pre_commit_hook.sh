@@ -49,18 +49,16 @@ if [ "$check_mode" == "full" ]; then
   # We do this on a `main` branch only in order to allow broken tests while development
   #   is in progress.
   npm run test
+fi
 
-  # Check examples
-  for EXAMPLE_PROJECT in ./examples/*/
-  do
-    echo "Checking example project: ${EXAMPLE_PROJECT} ..."
-    cd $EXAMPLE_PROJECT
-    npm install
-    npm run format
-    npm run tsc
-    npm run test --if-present
-    cd ../../
-  done
+if [ "$check_mode" == "full" ]; then
+  echo "Checking the playground project ..."
+  cd ./playground/
+  npm install
+  npm run format
+  npm run tsc
+  npm run test --if-present
+  cd ../
 fi
 
 # Generate up-to-date JS and .d.ts files out of the TypeScript source.

@@ -1,4 +1,4 @@
-import { $ } from "../../../src";
+import { $ } from "../../src";
 
 export class Music {
   static assetUrls = ["music_base.flac", "music_melody.flac"];
