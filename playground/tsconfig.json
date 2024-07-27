@@ -8,6 +8,6 @@
   },
   "include": [
     "./src",
-    "../../src/audio-buffer-utils.d.ts"
+    "../src/audio-buffer-utils.d.ts"
   ]
 }
