@@ -51,6 +51,16 @@ if [ "$check_mode" == "full" ]; then
   npm run test
 fi
 
+if [ "$check_mode" == "full" ]; then
+  echo "Checking the playground project ..."
+  cd ./playground/
+  npm install
+  npm run format
+  npm run tsc
+  npm run test --if-present
+  cd ../
+fi
+
 # Generate up-to-date JS and .d.ts files out of the TypeScript source.
 #   Thanks to this command being run on every commit, users can refer to
 #   any commit of this repo in their `package.json` files and have BeetPx

@@ -184,10 +184,15 @@ if (argv._.includes("dev") || argv._.length <= 0) {
     open: argv.open ?? false,
   });
 } else if (argv._.includes("zip")) {
-  runZipCommand();
+  runZipCommand().catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 } else {
   throw Error("This code should not be reached :-)");
 }
+
+/////////////////////////////////////////////////////////////////////////////
 
 function parseConstants(argvConst) {
   const result = {};
@@ -379,7 +384,7 @@ function runPreviewCommand(params) {
     });
 }
 
-function runZipCommand() {
+async function runZipCommand() {
   fs.mkdirSync(gameCodebase.distZipDir, {
     recursive: true,
   });
@@ -392,7 +397,15 @@ function runZipCommand() {
     fs.rmSync(outputZip);
   }
 
-  require("cross-zip").zipSync(inputDir, outputZip);
+  const archive = require("archiver")("zip", { zlib: { level: 9 } });
+  archive.on("error", err => {
+    console.error("Error from 'archiver':", err);
+    throw err;
+  });
+  archive.pipe(fs.createWriteStream(outputZip));
+  // `false` 2nd param means adding input files to the root of the created ZIP (instead of some subdir)
+  archive.directory(inputDir, false);
+  await archive.finalize();
 
   const sizeBytes = fs.statSync(outputZip).size;
   const sizeKibibytes = sizeBytes / 1024;
