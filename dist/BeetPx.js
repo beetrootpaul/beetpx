@@ -28,6 +28,9 @@ export class BeetPx {
     
     
     static async start(config) {
+        if (this.#engine) {
+            throw Error("BeetPx is already started");
+        }
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
         this.#engine = new Engine(config);
         const { startGame } = await this.#engine.init();
