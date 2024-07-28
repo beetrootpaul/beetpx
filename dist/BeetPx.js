@@ -23,15 +23,26 @@ import { trigSin } from "./utils/trigSin";
 
 export class BeetPx {
     static #engine;
+    static #dataStoredBeforeEngineStarted = {};
     
     
     
-    static async init(config) {
+    static async start(config) {
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
         this.#engine = new Engine(config);
         const { startGame } = await this.#engine.init();
         Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
-        return { startGame };
+        if (this.#dataStoredBeforeEngineStarted.onStarted) {
+            this.#engine.setOnStarted(this.#dataStoredBeforeEngineStarted.onStarted);
+        }
+        if (this.#dataStoredBeforeEngineStarted.onUpdate) {
+            this.#engine.setOnUpdate(this.#dataStoredBeforeEngineStarted.onUpdate);
+        }
+        if (this.#dataStoredBeforeEngineStarted.onDraw) {
+            this.#engine.setOnDraw(this.#dataStoredBeforeEngineStarted.onDraw);
+        }
+        this.#dataStoredBeforeEngineStarted = {};
+        return await startGame();
     }
     static get debug() {
         return DebugMode.enabled;
@@ -61,14 +72,29 @@ export class BeetPx {
     
     
     
-    static setOnStarted = (...args) => {
-        return this.#tryGetEngine().setOnStarted(...args);
+    static setOnStarted = (onStarted) => {
+        if (this.#engine) {
+            this.#engine.setOnStarted(onStarted);
+        }
+        else {
+            this.#dataStoredBeforeEngineStarted.onStarted = onStarted;
+        }
     };
-    static setOnUpdate = (...args) => {
-        return this.#tryGetEngine().setOnUpdate(...args);
+    static setOnUpdate = (onUpdate) => {
+        if (this.#engine) {
+            this.#engine.setOnUpdate(onUpdate);
+        }
+        else {
+            this.#dataStoredBeforeEngineStarted.onUpdate = onUpdate;
+        }
     };
-    static setOnDraw = (...args) => {
-        return this.#tryGetEngine().setOnDraw(...args);
+    static setOnDraw = (onDraw) => {
+        if (this.#engine) {
+            this.#engine.setOnDraw(onDraw);
+        }
+        else {
+            this.#dataStoredBeforeEngineStarted.onDraw = onDraw;
+        }
     };
     static restart = (...args) => {
         return this.#tryGetEngine().restart(...args);
@@ -219,7 +245,7 @@ export class BeetPx {
     
     static #tryGetEngine(drawFnNameToLogIfOutsideDrawCallback) {
         if (!this.#engine) {
-            throw Error(`Tried to access BeetPx API without calling BeetPx.init(…) first.`);
+            throw Error(`Tried to access BeetPx API without calling BeetPx.start(…) first.`);
         }
         if (drawFnNameToLogIfOutsideDrawCallback &&
             !this.#engine.isInsideDrawOrStartedCallback) {

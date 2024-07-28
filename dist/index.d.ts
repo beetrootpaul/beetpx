@@ -794,7 +794,7 @@ declare function trigSin(turnAngle: number): number;
 
 declare class BeetPx {
     #private;
-    static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
+    static start(config?: BpxEngineConfig): Promise<void>;
     static get debug(): typeof DebugMode.enabled;
     static get canvasSize(): BpxVector2d;
     /**
