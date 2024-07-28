@@ -751,8 +751,6 @@ declare function drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textC
 
 declare function identity<Param>(param: Param): Param;
 
-declare function isDefined<Value>(value: Value | null | undefined): value is Value;
-
 declare function lerp(a: number, b: number, t: number, opts?: {
     clamp?: boolean;
 }): number;
@@ -793,8 +791,6 @@ declare function trigCos(turnAngle: number): number;
  * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
  */
 declare function trigSin(turnAngle: number): number;
-
-declare function wait(millis: number): Promise<void>;
 
 declare class BeetPx {
     #private;
@@ -930,7 +926,6 @@ declare class BeetPx {
         clamp: typeof clamp;
         drawTextWithOutline: typeof drawTextWithOutline;
         identity: typeof identity;
-        isDefined: typeof isDefined;
         lerp: typeof lerp;
         mod: typeof mod;
         noop: typeof noop;
@@ -943,7 +938,6 @@ declare class BeetPx {
         trigAtan2: typeof trigAtan2;
         trigCos: typeof trigCos;
         trigSin: typeof trigSin;
-        wait: typeof wait;
     };
 }
 declare const $: typeof BeetPx;
@@ -1021,7 +1015,6 @@ declare const $u: {
     clamp: typeof clamp;
     drawTextWithOutline: typeof drawTextWithOutline;
     identity: typeof identity;
-    isDefined: typeof isDefined;
     lerp: typeof lerp;
     mod: typeof mod;
     noop: typeof noop;
@@ -1034,7 +1027,6 @@ declare const $u: {
     trigAtan2: typeof trigAtan2;
     trigCos: typeof trigCos;
     trigSin: typeof trigSin;
-    wait: typeof wait;
 };
 
 declare function $aspr(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;

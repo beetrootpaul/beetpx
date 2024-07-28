@@ -1,5 +1,6 @@
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
+import { throwError } from "../utils/throwError";
 
 declare global {
   // noinspection JSUnusedGlobalSymbols
@@ -65,14 +66,11 @@ class FullScreenSupported extends FullScreen {
   constructor() {
     super();
 
-    const fullScreenSubject = document.querySelector(
-      HtmlTemplate.selectors.fullScreenSubject,
-    );
-    if (!fullScreenSubject) {
-      throw Error(
+    const fullScreenSubject =
+      document.querySelector(HtmlTemplate.selectors.fullScreenSubject) ??
+      throwError(
         `Was unable to find a full screen subject by selector '${HtmlTemplate.selectors.fullScreenSubject}'`,
       );
-    }
     this.#fullScreenSubject = fullScreenSubject;
 
     const nativeRequestFullscreen =

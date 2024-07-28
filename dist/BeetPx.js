@@ -8,7 +8,6 @@ import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFra
 import { clamp } from "./utils/clamp";
 import { drawTextWithOutline } from "./utils/drawTextWithOutline";
 import { identity } from "./utils/identity";
-import { isDefined } from "./utils/isDefined";
 import { lerp } from "./utils/lerp";
 import { mod } from "./utils/mod";
 import { noop } from "./utils/noop";
@@ -21,7 +20,6 @@ import { throwError } from "./utils/throwError";
 import { trigAtan2 } from "./utils/trigAtan2";
 import { trigCos } from "./utils/trigCos";
 import { trigSin } from "./utils/trigSin";
-import { wait } from "./utils/wait";
 
 export class BeetPx {
     static #engine;
@@ -334,7 +332,6 @@ export class BeetPx {
         clamp,
         drawTextWithOutline,
         identity,
-        isDefined,
         lerp,
         mod,
         noop,
@@ -347,7 +344,6 @@ export class BeetPx {
         trigAtan2,
         trigCos,
         trigSin,
-        wait,
     };
 }
 
