@@ -9,7 +9,7 @@ declare global {
 }
 
 test("is prod", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
 
   const isProd = await page.evaluate(() => window.BEETPX__IS_PROD);
 

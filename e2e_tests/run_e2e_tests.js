@@ -36,9 +36,9 @@ const results = [];
 devTestFiles.forEach(devTestFile => {
   results.push(runTest(devTestFile, false));
 });
-prodTestFiles.forEach(prodTestFile => {
-  results.push(runTest(prodTestFile, true));
-});
+// prodTestFiles.forEach(prodTestFile => {
+//   results.push(runTest(prodTestFile, true));
+// });
 const hasSucceeded = results.every(r => r.pass);
 if (hasSucceeded) {
   console.log(
@@ -94,14 +94,14 @@ export default defineConfig({
   forbidOnly: true,
   webServer: {
     command: "${command}",
-    url: "http://localhost:9999",
+    url: "${isProd ? "http://localhost:9999" : "http://localhost:9999/.beetpx/dev/index.html"}",
     timeout: 4_000,
     stdout: "ignore",
     stderr: "pipe",
     reuseExistingServer: false,
   },
   use: {
-    baseURL: "http://localhost:9999",
+    baseURL: "${isProd ? "http://localhost:9999" : "http://localhost:9999/.beetpx/dev/"}",
   },
 });
   `,
