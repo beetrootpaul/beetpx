@@ -607,7 +607,7 @@ declare class BpxPalettePico8 {
  */
 declare class BpxFontConfigPico8 implements BpxFontConfig {
     #private;
-    static readonly spriteSheetUrl = ".beetpx/pico-8-font.png";
+    static readonly spriteSheetUrl = "beetpx/pico-8-font.png";
     ascent: number;
     descent: number;
     lineGap: number;

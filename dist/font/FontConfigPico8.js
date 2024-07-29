@@ -8,7 +8,7 @@ import { BpxSprite } from "../sprite/Sprite";
  *  - https:
  */
 export class BpxFontConfigPico8 {
-    static spriteSheetUrl = ".beetpx/pico-8-font.png";
+    static spriteSheetUrl = "beetpx/pico-8-font.png";
     ascent = 5;
     descent = 0;
     lineGap = 1;

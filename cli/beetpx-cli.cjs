@@ -99,25 +99,24 @@ const argv = require("yargs")
 
 const _bpxCodebaseRoot = path.resolve(__dirname, "..");
 const bpxCodebase = {
-  root: _bpxCodebaseRoot,
   packageJson: path.resolve(_bpxCodebaseRoot, "package.json"),
   templatesDir: path.resolve(_bpxCodebaseRoot, "html_templates"),
   templateFileNames: {
     indexHtml: "index.template.html",
     defaultIcon: "icon.png",
     additionalPngAsset: [
-      "edge_tl.png",
-      "edge_t.png",
-      "edge_tr.png",
+      "edge_b.png",
+      "edge_bl.png",
+      "edge_br.png",
       "edge_l.png",
       "edge_r.png",
-      "edge_bl.png",
-      "edge_b.png",
-      "edge_br.png",
+      "edge_t.png",
+      "edge_tl.png",
+      "edge_tr.png",
       "gui.png",
       "loading.gif",
-      "start.png",
       "pico-8-font.png",
+      "start.png",
     ],
   },
 };
@@ -125,16 +124,11 @@ const bpxCodebase = {
 const _gameCodebaseRoot = process.cwd();
 const gameCodebase = {
   root: _gameCodebaseRoot,
-  tmpBeetPxDir: path.resolve(_gameCodebaseRoot, ".beetpx"),
-  generatedIndexHtml: path.resolve(_gameCodebaseRoot, "index.html"),
-  assetsDirName: "public",
-  assetsDir: path.resolve(_gameCodebaseRoot, "public"),
-  generatedAdditionalAssetsDir: path.resolve(
-    _gameCodebaseRoot,
-    "public",
-    ".beetpx",
-  ),
   tsEntrypoint: path.resolve(_gameCodebaseRoot, "src", "main.ts"),
+  bpxDotViteDir: path.resolve(_gameCodebaseRoot, ".beetpx", ".vite"),
+  bpxDevDir: path.resolve(_gameCodebaseRoot, ".beetpx", "dev"),
+  bpxBuildDir: path.resolve(_gameCodebaseRoot, ".beetpx", "build"),
+  bpxBuildOutDir: path.resolve(_gameCodebaseRoot, ".beetpx", "build-out"),
   distZipDir: path.resolve(_gameCodebaseRoot, "dist"),
 };
 
@@ -213,13 +207,17 @@ function WatchPublicDir() {
     name: "watch-public-dir",
     enforce: "post",
     handleHotUpdate({ file, server }) {
-      const prefixToMatch = gameCodebase.assetsDir + "/";
-      if (file.startsWith(prefixToMatch)) {
-        const shortFileName =
-          gameCodebase.assetsDirName +
-          "/" +
-          file.substring(prefixToMatch.length);
-        console.log(`reloading due to change in file "${shortFileName}"...`);
+      const publicDirPrefix = path.resolve(gameCodebase.root, "public") + "/";
+      if (file.startsWith(publicDirPrefix)) {
+        const relativeFilePath = path.relative(gameCodebase.root, file);
+
+        console.log(`syncing asset file "${relativeFilePath}"...`);
+        fs.copyFileSync(
+          file,
+          path.resolve(gameCodebase.bpxDevDir, relativeFilePath),
+        );
+
+        console.log(`reloading due to change in file "${relativeFilePath}"...`);
         server.ws.send({
           type: "full-reload",
           path: "*",
@@ -232,17 +230,15 @@ function WatchPublicDir() {
 function runDevCommand(params) {
   const { constants, htmlTitle, htmlIconFile, port, open } = params;
 
-  [
-    gameCodebase.generatedIndexHtml,
-    gameCodebase.generatedAdditionalAssetsDir,
-    gameCodebase.tmpBeetPxDir,
-  ].forEach(fileOrDir => {
-    if (fs.existsSync(fileOrDir)) {
-      fs.rmSync(fileOrDir, { recursive: true });
-    }
+  if (fs.existsSync(gameCodebase.bpxDevDir)) {
+    fs.rmSync(gameCodebase.bpxDevDir, { recursive: true });
+  }
+  fs.mkdirSync(gameCodebase.bpxDevDir, { recursive: true });
+  fs.mkdirSync(path.resolve(gameCodebase.bpxDevDir, "public"), {
+    recursive: true,
   });
 
-  generateHtmlFile({
+  generateHtmlFile(gameCodebase.bpxDevDir, {
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
     constants: {
@@ -252,11 +248,7 @@ function runDevCommand(params) {
     },
   });
 
-  copyBeetPxAdditionalAssets();
-
-  fs.mkdirSync(gameCodebase.tmpBeetPxDir, {
-    recursive: true,
-  });
+  copyGameAssets(gameCodebase.bpxDevDir);
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#createserver
@@ -267,18 +259,18 @@ function runDevCommand(params) {
       plugins: [WatchPublicDir()],
       configFile: false,
       root: gameCodebase.root,
-      publicDir: gameCodebase.assetsDir,
-      cacheDir: path.resolve(gameCodebase.tmpBeetPxDir, ".vite"),
-      // Base `./` is crucial for itch.io, since it produces
-      //     <script type="module" crossOrigin src="./assets/index-<hash>.js"></script>
-      //   instead of
-      //     <script type="module" crossOrigin src="/assets/index-<hash>.js"></script>
-      //   and the latter does not work there.
-      base: "./",
+      publicDir: path.resolve(gameCodebase.bpxDevDir, "public"),
+      cacheDir: gameCodebase.bpxDotViteDir,
       server: {
         port: port ?? undefined,
         strictPort: !!port,
-        open: open ? "index.html" : false,
+        open:
+          open ?
+            path.relative(
+              gameCodebase.root,
+              path.resolve(gameCodebase.bpxDevDir, "index.html"),
+            )
+          : false,
         hmr: true,
         watch: {
           interval: 500,
@@ -301,17 +293,16 @@ function runDevCommand(params) {
 function runBuildCommand(params) {
   const { constants, htmlTitle, htmlIconFile } = params;
 
-  [
-    gameCodebase.generatedIndexHtml,
-    gameCodebase.generatedAdditionalAssetsDir,
-    gameCodebase.tmpBeetPxDir,
-  ].forEach(fileOrDir => {
-    if (fs.existsSync(fileOrDir)) {
-      fs.rmSync(fileOrDir, { recursive: true });
-    }
-  });
+  if (fs.existsSync(gameCodebase.bpxBuildDir)) {
+    fs.rmSync(gameCodebase.bpxBuildDir, { recursive: true });
+  }
+  if (fs.existsSync(gameCodebase.bpxBuildOutDir)) {
+    fs.rmSync(gameCodebase.bpxBuildOutDir, { recursive: true });
+  }
+  fs.mkdirSync(gameCodebase.bpxBuildDir, { recursive: true });
+  fs.mkdirSync(gameCodebase.bpxBuildOutDir, { recursive: true });
 
-  generateHtmlFile({
+  generateHtmlFile(gameCodebase.bpxBuildDir, {
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
     constants: {
@@ -321,11 +312,7 @@ function runBuildCommand(params) {
     },
   });
 
-  copyBeetPxAdditionalAssets();
-
-  fs.mkdirSync(gameCodebase.tmpBeetPxDir, {
-    recursive: true,
-  });
+  copyGameAssets(gameCodebase.bpxBuildDir);
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#build
@@ -334,12 +321,19 @@ function runBuildCommand(params) {
   require("vite")
     .build({
       configFile: false,
-      root: gameCodebase.root,
-      publicDir: gameCodebase.assetsDir,
-      cacheDir: path.resolve(gameCodebase.tmpBeetPxDir, ".vite"),
+      root: gameCodebase.bpxBuildDir,
+      cacheDir: gameCodebase.bpxDotViteDir,
+      // Base `./` is crucial for itch.io, since it produces
+      //     <script type="module" crossOrigin src="./assets/index-<hash>.js"></script>
+      //   instead of
+      //     <script type="module" crossOrigin src="/assets/index-<hash>.js"></script>
+      //   and the latter does not work there.
       base: "./",
       build: {
-        outDir: path.resolve(gameCodebase.tmpBeetPxDir, "dist"),
+        // Vite expects `index.html` to be inside `dist` subdirectory
+        //   of the `root` passed to the preview command, therefore
+        //   let's make sure the build gets generated there.
+        outDir: path.resolve(gameCodebase.bpxBuildOutDir, "dist"),
         emptyOutDir: true,
       },
       logLevel: "info",
@@ -353,9 +347,12 @@ function runBuildCommand(params) {
 function runPreviewCommand(params) {
   const { port, open } = params;
 
-  fs.mkdirSync(gameCodebase.tmpBeetPxDir, {
-    recursive: true,
-  });
+  if (!fs.existsSync(gameCodebase.bpxBuildOutDir)) {
+    console.error(
+      "Seems like `beetpx build` was not run for this project yet.",
+    );
+    process.exit(1);
+  }
 
   // Vite docs:
   //   - https://vitejs.dev/guide/api-javascript.html#preview
@@ -364,10 +361,8 @@ function runPreviewCommand(params) {
   require("vite")
     .preview({
       configFile: false,
-      // NOTE: Vite expects `dist/` directory inside the `root`. Make sure it is generated in `build`.
-      root: gameCodebase.tmpBeetPxDir,
-      cacheDir: path.resolve(gameCodebase.tmpBeetPxDir, ".vite"),
-      base: "./",
+      root: gameCodebase.bpxBuildOutDir,
+      cacheDir: gameCodebase.bpxDotViteDir,
       preview: {
         port: port ?? undefined,
         strictPort: !!port,
@@ -389,10 +384,9 @@ async function runZipCommand() {
     recursive: true,
   });
 
-  const inputDir = path.resolve(gameCodebase.tmpBeetPxDir, "dist");
+  const inputDir = path.resolve(gameCodebase.bpxBuildOutDir, "dist");
   const outputZip = path.resolve(gameCodebase.distZipDir, "game.zip");
 
-  // Remove the ZIP file first, otherwise its old content will get merged with the new one
   if (fs.existsSync(outputZip)) {
     fs.rmSync(outputZip);
   }
@@ -422,7 +416,7 @@ async function runZipCommand() {
   );
 }
 
-function generateHtmlFile(params) {
+function generateHtmlFile(outputBaseDir, params) {
   const { htmlTitle, htmlIconFile, constants } = params;
 
   let content = fs.readFileSync(
@@ -476,7 +470,7 @@ function generateHtmlFile(params) {
     preserveNewlines: true,
   });
 
-  fs.writeFileSync(gameCodebase.generatedIndexHtml, content, {
+  fs.writeFileSync(path.resolve(outputBaseDir, "index.html"), content, {
     encoding: "utf8",
   });
 }
@@ -485,17 +479,20 @@ function removeHtmlComments(content) {
   return content.replace(/<!--[\s\S]*?-->/g, "");
 }
 
-function copyBeetPxAdditionalAssets() {
-  if (fs.existsSync(gameCodebase.generatedAdditionalAssetsDir)) {
-    fs.rmSync(gameCodebase.generatedAdditionalAssetsDir, { recursive: true });
-  }
+function copyGameAssets(outputBaseDir) {
+  fs.cpSync(
+    path.resolve(gameCodebase.root, "public"),
+    path.resolve(outputBaseDir, "public"),
+    { recursive: true },
+  );
 
-  fs.mkdirSync(gameCodebase.generatedAdditionalAssetsDir, { recursive: true });
-
+  fs.mkdirSync(path.resolve(outputBaseDir, "public", "beetpx"), {
+    recursive: true,
+  });
   bpxCodebase.templateFileNames.additionalPngAsset.forEach(pngAsset => {
     fs.copyFileSync(
       path.resolve(bpxCodebase.templatesDir, pngAsset),
-      path.resolve(gameCodebase.generatedAdditionalAssetsDir, pngAsset),
+      path.resolve(outputBaseDir, "public", "beetpx", pngAsset),
     );
   });
 }
