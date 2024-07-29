@@ -1,5 +1,6 @@
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
+import { throwError } from "../utils/throwError";
 export class FullScreen {
     
     static #isFullScreenSupported = !!((typeof document === "undefined") ?
@@ -35,10 +36,8 @@ class FullScreenSupported extends FullScreen {
     #nativeExitFullscreen;
     constructor() {
         super();
-        const fullScreenSubject = document.querySelector(HtmlTemplate.selectors.fullScreenSubject);
-        if (!fullScreenSubject) {
-            throw Error(`Was unable to find a full screen subject by selector '${HtmlTemplate.selectors.fullScreenSubject}'`);
-        }
+        const fullScreenSubject = document.querySelector(HtmlTemplate.selectors.fullScreenSubject) ??
+            throwError(`Was unable to find a full screen subject by selector '${HtmlTemplate.selectors.fullScreenSubject}'`);
         this.#fullScreenSubject = fullScreenSubject;
         const nativeRequestFullscreen = this.#fullScreenSubject.requestFullscreen ??
             this.#fullScreenSubject.webkitRequestFullscreen ??

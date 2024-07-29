@@ -1,9 +1,10 @@
 import { HtmlTemplate } from "../HtmlTemplate";
 import { throwError } from "../utils/throwError";
-import { wait } from "../utils/wait";
 
 export class Loading {
-  readonly #minWaitToAvoidFlicker: Promise<void> = wait(750);
+  readonly #minWaitToAvoidFlicker: Promise<void> = new Promise(resolve => {
+    setTimeout(() => resolve(), 750);
+  });
 
   readonly #startButton: HTMLElement;
   readonly #startClicked: Promise<void>;

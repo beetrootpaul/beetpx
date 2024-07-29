@@ -5,8 +5,8 @@ import { BeetPx } from "./BeetPx";
 // test:    valid values
 //
 
-BeetPx.init({ fixedTimestep: "30fps" });
-BeetPx.init({ fixedTimestep: "60fps" });
+BeetPx.start({ fixedTimestep: "30fps" });
+BeetPx.start({ fixedTimestep: "60fps" });
 
 //
 // context: fixedTimestep
@@ -14,28 +14,28 @@ BeetPx.init({ fixedTimestep: "60fps" });
 //
 
 // @ts-expect-error
-BeetPx.init({ fixedTimestep: "0fps" });
+BeetPx.start({ fixedTimestep: "0fps" });
 // @ts-expect-error
-BeetPx.init({ fixedTimestep: "59fps" });
+BeetPx.start({ fixedTimestep: "59fps" });
 // @ts-expect-error
-BeetPx.init({ fixedTimestep: "120fps" });
+BeetPx.start({ fixedTimestep: "120fps" });
 
 // @ts-expect-error
-BeetPx.init({ fixedTimestep: 30 });
+BeetPx.start({ fixedTimestep: 30 });
 // @ts-expect-error
-BeetPx.init({ fixedTimestep: 60 });
+BeetPx.start({ fixedTimestep: 60 });
 
 // @ts-expect-error
-BeetPx.init({ fixedTimestep: null });
+BeetPx.start({ fixedTimestep: null });
 
 //
 // context: canvasSize
 // test:    valid values
 //
 
-BeetPx.init({ canvasSize: "64x64" });
-BeetPx.init({ canvasSize: "128x128" });
-BeetPx.init({ canvasSize: "256x256" });
+BeetPx.start({ canvasSize: "64x64" });
+BeetPx.start({ canvasSize: "128x128" });
+BeetPx.start({ canvasSize: "256x256" });
 
 //
 // context: canvasSize
@@ -43,18 +43,18 @@ BeetPx.init({ canvasSize: "256x256" });
 //
 
 // @ts-expect-error
-BeetPx.init({ canvasSize: "1x1" });
+BeetPx.start({ canvasSize: "1x1" });
 // @ts-expect-error
-BeetPx.init({ canvasSize: "512x512" });
+BeetPx.start({ canvasSize: "512x512" });
 // @ts-expect-error
-BeetPx.init({ canvasSize: "1980x1080" });
+BeetPx.start({ canvasSize: "1980x1080" });
 
 // @ts-expect-error
-BeetPx.init({ canvasSize: 64 });
+BeetPx.start({ canvasSize: 64 });
 // @ts-expect-error
-BeetPx.init({ canvasSize: 128 });
+BeetPx.start({ canvasSize: 128 });
 // @ts-expect-error
-BeetPx.init({ canvasSize: 256 });
+BeetPx.start({ canvasSize: 256 });
 
 // @ts-expect-error
-BeetPx.init({ canvasSize: null });
+BeetPx.start({ canvasSize: null });

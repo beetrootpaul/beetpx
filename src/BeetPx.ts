@@ -1,6 +1,6 @@
 // noinspection JSUnusedGlobalSymbols
 
-import { Engine, type BpxEngineConfig } from "./Engine";
+import { type BpxEngineConfig, Engine } from "./Engine";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { BpxBrowserType } from "./browser/BrowserTypeDetector";
@@ -26,7 +26,6 @@ import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFra
 import { clamp } from "./utils/clamp";
 import { drawTextWithOutline } from "./utils/drawTextWithOutline";
 import { identity } from "./utils/identity";
-import { isDefined } from "./utils/isDefined";
 import { lerp } from "./utils/lerp";
 import { mod } from "./utils/mod";
 import { noop } from "./utils/noop";
@@ -39,23 +38,44 @@ import { throwError } from "./utils/throwError";
 import { trigAtan2 } from "./utils/trigAtan2";
 import { trigCos } from "./utils/trigCos";
 import { trigSin } from "./utils/trigSin";
-import { wait } from "./utils/wait";
 
 /////////////////////////////////////////////////////////////////////////////
 
 export class BeetPx {
   static #engine: Engine;
 
+  static #dataStoredBeforeEngineStarted: {
+    onStarted?: () => void;
+    onUpdate?: () => void;
+    onDraw?: () => void;
+  } = {};
+
   //
   // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
   //
 
-  static async init(config?: BpxEngineConfig): ReturnType<Engine["init"]> {
+  static async start(config?: BpxEngineConfig): Promise<void> {
+    if (this.#engine) {
+      throw Error("BeetPx is already started");
+    }
+
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
     this.#engine = new Engine(config);
     const { startGame } = await this.#engine.init();
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
-    return { startGame };
+
+    if (this.#dataStoredBeforeEngineStarted.onStarted) {
+      this.#engine.setOnStarted(this.#dataStoredBeforeEngineStarted.onStarted);
+    }
+    if (this.#dataStoredBeforeEngineStarted.onUpdate) {
+      this.#engine.setOnUpdate(this.#dataStoredBeforeEngineStarted.onUpdate);
+    }
+    if (this.#dataStoredBeforeEngineStarted.onDraw) {
+      this.#engine.setOnDraw(this.#dataStoredBeforeEngineStarted.onDraw);
+    }
+    this.#dataStoredBeforeEngineStarted = {};
+
+    return await startGame();
   }
 
   static get debug(): typeof DebugMode.enabled {
@@ -93,16 +113,28 @@ export class BeetPx {
   // lifecycle methods
   //
 
-  static setOnStarted: Engine["setOnStarted"] = (...args) => {
-    return this.#tryGetEngine().setOnStarted(...args);
+  static setOnStarted: Engine["setOnStarted"] = (onStarted?: () => void) => {
+    if (this.#engine) {
+      this.#engine.setOnStarted(onStarted);
+    } else {
+      this.#dataStoredBeforeEngineStarted.onStarted = onStarted;
+    }
   };
 
-  static setOnUpdate: Engine["setOnUpdate"] = (...args) => {
-    return this.#tryGetEngine().setOnUpdate(...args);
+  static setOnUpdate: Engine["setOnUpdate"] = (onUpdate?: () => void) => {
+    if (this.#engine) {
+      this.#engine.setOnUpdate(onUpdate);
+    } else {
+      this.#dataStoredBeforeEngineStarted.onUpdate = onUpdate;
+    }
   };
 
-  static setOnDraw: Engine["setOnDraw"] = (...args) => {
-    return this.#tryGetEngine().setOnDraw(...args);
+  static setOnDraw: Engine["setOnDraw"] = (onDraw?: () => void) => {
+    if (this.#engine) {
+      this.#engine.setOnDraw(onDraw);
+    } else {
+      this.#dataStoredBeforeEngineStarted.onDraw = onDraw;
+    }
   };
 
   static restart: Engine["restart"] = (...args) => {
@@ -325,7 +357,7 @@ export class BeetPx {
   static #tryGetEngine(drawFnNameToLogIfOutsideDrawCallback?: string): Engine {
     if (!this.#engine) {
       throw Error(
-        `Tried to access BeetPx API without calling BeetPx.init(…) first.`,
+        `Tried to access BeetPx API without calling BeetPx.start(…) first.`,
       );
     }
     if (
@@ -561,7 +593,6 @@ export class BeetPx {
     clamp,
     drawTextWithOutline,
     identity,
-    isDefined,
     lerp,
     mod,
     noop,
@@ -574,7 +605,6 @@ export class BeetPx {
     trigAtan2,
     trigCos,
     trigSin,
-    wait,
   };
 }
 

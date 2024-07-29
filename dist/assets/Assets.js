@@ -1,3 +1,4 @@
+import { throwError } from "../utils/throwError";
 export class Assets {
     #images = new Map();
     #sounds = new Map();
@@ -12,24 +13,15 @@ export class Assets {
         this.#jsons.set(jsonUrl, jsonAsset);
     }
     getImageAsset(imageUrl) {
-        const imageAsset = this.#images.get(imageUrl);
-        if (!imageAsset) {
-            throw Error(`Assets: There is no image loaded for: ${imageUrl}`);
-        }
-        return imageAsset;
+        return (this.#images.get(imageUrl) ??
+            throwError(`Assets: There is no image loaded for: ${imageUrl}`));
     }
     getSoundAsset(soundUrl) {
-        const soundAsset = this.#sounds.get(soundUrl);
-        if (!soundAsset) {
-            throw Error(`Assets: There is no sound loaded for: ${soundUrl}`);
-        }
-        return soundAsset;
+        return (this.#sounds.get(soundUrl) ??
+            throwError(`Assets: There is no sound loaded for: ${soundUrl}`));
     }
     getJsonAsset(jsonUrl) {
-        const jsonAsset = this.#jsons.get(jsonUrl);
-        if (!jsonAsset) {
-            throw Error(`Assets: There is no JSON loaded for: ${jsonUrl}`);
-        }
-        return jsonAsset;
+        return (this.#jsons.get(jsonUrl) ??
+            throwError(`Assets: There is no JSON loaded for: ${jsonUrl}`));
     }
 }
