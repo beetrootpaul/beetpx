@@ -1,26 +1,19 @@
-import { $, $aspr, $d, $timer, $u, $v } from "../../src";
+import { BpxVector2d } from "../../src";
 
-export class Movement {
-  static assetUrls = ["animation.png"];
+export interface MovementFactory {
+  (startXy: BpxVector2d): Movement;
+}
 
-  #timer = $timer($.canvasSize.x, { loop: true });
-  #animation = $aspr("animation.png")(
-    48,
-    48,
-    $u.repeatEachElement(
-      4,
-      $u.range(12).map((i) => [48 * i, 0]),
-    ),
-  );
+export interface Movement {
+  get xy(): BpxVector2d;
 
-  draw(): void {
-    $d.sprite(
-      this.#animation.current,
-      $v(
-        this.#timer.t,
-        $.canvasSize.y * (0.5 + 0.5 * $u.trigCos(this.#timer.progress)),
-      ),
-      { centerXy: [true, true] },
-    );
-  }
+  get speed(): BpxVector2d;
+
+  get hasFinished(): boolean;
+
+  pause(): void;
+
+  resume(): void;
+
+  update(): void;
 }

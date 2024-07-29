@@ -8,6 +8,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "test": "vitest run",
     "start": "beetpx dev --open",
     "prod": "beetpx build && beetpx preview --open",
     "zip": "beetpx build && beetpx zip",
@@ -19,6 +20,7 @@
     "@beetpx/beetpx": "file:../",
     "prettier": "3.3.3",
     "prettier-plugin-organize-imports": "4.0.0",
-    "typescript": "5.5.3"
+    "typescript": "5.5.3",
+    "vitest": "2.0.4"
   }
 }
