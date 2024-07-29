@@ -1,20 +1,8 @@
-import { beforeEach, describe, expect, test, vi } from "vitest";
-import { BeetPx } from "../../src";
+import { describe, expect, test } from "vitest";
 import { TimerWrapper } from "./TimerWrapper";
+import { incrementFrameNumber } from "./test-setup/stub-frame-number";
 
 describe("TimerWrapper", () => {
-  let stubbedFrameNumber = 1;
-
-  function incrementFrameNumber(): void {
-    stubbedFrameNumber += 1;
-  }
-
-  beforeEach(() => {
-    vi.spyOn(BeetPx, "frameNumberOutsidePause", "get").mockImplementation(
-      () => stubbedFrameNumber,
-    );
-  });
-
   test("should pass", () => {
     const tw = new TimerWrapper(10);
     expect(tw.t).toBe(0);
