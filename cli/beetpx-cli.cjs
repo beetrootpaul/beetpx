@@ -49,6 +49,14 @@ const yargsBuilderOpen = {
   },
 };
 
+const yargsBuilderTimestamp = {
+  timestamp: {
+    type: "boolean",
+    describe: "Add a timestamp to the generated ZIP file.",
+    demandOption: false,
+  },
+};
+
 // yargs docs: https://yargs.js.org/docs/
 const argv = require("yargs")
   .strict()
@@ -76,6 +84,9 @@ const argv = require("yargs")
   .command(
     "zip",
     "Generates a ZIP file with a previously built production-ready bundle and static assets in it. Ready to be uploaded to e.g. itch.io.",
+    {
+      ...yargsBuilderTimestamp,
+    },
   )
   .check((argv, options) => {
     const { htmlIcon } = argv;
@@ -178,7 +189,9 @@ if (argv._.includes("dev") || argv._.length <= 0) {
     open: argv.open ?? false,
   });
 } else if (argv._.includes("zip")) {
-  runZipCommand().catch(err => {
+  runZipCommand({
+    timestamp: argv.timestamp ?? false,
+  }).catch(err => {
     console.error(err);
     process.exit(1);
   });
@@ -379,13 +392,32 @@ function runPreviewCommand(params) {
     });
 }
 
-async function runZipCommand() {
+async function runZipCommand(params) {
+  const { timestamp } = params;
+
   fs.mkdirSync(gameCodebase.distZipDir, {
     recursive: true,
   });
 
   const inputDir = path.resolve(gameCodebase.bpxBuildOutDir, "dist");
-  const outputZip = path.resolve(gameCodebase.distZipDir, "game.zip");
+
+  let zipFilename;
+  if (timestamp) {
+    const now = new Date();
+    const timestampFilenamePart =
+      now.getUTCFullYear().toFixed(0).padStart(4, "0") +
+      (now.getUTCMonth() + 1).toFixed(0).padStart(2, "0") +
+      now.getUTCDate().toFixed().padStart(2, "0") +
+      "_" +
+      now.getUTCHours().toString().padStart(2, "0") +
+      now.getUTCMinutes().toString().padStart(2, "0") +
+      now.getUTCSeconds().toString().padStart(2, "0") +
+      "_Z";
+    zipFilename = `game_${timestampFilenamePart}.zip`;
+  } else {
+    zipFilename = "game.zip";
+  }
+  const outputZip = path.resolve(gameCodebase.distZipDir, zipFilename);
 
   if (fs.existsSync(outputZip)) {
     fs.rmSync(outputZip);
