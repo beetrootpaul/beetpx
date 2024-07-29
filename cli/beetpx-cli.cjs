@@ -294,7 +294,11 @@ function runDevCommand(params) {
     })
     .then(devServer =>
       devServer.listen().then(() => {
-        devServer.printUrls();
+        // We don't use `devServer.printUrls()` here, because the URL logged
+        //   there is bare `devServer.resolvedUrls.local`, which doesn't
+        //   point to the proper `index.html`.
+        const url = `${devServer.resolvedUrls.local}.beetpx/dev/index.html`;
+        console.log(`\n  ➜  ${url}\n`);
       }),
     )
     .catch(err => {
@@ -384,7 +388,13 @@ function runPreviewCommand(params) {
       logLevel: "info",
     })
     .then(previewServer => {
-      previewServer.printUrls();
+      // We don't use `previewServer.printUrls()` here just for sake of consistency
+      //   with the way we print the URL for `beetpx dev`. Also, the built-in
+      //   function doesn't include `index.html` in the URL, which is not
+      //   required, but a bit inconsistent with what is opened in the browser
+      //   thanks to the `open` param of the `.preview(…)` call above.
+      const url = `${previewServer.resolvedUrls.local}index.html`;
+      console.log(`\n  ➜  ${url}\n`);
     })
     .catch(err => {
       console.error(err);
