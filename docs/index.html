@@ -17,10 +17,11 @@
       href="./BeetPx_logo_x5.png"
     />
 
+    <!-- Code taken from https://fonts.google.com/selection/embed -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Maven+Pro:wght@400..900&display=swap"
       rel="stylesheet"
     />
 
@@ -29,21 +30,18 @@
         --color-peach: rgb(254, 203, 176);
         --color-purple: rgb(167, 64, 105);
         --color-teal: rgb(25, 48, 67);
-
         --body-border-size: 1rem;
       }
 
       html {
         margin: 0;
         padding: 0;
+        font-size: 125%;
       }
 
       body {
         margin: 0;
-
         background-color: var(--color-peach);
-
-        font-size: 20px;
       }
 
       #body-subelement-with-border-inner-radius {
@@ -52,15 +50,21 @@
         margin: var(--body-border-size);
         box-sizing: border-box;
         border-radius: 2rem;
-        padding: 3rem 2rem 1rem 2rem;
-
+        padding: 3rem 2rem 2rem 2rem;
         background-color: var(--color-teal);
       }
 
       * {
         color: rgb(255, 255, 255);
-
         font-family: "Maven Pro", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      code,
+      code * {
+        font-family: "JetBrains Mono", monospace;
         font-optical-sizing: auto;
         font-weight: 400;
         font-style: normal;
@@ -68,15 +72,10 @@
 
       a {
         text-decoration: none;
-
-        &:hover {
-          /*text-decoration: underline;*/
-        }
       }
 
       main {
         margin: 0;
-
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -84,23 +83,44 @@
 
         & h1 {
           margin: 3rem 0 2rem 0;
-
           font-size: 2.6rem;
           font-weight: 500;
         }
 
         & h2 {
-          margin: 0 0 1rem 0;
-
-          font-size: 1.6rem;
+          margin: 0 0 4rem 0;
+          font-size: 1.4rem;
         }
+      }
 
+      #quick-start {
+        margin-bottom: 2rem;
+        border: 1px solid var(--color-peach);
+        border-radius: 1rem;
+        padding: 1rem;
+        font-size: 0.9rem;
+
+        & code {
+          display: block;
+          padding-bottom: 1rem;
+
+          &:last-of-type {
+            padding-bottom: 0;
+          }
+
+          & span {
+            color: var(--color-peach);
+          }
+        }
+      }
+
+      #links {
         & ol {
           list-style-type: none;
           padding-left: 0;
 
           & li {
-            margin: 0.5rem 0;
+            margin: 0.7rem 0;
 
             & a {
               border-bottom: 1px solid var(--color-peach);
@@ -108,11 +128,16 @@
 
               &:hover {
                 border-bottom-width: 2px;
-
                 color: var(--color-peach);
               }
             }
           }
+        }
+      }
+
+      @media (max-width: 810px) or (max-height: 810px) {
+        html {
+          font-size: 80%;
         }
       }
     </style>
@@ -123,46 +148,53 @@
         <img src="./BeetPx_logo_x5.png" alt="BeetPx logo" />
         <h1>BeetPx</h1>
         <h2>A TypeScript engine for pixel art browser games</h2>
-        <ol>
-          <li><a href="/docs/0.44.1"> Docs </a></li>
-          <li>
-            <a
-              href="https://github.com/beetrootpaul/beetpx-examples"
-              rel="noopener noreferrer"
-            >
-              Examples
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://beetrootpaul.itch.io/beetpx-input-tester"
-              rel="noopener noreferrer"
-            >
-              Input Tester
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/beetrootpaul/beetpx"
-              rel="noopener noreferrer"
-            >
-              GitHub
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.npmjs.com/package/@beetpx/beetpx"
-              rel="noopener noreferrer"
-            >
-              npm
-            </a>
-          </li>
-          <li>
-            <a href="https://beetrootpaul.com/" rel="noopener noreferrer">
-              beetrootpaul.com
-            </a>
-          </li>
-        </ol>
+        <section id="quick-start">
+          <code>npm init @beetpx/beetpx-game@latest <span>my-game</span></code>
+          <code>cd <span>my-game</span></code>
+          <code>npm install</code>
+        </section>
+        <section id="links">
+          <ol>
+            <li><a href="/docs/0.44.1"> Docs </a></li>
+            <li>
+              <a
+                href="https://github.com/beetrootpaul/beetpx-examples"
+                rel="noopener noreferrer"
+              >
+                Examples
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://beetrootpaul.itch.io/beetpx-input-tester"
+                rel="noopener noreferrer"
+              >
+                Input Tester
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/beetrootpaul/beetpx"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.npmjs.com/package/@beetpx/beetpx"
+                rel="noopener noreferrer"
+              >
+                npm
+              </a>
+            </li>
+            <li>
+              <a href="https://beetrootpaul.com/" rel="noopener noreferrer">
+                beetrootpaul.com
+              </a>
+            </li>
+          </ol>
+        </section>
       </main>
     </div>
   </body>
