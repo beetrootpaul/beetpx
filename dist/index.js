@@ -18,6 +18,6 @@ export { BpxSprite } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
 export { BpxTimerSequence } from "./timer/TimerSequence";
 
-export { $, $d, $u, BeetPx } from "./BeetPx";
+export { $, $d, $u, BeetPx, BeetPxDraw, BeetPxUtils } from "./BeetPx";
 
 export * from "./shorthands";

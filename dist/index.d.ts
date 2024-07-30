@@ -486,45 +486,152 @@ declare class BpxTimerSequence<TPhaseName extends string> {
     restart(): void;
 }
 
-declare function assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
-
-declare function booleanChangingEveryNthFrame(n: number, opts?: {
-    onGamePause?: "pause" | "ignore";
-}): boolean;
-
-declare function clamp(a: number, b: number, c: number): number;
-
-declare function drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, opts?: {
-    centerXy?: [boolean, boolean];
-    scaleXy?: BpxVector2d;
-}): void;
-
-declare function identity<Param>(param: Param): Param;
-
-declare function lerp(a: number, b: number, t: number, opts?: {
-    clamp?: boolean;
-}): number;
-
-declare function mod(value: number, modulus: number): number;
-
-declare function noop(): void;
-
-declare function offset4Directions(): BpxVector2d[];
-
-declare function offset8Directions(): BpxVector2d[];
-
-declare function randomElementOf<TElement>(array: TElement[]): TElement | undefined;
-
-declare function range(n: number): number[];
-
-declare function repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
-
-declare function throwError(message: string): never;
-
-declare function trigAtan2(x: number, y: number): number;
-
-declare function trigSin(turnAngle: number): number;
-
+declare class BeetPxUtils {
+    private constructor();
+    /**
+     * This function is meant to be used in a last branch of `if - else if - … - else`
+     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+     *   a union type of which we check all possible cases. Someday we add one more
+     *   type to the union, but we forget to extend our `switch` by that one more `case`.
+     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+     *   will inform us about such mistake.
+     *
+     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+     */
+    static assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
+    static booleanChangingEveryNthFrame(n: number, opts?: {
+        onGamePause?: "pause" | "ignore";
+    }): boolean;
+    /**
+     * Returns the middle number. Example usage: `clamp(min, value, max)`
+     *   in order to find a value which is:
+     *   - `value` if it is `>= min` and `<= max`
+     *   - `min` if `value` is `< min`
+     *   - `max` if `value` is `> max`
+     */
+    static clamp(a: number, b: number, c: number): number;
+    static drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textColor: BpxRgbColor, outlineColor: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+    }): void;
+    static identity<Param>(param: Param): Param;
+    static lerp(a: number, b: number, t: number, opts?: {
+        clamp?: boolean;
+    }): number;
+    /**
+     * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+     */
+    static mod(value: number, modulus: number): number;
+    static noop(): void;
+    /**
+     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
+     */
+    static offset4Directions(): [
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d
+    ];
+    /**
+     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
+     */
+    static offset8Directions(): [
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d,
+        BpxVector2d
+    ];
+    static randomElementOf<TElement>(array: TElement[]): TElement | undefined;
+    static range(n: number): number[];
+    static repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
+    /**
+     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+     */
+    static throwError(message: string): never;
+    /**
+     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigAtan2(x: number, y: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigCos(turnAngle: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    static trigSin(turnAngle: number): number;
+}
+declare class BeetPxDraw {
+    #private;
+    private constructor();
+    static clearCanvas(color: BpxRgbColor): void;
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
+    static setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
+    /**
+     * @returns - previous clipping region in form of an array: [xy, wh]
+     */
+    static removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
+    /**
+     * Sets a new XY (left-top corner) of a camera's viewport
+     *
+     * @returns previous camera XY
+     */
+    static setCameraXy(xy: BpxVector2d): BpxVector2d;
+    /**
+     * @returns previous pattern
+     */
+    static setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
+    static pixel(xy: BpxVector2d, color: BpxRgbColor): void;
+    /**
+     * Draws pixels based on a visual 2d representation in form of rows
+     *   (designated by new lines) where `#` and `-` stand for a colored
+     *   pixel and a lack of a pixel. Whitespaces are ignored.
+     */
+    static pixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
+    }): void;
+    static line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    static rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    static rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    static rectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    static ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    static ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    static ellipseOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
+    /**
+     * @returns previous sprite color mapping
+     */
+    static setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
+    static sprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+        flipXy?: [boolean, boolean];
+    }): void;
+    /**
+     * @returns - previously used font
+     */
+    static setFont(font: BpxFont): BpxFont;
+    /**
+     * @returns - previously used color markers
+     */
+    static setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
+    static measureText(text: string, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+    }): BpxTextMeasurement;
+    static text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
+        centerXy?: [boolean, boolean];
+        scaleXy?: BpxVector2d;
+    }): void;
+    static takeCanvasSnapshot(): void;
+}
 declare class BeetPx {
     #private;
     private constructor();
@@ -608,252 +715,10 @@ declare class BeetPx {
     static getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset;
     static getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset;
     static getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
-    static draw: {
-        clearCanvas(color: BpxRgbColor): void;
-        /**
-         * @returns - previous clipping region in form of an array: [xy, wh]
-         */
-        setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
-        /**
-         * @returns - previous clipping region in form of an array: [xy, wh]
-         */
-        removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
-        /**
-         * Sets a new XY (left-top corner) of a camera's viewport
-         *
-         * @returns previous camera XY
-         */
-        setCameraXy(xy: BpxVector2d): BpxVector2d;
-        /**
-         * @returns previous pattern
-         */
-        setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
-        pixel(xy: BpxVector2d, color: BpxRgbColor): void;
-        /**
-         * Draws pixels based on a visual 2d representation in form of rows
-         *   (designated by new lines) where `#` and `-` stand for a colored
-         *   pixel and a lack of a pixel. Whitespaces are ignored.
-         */
-        pixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
-            centerXy?: [boolean, boolean];
-            scaleXy?: BpxVector2d;
-            flipXy?: [boolean, boolean];
-        }): void;
-        line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-        rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-        rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-        rectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-        ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-        ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-        ellipseOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-        /**
-         * @returns previous sprite color mapping
-         */
-        setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-        sprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
-            centerXy?: [boolean, boolean];
-            scaleXy?: BpxVector2d;
-            flipXy?: [boolean, boolean];
-        }): void;
-        /**
-         * @returns - previously used font
-         */
-        setFont(font: BpxFont): BpxFont;
-        /**
-         * @returns - previously used color markers
-         */
-        setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
-        measureText(text: string, opts?: {
-            centerXy?: [boolean, boolean];
-            scaleXy?: BpxVector2d;
-        }): BpxTextMeasurement;
-        text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
-            centerXy?: [boolean, boolean];
-            scaleXy?: BpxVector2d;
-        }): void;
-        takeCanvasSnapshot(): void;
-    };
-    static utils: {
-        /**
-         * This function is meant to be used in a last branch of `if - else if - … - else`
-         *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
-         *   a union type of which we check all possible cases. Someday we add one more
-         *   type to the union, but we forget to extend our `switch` by that one more `case`.
-         *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
-         *   will inform us about such mistake.
-         *
-         * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
-         */
-        assertUnreachable: typeof assertUnreachable;
-        booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
-        /**
-         * Returns the middle number. Example usage: `clamp(min, value, max)`
-         *   in order to find a value which is:
-         *   - `value` if it is `>= min` and `<= max`
-         *   - `min` if `value` is `< min`
-         *   - `max` if `value` is `> max`
-         */
-        clamp: typeof clamp;
-        drawTextWithOutline: typeof drawTextWithOutline;
-        identity: typeof identity;
-        lerp: typeof lerp;
-        /**
-         * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
-         */
-        mod: typeof mod;
-        noop: typeof noop;
-        /**
-         * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
-         */
-        offset4Directions: typeof offset4Directions;
-        /**
-         * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
-         */
-        offset8Directions: typeof offset8Directions;
-        randomElementOf: typeof randomElementOf;
-        range: typeof range;
-        repeatEachElement: typeof repeatEachElement;
-        /**
-         * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
-         */
-        throwError: typeof throwError;
-        /**
-         * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-         */
-        trigAtan2: typeof trigAtan2;
-        /**
-         * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-         */
-        trigCos(turnAngle: number): number;
-        /**
-         * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-         */
-        trigSin: typeof trigSin;
-    };
 }
 declare const $: typeof BeetPx;
-declare const $d: {
-    clearCanvas(color: BpxRgbColor): void;
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
-    /**
-     * Sets a new XY (left-top corner) of a camera's viewport
-     *
-     * @returns previous camera XY
-     */
-    setCameraXy(xy: BpxVector2d): BpxVector2d;
-    /**
-     * @returns previous pattern
-     */
-    setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
-    pixel(xy: BpxVector2d, color: BpxRgbColor): void;
-    /**
-     * Draws pixels based on a visual 2d representation in form of rows
-     *   (designated by new lines) where `#` and `-` stand for a colored
-     *   pixel and a lack of a pixel. Whitespaces are ignored.
-     */
-    pixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-        flipXy?: [boolean, boolean];
-    }): void;
-    line(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    rect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    rectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    rectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    ellipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    ellipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    ellipseOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    /**
-     * @returns previous sprite color mapping
-     */
-    setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-    sprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-        flipXy?: [boolean, boolean];
-    }): void;
-    /**
-     * @returns - previously used font
-     */
-    setFont(font: BpxFont): BpxFont;
-    /**
-     * @returns - previously used color markers
-     */
-    setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
-    measureText(text: string, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-    }): BpxTextMeasurement;
-    text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-    }): void;
-    takeCanvasSnapshot(): void;
-};
-declare const $u: {
-    /**
-     * This function is meant to be used in a last branch of `if - else if - … - else`
-     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
-     *   a union type of which we check all possible cases. Someday we add one more
-     *   type to the union, but we forget to extend our `switch` by that one more `case`.
-     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
-     *   will inform us about such mistake.
-     *
-     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
-     */
-    assertUnreachable: typeof assertUnreachable;
-    booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
-    /**
-     * Returns the middle number. Example usage: `clamp(min, value, max)`
-     *   in order to find a value which is:
-     *   - `value` if it is `>= min` and `<= max`
-     *   - `min` if `value` is `< min`
-     *   - `max` if `value` is `> max`
-     */
-    clamp: typeof clamp;
-    drawTextWithOutline: typeof drawTextWithOutline;
-    identity: typeof identity;
-    lerp: typeof lerp;
-    /**
-     * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
-     */
-    mod: typeof mod;
-    noop: typeof noop;
-    /**
-     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
-     */
-    offset4Directions: typeof offset4Directions;
-    /**
-     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
-     */
-    offset8Directions: typeof offset8Directions;
-    randomElementOf: typeof randomElementOf;
-    range: typeof range;
-    repeatEachElement: typeof repeatEachElement;
-    /**
-     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
-     */
-    throwError: typeof throwError;
-    /**
-     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    trigAtan2: typeof trigAtan2;
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    trigCos(turnAngle: number): number;
-    /**
-     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-     */
-    trigSin: typeof trigSin;
-};
+declare const $d: typeof BeetPxDraw;
+declare const $u: typeof BeetPxUtils;
 
 declare function $aspr(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;
 declare function $font(config: Partial<BpxFontConfig>): BpxFont;
@@ -921,4 +786,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_1_1, BeetPx, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxVector2d };
+export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_1_1, BeetPx, BeetPxDraw, BeetPxUtils, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAudioPlaybackId, type BpxBrowserType, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxGameButtonName, type BpxGameInputEvent, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevCharMap, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, BpxTimer, BpxTimerSequence, BpxVector2d };

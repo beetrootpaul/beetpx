@@ -1,4 +1,4 @@
-import { BeetPx } from "../BeetPx";
+import { BeetPxDraw } from "../BeetPx";
 import type { BpxRgbColor } from "../color/RgbColor";
 import type { BpxVector2d } from "../misc/Vector2d";
 import { offset8Directions } from "./offset8Directions";
@@ -14,12 +14,12 @@ export function drawTextWithOutline(
   },
 ): void {
   for (const offset of offset8Directions()) {
-    BeetPx.draw.text(text, canvasXy1.add(offset), outlineColor, {
+    BeetPxDraw.text(text, canvasXy1.add(offset), outlineColor, {
       centerXy: opts?.centerXy,
       scaleXy: opts?.scaleXy,
     });
   }
-  BeetPx.draw.text(text, canvasXy1, textColor, {
+  BeetPxDraw.text(text, canvasXy1, textColor, {
     centerXy: opts?.centerXy,
     scaleXy: opts?.scaleXy,
   });

@@ -20,6 +20,7 @@ import { $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb_black, 
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 export class Engine {
+    static engineSingleton;
     #config;
     #assetsToLoad;
     #browserType;
