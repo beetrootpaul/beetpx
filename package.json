@@ -5,6 +5,7 @@
   "license": "MIT",
   "description": "A TypeScript engine for pixel art browser games.",
   "keywords": [
+    "beetpx",
     "browser",
     "browser-games",
     "engine",
@@ -19,7 +20,7 @@
     "pixelart",
     "typescript"
   ],
-  "homepage": "https://github.com/beetrootpaul/beetpx#readme",
+  "homepage": "https://beetpx.dev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/beetrootpaul/beetpx.git"
