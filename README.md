@@ -1,6 +1,6 @@
 # BeetPx
 
-<img src="docs/BeetPx_logo_x5.png" width="80" alt="BeetP logo">
+<img src="logo/BeetPx_logo_x5.png" width="80" alt="BeetP logo">
 
 > A TypeScript engine for pixel art browser games.
 
@@ -8,34 +8,45 @@
 
 <!-- TOC -->
 
-- [Getting Started](#getting-started)
-- [Game Controls](#game-controls)
-- [API Documentation](#api-documentation)
-- [Development Setup](#development-setup)
-- [The Origin](#the-origin)
-- [Credits](#credits)
-  - [Fonts](#fonts)
-  - [Color Palettes](#color-palettes)
-- [Random Notes](#random-notes)
-<!-- TOC -->
+- [BeetPx](#beetpx)
+  - [Getting Started](#getting-started)
+    - [Examples](#examples)
+  - [Game Controls](#game-controls)
+  - [API](#api)
+  - [Development Setup](#development-setup)
+  - [The Origin](#the-origin)
+  - [Credits](#credits)
+    - [Fonts](#fonts)
+    - [Color Palettes](#color-palettes)
+  - [Known Issues](#known-issues)
+  <!-- TOC -->
 
 ---
 
 ## Getting Started
 
-Add it to your project with:
+In your terminal navigate to the parent folder in which you want to create your
+BeetPx game. Then run:
 
 ```shell
-npm install --save-dev --save-exact @beetpx/beetpx
+npm init @beetpx/beetpx-game@latest my-game
+cd my-game
+npm install
 ```
 
-It might make sense in a future to drop `--save-exact` flag, but for now better
-be safe than sorry – in this early phase of development the engine constantly
-evolves and quite often breaking changes are introduced.
+where `my-game` is your desired directory/project name.
 
-ℹ️ 👉 There is a simple single-file example in
-[examples/simple/src/main.ts](https://github.com/beetrootpaul/beetpx/blob/main/examples/simple/src/main.ts)
-. Run it as described in its README.
+To make sure things are working correctly, continue with:
+
+```shell
+npm run tsc
+npm start
+```
+
+### Examples
+
+To see how to use the API, check out the examples:
+https://github.com/beetrootpaul/beetpx-examples/
 
 Also, you might want to take a look at how following projects are using BeetPx:
 
@@ -76,11 +87,10 @@ related engine config fields:
 - **jump to the next frame** (only while in frame-by-frame mode):
   - on keyboard: `.`
 
-To check if your controls work as expected, go to `examples/input-tester`, then
-run `npm install`, then `npm start` and test your controllers in an
-automatically opened browser tab.
+To check if your controls work as expected, go to
+https://beetrootpaul.itch.io/beetpx-input-tester .
 
-### API
+## API
 
 You can find docs at https://beetpx.dev .
 
@@ -165,10 +175,7 @@ There is a PICO-8 color palette ready to use, exported as `$rgb_p8`. That
 palette is created by zep and available under a CC-0 license (public domain,
 free to use). For more info see: https://www.lexaloffle.com/pico-8.php?page=faq
 
-## Random Notes
+## Known Issues
 
 - Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast
   paced games.
-- It's good to avoid `.forEach`, `.reduce` and similar functions and use classic
-  `for` loops instead. The former tend to have significantly worse performance
-  due to an extra function call in each iteration.
