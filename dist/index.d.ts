@@ -521,6 +521,7 @@ type BpxEngineConfig = {
     globalPause?: {
         available?: boolean;
     };
+    requireConfirmationOnTabClose?: boolean;
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;

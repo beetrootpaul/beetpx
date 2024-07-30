@@ -24,9 +24,6 @@ import { trigSin } from "./utils/trigSin";
 export class BeetPx {
     static #engine;
     static #dataStoredBeforeEngineStarted = {};
-    
-    
-    
     static async start(config) {
         if (this.#engine) {
             throw Error("BeetPx is already started");
