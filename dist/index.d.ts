@@ -521,6 +521,7 @@ type BpxEngineConfig = {
     globalPause?: {
         available?: boolean;
     };
+    requireConfirmationOnTabClose?: boolean;
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;
@@ -607,7 +608,7 @@ declare class BpxPalettePico8 {
  */
 declare class BpxFontConfigPico8 implements BpxFontConfig {
     #private;
-    static readonly spriteSheetUrl = ".beetpx/pico-8-font.png";
+    static readonly spriteSheetUrl = "beetpx/pico-8-font.png";
     ascent: number;
     descent: number;
     lineGap: number;
@@ -751,8 +752,6 @@ declare function drawTextWithOutline(text: string, canvasXy1: BpxVector2d, textC
 
 declare function identity<Param>(param: Param): Param;
 
-declare function isDefined<Value>(value: Value | null | undefined): value is Value;
-
 declare function lerp(a: number, b: number, t: number, opts?: {
     clamp?: boolean;
 }): number;
@@ -794,11 +793,9 @@ declare function trigCos(turnAngle: number): number;
  */
 declare function trigSin(turnAngle: number): number;
 
-declare function wait(millis: number): Promise<void>;
-
 declare class BeetPx {
     #private;
-    static init(config?: BpxEngineConfig): ReturnType<Engine["init"]>;
+    static start(config?: BpxEngineConfig): Promise<void>;
     static get debug(): typeof DebugMode.enabled;
     static get canvasSize(): BpxVector2d;
     /**
@@ -930,7 +927,6 @@ declare class BeetPx {
         clamp: typeof clamp;
         drawTextWithOutline: typeof drawTextWithOutline;
         identity: typeof identity;
-        isDefined: typeof isDefined;
         lerp: typeof lerp;
         mod: typeof mod;
         noop: typeof noop;
@@ -943,7 +939,6 @@ declare class BeetPx {
         trigAtan2: typeof trigAtan2;
         trigCos: typeof trigCos;
         trigSin: typeof trigSin;
-        wait: typeof wait;
     };
 }
 declare const $: typeof BeetPx;
@@ -1021,7 +1016,6 @@ declare const $u: {
     clamp: typeof clamp;
     drawTextWithOutline: typeof drawTextWithOutline;
     identity: typeof identity;
-    isDefined: typeof isDefined;
     lerp: typeof lerp;
     mod: typeof mod;
     noop: typeof noop;
@@ -1034,7 +1028,6 @@ declare const $u: {
     trigAtan2: typeof trigAtan2;
     trigCos: typeof trigCos;
     trigSin: typeof trigSin;
-    wait: typeof wait;
 };
 
 declare function $aspr(imageUrl: BpxImageUrl): BpxImageBoundAnimatedSpriteFactory;

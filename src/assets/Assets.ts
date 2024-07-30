@@ -1,4 +1,5 @@
 import { type PngDataArray } from "fast-png";
+import { throwError } from "../utils/throwError";
 
 export type BpxImageUrl = string;
 export type BpxSoundUrl = string;
@@ -37,26 +38,23 @@ export class Assets {
   }
 
   getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset {
-    const imageAsset = this.#images.get(imageUrl);
-    if (!imageAsset) {
-      throw Error(`Assets: There is no image loaded for: ${imageUrl}`);
-    }
-    return imageAsset;
+    return (
+      this.#images.get(imageUrl) ??
+      throwError(`Assets: There is no image loaded for: ${imageUrl}`)
+    );
   }
 
   getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset {
-    const soundAsset = this.#sounds.get(soundUrl);
-    if (!soundAsset) {
-      throw Error(`Assets: There is no sound loaded for: ${soundUrl}`);
-    }
-    return soundAsset;
+    return (
+      this.#sounds.get(soundUrl) ??
+      throwError(`Assets: There is no sound loaded for: ${soundUrl}`)
+    );
   }
 
   getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset {
-    const jsonAsset = this.#jsons.get(jsonUrl);
-    if (!jsonAsset) {
-      throw Error(`Assets: There is no JSON loaded for: ${jsonUrl}`);
-    }
-    return jsonAsset;
+    return (
+      this.#jsons.get(jsonUrl) ??
+      throwError(`Assets: There is no JSON loaded for: ${jsonUrl}`)
+    );
   }
 }

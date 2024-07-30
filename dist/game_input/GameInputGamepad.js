@@ -1,4 +1,3 @@
-import { isDefined } from "../utils/isDefined";
 import { GamepadMapping8BitDo } from "./gamepad_mapping/GamepadMapping8BitDo";
 import { GamepadMappingFallback } from "./gamepad_mapping/GamepadMappingFallback";
 import { GamepadMappingFirefox8BitDoOther } from "./gamepad_mapping/GamepadMappingFirefox8BitDoOther";
@@ -62,7 +61,7 @@ export class GameInputGamepad {
     connectedGamepadTypes() {
         return new Set(navigator
             .getGamepads()
-            .filter(isDefined)
+            .filter(gamepad => gamepad != null)
             .map(gamepad => BpxGamepadTypeDetector.detect(gamepad)));
     }
     #mappingFor(gamepad) {

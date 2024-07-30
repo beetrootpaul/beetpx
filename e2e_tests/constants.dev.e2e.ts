@@ -13,7 +13,7 @@ declare global {
 }
 
 test("constants injected onto window object", async ({ page }) => {
-  await page.goto("/");
+  await page.goto("./");
 
   const constants = await page.evaluate(() => ({
     c1: window.MY_CONST_1,

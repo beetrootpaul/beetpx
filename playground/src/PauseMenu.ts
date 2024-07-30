@@ -18,6 +18,12 @@ export class PauseMenu {
 
   #selectedItem = 0;
 
+  constructor() {
+    $.startPlaybackLooped("music_base.flac", {
+      onGamePause: "ignore",
+    });
+  }
+
   update() {
     if ($.wasJustPaused) {
       this.#selectedItem = 0;

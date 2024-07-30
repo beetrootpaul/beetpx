@@ -38,6 +38,7 @@ export type BpxEngineConfig = {
   globalPause?: {
     available?: boolean;
   };
+  requireConfirmationOnTabClose?: boolean;
   debugMode?: {
     /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
     available?: boolean;
@@ -62,6 +63,8 @@ export type OnEngineInitialized = {
 };
 
 export class Engine {
+  readonly #config: BpxEngineConfig;
+
   readonly #assetsToLoad: AssetsToLoad;
 
   readonly #browserType: BpxBrowserType;
@@ -122,6 +125,8 @@ export class Engine {
   }
 
   constructor(engineConfig: BpxEngineConfig = {}) {
+    this.#config = engineConfig;
+
     engineConfig.canvasSize ??= "128x128";
     engineConfig.fixedTimestep ??= "60fps";
 
@@ -295,7 +300,7 @@ export class Engine {
     }
     this.#isStarted = true;
 
-    if (window.BEETPX__IS_PROD) {
+    if (this.#config.requireConfirmationOnTabClose) {
       // A popup which prevents user from accidentally closing the browser tab during gameplay.
       // Implementation notes:
       // - returned message seems to be ignored by some browsers, therefore using `""`

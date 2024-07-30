@@ -40,7 +40,7 @@ export class AssetLoader {
     }
     async #loadImage(url) {
         Logger.infoBeetPx(`Assets: loading image "${url}"`);
-        const httpResponse = await fetch(url);
+        const httpResponse = await fetch(this.#withPathFixed(url));
         if (!this.#is2xx(httpResponse.status)) {
             throw Error(`Assets: could not fetch PNG file: "${url}"`);
         }
@@ -82,7 +82,7 @@ export class AssetLoader {
     }
     async #loadSound(url) {
         Logger.infoBeetPx(`Assets: loading sound "${url}"`);
-        const httpResponse = await fetch(url);
+        const httpResponse = await fetch(this.#withPathFixed(url));
         if (!this.#is2xx(httpResponse.status)) {
             throw Error(`Assets: could not fetch sound file: "${url}"`);
         }
@@ -92,12 +92,19 @@ export class AssetLoader {
     }
     async #loadJson(url) {
         Logger.infoBeetPx(`Assets: loading JSON "${url}"`);
-        const httpResponse = await fetch(url);
+        const httpResponse = await fetch(this.#withPathFixed(url));
         if (!this.#is2xx(httpResponse.status)) {
             throw Error(`Assets: could not fetch JSON file: "${url}"`);
         }
         const json = await httpResponse.json();
         this.#assets.addJsonAsset(url, { json });
+    }
+    #withPathFixed(url) {
+        return (url.startsWith("/") ||
+            url.startsWith("http:
+            url.startsWith("https:
+            url
+            : `/${url}`;
     }
     #is2xx(httpStatus) {
         return httpStatus >= 200 && httpStatus < 300;

@@ -187,18 +187,9 @@ describe("GameLoop", () => {
 
 const anyFps = 10;
 
-const rafFn = vi.fn<
-  Parameters<AnimationFrameProvider["requestAnimationFrame"]>,
-  ReturnType<AnimationFrameProvider["requestAnimationFrame"]>
->();
-const updateFn = vi.fn<
-  Parameters<GameLoopCallbacks["updateFn"]>,
-  ReturnType<GameLoopCallbacks["updateFn"]>
->();
-const renderFn = vi.fn<
-  Parameters<GameLoopCallbacks["renderFn"]>,
-  ReturnType<GameLoopCallbacks["renderFn"]>
->();
+const rafFn = vi.fn<AnimationFrameProvider["requestAnimationFrame"]>();
+const updateFn = vi.fn<GameLoopCallbacks["updateFn"]>();
+const renderFn = vi.fn<GameLoopCallbacks["renderFn"]>();
 
 const documentVisibilityStateProvider: {
   visibilityState: DocumentVisibilityState;

@@ -1,6 +1,6 @@
 {
   "name": "@beetpx/beetpx",
-  "version": "0.43.0",
+  "version": "0.44.1",
   "author": "Beetroot Paul",
   "license": "MIT",
   "description": "A TypeScript engine for pixel art browser games.",
@@ -65,7 +65,7 @@
     "audio-buffer-utils": "5.1.2",
     "fast-png": "6.2.0",
     "strip-comments": "2.0.1",
-    "vite": "5.2.7",
+    "vite": "5.3.5",
     "yargs": "17.7.2"
   },
   "devDependencies": {
@@ -80,11 +80,11 @@
     "prettier-plugin-organize-imports": "4.0.0",
     "replace-in-file": "8.1.0",
     "rimraf": "5.0.5",
-    "rollup": "4.13.2",
-    "rollup-plugin-dts": "6.1.0",
+    "rollup": "4.19.1",
+    "rollup-plugin-dts": "6.1.1",
     "tslib": "2.6.3",
     "typedoc": "0.26.5",
     "typescript": "5.5.3",
-    "vitest": "1.4.0"
+    "vitest": "2.0.4"
   }
 }
