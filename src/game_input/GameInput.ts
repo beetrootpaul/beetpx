@@ -10,6 +10,9 @@ import { GameInputTouch } from "./GameInputTouch";
 
 export type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 
+/**
+ * @category Game input
+ */
 export type BpxGameInputEvent =
   | null
   | "button_left"

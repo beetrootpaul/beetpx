@@ -8,6 +8,9 @@ export type BpxImageBoundSpriteFactory = (
   y: number,
 ) => BpxSprite;
 
+/**
+ * @category Drawing
+ */
 export class BpxSprite {
   static from(
     imageUrl: BpxImageUrl,

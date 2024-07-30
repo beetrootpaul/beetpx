@@ -1,29 +1,24 @@
+/**
+ * For TypeDoc:
+ * @module API
+ */
+
+/////////////////////////////////////////////////////////////////////////////
+
 declare global {
-  /**
-   * Note: the generated documentation marks this variable as "Not Exported".
-   *   This is *not* true.
-   *
-   * @notExported
-   */
   interface Window {
     BEETPX__IS_PROD: boolean;
     BEETPX__VERSION: string;
   }
 
   /**
-   * Note: This constant is labelled as "Not Exported" in these docs. It is not true.
-   *       We had to mark this constant with `@notExported` only to trick `typedoc`
-   *       into including in these docs here.
-   *
    * @notExported
+   * @category Globals
    */
   const BEETPX__IS_PROD: boolean;
   /**
-   * Note: This constant is labelled as "Not Exported" in these docs. It is not true.
-   *       We had to mark this constant with `@notExported` only to trick `typedoc`
-   *       into including in these docs here.
-   *
    * @notExported
+   * @category Globals
    */
   const BEETPX__VERSION: string;
 }

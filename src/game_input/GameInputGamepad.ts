@@ -20,6 +20,9 @@ export const supportedGamepadTypes = [
   "other",
 ] as const;
 
+/**
+ * @category Game input
+ */
 export type BpxGamepadType = (typeof supportedGamepadTypes)[number];
 
 export class GameInputGamepad implements GameInputSpecialized {

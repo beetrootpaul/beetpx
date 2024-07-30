@@ -6,6 +6,8 @@ import { BpxRgbColor } from "./RgbColor";
  * Links:
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
  *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from here
+ *
+ * @category Drawing
  */
 export class BpxPalettePico8 {
   static black = BpxRgbColor.fromCssHex("#000000");

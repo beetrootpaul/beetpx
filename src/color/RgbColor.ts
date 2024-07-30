@@ -1,5 +1,8 @@
 export type BpxRgbCssHex = string;
 
+/**
+ * @category Drawing
+ */
 export class BpxRgbColor {
   static of(r: number, g: number, b: number): BpxRgbColor {
     return new BpxRgbColor(r, g, b);

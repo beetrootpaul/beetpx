@@ -1,4 +1,23 @@
 {
-  "sidebarLinks": {},
-  "visibilityFilters": {}
+  "visibilityFilters": {},
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": false,
+    "includeFolders": true
+  },
+  "categoryOrder": [
+    "API entry points",
+    "Lifecycle",
+    "Drawing",
+    "Fonts",
+    "Audio",
+    "Game input",
+    "Global pause",
+    "Storage",
+    "Full screen",
+    "*",
+    "Logging",
+    "Globals",
+    "Other"
+  ]
 }

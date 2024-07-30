@@ -49,6 +49,9 @@ import { trigSin } from "./utils/trigSin";
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @category API entry points
+ */
 export class BeetPxUtils {
   // Make sure the constructor is private:
   private constructor() {}
@@ -196,6 +199,9 @@ export class BeetPxUtils {
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @category API entry points
+ */
 export class BeetPxDraw {
   // Make sure the constructor is private:
   private constructor() {}
@@ -378,6 +384,7 @@ export class BeetPxDraw {
   }
 
   /**
+   * @category Fonts
    * @returns - previously used font
    */
   static setFont(font: BpxFont): BpxFont {
@@ -427,6 +434,9 @@ export class BeetPxDraw {
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @category API entry points
+ */
 export class BeetPx {
   // Make sure the constructor is private:
   private constructor() {}
@@ -450,6 +460,9 @@ export class BeetPx {
   // START
   //
 
+  /**
+   * @category Lifecycle
+   */
   static async start(config?: BpxEngineConfig): Promise<void> {
     if (Engine.engineSingleton) {
       throw Error("BeetPx is already started");
@@ -519,6 +532,9 @@ export class BeetPx {
   // lifecycle methods
   //
 
+  /**
+   * @category Lifecycle
+   */
   static setOnStarted(onStarted?: () => void): void {
     if (Engine.engineSingleton) {
       Engine.engineSingleton.setOnStarted(onStarted);
@@ -527,6 +543,9 @@ export class BeetPx {
     }
   }
 
+  /**
+   * @category Lifecycle
+   */
   static setOnUpdate(onUpdate?: () => void): void {
     if (Engine.engineSingleton) {
       Engine.engineSingleton.setOnUpdate(onUpdate);
@@ -535,6 +554,9 @@ export class BeetPx {
     }
   }
 
+  /**
+   * @category Lifecycle
+   */
   static setOnDraw(onDraw?: () => void): void {
     if (Engine.engineSingleton) {
       Engine.engineSingleton.setOnDraw(onDraw);
@@ -543,6 +565,9 @@ export class BeetPx {
     }
   }
 
+  /**
+   * @category Lifecycle
+   */
   static restart(): void {
     this.#tryGetEngine().restart();
   }
@@ -551,18 +576,30 @@ export class BeetPx {
   // Logger
   //
 
+  /**
+   * @category Logging
+   */
   static logDebug(...args: unknown[]): void {
     Logger.debug(...args);
   }
 
+  /**
+   * @category Logging
+   */
   static logInfo(...args: unknown[]): void {
     Logger.info(...args);
   }
 
+  /**
+   * @category Logging
+   */
   static logWarn(...args: unknown[]): void {
     Logger.warn(...args);
   }
 
+  /**
+   * @category Logging
+   */
   static logError(...args: unknown[]): void {
     Logger.error(...args);
   }
@@ -571,54 +608,94 @@ export class BeetPx {
   // Global Pause
   //
 
+  /**
+   * @category Global pause
+   */
   static get isPaused(): boolean {
     return GlobalPause.isActive;
   }
 
+  /**
+   * @category Global pause
+   */
   static get wasJustPaused(): boolean {
     return GlobalPause.wasJustActivated;
   }
 
+  /**
+   * @category Global pause
+   */
   static get wasJustResumed(): boolean {
     return GlobalPause.wasJustDeactivated;
   }
 
+  /**
+   * @category Global pause
+   */
   static pause(): void {
     GlobalPause.activate();
   }
 
+  /**
+   * @category Global pause
+   */
   static resume(): void {
     GlobalPause.deactivate();
   }
 
   //
-  // Game Input & Buttons
+  // Game input
   //
 
+  /**
+   * @category Game input
+   */
   static wasAnyButtonJustPressed(): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasAnyJustPressed();
   }
 
+  /**
+   * @category Game input
+   */
   static wasButtonJustPressed(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustPressed(button);
   }
 
+  /**
+   * @category Game input
+   */
   static wasButtonJustReleased(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustReleased(button);
   }
 
+  /**
+   * @category Game input
+   */
   static isAnyButtonPressed(): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.isAnyPressed();
   }
 
+  /**
+   * @category Game input
+   */
   static isButtonPressed(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.isPressed(button);
   }
 
+  /**
+   * @category Game input
+   * @example
+   * ```ts
+   * this.position += $.getPressedDirection().mul(this.speed);
+   * ```
+   */
   static getPressedDirection(): BpxVector2d {
     return this.#tryGetEngine().gameInput.gameButtons.getPressedDirection();
   }
 
+  /**
+   * @category Game input
+   */
   static setButtonRepeating(
     button: BpxGameButtonName,
     repeating: {
@@ -632,14 +709,23 @@ export class BeetPx {
     );
   }
 
+  /**
+   * @category Game input
+   */
   static getRecentInputMethods(): Set<GameInputMethod> {
     return this.#tryGetEngine().gameInput.getRecentInputMethods();
   }
 
+  /**
+   * @category Game input
+   */
   static getConnectedGamepadTypes(): Set<BpxGamepadType> {
     return this.#tryGetEngine().gameInput.getConnectedGamepadTypes();
   }
 
+  /**
+   * @category Game input
+   */
   static getEventsCapturedInLastUpdate(): Set<BpxGameInputEvent> {
     return this.#tryGetEngine().gameInput.getEventsCapturedInLastUpdate();
   }
@@ -648,18 +734,30 @@ export class BeetPx {
   // Audio API
   //
 
+  /**
+   * @category Audio
+   */
   static isAudioMuted(): boolean {
     return this.#tryGetEngine().audioApi.isAudioMuted();
   }
 
+  /**
+   * @category Audio
+   */
   static muteAudio(opts?: { fadeOutMillis?: number }): void {
     this.#tryGetEngine().audioApi.muteAudio(opts);
   }
 
+  /**
+   * @category Audio
+   */
   static unmuteAudio(opts?: { fadeInMillis?: number }): void {
     this.#tryGetEngine().audioApi.unmuteAudio(opts);
   }
 
+  /**
+   * @category Audio
+   */
   static startPlayback(
     soundUrl: BpxSoundUrl,
     opts?: {
@@ -670,6 +768,9 @@ export class BeetPx {
     return this.#tryGetEngine().audioApi.startPlayback(soundUrl, opts);
   }
 
+  /**
+   * @category Audio
+   */
   static startPlaybackLooped(
     soundUrl: BpxSoundUrl,
     opts?: {
@@ -680,6 +781,9 @@ export class BeetPx {
     return this.#tryGetEngine().audioApi.startPlaybackLooped(soundUrl, opts);
   }
 
+  /**
+   * @category Audio
+   */
   static startPlaybackSequence(
     soundSequence: BpxSoundSequence,
     opts?: {
@@ -693,6 +797,9 @@ export class BeetPx {
     );
   }
 
+  /**
+   * @category Audio
+   */
   static mutePlayback(
     playbackId: BpxAudioPlaybackId,
     opts?: { fadeOutMillis?: number },
@@ -700,6 +807,9 @@ export class BeetPx {
     this.#tryGetEngine().audioApi.mutePlayback(playbackId, opts);
   }
 
+  /**
+   * @category Audio
+   */
   static unmutePlayback(
     playbackId: BpxAudioPlaybackId,
     opts?: { fadeInMillis?: number },
@@ -707,6 +817,9 @@ export class BeetPx {
     this.#tryGetEngine().audioApi.unmutePlayback(playbackId, opts);
   }
 
+  /**
+   * @category Audio
+   */
   static stopPlayback(
     playbackId: BpxAudioPlaybackId,
     opts?: { fadeOutMillis?: number },
@@ -714,14 +827,23 @@ export class BeetPx {
     this.#tryGetEngine().audioApi.stopPlayback(playbackId, opts);
   }
 
+  /**
+   * @category Audio
+   */
   static pausePlayback(playbackId: BpxAudioPlaybackId): void {
     this.#tryGetEngine().audioApi.pausePlayback(playbackId);
   }
 
+  /**
+   * @category Audio
+   */
   static resumePlayback(playbackId: BpxAudioPlaybackId): void {
     this.#tryGetEngine().audioApi.resumePlayback(playbackId);
   }
 
+  /**
+   * @category Audio
+   */
   static getAudioContext(): AudioContext {
     return this.#tryGetEngine().audioApi.getAudioContext();
   }
@@ -730,14 +852,23 @@ export class BeetPx {
   // Full Screen
   //
 
+  /**
+   * @category Full screen
+   */
   static isFullScreenSupported(): boolean {
     return this.#tryGetEngine().fullScreen.isFullScreenSupported();
   }
 
+  /**
+   * @category Full screen
+   */
   static isInFullScreen(): boolean {
     return this.#tryGetEngine().fullScreen.isInFullScreen();
   }
 
+  /**
+   * @category Full screen
+   */
   static toggleFullScreen(): void {
     this.#tryGetEngine().fullScreen.toggleFullScreen();
   }
@@ -746,18 +877,27 @@ export class BeetPx {
   // Storage API
   //
 
+  /**
+   * @category Storage
+   */
   static savePersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(value: PersistedStateValue): void {
     this.#tryGetEngine().storageApi.savePersistedState(value);
   }
 
+  /**
+   * @category Storage
+   */
   static loadPersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(): PersistedStateValue | null {
     return this.#tryGetEngine().storageApi.loadPersistedState();
   }
 
+  /**
+   * @category Storage
+   */
   static clearPersistedState(): void {
     this.#tryGetEngine().storageApi.clearPersistedState();
   }
@@ -766,14 +906,23 @@ export class BeetPx {
   // Direct access to loaded assets
   //
 
+  /**
+   * @category Assets
+   */
   static getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset {
     return this.#tryGetEngine().assets.getImageAsset(imageUrl);
   }
 
+  /**
+   * @category Assets
+   */
   static getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset {
     return this.#tryGetEngine().assets.getSoundAsset(soundUrl);
   }
 
+  /**
+   * @category Assets
+   */
   static getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset {
     return this.#tryGetEngine().assets.getJsonAsset(jsonUrl);
   }

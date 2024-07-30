@@ -15,9 +15,11 @@ BEETPX_VERSION="$(node -p -e "require('./package.json').version")"
 
 echo "Generating the docs ..."
 
+# --alwaysCreateEntryPointModule - Somehow adding a separate navigation level for the module makes the globals (e.g. `BEETPX__IS_PROD`) added to docs.
 npx typedoc \
   --entryPoints src/index.ts \
   --lang en \
+  --alwaysCreateEntryPointModule \
   --includeVersion \
   --titleLink "https://beetpx.dev" \
   --basePath "./docs/${BEETPX_VERSION}" \
