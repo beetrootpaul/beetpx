@@ -25,7 +25,9 @@ npx typedoc \
   --out "./docs/docs/${BEETPX_VERSION}" \
   --cleanOutputDir true \
   --githubPages true \
-  --plugin @zamiell/typedoc-plugin-not-exported
+  --plugin @zamiell/typedoc-plugin-not-exported \
+  --plugin typedoc-plugin-extras \
+  --footerDate
 
 #
 # Main page
