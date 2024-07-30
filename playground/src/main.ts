@@ -39,4 +39,5 @@ $.start({
   globalPause: {
     available: true,
   },
+  requireConfirmationOnTabClose: BEETPX__IS_PROD,
 });

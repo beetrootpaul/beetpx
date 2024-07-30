@@ -20,6 +20,7 @@ import { $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb_black, 
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 export class Engine {
+    #config;
     #assetsToLoad;
     #browserType;
     canvasSize;
@@ -62,6 +63,7 @@ export class Engine {
         return this.#browserType;
     }
     constructor(engineConfig = {}) {
+        this.#config = engineConfig;
         engineConfig.canvasSize ??= "128x128";
         engineConfig.fixedTimestep ??= "60fps";
         window.addEventListener("error", event => {
@@ -189,7 +191,7 @@ export class Engine {
             throw Error("Tried to start a game, but it is already started");
         }
         this.#isStarted = true;
-        if (window.BEETPX__IS_PROD) {
+        if (this.#config.requireConfirmationOnTabClose) {
             
             
             

@@ -50,10 +50,6 @@ export class BeetPx {
     onDraw?: () => void;
   } = {};
 
-  //
-  // The most important function, _has to be called first_ in order to properly initialize other fields and variables.
-  //
-
   static async start(config?: BpxEngineConfig): Promise<void> {
     if (this.#engine) {
       throw Error("BeetPx is already started");
