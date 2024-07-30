@@ -226,7 +226,7 @@ export class DrawApi {
     );
   }
 
-  useFont(font: BpxFont): BpxFont {
+  setFont(font: BpxFont): BpxFont {
     const prev = this.#font;
     this.#font = font;
     return prev;

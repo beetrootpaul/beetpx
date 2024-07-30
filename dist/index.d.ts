@@ -391,7 +391,7 @@ declare class DrawApi {
         scaleXy?: BpxVector2d;
         flipXy?: [boolean, boolean];
     }): void;
-    useFont(font: BpxFont): BpxFont;
+    setFont(font: BpxFont): BpxFont;
     setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
     measureText(text: string, opts?: {
         centerXy?: [boolean, boolean];
@@ -903,7 +903,7 @@ declare class BeetPx {
         /**
          * @returns - previously used font
          */
-        useFont(font: BpxFont): BpxFont;
+        setFont(font: BpxFont): BpxFont;
         /**
          * @returns - previously used color markers
          */
@@ -992,7 +992,7 @@ declare const $d: {
     /**
      * @returns - previously used font
      */
-    useFont(font: BpxFont): BpxFont;
+    setFont(font: BpxFont): BpxFont;
     /**
      * @returns - previously used color markers
      */

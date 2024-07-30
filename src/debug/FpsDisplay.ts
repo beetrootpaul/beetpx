@@ -61,7 +61,7 @@ export class FpsDisplay {
       this.#lastCalculatedAverageFps /= this.#recentSamples.length;
     }
 
-    const prevFont = this.#drawApi.useFont($font_pico8);
+    const prevFont = this.#drawApi.setFont($font_pico8);
 
     const text = this.#lastCalculatedAverageFps.toFixed();
     const wh = $d.measureText(text).wh;
@@ -74,6 +74,6 @@ export class FpsDisplay {
       this.#color,
     );
 
-    this.#drawApi.useFont(prevFont);
+    this.#drawApi.setFont(prevFont);
   }
 }

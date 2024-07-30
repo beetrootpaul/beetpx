@@ -330,8 +330,8 @@ export class BeetPx {
         /**
          * @returns - previously used font
          */
-        useFont(font) {
-            return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
+        setFont(font) {
+            return BeetPx.#tryGetEngine("setFont").drawApi.setFont(font);
         },
         /**
          * @returns - previously used color markers

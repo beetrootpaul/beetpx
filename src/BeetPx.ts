@@ -534,8 +534,8 @@ export class BeetPx {
     /**
      * @returns - previously used font
      */
-    useFont(font: BpxFont): BpxFont {
-      return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
+    setFont(font: BpxFont): BpxFont {
+      return BeetPx.#tryGetEngine("setFont").drawApi.setFont(font);
     },
 
     /**

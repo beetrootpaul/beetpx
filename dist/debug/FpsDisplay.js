@@ -32,10 +32,10 @@ export class FpsDisplay {
             }
             this.#lastCalculatedAverageFps /= this.#recentSamples.length;
         }
-        const prevFont = this.#drawApi.useFont($font_pico8);
+        const prevFont = this.#drawApi.setFont($font_pico8);
         const text = this.#lastCalculatedAverageFps.toFixed();
         const wh = $d.measureText(text).wh;
         this.#drawApi.drawText(text, this.#drawApi.cameraXy.add(this.#alignLeft ? 1 : this.#canvasSize.x - wh.x - 1, this.#alignTop ? 1 : this.#canvasSize.y - wh.y - 1), this.#color);
-        this.#drawApi.useFont(prevFont);
+        this.#drawApi.setFont(prevFont);
     }
 }
