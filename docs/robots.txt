@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://beetpx.dev/sitemap.xml
+Sitemap: http://beetpx.dev/docs/0.44.3/sitemap.xml

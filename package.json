@@ -57,6 +57,8 @@
     "compile": "tsc --project tsconfig.compile.json",
     "compile:watch": "tsc --project tsconfig.compile.json --watch",
     "postcompile": "node ./scripts/removeJsCommentFromDist.cjs && rollup --config ./rollup.config.ts --configPlugin typescript",
+    "website:generate": "./scripts/generateWebsite.sh",
+    "website:open": "./scripts/openWebsite.sh",
     "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "dependencies": {
@@ -83,6 +85,7 @@
     "rollup-plugin-dts": "6.1.1",
     "tslib": "2.6.3",
     "typedoc": "0.26.5",
+    "typedoc-plugin-extras": "3.1.0",
     "typescript": "5.5.3",
     "vitest": "2.0.4"
   }
