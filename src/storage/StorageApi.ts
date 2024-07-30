@@ -1,4 +1,4 @@
-type PersistedStateValueConstraints = Record<
+export type BpxPersistedStateValueConstraints = Record<
   string,
   string | number | boolean | null
 >;
@@ -7,7 +7,7 @@ export class StorageApi {
   static readonly #key: string = "game_stored_state";
 
   savePersistedState<
-    PersistedStateValue extends PersistedStateValueConstraints,
+    PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(value: PersistedStateValue): void {
     window.localStorage.setItem(
       StorageApi.#key,
@@ -16,7 +16,7 @@ export class StorageApi {
   }
 
   loadPersistedState<
-    PersistedStateValue extends PersistedStateValueConstraints,
+    PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(): PersistedStateValue | null {
     const maybeValue: string | null = window.localStorage.getItem(
       StorageApi.#key,

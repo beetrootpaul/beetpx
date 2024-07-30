@@ -13,7 +13,8 @@ export class DrawSprite {
   readonly #canvas: Canvas;
   readonly #options: { disableRounding?: boolean };
 
-  constructor(canvas: Canvas, options: { disableRounding?: boolean } = {}) {
+  constructor(canvas: Canvas, options?: { disableRounding?: boolean }) {
+    options ??= {};
     this.#canvas = canvas;
     this.#options = options;
   }

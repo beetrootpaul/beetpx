@@ -25,6 +25,11 @@ type DrawApiOptions = {
   assets: Assets;
 };
 
+export type BpxTextMeasurement = {
+  wh: BpxVector2d;
+  offset: BpxVector2d;
+};
+
 export class DrawApi {
   readonly #assets: Assets;
 
@@ -246,7 +251,7 @@ export class DrawApi {
       centerXy?: [boolean, boolean];
       scaleXy?: BpxVector2d;
     },
-  ): { wh: BpxVector2d; offset: BpxVector2d } {
+  ): BpxTextMeasurement {
     let maxLineNumber = 0;
     let maxX = 0;
 

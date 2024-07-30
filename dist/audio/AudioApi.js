@@ -109,7 +109,8 @@ export class AudioApi {
     isAudioMuted() {
         return this.#isMuted;
     }
-    muteAudio(opts = {}) {
+    muteAudio(opts) {
+        opts ??= {};
         Logger.debugBeetPx(`AudioApi.muteAudio (fadeOutMillis: ${opts.fadeOutMillis})`);
         if (this.#isMuted)
             return;
@@ -118,7 +119,8 @@ export class AudioApi {
         HtmlTemplate.updateMutedClass(this.#isMuted);
         AudioHelpers.muteGain(this.#globalGainNode, this.#audioContext.currentTime, opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis);
     }
-    unmuteAudio(opts = {}) {
+    unmuteAudio(opts) {
+        opts ??= {};
         Logger.debugBeetPx(`AudioApi.unmuteAudio (fadeInMillis: ${opts.fadeInMillis})`);
         if (!this.#isMuted)
             return;
@@ -127,25 +129,29 @@ export class AudioApi {
         HtmlTemplate.updateMutedClass(this.#isMuted);
         AudioHelpers.unmuteGain(this.#globalGainNode, this.#audioContext.currentTime, opts.fadeInMillis ?? _a.muteUnmuteDefaultFadeMillis);
     }
-    mutePlayback(playbackId, opts = {}) {
+    mutePlayback(playbackId, opts) {
+        opts ??= {};
         Logger.debugBeetPx(`AudioApi.mutePlayback (fadeOutMillis: ${opts.fadeOutMillis})`);
         this.#playbacks
             .get(playbackId)
             ?.mute(opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis);
     }
-    unmutePlayback(playbackId, opts = {}) {
+    unmutePlayback(playbackId, opts) {
+        opts ??= {};
         Logger.debugBeetPx(`AudioApi.unmutePlayback (fadeInMillis: ${opts.fadeInMillis})`);
         this.#playbacks
             .get(playbackId)
             ?.unmute(opts.fadeInMillis ?? _a.muteUnmuteDefaultFadeMillis);
     }
-    #stopAllPlaybacks(opts = {}) {
+    #stopAllPlaybacks(opts) {
+        opts ??= {};
         Logger.debugBeetPx(`AudioApi.#stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`);
         for (const playback of this.#playbacks.values()) {
             playback.stop(this.#isMuted ? 0 : ((opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis)));
         }
     }
-    stopPlayback(playbackId, opts = {}) {
+    stopPlayback(playbackId, opts) {
+        opts ??= {};
         Logger.debugBeetPx(`AudioApi.stopPlayback (fadeOutMillis: ${opts.fadeOutMillis})`);
         this.#playbacks
             .get(playbackId)

@@ -124,7 +124,8 @@ export class Engine {
     return this.#browserType;
   }
 
-  constructor(engineConfig: BpxEngineConfig = {}) {
+  constructor(engineConfig?: BpxEngineConfig) {
+    engineConfig ??= {};
     this.#config = engineConfig;
 
     engineConfig.canvasSize ??= "128x128";
@@ -265,19 +266,19 @@ export class Engine {
     };
   }
 
-  setOnStarted(onStarted?: () => void) {
+  setOnStarted(onStarted?: () => void): void {
     this.#onStarted = onStarted;
   }
 
-  setOnUpdate(onUpdate?: () => void) {
+  setOnUpdate(onUpdate?: () => void): void {
     this.#onUpdate = onUpdate;
   }
 
-  setOnDraw(onDraw?: () => void) {
+  setOnDraw(onDraw?: () => void): void {
     this.#onDraw = onDraw;
   }
 
-  restart() {
+  restart(): void {
     this.#currentFrameNumber = 0;
     this.#currentFrameNumberOutsidePause = 0;
 
