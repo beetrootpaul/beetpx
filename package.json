@@ -5,6 +5,7 @@
   "license": "MIT",
   "description": "A TypeScript engine for pixel art browser games.",
   "keywords": [
+    "beetpx",
     "browser",
     "browser-games",
     "engine",
