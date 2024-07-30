@@ -5,7 +5,8 @@ export class DrawSprite {
     #preparedSprites = new PreparedSprites();
     #canvas;
     #options;
-    constructor(canvas, options = {}) {
+    constructor(canvas, options) {
+        options ??= {};
         this.#canvas = canvas;
         this.#options = options;
     }

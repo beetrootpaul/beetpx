@@ -3,43 +3,81 @@ import { DebugMode } from "../debug/DebugMode";
 export class Logger {
   static readonly #prefix = "[BeetPx]";
 
-  static debugBeetPx(...args: any[]): void {
+  static debugBeetPx(...args: unknown[]): void {
     Logger.debug(Logger.#prefix, ...args);
   }
-  static debug(...args: any[]): void {
+
+  static debug(...args: unknown[]): void {
     if (DebugMode.enabled) {
       console.debug(
         ...args.map(value =>
-          value.__printDebug ? value.__printDebug() : value,
+          (
+            value != null &&
+            typeof value === "object" &&
+            "__printDebug" in value &&
+            typeof value.__printDebug === "function"
+          ) ?
+            value.__printDebug()
+          : value,
         ),
       );
     }
   }
 
-  static infoBeetPx(...args: any[]): void {
+  static infoBeetPx(...args: unknown[]): void {
     Logger.info(Logger.#prefix, ...args);
   }
-  static info(...args: any[]): void {
+
+  static info(...args: unknown[]): void {
     console.info(
-      ...args.map(value => (value.__printDebug ? value.__printDebug() : value)),
+      ...args.map(value =>
+        (
+          value != null &&
+          typeof value === "object" &&
+          "__printDebug" in value &&
+          typeof value.__printDebug === "function"
+        ) ?
+          value.__printDebug()
+        : value,
+      ),
     );
   }
 
-  static warnBeetPx(...args: any[]): void {
+  static warnBeetPx(...args: unknown[]): void {
     Logger.warn(Logger.#prefix, ...args);
   }
-  static warn(...args: any[]): void {
+
+  static warn(...args: unknown[]): void {
     console.warn(
-      ...args.map(value => (value.__printDebug ? value.__printDebug() : value)),
+      ...args.map(value =>
+        (
+          value != null &&
+          typeof value === "object" &&
+          "__printDebug" in value &&
+          typeof value.__printDebug === "function"
+        ) ?
+          value.__printDebug()
+        : value,
+      ),
     );
   }
 
-  static errorBeetPx(...args: any[]): void {
+  static errorBeetPx(...args: unknown[]): void {
     Logger.error(Logger.#prefix, ...args);
   }
-  static error(...args: any[]): void {
+
+  static error(...args: unknown[]): void {
     console.error(
-      ...args.map(value => (value.__printDebug ? value.__printDebug() : value)),
+      ...args.map(value =>
+        (
+          value != null &&
+          typeof value === "object" &&
+          "__printDebug" in value &&
+          typeof value.__printDebug === "function"
+        ) ?
+          value.__printDebug()
+        : value,
+      ),
     );
   }
 }

@@ -62,7 +62,8 @@ export class Engine {
     get detectedBrowserType() {
         return this.#browserType;
     }
-    constructor(engineConfig = {}) {
+    constructor(engineConfig) {
+        engineConfig ??= {};
         this.#config = engineConfig;
         engineConfig.canvasSize ??= "128x128";
         engineConfig.fixedTimestep ??= "60fps";

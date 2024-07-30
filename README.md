@@ -179,3 +179,7 @@ free to use). For more info see: https://www.lexaloffle.com/pico-8.php?page=faq
 
 - Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast
   paced games.
+- In iOS web browsers (Safari, Firefox, etc.) it is possible to go to the
+  previous page by swiping the finger from the left edge. Which means, it is
+  possible to accidentally close the game (while playing it on e.g. itch.io)
+  when trying to use game touch buttons.

@@ -141,7 +141,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(16, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       const text = "Bpx,";
       dts.drawApi.drawText(text, $v(1, 1), c1);
 
@@ -169,7 +169,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(14, 38, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       const text = "Bpx\n\nBpx\n";
       dts.drawApi.drawText(text, $v(1, 1), c1);
 
@@ -228,7 +228,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(15, 8, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
+    dts.drawApi.setFont(testFont);
     const text = "x⏏️x";
     dts.drawApi.drawText(text, $v(1, 1), c1);
 
@@ -252,7 +252,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(20, 8, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       const text = "111B222p333x444";
       dts.drawApi.drawText(text, $v(1, 1), c1);
 
@@ -278,7 +278,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(14, 38, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       const text = "Bpx\n111222333\nBpx\n111222333";
       dts.drawApi.drawText(text, $v(1, 1), c1);
 
@@ -338,7 +338,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [false, false] });
 
       dts.canvas.expectToEqual({
@@ -366,7 +366,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [true, false] });
 
       dts.canvas.expectToEqual({
@@ -394,7 +394,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [false, true] });
 
       dts.canvas.expectToEqual({
@@ -422,7 +422,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(23, 14, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       dts.drawApi.drawText("Bpx,", $v(8, 5), c1, { centerXy: [true, true] });
 
       dts.canvas.expectToEqual({
@@ -451,7 +451,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(18, 12, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
+    dts.drawApi.setFont(testFont);
     dts.drawApi.drawText("Bpx,", $v(2.49, 1.51), c1);
 
     dts.canvas.expectToEqual({
@@ -478,7 +478,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(44, 18, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       dts.drawApi.drawText("Bpx,", $v(1, 1), c1, { scaleXy: $v(3, 2) });
 
       dts.canvas.expectToEqual({
@@ -510,7 +510,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(16, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       dts.drawApi.drawText("Bpx,", $v(1, 1), c1, { scaleXy: $v(-3, -2) });
 
       dts.canvas.expectToEqual({
@@ -534,7 +534,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(16, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       dts.drawApi.drawText("Bpx,", $v(1, 1), c1, { scaleXy: $v(0.9, 0.9) });
 
       dts.canvas.expectToEqual({
@@ -578,7 +578,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(26, 18, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
+    dts.drawApi.setFont(testFont);
     dts.drawApi.drawText("B,", $v(13, 9), c1, {
       centerXy: [true, true],
       scaleXy: $v(4, 2),
@@ -613,7 +613,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(7, 3, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
+    dts.drawApi.setFont(testFont);
     dts.drawApi.drawText("Bpx,", $v(-3, -2), c1);
 
     dts.canvas.expectToEqual({
@@ -630,7 +630,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(16, 10, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
+    dts.drawApi.setFont(testFont);
     dts.drawApi.setCameraXy($v(2, -5));
     dts.drawApi.drawText("Bpx,", $v(1, 1), c1);
 
@@ -655,7 +655,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(16, 10, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
+    dts.drawApi.setFont(testFont);
     dts.drawApi.setDrawingPattern(
       BpxDrawingPattern.from(`
         ##--
@@ -687,7 +687,7 @@ describe("DrawText", () => {
     dts = drawingTestSetup(16, 10, c0);
     dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-    dts.drawApi.useFont(testFont);
+    dts.drawApi.setFont(testFont);
     dts.drawApi.setCameraXy($v(2, -3));
     dts.drawApi.setDrawingPattern(
       BpxDrawingPattern.from(`
@@ -721,7 +721,7 @@ describe("DrawText", () => {
       dts = drawingTestSetup(28, 10, c0);
       dts.assets.addImageAsset(fontImage.uniqueUrl, fontImage.asset);
 
-      dts.drawApi.useFont(testFont);
+      dts.drawApi.setFont(testFont);
       const text = "B[m2]p[m3]x[m4],";
       dts.drawApi.setTextColorMarkers({
         m2: c2,

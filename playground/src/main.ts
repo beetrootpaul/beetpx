@@ -40,4 +40,10 @@ $.start({
     available: true,
   },
   requireConfirmationOnTabClose: BEETPX__IS_PROD,
+  debugMode: {
+    available: !BEETPX__IS_PROD,
+  },
+  frameByFrame: {
+    available: !BEETPX__VERSION,
+  },
 });

@@ -3,7 +3,8 @@ import { $v_0_0 } from "../../shorthands";
 export class DrawPixels {
     #canvas;
     #options;
-    constructor(canvas, options = {}) {
+    constructor(canvas, options) {
+        options ??= {};
         this.#canvas = canvas;
         this.#options = options;
     }

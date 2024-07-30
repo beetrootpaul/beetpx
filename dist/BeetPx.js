@@ -22,6 +22,8 @@ import { trigCos } from "./utils/trigCos";
 import { trigSin } from "./utils/trigSin";
 
 export class BeetPx {
+    
+    constructor() { }
     static #engine;
     static #dataStoredBeforeEngineStarted = {};
     static async start(config) {
@@ -72,48 +74,48 @@ export class BeetPx {
     
     
     
-    static setOnStarted = (onStarted) => {
+    static setOnStarted(onStarted) {
         if (this.#engine) {
             this.#engine.setOnStarted(onStarted);
         }
         else {
             this.#dataStoredBeforeEngineStarted.onStarted = onStarted;
         }
-    };
-    static setOnUpdate = (onUpdate) => {
+    }
+    static setOnUpdate(onUpdate) {
         if (this.#engine) {
             this.#engine.setOnUpdate(onUpdate);
         }
         else {
             this.#dataStoredBeforeEngineStarted.onUpdate = onUpdate;
         }
-    };
-    static setOnDraw = (onDraw) => {
+    }
+    static setOnDraw(onDraw) {
         if (this.#engine) {
             this.#engine.setOnDraw(onDraw);
         }
         else {
             this.#dataStoredBeforeEngineStarted.onDraw = onDraw;
         }
-    };
-    static restart = (...args) => {
-        return this.#tryGetEngine().restart(...args);
-    };
+    }
+    static restart() {
+        this.#tryGetEngine().restart();
+    }
     
     
     
-    static logDebug = (...args) => {
-        return Logger.debug(...args);
-    };
-    static logInfo = (...args) => {
-        return Logger.info(...args);
-    };
-    static logWarn = (...args) => {
-        return Logger.warn(...args);
-    };
-    static logError = (...args) => {
-        return Logger.error(...args);
-    };
+    static logDebug(...args) {
+        Logger.debug(...args);
+    }
+    static logInfo(...args) {
+        Logger.info(...args);
+    }
+    static logWarn(...args) {
+        Logger.warn(...args);
+    }
+    static logError(...args) {
+        Logger.error(...args);
+    }
     
     
     
@@ -135,111 +137,111 @@ export class BeetPx {
     
     
     
-    static wasAnyButtonJustPressed = (...args) => {
-        return this.#tryGetEngine().gameInput.gameButtons.wasAnyJustPressed(...args);
-    };
-    static wasButtonJustPressed = (...args) => {
-        return this.#tryGetEngine().gameInput.gameButtons.wasJustPressed(...args);
-    };
-    static wasButtonJustReleased = (...args) => {
-        return this.#tryGetEngine().gameInput.gameButtons.wasJustReleased(...args);
-    };
-    static isAnyButtonPressed = (...args) => {
-        return this.#tryGetEngine().gameInput.gameButtons.isAnyPressed(...args);
-    };
-    static isButtonPressed = (...args) => {
-        return this.#tryGetEngine().gameInput.gameButtons.isPressed(...args);
-    };
-    static getPressedDirection = (...args) => {
-        return this.#tryGetEngine().gameInput.gameButtons.getPressedDirection(...args);
-    };
-    static setButtonRepeating = (...args) => {
-        return this.#tryGetEngine().gameInput.gameButtons.setButtonRepeating(...args);
-    };
-    static getRecentInputMethods = (...args) => {
-        return this.#tryGetEngine().gameInput.getRecentInputMethods(...args);
-    };
-    static getConnectedGamepadTypes = (...args) => {
-        return this.#tryGetEngine().gameInput.getConnectedGamepadTypes(...args);
-    };
-    static getEventsCapturedInLastUpdate = (...args) => {
-        return this.#tryGetEngine().gameInput.getEventsCapturedInLastUpdate(...args);
-    };
+    static wasAnyButtonJustPressed() {
+        return this.#tryGetEngine().gameInput.gameButtons.wasAnyJustPressed();
+    }
+    static wasButtonJustPressed(button) {
+        return this.#tryGetEngine().gameInput.gameButtons.wasJustPressed(button);
+    }
+    static wasButtonJustReleased(button) {
+        return this.#tryGetEngine().gameInput.gameButtons.wasJustReleased(button);
+    }
+    static isAnyButtonPressed() {
+        return this.#tryGetEngine().gameInput.gameButtons.isAnyPressed();
+    }
+    static isButtonPressed(button) {
+        return this.#tryGetEngine().gameInput.gameButtons.isPressed(button);
+    }
+    static getPressedDirection() {
+        return this.#tryGetEngine().gameInput.gameButtons.getPressedDirection();
+    }
+    static setButtonRepeating(button, repeating) {
+        this.#tryGetEngine().gameInput.gameButtons.setButtonRepeating(button, repeating);
+    }
+    static getRecentInputMethods() {
+        return this.#tryGetEngine().gameInput.getRecentInputMethods();
+    }
+    static getConnectedGamepadTypes() {
+        return this.#tryGetEngine().gameInput.getConnectedGamepadTypes();
+    }
+    static getEventsCapturedInLastUpdate() {
+        return this.#tryGetEngine().gameInput.getEventsCapturedInLastUpdate();
+    }
     
     
     
-    static isAudioMuted = (...args) => {
-        return this.#tryGetEngine().audioApi.isAudioMuted(...args);
-    };
-    static muteAudio = (...args) => {
-        return this.#tryGetEngine().audioApi.muteAudio(...args);
-    };
-    static unmuteAudio = (...args) => {
-        return this.#tryGetEngine().audioApi.unmuteAudio(...args);
-    };
-    static startPlayback = (...args) => {
-        return this.#tryGetEngine().audioApi.startPlayback(...args);
-    };
-    static startPlaybackLooped = (...args) => {
-        return this.#tryGetEngine().audioApi.startPlaybackLooped(...args);
-    };
-    static startPlaybackSequence = (...args) => {
-        return this.#tryGetEngine().audioApi.startPlaybackSequence(...args);
-    };
-    static mutePlayback = (...args) => {
-        return this.#tryGetEngine().audioApi.mutePlayback(...args);
-    };
-    static unmutePlayback = (...args) => {
-        return this.#tryGetEngine().audioApi.unmutePlayback(...args);
-    };
-    static stopPlayback = (...args) => {
-        return this.#tryGetEngine().audioApi.stopPlayback(...args);
-    };
-    static pausePlayback = (...args) => {
-        return this.#tryGetEngine().audioApi.pausePlayback(...args);
-    };
-    static resumePlayback = (...args) => {
-        return this.#tryGetEngine().audioApi.resumePlayback(...args);
-    };
-    static getAudioContext = (...args) => {
-        return this.#tryGetEngine().audioApi.getAudioContext(...args);
-    };
+    static isAudioMuted() {
+        return this.#tryGetEngine().audioApi.isAudioMuted();
+    }
+    static muteAudio(opts) {
+        this.#tryGetEngine().audioApi.muteAudio(opts);
+    }
+    static unmuteAudio(opts) {
+        this.#tryGetEngine().audioApi.unmuteAudio(opts);
+    }
+    static startPlayback(soundUrl, opts) {
+        return this.#tryGetEngine().audioApi.startPlayback(soundUrl, opts);
+    }
+    static startPlaybackLooped(soundUrl, opts) {
+        return this.#tryGetEngine().audioApi.startPlaybackLooped(soundUrl, opts);
+    }
+    static startPlaybackSequence(soundSequence, opts) {
+        return this.#tryGetEngine().audioApi.startPlaybackSequence(soundSequence, opts);
+    }
+    static mutePlayback(playbackId, opts) {
+        this.#tryGetEngine().audioApi.mutePlayback(playbackId, opts);
+    }
+    static unmutePlayback(playbackId, opts) {
+        this.#tryGetEngine().audioApi.unmutePlayback(playbackId, opts);
+    }
+    static stopPlayback(playbackId, opts) {
+        this.#tryGetEngine().audioApi.stopPlayback(playbackId, opts);
+    }
+    static pausePlayback(playbackId) {
+        this.#tryGetEngine().audioApi.pausePlayback(playbackId);
+    }
+    static resumePlayback(playbackId) {
+        this.#tryGetEngine().audioApi.resumePlayback(playbackId);
+    }
+    static getAudioContext() {
+        return this.#tryGetEngine().audioApi.getAudioContext();
+    }
     
     
     
-    static isFullScreenSupported = (...args) => {
-        return this.#tryGetEngine().fullScreen.isFullScreenSupported(...args);
-    };
-    static isInFullScreen = (...args) => {
-        return this.#tryGetEngine().fullScreen.isInFullScreen(...args);
-    };
-    static toggleFullScreen = (...args) => {
-        return this.#tryGetEngine().fullScreen.toggleFullScreen(...args);
-    };
+    static isFullScreenSupported() {
+        return this.#tryGetEngine().fullScreen.isFullScreenSupported();
+    }
+    static isInFullScreen() {
+        return this.#tryGetEngine().fullScreen.isInFullScreen();
+    }
+    static toggleFullScreen() {
+        this.#tryGetEngine().fullScreen.toggleFullScreen();
+    }
     
     
     
-    static savePersistedState = (...args) => {
-        return this.#tryGetEngine().storageApi.savePersistedState(...args);
-    };
-    static loadPersistedState = (...args) => {
-        return this.#tryGetEngine().storageApi.loadPersistedState(...args);
-    };
-    static clearPersistedState = (...args) => {
-        return this.#tryGetEngine().storageApi.clearPersistedState(...args);
-    };
+    static savePersistedState(value) {
+        this.#tryGetEngine().storageApi.savePersistedState(value);
+    }
+    static loadPersistedState() {
+        return this.#tryGetEngine().storageApi.loadPersistedState();
+    }
+    static clearPersistedState() {
+        this.#tryGetEngine().storageApi.clearPersistedState();
+    }
     
     
     
-    static getImageAsset = (...args) => {
-        return this.#tryGetEngine().assets.getImageAsset(...args);
-    };
-    static getSoundAsset = (...args) => {
-        return this.#tryGetEngine().assets.getSoundAsset(...args);
-    };
-    static getJsonAsset = (...args) => {
-        return this.#tryGetEngine().assets.getJsonAsset(...args);
-    };
+    static getImageAsset(imageUrl) {
+        return this.#tryGetEngine().assets.getImageAsset(imageUrl);
+    }
+    static getSoundAsset(soundUrl) {
+        return this.#tryGetEngine().assets.getSoundAsset(soundUrl);
+    }
+    static getJsonAsset(jsonUrl) {
+        return this.#tryGetEngine().assets.getJsonAsset(jsonUrl);
+    }
     
     
     
@@ -330,8 +332,8 @@ export class BeetPx {
         /**
          * @returns - previously used font
          */
-        useFont(font) {
-            return BeetPx.#tryGetEngine("useFont").drawApi.useFont(font);
+        setFont(font) {
+            return BeetPx.#tryGetEngine("setFont").drawApi.setFont(font);
         },
         /**
          * @returns - previously used color markers
@@ -353,22 +355,62 @@ export class BeetPx {
     
     
     static utils = {
+        /**
+         * This function is meant to be used in a last branch of `if - else if - … - else`
+         *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+         *   a union type of which we check all possible cases. Someday we add one more
+         *   type to the union, but we forget to extend our `switch` by that one more `case`.
+         *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+         *   will inform us about such mistake.
+         *
+         * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+         */
         assertUnreachable,
         booleanChangingEveryNthFrame,
+        /**
+         * Returns the middle number. Example usage: `clamp(min, value, max)`
+         *   in order to find a value which is:
+         *   - `value` if it is `>= min` and `<= max`
+         *   - `min` if `value` is `< min`
+         *   - `max` if `value` is `> max`
+         */
         clamp,
         drawTextWithOutline,
         identity,
         lerp,
+        /**
+         * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+         */
         mod,
         noop,
+        /**
+         * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
+         */
         offset4Directions,
+        /**
+         * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
+         */
         offset8Directions,
         randomElementOf,
         range,
         repeatEachElement,
+        /**
+         * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+         */
         throwError,
+        /**
+         * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+         */
         trigAtan2,
-        trigCos,
+        /**
+         * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+         */
+        trigCos(turnAngle) {
+            return trigCos(turnAngle);
+        },
+        /**
+         * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+         */
         trigSin,
     };
 }

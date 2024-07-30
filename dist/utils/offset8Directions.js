@@ -1,5 +1,4 @@
 import { BpxVector2d } from "../misc/Vector2d";
-
 export function offset8Directions() {
     return [
         BpxVector2d.of(-1, -1),

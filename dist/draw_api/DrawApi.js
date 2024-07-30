@@ -100,7 +100,7 @@ export class DrawApi {
         const sourceImageAsset = this.#assets.getImageAsset(sprite.imageUrl);
         this.#sprite.draw(sprite.type === "static" ? sprite : sprite.current, sourceImageAsset, xy.sub(this.cameraXy), opts?.scaleXy ?? $v_1_1, opts?.flipXy ?? [false, false], this.#spriteColorMapping, this.#pattern);
     }
-    useFont(font) {
+    setFont(font) {
         const prev = this.#font;
         this.#font = font;
         return prev;

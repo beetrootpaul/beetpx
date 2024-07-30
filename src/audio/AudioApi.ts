@@ -164,7 +164,8 @@ export class AudioApi {
     return this.#isMuted;
   }
 
-  muteAudio(opts: { fadeOutMillis?: number } = {}): void {
+  muteAudio(opts?: { fadeOutMillis?: number }): void {
+    opts ??= {};
     Logger.debugBeetPx(
       `AudioApi.muteAudio (fadeOutMillis: ${opts.fadeOutMillis})`,
     );
@@ -182,7 +183,8 @@ export class AudioApi {
     );
   }
 
-  unmuteAudio(opts: { fadeInMillis?: number } = {}): void {
+  unmuteAudio(opts?: { fadeInMillis?: number }): void {
+    opts ??= {};
     Logger.debugBeetPx(
       `AudioApi.unmuteAudio (fadeInMillis: ${opts.fadeInMillis})`,
     );
@@ -202,8 +204,9 @@ export class AudioApi {
 
   mutePlayback(
     playbackId: BpxAudioPlaybackId,
-    opts: { fadeOutMillis?: number } = {},
+    opts?: { fadeOutMillis?: number },
   ): void {
+    opts ??= {};
     Logger.debugBeetPx(
       `AudioApi.mutePlayback (fadeOutMillis: ${opts.fadeOutMillis})`,
     );
@@ -215,8 +218,9 @@ export class AudioApi {
 
   unmutePlayback(
     playbackId: BpxAudioPlaybackId,
-    opts: { fadeInMillis?: number } = {},
+    opts?: { fadeInMillis?: number },
   ): void {
+    opts ??= {};
     Logger.debugBeetPx(
       `AudioApi.unmutePlayback (fadeInMillis: ${opts.fadeInMillis})`,
     );
@@ -226,7 +230,8 @@ export class AudioApi {
       ?.unmute(opts.fadeInMillis ?? AudioApi.muteUnmuteDefaultFadeMillis);
   }
 
-  #stopAllPlaybacks(opts: { fadeOutMillis?: number } = {}): void {
+  #stopAllPlaybacks(opts?: { fadeOutMillis?: number }): void {
+    opts ??= {};
     Logger.debugBeetPx(
       `AudioApi.#stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`,
     );
@@ -242,8 +247,9 @@ export class AudioApi {
 
   stopPlayback(
     playbackId: BpxAudioPlaybackId,
-    opts: { fadeOutMillis?: number } = {},
+    opts?: { fadeOutMillis?: number },
   ): void {
+    opts ??= {};
     Logger.debugBeetPx(
       `AudioApi.stopPlayback (fadeOutMillis: ${opts.fadeOutMillis})`,
     );

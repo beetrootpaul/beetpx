@@ -15,15 +15,6 @@ type BpxSoundAsset = {
 type BpxJsonAsset = {
     json: any;
 };
-declare class Assets {
-    #private;
-    addImageAsset(imageUrl: BpxImageUrl, imageAsset: BpxImageAsset): void;
-    addSoundAsset(soundUrl: BpxSoundUrl, soundAsset: BpxSoundAsset): void;
-    addJsonAsset(jsonUrl: BpxJsonUrl, jsonAsset: BpxJsonAsset): void;
-    getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset;
-    getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset;
-    getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
-}
 
 type BpxAudioPlaybackId = number;
 
@@ -62,46 +53,6 @@ declare class BpxRgbColor {
 type BpxColorMapper = (sourceColor: BpxRgbColor | null, x: number, y: number) => BpxRgbColor | null;
 
 type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
-
-declare class AudioApi {
-    #private;
-    static readonly muteUnmuteDefaultFadeMillis = 100;
-    constructor(assets: Assets, audioContext: AudioContext);
-    restart(): void;
-    tryToResumeAudioContextSuspendedByBrowserForSecurityReasons(): Promise<boolean>;
-    startPlayback(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
-        muteOnStart?: boolean;
-        onGamePause?: "pause" | "mute" | "ignore";
-    }): BpxAudioPlaybackId;
-    isAudioMuted(): boolean;
-    muteAudio(opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmuteAudio(opts?: {
-        fadeInMillis?: number;
-    }): void;
-    mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeInMillis?: number;
-    }): void;
-    stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
-        fadeOutMillis?: number;
-    }): void;
-    pausePlayback(playbackId: BpxAudioPlaybackId): void;
-    resumePlayback(playbackId: BpxAudioPlaybackId): void;
-    getAudioContext(): AudioContext;
-    getGlobalGainNode(): GainNode;
-}
 
 interface PrintDebug {
     __printDebug(): string;
@@ -177,28 +128,6 @@ declare class BpxVector2d implements PrintDebug {
 
 interface CanvasSnapshot {
     getColorAt(x: number, y: number): BpxRgbColor;
-}
-
-declare abstract class Canvas {
-    #private;
-    readonly canvasSize: BpxVector2d;
-    protected constructor(canvasSize: BpxVector2d);
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
-    removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
-    canSetAny(xMin: number, yMin: number, xMax: number, yMax: number): boolean;
-    canSetAt(x: number, y: number): boolean;
-    abstract set(color: BpxRgbColor, x: number, y: number): void;
-    takeSnapshot(): void;
-    getMostRecentSnapshot(): CanvasSnapshot | null;
-    protected abstract newSnapshot(): CanvasSnapshot;
-    render(): void;
-    protected abstract doRender(): void;
 }
 
 declare class BpxCanvasSnapshotColorMapping {
@@ -359,134 +288,20 @@ declare class BpxDrawingPattern {
     hasPrimaryColorAt(x: number, y: number): boolean;
 }
 
-type DrawApiOptions = {
-    canvas: Canvas;
-    assets: Assets;
+type BpxTextMeasurement = {
+    wh: BpxVector2d;
+    offset: BpxVector2d;
 };
-declare class DrawApi {
-    #private;
-    cameraXy: BpxVector2d;
-    constructor(options: DrawApiOptions);
-    clearCanvas(color: BpxRgbColor): void;
-    setClippingRegion(xy: BpxVector2d, wh: BpxVector2d): [xy: BpxVector2d, wh: BpxVector2d];
-    removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
-    setCameraXy(xy: BpxVector2d): BpxVector2d;
-    setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern;
-    drawPixel(xy: BpxVector2d, color: BpxRgbColor): void;
-    drawPixels(pixels: BpxPixels, xy: BpxVector2d, color: BpxRgbColor, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-        flipXy?: [boolean, boolean];
-    }): void;
-    drawLine(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    drawRect(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    drawRectFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    drawRectOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    drawEllipse(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    drawEllipseFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    drawEllipseOutsideFilled(xy: BpxVector2d, wh: BpxVector2d, color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping): void;
-    setSpriteColorMapping(spriteColorMapping: BpxSpriteColorMapping): BpxSpriteColorMapping;
-    drawSprite(sprite: BpxSprite | BpxAnimatedSprite, xy: BpxVector2d, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-        flipXy?: [boolean, boolean];
-    }): void;
-    useFont(font: BpxFont): BpxFont;
-    setTextColorMarkers(textColorMarkers: BpxTextColorMarkers): BpxTextColorMarkers;
-    measureText(text: string, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-    }): {
-        wh: BpxVector2d;
-        offset: BpxVector2d;
-    };
-    drawText(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
-        centerXy?: [boolean, boolean];
-        scaleXy?: BpxVector2d;
-    }): void;
-    takeCanvasSnapshot(): void;
-}
 
 type FpsDisplayPlacement = "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
-declare class Button {
-    #private;
-    setRepeating(params: {
-        firstRepeatFrames: number | null;
-        loopedRepeatFrames: number | null;
-    }): void;
-    get isPressed(): boolean;
-    get wasJustPressed(): boolean;
-    get wasJustReleased(): boolean;
-    update(isPressed: boolean): void;
-}
-
 type BpxGameButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
-declare class GameButtons {
-    #private;
-    update(events: Set<BpxGameInputEvent>): void;
-    isAnyPressed(): boolean;
-    isPressed(button: BpxGameButtonName): boolean;
-    getPressedDirection(): BpxVector2d;
-    setButtonRepeating(button: BpxGameButtonName, repeating: {
-        firstRepeatFrames: number | null;
-        loopedRepeatFrames: number | null;
-    }): void;
-    wasAnyJustPressed(): boolean;
-    wasJustPressed(button: BpxGameButtonName): boolean;
-    wasJustReleased(button: BpxGameButtonName): boolean;
-}
-
-interface GameInputSpecialized {
-    inputMethod: GameInputMethod;
-    startListening(): void;
-    /**
-     * @return Whether any events were added to eventsCollector
-     */
-    update(eventsCollector: Set<BpxGameInputEvent>): boolean;
-}
 
 declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "8bitdo", "other"];
 type BpxGamepadType = (typeof supportedGamepadTypes)[number];
-declare class GameInputGamepad implements GameInputSpecialized {
-    #private;
-    inputMethod: GameInputMethod;
-    constructor(params: {
-        browserType: BpxBrowserType;
-    });
-    startListening(): void;
-    update(eventsCollector: Set<BpxGameInputEvent>): boolean;
-    connectedGamepadTypes(): Set<BpxGamepadType>;
-}
 
 type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
-declare class GameInput {
-    #private;
-    readonly gameInputsSpecialized: GameInputSpecialized[];
-    readonly gameInputGamepad: GameInputGamepad;
-    readonly gameButtons: GameButtons;
-    readonly buttonFullScreen: Button;
-    readonly buttonMuteUnmute: Button;
-    readonly buttonDebugToggle: Button;
-    readonly buttonFrameByFrameToggle: Button;
-    readonly buttonFrameByFrameStep: Button;
-    constructor(params: {
-        enableDebugToggle: boolean;
-        enableFrameByFrameControls: boolean;
-        browserType: BpxBrowserType;
-    });
-    startListening(): void;
-    /**
-     * @return If any interaction happened.
-     */
-    update(params: {
-        skipGameButtons: boolean;
-    }): boolean;
-    getRecentInputMethods(): Set<GameInputMethod>;
-    getConnectedGamepadTypes(): Set<BpxGamepadType>;
-    getEventsCapturedInLastUpdate(): Set<BpxGameInputEvent>;
-}
 
 declare global {
     interface Document {
@@ -498,21 +313,8 @@ declare global {
         webkitRequestFullscreen?: () => void;
     }
 }
-declare abstract class FullScreen {
-    #private;
-    isFullScreenSupported(): boolean;
-    abstract isInFullScreen(): boolean;
-    static create(): FullScreen;
-    abstract toggleFullScreen(): void;
-}
 
-type PersistedStateValueConstraints = Record<string, string | number | boolean | null>;
-declare class StorageApi {
-    #private;
-    savePersistedState<PersistedStateValue extends PersistedStateValueConstraints>(value: PersistedStateValue): void;
-    loadPersistedState<PersistedStateValue extends PersistedStateValueConstraints>(): PersistedStateValue | null;
-    clearPersistedState(): void;
-}
+type BpxPersistedStateValueConstraints = Record<string, string | number | boolean | null>;
 
 type BpxEngineConfig = {
     canvasSize?: "64x64" | "128x128" | "256x256";
@@ -540,30 +342,6 @@ type BpxEngineConfig = {
         activateOnStart?: boolean;
     };
 };
-type OnEngineInitialized = {
-    startGame: () => Promise<void>;
-};
-declare class Engine {
-    #private;
-    readonly canvasSize: BpxVector2d;
-    readonly gameInput: GameInput;
-    readonly audioApi: AudioApi;
-    readonly fullScreen: FullScreen;
-    readonly storageApi: StorageApi;
-    readonly assets: Assets;
-    readonly drawApi: DrawApi;
-    isInsideDrawOrStartedCallback: boolean;
-    get frameNumber(): number;
-    get frameNumberOutsidePause(): number;
-    get renderingFps(): number;
-    get detectedBrowserType(): BpxBrowserType;
-    constructor(engineConfig?: BpxEngineConfig);
-    init(): Promise<OnEngineInitialized>;
-    setOnStarted(onStarted?: () => void): void;
-    setOnUpdate(onUpdate?: () => void): void;
-    setOnDraw(onDraw?: () => void): void;
-    restart(): void;
-}
 
 type BpxEasingFn = (t: number) => number;
 declare class BpxEasing {
@@ -708,35 +486,6 @@ declare class BpxTimerSequence<TPhaseName extends string> {
     restart(): void;
 }
 
-declare class DebugMode {
-    #private;
-    static loadFromStorage(): void;
-    static get enabled(): boolean;
-    static set enabled(value: boolean);
-}
-
-declare class Logger {
-    #private;
-    static debugBeetPx(...args: any[]): void;
-    static debug(...args: any[]): void;
-    static infoBeetPx(...args: any[]): void;
-    static info(...args: any[]): void;
-    static warnBeetPx(...args: any[]): void;
-    static warn(...args: any[]): void;
-    static errorBeetPx(...args: any[]): void;
-    static error(...args: any[]): void;
-}
-
-/**
- * This function is meant to be used in a last branch of `if - else if - … - else`
- *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
- *   a union type of which we check all possible cases. Someday we add one more
- *   type to the union, but we forget to extend our `switch` by that one more `case`.
- *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
- *   will inform us about such mistake.
- *
- * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
- */
 declare function assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint: never): void;
 
 declare function booleanChangingEveryNthFrame(n: number, opts?: {
@@ -756,9 +505,6 @@ declare function lerp(a: number, b: number, t: number, opts?: {
     clamp?: boolean;
 }): number;
 
-/**
- * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
- */
 declare function mod(value: number, modulus: number): number;
 
 declare function noop(): void;
@@ -773,30 +519,17 @@ declare function range(n: number): number[];
 
 declare function repeatEachElement<TElement>(times: number, array: TElement[]): TElement[];
 
-/**
- * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
- */
 declare function throwError(message: string): never;
 
-/**
- * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
- */
 declare function trigAtan2(x: number, y: number): number;
 
-/**
- * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
- */
-declare function trigCos(turnAngle: number): number;
-
-/**
- * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
- */
 declare function trigSin(turnAngle: number): number;
 
 declare class BeetPx {
     #private;
+    private constructor();
     static start(config?: BpxEngineConfig): Promise<void>;
-    static get debug(): typeof DebugMode.enabled;
+    static get debug(): boolean;
     static get canvasSize(): BpxVector2d;
     /**
      * Number of frames processed since game started.
@@ -809,50 +542,72 @@ declare class BeetPx {
     static get frameNumberOutsidePause(): number;
     static get renderingFps(): number;
     static get detectedBrowserType(): BpxBrowserType;
-    static setOnStarted: Engine["setOnStarted"];
-    static setOnUpdate: Engine["setOnUpdate"];
-    static setOnDraw: Engine["setOnDraw"];
-    static restart: Engine["restart"];
-    static logDebug: typeof Logger.debug;
-    static logInfo: typeof Logger.info;
-    static logWarn: typeof Logger.warn;
-    static logError: typeof Logger.error;
+    static setOnStarted(onStarted?: () => void): void;
+    static setOnUpdate(onUpdate?: () => void): void;
+    static setOnDraw(onDraw?: () => void): void;
+    static restart(): void;
+    static logDebug(...args: unknown[]): void;
+    static logInfo(...args: unknown[]): void;
+    static logWarn(...args: unknown[]): void;
+    static logError(...args: unknown[]): void;
     static get isPaused(): boolean;
     static get wasJustPaused(): boolean;
     static get wasJustResumed(): boolean;
     static pause(): void;
     static resume(): void;
-    static wasAnyButtonJustPressed: GameButtons["wasAnyJustPressed"];
-    static wasButtonJustPressed: GameButtons["wasJustPressed"];
-    static wasButtonJustReleased: GameButtons["wasJustReleased"];
-    static isAnyButtonPressed: GameButtons["isAnyPressed"];
-    static isButtonPressed: GameButtons["isPressed"];
-    static getPressedDirection: GameButtons["getPressedDirection"];
-    static setButtonRepeating: GameButtons["setButtonRepeating"];
-    static getRecentInputMethods: GameInput["getRecentInputMethods"];
-    static getConnectedGamepadTypes: GameInput["getConnectedGamepadTypes"];
-    static getEventsCapturedInLastUpdate: GameInput["getEventsCapturedInLastUpdate"];
-    static isAudioMuted: AudioApi["isAudioMuted"];
-    static muteAudio: AudioApi["muteAudio"];
-    static unmuteAudio: AudioApi["unmuteAudio"];
-    static startPlayback: AudioApi["startPlayback"];
-    static startPlaybackLooped: AudioApi["startPlaybackLooped"];
-    static startPlaybackSequence: AudioApi["startPlaybackSequence"];
-    static mutePlayback: AudioApi["mutePlayback"];
-    static unmutePlayback: AudioApi["unmutePlayback"];
-    static stopPlayback: AudioApi["stopPlayback"];
-    static pausePlayback: AudioApi["pausePlayback"];
-    static resumePlayback: AudioApi["resumePlayback"];
-    static getAudioContext: AudioApi["getAudioContext"];
-    static isFullScreenSupported: FullScreen["isFullScreenSupported"];
-    static isInFullScreen: FullScreen["isInFullScreen"];
-    static toggleFullScreen: FullScreen["toggleFullScreen"];
-    static savePersistedState: StorageApi["savePersistedState"];
-    static loadPersistedState: StorageApi["loadPersistedState"];
-    static clearPersistedState: StorageApi["clearPersistedState"];
-    static getImageAsset: Assets["getImageAsset"];
-    static getSoundAsset: Assets["getSoundAsset"];
-    static getJsonAsset: Assets["getJsonAsset"];
+    static wasAnyButtonJustPressed(): boolean;
+    static wasButtonJustPressed(button: BpxGameButtonName): boolean;
+    static wasButtonJustReleased(button: BpxGameButtonName): boolean;
+    static isAnyButtonPressed(): boolean;
+    static isButtonPressed(button: BpxGameButtonName): boolean;
+    static getPressedDirection(): BpxVector2d;
+    static setButtonRepeating(button: BpxGameButtonName, repeating: {
+        firstRepeatFrames: number | null;
+        loopedRepeatFrames: number | null;
+    }): void;
+    static getRecentInputMethods(): Set<GameInputMethod>;
+    static getConnectedGamepadTypes(): Set<BpxGamepadType>;
+    static getEventsCapturedInLastUpdate(): Set<BpxGameInputEvent>;
+    static isAudioMuted(): boolean;
+    static muteAudio(opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    static unmuteAudio(opts?: {
+        fadeInMillis?: number;
+    }): void;
+    static startPlayback(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    static startPlaybackLooped(soundUrl: BpxSoundUrl, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    static startPlaybackSequence(soundSequence: BpxSoundSequence, opts?: {
+        muteOnStart?: boolean;
+        onGamePause?: "pause" | "mute" | "ignore";
+    }): BpxAudioPlaybackId;
+    static mutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    static unmutePlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeInMillis?: number;
+    }): void;
+    static stopPlayback(playbackId: BpxAudioPlaybackId, opts?: {
+        fadeOutMillis?: number;
+    }): void;
+    static pausePlayback(playbackId: BpxAudioPlaybackId): void;
+    static resumePlayback(playbackId: BpxAudioPlaybackId): void;
+    static getAudioContext(): AudioContext;
+    static isFullScreenSupported(): boolean;
+    static isInFullScreen(): boolean;
+    static toggleFullScreen(): void;
+    static savePersistedState<PersistedStateValue extends BpxPersistedStateValueConstraints>(value: PersistedStateValue): void;
+    static loadPersistedState<PersistedStateValue extends BpxPersistedStateValueConstraints>(): PersistedStateValue | null;
+    static clearPersistedState(): void;
+    static getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset;
+    static getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset;
+    static getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset;
     static draw: {
         clearCanvas(color: BpxRgbColor): void;
         /**
@@ -903,7 +658,7 @@ declare class BeetPx {
         /**
          * @returns - previously used font
          */
-        useFont(font: BpxFont): BpxFont;
+        setFont(font: BpxFont): BpxFont;
         /**
          * @returns - previously used color markers
          */
@@ -911,10 +666,7 @@ declare class BeetPx {
         measureText(text: string, opts?: {
             centerXy?: [boolean, boolean];
             scaleXy?: BpxVector2d;
-        }): {
-            wh: BpxVector2d;
-            offset: BpxVector2d;
-        };
+        }): BpxTextMeasurement;
         text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
             centerXy?: [boolean, boolean];
             scaleXy?: BpxVector2d;
@@ -922,22 +674,60 @@ declare class BeetPx {
         takeCanvasSnapshot(): void;
     };
     static utils: {
+        /**
+         * This function is meant to be used in a last branch of `if - else if - … - else`
+         *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+         *   a union type of which we check all possible cases. Someday we add one more
+         *   type to the union, but we forget to extend our `switch` by that one more `case`.
+         *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+         *   will inform us about such mistake.
+         *
+         * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+         */
         assertUnreachable: typeof assertUnreachable;
         booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
+        /**
+         * Returns the middle number. Example usage: `clamp(min, value, max)`
+         *   in order to find a value which is:
+         *   - `value` if it is `>= min` and `<= max`
+         *   - `min` if `value` is `< min`
+         *   - `max` if `value` is `> max`
+         */
         clamp: typeof clamp;
         drawTextWithOutline: typeof drawTextWithOutline;
         identity: typeof identity;
         lerp: typeof lerp;
+        /**
+         * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+         */
         mod: typeof mod;
         noop: typeof noop;
+        /**
+         * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
+         */
         offset4Directions: typeof offset4Directions;
+        /**
+         * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
+         */
         offset8Directions: typeof offset8Directions;
         randomElementOf: typeof randomElementOf;
         range: typeof range;
         repeatEachElement: typeof repeatEachElement;
+        /**
+         * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+         */
         throwError: typeof throwError;
+        /**
+         * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+         */
         trigAtan2: typeof trigAtan2;
-        trigCos: typeof trigCos;
+        /**
+         * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+         */
+        trigCos(turnAngle: number): number;
+        /**
+         * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+         */
         trigSin: typeof trigSin;
     };
 }
@@ -992,7 +782,7 @@ declare const $d: {
     /**
      * @returns - previously used font
      */
-    useFont(font: BpxFont): BpxFont;
+    setFont(font: BpxFont): BpxFont;
     /**
      * @returns - previously used color markers
      */
@@ -1000,10 +790,7 @@ declare const $d: {
     measureText(text: string, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
-    }): {
-        wh: BpxVector2d;
-        offset: BpxVector2d;
-    };
+    }): BpxTextMeasurement;
     text(text: string, xy: BpxVector2d, color: BpxRgbColor, opts?: {
         centerXy?: [boolean, boolean];
         scaleXy?: BpxVector2d;
@@ -1011,22 +798,60 @@ declare const $d: {
     takeCanvasSnapshot(): void;
 };
 declare const $u: {
+    /**
+     * This function is meant to be used in a last branch of `if - else if - … - else`
+     *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
+     *   a union type of which we check all possible cases. Someday we add one more
+     *   type to the union, but we forget to extend our `switch` by that one more `case`.
+     *   Thanks to `assertUnreachable(theValueOfThatUnionType)` the TypeScript checker
+     *   will inform us about such mistake.
+     *
+     * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type never
+     */
     assertUnreachable: typeof assertUnreachable;
     booleanChangingEveryNthFrame: typeof booleanChangingEveryNthFrame;
+    /**
+     * Returns the middle number. Example usage: `clamp(min, value, max)`
+     *   in order to find a value which is:
+     *   - `value` if it is `>= min` and `<= max`
+     *   - `min` if `value` is `< min`
+     *   - `max` if `value` is `> max`
+     */
     clamp: typeof clamp;
     drawTextWithOutline: typeof drawTextWithOutline;
     identity: typeof identity;
     lerp: typeof lerp;
+    /**
+     * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
+     */
     mod: typeof mod;
     noop: typeof noop;
+    /**
+     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
+     */
     offset4Directions: typeof offset4Directions;
+    /**
+     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
+     */
     offset8Directions: typeof offset8Directions;
     randomElementOf: typeof randomElementOf;
     range: typeof range;
     repeatEachElement: typeof repeatEachElement;
+    /**
+     * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
+     */
     throwError: typeof throwError;
+    /**
+     * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
     trigAtan2: typeof trigAtan2;
-    trigCos: typeof trigCos;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
+    trigCos(turnAngle: number): number;
+    /**
+     * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+     */
     trigSin: typeof trigSin;
 };
 
