@@ -3,6 +3,12 @@
  * @module API
  */
 
+//
+// NOTE: Shape of this file and the way things are defined (props vs methods vs static etc.)
+//       is carefully picked in order to achieve a given end result in how the docs generated
+//       by TypeDoc looks like.
+//
+
 /////////////////////////////////////////////////////////////////////////////
 
 declare global {
