@@ -1,4 +1,4 @@
-import { BeetPx } from "../BeetPx";
+import { BeetPx } from "../";
 
 export function booleanChangingEveryNthFrame(
   n: number,

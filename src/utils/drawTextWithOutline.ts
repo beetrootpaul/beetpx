@@ -1,4 +1,4 @@
-import { BeetPxDraw } from "../BeetPx";
+import { BeetPxDraw } from "../";
 import type { BpxRgbColor } from "../color/RgbColor";
 import type { BpxVector2d } from "../misc/Vector2d";
 import { offset8Directions } from "./offset8Directions";

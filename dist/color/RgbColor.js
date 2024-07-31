@@ -1,3 +1,6 @@
+/**
+ * @category Drawing
+ */
 export class BpxRgbColor {
     static of(r, g, b) {
         return new BpxRgbColor(r, g, b);

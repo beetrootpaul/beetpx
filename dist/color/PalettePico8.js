@@ -5,6 +5,8 @@ import { BpxRgbColor } from "./RgbColor";
  * Links:
  *  - https:
  *  - https:
+ *
+ * @category Drawing
  */
 export class BpxPalettePico8 {
     static black = BpxRgbColor.fromCssHex("#000000");

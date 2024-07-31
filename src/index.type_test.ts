@@ -1,4 +1,4 @@
-import { BeetPx } from "./BeetPx";
+import { BeetPx } from "./";
 
 //
 // context: fixedTimestep

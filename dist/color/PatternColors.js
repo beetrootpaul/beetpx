@@ -1,3 +1,6 @@
+/**
+ * @category Drawing
+ */
 export class BpxPatternColors {
     primary;
     secondary;

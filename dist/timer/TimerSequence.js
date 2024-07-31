@@ -1,4 +1,4 @@
-import { BeetPx } from "../BeetPx";
+import { BeetPx } from "../";
 import { BpxTimer } from "./Timer";
 export class BpxTimerSequence {
     static of(params, opts) {

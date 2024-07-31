@@ -1,4 +1,4 @@
-import { BeetPx } from "../BeetPx";
+import { BeetPx } from "../";
 export function booleanChangingEveryNthFrame(n, opts) {
     return n > 0 ?
         (opts?.onGamePause === "ignore" ?

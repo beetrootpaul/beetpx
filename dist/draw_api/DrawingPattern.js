@@ -3,6 +3,8 @@ export class BpxDrawingPattern {
      * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
      *   (designated by new lines) where `#` and `-` stand for a primary and
      *   a secondary color. Whitespaces are ignored.
+     *
+     * @category Drawing
      */
     static from(ascii) {
         ascii = ascii.replace(/\s/g, "");

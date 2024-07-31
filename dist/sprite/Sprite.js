@@ -1,4 +1,7 @@
 import { BpxVector2d } from "../misc/Vector2d";
+/**
+ * @category Drawing
+ */
 export class BpxSprite {
     static from(imageUrl, w, h, x, y) {
         return new BpxSprite(imageUrl, w, h, x, y);
