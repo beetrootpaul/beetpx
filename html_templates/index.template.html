@@ -49,8 +49,9 @@
       }
 
       html {
-        width: 100dvw;
-        height: 100dvh;
+        width: 100%;
+        height: 100%;
+        background-color: var(--color-bg-gui);
       }
 
       body {
@@ -121,8 +122,8 @@
           ".     . ."
           ". start ."
           ".     . .";
-        grid-template-columns: 1fr 3fr 1fr;
-        grid-template-rows: 1fr 3fr 1fr;
+        grid-template-columns: 1fr 60dvmin 1fr;
+        grid-template-rows: 1fr 60dvmin 1fr;
       }
 
       .started #screen_start_game {
@@ -217,64 +218,104 @@
 
       #edge_tl {
         grid-area: e_TL;
-        background-image: url(/beetpx/edge_tl.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: no-repeat;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_tl.png);
+        }
       }
 
       #edge_t {
         grid-area: e_t_;
-        background-image: url(/beetpx/edge_t.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: repeat-x;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_t.png);
+        }
       }
 
       #edge_tr {
         grid-area: e_TR;
-        background-image: url(/beetpx/edge_tr.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: no-repeat;
         background-position-x: right;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_tr.png);
+        }
       }
 
       #edge_l {
         grid-area: e__l;
-        background-image: url(/beetpx/edge_l.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: repeat-y;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_l.png);
+        }
       }
 
       #edge_r {
         grid-area: e__r;
-        background-image: url(/beetpx/edge_r.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: repeat-y;
         background-position-x: right;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_r.png);
+        }
       }
 
       #edge_bl {
         grid-area: e_BL;
-        background-image: url(/beetpx/edge_bl.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: no-repeat;
         background-position-y: bottom;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_bl.png);
+        }
       }
 
       #edge_b {
         grid-area: e_b_;
-        background-image: url(/beetpx/edge_b.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: repeat-x;
         background-position-y: bottom;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_b.png);
+        }
       }
 
       #edge_br {
         grid-area: e_BR;
-        background-image: url(/beetpx/edge_br.png);
+        background-image: none;
         background-size: var(--scs);
         background-repeat: no-repeat;
         background-position-x: right;
         background-position-y: bottom;
+
+        /* touch GUI */
+        @media (pointer: coarse) {
+          background-image: url(/beetpx/edge_br.png);
+        }
       }
 
       /*
@@ -481,153 +522,192 @@
       }
 
       /*
-       * MOUSE GUI – portrait
+       * MOUSE GUI – portrait high
        */
       :root {
         /* "scs" = Sprite Cell Size (16x16 px)*/
-        --scs: 10dvw;
+        --scs: 8dvw;
       }
 
       #game_display {
         grid-template-areas:
-          "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-          "e__l    .    . full    . b_mu b_mu e__r"
-          "e__l    .    .    .    . i_mu i_mu e__r"
-          "e__l    .    .    .    .    .    . e__r"
-          "e__l canv canv canv canv canv canv e__r"
-          "e__l    .    .    .    .    .    . e__r"
-          "e__l    .    .    .    .    .    . e__r"
-          "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-        grid-template-columns: 5dvw 5dvw 1fr 10dvw 5dvw 5dvw 5dvw 5dvw;
-        grid-template-rows: 5dvw 10dvw 10dvw 1fr 90dvw 1fr 20dvw 5dvw;
+            "e_TL e_t_ e_t_ e_t_ e_t_ e_TR"
+            "e__l    .    .    .    . e__r"
+            "e__l canv canv canv canv e__r"
+            "e__l    .    .    .    . e__r"
+            "e__l b_mu    . full    . e__r"
+            "e__l i_mu    .    .    . e__r"
+            "e__l    .    .    .    . e__r"
+            "e_BL e_b_ e_b_ e_b_ e_b_ e_BR";
+        grid-template-columns: 2dvw 8dvw 4dvw 8dvw 1fr 2dvw;
+        grid-template-rows: 2dvw 1fr 96dvw 4dvw 8dvw 4dvw 1fr 2dvw;
       }
 
       #game_canvas {
         border-width: 1dvw;
+        border-radius: 0.5dvw;
       }
 
       /*
        * MOUSE GUI – portrait low
        */
-      @media (min-aspect-ratio: 250/360) {
-        :root {
-          --scs: 10dvw;
-        }
-
-        #game_display {
-          grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l    .    .    .    .    .    . e__r"
-            "e__l canv canv canv canv canv canv e__r"
-            "e__l    .    .    .    .    .    . e__r"
-            "e__l    .    . full    . b_mu b_mu e__r"
-            "e__l    .    .    .    . i_mu i_mu e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5dvw 5dvw 1fr 10dvw 5dvw 5dvw 5dvw 5dvw;
-          grid-template-rows: 5dvw 1fr 90dvw 10dvw 10dvw 5dvw 5dvw;
-        }
-
-        #game_canvas {
-          border-width: 1dvw;
-        }
-      }
-
-      /*
-       * MOUSE GUI – tall square
-       */
-      @media (min-aspect-ratio: 250/310) {
-        :root {
-          --scs: 8dvw;
-        }
-
-        #game_display {
-          grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l canv canv canv canv canv canv e__r"
-            "e__l    .    .    .    .    .    . e__r"
-            "e__l    .    . full    . b_mu b_mu e__r"
-            "e__l    .    .    .    . i_mu i_mu e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4dvw 4dvw 1fr 8dvw 4dvw 4dvw 4dvw 4dvw;
-          grid-template-rows: 4dvw 92dvw 1fr 8dvw 4dvw 4dvw;
-        }
-
-        #game_canvas {
-          border-width: 1dvw;
-        }
-      }
-
-      /*
-       * MOUSE GUI – mid square
-       */
-      @media (min-aspect-ratio: 250/290) {
+      @media (min-aspect-ratio: 600/700) {
         :root {
           --scs: 6dvw;
         }
 
         #game_display {
           grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l b_mu b_mu    . canv    . full full e__r"
-            "e__l i_mu i_mu    . canv    .    .    . e__r"
-            "e__l    .    .    . canv    .    .    . e__r"
-            "e__l    .    .    .    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 3dvw 3dvw 3dvw 3dvw 76dvw 3dvw 3dvw 3dvw 3dvw;
-          grid-template-rows: 3dvw 6dvw 6dvw 64dvw 1fr 3dvw;
+            "e_TL e_t_ e_t_ e_t_ e_t_ e_TR"
+            "e__l    .    .    .    . e__r"
+            "e__l canv canv canv canv e__r"
+            "e__l    .    .    .    . e__r"
+            "e__l b_mu    . full    . e__r"
+            "e__l i_mu    .    .    . e__r"
+            "e__l    .    .    .    . e__r"
+            "e_BL e_b_ e_b_ e_b_ e_b_ e_BR";
+          grid-template-columns: 2dvw 6dvw 3dvw 6dvw 1fr 2dvw;
+          grid-template-rows: 2dvw 1fr 96dvw 3dvw 6dvw 3dvw 1fr 2dvw;
         }
 
         #game_canvas {
           border-width: 1dvw;
+          border-radius: 0.5dvw;
+        }
+      }
+
+      /*
+       * MOUSE GUI – tall square
+       */
+      @media (min-aspect-ratio: 600/660) {
+        :root {
+          --scs: 6dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR"
+            "e__l b_mu    . canv    .    . e__r"
+            "e__l i_mu    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e__l full    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR";
+          grid-template-columns: 1fr 6dvh 1fr 76dvh 1fr 6dvh 1fr;
+          grid-template-rows: 12dvh 6dvh 3dvh 3dvh 6dvh 1fr 12dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+          border-radius: 0.5dvh;
+        }
+      }
+
+      /*
+       * MOUSE GUI – mid square
+       */
+      @media (min-aspect-ratio: 600/610) {
+        :root {
+          --scs: 6dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR"
+            "e__l b_mu    . canv    .    . e__r"
+            "e__l i_mu    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e__l full    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR";
+          grid-template-columns: 1fr 6dvh 1fr 82dvh 1fr 6dvh 1fr;
+          grid-template-rows: 9dvh 6dvh 3dvh 3dvh 6dvh 1fr 9dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+          border-radius: 0.5dvh;
         }
       }
 
       /*
        * MOUSE GUI – wide square
        */
-      @media (min-aspect-ratio: 250/210) {
+      @media (min-aspect-ratio: 600/580) {
         :root {
-          --scs: 8dvh;
+          --scs: 6dvh;
         }
 
         #game_display {
           grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l    . b_mu    . canv    . full    . e__r"
-            "e__l    . i_mu    . canv    .    .    . e__r"
-            "e__l    .    .    . canv    .    .    . e__r"
-            "e__l    .    .    .    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4dvh 4dvh 8dvh 1fr 80dvh 1fr 8dvh 4dvh 4dvh;
-          grid-template-rows: 4dvh 8dvh 8dvh 64dvh 1fr 4dvh;
+            "e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR"
+            "e__l b_mu    . canv    .    . e__r"
+            "e__l i_mu    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e__l full    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR";
+          grid-template-columns: 1fr 6dvh 1fr 88dvh 1fr 6dvh 1fr;
+          grid-template-rows: 6dvh 6dvh 3dvh 3dvh 6dvh 1fr 6dvh;
         }
 
         #game_canvas {
           border-width: 1dvh;
+          border-radius: 0.5dvh;
+        }
+      }
+
+      /*
+       * MOUSE GUI – wider square
+       */
+      @media (min-aspect-ratio: 600/520) {
+        :root {
+          --scs: 6dvh;
+        }
+
+        #game_display {
+          grid-template-areas:
+            "e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR"
+            "e__l b_mu    . canv    .    . e__r"
+            "e__l i_mu    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e__l full    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR";
+          grid-template-columns: 1fr 6dvh 1fr 94dvh 1fr 6dvh 1fr;
+          grid-template-rows: 3dvh 6dvh 3dvh 3dvh 6dvh 1fr 3dvh;
+        }
+
+        #game_canvas {
+          border-width: 1dvh;
+          border-radius: 0.5dvh;
         }
       }
 
       /*
        * MOUSE GUI – landscape
        */
-      @media (min-aspect-ratio: 250/170) {
+      @media (min-aspect-ratio: 600/480) {
         :root {
-          --scs: 10dvh;
+          --scs: 8dvh;
         }
 
         #game_display {
           grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l    .    . b_mu    . canv    . full    .    . e__r"
-            "e__l    .    . i_mu    . canv    .    .    .    . e__r"
-            "e__l    .    .    .    . canv    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5dvh 5dvh 1fr 10dvh 5dvh 90dvh 5dvh 10dvh 1fr 5dvh 5dvh;
-          grid-template-rows: 5dvh 10dvh 10dvh 1fr 5dvh;
+            "e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_TR"
+            "e__l b_mu    . canv    .    . e__r"
+            "e__l i_mu    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e__l full    . canv    .    . e__r"
+            "e__l    .    . canv    .    . e__r"
+            "e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_BR";
+          grid-template-columns: 1fr 8dvh 4dvh 96dvh 4dvh 8dvh 1fr;
+          grid-template-rows: 2dvh 8dvh 4dvh 4dvh 8dvh 1fr 2dvh;
         }
 
         #game_canvas {
           border-width: 1dvh;
+          border-radius: 0.5dvh;
         }
       }
 
@@ -641,24 +721,25 @@
 
         #game_display {
           grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l canv canv canv canv canv canv canv canv canv canv canv canv e__r"
-            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    . menu menu menu    . bt_b bt_b bt_b e__r"
-            "e__l d_ul d_ul d_u_ d_ur    .    .    .    .    . bt_b bt_b bt_b e__r"
-            "e__l d_ul d_ul d_u_ d_ur    . full    .    .    . bt_b bt_b bt_b e__r"
-            "e__l d__l d__l d___ d__r    . full    . bt_a bt_a bt_a    .    . e__r"
-            "e__l d__l d__l d___ d__r    .    .    . bt_a bt_a bt_a    .    . e__r"
-            "e__l d_dl d_dl d_d_ d_dr    . b_mu    . bt_a bt_a bt_a    .    . e__r"
-            "e__l    .    .    .    .    . i_mu    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 5dvw 5dvw 5dvw 10dvw 10dvw 12dvw 10dvw 8dvw 2dvw 8dvw 10dvw 5dvw 5dvw 5dvw;
+            "e_TL e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    . menu menu menu    . bt_b bt_b bt_b e__r"
+            "e__l    . d_ul d_ul d_u_ d_ur    .    .    .    .    . bt_b bt_b bt_b e__r"
+            "e__l    . d_ul d_ul d_u_ d_ur    . full    .    .    . bt_b bt_b bt_b e__r"
+            "e__l    . d__l d__l d___ d__r    . full    . bt_a bt_a bt_a    .    . e__r"
+            "e__l    . d__l d__l d___ d__r    .    .    . bt_a bt_a bt_a    .    . e__r"
+            "e__l    . d_dl d_dl d_d_ d_dr    . b_mu    . bt_a bt_a bt_a    .    . e__r"
+            "e__l    .    .    .    .    .    . i_mu    .    .    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e_BL e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 5dvw 3dvw 2dvw 8dvw 10dvw 10dvw 9dvw 10dvw 8dvw 2dvw 8dvw 10dvw 5dvw 5dvw 5dvw;
           grid-template-rows: 5dvw 92dvw 1fr 10dvw 7dvw 3dvw 7dvw 3dvw 10dvw 5dvw 2fr 5dvw;
         }
 
         #game_canvas {
           border-width: 1dvw;
+          border-radius: 0.5dvw;
         }
       }
 
@@ -672,20 +753,21 @@
 
         #game_display {
           grid-template-areas:
-            "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
-            "e__l canv canv canv canv canv canv canv canv canv canv canv canv e__r"
-            "e__l    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l d_ul d_ul d_u_ d_ur    .    .    . menu menu    . bt_b bt_b e__r"
-            "e__l d__l d__l d___ d__r    .    .    .    .    . bt_a bt_b bt_b e__r"
-            "e__l d_dl d_dl d_d_ d_dr    . full    . b_mu    . bt_a    .    . e__r"
-            "e__l    .    .    .    .    .    .    . i_mu    .    .    .    . e__r"
-            "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
-          grid-template-columns: 4dvw 4dvw 4dvw 8dvw 8dvw 3fr 8dvw 4dvw 8dvw 8dvw 16dvw 12dvw 4dvw 4dvw;
+            "e_TL e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
+            "e__l canv canv canv canv canv canv canv canv canv canv canv canv canv e__r"
+            "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
+            "e__l    . d_ul d_ul d_u_ d_ur    .    .    . menu menu    . bt_b bt_b e__r"
+            "e__l    . d__l d__l d___ d__r    .    .    .    .    . bt_a bt_b bt_b e__r"
+            "e__l    . d_dl d_dl d_d_ d_dr    . full    . b_mu    . bt_a    .    . e__r"
+            "e__l    .    .    .    .    .    .    .    . i_mu    .    .    .    . e__r"
+            "e_BL e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
+          grid-template-columns: 4dvw 2dvw 2dvw 6dvw 8dvw 8dvw 3fr 8dvw 4dvw 8dvw 8dvw 16dvw 12dvw 4dvw 4dvw;
           grid-template-rows: 4dvw 92dvw 4dvw 8dvw 8dvw 8dvw 1fr 4dvw;
         }
 
         #game_canvas {
           border-width: 1dvw;
+          border-radius: 0.5dvw;
         }
       }
 
@@ -716,6 +798,7 @@
 
         #game_canvas {
           border-width: 1dvh;
+          border-radius: 0.5dvh;
         }
       }
 
@@ -747,6 +830,7 @@
 
         #game_canvas {
           border-width: 1dvh;
+          border-radius: 0.5dvh;
         }
       }
 
@@ -779,6 +863,7 @@
 
         #game_canvas {
           border-width: 1dvh;
+          border-radius: 0.5dvh;
         }
       }
 
@@ -809,6 +894,7 @@
 
         #game_canvas {
           border-width: 1dvh;
+          border-radius: 0.5dvh;
         }
       }
     </style>
