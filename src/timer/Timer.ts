@@ -6,7 +6,7 @@ export class BpxTimer {
   static for(opts: {
     frames: number;
     loop: boolean;
-    pause: boolean;
+    paused: boolean;
     delayFrames: number;
     onGamePause: "pause" | "ignore";
   }): BpxTimer {
@@ -25,7 +25,7 @@ export class BpxTimer {
   private constructor(opts: {
     frames: number;
     loop: boolean;
-    pause: boolean;
+    paused: boolean;
     delayFrames: number;
     onGamePause: "pause" | "ignore";
   }) {
@@ -38,7 +38,7 @@ export class BpxTimer {
 
     this.#isPaused = false;
     this.#pausedFrame = null;
-    if (opts.pause) {
+    if (opts.paused) {
       this.pause();
     }
   }

@@ -503,7 +503,7 @@ describe("TimerSequence", () => {
               ["ccc", framesCcc],
             ],
           },
-          { pause: true },
+          { paused: true },
         );
 
         range(9876).forEach(() => {
@@ -796,7 +796,7 @@ describe("TimerSequence", () => {
               ["ccc", framesCcc],
             ],
           },
-          { delayFrames: 333, pause: true },
+          { delayFrames: 333, paused: true },
         );
 
         range(9876).forEach(() => {
@@ -1548,7 +1548,7 @@ describe("TimerSequence", () => {
               ["fff", framesFff],
             ],
           },
-          { pause: true },
+          { paused: true },
         );
 
         range(9876).forEach(() => {
@@ -1894,7 +1894,7 @@ describe("TimerSequence", () => {
               ["fff", framesFff],
             ],
           },
-          { delayFrames: 333, pause: true },
+          { delayFrames: 333, paused: true },
         );
 
         range(9876).forEach(() => {
@@ -3020,7 +3020,7 @@ describe("TimerSequence", () => {
               ["fff", framesFff],
             ],
           },
-          { pause: true },
+          { paused: true },
         );
 
         range(9876).forEach(() => {
@@ -3539,7 +3539,7 @@ describe("TimerSequence", () => {
               ["fff", framesFff],
             ],
           },
-          { delayFrames: 333, pause: true },
+          { delayFrames: 333, paused: true },
         );
 
         range(9876).forEach(() => {

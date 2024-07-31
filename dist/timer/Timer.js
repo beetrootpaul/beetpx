@@ -18,7 +18,7 @@ export class BpxTimer {
         this.#offsetFrame = this.#fn + opts.delayFrames;
         this.#isPaused = false;
         this.#pausedFrame = null;
-        if (opts.pause) {
+        if (opts.paused) {
             this.pause();
         }
     }

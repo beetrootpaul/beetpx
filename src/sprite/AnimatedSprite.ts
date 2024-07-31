@@ -8,7 +8,7 @@ export type BpxImageBoundAnimatedSpriteFactory = (
   h: number,
   xys: [x: number, y: number][],
   opts?: {
-    pause?: boolean;
+    paused?: boolean;
     onGamePause?: "pause" | "ignore";
   },
 ) => BpxAnimatedSprite;
@@ -20,14 +20,14 @@ export class BpxAnimatedSprite {
     h: number,
     xys: [x: number, y: number][],
     opts?: {
-      pause?: boolean;
+      paused?: boolean;
       onGamePause?: "pause" | "ignore";
     },
   ): BpxAnimatedSprite {
     return new BpxAnimatedSprite(
       { imageUrl, w, h, xys },
       {
-        pause: opts?.pause ?? false,
+        paused: opts?.paused ?? false,
         onGamePause: opts?.onGamePause ?? "pause",
       },
     );
@@ -49,7 +49,7 @@ export class BpxAnimatedSprite {
       xys: [x: number, y: number][];
     },
     opts: {
-      pause?: boolean;
+      paused?: boolean;
       onGamePause: "pause" | "ignore";
     },
   ) {
@@ -61,7 +61,7 @@ export class BpxAnimatedSprite {
     this.#loop = BpxTimer.for({
       frames: this.#sprites.length,
       loop: true,
-      pause: opts.pause ?? false,
+      paused: opts.paused ?? false,
       delayFrames: 0,
       onGamePause: opts.onGamePause,
     });

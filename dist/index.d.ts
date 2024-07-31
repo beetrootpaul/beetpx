@@ -281,13 +281,13 @@ declare class BpxFont {
 }
 
 type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][], opts?: {
-    pause?: boolean;
+    paused?: boolean;
     onGamePause?: "pause" | "ignore";
 }) => BpxAnimatedSprite;
 declare class BpxAnimatedSprite {
     #private;
     static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][], opts?: {
-        pause?: boolean;
+        paused?: boolean;
         onGamePause?: "pause" | "ignore";
     }): BpxAnimatedSprite;
     readonly type = "animated";
@@ -486,7 +486,7 @@ declare class BpxTimer {
     static for(opts: {
         frames: number;
         loop: boolean;
-        pause: boolean;
+        paused: boolean;
         delayFrames: number;
         onGamePause: "pause" | "ignore";
     }): BpxTimer;
@@ -507,7 +507,7 @@ declare class BpxTimerSequence<TPhaseName extends string> {
         intro: Array<[phase: TPhaseName, frames: number]>;
         loop: Array<[phase: TPhaseName, frames: number]>;
     }, opts: {
-        pause: boolean;
+        paused: boolean;
         delayFrames: number;
         onGamePause: "pause" | "ignore";
     }): BpxTimerSequence<TPhaseName>;
@@ -547,7 +547,7 @@ declare const $rgb_p8: typeof BpxPalettePico8;
 declare function $spr(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory;
 declare function $timer(frames: number, opts?: {
     loop?: boolean;
-    pause?: boolean;
+    paused?: boolean;
     delayFrames?: number;
     onGamePause?: "pause" | "ignore";
 }): BpxTimer;
@@ -555,7 +555,7 @@ declare function $timerSeq<TPhaseName extends string>(params: {
     intro?: Array<[phase: TPhaseName, frames: number]>;
     loop?: Array<[phase: TPhaseName, frames: number]>;
 }, opts?: {
-    pause?: boolean;
+    paused?: boolean;
     delayFrames?: number;
     onGamePause?: "pause" | "ignore";
 }): BpxTimerSequence<TPhaseName>;

@@ -25,6 +25,7 @@ export function $aspr(
     h: number,
     xys: [x: number, y: number][],
     opts?: {
+      paused?: boolean;
       onGamePause?: "pause" | "ignore";
     },
   ) => {
@@ -90,7 +91,7 @@ export function $timer(
   frames: number,
   opts?: {
     loop?: boolean;
-    pause?: boolean;
+    paused?: boolean;
     delayFrames?: number;
     onGamePause?: "pause" | "ignore";
   },
@@ -98,7 +99,7 @@ export function $timer(
   return BpxTimer.for({
     frames,
     loop: opts?.loop ?? false,
-    pause: opts?.pause ?? false,
+    paused: opts?.paused ?? false,
     delayFrames: opts?.delayFrames ?? 0,
     onGamePause: opts?.onGamePause ?? "pause",
   });
@@ -110,7 +111,7 @@ export function $timerSeq<TPhaseName extends string>(
     loop?: Array<[phase: TPhaseName, frames: number]>;
   },
   opts?: {
-    pause?: boolean;
+    paused?: boolean;
     delayFrames?: number;
     onGamePause?: "pause" | "ignore";
   },
@@ -121,7 +122,7 @@ export function $timerSeq<TPhaseName extends string>(
       loop: params.loop ?? [],
     },
     {
-      pause: opts?.pause ?? false,
+      paused: opts?.paused ?? false,
       delayFrames: opts?.delayFrames ?? 0,
       onGamePause: opts?.onGamePause ?? "pause",
     },

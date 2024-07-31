@@ -18,7 +18,7 @@ import { BpxTimerSequence } from "./TimerSequence";
         ["ddd", 444],
       ],
     },
-    { pause: false, delayFrames: 0, onGamePause: "pause" },
+    { paused: false, delayFrames: 0, onGamePause: "pause" },
   );
 
   switch (ts.currentPhase) {

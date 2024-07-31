@@ -4,7 +4,7 @@ import { BpxSprite } from "./Sprite";
 export class BpxAnimatedSprite {
     static from(imageUrl, w, h, xys, opts) {
         return new BpxAnimatedSprite({ imageUrl, w, h, xys }, {
-            pause: opts?.pause ?? false,
+            paused: opts?.paused ?? false,
             onGamePause: opts?.onGamePause ?? "pause",
         });
     }
@@ -20,7 +20,7 @@ export class BpxAnimatedSprite {
         this.#loop = BpxTimer.for({
             frames: this.#sprites.length,
             loop: true,
-            pause: opts.pause ?? false,
+            paused: opts.paused ?? false,
             delayFrames: 0,
             onGamePause: opts.onGamePause,
         });
