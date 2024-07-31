@@ -19,5 +19,9 @@
     "Logging",
     "Globals",
     "Other"
+  ],
+  "groupOrder": [
+    "Static factories",
+    "*"
   ]
 }

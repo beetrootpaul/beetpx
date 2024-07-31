@@ -2,9 +2,15 @@
  * @category Drawing
  */
 export class BpxRgbColor {
+    /**
+     * @group Static factories
+     */
     static of(r, g, b) {
         return new BpxRgbColor(r, g, b);
     }
+    /**
+     * @group Static factories
+     */
     static fromCssHex(cssHex) {
         if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {
             throw Error("Hexadecimal representation of the color doesn't contain exactly 6 hexadecimal digits, preceded by a single '#'");

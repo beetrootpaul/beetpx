@@ -24,6 +24,7 @@ npx typedoc \
   --titleLink "https://beetpx.dev" \
   --basePath "./docs/${BEETPX_VERSION}" \
   --hostedBaseUrl "https://beetpx.dev/docs/${BEETPX_VERSION}" \
+  --sort static-first --sort alphabetical \
   --out "./docs/docs/${BEETPX_VERSION}" \
   --cleanOutputDir true \
   --githubPages true \

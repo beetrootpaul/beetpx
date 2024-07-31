@@ -43,7 +43,13 @@ type BpxRgbCssHex = string;
  * @category Drawing
  */
 declare class BpxRgbColor {
+    /**
+     * @group Static factories
+     */
     static of(r: number, g: number, b: number): BpxRgbColor;
+    /**
+     * @group Static factories
+     */
     static fromCssHex(cssHex: string): BpxRgbColor;
     readonly type = "rgb";
     readonly r: number;
@@ -147,6 +153,9 @@ declare class BpxCanvasSnapshotColorMapping {
 declare class BpxPatternColors {
     readonly primary: BpxRgbColor | null;
     readonly secondary: BpxRgbColor | null;
+    /**
+     * @group Static factories
+     */
     static of(primary: BpxRgbColor | null, secondary: BpxRgbColor | null): BpxPatternColors;
     readonly type = "pattern";
     private constructor();
