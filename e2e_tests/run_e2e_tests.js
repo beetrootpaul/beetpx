@@ -36,9 +36,9 @@ const results = [];
 devTestFiles.forEach(devTestFile => {
   results.push(runTest(devTestFile, false));
 });
-// prodTestFiles.forEach(prodTestFile => {
-//   results.push(runTest(prodTestFile, true));
-// });
+prodTestFiles.forEach(prodTestFile => {
+  results.push(runTest(prodTestFile, true));
+});
 const hasSucceeded = results.every(r => r.pass);
 if (hasSucceeded) {
   console.log(
