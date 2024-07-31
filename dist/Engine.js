@@ -15,7 +15,7 @@ import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
-import { GlobalPause } from "./pause/GlobalPause";
+import { GamePause } from "./pause/GamePause";
 import { $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb_black, $v, } from "./shorthands";
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
@@ -88,8 +88,8 @@ export class Engine {
                 .suspend()
                 .then(() => { });
         });
-        if (engineConfig.globalPause?.available) {
-            GlobalPause.enable();
+        if (engineConfig.gamePause?.available) {
+            GamePause.enable();
         }
         DebugMode.loadFromStorage();
         if (!engineConfig.debugMode?.available) {
@@ -183,7 +183,7 @@ export class Engine {
         this.drawApi.clearCanvas($rgb_black);
         AudioPlayback.playbacksToPauseOnGamePause.clear();
         AudioPlayback.playbacksToMuteOnGamePause.clear();
-        GlobalPause.deactivate();
+        GamePause.deactivate();
         this.isInsideDrawOrStartedCallback = true;
         this.#onStarted?.();
         this.isInsideDrawOrStartedCallback = false;
@@ -228,14 +228,14 @@ export class Engine {
                     }
                 }
                 if (this.gameInput.gameButtons.wasJustPressed("menu")) {
-                    if (GlobalPause.isActive) {
-                        GlobalPause.deactivate();
+                    if (GamePause.isActive) {
+                        GamePause.deactivate();
                     }
                     else {
-                        GlobalPause.activate();
+                        GamePause.activate();
                     }
                 }
-                GlobalPause.update();
+                GamePause.update();
                 if (this.gameInput.buttonDebugToggle.wasJustPressed) {
                     DebugMode.enabled = !DebugMode.enabled;
                 }
@@ -266,7 +266,7 @@ export class Engine {
                         this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
                             0
                             : this.#currentFrameNumber + 1;
-                    if (!GlobalPause.isActive) {
+                    if (!GamePause.isActive) {
                         this.#currentFrameNumberOutsidePause =
                             this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER ?
                                 0

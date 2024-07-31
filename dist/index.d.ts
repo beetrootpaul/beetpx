@@ -358,7 +358,7 @@ type BpxEngineConfig = {
     canvasSize?: "64x64" | "128x128" | "256x256";
     fixedTimestep?: "30fps" | "60fps";
     assets?: AssetsToLoad;
-    globalPause?: {
+    gamePause?: {
         available?: boolean;
     };
     requireConfirmationOnTabClose?: boolean;
@@ -641,23 +641,23 @@ declare class BeetPx {
      */
     static logError(...args: unknown[]): void;
     /**
-     * @category Global pause
+     * @category Game pause
      */
     static get isPaused(): boolean;
     /**
-     * @category Global pause
+     * @category Game pause
      */
     static get wasJustPaused(): boolean;
     /**
-     * @category Global pause
+     * @category Game pause
      */
     static get wasJustResumed(): boolean;
     /**
-     * @category Global pause
+     * @category Game pause
      */
     static pause(): void;
     /**
-     * @category Global pause
+     * @category Game pause
      */
     static resume(): void;
     /**

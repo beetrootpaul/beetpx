@@ -36,7 +36,7 @@ $.setOnDraw(() => {
 $.start({
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
-  globalPause: {
+  gamePause: {
     available: true,
   },
   requireConfirmationOnTabClose: BEETPX__IS_PROD,
