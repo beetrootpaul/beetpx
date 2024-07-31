@@ -1,6 +1,7 @@
 var _a;
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
+import { ScopedLocaleStorage } from "../storage/ScopedLocaleStorage";
 import { AudioHelpers } from "./AudioHelpers";
 import { AudioPlaybackLooped } from "./AudioPlaybackLooped";
 import { AudioPlaybackOnce } from "./AudioPlaybackOnce";
@@ -166,15 +167,15 @@ export class AudioApi {
         this.#playbacks.get(playbackId)?.resume();
     }
     #loadStoredGlobalMuteUnmuteState() {
-        return (window.localStorage.getItem(_a.#storageMuteUnmuteKey) ===
+        return (ScopedLocaleStorage.getItem(_a.#storageMuteUnmuteKey) ===
             _a.#storageMuteUnmuteTrue);
     }
     #storeGlobalMuteUnmuteState(muted) {
         if (muted) {
-            window.localStorage.setItem(_a.#storageMuteUnmuteKey, _a.#storageMuteUnmuteTrue);
+            ScopedLocaleStorage.setItem(_a.#storageMuteUnmuteKey, _a.#storageMuteUnmuteTrue);
         }
         else {
-            window.localStorage.removeItem(_a.#storageMuteUnmuteKey);
+            ScopedLocaleStorage.removeItem(_a.#storageMuteUnmuteKey);
         }
     }
     getAudioContext() {

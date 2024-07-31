@@ -1,6 +1,7 @@
 import { Assets, BpxSoundUrl } from "../assets/Assets";
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
+import { ScopedLocaleStorage } from "../storage/ScopedLocaleStorage";
 import { AudioHelpers } from "./AudioHelpers";
 import { AudioPlayback, type BpxAudioPlaybackId } from "./AudioPlayback";
 import { AudioPlaybackLooped } from "./AudioPlaybackLooped";
@@ -277,19 +278,19 @@ export class AudioApi {
 
   #loadStoredGlobalMuteUnmuteState(): boolean {
     return (
-      window.localStorage.getItem(AudioApi.#storageMuteUnmuteKey) ===
+      ScopedLocaleStorage.getItem(AudioApi.#storageMuteUnmuteKey) ===
       AudioApi.#storageMuteUnmuteTrue
     );
   }
 
   #storeGlobalMuteUnmuteState(muted: boolean): void {
     if (muted) {
-      window.localStorage.setItem(
+      ScopedLocaleStorage.setItem(
         AudioApi.#storageMuteUnmuteKey,
         AudioApi.#storageMuteUnmuteTrue,
       );
     } else {
-      window.localStorage.removeItem(AudioApi.#storageMuteUnmuteKey);
+      ScopedLocaleStorage.removeItem(AudioApi.#storageMuteUnmuteKey);
     }
   }
 

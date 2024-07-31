@@ -28,10 +28,15 @@ import {
   $rgb_black,
   $v,
 } from "./shorthands";
+import { ScopedLocaleStorage } from "./storage/ScopedLocaleStorage";
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 
 export type BpxEngineConfig = {
+  /**
+   * Used e.g. for scoping localStorage keys, so two different games won't override their persisted state.
+   */
+  gameId: string;
   canvasSize?: "64x64" | "128x128" | "256x256";
   fixedTimestep?: "30fps" | "60fps";
   assets?: AssetsToLoad;
@@ -126,12 +131,13 @@ export class Engine {
     return this.#browserType;
   }
 
-  constructor(engineConfig?: BpxEngineConfig) {
-    engineConfig ??= {};
+  constructor(engineConfig: BpxEngineConfig) {
     this.#config = engineConfig;
 
     engineConfig.canvasSize ??= "128x128";
     engineConfig.fixedTimestep ??= "60fps";
+
+    ScopedLocaleStorage.gameId = engineConfig.gameId;
 
     window.addEventListener("error", event => {
       HtmlTemplate.showError(event.message);

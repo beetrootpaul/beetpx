@@ -1,15 +1,16 @@
 import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
+import { ScopedLocaleStorage } from "../storage/ScopedLocaleStorage";
 
 export class DebugMode {
-  static readonly #storageDebugDisabledKey = "beetpx__debug_disabled";
+  static readonly #storageDebugDisabledKey = "debug__disabled";
   static readonly #storageDebugDisabledTrue = "yes";
 
   static #enabled = false;
 
   static loadFromStorage(): void {
     this.#enabled =
-      window.localStorage.getItem(this.#storageDebugDisabledKey) !==
+      ScopedLocaleStorage.getItem(this.#storageDebugDisabledKey) !==
       this.#storageDebugDisabledTrue;
 
     HtmlTemplate.updateDebugClass(this.enabled);
@@ -27,9 +28,9 @@ export class DebugMode {
     HtmlTemplate.updateDebugClass(this.enabled);
 
     if (this.#enabled) {
-      window.localStorage.removeItem(this.#storageDebugDisabledKey);
+      ScopedLocaleStorage.removeItem(this.#storageDebugDisabledKey);
     } else {
-      window.localStorage.setItem(
+      ScopedLocaleStorage.setItem(
         this.#storageDebugDisabledKey,
         this.#storageDebugDisabledTrue,
       );
