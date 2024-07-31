@@ -281,12 +281,14 @@ declare class BpxFont {
 }
 
 type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number, y: number][], opts?: {
+    frameDuration?: number;
     paused?: boolean;
     onGamePause?: "pause" | "ignore";
 }) => BpxAnimatedSprite;
 declare class BpxAnimatedSprite {
     #private;
     static from(imageUrl: BpxImageUrl, w: number, h: number, xys: [x: number, y: number][], opts?: {
+        frameDuration?: number;
         paused?: boolean;
         onGamePause?: "pause" | "ignore";
     }): BpxAnimatedSprite;

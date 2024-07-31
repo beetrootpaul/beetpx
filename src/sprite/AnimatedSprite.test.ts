@@ -72,6 +72,46 @@ describe("AnimatedSprite", () => {
     expect(sprite.current.xy).toEqual($v(2, 20));
   });
 
+  test("frame duration", () => {
+    const xys: [number, number][] = [
+      [1, 10],
+      [2, 20],
+      [3, 30],
+    ];
+    const frameDuration = 3;
+    const sprite = $aspr("any.image.url")(90, 91, xys, { frameDuration });
+    expect(sprite.current.xy).toEqual($v(1, 10));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(1, 10));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(1, 10));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(2, 20));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(2, 20));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(2, 20));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(3, 30));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(3, 30));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(3, 30));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(1, 10));
+
+    range(xys.length * frameDuration).forEach(() => {
+      incrementFrameNumber();
+    });
+
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(1, 10));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(1, 10));
+    incrementFrameNumber();
+    expect(sprite.current.xy).toEqual($v(2, 20));
+  });
+
   test("when time moves backward", () => {
     nextFrameNumberWillBe(501);
     const xys: [number, number][] = [

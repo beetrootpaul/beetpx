@@ -25,6 +25,7 @@ export function $aspr(
     h: number,
     xys: [x: number, y: number][],
     opts?: {
+      frameDuration?: number;
       paused?: boolean;
       onGamePause?: "pause" | "ignore";
     },
