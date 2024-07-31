@@ -34,6 +34,7 @@ $.setOnDraw(() => {
 });
 
 $.start({
+  gameId: "beetpx-playground",
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
   gamePause: {

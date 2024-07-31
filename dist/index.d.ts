@@ -357,6 +357,10 @@ declare global {
 type BpxPersistedStateValueConstraints = Record<string, string | number | boolean | null>;
 
 type BpxEngineConfig = {
+    /**
+     * Used e.g. for scoping localStorage keys, so two different games won't override their persisted state.
+     */
+    gameId: string;
     canvasSize?: "64x64" | "128x128" | "256x256";
     fixedTimestep?: "30fps" | "60fps";
     assets?: AssetsToLoad;
@@ -596,7 +600,7 @@ declare class BeetPx {
     /**
      * @category Lifecycle
      */
-    static start(config?: BpxEngineConfig): Promise<void>;
+    static start(config: BpxEngineConfig): Promise<void>;
     static get debug(): boolean;
     static get canvasSize(): BpxVector2d;
     /**

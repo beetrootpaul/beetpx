@@ -1,30 +1,28 @@
+import { ScopedLocaleStorage } from "./ScopedLocaleStorage";
+
 export type BpxPersistedStateValueConstraints = Record<
   string,
   string | number | boolean | null
 >;
 
 export class StorageApi {
-  static readonly #key: string = "game_stored_state";
+  static readonly #key: string = "game__stored_state";
 
   savePersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(value: PersistedStateValue): void {
-    window.localStorage.setItem(
-      StorageApi.#key,
-      JSON.stringify(value, null, 2),
-    );
+    ScopedLocaleStorage.setItem(StorageApi.#key, value);
   }
 
   loadPersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(): PersistedStateValue | null {
-    const maybeValue: string | null = window.localStorage.getItem(
+    return ScopedLocaleStorage.getItem(
       StorageApi.#key,
-    );
-    return maybeValue ? JSON.parse(maybeValue) : null;
+    ) as PersistedStateValue | null;
   }
 
   clearPersistedState(): void {
-    window.localStorage.removeItem(StorageApi.#key);
+    ScopedLocaleStorage.removeItem(StorageApi.#key);
   }
 }

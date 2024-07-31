@@ -136,7 +136,7 @@ export class BeetPx {
   /**
    * @category Lifecycle
    */
-  static async start(config?: BpxEngineConfig): Promise<void> {
+  static async start(config: BpxEngineConfig): Promise<void> {
     if (Engine.engineSingleton) {
       throw Error("BeetPx is already started");
     }

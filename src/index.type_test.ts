@@ -1,12 +1,16 @@
-import { BeetPx } from "./";
+import { BeetPx, BpxEngineConfig } from "./";
+
+const anyConfig: BpxEngineConfig = {
+  gameId: "any-id",
+};
 
 //
 // context: fixedTimestep
 // test:    valid values
 //
 
-BeetPx.start({ fixedTimestep: "30fps" });
-BeetPx.start({ fixedTimestep: "60fps" });
+BeetPx.start({ ...anyConfig, fixedTimestep: "30fps" });
+BeetPx.start({ ...anyConfig, fixedTimestep: "60fps" });
 
 //
 // context: fixedTimestep
@@ -14,28 +18,28 @@ BeetPx.start({ fixedTimestep: "60fps" });
 //
 
 // @ts-expect-error
-BeetPx.start({ fixedTimestep: "0fps" });
+BeetPx.start({ ...anyConfig, fixedTimestep: "0fps" });
 // @ts-expect-error
-BeetPx.start({ fixedTimestep: "59fps" });
+BeetPx.start({ ...anyConfig, fixedTimestep: "59fps" });
 // @ts-expect-error
-BeetPx.start({ fixedTimestep: "120fps" });
+BeetPx.start({ ...anyConfig, fixedTimestep: "120fps" });
 
 // @ts-expect-error
-BeetPx.start({ fixedTimestep: 30 });
+BeetPx.start({ ...anyConfig, fixedTimestep: 30 });
 // @ts-expect-error
-BeetPx.start({ fixedTimestep: 60 });
+BeetPx.start({ ...anyConfig, fixedTimestep: 60 });
 
 // @ts-expect-error
-BeetPx.start({ fixedTimestep: null });
+BeetPx.start({ ...anyConfig, fixedTimestep: null });
 
 //
 // context: canvasSize
 // test:    valid values
 //
 
-BeetPx.start({ canvasSize: "64x64" });
-BeetPx.start({ canvasSize: "128x128" });
-BeetPx.start({ canvasSize: "256x256" });
+BeetPx.start({ ...anyConfig, canvasSize: "64x64" });
+BeetPx.start({ ...anyConfig, canvasSize: "128x128" });
+BeetPx.start({ ...anyConfig, canvasSize: "256x256" });
 
 //
 // context: canvasSize
@@ -43,18 +47,18 @@ BeetPx.start({ canvasSize: "256x256" });
 //
 
 // @ts-expect-error
-BeetPx.start({ canvasSize: "1x1" });
+BeetPx.start({ ...anyConfig, canvasSize: "1x1" });
 // @ts-expect-error
-BeetPx.start({ canvasSize: "512x512" });
+BeetPx.start({ ...anyConfig, canvasSize: "512x512" });
 // @ts-expect-error
-BeetPx.start({ canvasSize: "1980x1080" });
+BeetPx.start({ ...anyConfig, canvasSize: "1980x1080" });
 
 // @ts-expect-error
-BeetPx.start({ canvasSize: 64 });
+BeetPx.start({ ...anyConfig, canvasSize: 64 });
 // @ts-expect-error
-BeetPx.start({ canvasSize: 128 });
+BeetPx.start({ ...anyConfig, canvasSize: 128 });
 // @ts-expect-error
-BeetPx.start({ canvasSize: 256 });
+BeetPx.start({ ...anyConfig, canvasSize: 256 });
 
 // @ts-expect-error
-BeetPx.start({ canvasSize: null });
+BeetPx.start({ ...anyConfig, canvasSize: null });

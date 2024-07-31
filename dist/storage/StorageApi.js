@@ -1,13 +1,13 @@
+import { ScopedLocaleStorage } from "./ScopedLocaleStorage";
 export class StorageApi {
-    static #key = "game_stored_state";
+    static #key = "game__stored_state";
     savePersistedState(value) {
-        window.localStorage.setItem(StorageApi.#key, JSON.stringify(value, null, 2));
+        ScopedLocaleStorage.setItem(StorageApi.#key, value);
     }
     loadPersistedState() {
-        const maybeValue = window.localStorage.getItem(StorageApi.#key);
-        return maybeValue ? JSON.parse(maybeValue) : null;
+        return ScopedLocaleStorage.getItem(StorageApi.#key);
     }
     clearPersistedState() {
-        window.localStorage.removeItem(StorageApi.#key);
+        ScopedLocaleStorage.removeItem(StorageApi.#key);
     }
 }

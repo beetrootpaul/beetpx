@@ -17,6 +17,7 @@ import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { GamePause } from "./pause/GamePause";
 import { $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb_black, $v, } from "./shorthands";
+import { ScopedLocaleStorage } from "./storage/ScopedLocaleStorage";
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 export class Engine {
@@ -64,10 +65,10 @@ export class Engine {
         return this.#browserType;
     }
     constructor(engineConfig) {
-        engineConfig ??= {};
         this.#config = engineConfig;
         engineConfig.canvasSize ??= "128x128";
         engineConfig.fixedTimestep ??= "60fps";
+        ScopedLocaleStorage.gameId = engineConfig.gameId;
         window.addEventListener("error", event => {
             HtmlTemplate.showError(event.message);
             
