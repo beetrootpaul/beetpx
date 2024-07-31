@@ -582,7 +582,7 @@ describe("Timer", () => {
       });
 
       test("already paused timer", () => {
-        const timer = $timer(5, { pause: true });
+        const timer = $timer(5, { paused: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -929,7 +929,7 @@ describe("Timer", () => {
       });
 
       test("delayed and already paused timer", () => {
-        const timer = $timer(5, { delayFrames: 3, pause: true });
+        const timer = $timer(5, { delayFrames: 3, paused: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -1632,7 +1632,7 @@ describe("Timer", () => {
       });
 
       test("already paused timer", () => {
-        const timer = $timer(5, { loop: true, pause: true });
+        const timer = $timer(5, { loop: true, paused: true });
 
         expect(ppt(timer)).toEqual(
           ppev({
@@ -2009,7 +2009,7 @@ describe("Timer", () => {
         const timer = $timer(5, {
           loop: true,
           delayFrames: 3,
-          pause: true,
+          paused: true,
         });
 
         expect(ppt(timer)).toEqual(

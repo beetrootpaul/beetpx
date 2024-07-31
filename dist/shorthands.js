@@ -47,7 +47,7 @@ export function $timer(frames, opts) {
     return BpxTimer.for({
         frames,
         loop: opts?.loop ?? false,
-        pause: opts?.pause ?? false,
+        paused: opts?.paused ?? false,
         delayFrames: opts?.delayFrames ?? 0,
         onGamePause: opts?.onGamePause ?? "pause",
     });
@@ -57,7 +57,7 @@ export function $timerSeq(params, opts) {
         intro: params.intro ?? [],
         loop: params.loop ?? [],
     }, {
-        pause: opts?.pause ?? false,
+        paused: opts?.paused ?? false,
         delayFrames: opts?.delayFrames ?? 0,
         onGamePause: opts?.onGamePause ?? "pause",
     });

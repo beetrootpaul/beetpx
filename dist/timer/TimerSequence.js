@@ -35,7 +35,7 @@ export class BpxTimerSequence {
         this.#firstIterationTimer = BpxTimer.for({
             frames: this.#firstIterationFrames,
             loop: false,
-            pause: opts.pause,
+            paused: opts.paused,
             delayFrames: opts.delayFrames,
             onGamePause: this.#onGamePause,
         });
@@ -44,14 +44,14 @@ export class BpxTimerSequence {
                 BpxTimer.for({
                     frames: this.#loopFrames,
                     loop: true,
-                    pause: opts.pause,
+                    paused: opts.paused,
                     delayFrames: opts.delayFrames + this.#firstIterationFrames,
                     onGamePause: this.#onGamePause,
                 })
                 : null;
         this.#isPaused = false;
         this.#pausedFrame = null;
-        if (opts.pause) {
+        if (opts.paused) {
             this.pause();
         }
     }
@@ -190,7 +190,7 @@ export class BpxTimerSequence {
             this.#loopTimer = BpxTimer.for({
                 frames: this.#loopFrames,
                 loop: true,
-                pause: false,
+                paused: false,
                 delayFrames: this.#firstIterationFrames,
                 onGamePause: this.#onGamePause,
             });

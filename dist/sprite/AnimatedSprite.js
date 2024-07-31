@@ -1,10 +1,12 @@
 import { BpxVector2d } from "../misc/Vector2d";
 import { BpxTimer } from "../timer/Timer";
+import { repeatEachElement } from "../utils/repeatEachElement";
 import { BpxSprite } from "./Sprite";
 export class BpxAnimatedSprite {
     static from(imageUrl, w, h, xys, opts) {
         return new BpxAnimatedSprite({ imageUrl, w, h, xys }, {
-            pause: opts?.pause ?? false,
+            frameDuration: opts?.frameDuration ?? 1,
+            paused: opts?.paused ?? false,
             onGamePause: opts?.onGamePause ?? "pause",
         });
     }
@@ -16,11 +18,11 @@ export class BpxAnimatedSprite {
     constructor(params, opts) {
         this.imageUrl = params.imageUrl;
         this.size = BpxVector2d.of(params.w, params.h).abs().round();
-        this.#sprites = params.xys.map(([x, y]) => BpxSprite.from(params.imageUrl, params.w, params.h, x, y));
+        this.#sprites = repeatEachElement(Math.max(1, Math.round(opts.frameDuration)), params.xys.map(([x, y]) => BpxSprite.from(params.imageUrl, params.w, params.h, x, y)));
         this.#loop = BpxTimer.for({
             frames: this.#sprites.length,
             loop: true,
-            pause: opts.pause ?? false,
+            paused: opts.paused,
             delayFrames: 0,
             onGamePause: opts.onGamePause,
         });
