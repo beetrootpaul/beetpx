@@ -3,6 +3,9 @@ import { $v } from "../../shorthands";
 import { BpxGameInputEvent } from "../GameInput";
 import { Button } from "./Button";
 
+/**
+ * @category Game input
+ */
 export type BpxGameButtonName =
   | "left"
   | "right"

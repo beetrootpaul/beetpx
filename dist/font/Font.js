@@ -3,6 +3,9 @@ import { BpxVector2d } from "../misc/Vector2d";
 import { assertUnreachable } from "../utils/assertUnreachable";
 import { identity } from "../utils/identity";
 import { range } from "../utils/range";
+/**
+ * @category Fonts
+ */
 export class BpxFont {
     static of(config) {
         return new BpxFont({

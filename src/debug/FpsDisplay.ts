@@ -1,4 +1,4 @@
-import { $d } from "../BeetPx";
+import { $d } from "../";
 import { BpxRgbColor } from "../color/RgbColor";
 import { DrawApi } from "../draw_api/DrawApi";
 import { BpxVector2d } from "../misc/Vector2d";

@@ -1,6 +1,12 @@
 import { BpxRgbColor } from "./RgbColor";
 
+/**
+ * @category Drawing
+ */
 export class BpxPatternColors {
+  /**
+   * @group Static factories
+   */
   static of(
     primary: BpxRgbColor | null,
     secondary: BpxRgbColor | null,

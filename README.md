@@ -99,9 +99,8 @@ exposed types and classes and constants, and nothing more. This is something to
 be improved before 1.0 release.
 
 ℹ️ For a quick start you can start by typing either `BeetPx.` and checking what
-your IDE suggests. The BeetPx follows a convention of having all functions and
-constants exposed through `BeetPx.`, `BeetPx.draw.`, and `BeetPx.helpers.`.
-Their shorthands are `$`, `$d`, and `$u`.
+your IDE suggests. Same for `BeetPxDraw.`, and `BeetPxUtils.`. Their shorthands
+are respectively: `$`, `$d`, and `$u`.
 
 ## Development Setup
 

@@ -1,6 +1,12 @@
+/**
+ * @category Drawing
+ */
 export class BpxPatternColors {
     primary;
     secondary;
+    /**
+     * @group Static factories
+     */
     static of(primary, secondary) {
         return new BpxPatternColors(primary, secondary);
     }

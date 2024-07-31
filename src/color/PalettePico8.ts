@@ -5,9 +5,13 @@ import { BpxRgbColor } from "./RgbColor";
  *
  * Links:
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
- *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from here
+ *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from there
+ *
+ * @category Drawing
  */
 export class BpxPalettePico8 {
+  private constructor() {}
+
   static black = BpxRgbColor.fromCssHex("#000000");
   static storm = BpxRgbColor.fromCssHex("#1D2B53");
   static wine = BpxRgbColor.fromCssHex("#7E2553");

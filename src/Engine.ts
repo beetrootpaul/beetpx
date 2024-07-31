@@ -63,6 +63,8 @@ export type OnEngineInitialized = {
 };
 
 export class Engine {
+  static engineSingleton: Engine | undefined;
+
   readonly #config: BpxEngineConfig;
 
   readonly #assetsToLoad: AssetsToLoad;

@@ -1,5 +1,5 @@
 import { expect, test, vi } from "vitest";
-import { BeetPx } from "../BeetPx";
+import { BeetPx } from "../";
 import { booleanChangingEveryNthFrame } from "./booleanChangingEveryNthFrame";
 import { range } from "./range";
 

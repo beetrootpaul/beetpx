@@ -1,4 +1,4 @@
-import { BeetPx } from "../BeetPx";
+import { BeetPx } from "../";
 import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
 export class BpxTimer {

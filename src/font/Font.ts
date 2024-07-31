@@ -34,6 +34,9 @@ export type BpxGlyph =
       kerning?: BpxKerningPrevCharMap;
     };
 
+/**
+ * @category Fonts
+ */
 export type BpxArrangedGlyph =
   | {
       type: "sprite";
@@ -58,6 +61,9 @@ export type BpxArrangedGlyph =
       lineNumber: number;
     };
 
+/**
+ * @category Fonts
+ */
 export type BpxFontConfig = {
   /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
   ascent: number;
@@ -85,6 +91,9 @@ export type BpxFontConfig = {
   glyphs: Map<string, BpxGlyph>;
 };
 
+/**
+ * @category Fonts
+ */
 export class BpxFont {
   static of(config: Partial<BpxFontConfig>) {
     return new BpxFont({

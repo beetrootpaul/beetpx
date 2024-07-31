@@ -1,4 +1,4 @@
-import { $d } from "../BeetPx";
+import { $d } from "../";
 import { $font_pico8, $rgb_p8 } from "../shorthands";
 import { mod } from "../utils/mod";
 export class FpsDisplay {

@@ -1,10 +1,19 @@
 export type BpxRgbCssHex = string;
 
+/**
+ * @category Drawing
+ */
 export class BpxRgbColor {
+  /**
+   * @group Static factories
+   */
   static of(r: number, g: number, b: number): BpxRgbColor {
     return new BpxRgbColor(r, g, b);
   }
 
+  /**
+   * @group Static factories
+   */
   static fromCssHex(cssHex: string): BpxRgbColor {
     if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {
       throw Error(
