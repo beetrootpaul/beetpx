@@ -37,7 +37,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   // the frame the counting should start at
   #firstIterationOffset: number;
 
-  readonly #ignoreGlobalPause: boolean;
+  readonly #ignoreGamePause: boolean;
   readonly #onGamePause: "pause" | "ignore";
   #isPaused: boolean;
 
@@ -61,7 +61,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
       onGamePause: "pause" | "ignore";
     },
   ) {
-    this.#ignoreGlobalPause = opts.onGamePause === "ignore";
+    this.#ignoreGamePause = opts.onGamePause === "ignore";
     this.#onGamePause = opts.onGamePause;
 
     this.#firstIterationPhases = [...params.intro, ...params.loop].map(
@@ -197,7 +197,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   get #fn(): number {
-    return this.#ignoreGlobalPause ?
+    return this.#ignoreGamePause ?
         BeetPx.frameNumber
       : BeetPx.frameNumberOutsidePause;
   }

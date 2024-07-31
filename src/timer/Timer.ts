@@ -16,7 +16,7 @@ export class BpxTimer {
   readonly #frames: number;
   readonly #loop: boolean;
 
-  readonly #ignoreGlobalPause: boolean;
+  readonly #ignoreGamePause: boolean;
   #isPaused: boolean;
 
   #offsetFrame: number;
@@ -29,7 +29,7 @@ export class BpxTimer {
     delayFrames: number;
     onGamePause: "pause" | "ignore";
   }) {
-    this.#ignoreGlobalPause = opts.onGamePause === "ignore";
+    this.#ignoreGamePause = opts.onGamePause === "ignore";
 
     this.#frames = Math.max(0, Math.round(opts.frames));
     this.#loop = opts.loop;
@@ -44,7 +44,7 @@ export class BpxTimer {
   }
 
   get #fn(): number {
-    return this.#ignoreGlobalPause ?
+    return this.#ignoreGamePause ?
         BeetPx.frameNumber
       : BeetPx.frameNumberOutsidePause;
   }

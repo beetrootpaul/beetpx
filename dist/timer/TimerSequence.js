@@ -11,7 +11,7 @@ export class BpxTimerSequence {
     #loopFrames;
     
     #firstIterationOffset;
-    #ignoreGlobalPause;
+    #ignoreGamePause;
     #onGamePause;
     #isPaused;
     #pausedFrame;
@@ -19,7 +19,7 @@ export class BpxTimerSequence {
     #loopTimer;
     #recentlyComputedNow;
     constructor(params, opts) {
-        this.#ignoreGlobalPause = opts.onGamePause === "ignore";
+        this.#ignoreGamePause = opts.onGamePause === "ignore";
         this.#onGamePause = opts.onGamePause;
         this.#firstIterationPhases = [...params.intro, ...params.loop].map(entry => ({
             name: entry[0],
@@ -127,7 +127,7 @@ export class BpxTimerSequence {
         return this.#now.phase?.name ?? null;
     }
     get #fn() {
-        return this.#ignoreGlobalPause ?
+        return this.#ignoreGamePause ?
             BeetPx.frameNumber
             : BeetPx.frameNumberOutsidePause;
     }

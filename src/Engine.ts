@@ -20,7 +20,7 @@ import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
 import { BpxVector2d } from "./misc/Vector2d";
-import { GlobalPause } from "./pause/GlobalPause";
+import { GamePause } from "./pause/GamePause";
 import {
   $font_pico8,
   $font_saint11Minimal4,
@@ -35,7 +35,7 @@ export type BpxEngineConfig = {
   canvasSize?: "64x64" | "128x128" | "256x256";
   fixedTimestep?: "30fps" | "60fps";
   assets?: AssetsToLoad;
-  globalPause?: {
+  gamePause?: {
     available?: boolean;
   };
   requireConfirmationOnTabClose?: boolean;
@@ -154,8 +154,8 @@ export class Engine {
         .then(() => {});
     });
 
-    if (engineConfig.globalPause?.available) {
-      GlobalPause.enable();
+    if (engineConfig.gamePause?.available) {
+      GamePause.enable();
     }
 
     DebugMode.loadFromStorage();
@@ -290,7 +290,7 @@ export class Engine {
 
     AudioPlayback.playbacksToPauseOnGamePause.clear();
     AudioPlayback.playbacksToMuteOnGamePause.clear();
-    GlobalPause.deactivate();
+    GamePause.deactivate();
 
     this.isInsideDrawOrStartedCallback = true;
     this.#onStarted?.();
@@ -343,13 +343,13 @@ export class Engine {
         }
 
         if (this.gameInput.gameButtons.wasJustPressed("menu")) {
-          if (GlobalPause.isActive) {
-            GlobalPause.deactivate();
+          if (GamePause.isActive) {
+            GamePause.deactivate();
           } else {
-            GlobalPause.activate();
+            GamePause.activate();
           }
         }
-        GlobalPause.update();
+        GamePause.update();
 
         if (this.gameInput.buttonDebugToggle.wasJustPressed) {
           DebugMode.enabled = !DebugMode.enabled;
@@ -390,7 +390,7 @@ export class Engine {
               0
             : this.#currentFrameNumber + 1;
 
-          if (!GlobalPause.isActive) {
+          if (!GamePause.isActive) {
             this.#currentFrameNumberOutsidePause =
               this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER ?
                 0

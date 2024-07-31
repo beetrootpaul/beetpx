@@ -64,7 +64,7 @@ import { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
 import { Logger } from "./logger/Logger";
 import { BpxEasing, BpxEasingFn } from "./misc/Easing";
 import { BpxVector2d } from "./misc/Vector2d";
-import { GlobalPause } from "./pause/GlobalPause";
+import { GamePause } from "./pause/GamePause";
 import { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
 import { BpxSprite } from "./sprite/Sprite";
 import { BpxTimer } from "./timer/Timer";
@@ -278,42 +278,42 @@ export class BeetPx {
   }
 
   //
-  // Global Pause
+  // Game Pause
   //
 
   /**
-   * @category Global pause
+   * @category Game pause
    */
   static get isPaused(): boolean {
-    return GlobalPause.isActive;
+    return GamePause.isActive;
   }
 
   /**
-   * @category Global pause
+   * @category Game pause
    */
   static get wasJustPaused(): boolean {
-    return GlobalPause.wasJustActivated;
+    return GamePause.wasJustActivated;
   }
 
   /**
-   * @category Global pause
+   * @category Game pause
    */
   static get wasJustResumed(): boolean {
-    return GlobalPause.wasJustDeactivated;
+    return GamePause.wasJustDeactivated;
   }
 
   /**
-   * @category Global pause
+   * @category Game pause
    */
   static pause(): void {
-    GlobalPause.activate();
+    GamePause.activate();
   }
 
   /**
-   * @category Global pause
+   * @category Game pause
    */
   static resume(): void {
-    GlobalPause.deactivate();
+    GamePause.deactivate();
   }
 
   //

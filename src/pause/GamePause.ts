@@ -1,6 +1,6 @@
 import { AudioPlayback } from "../audio/AudioPlayback";
 
-export class GlobalPause {
+export class GamePause {
   static #isEnabled: boolean = false;
 
   static #prevIsActive: boolean = false;
@@ -25,14 +25,14 @@ export class GlobalPause {
   static update(): void {
     if (!this.#isEnabled) return;
 
-    if (GlobalPause.wasJustActivated) {
+    if (GamePause.wasJustActivated) {
       for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
         playback.pauseByEngine();
       }
       for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
         playback.muteByEngine();
       }
-    } else if (GlobalPause.wasJustDeactivated) {
+    } else if (GamePause.wasJustDeactivated) {
       for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
         playback.resumeByEngine();
       }
