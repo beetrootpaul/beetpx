@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
-import { BeetPx } from "../../BeetPx";
+import { BeetPx } from "../../";
 import { $v } from "../../shorthands";
 import { GameButtons } from "./GameButtons";
 

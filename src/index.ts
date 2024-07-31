@@ -21,33 +21,54 @@ import type {
   BpxSoundUrl,
 } from "./assets/Assets";
 import type { BpxAudioPlaybackId } from "./audio/AudioPlayback";
-import type { BpxSoundSequence } from "./audio/SoundSequence";
+import type {
+  BpxSoundSequence,
+  BpxSoundSequenceEntry,
+} from "./audio/SoundSequence";
 import type { BpxBrowserType } from "./browser/BrowserTypeDetector";
-import type { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
-import type { BpxPatternColors } from "./color/PatternColors";
-import type { BpxRgbColor } from "./color/RgbColor";
-import type { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
+import type { BpxColorMapper } from "./color/ColorMapper";
+import type { BpxRgbCssHex } from "./color/RgbColor";
 import type { BpxTextMeasurement } from "./draw_api/DrawApi";
-import type { BpxDrawingPattern } from "./draw_api/DrawingPattern";
-import type { BpxPixels } from "./draw_api/Pixels";
-import type { BpxFont, BpxTextColorMarkers } from "./font/Font";
+import type {
+  BpxArrangedGlyph,
+  BpxGlyph,
+  BpxKerningPrevCharMap,
+  BpxTextColorMarkers,
+} from "./font/Font";
 import type {
   BpxGameInputEvent,
   GameInputMethod,
 } from "./game_input/GameInput";
 import type { BpxGamepadType } from "./game_input/GameInputGamepad";
 import type { BpxGameButtonName } from "./game_input/buttons/GameButtons";
-import type { BpxVector2d } from "./misc/Vector2d";
-import type { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
-import type { BpxSprite } from "./sprite/Sprite";
+import type { BpxImageBoundAnimatedSpriteFactory } from "./sprite/AnimatedSprite";
+import type { BpxImageBoundSpriteFactory } from "./sprite/Sprite";
 import type { BpxPersistedStateValueConstraints } from "./storage/StorageApi";
 
 /////////////////////////////////////////////////////////////////////////////
 
 import { Engine } from "./Engine";
+import { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
+import { BpxPalettePico8 } from "./color/PalettePico8";
+import { BpxPatternColors } from "./color/PatternColors";
+import { BpxRgbColor } from "./color/RgbColor";
+import { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 import { DebugMode } from "./debug/DebugMode";
+import { BpxDrawingPattern } from "./draw_api/DrawingPattern";
+import { BpxPixels } from "./draw_api/Pixels";
+import { BpxFont, BpxFontConfig } from "./font/Font";
+import { BpxFontConfigPico8 } from "./font/FontConfigPico8";
+import { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
+import { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
+import { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
 import { Logger } from "./logger/Logger";
+import { BpxEasing, BpxEasingFn } from "./misc/Easing";
+import { BpxVector2d } from "./misc/Vector2d";
 import { GlobalPause } from "./pause/GlobalPause";
+import { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
+import { BpxSprite } from "./sprite/Sprite";
+import { BpxTimer } from "./timer/Timer";
+import { BpxTimerSequence } from "./timer/TimerSequence";
 import { assertUnreachable } from "./utils/assertUnreachable";
 import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFrame";
 import { clamp } from "./utils/clamp";
@@ -91,7 +112,6 @@ declare global {
  * @category API entry points
  */
 export class BeetPx {
-  // Make sure the constructor is private:
   private constructor() {}
 
   static #dataStoredBeforeEngineStarted: {
@@ -587,7 +607,6 @@ export class BeetPx {
  * @category API entry points
  */
 export class BeetPxDraw {
-  // Make sure the constructor is private:
   private constructor() {}
 
   static #tryGetEngine(calledFnName: string): Engine {
@@ -822,7 +841,6 @@ export class BeetPxDraw {
  * @category API entry points
  */
 export class BeetPxUtils {
-  // Make sure the constructor is private:
   private constructor() {}
 
   /**
@@ -968,57 +986,56 @@ export class BeetPxUtils {
 
 /////////////////////////////////////////////////////////////////////////////
 
-export type { BpxEngineConfig } from "./Engine";
 export type {
+  BpxArrangedGlyph,
+  BpxAudioPlaybackId,
+  BpxBrowserType,
+  BpxColorMapper,
+  BpxEasingFn,
+  BpxEngineConfig,
+  BpxFontConfig,
+  BpxGameButtonName,
+  BpxGameInputEvent,
+  BpxGamepadType,
+  BpxGlyph,
   BpxImageAsset,
+  BpxImageBoundAnimatedSpriteFactory,
+  BpxImageBoundSpriteFactory,
   BpxImageUrl,
   BpxJsonAsset,
   BpxJsonUrl,
+  BpxKerningPrevCharMap,
+  BpxPersistedStateValueConstraints,
+  BpxRgbCssHex,
   BpxSoundAsset,
-  BpxSoundUrl,
-} from "./assets/Assets";
-export type { BpxAudioPlaybackId } from "./audio/AudioPlayback";
-export type {
   BpxSoundSequence,
   BpxSoundSequenceEntry,
-} from "./audio/SoundSequence";
-export type { BpxBrowserType } from "./browser/BrowserTypeDetector";
-export type { BpxColorMapper } from "./color/ColorMapper";
-export type { BpxRgbCssHex } from "./color/RgbColor";
-export type {
-  BpxArrangedGlyph,
-  BpxFontConfig,
-  BpxGlyph,
-  BpxKerningPrevCharMap,
+  BpxSoundUrl,
   BpxTextColorMarkers,
-} from "./font/Font";
-export type { BpxGameInputEvent } from "./game_input/GameInput";
-export type { BpxGamepadType } from "./game_input/GameInputGamepad";
-export type { BpxGameButtonName } from "./game_input/buttons/GameButtons";
-export type { BpxEasingFn } from "./misc/Easing";
-export type { BpxImageBoundAnimatedSpriteFactory } from "./sprite/AnimatedSprite";
-export type { BpxImageBoundSpriteFactory } from "./sprite/Sprite";
+};
 
 /////////////////////////////////////////////////////////////////////////////
 
-export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
-export { BpxPalettePico8 } from "./color/PalettePico8";
-export { BpxPatternColors } from "./color/PatternColors";
-export { BpxRgbColor } from "./color/RgbColor";
-export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
-export { BpxDrawingPattern } from "./draw_api/DrawingPattern";
-export { BpxPixels } from "./draw_api/Pixels";
-export { BpxFont } from "./font/Font";
-export { BpxFontConfigPico8 } from "./font/FontConfigPico8";
-export { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
-export { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
-export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
-export { BpxEasing } from "./misc/Easing";
-export { BpxVector2d } from "./misc/Vector2d";
-export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
-export { BpxSprite } from "./sprite/Sprite";
-export { BpxTimer } from "./timer/Timer";
-export { BpxTimerSequence } from "./timer/TimerSequence";
+export {
+  BpxAnimatedSprite,
+  BpxCanvasSnapshotColorMapping,
+  BpxDrawingPattern,
+  BpxEasing,
+  BpxFont,
+  BpxFontConfigPico8,
+  BpxFontConfigSaint11Minimal4,
+  BpxFontConfigSaint11Minimal5,
+  BpxGamepadTypeDetector,
+  BpxPalettePico8,
+  BpxPatternColors,
+  BpxPixels,
+  BpxRgbColor,
+  BpxSprite,
+  BpxSpriteColorMapping,
+  BpxTimer,
+  BpxTimerSequence,
+  BpxVector2d,
+};
 
 /////////////////////////////////////////////////////////////////////////////
 

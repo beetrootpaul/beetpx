@@ -9,6 +9,7 @@ import { BpxRgbColor } from "./RgbColor";
  * @category Drawing
  */
 export class BpxPalettePico8 {
+    constructor() { }
     static black = BpxRgbColor.fromCssHex("#000000");
     static storm = BpxRgbColor.fromCssHex("#1D2B53");
     static wine = BpxRgbColor.fromCssHex("#7E2553");

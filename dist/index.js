@@ -4,9 +4,27 @@
  */
 
 import { Engine } from "./Engine";
+import { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
+import { BpxPalettePico8 } from "./color/PalettePico8";
+import { BpxPatternColors } from "./color/PatternColors";
+import { BpxRgbColor } from "./color/RgbColor";
+import { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 import { DebugMode } from "./debug/DebugMode";
+import { BpxDrawingPattern } from "./draw_api/DrawingPattern";
+import { BpxPixels } from "./draw_api/Pixels";
+import { BpxFont } from "./font/Font";
+import { BpxFontConfigPico8 } from "./font/FontConfigPico8";
+import { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
+import { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
+import { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
 import { Logger } from "./logger/Logger";
+import { BpxEasing } from "./misc/Easing";
+import { BpxVector2d } from "./misc/Vector2d";
 import { GlobalPause } from "./pause/GlobalPause";
+import { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
+import { BpxSprite } from "./sprite/Sprite";
+import { BpxTimer } from "./timer/Timer";
+import { BpxTimerSequence } from "./timer/TimerSequence";
 import { assertUnreachable } from "./utils/assertUnreachable";
 import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFrame";
 import { clamp } from "./utils/clamp";
@@ -28,7 +46,6 @@ import { trigSin } from "./utils/trigSin";
  * @category API entry points
  */
 export class BeetPx {
-    
     constructor() { }
     static #dataStoredBeforeEngineStarted = {};
     static #tryGetEngine() {
@@ -404,7 +421,6 @@ export class BeetPx {
  * @category API entry points
  */
 export class BeetPxDraw {
-    
     constructor() { }
     static #tryGetEngine(calledFnName) {
         if (!Engine.engineSingleton) {
@@ -513,7 +529,6 @@ export class BeetPxDraw {
  * @category API entry points
  */
 export class BeetPxUtils {
-    
     constructor() { }
     /**
      * This function is meant to be used in a last branch of `if - else if - … - else`
@@ -604,24 +619,7 @@ export class BeetPxUtils {
     }
 }
 
-export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
-export { BpxPalettePico8 } from "./color/PalettePico8";
-export { BpxPatternColors } from "./color/PatternColors";
-export { BpxRgbColor } from "./color/RgbColor";
-export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
-export { BpxDrawingPattern } from "./draw_api/DrawingPattern";
-export { BpxPixels } from "./draw_api/Pixels";
-export { BpxFont } from "./font/Font";
-export { BpxFontConfigPico8 } from "./font/FontConfigPico8";
-export { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
-export { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
-export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
-export { BpxEasing } from "./misc/Easing";
-export { BpxVector2d } from "./misc/Vector2d";
-export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
-export { BpxSprite } from "./sprite/Sprite";
-export { BpxTimer } from "./timer/Timer";
-export { BpxTimerSequence } from "./timer/TimerSequence";
+export { BpxAnimatedSprite, BpxCanvasSnapshotColorMapping, BpxDrawingPattern, BpxEasing, BpxFont, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, BpxGamepadTypeDetector, BpxPalettePico8, BpxPatternColors, BpxPixels, BpxRgbColor, BpxSprite, BpxSpriteColorMapping, BpxTimer, BpxTimerSequence, BpxVector2d, };
 
 export const $ = BeetPx;
 export const $d = BeetPxDraw;
