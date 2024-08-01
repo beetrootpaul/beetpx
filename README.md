@@ -62,14 +62,16 @@ Also, you might want to take a look at how following projects are using BeetPx:
 The BeetPx engine supports a following sets of game buttons and their mappings
 from physical devices:
 
-| game button     | keyboard               | DualSense controller | Xbox controller |
-| --------------- | ---------------------- | -------------------- | --------------- |
-| **A**           | `C` / `J`              | cross / triangle     | `A` / `Y`       |
-| **B**           | `X` / `K`              | circle / square      | `B` / `X`       |
-| **menu**        | `P` / `return` / `esc` | menu                 | menu            |
-| **directions**  | arrows / `WSAD`        | D-pad / sticks       | D-pad / sticks  |
-| **mute/unmute** | `M`                    |                      |                 |
-| **full screen** | `F`                    |                      |                 |
+| game button                          | keyboard               | DualSense controller | Xbox controller |
+| ------------------------------------ | ---------------------- | -------------------- | --------------- |
+| **A**                                | `C` / `J`              | cross / triangle     | `A` / `Y`       |
+| **B**                                | `X` / `K`              | circle / square      | `B` / `X`       |
+| **menu**                             | `P` / `return` / `esc` | menu                 | menu            |
+| **directions**                       | arrows / `WSAD`        | D-pad / sticks       | D-pad / sticks  |
+| **mute/unmute**                      | `M`                    |                      |                 |
+| **full screen**                      | `F`                    |                      |                 |
+| **take screenshot** (if enabled)     | `]`                    |                      |                 |
+| **browser screenshots** (fi enabled) | `}`                    |                      |                 |
 
 Other game controllers might works as well. For example, this engine has an
 implemented support for **8BitDo Lite 2**.
