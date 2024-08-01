@@ -22,15 +22,18 @@ export class GameInputKeyboard implements GameInputSpecialized {
     ["d", "button_right"],
     ["D", "button_right"],
 
-    ["j", "button_a"],
-    ["J", "button_a"],
-    ["k", "button_b"],
-    ["K", "button_b"],
+    ["j", "button_O"],
+    ["J", "button_O"],
+    ["k", "button_X"],
+    ["K", "button_X"],
 
-    ["c", "button_a"],
-    ["C", "button_a"],
-    ["x", "button_b"],
-    ["x", "button_b"],
+    ["c", "button_O"],
+    ["C", "button_O"],
+    ["x", "button_X"],
+    ["x", "button_X"],
+
+    ["o", "button_O"],
+    ["O", "button_O"],
 
     ["p", "button_menu"],
     ["P", "button_menu"],
@@ -48,9 +51,14 @@ export class GameInputKeyboard implements GameInputSpecialized {
     new Set<BpxGameInputEvent>();
 
   constructor(params: {
+    enableScreenshots: boolean;
     enableDebugToggle: boolean;
     enableFrameByFrameControls: boolean;
   }) {
+    if (params.enableScreenshots) {
+      this.#keyMapping.set("]", "take_screenshot");
+      this.#keyMapping.set("}", "browse_screenshots_toggle");
+    }
     if (params.enableDebugToggle) {
       this.#keyMapping.set(";", "debug_toggle");
     }

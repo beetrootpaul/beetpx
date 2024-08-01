@@ -19,12 +19,12 @@ export class GamepadMappingFallback implements GamepadMapping {
       case 3:
       case 4:
       case 7:
-        return "button_a";
+        return "button_O";
       case 1:
       case 2:
       case 5:
       case 6:
-        return "button_b";
+        return "button_X";
       case 12:
         return "button_up";
       case 13:

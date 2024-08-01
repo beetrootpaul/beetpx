@@ -59,20 +59,32 @@ Also, you might want to take a look at how following projects are using BeetPx:
 
 ## Game Controls
 
+<img src="misc/beetpx_controls.png" width="640">
+
 The BeetPx engine supports a following sets of game buttons and their mappings
 from physical devices:
 
-| game button     | keyboard               | DualSense controller | Xbox controller |
-| --------------- | ---------------------- | -------------------- | --------------- |
-| **A**           | `C` / `J`              | cross / triangle     | `A` / `Y`       |
-| **B**           | `X` / `K`              | circle / square      | `B` / `X`       |
-| **menu**        | `P` / `return` / `esc` | menu                 | menu            |
-| **directions**  | arrows / `WSAD`        | D-pad / sticks       | D-pad / sticks  |
-| **mute/unmute** | `M`                    |                      |                 |
-| **full screen** | `F`                    |                      |                 |
+| game button                          | keyboard               | DualSense controller | Xbox controller |
+| ------------------------------------ | ---------------------- | -------------------- | --------------- |
+| **O** (Maru)                         | `C` / `J` / `O`        | circle / square      | `A` / `Y`       |
+| **X** (Batsu)                        | `X` / `K`              | cross / triangle     | `B` / `X`       |
+| **menu**                             | `P` / `return` / `esc` | menu                 | menu            |
+| **directions**                       | arrows / `WSAD`        | D-pad / sticks       | D-pad / sticks  |
+| **mute/unmute**                      | `M`                    |                      |                 |
+| **full screen**                      | `F`                    |                      |                 |
+| **take screenshot** (if enabled)     | `]`                    |                      |                 |
+| **browser screenshots** (fi enabled) | `}`                    |                      |                 |
 
-Other game controllers might works as well. For example, this engine has an
-implemented support for **8BitDo Lite 2**.
+Regarding the main game buttons on a keyboard, the intention is basically to
+either play with left hand on `X`+`C` and right hand on arrows, or to place the
+left hand on `WSAD`, then used `J`+`K` with the right hand. The `O` support is
+added in order to reduce to entry barrier for a situation when the game author
+uses the "⭕️" and "❌" on their sprites and a player doesn't realize what keys
+should they use – there is a chance they would try with just `O`+`X` on their
+keyboard.
+
+Regarding th game controllers – other controllers might works as well. For
+example, this engine has an implemented support for **8BitDo Lite 2**.
 
 There are also **touch controls** in form of GUI buttons resembling a physical
 ones. You can see and use them on touch devices like e.g. an iPhone.
@@ -87,7 +99,7 @@ related engine config fields:
 - **jump to the next frame** (only while in frame-by-frame mode):
   - on keyboard: `.`
 
-To check if your controls work as expected, go to
+ℹ️ To check if your controls work as expected, go to
 https://beetrootpaul.itch.io/beetpx-input-tester .
 
 ## API

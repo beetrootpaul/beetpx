@@ -28,6 +28,10 @@
 
         --color-screen: #000000;
 
+        --color-screenshots-bg: rgba(0, 0, 0, 0.7);
+        --color-screenshots-text: #b8b5b9;
+        --color-screenshots-link-hover: #ffccaa;
+
         --color-error-screen: #000000;
         --color-error-screen-text: #b8b5b9;
         --color-error-screen-border: #ff004d;
@@ -142,6 +146,45 @@
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
+      }
+
+      #screen_screenshots {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100dvw;
+        height: 100dvh;
+        padding: 1rem;
+
+        background-color: var(--color-screenshots-bg);
+        color: var(--color-screenshots-text);
+
+        & h1 {
+          margin-bottom: 1rem;
+        }
+
+        & p {
+          margin-bottom: 1rem;
+        }
+
+        & li {
+          margin-bottom: 0.5rem;
+
+          & a {
+            color: var(--color-screenshots-text);
+
+            &:hover {
+              color: var(--color-screenshots-link-hover);
+            }
+          }
+        }
+
+        display: none;
+      }
+
+      .browsing_screenshots #screen_screenshots {
+        display: flex;
+        flex-direction: column;
       }
 
       #screen_error {
@@ -456,21 +499,21 @@
        * GUI SPRITES - OTHER
        */
 
-      #button_a {
-        grid-area: bt_a;
+      #button_O {
+        grid-area: bt_O;
         background-position: 0 0;
       }
 
-      .pressed_a #button_a {
+      .pressed_A #button_O {
         background-position-y: calc(var(--scs) * -3);
       }
 
-      #button_b {
-        grid-area: bt_b;
+      #button_X {
+        grid-area: bt_X;
         background-position: calc(var(--scs) * -3) 0;
       }
 
-      .pressed_b #button_b {
+      .pressed_X #button_X {
         background-position-y: calc(var(--scs) * -3);
       }
 
@@ -724,12 +767,12 @@
             "e_TL e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
             "e__l canv canv canv canv canv canv canv canv canv canv canv canv canv e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    . menu menu menu    . bt_b bt_b bt_b e__r"
-            "e__l    . d_ul d_ul d_u_ d_ur    .    .    .    .    . bt_b bt_b bt_b e__r"
-            "e__l    . d_ul d_ul d_u_ d_ur    . full    .    .    . bt_b bt_b bt_b e__r"
-            "e__l    . d__l d__l d___ d__r    . full    . bt_a bt_a bt_a    .    . e__r"
-            "e__l    . d__l d__l d___ d__r    .    .    . bt_a bt_a bt_a    .    . e__r"
-            "e__l    . d_dl d_dl d_d_ d_dr    . b_mu    . bt_a bt_a bt_a    .    . e__r"
+            "e__l    .    .    .    .    .    . menu menu menu    . bt_X bt_X bt_X e__r"
+            "e__l    . d_ul d_ul d_u_ d_ur    .    .    .    .    . bt_X bt_X bt_X e__r"
+            "e__l    . d_ul d_ul d_u_ d_ur    . full    .    .    . bt_X bt_X bt_X e__r"
+            "e__l    . d__l d__l d___ d__r    . full    . bt_O bt_O bt_O    .    . e__r"
+            "e__l    . d__l d__l d___ d__r    .    .    . bt_O bt_O bt_O    .    . e__r"
+            "e__l    . d_dl d_dl d_d_ d_dr    . b_mu    . bt_O bt_O bt_O    .    . e__r"
             "e__l    .    .    .    .    .    . i_mu    .    .    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
@@ -756,9 +799,9 @@
             "e_TL e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
             "e__l canv canv canv canv canv canv canv canv canv canv canv canv canv e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l    . d_ul d_ul d_u_ d_ur    .    .    . menu menu    . bt_b bt_b e__r"
-            "e__l    . d__l d__l d___ d__r    .    .    .    .    . bt_a bt_b bt_b e__r"
-            "e__l    . d_dl d_dl d_d_ d_dr    . full    . b_mu    . bt_a    .    . e__r"
+            "e__l    . d_ul d_ul d_u_ d_ur    .    .    . menu menu    . bt_X bt_X e__r"
+            "e__l    . d__l d__l d___ d__r    .    .    .    .    . bt_O bt_X bt_X e__r"
+            "e__l    . d_dl d_dl d_d_ d_dr    . full    . b_mu    . bt_O    .    . e__r"
             "e__l    .    .    .    .    .    .    .    . i_mu    .    .    .    . e__r"
             "e_BL e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
           grid-template-columns: 4dvw 2dvw 2dvw 6dvw 8dvw 8dvw 3fr 8dvw 4dvw 8dvw 8dvw 16dvw 12dvw 4dvw 4dvw;
@@ -784,12 +827,12 @@
             "e_TL e_TL e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_t_ e_TR e_TR"
             "e__l    .    . canv canv canv canv canv canv canv canv canv    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    . menu menu    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_ur    . full    .    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d__l d___ d__r    . full    . bt_a bt_a    .    .    . e__r"
-            "e__l    .    . d__l d___ d__r    .    .    . bt_a bt_a    .    .    . e__r"
-            "e__l    .    . d_dl d_d_ d_dr    . b_mu    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    .    .    .    .    . menu menu    . bt_X bt_X    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_X bt_X    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    . full    .    . bt_X bt_X    .    . e__r"
+            "e__l    .    . d__l d___ d__r    . full    . bt_O bt_O    .    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    .    . bt_O bt_O    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    . b_mu    . bt_O bt_O    .    .    . e__r"
             "e__l    .    .     .   .    .    . i_mu    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
           grid-template-columns: 3dvh 3dvh 1fr 6dvh 6dvh 6dvh 12dvh 6dvh 6dvh 6dvh 6dvh 6dvh 1fr 3dvh 3dvh;
@@ -819,9 +862,9 @@
             "e__l    .    . full    . canv canv canv canv canv canv canv    .    .    .    . e__r"
             "e__l    .    .    .    . canv canv canv canv canv canv canv    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_u_ d_ur    . menu menu    . bt_b bt_b bt_b    .    . e__r"
-            "e__l    .    . d__l d___ d___ d__r    .    . bt_a bt_a bt_b bt_b bt_b    .    . e__r"
-            "e__l    .    . d_dl d_d_ d_d_ d_dr    .    . bt_a bt_a    .    .    .    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_u_ d_ur    . menu menu    . bt_X bt_X bt_X    .    . e__r"
+            "e__l    .    . d__l d___ d___ d__r    .    . bt_O bt_O bt_X bt_X bt_X    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_d_ d_dr    .    . bt_O bt_O    .    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
           grid-template-columns: 3dvh 3dvh 1fr 6dvh 2dvh 4dvh 6dvh 37dvh 8dvh 4dvh 8dvh 4dvh 2dvh 6dvh 1fr 3dvh 3dvh;
@@ -850,11 +893,11 @@
             "e__l    .    .    . i_mu    .    . canv    .    .    .    .    .    . e__r"
             "e__l    .    .    . full    .    . canv    .    .    .    .    .    . e__r"
             "e__l    .    .    .    .    .    . canv    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    . canv    .    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_ur    . canv    .    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_b bt_b    .    . e__r"
-            "e__l    .    . d__l d___ d__r    .    .    . bt_a bt_a    .    .    . e__r"
-            "e__l    .    . d_dl d_d_ d_dr    .    .    . bt_a bt_a    .    .    . e__r"
+            "e__l    .    .    .    .    .    . canv    .    . bt_X bt_X    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    . canv    .    . bt_X bt_X    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    .    .    . bt_X bt_X    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    .    . bt_O bt_O    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    .    .    . bt_O bt_O    .    .    . e__r"
             "e__l    .    .    .    .    .    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
           grid-template-columns: 5dvh 5dvh 1fr 10dvh 10dvh 10dvh 1fr 58dvh 1fr 10dvh 10dvh 10dvh 1fr 5dvh 5dvh;
@@ -882,10 +925,10 @@
             "e__l    .    . b_mu    . full    .    . canv    .    .    . menu menu menu    .    . e__r"
             "e__l    .    . i_mu    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
-            "e__l    .    .    .    .    .    .    . canv    .    .    . bt_b bt_b bt_b    .    . e__r"
-            "e__l    .    . d_ul d_u_ d_ur    .    . canv    .    .    . bt_b bt_b bt_b    .    . e__r"
-            "e__l    .    . d__l d___ d__r    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
-            "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_a bt_a bt_a    .    .    .    . e__r"
+            "e__l    .    .    .    .    .    .    . canv    .    .    . bt_X bt_X bt_X    .    . e__r"
+            "e__l    .    . d_ul d_u_ d_ur    .    . canv    .    .    . bt_X bt_X bt_X    .    . e__r"
+            "e__l    .    . d__l d___ d__r    .    . canv    . bt_O bt_O bt_O    .    .    .    . e__r"
+            "e__l    .    . d_dl d_d_ d_dr    .    . canv    . bt_O bt_O bt_O    .    .    .    . e__r"
             "e__l    .    .    .    .    .    .    . canv    .    .    .    .    .    .    .    . e__r"
             "e_BL e_BL e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_b_ e_BR e_BR";
           grid-template-columns: 6dvh 6dvh 1fr 12dvh 12dvh 12dvh 3dvh 3fr 88dvh 3fr 12dvh 3dvh 9dvh 3dvh 12dvh 1fr 6dvh 6dvh;
@@ -922,8 +965,8 @@
       <div id="dpad_dl"></div>
       <div id="dpad_dr"></div>
 
-      <div id="button_a" class="gui_sprite"></div>
-      <div id="button_b" class="gui_sprite"></div>
+      <div id="button_O" class="gui_sprite"></div>
+      <div id="button_X" class="gui_sprite"></div>
 
       <div id="button_menu" class="gui_sprite"></div>
 
@@ -939,6 +982,14 @@
     <!-- Has to be placed after #screen_start_game in order to be visible on top  -->
     <div id="screen_loading">
       <div id="screen_loading__spinner"></div>
+    </div>
+
+    <div id="screen_screenshots">
+      <h1>Screenshots</h1>
+      <p>
+        Click the one you want to download. The most recent ones are on the top.
+      </p>
+      <ol id="screen_screenshots__list"></ol>
     </div>
 
     <div id="screen_error">

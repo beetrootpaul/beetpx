@@ -27,6 +27,9 @@ export class CanvasForTests extends Canvas {
         return new CanvasSnapshotForTests(this.#rgbValues.slice(), this.#width);
     }
     doRender() { }
+    asDataUrl() {
+        return "-";
+    }
     expectToEqual(params) {
         const { withMapping: asciiToColor, expectedImageAsAscii } = params;
         const colorToAscii = new Map(Object.entries(asciiToColor).map(([ascii, color]) => [

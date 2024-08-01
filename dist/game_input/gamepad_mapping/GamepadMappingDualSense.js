@@ -1,25 +1,15 @@
 
-/**
- * Here we use Xbox as a default one for all other gamepad types in Firefox,
- *   since my gut feeling is the way `GamepadTypeDetector` detects
- *   DualSense would work for DualShock as well, therefore better assume
- *   there will be more cases of Xbox controller not detected as such.
- */
-export class GamepadMappingFirefoxFallback {
+export class GamepadMappingDualSense {
     static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
             case 1: 
-            case 5: 
-            case 4:
-            case 7:
-                return "button_O";
             case 2: 
+                return "button_O";
+            case 0: 
             case 3: 
-            case 0:
-            case 6:
                 return "button_X";
             case 12: 
                 return "button_up";
@@ -29,12 +19,7 @@ export class GamepadMappingFirefoxFallback {
                 return "button_left";
             case 15: 
                 return "button_right";
-            case 16: 
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 17:
+            case 9: 
                 return "button_menu";
         }
         return null;
@@ -43,16 +28,16 @@ export class GamepadMappingFirefoxFallback {
         switch (axisIndex) {
             case 0: 
             case 2: 
-                return (axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
+                return (axisValue > GamepadMappingDualSense.#stickAxisThreshold ?
                     ["button_right"]
-                    : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
+                    : axisValue < -GamepadMappingDualSense.#stickAxisThreshold ?
                         ["button_left"]
                         : []);
             case 1: 
             case 3: 
-                return (axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
+                return (axisValue > GamepadMappingDualSense.#stickAxisThreshold ?
                     ["button_down"]
-                    : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
+                    : axisValue < -GamepadMappingDualSense.#stickAxisThreshold ?
                         ["button_up"]
                         : []);
             default:

@@ -11,6 +11,8 @@ export class GameInput {
     gameButtons;
     buttonFullScreen;
     buttonMuteUnmute;
+    buttonTakeScreenshot;
+    buttonBrowseScreenshots;
     buttonDebugToggle;
     buttonFrameByFrameToggle;
     buttonFrameByFrameStep;
@@ -23,6 +25,7 @@ export class GameInput {
         this.gameInputsSpecialized = [
             new GameInputMouse(),
             new GameInputKeyboard({
+                enableScreenshots: params.enableScreenshots,
                 enableDebugToggle: params.enableDebugToggle,
                 enableFrameByFrameControls: params.enableFrameByFrameControls,
             }),
@@ -32,6 +35,8 @@ export class GameInput {
         this.gameButtons = new GameButtons();
         this.buttonFullScreen = new Button();
         this.buttonMuteUnmute = new Button();
+        this.buttonTakeScreenshot = new Button();
+        this.buttonBrowseScreenshots = new Button();
         this.buttonDebugToggle = new Button();
         this.buttonFrameByFrameToggle = new Button();
         this.buttonFrameByFrameStep = new Button();
@@ -60,6 +65,8 @@ export class GameInput {
         }
         this.buttonFullScreen.update(events.has("full_screen"));
         this.buttonMuteUnmute.update(events.has("mute_unmute_toggle"));
+        this.buttonTakeScreenshot.update(events.has("take_screenshot"));
+        this.buttonBrowseScreenshots.update(events.has("browse_screenshots_toggle"));
         this.buttonDebugToggle.update(events.has("debug_toggle"));
         this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
         this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));
@@ -68,8 +75,8 @@ export class GameInput {
             down: this.gameButtons.isPressed("down"),
             left: this.gameButtons.isPressed("left"),
             right: this.gameButtons.isPressed("right"),
-            a: this.gameButtons.isPressed("a"),
-            b: this.gameButtons.isPressed("b"),
+            O: this.gameButtons.isPressed("O"),
+            X: this.gameButtons.isPressed("X"),
             menu: this.gameButtons.isPressed("menu"),
             mute: this.buttonMuteUnmute.isPressed,
             fullscreen: this.buttonFullScreen.isPressed,

@@ -49,6 +49,10 @@ export class CanvasForTests extends Canvas {
 
   doRender(): void {}
 
+  asDataUrl(): string {
+    return "-";
+  }
+
   expectToEqual(params: {
     withMapping: Record<string, BpxRgbColor>;
     expectedImageAsAscii: string;

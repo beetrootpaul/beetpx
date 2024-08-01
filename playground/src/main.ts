@@ -1,4 +1,4 @@
-import { $, $d, $rgb_p8 } from "../../src";
+import { $, $d, $rgb_p8, $v } from "../../src";
 import { Movement } from "./Movement";
 import { Music } from "./Music";
 import { PauseMenu } from "./PauseMenu";
@@ -28,6 +28,13 @@ $.setOnDraw(() => {
   vfx.draw();
   movement.draw();
 
+  if ($.isButtonPressed("O")) {
+    $d.text("O", $v(8, 32), $rgb_p8.lemon);
+  }
+  if ($.isButtonPressed("X")) {
+    $d.text("X", $v(18, 32), $rgb_p8.lemon);
+  }
+
   if ($.isPaused) {
     pauseMenu.draw();
   }
@@ -41,6 +48,9 @@ $.start({
     available: true,
   },
   requireConfirmationOnTabClose: BEETPX__IS_PROD,
+  screenshots: {
+    available: true,
+  },
   debugMode: {
     available: !BEETPX__IS_PROD,
   },

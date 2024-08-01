@@ -62,10 +62,10 @@ export class GamepadMappingFirefox8BitDoOther implements GamepadMapping {
     switch (buttonIndex) {
       case 0: // A
       case 4: // Y
-        return "button_a";
+        return "button_O";
       case 1: // B
       case 3: // X
-        return "button_b";
+        return "button_X";
       case 10: // minus
       case 11: // plus
         return "button_menu";

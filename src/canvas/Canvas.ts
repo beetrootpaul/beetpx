@@ -85,4 +85,6 @@ export abstract class Canvas {
   }
 
   protected abstract doRender(): void;
+
+  abstract asDataUrl(): string;
 }

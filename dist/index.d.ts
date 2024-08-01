@@ -329,7 +329,11 @@ type FpsDisplayPlacement = "top-left" | "top-right" | "bottom-left" | "bottom-ri
 /**
  * @category Game input
  */
-type BpxGameButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
+type BpxGameButtonName = "left" | "right" | "up" | "down"
+/** Japanese "Maru" sign, kind of a "Yes", good for a primary/accept/next button */
+ | "O" | "o"
+/** Japanese "Batsu" sign, kind of a "No", good for a secondary/cancel/back button */
+ | "X" | "x" | "menu";
 
 declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "8bitdo", "other"];
 /**
@@ -341,7 +345,7 @@ type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 /**
  * @category Game input
  */
-type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
+type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_O" | "button_X" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "take_screenshot" | "browse_screenshots_toggle" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 
 declare global {
     interface Document {
@@ -358,7 +362,8 @@ type BpxPersistedStateValueConstraints = Record<string, string | number | boolea
 
 type BpxEngineConfig = {
     /**
-     * Used e.g. for scoping localStorage keys, so two different games won't override their persisted state.
+     * Used for scoping localStorage keys, so two different games won't override their persisted state.
+     * An example: built-in screenshots feature binds screenshots to the proper game by its `gameId`.
      */
     gameId: string;
     canvasSize?: "64x64" | "128x128" | "256x256";
@@ -368,6 +373,9 @@ type BpxEngineConfig = {
         available?: boolean;
     };
     requireConfirmationOnTabClose?: boolean;
+    screenshots?: {
+        available?: boolean;
+    };
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;

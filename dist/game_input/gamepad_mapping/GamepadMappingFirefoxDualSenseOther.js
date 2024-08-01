@@ -5,12 +5,12 @@ export class GamepadMappingFirefoxDualSenseOther {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
-            case 1: 
-            case 3: 
-                return "button_a";
             case 0: 
             case 2: 
-                return "button_b";
+                return "button_O";
+            case 1: 
+            case 3: 
+                return "button_X";
             case 9: 
                 return "button_menu";
         }

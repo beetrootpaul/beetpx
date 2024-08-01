@@ -121,6 +121,10 @@ export class CanvasForProduction extends Canvas {
     );
   }
 
+  asDataUrl(): string {
+    return this.#htmlCanvas.toDataURL();
+  }
+
   #initializeAsNonTransparent() {
     for (let i = 3; i < this.#offscreenImageData.data.length; i += 4) {
       this.#offscreenImageData.data[i] = 0xff;

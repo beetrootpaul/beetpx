@@ -27,8 +27,8 @@ export class GameInputMouse implements GameInputSpecialized {
       event: "button_down",
       selector: HtmlTemplate.selectors.controlsDownRight,
     },
-    { event: "button_a", selector: HtmlTemplate.selectors.controlsA },
-    { event: "button_b", selector: HtmlTemplate.selectors.controlsB },
+    { event: "button_O", selector: HtmlTemplate.selectors.controlsO },
+    { event: "button_X", selector: HtmlTemplate.selectors.controlsX },
     { event: "button_menu", selector: HtmlTemplate.selectors.controlsMenu },
     {
       event: "mute_unmute_toggle",

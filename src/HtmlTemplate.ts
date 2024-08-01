@@ -1,3 +1,8 @@
+import {
+  PersistedScreenshot,
+  ScreenshotManager,
+} from "./misc/ScreenshotManager";
+
 export class HtmlTemplate {
   static readonly selectors = {
     fullScreenSubject: "body",
@@ -13,8 +18,8 @@ export class HtmlTemplate {
     controlsUpRight: "#dpad_ur",
     controlsDownLeft: "#dpad_dl",
     controlsDownRight: "#dpad_dr",
-    controlsA: "#button_a",
-    controlsB: "#button_b",
+    controlsO: "#button_O",
+    controlsX: "#button_X",
     controlsMenu: "#button_menu",
 
     controlsFullScreen: "#button_fullscreen",
@@ -39,6 +44,40 @@ export class HtmlTemplate {
     document.body.classList[isMuted ? "add" : "remove"]("muted");
   }
 
+  static updateBrowsingScreenshotsClass(isBrowsing: boolean): void {
+    document.body.classList[isBrowsing ? "add" : "remove"](
+      "browsing_screenshots",
+    );
+  }
+
+  static updateScreenshotDownloadLinks(
+    imageDataUrls: PersistedScreenshot[],
+  ): void {
+    const listEl = document.getElementById("screen_screenshots__list")!;
+    listEl.innerHTML = "";
+
+    for (let i = 0; i < imageDataUrls.length; i++) {
+      const fileName = `game_screenshot_${imageDataUrls[i]!.timestamp}.png`;
+
+      const anchorEl = document.createElement("a");
+      anchorEl.href = imageDataUrls[i]!.imageDataUrl;
+      anchorEl.download = fileName;
+      anchorEl.innerText = fileName;
+
+      const itemEl = document.createElement("li");
+      itemEl.appendChild(anchorEl);
+
+      listEl.appendChild(itemEl);
+    }
+
+    for (let i = imageDataUrls.length; i < ScreenshotManager.limit; i++) {
+      const itemEl = document.createElement("li");
+      itemEl.innerHTML = "-";
+
+      listEl.appendChild(itemEl);
+    }
+  }
+
   static updateDebugClass(isDebug: boolean): void {
     document.body.classList[isDebug ? "add" : "remove"]("debug");
   }
@@ -48,8 +87,8 @@ export class HtmlTemplate {
     down: boolean;
     left: boolean;
     right: boolean;
-    a: boolean;
-    b: boolean;
+    O: boolean;
+    X: boolean;
     menu: boolean;
     mute: boolean;
     fullscreen: boolean;
@@ -58,8 +97,8 @@ export class HtmlTemplate {
     document.body.classList[isPressed.down ? "add" : "remove"]("pressed_d");
     document.body.classList[isPressed.left ? "add" : "remove"]("pressed_l");
     document.body.classList[isPressed.right ? "add" : "remove"]("pressed_r");
-    document.body.classList[isPressed.a ? "add" : "remove"]("pressed_a");
-    document.body.classList[isPressed.b ? "add" : "remove"]("pressed_b");
+    document.body.classList[isPressed.O ? "add" : "remove"]("pressed_O");
+    document.body.classList[isPressed.X ? "add" : "remove"]("pressed_X");
     document.body.classList[isPressed.menu ? "add" : "remove"]("pressed_menu");
     document.body.classList[isPressed.mute ? "add" : "remove"]("pressed_mute");
     document.body.classList[isPressed.fullscreen ? "add" : "remove"](
