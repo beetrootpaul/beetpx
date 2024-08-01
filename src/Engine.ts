@@ -35,7 +35,8 @@ import { throwError } from "./utils/throwError";
 
 export type BpxEngineConfig = {
   /**
-   * Used e.g. for scoping localStorage keys, so two different games won't override their persisted state.
+   * Used for scoping localStorage keys, so two different games won't override their persisted state.
+   * An example: built-in screenshots feature binds screenshots to the proper game by its `gameId`.
    */
   gameId: string;
   canvasSize?: "64x64" | "128x128" | "256x256";
