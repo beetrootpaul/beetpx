@@ -59,6 +59,8 @@ Also, you might want to take a look at how following projects are using BeetPx:
 
 ## Game Controls
 
+<img src="misc/beetpx_controls.png" width="640">
+
 The BeetPx engine supports a following sets of game buttons and their mappings
 from physical devices:
 
