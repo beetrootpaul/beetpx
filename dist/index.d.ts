@@ -329,7 +329,11 @@ type FpsDisplayPlacement = "top-left" | "top-right" | "bottom-left" | "bottom-ri
 /**
  * @category Game input
  */
-type BpxGameButtonName = "left" | "right" | "up" | "down" | "a" | "b" | "menu";
+type BpxGameButtonName = "left" | "right" | "up" | "down"
+/** Japanese "Maru" sign, kind of a "Yes", good for a primary/accept/next button */
+ | "O" | "o"
+/** Japanese "Batsu" sign, kind of a "No", good for a secondary/cancel/back button */
+ | "X" | "x" | "menu";
 
 declare const supportedGamepadTypes: readonly ["xbox", "dualsense", "8bitdo", "other"];
 /**
@@ -341,7 +345,7 @@ type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 /**
  * @category Game input
  */
-type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "take_screenshot" | "browse_screenshots_toggle" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
+type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_O" | "button_X" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "take_screenshot" | "browse_screenshots_toggle" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 
 declare global {
     interface Document {

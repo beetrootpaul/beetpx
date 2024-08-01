@@ -61,12 +61,12 @@ export class GamepadMappingFirefoxDualSenseOther implements GamepadMapping {
     if (!button.pressed) return null;
 
     switch (buttonIndex) {
-      case 1: // cross
-      case 3: // triangle
-        return "button_a";
       case 0: // square
       case 2: // circle
-        return "button_b";
+        return "button_O";
+      case 1: // cross
+      case 3: // triangle
+        return "button_X";
       case 9: // menu (tiny in the center-right)
         return "button_menu";
     }

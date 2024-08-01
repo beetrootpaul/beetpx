@@ -68,12 +68,12 @@ export class GamepadMappingFirefoxFallback implements GamepadMapping {
       case 5: // Xbox One controller: Y
       case 4:
       case 7:
-        return "button_a";
+        return "button_O";
       case 2: // Xbox One controller: B
       case 3: // Xbox One controller: X
       case 0:
       case 6:
-        return "button_b";
+        return "button_X";
       case 12: // Xbox One controller: d-pad up
         return "button_up";
       case 13: // Xbox One controller: d-pad down

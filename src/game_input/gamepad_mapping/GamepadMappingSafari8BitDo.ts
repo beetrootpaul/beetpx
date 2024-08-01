@@ -47,10 +47,10 @@ export class GamepadMappingSafari8BitDo implements GamepadMapping {
     switch (buttonIndex) {
       case 0: // A
       case 3: // Y
-        return "button_a";
+        return "button_O";
       case 1: // B
       case 2: // X
-        return "button_b";
+        return "button_X";
       case 12: // d-pad up
         return "button_up";
       case 13: // d-pad down

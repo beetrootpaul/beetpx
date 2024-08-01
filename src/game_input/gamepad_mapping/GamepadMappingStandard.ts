@@ -236,10 +236,10 @@ export class GamepadMappingStandard implements GamepadMapping {
     switch (buttonIndex) {
       case 0: // Xbox: A / DualSense: cross
       case 3: // Xbox: Y / DualSense: triangle
-        return "button_a";
+        return "button_O";
       case 1: // Xbox: B / DualSense: circle
       case 2: // Xbox: X / DualSense: square
-        return "button_b";
+        return "button_X";
       case 12: // d-pad up
         return "button_up";
       case 13: // d-pad down

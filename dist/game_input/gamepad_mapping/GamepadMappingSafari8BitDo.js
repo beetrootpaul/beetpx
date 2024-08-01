@@ -7,10 +7,10 @@ export class GamepadMappingSafari8BitDo {
         switch (buttonIndex) {
             case 0: 
             case 3: 
-                return "button_a";
+                return "button_O";
             case 1: 
             case 2: 
-                return "button_b";
+                return "button_X";
             case 12: 
                 return "button_up";
             case 13: 

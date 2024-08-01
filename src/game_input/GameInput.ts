@@ -19,8 +19,8 @@ export type BpxGameInputEvent =
   | "button_right"
   | "button_up"
   | "button_down"
-  | "button_a"
-  | "button_b"
+  | "button_O"
+  | "button_X"
   | "button_menu"
   | "mute_unmute_toggle"
   | "full_screen"
@@ -121,8 +121,8 @@ export class GameInput {
       down: this.gameButtons.isPressed("down"),
       left: this.gameButtons.isPressed("left"),
       right: this.gameButtons.isPressed("right"),
-      a: this.gameButtons.isPressed("a"),
-      b: this.gameButtons.isPressed("b"),
+      O: this.gameButtons.isPressed("O"),
+      X: this.gameButtons.isPressed("X"),
       menu: this.gameButtons.isPressed("menu"),
       mute: this.buttonMuteUnmute.isPressed,
       fullscreen: this.buttonFullScreen.isPressed,

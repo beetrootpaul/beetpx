@@ -7,10 +7,10 @@ export class GamepadMappingFirefox8BitDoWindows {
         switch (buttonIndex) {
             case 0: 
             case 4: 
-                return "button_a";
+                return "button_O";
             case 1: 
             case 3: 
-                return "button_b";
+                return "button_X";
             case 10: 
             case 11: 
                 return "button_menu";

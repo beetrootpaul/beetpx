@@ -5,16 +5,16 @@ export class GameButtons {
     #right = new Button();
     #up = new Button();
     #down = new Button();
-    #a = new Button();
-    #b = new Button();
+    #O = new Button();
+    #X = new Button();
     #menu = new Button();
     update(events) {
         this.#left.update(events.has("button_left"));
         this.#right.update(events.has("button_right"));
         this.#up.update(events.has("button_up"));
         this.#down.update(events.has("button_down"));
-        this.#a.update(events.has("button_a"));
-        this.#b.update(events.has("button_b"));
+        this.#O.update(events.has("button_O"));
+        this.#X.update(events.has("button_X"));
         this.#menu.update(events.has("button_menu"));
     }
     isAnyPressed() {
@@ -22,8 +22,8 @@ export class GameButtons {
             this.#right.isPressed ||
             this.#up.isPressed ||
             this.#down.isPressed ||
-            this.#a.isPressed ||
-            this.#b.isPressed ||
+            this.#O.isPressed ||
+            this.#X.isPressed ||
             this.#menu.isPressed);
     }
     isPressed(button) {
@@ -36,10 +36,12 @@ export class GameButtons {
                 return this.#up.isPressed;
             case "down":
                 return this.#down.isPressed;
-            case "a":
-                return this.#a.isPressed;
-            case "b":
-                return this.#b.isPressed;
+            case "O":
+            case "o":
+                return this.#O.isPressed;
+            case "X":
+            case "x":
+                return this.#X.isPressed;
             case "menu":
                 return this.#menu.isPressed;
         }
@@ -61,11 +63,13 @@ export class GameButtons {
             case "down":
                 this.#down.setRepeating(repeating);
                 return;
-            case "a":
-                this.#a.setRepeating(repeating);
+            case "O":
+            case "o":
+                this.#O.setRepeating(repeating);
                 return;
-            case "b":
-                this.#b.setRepeating(repeating);
+            case "X":
+            case "x":
+                this.#X.setRepeating(repeating);
                 return;
             case "menu":
                 this.#menu.setRepeating(repeating);
@@ -77,8 +81,8 @@ export class GameButtons {
             this.#right.wasJustPressed ||
             this.#up.wasJustPressed ||
             this.#down.wasJustPressed ||
-            this.#a.wasJustPressed ||
-            this.#b.wasJustPressed ||
+            this.#O.wasJustPressed ||
+            this.#X.wasJustPressed ||
             this.#menu.wasJustPressed);
     }
     wasJustPressed(button) {
@@ -91,10 +95,12 @@ export class GameButtons {
                 return this.#up.wasJustPressed;
             case "down":
                 return this.#down.wasJustPressed;
-            case "a":
-                return this.#a.wasJustPressed;
-            case "b":
-                return this.#b.wasJustPressed;
+            case "O":
+            case "o":
+                return this.#O.wasJustPressed;
+            case "X":
+            case "x":
+                return this.#X.wasJustPressed;
             case "menu":
                 return this.#menu.wasJustPressed;
         }
@@ -109,10 +115,12 @@ export class GameButtons {
                 return this.#up.wasJustReleased;
             case "down":
                 return this.#down.wasJustReleased;
-            case "a":
-                return this.#a.wasJustReleased;
-            case "b":
-                return this.#b.wasJustReleased;
+            case "O":
+            case "o":
+                return this.#O.wasJustReleased;
+            case "X":
+            case "x":
+                return this.#X.wasJustReleased;
             case "menu":
                 return this.#menu.wasJustReleased;
         }
