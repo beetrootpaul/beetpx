@@ -6,32 +6,37 @@ import { GamepadMapping } from "./GamepadMapping";
 env:
   macOS Ventura 13.5.2 (Apple M1 Max), Safari 16.6 (18615.3.12.11.2)
 gamepad:
-  Xbox One
+  DualSense
 gamepad ID:
-  "Xbox Wireless Controller Extended Gamepad"
+  "54c-ce6-DualSense Wireless Controller"
 buttons:
-  - A -> 0
-  - B -> 1
-  - X -> 2
-  - Y -> 3
-  - LB -> 4
-  - RB -> 5
-  - LT -> 6
-  - RT -> 7
+  - cross    -> 0
+  - circle   -> 1
+  - square   -> 2
+  - triangle -> 3
+  - L1 -> 4
+  - R1 -> 5
+  - L2 -> 6
+  - R2 -> 7
   - dpad up    -> 12
   - dpad down  -> 13
   - dpad left  -> 14
   - dpad right -> 15
-  - Xbox logo           -> 16
-  - view (center left ) ->  8
-  - menu (center right) ->  9
-  - left  stick pressed -> 10
-  - right stick pressed -> 11
+  - touch panel press     -> -
+  - PS logo               -> 16
+  - microphone            ->  -
+  - create (center left ) ->  8
+  - menu   (center right) ->  9
+  - left  stick pressed   -> 10
+  - right stick pressed   -> 11
  axes and their ranges:
   - left  stick, horizontal -> 0 (left -1.00 : 1.00 right)
   - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
+  - L2                      -> -
+  - R2                      -> -
+  - dpad -> -
 
 env:
   macOS Ventura 13.5.2 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Engine Version 118.0.5993.88
@@ -41,76 +46,81 @@ env:
   macOS Ventura 13.5.2 (Apple M1 Max), Opera One (version: 103.0.4928.34) (arm64)
   macOS Ventura 13.5.2 (Apple M1 Max), Vivaldi 6.2.3105.58 (Stable channel) (arm64)
 gamepad:
-  Xbox One
+  DualSense
 gamepad ID:
-  "Xbox Wireless Controller (STANDARD GAMEPAD Vendor: 045e Product: 02fd)"
+  "DualSense Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)"
 buttons:
-  - A -> 0
-  - B -> 1
-  - X -> 2
-  - Y -> 3
-  - LB -> 4
-  - RB -> 5
-  - LT -> 6  ("touched: true" if half-pressed, "value": from 0 to 1)
-  - RT -> 7  ("touched: true" if half-pressed, "value": from 0 to 1)
+  - cross    -> 0
+  - circle   -> 1
+  - square   -> 2
+  - triangle -> 3
+  - L1 -> 4
+  - R1 -> 5
+  - L2 -> 6  ("touched: true" if half-pressed, "value": from 0 to 1)
+  - R2 -> 7  ("touched: true" if half-pressed, "value": from 0 to 1)
   - dpad up    -> 12
   - dpad down  -> 13
   - dpad left  -> 14
   - dpad right -> 15
-  - Xbox logo           -> 16
-  - view (center left ) ->  8
-  - menu (center right) ->  9
-  - left  stick pressed -> 10
-  - right stick pressed -> 11
+  - touch panel press     -> 17
+  - PS logo               -> 16
+  - microphone            ->  -
+  - create (center left ) ->  8
+  - menu   (center right) ->  9
+  - left  stick pressed   -> 10
+  - right stick pressed   -> 11
  axes and their ranges:
   - left  stick, horizontal -> 0 (left -1.00 : 1.00 right)
   - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
-
+  - L2                      -> -
+  - R2                      -> -
+  - dpad -> -
+  - dpad -> -
 
 env:
   Windows 10 Home 22H2 (Intel Core i7-3517U), Brave 1.59.120 Chromium: 118.0.5993.88 (Official Build) (64-bit)
   Windows 10 Home 22H2 (Intel Core i7-3517U), Chrome 118.0.5993.89 (Official Build) (64-bit)
-  Windows 10 Home 22H2 (Intel Core i7-3517U), Edge 118.0.2088.57 (Official build) (arm64)
+  Windows 10 Home 22H2 (Intel Core i7-3517U), Edge 118.0.2088.57 (Official build) (64-bit)
   Windows 10 Home 22H2 (Intel Core i7-3517U), Opera One (version: 103.0.4928.34)
   Windows 10 Home 22H2 (Intel Core i7-3517U), Vivaldi 6.2.3105.58 (Stable channel) (64-bit)
 gamepad:
-  Xbox One
+  DualSense
 gamepad ID:
-  "HID-compliant game controller (STANDARD GAMEPAD Vendor: 045e Product: 02fd)"
-  "Xbox 360 Controller (XInput STANDARD GAMEPAD)" <-- Vivaldi, and maye others as well in unclear circumstances
+  "Wireless Controller (STANDARD GAMEPAD Vendor: 054c Product: 0ce6)"
 buttons:
-  - A -> 0
-  - B -> 1
-  - X -> 2
-  - Y -> 3
-  - LB -> 4
-  - RB -> 5
-  - LT -> 6  ("touched: true" if half-pressed, "value": from 0 to 1)
-  - RT -> 7  ("touched: true" if half-pressed, "value": from 0 to 1)
+  - cross    -> 0
+  - circle   -> 1
+  - square   -> 2
+  - triangle -> 3
+  - L1 -> 4
+  - R1 -> 5
+  - L2 -> 6 ("touched: true" if half-pressed, "value": from 0 to 1)
+  - R2 -> 7 ("touched: true" if half-pressed, "value": from 0 to 1)
   - dpad up    -> 12
   - dpad down  -> 13
   - dpad left  -> 14
   - dpad right -> 15
-  - Xbox logo           -> - (also: it brings front some OS-wide overlay!)
-  - view (center left ) -> 8
-  - menu (center right) -> 9
-  - left  stick pressed -> 10
-  - right stick pressed -> 11
+  - touch panel press     -> 17
+  - PS logo               -> 16
+  - microphone            ->  -
+  - create (center left ) ->  8
+  - menu   (center right) ->  9
+  - left  stick pressed   -> 10
+  - right stick pressed   -> 11
  axes and their ranges:
   - left  stick, horizontal -> 0 (left -1.00 : 1.00 right)
   - left  stick, vertical   -> 1 (  up -1.00 : 1.00 down )
   - right stick, horizontal -> 2 (left -1.00 : 1.00 right)
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
+  - L2                      -> -
+  - R2                      -> -
+  - dpad -> -
 
  */
 
-/**
- * Used for the Standard mapping, as described on https://w3c.github.io/gamepad/#remapping
- *   and indicated by `Gamepad.mapping === "standard"`.
- */
-export class GamepadMappingStandard implements GamepadMapping {
+export class GamepadMappingDualSense implements GamepadMapping {
   static readonly #stickAxisThreshold: number = 0.6;
 
   eventForButton(
@@ -120,11 +130,11 @@ export class GamepadMappingStandard implements GamepadMapping {
     if (!button.pressed) return null;
 
     switch (buttonIndex) {
-      case 0: // Xbox: A / DualSense: cross
-      case 3: // Xbox: Y / DualSense: triangle
+      case 1: // circle
+      case 2: // square
         return "button_O";
-      case 1: // Xbox: B / DualSense: circle
-      case 2: // Xbox: X / DualSense: square
+      case 0: // cross
+      case 3: // triangle
         return "button_X";
       case 12: // d-pad up
         return "button_up";
@@ -149,18 +159,18 @@ export class GamepadMappingStandard implements GamepadMapping {
       case 0: // left stick, horizontal
       case 2: // right stick, horizontal
         return (
-          axisValue > GamepadMappingStandard.#stickAxisThreshold ?
+          axisValue > GamepadMappingDualSense.#stickAxisThreshold ?
             ["button_right"]
-          : axisValue < -GamepadMappingStandard.#stickAxisThreshold ?
+          : axisValue < -GamepadMappingDualSense.#stickAxisThreshold ?
             ["button_left"]
           : []
         );
       case 1: // left stick, vertical
       case 3: // right stick, vertical
         return (
-          axisValue > GamepadMappingStandard.#stickAxisThreshold ?
+          axisValue > GamepadMappingDualSense.#stickAxisThreshold ?
             ["button_down"]
-          : axisValue < -GamepadMappingStandard.#stickAxisThreshold ?
+          : axisValue < -GamepadMappingDualSense.#stickAxisThreshold ?
             ["button_up"]
           : []
         );
