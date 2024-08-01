@@ -48,9 +48,14 @@ export class GameInputKeyboard implements GameInputSpecialized {
     new Set<BpxGameInputEvent>();
 
   constructor(params: {
+    enableScreenshots: boolean;
     enableDebugToggle: boolean;
     enableFrameByFrameControls: boolean;
   }) {
+    if (params.enableScreenshots) {
+      this.#keyMapping.set("]", "take_screenshot");
+      this.#keyMapping.set("}", "browse_screenshots_toggle");
+    }
     if (params.enableDebugToggle) {
       this.#keyMapping.set(";", "debug_toggle");
     }

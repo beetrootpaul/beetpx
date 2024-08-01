@@ -32,6 +32,10 @@ export class GameInputKeyboard {
     ]);
     #eventsSinceLastUpdate = new Set();
     constructor(params) {
+        if (params.enableScreenshots) {
+            this.#keyMapping.set("]", "take_screenshot");
+            this.#keyMapping.set("}", "browse_screenshots_toggle");
+        }
         if (params.enableDebugToggle) {
             this.#keyMapping.set(";", "debug_toggle");
         }

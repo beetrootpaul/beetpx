@@ -28,6 +28,10 @@
 
         --color-screen: #000000;
 
+        --color-screenshots-bg: rgba(0, 0, 0, 0.7);
+        --color-screenshots-text: #b8b5b9;
+        --color-screenshots-link-hover: #ffccaa;
+
         --color-error-screen: #000000;
         --color-error-screen-text: #b8b5b9;
         --color-error-screen-border: #ff004d;
@@ -142,6 +146,45 @@
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
+      }
+
+      #screen_screenshots {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100dvw;
+        height: 100dvh;
+        padding: 1rem;
+
+        background-color: var(--color-screenshots-bg);
+        color: var(--color-screenshots-text);
+
+        & h1 {
+          margin-bottom: 1rem;
+        }
+
+        & p {
+          margin-bottom: 1rem;
+        }
+
+        & li {
+          margin-bottom: 0.5rem;
+
+          & a {
+            color: var(--color-screenshots-text);
+
+            &:hover {
+              color: var(--color-screenshots-link-hover);
+            }
+          }
+        }
+
+        display: none;
+      }
+
+      .browsing_screenshots #screen_screenshots {
+        display: flex;
+        flex-direction: column;
       }
 
       #screen_error {
@@ -939,6 +982,14 @@
     <!-- Has to be placed after #screen_start_game in order to be visible on top  -->
     <div id="screen_loading">
       <div id="screen_loading__spinner"></div>
+    </div>
+
+    <div id="screen_screenshots">
+      <h1>Screenshots</h1>
+      <p>
+        Click the one you want to download. The most recent ones are on the top.
+      </p>
+      <ol id="screen_screenshots__list"></ol>
     </div>
 
     <div id="screen_error">

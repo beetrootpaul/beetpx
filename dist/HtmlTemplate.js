@@ -1,3 +1,4 @@
+import { ScreenshotManager, } from "./misc/ScreenshotManager";
 export class HtmlTemplate {
     static selectors = {
         fullScreenSubject: "body",
@@ -30,6 +31,28 @@ export class HtmlTemplate {
     }
     static updateMutedClass(isMuted) {
         document.body.classList[isMuted ? "add" : "remove"]("muted");
+    }
+    static updateBrowsingScreenshotsClass(isBrowsing) {
+        document.body.classList[isBrowsing ? "add" : "remove"]("browsing_screenshots");
+    }
+    static updateScreenshotDownloadLinks(imageDataUrls) {
+        const listEl = document.getElementById("screen_screenshots__list");
+        listEl.innerHTML = "";
+        for (let i = 0; i < imageDataUrls.length; i++) {
+            const fileName = `game_screenshot_${imageDataUrls[i].timestamp}.png`;
+            const anchorEl = document.createElement("a");
+            anchorEl.href = imageDataUrls[i].imageDataUrl;
+            anchorEl.download = fileName;
+            anchorEl.innerText = fileName;
+            const itemEl = document.createElement("li");
+            itemEl.appendChild(anchorEl);
+            listEl.appendChild(itemEl);
+        }
+        for (let i = imageDataUrls.length; i < ScreenshotManager.limit; i++) {
+            const itemEl = document.createElement("li");
+            itemEl.innerHTML = "-";
+            listEl.appendChild(itemEl);
+        }
     }
     static updateDebugClass(isDebug) {
         document.body.classList[isDebug ? "add" : "remove"]("debug");

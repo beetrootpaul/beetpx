@@ -1,3 +1,8 @@
+import {
+  PersistedScreenshot,
+  ScreenshotManager,
+} from "./misc/ScreenshotManager";
+
 export class HtmlTemplate {
   static readonly selectors = {
     fullScreenSubject: "body",
@@ -37,6 +42,40 @@ export class HtmlTemplate {
 
   static updateMutedClass(isMuted: boolean): void {
     document.body.classList[isMuted ? "add" : "remove"]("muted");
+  }
+
+  static updateBrowsingScreenshotsClass(isBrowsing: boolean): void {
+    document.body.classList[isBrowsing ? "add" : "remove"](
+      "browsing_screenshots",
+    );
+  }
+
+  static updateScreenshotDownloadLinks(
+    imageDataUrls: PersistedScreenshot[],
+  ): void {
+    const listEl = document.getElementById("screen_screenshots__list")!;
+    listEl.innerHTML = "";
+
+    for (let i = 0; i < imageDataUrls.length; i++) {
+      const fileName = `game_screenshot_${imageDataUrls[i]!.timestamp}.png`;
+
+      const anchorEl = document.createElement("a");
+      anchorEl.href = imageDataUrls[i]!.imageDataUrl;
+      anchorEl.download = fileName;
+      anchorEl.innerText = fileName;
+
+      const itemEl = document.createElement("li");
+      itemEl.appendChild(anchorEl);
+
+      listEl.appendChild(itemEl);
+    }
+
+    for (let i = imageDataUrls.length; i < ScreenshotManager.limit; i++) {
+      const itemEl = document.createElement("li");
+      itemEl.innerHTML = "-";
+
+      listEl.appendChild(itemEl);
+    }
   }
 
   static updateDebugClass(isDebug: boolean): void {

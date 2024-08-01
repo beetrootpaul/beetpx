@@ -24,6 +24,8 @@ export type BpxGameInputEvent =
   | "button_menu"
   | "mute_unmute_toggle"
   | "full_screen"
+  | "take_screenshot"
+  | "browse_screenshots_toggle"
   | "debug_toggle"
   | "frame_by_frame_toggle"
   | "frame_by_frame_step";
@@ -36,6 +38,8 @@ export class GameInput {
 
   readonly buttonFullScreen: Button;
   readonly buttonMuteUnmute: Button;
+  readonly buttonTakeScreenshot: Button;
+  readonly buttonBrowseScreenshots: Button;
   readonly buttonDebugToggle: Button;
   readonly buttonFrameByFrameToggle: Button;
   readonly buttonFrameByFrameStep: Button;
@@ -45,6 +49,7 @@ export class GameInput {
   #mostRecentInputMethods: Set<GameInputMethod> = new Set();
 
   constructor(params: {
+    enableScreenshots: boolean;
     enableDebugToggle: boolean;
     enableFrameByFrameControls: boolean;
     browserType: BpxBrowserType;
@@ -55,6 +60,7 @@ export class GameInput {
     this.gameInputsSpecialized = [
       new GameInputMouse(),
       new GameInputKeyboard({
+        enableScreenshots: params.enableScreenshots,
         enableDebugToggle: params.enableDebugToggle,
         enableFrameByFrameControls: params.enableFrameByFrameControls,
       }),
@@ -66,6 +72,8 @@ export class GameInput {
 
     this.buttonFullScreen = new Button();
     this.buttonMuteUnmute = new Button();
+    this.buttonTakeScreenshot = new Button();
+    this.buttonBrowseScreenshots = new Button();
     this.buttonDebugToggle = new Button();
     this.buttonFrameByFrameToggle = new Button();
     this.buttonFrameByFrameStep = new Button();
@@ -100,6 +108,10 @@ export class GameInput {
 
     this.buttonFullScreen.update(events.has("full_screen"));
     this.buttonMuteUnmute.update(events.has("mute_unmute_toggle"));
+    this.buttonTakeScreenshot.update(events.has("take_screenshot"));
+    this.buttonBrowseScreenshots.update(
+      events.has("browse_screenshots_toggle"),
+    );
     this.buttonDebugToggle.update(events.has("debug_toggle"));
     this.buttonFrameByFrameToggle.update(events.has("frame_by_frame_toggle"));
     this.buttonFrameByFrameStep.update(events.has("frame_by_frame_step"));

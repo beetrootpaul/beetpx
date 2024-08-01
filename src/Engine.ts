@@ -19,6 +19,7 @@ import { GameLoop } from "./game_loop/GameLoop";
 import { Logger } from "./logger/Logger";
 import { FullScreen } from "./misc/FullScreen";
 import { Loading } from "./misc/Loading";
+import { ScreenshotManager } from "./misc/ScreenshotManager";
 import { BpxVector2d } from "./misc/Vector2d";
 import { GamePause } from "./pause/GamePause";
 import {
@@ -44,6 +45,9 @@ export type BpxEngineConfig = {
     available?: boolean;
   };
   requireConfirmationOnTabClose?: boolean;
+  screenshots?: {
+    available?: boolean;
+  };
   debugMode?: {
     /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
     available?: boolean;
@@ -95,6 +99,8 @@ export class Engine {
   readonly drawApi: DrawApi;
 
   readonly #fpsDisplay?: FpsDisplay;
+
+  readonly #screenshotManager?: ScreenshotManager;
 
   #isStarted: boolean = false;
   isInsideDrawOrStartedCallback: boolean = false;
@@ -203,6 +209,7 @@ export class Engine {
       : throwError(`Unsupported canvasSize: "${engineConfig.canvasSize}"`);
 
     this.gameInput = new GameInput({
+      enableScreenshots: engineConfig.screenshots?.available ?? false,
       enableDebugToggle: engineConfig.debugMode?.available ?? false,
       enableFrameByFrameControls: engineConfig.frameByFrame?.available ?? false,
       browserType: this.#browserType,
@@ -264,6 +271,10 @@ export class Engine {
         color: engineConfig.debugMode.fpsDisplay.color,
         placement: engineConfig.debugMode.fpsDisplay.placement,
       });
+    }
+
+    if (engineConfig?.screenshots?.available) {
+      this.#screenshotManager = new ScreenshotManager();
     }
   }
 
@@ -337,9 +348,26 @@ export class Engine {
 
     this.#gameLoop.start({
       updateFn: () => {
+        if (this.#screenshotManager) {
+          if (this.gameInput.buttonBrowseScreenshots.wasJustPressed) {
+            this.#screenshotManager.isBrowsing =
+              !this.#screenshotManager.isBrowsing;
+            HtmlTemplate.updateBrowsingScreenshotsClass(
+              this.#screenshotManager.isBrowsing,
+            );
+          }
+        }
+
+        if (this.#screenshotManager) {
+          if (this.gameInput.buttonTakeScreenshot.wasJustPressed) {
+            this.#screenshotManager.addScreenshot(this.#canvas.asDataUrl());
+          }
+        }
+
         if (this.gameInput.buttonFullScreen.wasJustPressed) {
           this.fullScreen.toggleFullScreen();
         }
+
         if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
           if (this.audioApi.isAudioMuted()) {
             this.audioApi.unmuteAudio();

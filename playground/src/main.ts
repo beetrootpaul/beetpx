@@ -41,6 +41,9 @@ $.start({
     available: true,
   },
   requireConfirmationOnTabClose: BEETPX__IS_PROD,
+  screenshots: {
+    available: true,
+  },
   debugMode: {
     available: !BEETPX__IS_PROD,
   },

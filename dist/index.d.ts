@@ -341,7 +341,7 @@ type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 /**
  * @category Game input
  */
-type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
+type BpxGameInputEvent = null | "button_left" | "button_right" | "button_up" | "button_down" | "button_a" | "button_b" | "button_menu" | "mute_unmute_toggle" | "full_screen" | "take_screenshot" | "browse_screenshots_toggle" | "debug_toggle" | "frame_by_frame_toggle" | "frame_by_frame_step";
 
 declare global {
     interface Document {
@@ -368,6 +368,9 @@ type BpxEngineConfig = {
         available?: boolean;
     };
     requireConfirmationOnTabClose?: boolean;
+    screenshots?: {
+        available?: boolean;
+    };
     debugMode?: {
         /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
         available?: boolean;

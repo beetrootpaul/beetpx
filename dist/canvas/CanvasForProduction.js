@@ -61,6 +61,9 @@ export class CanvasForProduction extends Canvas {
             .floor();
         this.#htmlCanvasContext.drawImage(this.#offscreenContext.canvas, 0, 0, this.#offscreenContext.canvas.width, this.#offscreenContext.canvas.height, centeringOffset.x, centeringOffset.y, scaleToFill * this.canvasSize.x, scaleToFill * this.canvasSize.y);
     }
+    asDataUrl() {
+        return this.#htmlCanvas.toDataURL();
+    }
     #initializeAsNonTransparent() {
         for (let i = 3; i < this.#offscreenImageData.data.length; i += 4) {
             this.#offscreenImageData.data[i] = 0xff;
