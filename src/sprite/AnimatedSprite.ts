@@ -4,6 +4,9 @@ import { BpxTimer } from "../timer/Timer";
 import { repeatEachElement } from "../utils/repeatEachElement";
 import { BpxSprite } from "./Sprite";
 
+/**
+ * TODO: docs
+ */
 export type BpxImageBoundAnimatedSpriteFactory = (
   w: number,
   h: number,
@@ -15,7 +18,13 @@ export type BpxImageBoundAnimatedSpriteFactory = (
   },
 ) => BpxAnimatedSprite;
 
+/**
+ * TODO: docs
+ */
 export class BpxAnimatedSprite {
+  /**
+   * TODO: docs
+   */
   static from(
     imageUrl: BpxImageUrl,
     w: number,
@@ -37,9 +46,18 @@ export class BpxAnimatedSprite {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   readonly type = "animated";
 
+  /**
+   * TODO: docs
+   */
   readonly imageUrl: BpxImageUrl;
+  /**
+   * TODO: docs
+   */
   readonly size: BpxVector2d;
 
   readonly #sprites: BpxSprite[];
@@ -78,18 +96,30 @@ export class BpxAnimatedSprite {
     });
   }
 
+  /**
+   * TODO: docs
+   */
   get current(): BpxSprite {
     return this.#sprites[this.#loop.t]!;
   }
 
+  /**
+   * TODO: docs
+   */
   pause(): void {
     this.#loop.pause();
   }
 
+  /**
+   * TODO: docs
+   */
   resume(): void {
     this.#loop.resume();
   }
 
+  /**
+   * TODO: docs
+   */
   restart(): void {
     this.#loop.restart();
   }

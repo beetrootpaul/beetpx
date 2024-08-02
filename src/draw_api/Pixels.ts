@@ -1,12 +1,24 @@
 import { BpxVector2d } from "../misc/Vector2d";
 
+/**
+ * TODO: docs
+ */
 export class BpxPixels {
+  /**
+   * TODO: docs
+   */
   static from(ascii: string): BpxPixels {
     return new BpxPixels(ascii);
   }
 
+  /**
+   * TODO: docs
+   */
   readonly asciiRows: string[];
 
+  /**
+   * TODO: docs
+   */
   readonly size: BpxVector2d;
 
   private constructor(ascii: string) {

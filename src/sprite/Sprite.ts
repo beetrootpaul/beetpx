@@ -1,6 +1,9 @@
 import { BpxImageUrl } from "../assets/Assets";
 import { BpxVector2d } from "../misc/Vector2d";
 
+/**
+ * TODO: docs
+ */
 export type BpxImageBoundSpriteFactory = (
   w: number,
   h: number,
@@ -9,9 +12,14 @@ export type BpxImageBoundSpriteFactory = (
 ) => BpxSprite;
 
 /**
- * @category Drawing
+ * TODO: docs
+ *
+ * @categoryTODO Drawing
  */
 export class BpxSprite {
+  /**
+   * TODO: docs
+   */
   static from(
     imageUrl: BpxImageUrl,
     w: number,
@@ -22,10 +30,22 @@ export class BpxSprite {
     return new BpxSprite(imageUrl, w, h, x, y);
   }
 
+  /**
+   * TODO: docs
+   */
   readonly type = "static";
 
+  /**
+   * TODO: docs
+   */
   readonly imageUrl: BpxImageUrl;
+  /**
+   * TODO: docs
+   */
   readonly size: BpxVector2d;
+  /**
+   * TODO: docs
+   */
   readonly xy: BpxVector2d;
 
   private constructor(
@@ -51,6 +71,9 @@ export class BpxSprite {
       .sub(this.xy);
   }
 
+  /**
+   * TODO: docs
+   */
   clipBy(xy1: BpxVector2d, xy2: BpxVector2d): BpxSprite {
     const xy = this.xy.clamp(xy1, xy2);
     const wh = this.xy.add(this.size).clamp(xy1, xy2).sub(xy);

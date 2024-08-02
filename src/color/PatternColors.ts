@@ -1,11 +1,15 @@
 import { BpxRgbColor } from "./RgbColor";
 
 /**
- * @category Drawing
+ * TODO: docs
+ *
+ * @categoryTODO Drawing
  */
 export class BpxPatternColors {
   /**
-   * @group Static factories
+   * TODO: docs
+   *
+   * @groupTODO Static factories
    */
   static of(
     primary: BpxRgbColor | null,
@@ -14,10 +18,19 @@ export class BpxPatternColors {
     return new BpxPatternColors(primary, secondary);
   }
 
+  /**
+   * TODO: docs
+   */
   readonly type = "pattern";
 
   private constructor(
+    /**
+     * TODO: docs
+     */
     readonly primary: BpxRgbColor | null,
+    /**
+     * TODO: docs
+     */
     readonly secondary: BpxRgbColor | null,
   ) {}
 }

@@ -1,22 +1,58 @@
 import { type PngDataArray } from "fast-png";
 import { throwError } from "../utils/throwError";
 
+/**
+ * TODO: docs
+ */
 export type BpxImageUrl = string;
+/**
+ * TODO: docs
+ */
 export type BpxSoundUrl = string;
+/**
+ * TODO: docs
+ */
 export type BpxJsonUrl = string;
 
+/**
+ * TODO: docs
+ */
 export type BpxImageAsset = {
+  /**
+   * TODO: docs
+   */
   width: number;
+  /**
+   * TODO: docs
+   */
   height: number;
+  /**
+   * TODO: docs
+   */
   channels: 3 | 4;
+  /**
+   * TODO: docs
+   */
   rgba8bitData: PngDataArray;
 };
 
+/**
+ * TODO: docs
+ */
 export type BpxSoundAsset = {
+  /**
+   * TODO: docs
+   */
   audioBuffer: AudioBuffer;
 };
 
+/**
+ * TODO: docs
+ */
 export type BpxJsonAsset = {
+  /**
+   * TODO: docs
+   */
   json: any;
 };
 

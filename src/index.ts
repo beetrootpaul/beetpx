@@ -1,5 +1,4 @@
 /**
- * For TypeDoc:
  * @module API
  */
 
@@ -95,13 +94,17 @@ declare global {
   }
 
   /**
+   * TODO: docs
+   *
    * @notExported
-   * @category Globals
+   * @categoryTODO Globals
    */
   const BEETPX__IS_PROD: boolean;
   /**
+   * TODO: docs
+   *
    * @notExported
-   * @category Globals
+   * @categoryTODO Globals
    */
   const BEETPX__VERSION: string;
 }
@@ -109,6 +112,16 @@ declare global {
 /////////////////////////////////////////////////////////////////////////////
 
 /**
+ * One of 3 main API entry points. This one provides you with the most of
+ * the BeetPx capabilities, except drawing.
+ *
+ * @example
+ * ```ts
+ * BeetPx.setOnUpdate(() => {
+ *   BeetPx.logInfo(BeetPx.isAnyButtonPressed());
+ * });
+ * ```
+ *
  * @category API entry points
  */
 export class BeetPx {
@@ -134,7 +147,9 @@ export class BeetPx {
   //
 
   /**
-   * @category Lifecycle
+   * TODO: docs
+   *
+   * @categoryTODO Lifecycle
    */
   static async start(config: BpxEngineConfig): Promise<void> {
     if (Engine.engineSingleton) {
@@ -170,15 +185,23 @@ export class BeetPx {
   // accessors
   //
 
+  /**
+   * TODO: docs
+   */
   static get debug(): boolean {
     return DebugMode.enabled;
   }
 
+  /**
+   * TODO: docs
+   */
   static get canvasSize(): BpxVector2d {
     return this.#tryGetEngine().canvasSize;
   }
 
   /**
+   * TODO: docs
+   *
    * Number of frames processed since game started.
    * It gets reset to 0 when `BeetPx.restart()` is called.
    * It counts update calls, not draw calls.
@@ -189,14 +212,23 @@ export class BeetPx {
     return this.#tryGetEngine().frameNumber;
   }
 
+  /**
+   * TODO: docs
+   */
   static get frameNumberOutsidePause(): number {
     return this.#tryGetEngine().frameNumberOutsidePause;
   }
 
+  /**
+   * TODO: docs
+   */
   static get renderingFps(): number {
     return this.#tryGetEngine().renderingFps;
   }
 
+  /**
+   * TODO: docs
+   */
   static get detectedBrowserType(): BpxBrowserType {
     return this.#tryGetEngine().detectedBrowserType;
   }
@@ -206,7 +238,9 @@ export class BeetPx {
   //
 
   /**
-   * @category Lifecycle
+   * TODO: docs
+   *
+   * @categoryTODO Lifecycle
    */
   static setOnStarted(onStarted?: () => void): void {
     if (Engine.engineSingleton) {
@@ -217,7 +251,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Lifecycle
+   * TODO: docs
+   *
+   * @categoryTODO Lifecycle
    */
   static setOnUpdate(onUpdate?: () => void): void {
     if (Engine.engineSingleton) {
@@ -228,7 +264,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Lifecycle
+   * TODO: docs
+   *
+   * @categoryTODO Lifecycle
    */
   static setOnDraw(onDraw?: () => void): void {
     if (Engine.engineSingleton) {
@@ -239,7 +277,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Lifecycle
+   * TODO: docs
+   *
+   * @categoryTODO Lifecycle
    */
   static restart(): void {
     this.#tryGetEngine().restart();
@@ -250,28 +290,36 @@ export class BeetPx {
   //
 
   /**
-   * @category Logging
+   * TODO: docs
+   *
+   * @categoryTODO Logging
    */
   static logDebug(...args: unknown[]): void {
     Logger.debug(...args);
   }
 
   /**
-   * @category Logging
+   * TODO: docs
+   *
+   * @categoryTODO Logging
    */
   static logInfo(...args: unknown[]): void {
     Logger.info(...args);
   }
 
   /**
-   * @category Logging
+   * TODO: docs
+   *
+   * @categoryTODO Logging
    */
   static logWarn(...args: unknown[]): void {
     Logger.warn(...args);
   }
 
   /**
-   * @category Logging
+   * TODO: docs
+   *
+   * @categoryTODO Logging
    */
   static logError(...args: unknown[]): void {
     Logger.error(...args);
@@ -282,35 +330,45 @@ export class BeetPx {
   //
 
   /**
-   * @category Game pause
+   * TODO: docs
+   *
+   * @categoryTODO Game pause
    */
   static get isPaused(): boolean {
     return GamePause.isActive;
   }
 
   /**
-   * @category Game pause
+   * TODO: docs
+   *
+   * @categoryTODO Game pause
    */
   static get wasJustPaused(): boolean {
     return GamePause.wasJustActivated;
   }
 
   /**
-   * @category Game pause
+   * TODO: docs
+   *
+   * @categoryTODO Game pause
    */
   static get wasJustResumed(): boolean {
     return GamePause.wasJustDeactivated;
   }
 
   /**
-   * @category Game pause
+   * TODO: docs
+   *
+   * @categoryTODO Game pause
    */
   static pause(): void {
     GamePause.activate();
   }
 
   /**
-   * @category Game pause
+   * TODO: docs
+   *
+   * @categoryTODO Game pause
    */
   static resume(): void {
     GamePause.deactivate();
@@ -321,42 +379,54 @@ export class BeetPx {
   //
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static wasAnyButtonJustPressed(): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasAnyJustPressed();
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static wasButtonJustPressed(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustPressed(button);
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static wasButtonJustReleased(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustReleased(button);
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static isAnyButtonPressed(): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.isAnyPressed();
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static isButtonPressed(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.isPressed(button);
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    * @example
    * ```ts
    * this.position += $.getPressedDirection().mul(this.speed);
@@ -367,7 +437,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static setButtonRepeating(
     button: BpxGameButtonName,
@@ -383,21 +455,27 @@ export class BeetPx {
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static getRecentInputMethods(): Set<GameInputMethod> {
     return this.#tryGetEngine().gameInput.getRecentInputMethods();
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static getConnectedGamepadTypes(): Set<BpxGamepadType> {
     return this.#tryGetEngine().gameInput.getConnectedGamepadTypes();
   }
 
   /**
-   * @category Game input
+   * TODO: docs
+   *
+   * @categoryTODO Game input
    */
   static getEventsCapturedInLastUpdate(): Set<BpxGameInputEvent> {
     return this.#tryGetEngine().gameInput.getEventsCapturedInLastUpdate();
@@ -408,28 +486,36 @@ export class BeetPx {
   //
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static isAudioMuted(): boolean {
     return this.#tryGetEngine().audioApi.isAudioMuted();
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static muteAudio(opts?: { fadeOutMillis?: number }): void {
     this.#tryGetEngine().audioApi.muteAudio(opts);
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static unmuteAudio(opts?: { fadeInMillis?: number }): void {
     this.#tryGetEngine().audioApi.unmuteAudio(opts);
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static startPlayback(
     soundUrl: BpxSoundUrl,
@@ -442,7 +528,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static startPlaybackLooped(
     soundUrl: BpxSoundUrl,
@@ -455,7 +543,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static startPlaybackSequence(
     soundSequence: BpxSoundSequence,
@@ -471,7 +561,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static mutePlayback(
     playbackId: BpxAudioPlaybackId,
@@ -481,7 +573,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static unmutePlayback(
     playbackId: BpxAudioPlaybackId,
@@ -491,7 +585,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static stopPlayback(
     playbackId: BpxAudioPlaybackId,
@@ -501,21 +597,27 @@ export class BeetPx {
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static pausePlayback(playbackId: BpxAudioPlaybackId): void {
     this.#tryGetEngine().audioApi.pausePlayback(playbackId);
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static resumePlayback(playbackId: BpxAudioPlaybackId): void {
     this.#tryGetEngine().audioApi.resumePlayback(playbackId);
   }
 
   /**
-   * @category Audio
+   * TODO: docs
+   *
+   * @categoryTODO Audio
    */
   static getAudioContext(): AudioContext {
     return this.#tryGetEngine().audioApi.getAudioContext();
@@ -526,21 +628,27 @@ export class BeetPx {
   //
 
   /**
-   * @category Full screen
+   * TODO: docs
+   *
+   * @categoryTODO Full screen
    */
   static isFullScreenSupported(): boolean {
     return this.#tryGetEngine().fullScreen.isFullScreenSupported();
   }
 
   /**
-   * @category Full screen
+   * TODO: docs
+   *
+   * @categoryTODO Full screen
    */
   static isInFullScreen(): boolean {
     return this.#tryGetEngine().fullScreen.isInFullScreen();
   }
 
   /**
-   * @category Full screen
+   * TODO: docs
+   *
+   * @categoryTODO Full screen
    */
   static toggleFullScreen(): void {
     this.#tryGetEngine().fullScreen.toggleFullScreen();
@@ -551,7 +659,9 @@ export class BeetPx {
   //
 
   /**
-   * @category Storage
+   * TODO: docs
+   *
+   * @categoryTODO Storage
    */
   static savePersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
@@ -560,7 +670,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Storage
+   * TODO: docs
+   *
+   * @categoryTODO Storage
    */
   static loadPersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
@@ -569,7 +681,9 @@ export class BeetPx {
   }
 
   /**
-   * @category Storage
+   * TODO: docs
+   *
+   * @categoryTODO Storage
    */
   static clearPersistedState(): void {
     this.#tryGetEngine().storageApi.clearPersistedState();
@@ -580,21 +694,27 @@ export class BeetPx {
   //
 
   /**
-   * @category Assets
+   * TODO: docs
+   *
+   * @categoryTODO Assets
    */
   static getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset {
     return this.#tryGetEngine().assets.getImageAsset(imageUrl);
   }
 
   /**
-   * @category Assets
+   * TODO: docs
+   *
+   * @categoryTODO Assets
    */
   static getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset {
     return this.#tryGetEngine().assets.getSoundAsset(soundUrl);
   }
 
   /**
-   * @category Assets
+   * TODO: docs
+   *
+   * @categoryTODO Assets
    */
   static getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset {
     return this.#tryGetEngine().assets.getJsonAsset(jsonUrl);
@@ -604,6 +724,17 @@ export class BeetPx {
 /////////////////////////////////////////////////////////////////////////////
 
 /**
+ * One of 3 main API entry points. This one provides you with the drawing
+ * capabilities. Its methods are supposed to be called from either inside
+ * {@link BeetPx.setOnStarted} or {@link BeetPx.setOnDraw} callback.
+ *
+ * @example
+ * ```ts
+ * BeetPx.setOnDraw(() => {
+ *   BeetPxDraw.rectFilled($v(10), $v(20), $rgb_red);
+ * });
+ * ```
+ *
  * @category API entry points
  */
 export class BeetPxDraw {
@@ -623,11 +754,16 @@ export class BeetPxDraw {
     return Engine.engineSingleton;
   }
 
+  /**
+   * TODO: docs
+   */
   static clearCanvas(color: BpxRgbColor): void {
     BeetPxDraw.#tryGetEngine("clearCanvas").drawApi.clearCanvas(color);
   }
 
   /**
+   * TODO: docs
+   *
    * @returns - previous clipping region in form of an array: [xy, wh]
    */
   static setClippingRegion(
@@ -640,6 +776,8 @@ export class BeetPxDraw {
   }
 
   /**
+   * TODO: docs
+   *
    * @returns - previous clipping region in form of an array: [xy, wh]
    */
   static removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d] {
@@ -649,6 +787,8 @@ export class BeetPxDraw {
   }
 
   /**
+   * TODO: docs
+   *
    * Sets a new XY (left-top corner) of a camera's viewport
    *
    * @returns previous camera XY
@@ -658,6 +798,8 @@ export class BeetPxDraw {
   }
 
   /**
+   * TODO: docs
+   *
    * @returns previous pattern
    */
   static setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern {
@@ -666,11 +808,16 @@ export class BeetPxDraw {
     ).drawApi.setDrawingPattern(pattern);
   }
 
+  /**
+   * TODO: docs
+   */
   static pixel(xy: BpxVector2d, color: BpxRgbColor): void {
     BeetPxDraw.#tryGetEngine("pixel").drawApi.drawPixel(xy, color);
   }
 
   /**
+   * TODO: docs
+   *
    * Draws pixels based on a visual 2d representation in form of rows
    *   (designated by new lines) where `#` and `-` stand for a colored
    *   pixel and a lack of a pixel. Whitespaces are ignored.
@@ -693,6 +840,9 @@ export class BeetPxDraw {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   static line(
     xy: BpxVector2d,
     wh: BpxVector2d,
@@ -701,6 +851,9 @@ export class BeetPxDraw {
     BeetPxDraw.#tryGetEngine("line").drawApi.drawLine(xy, wh, color);
   }
 
+  /**
+   * TODO: docs
+   */
   static rect(
     xy: BpxVector2d,
     wh: BpxVector2d,
@@ -709,6 +862,9 @@ export class BeetPxDraw {
     BeetPxDraw.#tryGetEngine("rect").drawApi.drawRect(xy, wh, color);
   }
 
+  /**
+   * TODO: docs
+   */
   static rectFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
@@ -721,6 +877,9 @@ export class BeetPxDraw {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   static rectOutsideFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
@@ -733,6 +892,9 @@ export class BeetPxDraw {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   static ellipse(
     xy: BpxVector2d,
     wh: BpxVector2d,
@@ -741,6 +903,9 @@ export class BeetPxDraw {
     BeetPxDraw.#tryGetEngine("ellipse").drawApi.drawEllipse(xy, wh, color);
   }
 
+  /**
+   * TODO: docs
+   */
   static ellipseFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
@@ -753,6 +918,9 @@ export class BeetPxDraw {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   static ellipseOutsideFilled(
     xy: BpxVector2d,
     wh: BpxVector2d,
@@ -764,6 +932,8 @@ export class BeetPxDraw {
   }
 
   /**
+   * TODO: docs
+   *
    * @returns previous sprite color mapping
    */
   static setSpriteColorMapping(
@@ -774,6 +944,9 @@ export class BeetPxDraw {
     ).drawApi.setSpriteColorMapping(spriteColorMapping);
   }
 
+  /**
+   * TODO: docs
+   */
   static sprite(
     sprite: BpxSprite | BpxAnimatedSprite,
     xy: BpxVector2d,
@@ -787,7 +960,9 @@ export class BeetPxDraw {
   }
 
   /**
-   * @category Fonts
+   * TODO: docs
+   *
+   * @categoryTODO Fonts
    * @returns - previously used font
    */
   static setFont(font: BpxFont): BpxFont {
@@ -795,6 +970,8 @@ export class BeetPxDraw {
   }
 
   /**
+   * TODO: docs
+   *
    * @returns - previously used color markers
    */
   static setTextColorMarkers(
@@ -805,6 +982,9 @@ export class BeetPxDraw {
     ).drawApi.setTextColorMarkers(textColorMarkers);
   }
 
+  /**
+   * TODO: docs
+   */
   static measureText(
     text: string,
     opts?: {
@@ -818,6 +998,9 @@ export class BeetPxDraw {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   static text(
     text: string,
     xy: BpxVector2d,
@@ -830,6 +1013,9 @@ export class BeetPxDraw {
     BeetPxDraw.#tryGetEngine("text").drawApi.drawText(text, xy, color, opts);
   }
 
+  /**
+   * TODO: docs
+   */
   static takeCanvasSnapshot(): void {
     BeetPxDraw.#tryGetEngine("takeCanvasSnapshot").drawApi.takeCanvasSnapshot();
   }
@@ -838,12 +1024,22 @@ export class BeetPxDraw {
 /////////////////////////////////////////////////////////////////////////////
 
 /**
+ * One of 3 main API entry points. This one provides you with the useful
+ * utils.
+ *
+ * @example
+ * ```ts
+ * BeetPxUtils.clamp($v_0_0, this.playerXy, BeetPx.canvasSize);
+ * ```
+ *
  * @category API entry points
  */
 export class BeetPxUtils {
   private constructor() {}
 
   /**
+   * TODO: docs
+   *
    * This function is meant to be used in a last branch of `if - else if - … - else`
    *   chain or in `default` of `switch - case - case - …`. Let's imagine there is
    *   a union type of which we check all possible cases. Someday we add one more
@@ -859,6 +1055,9 @@ export class BeetPxUtils {
     assertUnreachable(thingThatShouldBeOfTypeNeverAtThisPoint);
   }
 
+  /**
+   * TODO: docs
+   */
   static booleanChangingEveryNthFrame(
     n: number,
     opts?: { onGamePause?: "pause" | "ignore" },
@@ -867,6 +1066,8 @@ export class BeetPxUtils {
   }
 
   /**
+   * TODO: docs
+   *
    * Returns the middle number. Example usage: `clamp(min, value, max)`
    *   in order to find a value which is:
    *   - `value` if it is `>= min` and `<= max`
@@ -877,6 +1078,9 @@ export class BeetPxUtils {
     return clamp(a, b, c);
   }
 
+  /**
+   * TODO: docs
+   */
   static drawTextWithOutline(
     text: string,
     canvasXy1: BpxVector2d,
@@ -890,10 +1094,16 @@ export class BeetPxUtils {
     drawTextWithOutline(text, canvasXy1, textColor, outlineColor, opts);
   }
 
+  /**
+   * TODO: docs
+   */
   static identity<Param>(param: Param): Param {
     return identity(param);
   }
 
+  /**
+   * TODO: docs
+   */
   static lerp(
     a: number,
     b: number,
@@ -904,15 +1114,22 @@ export class BeetPxUtils {
   }
 
   /**
+   * TODO: docs
+   *
    * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
    */
   static mod(value: number, modulus: number): number {
     return mod(value, modulus);
   }
 
+  /**
+   * TODO: docs
+   */
   static noop(): void {}
 
   /**
+   * TODO: docs
+   *
    * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
    */
   static offset4Directions(): [
@@ -925,6 +1142,8 @@ export class BeetPxUtils {
   }
 
   /**
+   * TODO: docs
+   *
    * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
    */
   static offset8Directions(): [
@@ -940,14 +1159,23 @@ export class BeetPxUtils {
     return offset8Directions();
   }
 
+  /**
+   * TODO: docs
+   */
   static randomElementOf<TElement>(array: TElement[]): TElement | undefined {
     return randomElementOf<TElement>(array);
   }
 
+  /**
+   * TODO: docs
+   */
   static range(n: number): number[] {
     return range(n);
   }
 
+  /**
+   * TODO: docs
+   */
   static repeatEachElement<TElement>(
     times: number,
     array: TElement[],
@@ -956,6 +1184,8 @@ export class BeetPxUtils {
   }
 
   /**
+   * TODO: docs
+   *
    * To be used as a value, e.g. in `definedValue: maybeUndefined() ?? throwError("…")`.
    */
   static throwError(message: string): never {
@@ -963,6 +1193,8 @@ export class BeetPxUtils {
   }
 
   /**
+   * TODO: docs
+   *
    * @returns turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   static trigAtan2(x: number, y: number): number {
@@ -970,6 +1202,8 @@ export class BeetPxUtils {
   }
 
   /**
+   * TODO: docs
+   *
    * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   static trigCos(turnAngle: number): number {
@@ -977,6 +1211,8 @@ export class BeetPxUtils {
   }
 
   /**
+   * TODO: docs
+   *
    * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   static trigSin(turnAngle: number): number {
@@ -1039,8 +1275,23 @@ export {
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * A shorthand for {@link BeetPx}.
+ *
+ * @category API entry points
+ */
 export const $ = BeetPx;
+/**
+ * A shorthand for {@link BeetPxDraw}.
+ *
+ * @category API entry points
+ */
 export const $d = BeetPxDraw;
+/**
+ * A shorthand for {@link BeetPxUtils}.
+ *
+ * @category API entry points
+ */
 export const $u = BeetPxUtils;
 
 /////////////////////////////////////////////////////////////////////////////

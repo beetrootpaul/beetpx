@@ -6,14 +6,22 @@ import { trigAtan2 } from "../utils/trigAtan2";
 import { trigCos } from "../utils/trigCos";
 import { trigSin } from "../utils/trigSin";
 
+/**
+ * TODO: docs
+ */
 export class BpxVector2d implements PrintDebug {
   /**
+   * TODO: docs
+   *
    * @param turnAngle – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   static unitFromAngle(turnAngle: number): BpxVector2d {
     return new BpxVector2d(trigCos(turnAngle), trigSin(turnAngle));
   }
 
+  /**
+   * TODO: docs
+   */
   static of(value: number): BpxVector2d;
   static of(x: number, y: number): BpxVector2d;
   static of(valueOrX: number, maybeY?: number): BpxVector2d {
@@ -21,20 +29,35 @@ export class BpxVector2d implements PrintDebug {
   }
 
   private constructor(
+    /**
+     * TODO: docs
+     */
     readonly x: number,
+    /**
+     * TODO: docs
+     */
     readonly y: number,
   ) {}
 
   /////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * TODO: docs
+   */
   static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
   }
 
+  /**
+   * TODO: docs
+   */
   static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y));
   }
 
+  /**
+   * TODO: docs
+   */
   static minMax(
     xy1: BpxVector2d,
     xy2: BpxVector2d,
@@ -42,6 +65,9 @@ export class BpxVector2d implements PrintDebug {
     return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
   }
 
+  /**
+   * TODO: docs
+   */
   static lerp(
     xy1: BpxVector2d,
     xy2: BpxVector2d,
@@ -56,47 +82,75 @@ export class BpxVector2d implements PrintDebug {
 
   /////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * TODO: docs
+   */
   asArray(): [number, number] {
     return [this.x, this.y];
   }
 
+  /**
+   * TODO: docs
+   */
   magnitude(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
+  /**
+   * TODO: docs
+   */
   normalize(): BpxVector2d {
     const m = this.magnitude();
     return new BpxVector2d(this.x / m, this.y / m);
   }
 
+  /**
+   * TODO: docs
+   */
   sign(): BpxVector2d {
     return new BpxVector2d(Math.sign(this.x), Math.sign(this.y));
   }
 
+  /**
+   * TODO: docs
+   */
   abs(): BpxVector2d {
     return new BpxVector2d(Math.abs(this.x), Math.abs(this.y));
   }
 
+  /**
+   * TODO: docs
+   */
   floor(): BpxVector2d {
     return new BpxVector2d(Math.floor(this.x), Math.floor(this.y));
   }
 
+  /**
+   * TODO: docs
+   */
   ceil(): BpxVector2d {
     return new BpxVector2d(Math.ceil(this.x), Math.ceil(this.y));
   }
 
+  /**
+   * TODO: docs
+   */
   round(): BpxVector2d {
     return new BpxVector2d(Math.round(this.x), Math.round(this.y));
   }
 
   /**
+   * TODO: docs
+   *
    * "turn" – A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   toAngle(): number {
     return trigAtan2(this.x, this.y);
   }
 
-  /** equal to */
+  /**
+   * TODO: docs
+   */
   eq(other: BpxVector2d): boolean;
   eq(value: number): boolean;
   eq(otherOrValue: BpxVector2d | number): boolean {
@@ -105,7 +159,9 @@ export class BpxVector2d implements PrintDebug {
       : this.x === otherOrValue && this.y === otherOrValue;
   }
 
-  /** greater than */
+  /**
+   * TODO: docs
+   */
   gt(other: BpxVector2d): boolean;
   gt(value: number): boolean;
   gt(otherOrValue: BpxVector2d | number): boolean {
@@ -114,7 +170,9 @@ export class BpxVector2d implements PrintDebug {
       : this.x > otherOrValue && this.y > otherOrValue;
   }
 
-  /** greater than or equal */
+  /**
+   * TODO: docs
+   */
   gte(other: BpxVector2d): boolean;
   gte(value: number): boolean;
   gte(otherOrValue: BpxVector2d | number): boolean {
@@ -123,7 +181,9 @@ export class BpxVector2d implements PrintDebug {
       : this.x >= otherOrValue && this.y >= otherOrValue;
   }
 
-  /** less than */
+  /**
+   * TODO: docs
+   */
   lt(other: BpxVector2d): boolean;
   lt(value: number): boolean;
   lt(otherOrValue: BpxVector2d | number): boolean {
@@ -132,7 +192,9 @@ export class BpxVector2d implements PrintDebug {
       : this.x < otherOrValue && this.y < otherOrValue;
   }
 
-  /** less than or equal */
+  /**
+   * TODO: docs
+   */
   lte(other: BpxVector2d): boolean;
   lte(value: number): boolean;
   lte(otherOrValue: BpxVector2d | number): boolean {
@@ -141,6 +203,9 @@ export class BpxVector2d implements PrintDebug {
       : this.x <= otherOrValue && this.y <= otherOrValue;
   }
 
+  /**
+   * TODO: docs
+   */
   clamp(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(
       clamp(xy1.x, this.x, xy2.x),
@@ -149,6 +214,8 @@ export class BpxVector2d implements PrintDebug {
   }
 
   /**
+   * TODO: docs
+   *
    * a modulo operation – in contrary to native `%`, this returns results from [0, n) range (positive values only)
    */
   mod(other: BpxVector2d): BpxVector2d;
@@ -166,6 +233,9 @@ export class BpxVector2d implements PrintDebug {
         );
   }
 
+  /**
+   * TODO: docs
+   */
   add(other: BpxVector2d): BpxVector2d;
   add(value: number): BpxVector2d;
   add(x: number, y: number): BpxVector2d;
@@ -178,6 +248,9 @@ export class BpxVector2d implements PrintDebug {
         );
   }
 
+  /**
+   * TODO: docs
+   */
   sub(other: BpxVector2d): BpxVector2d;
   sub(value: number): BpxVector2d;
   sub(x: number, y: number): BpxVector2d;
@@ -190,6 +263,9 @@ export class BpxVector2d implements PrintDebug {
         );
   }
 
+  /**
+   * TODO: docs
+   */
   mul(other: BpxVector2d): BpxVector2d;
   mul(value: number): BpxVector2d;
   mul(x: number, y: number): BpxVector2d;
@@ -202,6 +278,9 @@ export class BpxVector2d implements PrintDebug {
         );
   }
 
+  /**
+   * TODO: docs
+   */
   div(other: BpxVector2d): BpxVector2d;
   div(value: number): BpxVector2d;
   div(x: number, y: number): BpxVector2d;
@@ -216,11 +295,17 @@ export class BpxVector2d implements PrintDebug {
 
   /////////////////////////////////////////////////////////////////////////////
 
+  /**
+   * TODO: docs
+   */
   *[Symbol.iterator](): Generator<number> {
     yield this.x;
     yield this.y;
   }
 
+  /**
+   * TODO: docs
+   */
   [Symbol.toPrimitive](hint: "default" | "string" | "number"): string | number {
     switch (hint) {
       case "default":
@@ -231,10 +316,16 @@ export class BpxVector2d implements PrintDebug {
     }
   }
 
+  /**
+   * TODO: docs
+   */
   get [Symbol.toStringTag]() {
     return "BpxVector2d";
   }
 
+  /**
+   * TODO: docs
+   */
   __printDebug(): string {
     return `(${this.x},${this.y})`;
   }

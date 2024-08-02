@@ -1,13 +1,15 @@
 import { BpxRgbColor } from "./RgbColor";
 
 /**
+ * TODO: docs
+ *
  * A free to use (CC-0) color palette created by zep and distributed as part of PICO-8 fantasy console.
  *
  * Links:
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the palette being available under a CC-0 license
  *  - https://pico-8.fandom.com/wiki/Palette#The_system_palette – hex values are copy-pasted from there
  *
- * @category Drawing
+ * @categoryTODO Drawing
  */
 export class BpxPalettePico8 {
   private constructor() {}

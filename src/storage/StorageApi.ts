@@ -1,5 +1,8 @@
 import { ScopedLocaleStorage } from "./ScopedLocaleStorage";
 
+/**
+ * TODO: docs
+ */
 export type BpxPersistedStateValueConstraints = Record<
   string,
   string | number | boolean | null

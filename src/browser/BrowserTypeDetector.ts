@@ -1,3 +1,6 @@
+/**
+ * TODO: docs
+ */
 export type BpxBrowserType =
   | "chromium"
   | "firefox_windows"

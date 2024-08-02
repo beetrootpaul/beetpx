@@ -12,6 +12,9 @@ type Now<TPhaseName extends string> = {
   t: number;
 };
 
+/**
+ * TODO: docs
+ */
 export class BpxTimerSequence<TPhaseName extends string> {
   static of<TPhaseName extends string>(
     params: {
@@ -186,12 +189,18 @@ export class BpxTimerSequence<TPhaseName extends string> {
     };
   }
 
+  /**
+   * TODO: docs
+   */
   get justFinishedPhase(): TPhaseName | null {
     return this.hasJustFinishedOverall || this.#now.t === 0 ?
         this.#now.recentlyFinishedPhase
       : null;
   }
 
+  /**
+   * TODO: docs
+   */
   get currentPhase(): TPhaseName | null {
     return this.#now.phase?.name ?? null;
   }
@@ -202,42 +211,66 @@ export class BpxTimerSequence<TPhaseName extends string> {
       : BeetPx.frameNumberOutsidePause;
   }
 
+  /**
+   * TODO: docs
+   */
   get t(): number {
     return this.#now.t;
   }
 
+  /**
+   * TODO: docs
+   */
   get progress(): number {
     return this.#now.phase && this.#now.phase.frames > 0 ?
         this.#now.t / this.#now.phase.frames
       : 1;
   }
 
+  /**
+   * TODO: docs
+   */
   get framesLeft(): number {
     return this.#now.phase ? this.#now.phase.frames - this.#now.t : 0;
   }
 
+  /**
+   * TODO: docs
+   */
   get tOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
         (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
       : this.#firstIterationTimer.t;
   }
 
+  /**
+   * TODO: docs
+   */
   get framesLeftOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
         (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
       : this.#firstIterationTimer.framesLeft;
   }
 
+  /**
+   * TODO: docs
+   */
   get progressOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
         (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
       : this.#firstIterationTimer.progress;
   }
 
+  /**
+   * TODO: docs
+   */
   get hasFinishedOverall(): boolean {
     return this.#firstIterationTimer.hasFinished;
   }
 
+  /**
+   * TODO: docs
+   */
   get hasJustFinishedOverall(): boolean {
     return (
       this.#loopTimer?.hasJustFinished ||
@@ -245,6 +278,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   pause(): void {
     if (this.#isPaused) return;
     this.#isPaused = true;
@@ -255,6 +291,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
     this.#loopTimer?.pause();
   }
 
+  /**
+   * TODO: docs
+   */
   resume(): void {
     if (!this.#isPaused) return;
     this.#isPaused = false;
@@ -266,6 +305,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
     this.#loopTimer?.resume();
   }
 
+  /**
+   * TODO: docs
+   */
   restart(): void {
     this.#firstIterationOffset = this.#fn;
 

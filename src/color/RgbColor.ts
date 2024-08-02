@@ -1,20 +1,29 @@
+/**
+ * TODO: docs
+ */
 export type BpxRgbCssHex = string;
 
 /**
- * @category Drawing
+ * TODO: docs
+ *
+ * @categoryTODO Drawing
  */
 export class BpxRgbColor {
   /**
-   * @group Static factories
+   * TODO: docs
+   *
+   * @groupTODO Static factories
    */
   static of(r: number, g: number, b: number): BpxRgbColor {
     return new BpxRgbColor(r, g, b);
   }
 
   /**
-   * @group Static factories
+   * TODO: docs
+   *
+   * @groupTODO Static factories
    */
-  static fromCssHex(cssHex: string): BpxRgbColor {
+  static fromCssHex(cssHex: BpxRgbCssHex): BpxRgbColor {
     if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {
       throw Error(
         "Hexadecimal representation of the color doesn't contain exactly 6 hexadecimal digits, preceded by a single '#'",
@@ -27,13 +36,29 @@ export class BpxRgbColor {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   readonly type = "rgb";
 
-  // values between 0 and 255
+  /**
+   * TODO: docs
+   *
+   * values between 0 and 255
+   */
   readonly r: number;
+  /**
+   * TODO: docs
+   */
   readonly g: number;
+  /**
+   * TODO: docs
+   */
   readonly b: number;
 
+  /**
+   * TODO: docs
+   */
   readonly cssHex: BpxRgbCssHex;
 
   private constructor(r: number, g: number, b: number) {
@@ -48,10 +73,16 @@ export class BpxRgbColor {
       b.toString(16).padStart(2, "0");
   }
 
+  /**
+   * TODO: docs
+   */
   isSameAs(another: BpxRgbColor): boolean {
     return another.r === this.r && another.g === this.g && another.b === this.b;
   }
 
+  /**
+   * TODO: docs
+   */
   asArray(): [r: number, g: number, b: number] {
     return [this.r, this.g, this.b];
   }

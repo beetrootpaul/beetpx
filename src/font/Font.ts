@@ -7,10 +7,19 @@ import { assertUnreachable } from "../utils/assertUnreachable";
 import { identity } from "../utils/identity";
 import { range } from "../utils/range";
 
+/**
+ * TODO: docs
+ */
 export type BpxKerningPrevCharMap = { [prevChar: string]: number };
 
+/**
+ * TODO: docs
+ */
 export type BpxTextColorMarkers = { [marker: string]: BpxRgbColor };
 
+/**
+ * TODO: docs
+ */
 export type BpxGlyph =
   | {
       type: "sprite";
@@ -35,7 +44,9 @@ export type BpxGlyph =
     };
 
 /**
- * @category Fonts
+ * TODO: docs
+ *
+ * @categoryTODO Fonts
  */
 export type BpxArrangedGlyph =
   | {
@@ -62,39 +73,66 @@ export type BpxArrangedGlyph =
     };
 
 /**
- * @category Fonts
+ * TODO: docs
+ *
+ * @categoryTODO Fonts
  */
 export type BpxFontConfig = {
-  /** An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs. */
+  /**
+   * TODO: docs
+   *
+   * An amount of pixels from the baseline (included) to the top-most pixel of font's glyphs.
+   */
   ascent: number;
 
-  /** An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs. */
+  /**
+   * TODO: docs
+   *
+   * An amount of pixels from the baseline (excluded) to the bottom-most pixel of font's glyphs.
+   */
   descent: number;
 
-  /** An amount of pixels between the bottom-most pixel of the previous line (excluded) and
-   *  the top-most pixel of the next line (excluded). */
+  /**
+   * TODO: docs
+   *
+   * An amount of pixels between the bottom-most pixel of the previous line (excluded) and
+   * the top-most pixel of the next line (excluded).
+   */
   lineGap: number;
 
-  /** This functions maps the text grapheme (a user-perceived character like `a` or a
-   *  multi-character emoji like `❤️`) before trying to find its corresponding glyph
-   *  in a `glyphs` map. It would be typically used to call `grapheme.toLowerCase()`
-   *  in fonts which have glyphs defined for lower-case characters only. */
+  /**
+   * TODO: docs
+   *
+   * This functions maps the text grapheme (a user-perceived character like `a` or a
+   * multi-character emoji like `❤️`) before trying to find its corresponding glyph
+   * in a `glyphs` map. It would be typically used to call `grapheme.toLowerCase()`
+   * in fonts which have glyphs defined for lower-case characters only.
+   */
   mapGrapheme: (grapheme: string) => string;
 
-  /** A map which contains the glyphs for specified graphemes (keys of the map).
-   *  Grapheme is a user-perceived character like `a` or a multi-character emoji
-   *  like `❤️`. Before retrieving a glyph from this map, a grapheme is normalized
-   *  with use of `mapGrapheme` function. Typically, it would be useful when you
-   *  want to specify same glyphs for both upper-case and lower-case characters,
-   *  so you are able to define lower-case ones only and then implement
-   *  `mapGrapheme` as `grapheme.toLowerCase()`. */
+  /**
+   * TODO: docs
+   *
+   * A map which contains the glyphs for specified graphemes (keys of the map).
+   * Grapheme is a user-perceived character like `a` or a multi-character emoji
+   * like `❤️`. Before retrieving a glyph from this map, a grapheme is normalized
+   * with use of `mapGrapheme` function. Typically, it would be useful when you
+   * want to specify same glyphs for both upper-case and lower-case characters,
+   * so you are able to define lower-case ones only and then implement
+   * `mapGrapheme` as `grapheme.toLowerCase()`.
+   */
   glyphs: Map<string, BpxGlyph>;
 };
 
 /**
- * @category Fonts
+ * TODO: docs
+ *
+ * @categoryTODO Fonts
  */
 export class BpxFont {
+  /**
+   * TODO: docs
+   */
   static of(config: Partial<BpxFontConfig>) {
     return new BpxFont({
       ascent: config.ascent ?? 8,
@@ -105,6 +143,9 @@ export class BpxFont {
     });
   }
 
+  /**
+   * TODO: docs
+   */
   static basedOn(
     baseFont: BpxFont,
     extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
@@ -122,7 +163,7 @@ export class BpxFont {
 
   readonly #computedSpriteSheetUrls: string[];
 
-  constructor(config: BpxFontConfig) {
+  private constructor(config: BpxFontConfig) {
     this.#config = config;
 
     this.#computedSpriteSheetUrls = [
@@ -134,20 +175,35 @@ export class BpxFont {
     ];
   }
 
+  /**
+   * TODO: docs
+   */
   get spriteSheetUrls(): string[] {
     return this.#computedSpriteSheetUrls;
   }
 
+  /**
+   * TODO: docs
+   */
   get ascent(): number {
     return this.#config.ascent;
   }
+  /**
+   * TODO: docs
+   */
   get descent(): number {
     return this.#config.descent;
   }
+  /**
+   * TODO: docs
+   */
   get lineGap(): number {
     return this.#config.lineGap;
   }
 
+  /**
+   * TODO: docs
+   */
   arrangeGlyphsFor(
     text: string,
     textColor: BpxRgbColor,

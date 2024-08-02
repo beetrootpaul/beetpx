@@ -2,6 +2,8 @@ import { BpxPixels } from "../draw_api/Pixels";
 import { BpxFontConfig, BpxGlyph } from "./Font";
 
 /**
+ * TODO: docs
+ *
  * A free to use (CC-0) font created by saint11 and distributed on https://saint11.org/blog/fonts/
  *
  * Note: only a subset of characters is implemented here:
@@ -14,10 +16,22 @@ import { BpxFontConfig, BpxGlyph } from "./Font";
  *   n o p q r s t u v w x y z             characters use same glyphs)
  */
 export class BpxFontConfigSaint11Minimal4 implements BpxFontConfig {
+  /**
+   * TODO: docs
+   */
   ascent = 4;
+  /**
+   * TODO: docs
+   */
   descent = 0;
+  /**
+   * TODO: docs
+   */
   lineGap = 2;
 
+  /**
+   * TODO: docs
+   */
   mapGrapheme(grapheme: string): string {
     return grapheme.toLowerCase();
   }
@@ -31,6 +45,9 @@ export class BpxFontConfigSaint11Minimal4 implements BpxFontConfig {
     };
   }
 
+  /**
+   * TODO: docs
+   */
   glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
     [
       " ",

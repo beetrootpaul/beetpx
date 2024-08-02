@@ -1,10 +1,15 @@
+/**
+ * TODO: docs
+ */
 export class BpxDrawingPattern {
   /**
+   * TODO: docs
+   *
    * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
    *   (designated by new lines) where `#` and `-` stand for a primary and
    *   a secondary color. Whitespaces are ignored.
    *
-   * @category Drawing
+   * @categoryTODO Drawing
    */
   static from(ascii: string): BpxDrawingPattern {
     ascii = ascii.replace(/\s/g, "");
@@ -31,11 +36,20 @@ export class BpxDrawingPattern {
     return new BpxDrawingPattern(bits);
   }
 
+  /**
+   * TODO: docs
+   */
   static of(bits: number): BpxDrawingPattern {
     return new BpxDrawingPattern(bits);
   }
 
+  /**
+   * TODO: docs
+   */
   static primaryOnly = BpxDrawingPattern.of(0b1111_1111_1111_1111);
+  /**
+   * TODO: docs
+   */
   static secondaryOnly = BpxDrawingPattern.of(0b0000_0000_0000_0000);
 
   readonly #bits: number;
@@ -49,6 +63,9 @@ export class BpxDrawingPattern {
     this.#bits = bits;
   }
 
+  /**
+   * TODO: docs
+   */
   hasPrimaryColorAt(x: number, y: number): boolean {
     const patternX = x % 4;
     const patternY = y % 4;

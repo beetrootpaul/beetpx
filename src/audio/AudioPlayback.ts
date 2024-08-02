@@ -2,6 +2,9 @@ import { Logger } from "../logger/Logger";
 import { AudioApi } from "./AudioApi";
 import { AudioHelpers } from "./AudioHelpers";
 
+/**
+ * TODO: docs
+ */
 export type BpxAudioPlaybackId = number;
 
 export abstract class AudioPlayback {

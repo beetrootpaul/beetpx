@@ -17,6 +17,11 @@ import { identity } from "./utils/identity";
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * TODO: docs
+ *
+ * A shorthand for {@link BpxAnimatedSprite.from}
+ */
 export function $aspr(
   imageUrl: BpxImageUrl,
 ): BpxImageBoundAnimatedSpriteFactory {
@@ -36,6 +41,9 @@ export function $aspr(
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * TODO: docs
+ */
 export function $font(config: Partial<BpxFontConfig>): BpxFont;
 export function $font(
   baseFont: BpxFont,
@@ -50,12 +58,24 @@ export function $font(
     : BpxFont.of(baseFontOrConfig);
 }
 
+/**
+ * TODO: docs
+ */
 export const $font_pico8 = $font(new BpxFontConfigPico8());
+/**
+ * TODO: docs
+ */
 export const $font_saint11Minimal4 = $font(new BpxFontConfigSaint11Minimal4());
+/**
+ * TODO: docs
+ */
 export const $font_saint11Minimal5 = $font(new BpxFontConfigSaint11Minimal5());
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * TODO: docs
+ */
 export function $rgb(r: number, g: number, b: number): BpxRgbColor;
 export function $rgb(cssHex: string): BpxRgbColor;
 export function $rgb(
@@ -68,19 +88,49 @@ export function $rgb(
     : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
 
+/**
+ * TODO: docs
+ */
 export const $rgb_black = $rgb("#000000");
+/**
+ * TODO: docs
+ */
 export const $rgb_white = $rgb("#ffffff");
+/**
+ * TODO: docs
+ */
 export const $rgb_red = $rgb("#ff0000");
+/**
+ * TODO: docs
+ */
 export const $rgb_green = $rgb("#00ff00");
+/**
+ * TODO: docs
+ */
 export const $rgb_blue = $rgb("#0000ff");
+/**
+ * TODO: docs
+ */
 export const $rgb_cyan = $rgb("#00ffff");
+/**
+ * TODO: docs
+ */
 export const $rgb_magenta = $rgb("#ff00ff");
+/**
+ * TODO: docs
+ */
 export const $rgb_yellow = $rgb("#ffff00");
 
+/**
+ * TODO: docs
+ */
 export const $rgb_p8 = BpxPalettePico8;
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * TODO: docs
+ */
 export function $spr(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory {
   return (w: number, h: number, x: number, y: number) =>
     BpxSprite.from(imageUrl, w, h, x, y);
@@ -88,6 +138,9 @@ export function $spr(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory {
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * TODO: docs
+ */
 export function $timer(
   frames: number,
   opts?: {
@@ -106,6 +159,9 @@ export function $timer(
   });
 }
 
+/**
+ * TODO: docs
+ */
 export function $timerSeq<TPhaseName extends string>(
   params: {
     intro?: Array<[phase: TPhaseName, frames: number]>;
@@ -132,13 +188,22 @@ export function $timerSeq<TPhaseName extends string>(
 
 /////////////////////////////////////////////////////////////////////////////
 
+/**
+ * TODO: docs
+ */
 export function $v(value: number): BpxVector2d;
 export function $v(x: number, y: number): BpxVector2d;
 export function $v(valueOrX: number, maybeY?: number): BpxVector2d {
   return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
 }
 
+/**
+ * TODO: docs
+ */
 export const $v_0_0 = $v(0, 0);
+/**
+ * TODO: docs
+ */
 export const $v_1_1 = $v(1, 1);
 
 /////////////////////////////////////////////////////////////////////////////

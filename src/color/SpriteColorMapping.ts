@@ -1,11 +1,20 @@
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor, BpxRgbCssHex } from "./RgbColor";
 
+/**
+ * TODO: docs
+ */
 export class BpxSpriteColorMapping {
+  /**
+   * TODO: docs
+   */
   static noMapping: BpxSpriteColorMapping = new BpxSpriteColorMapping(
     (c, _x, _y) => c,
   );
 
+  /**
+   * TODO: docs
+   */
   static from(
     colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor | null]>,
   ): BpxSpriteColorMapping {
@@ -19,10 +28,16 @@ export class BpxSpriteColorMapping {
     });
   }
 
+  /**
+   * TODO: docs
+   */
   static of(mapping: BpxColorMapper): BpxSpriteColorMapping {
     return new BpxSpriteColorMapping(mapping);
   }
 
+  /**
+   * TODO: docs
+   */
   readonly type = "sprite_mapping";
 
   readonly #mapping: BpxColorMapper;
@@ -31,6 +46,9 @@ export class BpxSpriteColorMapping {
     this.#mapping = mapping;
   }
 
+  /**
+   * TODO: docs
+   */
   getMappedColor(
     spriteColor: BpxRgbColor | null,
     spriteX: number,

@@ -1,6 +1,12 @@
 import { BpxGamepadType } from "./GameInputGamepad";
 
+/**
+ * TODO: docs
+ */
 export class BpxGamepadTypeDetector {
+  /**
+   * TODO: docs
+   */
   static detect(gamepad: Gamepad): BpxGamepadType {
     const id = gamepad.id.toLowerCase();
     if (id.includes("dualsense")) return "dualsense";

@@ -22,7 +22,9 @@ export const supportedGamepadTypes = [
 ] as const;
 
 /**
- * @category Game input
+ * TODO: docs
+ *
+ * @categoryTODO Game input
  */
 export type BpxGamepadType = (typeof supportedGamepadTypes)[number];
 

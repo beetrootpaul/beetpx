@@ -2,7 +2,13 @@ import { BeetPx } from "../";
 import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
 
+/**
+ * TODO: docs
+ */
 export class BpxTimer {
+  /**
+   * TODO: docs
+   */
   static for(opts: {
     frames: number;
     loop: boolean;
@@ -53,6 +59,9 @@ export class BpxTimer {
     return (this.#pausedFrame ?? this.#fn) - this.#offsetFrame;
   }
 
+  /**
+   * TODO: docs
+   */
   get t(): number {
     return (
       this.#loop ?
@@ -63,18 +72,30 @@ export class BpxTimer {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   get framesLeft(): number {
     return this.#frames - this.t;
   }
 
+  /**
+   * TODO: docs
+   */
   get progress(): number {
     return this.#frames > 0 ? this.t / this.#frames : 1;
   }
 
+  /**
+   * TODO: docs
+   */
   get hasFinished(): boolean {
     return this.#tRaw >= this.#frames;
   }
 
+  /**
+   * TODO: docs
+   */
   get hasJustFinished(): boolean {
     return (
       this.#frames > 0 ?
@@ -86,6 +107,9 @@ export class BpxTimer {
     );
   }
 
+  /**
+   * TODO: docs
+   */
   pause(): void {
     if (this.#isPaused) return;
     this.#isPaused = true;
@@ -93,6 +117,9 @@ export class BpxTimer {
     this.#pausedFrame = this.#fn;
   }
 
+  /**
+   * TODO: docs
+   */
   resume(): void {
     if (!this.#isPaused) return;
     this.#isPaused = false;
@@ -101,6 +128,9 @@ export class BpxTimer {
     this.#pausedFrame = null;
   }
 
+  /**
+   * TODO: docs
+   */
   restart(): void {
     this.#offsetFrame = this.#fn;
     this.#pausedFrame = null;

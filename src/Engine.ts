@@ -33,37 +33,100 @@ import { ScopedLocaleStorage } from "./storage/ScopedLocaleStorage";
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 
+/**
+ * TODO: docs
+ */
 export type BpxEngineConfig = {
   /**
+   * TODO: docs
+   *
    * Used for scoping localStorage keys, so two different games won't override their persisted state.
    * An example: built-in screenshots feature binds screenshots to the proper game by its `gameId`.
    */
   gameId: string;
+  /**
+   * TODO: docs
+   */
   canvasSize?: "64x64" | "128x128" | "256x256";
+  /**
+   * TODO: docs
+   */
   fixedTimestep?: "30fps" | "60fps";
+  /**
+   * TODO: docs
+   */
   assets?: AssetsToLoad;
+  /**
+   * TODO: docs
+   */
   gamePause?: {
+    /**
+     * TODO: docs
+     */
     available?: boolean;
   };
+  /**
+   * TODO: docs
+   */
   requireConfirmationOnTabClose?: boolean;
+  /**
+   * TODO: docs
+   */
   screenshots?: {
+    /**
+     * TODO: docs
+     */
     available?: boolean;
   };
+  /**
+   * TODO: docs
+   */
   debugMode?: {
-    /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
+    /**
+     * TODO: docs
+     *
+     * A recommended approach would be to set it to `!window.BEETPX__IS_PROD`.
+     */
     available?: boolean;
-    /** If `true`, then the debug mode will be enabled on start no matter what its persisted state was. */
+    /**
+     * TODO: docs
+     *
+     * If `true`, then the debug mode will be enabled on start no matter what its persisted state was.
+     */
     forceEnabledOnStart?: boolean;
+    /**
+     * TODO: docs
+     */
     fpsDisplay?: {
+      /**
+       * TODO: docs
+       */
       enabled?: boolean;
+      /**
+       * TODO: docs
+       */
       color?: BpxRgbColor;
+      /**
+       * TODO: docs
+       */
       placement?: FpsDisplayPlacement;
     };
   };
+  /**
+   * TODO: docs
+   */
   frameByFrame?: {
-    /** A recommended approach would be to set it to `!window.BEETPX__IS_PROD`. */
+    /**
+     * TODO: docs
+     *
+     * A recommended approach would be to set it to `!window.BEETPX__IS_PROD`.
+     */
     available?: boolean;
-    /** If `true`, then the frame-by-frame mode will be activated from the very start. */
+    /**
+     * TODO: docs
+     *
+     * If `true`, then the frame-by-frame mode will be activated from the very start.
+     */
     activateOnStart?: boolean;
   };
 };

@@ -4,19 +4,50 @@ import { BpxGameInputEvent } from "../GameInput";
 import { Button } from "./Button";
 
 /**
- * @category Game input
+ * TODO: docs
+ *
+ * @categoryTODO Game input
  */
 export type BpxGameButtonName =
+  /**
+   * TODO: docs
+   */
   | "left"
+  /**
+   * TODO: docs
+   */
   | "right"
+  /**
+   * TODO: docs
+   */
   | "up"
+  /**
+   * TODO: docs
+   */
   | "down"
-  /** Japanese "Maru" sign, kind of a "Yes", good for a primary/accept/next button */
+  /**
+   * TODO: docs
+   *
+   * Japanese "Maru" sign, kind of a "Yes", good for a primary/accept/next button
+   */
   | "O"
+  /**
+   * TODO: docs
+   */
   | "o"
-  /** Japanese "Batsu" sign, kind of a "No", good for a secondary/cancel/back button */
+  /**
+   * TODO: docs
+   *
+   * Japanese "Batsu" sign, kind of a "No", good for a secondary/cancel/back button
+   */
   | "X"
+  /**
+   * TODO: docs
+   */
   | "x"
+  /**
+   * TODO: docs
+   */
   | "menu";
 
 export class GameButtons {
