@@ -95,6 +95,7 @@ export type {
   BpxGameInputMethod,
 } from "./game_input/GameInput";
 export type { BpxGamepadType } from "./game_input/GameInputGamepad";
+export type { BpxEasingFn } from "./misc/Easing";
 export type { BpxImageBoundAnimatedSpriteFactory } from "./sprite/AnimatedSprite";
 export type { BpxImageBoundSpriteFactory } from "./sprite/Sprite";
 export type { BpxPersistedStateValueConstraints } from "./storage/StorageApi";
@@ -113,7 +114,7 @@ export { BpxFontConfigPico8 } from "./font/FontConfigPico8";
 export { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
 export { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";
 export { BpxGamepadTypeDetector } from "./game_input/GamepadTypeDetector";
-export { BpxEasing, BpxEasingFn } from "./misc/Easing";
+export { BpxEasing } from "./misc/Easing";
 export { BpxVector2d } from "./misc/Vector2d";
 export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
 export { BpxSprite } from "./sprite/Sprite";

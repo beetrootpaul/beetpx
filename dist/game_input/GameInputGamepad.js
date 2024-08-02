@@ -9,12 +9,6 @@ import { GamepadMappingFirefoxFallback } from "./gamepad_mapping/GamepadMappingF
 import { GamepadMappingSafari8BitDo } from "./gamepad_mapping/GamepadMappingSafari8BitDo";
 import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
 import { BpxGamepadTypeDetector } from "./GamepadTypeDetector";
-export const supportedGamepadTypes = [
-    "xbox",
-    "dualsense",
-    "8bitdo",
-    "other",
-];
 export class GameInputGamepad {
     inputMethod = "gamepad";
     #browserType;

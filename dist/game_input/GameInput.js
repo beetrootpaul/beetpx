@@ -47,7 +47,7 @@ export class GameInput {
         }
     }
     /**
-     * @return If any interaction happened.
+     * @returns If any interaction happened.
      */
     update(params) {
         this.#mostRecentInputMethods.clear();

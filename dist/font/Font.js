@@ -4,9 +4,18 @@ import { assertUnreachable } from "../utils/assertUnreachable";
 import { identity } from "../utils/identity";
 import { range } from "../utils/range";
 /**
+ * An instance of a font, defined with use of {@link BpxFontConfig}.
+ *
+ * @see https:
+ *
  * @category Fonts
  */
 export class BpxFont {
+    /**
+     * A method to create a font from scratch.
+     *
+     * @group Static factories
+     */
     static of(config) {
         return new BpxFont({
             ascent: config.ascent ?? 8,
@@ -16,6 +25,22 @@ export class BpxFont {
             glyphs: config.glyphs ?? new Map(),
         });
     }
+    /**
+     * A method to create a font as an extension of an already defined font.
+     *
+     * @example
+     * ```ts
+     * const pico8FontWithExtraGlyphs = BpxFont.basedOn($font_pico8, baseFontConfig => ({
+     *   ...baseFontConfig,
+     *   glyphs: new Map<string, BpxGlyph>([
+     *     ...baseFontConfig.glyphs,
+     *     
+     *   ]),
+     * });
+     * ```
+     *
+     * @group Static factories
+     */
     static basedOn(baseFont, extendedConfig) {
         const config = extendedConfig(baseFont.#config);
         return new BpxFont(config);
@@ -34,18 +59,51 @@ export class BpxFont {
                 .map(glyph => glyph.sprite.imageUrl)),
         ];
     }
+    /**
+     * A list of sprite sheets gathered from the all sprite glyphs defined for this font.
+     *
+     * Useful for defining the assets to fetch in {@link BeetPx.start}
+     *
+     * @example
+     * ```ts
+     * $.start({
+     *   
+     *   assets: [
+     *     ...myFont.spriteSheetUrls
+     *   ],
+     * })
+     * ```
+     */
     get spriteSheetUrls() {
         return this.#computedSpriteSheetUrls;
     }
+    /**
+     * @see {@link BpxFontConfig.ascent}
+     */
     get ascent() {
         return this.#config.ascent;
     }
+    /**
+     * @see {@link BpxFontConfig.descent}
+     */
     get descent() {
         return this.#config.descent;
     }
+    /**
+     * @see {@link BpxFontConfig.lineGap}
+     */
     get lineGap() {
         return this.#config.lineGap;
     }
+    /**
+     * The main methods of the font, which iterates of the text segments (characters, but with a support
+     * for multi-char emojis, e.g. "❤️"), and arranges their corresponding glyphs in a virtual visual space.
+     *
+     * The resulting array of {@link BpxArrangedGlyph} is further used by {@link BeetPxDraw.measureText}
+     * for a headless text rendering and by {@link BeetPxDraw.text} for an actual text rendering.
+     *
+     * You rather doesn't have to use this method directly.
+     */
     arrangeGlyphsFor(text, textColor, colorMarkers) {
         colorMarkers ??= {};
         const arrangedGlyphs = [];
