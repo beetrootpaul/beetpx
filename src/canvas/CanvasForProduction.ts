@@ -2,7 +2,7 @@ import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { throwError } from "../utils/throwError";
 import { Canvas } from "./Canvas";
-import { CanvasSnapshot } from "./CanvasSnapshot";
+import { BpxCanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForProduction } from "./CanvasSnapshotForProduction";
 
 export class CanvasForProduction extends Canvas {
@@ -82,7 +82,7 @@ export class CanvasForProduction extends Canvas {
     this.#offscreenImageData.data[dataIndex + 2] = color.b;
   }
 
-  newSnapshot(): CanvasSnapshot {
+  newSnapshot(): BpxCanvasSnapshot {
     return new CanvasSnapshotForProduction(
       this.#offscreenImageData.data.slice(),
       this.canvasSize.x,

@@ -58,6 +58,7 @@ declare global {
 
 /////////////////////////////////////////////////////////////////////////////
 
+export type { BpxAssetsToLoad } from "./assets/AssetLoader";
 export type {
   BpxImageAsset,
   BpxImageUrl,
@@ -74,18 +75,25 @@ export type {
   BpxSoundSequenceEntrySoundMain,
 } from "./audio/SoundSequence";
 export type { BpxBrowserType } from "./browser/BrowserTypeDetector";
+export type { BpxCanvasSnapshot } from "./canvas/CanvasSnapshot";
 export type { BpxColorMapper } from "./color/ColorMapper";
 export type { BpxRgbCssHex } from "./color/RgbColor";
+export type { BpxFpsDisplayPlacement } from "./debug/FpsDisplay";
 export type { BpxPrintDebug } from "./debug/PrintDebug";
+export type { BpxTextMeasurement } from "./draw_api/DrawApi";
 export type { BpxEngineConfig } from "./Engine";
 export type {
   BpxArrangedGlyph,
+  BpxFontConfig,
   BpxGlyph,
-  BpxKerningPrevCharMap,
+  BpxKerningPrevSegmentMap,
   BpxTextColorMarkers,
 } from "./font/Font";
 export type { BpxGameButtonName } from "./game_input/buttons/GameButtons";
-export type { BpxGameInputEvent } from "./game_input/GameInput";
+export type {
+  BpxGameInputEvent,
+  BpxGameInputMethod,
+} from "./game_input/GameInput";
 export type { BpxGamepadType } from "./game_input/GameInputGamepad";
 export type { BpxImageBoundAnimatedSpriteFactory } from "./sprite/AnimatedSprite";
 export type { BpxImageBoundSpriteFactory } from "./sprite/Sprite";
@@ -100,7 +108,7 @@ export { BpxRgbColor } from "./color/RgbColor";
 export { BpxSpriteColorMapping } from "./color/SpriteColorMapping";
 export { BpxDrawingPattern } from "./draw_api/DrawingPattern";
 export { BpxPixels } from "./draw_api/Pixels";
-export { BpxFont, BpxFontConfig } from "./font/Font";
+export { BpxFont } from "./font/Font";
 export { BpxFontConfigPico8 } from "./font/FontConfigPico8";
 export { BpxFontConfigSaint11Minimal4 } from "./font/FontConfigSaint11Minimal4";
 export { BpxFontConfigSaint11Minimal5 } from "./font/FontConfigSaint11Minimal5";

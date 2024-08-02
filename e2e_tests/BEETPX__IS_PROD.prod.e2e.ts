@@ -6,12 +6,22 @@ declare global {
   interface Window {
     BEETPX__IS_PROD: boolean;
   }
+  const BEETPX__IS_PROD: boolean;
 }
 
-test("is prod", async ({ page }) => {
+test("is prod, taken from the `window`", async ({ page }) => {
   await page.goto("./");
 
   const isProd = await page.evaluate(() => window.BEETPX__IS_PROD);
+
+  expect(isProd).toBe(true);
+  expect(typeof isProd).toBe("boolean");
+});
+
+test("is prod, taken from the global namespace", async ({ page }) => {
+  await page.goto("./");
+
+  const isProd = await page.evaluate(() => BEETPX__IS_PROD);
 
   expect(isProd).toBe(true);
   expect(typeof isProd).toBe("boolean");

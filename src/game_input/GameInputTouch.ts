@@ -1,11 +1,11 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
+import { BpxGameInputEvent, BpxGameInputMethod } from "./GameInput";
 import { GameInputSpecialized } from "./GameInputSpecialized";
 
 type BitMask = number;
 
 export class GameInputTouch implements GameInputSpecialized {
-  inputMethod: GameInputMethod = "touch";
+  inputMethod: BpxGameInputMethod = "touch";
 
   static readonly #bitMasks = {
     up: 0b1000_00_0_00,

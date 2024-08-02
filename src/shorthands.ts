@@ -254,6 +254,13 @@ export function $timer(
  * });
  * ```
  *
+ * @template {string} TPhaseName Names of the phases used as keys in `intro` and `loop`.
+ *                               It allows for a phase name type-checking in the places
+ *                               where the timer sequence is used.
+ *                               Usually you doesn't have to specify those phase names
+ *                               in the template definition, since they are inferred
+ *                               by TypeScript from the `intro` and `loop`.
+ *
  * @category Core
  */
 export function $timerSeq<TPhaseName extends string>(

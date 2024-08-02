@@ -13,9 +13,20 @@ type Now<TPhaseName extends string> = {
 };
 
 /**
- * TODO: docs
+ * A timer sequence, which is a more advanced version of the {@link BpxTimer}.
+ * It allows to define a complex set of intervals and looping with use
+ * of multiple `intro` and `loop` phases.
+ *
+ * @see {@link $timerSeq}
+ *
+ * @category Core
  */
 export class BpxTimerSequence<TPhaseName extends string> {
+  /**
+   * @see {@link $timerSeq}
+   *
+   * @group Static factories
+   */
   static of<TPhaseName extends string>(
     params: {
       intro: Array<[phase: TPhaseName, frames: number]>;
@@ -190,7 +201,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * The name of the phase which has finished in the recent game loop iteration.
    */
   get justFinishedPhase(): TPhaseName | null {
     return this.hasJustFinishedOverall || this.#now.t === 0 ?
@@ -199,7 +210,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * The name of the currently counted phase.
    */
   get currentPhase(): TPhaseName | null {
     return this.#now.phase?.name ?? null;
@@ -212,14 +223,14 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * A current counted frame number within the current phase, incrementing from 0.
    */
   get t(): number {
     return this.#now.t;
   }
 
   /**
-   * TODO: docs
+   * A progress of the counting for the current phase, gradually incrementing from 0 to 1.
    */
   get progress(): number {
     return this.#now.phase && this.#now.phase.frames > 0 ?
@@ -228,14 +239,16 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * A an amount of frames left to be counted in the current phase, decrementing down to 0.
    */
   get framesLeft(): number {
     return this.#now.phase ? this.#now.phase.frames - this.#now.t : 0;
   }
 
   /**
-   * TODO: docs
+   * A current counted frame number for the entire sequence (intro + 1 loop pass),
+   * incrementing from 0.
+   * After the first loop pass, the intro is no longer taken into account in the calculation.
    */
   get tOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
@@ -244,7 +257,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * A an amount of frames left to be counted for the entire sequence (intro + 1 loop pass),
+   * decrementing down to 0.
+   * After the first loop pass, the intro is no longer taken into account in the calculation.
    */
   get framesLeftOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
@@ -253,7 +268,9 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * A progress of the counting for the entire sequence (intro + 1 loop pass),
+   * gradually incrementing from 0 to 1.
+   * After the first loop pass, the intro is no longer taken into account in the calculation.
    */
   get progressOverall(): number {
     return this.#firstIterationTimer.hasFinished ?
@@ -262,14 +279,17 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * Whether this timer has finished already the entire sequence (intro + 1 loop pass).
+   * This becomes `true` forever afterwards.
    */
   get hasFinishedOverall(): boolean {
     return this.#firstIterationTimer.hasFinished;
   }
 
   /**
-   * TODO: docs
+   * Whether this timer has finished the entire sequence (intro + 1 loop pass)
+   * in the most recent game loop iteration.
+   * After the first loop pass, the intro is no longer taken into account.
    */
   get hasJustFinishedOverall(): boolean {
     return (
@@ -279,7 +299,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * Pauses the timer.
    */
   pause(): void {
     if (this.#isPaused) return;
@@ -292,7 +312,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * Resumes the timer.
    */
   resume(): void {
     if (!this.#isPaused) return;
@@ -306,7 +326,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
-   * TODO: docs
+   * Restarts the timer from 0.
    */
   restart(): void {
     this.#firstIterationOffset = this.#fn;

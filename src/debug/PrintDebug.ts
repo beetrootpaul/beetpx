@@ -9,7 +9,7 @@
  * @see {@link BeetPx.logWarn}
  * @see {@link BeetPx.logError}
  *
- * @category Miscellaneous
+ * @category Debug
  */
 export interface BpxPrintDebug {
   __printDebug(): string;

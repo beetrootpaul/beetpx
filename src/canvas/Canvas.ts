@@ -1,6 +1,6 @@
 import { BpxRgbColor } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
-import { CanvasSnapshot } from "./CanvasSnapshot";
+import { BpxCanvasSnapshot } from "./CanvasSnapshot";
 
 export abstract class Canvas {
   readonly canvasSize: BpxVector2d;
@@ -10,7 +10,7 @@ export abstract class Canvas {
   #maxX: number;
   #maxY: number;
 
-  #snapshot: CanvasSnapshot | null = null;
+  #snapshot: BpxCanvasSnapshot | null = null;
 
   protected constructor(canvasSize: BpxVector2d) {
     this.canvasSize = canvasSize.round();
@@ -73,11 +73,11 @@ export abstract class Canvas {
     this.#snapshot = this.newSnapshot();
   }
 
-  getMostRecentSnapshot(): CanvasSnapshot | null {
+  getMostRecentSnapshot(): BpxCanvasSnapshot | null {
     return this.#snapshot;
   }
 
-  protected abstract newSnapshot(): CanvasSnapshot;
+  protected abstract newSnapshot(): BpxCanvasSnapshot;
 
   render(): void {
     this.#snapshot = null;

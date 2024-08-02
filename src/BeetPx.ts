@@ -20,7 +20,7 @@ import type { BpxBrowserType } from "./browser/BrowserTypeDetector";
 import { DebugMode } from "./debug/DebugMode";
 import type {
   BpxGameInputEvent,
-  GameInputMethod,
+  BpxGameInputMethod,
 } from "./game_input/GameInput";
 import type { BpxGamepadType } from "./game_input/GameInputGamepad";
 import type { BpxGameButtonName } from "./game_input/buttons/GameButtons";
@@ -67,9 +67,32 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * The method which starts the game.
    *
-   * @categoryTODO Lifecycle
+   * You are supposed to set {@link BeetPx.setOnStarted},
+   * {@link BeetPx.setOnUpdate}, and {@link BeetPx.setOnDraw} before this one.
+   *
+   * @example
+   * ```ts
+   * $.setOnStarted(() => {
+   *   // ...
+   * });
+   *
+   * $.setOnUpdate(() => {
+   *   // ...
+   * });
+   *
+   * $.setOnDraw(() => {
+   *   // ...
+   * });
+   *
+   * $.start({
+   *   gameId: "my-game",
+   *   // ...
+   * });
+   * ```
+   *
+   * @category Game loop
    */
   static async start(config: BpxEngineConfig): Promise<void> {
     if (Engine.engineSingleton) {
@@ -106,48 +129,71 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Let's you know whether the debug mode is on or off. To be used in combination with:
+   * - {@link BpxEngineConfig}'s `debugMode.available` set to `true`
+   * - `;` key used to toggle the debug mode on/off
+   *
+   * @category Debug
    */
   static get debug(): boolean {
     return DebugMode.enabled;
   }
 
   /**
-   * TODO: docs
+   * The canvas size as set in {@link BpxEngineConfig}'s `canvasSize`.
+   *
+   * @category Graphics
    */
   static get canvasSize(): BpxVector2d {
     return this.#tryGetEngine().canvasSize;
   }
 
   /**
-   * TODO: docs
-   *
    * Number of frames processed since game started.
-   * It gets reset to 0 when `BeetPx.restart()` is called.
+   * It gets reset to 0 when {@link BeetPx.restart} is called.
    * It counts update calls, not draw calls.
    *
-   * @returns number
+   * Usually you would use e.g. {@link $timer} instead of this low-level API.
+   *
+   * @category Game loop
    */
   static get frameNumber(): number {
     return this.#tryGetEngine().frameNumber;
   }
 
   /**
-   * TODO: docs
+   * Number of frames processed since game started, excluding the frames which happened during an active game pause.
+   * It gets reset to 0 when {@link BeetPx.restart} is called.
+   * It counts update calls, not draw calls.
+   *
+   * Usually you would use e.g. {@link $timer} instead of this low-level API.
+   *
+   * @category Game loop
    */
   static get frameNumberOutsidePause(): number {
     return this.#tryGetEngine().frameNumberOutsidePause;
   }
 
   /**
-   * TODO: docs
+   * The effective FPS (frames per second) of render calls. This does *not* count the update calls.
+   *
+   * This value is used (with some averaging, to avoid quickly changing number) in the FPS display,
+   * which is active in debug mode if {@link BpxEngineConfig}'s
+   * `debugMode.fpsDisplay.enabled` is set to `true`.
+   *
+   * @category Game loop
    */
   static get renderingFps(): number {
     return this.#tryGetEngine().renderingFps;
   }
 
   /**
-   * TODO: docs
+   * The type of a browser detected by the engine.
+   * It is tightly related to the gamepad mapping detection.
+   *
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/input-tester
+   *
+   * @category Game input
    */
   static get detectedBrowserType(): BpxBrowserType {
     return this.#tryGetEngine().detectedBrowserType;
@@ -158,9 +204,41 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * The method to set an on-started callback which is called every time the game is (re-)started.
    *
-   * @categoryTODO Lifecycle
+   * While the game starts only once, it can be restarted many time with use of {@link BeetPx.restart}.
+   * In such case, the callback is useful for clearing up the game state, so nothing from the previous
+   * gameplay remains.
+   *
+   * The timers, animations, and music restart on their own, there is no manual action needed.
+   *
+   * The on-started callback is one of 2 recommended places to use `BeetPxDraw` methods within
+   * (the other one is the draw callback set by {@link BeetPx.setOnDraw}).
+   *
+   * @example
+   * ```ts
+   * const inputManager = MySpecialInputManager();
+   * let gameLogic: MyComplexGameLogic;
+   *
+   * $.setOnStarted(() => {
+   *   gameLogic = new MyComplexGameLogic();
+   *   inputManager.reset();
+   * });
+   *
+   * $.setOnUpdate(() => {
+   *   // ...
+   * });
+   *
+   * $.setOnDraw(() => {
+   *   // ...
+   * });
+   *
+   * $.start({
+   *   // ...
+   * });
+   * ```
+   *
+   * @category Game loop
    */
   static setOnStarted(onStarted?: () => void): void {
     if (Engine.engineSingleton) {
@@ -171,9 +249,36 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * The method to set an update callback which is called on every iteration of the game loop,
+   * on a fixed timestep.
    *
-   * @categoryTODO Lifecycle
+   * @example
+   * ```ts
+   * const speed = 6;
+   * let player;
+   *
+   * $.setOnStarted(() => {
+   *   // ...
+   * });
+   *
+   * $.setOnUpdate(() => {
+   *   player.setPosition(
+   *     player.position.mul($.getPressedDirection()).mul(speed)
+   *   );
+   * });
+   *
+   * $.setOnDraw(() => {
+   *   // ...
+   * });
+   *
+   * $.start({
+   *   // ...
+   * });
+   * ```
+   *
+   * @see {@link BpxEngineConfig.fixedTimestep}
+   *
+   * @category Game loop
    */
   static setOnUpdate(onUpdate?: () => void): void {
     if (Engine.engineSingleton) {
@@ -184,9 +289,36 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * The method to set a draw callback which is called every time the browser has a chance to repaint the canvas
+   * ([requestAnimationFrame](https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame) is used
+   * under the hood).
    *
-   * @categoryTODO Lifecycle
+   * The draw callback is one of 2 recommended places to use `BeetPxDraw` methods within
+   * (the other one is the on-started callback set by {@link BeetPx.setOnStarted}).
+   *
+   * @example
+   * ```ts
+   * $.setOnStarted(() => {
+   *   // ...
+   * });
+   *
+   * $.setOnUpdate(() => {
+   *   // ...
+   * });
+   *
+   * $.setOnDraw(() => {
+   *   $d.clearCanvas($rgb_blue);
+   *   $d.pixel($v(10,20), $rgb_red);
+   * });
+   *
+   * $.start({
+   *   // ...
+   * });
+   * ```
+   *
+   * @see {@link BpxEngineConfig.fixedTimestep}
+   *
+   * @category Game loop
    */
   static setOnDraw(onDraw?: () => void): void {
     if (Engine.engineSingleton) {
@@ -197,9 +329,15 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Restarts the entire game.
    *
-   * @categoryTODO Lifecycle
+   * It is important to properly set the game initialization logic through the {@link BeetPx.setOnStarted},
+   * so the `$.restart()` will result with a properly restarted game.
+   *
+   * An example usage would be to implement a game pause menu, with the "restart the game" as
+   * one of available options.
+   *
+   * @category Game loop
    */
   static restart(): void {
     this.#tryGetEngine().restart();
@@ -210,36 +348,58 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Prints to the console on the debug level, with use of `console.debug`.
+   * This one is run only in the debug mode.
    *
-   * @categoryTODO Logging
+   * You can implement {@link BpxPrintDebug} on a given object if you want
+   * it to be printed out in a custom way.
+   *
+   * @see {@link BpxEngineConfig.debugMode}
+   * @see {@link BpxPrintDebug}
+   *
+   * @category Logging
    */
   static logDebug(...args: unknown[]): void {
     Logger.debug(...args);
   }
 
   /**
-   * TODO: docs
+   * Prints to the console on the info level, with use of `console.info`.
    *
-   * @categoryTODO Logging
+   * You can implement {@link BpxPrintDebug} on a given object if you want
+   * it to be printed out in a custom way.
+   *
+   * @see {@link BpxPrintDebug}
+   *
+   * @category Logging
    */
   static logInfo(...args: unknown[]): void {
     Logger.info(...args);
   }
 
   /**
-   * TODO: docs
+   * Prints to the console on the warn level, with use of `console.warn`.
    *
-   * @categoryTODO Logging
+   * You can implement {@link BpxPrintDebug} on a given object if you want
+   * it to be printed out in a custom way.
+   *
+   * @see {@link BpxPrintDebug}
+   *
+   * @category Logging
    */
   static logWarn(...args: unknown[]): void {
     Logger.warn(...args);
   }
 
   /**
-   * TODO: docs
+   * Prints to the console on the error level, with use of `console.error`.
    *
-   * @categoryTODO Logging
+   * You can implement {@link BpxPrintDebug} on a given object if you want
+   * it to be printed out in a custom way.
+   *
+   * @see {@link BpxPrintDebug}
+   *
+   * @category Logging
    */
   static logError(...args: unknown[]): void {
     Logger.error(...args);
@@ -250,45 +410,61 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Whether the game pause is active.
    *
-   * @categoryTODO Game pause
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/pause-and-restart
+   *
+   * @category Game pause
    */
   static get isPaused(): boolean {
     return GamePause.isActive;
   }
 
   /**
-   * TODO: docs
+   Whether the game pause was activated in the most recent game loop iteration.
    *
-   * @categoryTODO Game pause
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/pause-and-restart
+   *
+   * @category Game pause
    */
   static get wasJustPaused(): boolean {
     return GamePause.wasJustActivated;
   }
 
   /**
-   * TODO: docs
+   Whether the game pause was deactivated in the most recent game loop iteration.
    *
-   * @categoryTODO Game pause
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/pause-and-restart
+   *
+   * @category Game pause
    */
   static get wasJustResumed(): boolean {
     return GamePause.wasJustDeactivated;
   }
 
   /**
-   * TODO: docs
+   * Pauses the game. This works only if {@link BpxEngineConfig.gamePause}'s `available` is set to `true`.
    *
-   * @categoryTODO Game pause
+   * The game pauses is by default toggled with the "menu" button, but this method allows you
+   * to add other ways of activating the pause.
+   *
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/pause-and-restart
+   *
+   * @category Game pause
    */
   static pause(): void {
     GamePause.activate();
   }
 
   /**
-   * TODO: docs
+   * Resumes the game. This works only if {@link BpxEngineConfig.gamePause}'s `available` is set to `true`.
    *
-   * @categoryTODO Game pause
+   * The game pauses is by default toggled with the "menu" button, but this method allows you
+   * to add other ways of deactivating the pause.
+   *
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/pause-and-restart
+   *
+   * @category Game pause
    */
   static resume(): void {
     GamePause.deactivate();
@@ -299,67 +475,81 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Tells whether any of the game buttons changed from released to pressed in the recent game loop iteration.
    *
-   * @categoryTODO Game input
+   * @see For a list of available game buttons check {@link BpxGameButtonName}
+   *
+   * @category Game input
    */
   static wasAnyButtonJustPressed(): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasAnyJustPressed();
   }
 
   /**
-   * TODO: docs
+   * Tells whether a given game button changed from released to pressed in the recent game loop iteration.
    *
-   * @categoryTODO Game input
+   * @category Game input
    */
   static wasButtonJustPressed(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustPressed(button);
   }
 
   /**
-   * TODO: docs
+   * Tells whether a given game button changed from pressed to released in the recent game loop iteration.
    *
-   * @categoryTODO Game input
+   * @category Game input
    */
   static wasButtonJustReleased(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.wasJustReleased(button);
   }
 
   /**
-   * TODO: docs
+   * Tells whether any of the game buttons is pressed right now.
    *
-   * @categoryTODO Game input
+   * @see For a list of available game buttons check {@link BpxGameButtonName}
+   *
+   * @category Game input
    */
   static isAnyButtonPressed(): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.isAnyPressed();
   }
 
   /**
-   * TODO: docs
+   * Tells whether a given button is pressed right now.
    *
-   * @categoryTODO Game input
+   * @category Game input
    */
   static isButtonPressed(button: BpxGameButtonName): boolean {
     return this.#tryGetEngine().gameInput.gameButtons.isPressed(button);
   }
 
   /**
-   * TODO: docs
+   * Returns a 2D vector where:
+   * - X=-1 means the up is pressed,
+   * - X=0 means neither up nor down is pressed or both are pressed at the same time,
+   * - X=1 means the down is pressed,
+   * - Y=-1 means the left is pressed,
+   * - Y=0 means neither left nor right is pressed or both are pressed at the same time,
+   * - Y=1 means the right is pressed.
    *
-   * @categoryTODO Game input
    * @example
    * ```ts
    * this.position += $.getPressedDirection().mul(this.speed);
    * ```
+   *
+   * @category Game input
    */
   static getPressedDirection(): BpxVector2d {
     return this.#tryGetEngine().gameInput.gameButtons.getPressedDirection();
   }
 
   /**
-   * TODO: docs
+   * Allows to enable repeating for a given button.
+   * Repeating means if the user presses the button for a longer timer,
+   * the "just pressed" state is detected first after `firstRepeatFrames`
+   * frames, then repetitively after `loopedRepeatFrames` frames.
    *
-   * @categoryTODO Game input
+   * @category Game input
    */
   static setButtonRepeating(
     button: BpxGameButtonName,
@@ -375,18 +565,20 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Tells what input methods were used in the last game loop iteration.
    *
-   * @categoryTODO Game input
+   * Might be used to render in-game indications what button to press,
+   * with their sprites chosen based on which input method was recently
+   * used.
+   *
+   * @category Game input
    */
-  static getRecentInputMethods(): Set<GameInputMethod> {
+  static getRecentInputMethods(): Set<BpxGameInputMethod> {
     return this.#tryGetEngine().gameInput.getRecentInputMethods();
   }
 
   /**
-   * TODO: docs
-   *
-   * @categoryTODO Game input
+   * @category Game input
    */
   static getConnectedGamepadTypes(): Set<BpxGamepadType> {
     return this.#tryGetEngine().gameInput.getConnectedGamepadTypes();
@@ -397,6 +589,8 @@ export class BeetPx {
    *
    * Typically you wouldn't need to use those this method unless dealing
    * with custom even handling.
+   *
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/input-tester
    *
    * @category Game input
    */
@@ -409,36 +603,44 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Checks if the audio is globally muted.
    *
-   * @categoryTODO Audio
+   * @category Audio
    */
   static isAudioMuted(): boolean {
     return this.#tryGetEngine().audioApi.isAudioMuted();
   }
 
   /**
-   * TODO: docs
+   * Mutes the audio globally.
    *
-   * @categoryTODO Audio
+   * The global mute/unmute logic is independent from
+   * {@link BeetPx.mutePlayback} and {@link BeetPx.unmutePlayback}.
+   *
+   * @category Audio
    */
   static muteAudio(opts?: { fadeOutMillis?: number }): void {
     this.#tryGetEngine().audioApi.muteAudio(opts);
   }
 
   /**
-   * TODO: docs
+   * Un-mutes the audio globally.
    *
-   * @categoryTODO Audio
+   * The global mute/unmute logic is independent from
+   * {@link BeetPx.mutePlayback} and {@link BeetPx.unmutePlayback}.
+   *
+   * @category Audio
    */
   static unmuteAudio(opts?: { fadeInMillis?: number }): void {
     this.#tryGetEngine().audioApi.unmuteAudio(opts);
   }
 
   /**
-   * TODO: docs
+   * Start to play a given sound, once.
    *
-   * @categoryTODO Audio
+   * @returns - A {@link BpxAudioPlaybackId} of the started playback. Can be later used to e.g. mute this playback.
+   *
+   * @category Audio
    */
   static startPlayback(
     soundUrl: BpxSoundUrl,
@@ -451,9 +653,11 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Start to play a given sound, looped.
    *
-   * @categoryTODO Audio
+   * @returns - A {@link BpxAudioPlaybackId} of the started playback. Can be later used to e.g. mute this playback.
+   *
+   * @category Audio
    */
   static startPlaybackLooped(
     soundUrl: BpxSoundUrl,
@@ -466,9 +670,13 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Start to play a given sound, defined by a sequence of audio samples.
    *
-   * @categoryTODO Audio
+   * @see {@link BpxSoundSequence}
+   *
+   * @returns - A {@link BpxAudioPlaybackId} of the started playback. Can be later used to e.g. mute this playback.
+   *
+   * @category Audio
    */
   static startPlaybackSequence(
     soundSequence: BpxSoundSequence,
@@ -484,9 +692,9 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Mutes a given playback, denoted by its {@link BpxAudioPlaybackId}.
    *
-   * @categoryTODO Audio
+   * @category Audio
    */
   static mutePlayback(
     playbackId: BpxAudioPlaybackId,
@@ -496,9 +704,9 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Un-mutes a given playback, denoted by its {@link BpxAudioPlaybackId}.
    *
-   * @categoryTODO Audio
+   * @category Audio
    */
   static unmutePlayback(
     playbackId: BpxAudioPlaybackId,
@@ -508,9 +716,9 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Completely stops a given playback, denoted by its {@link BpxAudioPlaybackId}.
    *
-   * @categoryTODO Audio
+   * @category Audio
    */
   static stopPlayback(
     playbackId: BpxAudioPlaybackId,
@@ -520,27 +728,30 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Pauses a given playback, denoted by its {@link BpxAudioPlaybackId}.
    *
-   * @categoryTODO Audio
+   * @category Audio
    */
   static pausePlayback(playbackId: BpxAudioPlaybackId): void {
     this.#tryGetEngine().audioApi.pausePlayback(playbackId);
   }
 
   /**
-   * TODO: docs
+   * Resumes a given paused playback, denoted by its {@link BpxAudioPlaybackId}.
    *
-   * @categoryTODO Audio
+   * @category Audio
    */
   static resumePlayback(playbackId: BpxAudioPlaybackId): void {
     this.#tryGetEngine().audioApi.resumePlayback(playbackId);
   }
 
   /**
-   * TODO: docs
+   * Gives access to the main global [AudioContext](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext).
    *
-   * @categoryTODO Audio
+   * Typically, you wouldn't have to access to method on your own. But it might prove useful
+   * to have it in some unexpected scenario.
+   *
+   * @category Audio
    */
   static getAudioContext(): AudioContext {
     return this.#tryGetEngine().audioApi.getAudioContext();
@@ -551,27 +762,33 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Tells whether it is possible to enter full screen on the current device and browser.
    *
-   * @categoryTODO Full screen
+   * It might be used e.g. for implementing a pause menu action to toggle full screen.
+   *
+   * @category Full screen
    */
   static isFullScreenSupported(): boolean {
     return this.#tryGetEngine().fullScreen.isFullScreenSupported();
   }
 
   /**
-   * TODO: docs
+   * Tells whether the game is currently in a full screen mode.
    *
-   * @categoryTODO Full screen
+   * It might be used e.g. for implementing a pause menu action to toggle full screen.
+   *
+   * @category Full screen
    */
   static isInFullScreen(): boolean {
     return this.#tryGetEngine().fullScreen.isInFullScreen();
   }
 
   /**
-   * TODO: docs
+   * Requests the game to either enter or exit the full screen mode.
    *
-   * @categoryTODO Full screen
+   * It might be used e.g. for implementing a pause menu action to toggle full screen.
+   *
+   * @category Full screen
    */
   static toggleFullScreen(): void {
     this.#tryGetEngine().fullScreen.toggleFullScreen();
@@ -582,9 +799,14 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Allows to persist some data between separate game runs.
    *
-   * @categoryTODO Storage
+   * The stored data is kept in the
+   * [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
+   * It means it will be there as long as you the same web browser (with the same user profile active)
+   * on the same machine, without clearing the website's data.
+   *
+   * @category Storage
    */
   static savePersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
@@ -593,9 +815,14 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Allows to bring back the previously persisted data.
    *
-   * @categoryTODO Storage
+   * The stored data is kept in the
+   * [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
+   * It means it will be there as long as you the same web browser (with the same user profile active)
+   * on the same machine, without clearing the website's data.
+   *
+   * @category Storage
    */
   static loadPersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
@@ -604,9 +831,9 @@ export class BeetPx {
   }
 
   /**
-   * TODO: docs
+   * Allows to completely remove the previously persisted data.
    *
-   * @categoryTODO Storage
+   * @category Storage
    */
   static clearPersistedState(): void {
     this.#tryGetEngine().storageApi.clearPersistedState();
@@ -617,27 +844,46 @@ export class BeetPx {
   //
 
   /**
-   * TODO: docs
+   * Retrieves a previously fetched image.
    *
-   * @categoryTODO Assets
+   * Usually, you wouldn't need to directly call this method,
+   * as the image retrieval happens under the hood for operations
+   * like sprite drawing.
+   *
+   * @see {@link BpxEngineConfig}'a `assets`
+   *
+   * @category Assets
    */
   static getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset {
     return this.#tryGetEngine().assets.getImageAsset(imageUrl);
   }
 
   /**
-   * TODO: docs
+   * Retrieves a previously fetched sound.
    *
-   * @categoryTODO Assets
+   * Usually, you wouldn't need to directly call this method,
+   * as the sound retrieval happens under the hood for operations
+   * like music playing.
+   *
+   * @see {@link BpxEngineConfig}'a `assets`
+   *
+   * @category Assets
    */
   static getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset {
     return this.#tryGetEngine().assets.getSoundAsset(soundUrl);
   }
 
   /**
-   * TODO: docs
+   * Retrieves a previously fetched JSON.
    *
-   * @categoryTODO Assets
+   * Right now there is no API which would make use of the fetched JSON under the hood.
+   *
+   * Example use case for this method is when you develop your game level in [LDtk](https://ldtk.io/)
+   * and want to read the level's file in the game code.
+   *
+   * @see {@link BpxEngineConfig}'a `assets`
+   *
+   * @category Assets
    */
   static getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset {
     return this.#tryGetEngine().assets.getJsonAsset(jsonUrl);

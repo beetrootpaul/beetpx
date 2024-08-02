@@ -1,13 +1,17 @@
-import { CanvasSnapshot } from "../canvas/CanvasSnapshot";
+import { BpxCanvasSnapshot } from "../canvas/CanvasSnapshot";
 import { BpxColorMapper } from "./ColorMapper";
 import { BpxRgbColor } from "./RgbColor";
 
 /**
- * TODO: docs
+ * @see {@link BeetPxDraw.takeCanvasSnapshot}
+ *
+ * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/canvas-snapshot
+ *
+ * @category Drawing
  */
 export class BpxCanvasSnapshotColorMapping {
   /**
-   * TODO: docs
+   * @group Static factories
    */
   static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping {
     return new BpxCanvasSnapshotColorMapping(mapping);
@@ -34,8 +38,10 @@ export class BpxCanvasSnapshotColorMapping {
    *   // c is BpxPatternColors here
    * } else if (c.type === "sprite_mapping") {
    *   // c is BpxSpriteColorMapping here
-   * } else {
+   * } else if (c.type === "canvas_snapshot_mapping") {
    *   // c is BpxCanvasSnapshotColorMapping here
+   * } else {
+   *   $u.assertUnreachable(c);
    * }
    * ```
    */
@@ -48,10 +54,10 @@ export class BpxCanvasSnapshotColorMapping {
   }
 
   /**
-   * TODO: docs
+   * The main method of this class, used to get a mapped color for a given color on the canvas snapshot.
    */
   getMappedColor(
-    snapshot: CanvasSnapshot | null,
+    snapshot: BpxCanvasSnapshot | null,
     canvasX: number,
     canvasY: number,
   ): BpxRgbColor | null {

@@ -8,6 +8,8 @@ import { AudioHelpers } from "./AudioHelpers";
  * @see {@link BeetPx.startPlayback}
  * @see {@link BeetPx.startPlaybackLooped}
  * @see {@link BeetPx.startPlaybackSequence}
+ *
+ * @category Audio
  */
 export type BpxAudioPlaybackId = number;
 

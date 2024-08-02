@@ -1,5 +1,5 @@
 import { Canvas } from "../../canvas/Canvas";
-import { CanvasSnapshot } from "../../canvas/CanvasSnapshot";
+import { BpxCanvasSnapshot } from "../../canvas/CanvasSnapshot";
 import { BpxCanvasSnapshotColorMapping } from "../../color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "../../color/PatternColors";
 import { BpxRgbColor } from "../../color/RgbColor";
@@ -118,7 +118,7 @@ export class DrawRect {
     c1: BpxRgbColor | BpxCanvasSnapshotColorMapping | null,
     c2: BpxRgbColor | null,
     pattern: BpxDrawingPattern,
-    snapshot: CanvasSnapshot | null,
+    snapshot: BpxCanvasSnapshot | null,
   ): void {
     if (!this.#canvas.canSetAt(x, y)) {
       return;

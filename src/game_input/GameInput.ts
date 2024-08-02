@@ -8,7 +8,12 @@ import { GameInputMouse } from "./GameInputMouse";
 import { GameInputSpecialized } from "./GameInputSpecialized";
 import { GameInputTouch } from "./GameInputTouch";
 
-export type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
+/**
+ * @see {@link BeetPx.getRecentInputMethods}
+ *
+ * @category Game input
+ */
+export type BpxGameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 
 /**
  * Identifiers of the game input events.
@@ -53,7 +58,7 @@ export class GameInput {
 
   #eventsCapturedInLastUpdate: Set<BpxGameInputEvent> = new Set();
 
-  #mostRecentInputMethods: Set<GameInputMethod> = new Set();
+  #mostRecentInputMethods: Set<BpxGameInputMethod> = new Set();
 
   constructor(params: {
     enableScreenshots: boolean;
@@ -138,7 +143,7 @@ export class GameInput {
     return events.size > 0;
   }
 
-  getRecentInputMethods(): Set<GameInputMethod> {
+  getRecentInputMethods(): Set<BpxGameInputMethod> {
     return this.#mostRecentInputMethods;
   }
 

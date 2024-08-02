@@ -1,5 +1,5 @@
 import { HtmlTemplate } from "./HtmlTemplate";
-import { AssetLoader, AssetsToLoad } from "./assets/AssetLoader";
+import { AssetLoader, BpxAssetsToLoad } from "./assets/AssetLoader";
 import { Assets } from "./assets/Assets";
 import { AudioApi } from "./audio/AudioApi";
 import { AudioPlayback } from "./audio/AudioPlayback";
@@ -11,7 +11,7 @@ import { Canvas } from "./canvas/Canvas";
 import { CanvasForProduction } from "./canvas/CanvasForProduction";
 import { BpxRgbColor } from "./color/RgbColor";
 import { DebugMode } from "./debug/DebugMode";
-import { FpsDisplay, FpsDisplayPlacement } from "./debug/FpsDisplay";
+import { BpxFpsDisplayPlacement, FpsDisplay } from "./debug/FpsDisplay";
 import { FrameByFrame } from "./debug/FrameByFrame";
 import { DrawApi } from "./draw_api/DrawApi";
 import { GameInput } from "./game_input/GameInput";
@@ -34,98 +34,173 @@ import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 
 /**
- * TODO: docs
+ * The configuration of the BeetPx engine. Passed into {@link BeetPx.start}.
+ *
+ * @category Core
  */
 export type BpxEngineConfig = {
   /**
-   * TODO: docs
-   *
    * Used for scoping localStorage keys, so two different games won't override their persisted state.
+   *
    * An example: built-in screenshots feature binds screenshots to the proper game by its `gameId`.
    */
   gameId: string;
+
   /**
-   * TODO: docs
+   * The logical canvas size. Not to be mistaken with a size of the HTML Canvas, which the user has no control over.
+   *
+   * During the game, this value (as a {@link BpxVector2d} can be obtained with {@link BeetPx.canvasSize}.
    */
   canvasSize?: "64x64" | "128x128" | "256x256";
+
   /**
-   * TODO: docs
+   * The desired frequency of update calls. This is a basis for all time-based computations
+   * in the game, since BeetPx has no notion of the real time, nor delta time between update calls.
+   * The entire engine is based in a fixed timestep computations, where you can expect each game loop
+   * iteration to happen after the similar amount of time from the previous one.
+   *
+   * 60 FPS games looks smoother, but require more performant machine, if the game logic is
+   * computation heavy.
+   *
+   * PleaseThis setting does *not* imply the rendering FPS, which is decoupled from the update calls.
    */
   fixedTimestep?: "30fps" | "60fps";
+
   /**
-   * TODO: docs
+   * A list of URLs of assets to load. The URLs might be either relative to the `./public/` directory,
+   * or external ones.
+   *
+   * Allowed file extensions:
+   * - `.png` – for images,
+   * - `.wav` – for music,
+   * - `.flac` – for music, smaller files than `.wav`,
+   * - `.json` – for JSON files,
+   * - `.ldtk` – a convenience extension support for JSON files with the default extension used by [LDtk](https://ldtk.io/) tool, so you doesn't have to rename them.
+   *
+   * @example
+   * ```ts
+   * $.start({
+   *   // ...
+   *   assets: [
+   *     "spriteshet.png",    // refers to `./public/spriteshet.png`
+   *     "music/track1.flac", // refers to `./public/music/track1.flac`
+   *     "https://the.url/of/level.ldtk",
+   *   ],
+   * });
+   * ```
    */
-  assets?: AssetsToLoad;
+  assets?: BpxAssetsToLoad;
+
   /**
-   * TODO: docs
+   * A feature which allows to toggle a game pause with use of a "menu" button.
+   * When active, the timers, animations, and music do not progress, unless configured to ignore the pause.
+   *
+   * This also allows to implement a pause menu.
+   *
+   * @example
+   * ```ts
+   * $.setOnDraw(() => {
+   *   // ...
+   *   if ($.isPaused) {
+   *     pauseMenu.draw();
+   *   }
+   * });
+   * ```
+   *
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/pause-and-restart
    */
   gamePause?: {
     /**
-     * TODO: docs
+     * Whether the game pause should be available (and automatically toggled with the "menu" button).
      */
     available?: boolean;
   };
   /**
-   * TODO: docs
+   * Whether to prevent user from accidentally closing the browser tab with the game running.
+   *
+   * A recommended approach would be to set it to {@link BEETPX__IS_PROD}
+   *
+   * @example
+   * ```ts
+   * $.start({
+   *   // ...,
+   *   requireConfirmationOnTabClose: BEETPX__IS_PROD,
+   * });
+   * ```
    */
   requireConfirmationOnTabClose?: boolean;
-  /**
-   * TODO: docs
-   */
+
   screenshots?: {
     /**
-     * TODO: docs
+     * Whether to allow user to take screenshots of the game (with use of the `]` key)
+     * and access the screenshot browser overlay (with use of the `}` key).
      */
     available?: boolean;
   };
+
   /**
-   * TODO: docs
+   * A mode in which you can perform an additional logic, draw helpful markers, etc.
+   * When active, the {@link BeetPx.debug} returns `true`.
+   *
+   * Visually, this mode is indicated by an orange border around the game canvas.
+   *
+   * When inactive, the {@link BeetPx.logDebug} are not printed.
+   *
+   * @example
+   * ```ts
+   * $d.sprite(playerSprite, xy);
+   * if ($.debug) {
+   *   $d.rect(xy, playerSprite.size, $rgb_red);
+   * }
+   * ```
    */
   debugMode?: {
     /**
-     * TODO: docs
+     * Whether to allow use to toggle the debug mode (with use of the `;` key).
      *
-     * A recommended approach would be to set it to `!window.BEETPX__IS_PROD`.
+     * A recommended approach would be to set it to the negation of {@link BEETPX__IS_PROD}.
      */
     available?: boolean;
+
     /**
-     * TODO: docs
-     *
-     * If `true`, then the debug mode will be enabled on start no matter what its persisted state was.
+     * Whether to activate the debug mode from the game start. Useful, when you
+     * want to investigate what happens on the very first frame. This setting ignores
+     * the persisted state of whether the debug mode was activated the last time the games was run.
      */
     forceEnabledOnStart?: boolean;
+
     /**
-     * TODO: docs
+     * FPS Display shows the rendering FPS in one of the canvas corners, when in enabled and in the debug mode.
      */
     fpsDisplay?: {
       /**
-       * TODO: docs
+       * Whether the FPS Display should be shown in the debug mode.
        */
       enabled?: boolean;
+
       /**
-       * TODO: docs
+       * The color of the printed FPS on the canvas.
        */
       color?: BpxRgbColor;
+
       /**
-       * TODO: docs
+       * The placement of the printed FPS on the canvas.
        */
-      placement?: FpsDisplayPlacement;
+      placement?: BpxFpsDisplayPlacement;
     };
   };
-  /**
-   * TODO: docs
-   */
   frameByFrame?: {
     /**
-     * TODO: docs
+     * Whether to allow use to toggle the frame-by-frame mode (with use of the `,` key),
+     * and (when in that mode) to progress to the next frame (with use of the `.` key).
      *
-     * A recommended approach would be to set it to `!window.BEETPX__IS_PROD`.
+     * A recommended approach would be to set it to the negation of {@link BEETPX__IS_PROD}.
      */
     available?: boolean;
+
     /**
-     * TODO: docs
-     *
-     * If `true`, then the frame-by-frame mode will be activated from the very start.
+     * Whether to activate the frame-by-frame mode from the game start. Useful, when you
+     * want to investigate what happens on the very first frame.
      */
     activateOnStart?: boolean;
   };
@@ -140,7 +215,7 @@ export class Engine {
 
   readonly #config: BpxEngineConfig;
 
-  readonly #assetsToLoad: AssetsToLoad;
+  readonly #assetsToLoad: BpxAssetsToLoad;
 
   readonly #browserType: BpxBrowserType;
 

@@ -5,7 +5,12 @@ import { BpxVector2d } from "../misc/Vector2d";
 import { $font_pico8, $rgb_p8 } from "../shorthands";
 import { mod } from "../utils/mod";
 
-export type FpsDisplayPlacement =
+/**
+ * @see {@link BpxEngineConfig}'s `debugMode.fpsDisplay.placement`
+ *
+ * @category Debug
+ */
+export type BpxFpsDisplayPlacement =
   | "top-left"
   | "top-right"
   | "bottom-left"
@@ -23,7 +28,7 @@ export class FpsDisplay {
     canvasSize: BpxVector2d,
     params: {
       color?: BpxRgbColor;
-      placement?: FpsDisplayPlacement;
+      placement?: BpxFpsDisplayPlacement;
     },
   ) {
     this.#drawApi = drawApi;
@@ -32,7 +37,7 @@ export class FpsDisplay {
 
     this.#canvasSize = canvasSize;
 
-    const placement: FpsDisplayPlacement = params.placement ?? "top-right";
+    const placement: BpxFpsDisplayPlacement = params.placement ?? "top-right";
     this.#alignLeft = placement.endsWith("-left");
     this.#alignTop = placement.startsWith("top-");
 

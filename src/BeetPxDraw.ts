@@ -53,16 +53,23 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Fill the entire canvas with a given color. It's a method which you would typically
+   * call as the very first inside {@link BeetPx.setOnDraw} in order to not clear the canvas
+   * from what was drawn in the previous game loop iteration.
+   *
+   * @category General
    */
   static clearCanvas(color: BpxRgbColor): void {
     BeetPxDraw.#tryGetEngine("clearCanvas").drawApi.clearCanvas(color);
   }
 
   /**
-   * TODO: docs
+   * Sets a clipping region, which is a rectangular boundary which limits all the subsequent drawing
+   * to happen only within it.
    *
-   * @returns - previous clipping region in form of an array: [xy, wh]
+   * @returns Previous clipping region in form of an array: `[xy, wh]`
+   *
+   * @category General
    */
   static setClippingRegion(
     xy: BpxVector2d,
@@ -74,9 +81,11 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Removes the currently set clipping region, if any.
    *
-   * @returns - previous clipping region in form of an array: [xy, wh]
+   * @returns Previous clipping region in form of an array: `[xy, wh]`
+   *
+   * @category General
    */
   static removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d] {
     return BeetPxDraw.#tryGetEngine(
@@ -85,20 +94,43 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
-   *
    * Sets a new XY (left-top corner) of a camera's viewport
    *
-   * @returns previous camera XY
+   * @example
+   * ```ts
+   * const prevCameraXy = $d.setCameraXy($v(50,50));
+   * // draw something that requires the camera to be moved to (50,50)
+   * $d.setCameraXy(prevCameraXy);
+   * ```
+   *
+   * @returns Previous camera's XY.
+   *
+   * @category General
    */
   static setCameraXy(xy: BpxVector2d): BpxVector2d {
     return BeetPxDraw.#tryGetEngine("setCameraXy").drawApi.setCameraXy(xy);
   }
 
   /**
-   * TODO: docs
+   * Sets a drawing pattern to use. A drawing pattern is a 4x4 definition of which
+   * pixels should be drawn with the `primary` and which with the `secondary` of
+   * {@link BpxPatternColors}.
    *
-   * @returns previous pattern
+   * @example
+   * ```ts
+   * const prevPattern = $d.setDrawingPattern(BpxDrawingPattern.from(`
+   *   ##--
+   *   ##--
+   *   --##
+   *   --##
+   * `));
+   * $d.rectFilled($v(10), $v(20), BpxPatternColors.of($rgb_red, $rgb_blue));
+   * $d.setDrawingPattern(prevPattern);
+   * ```
+   *
+   * @returns Previously used pattern.
+   *
+   * @category General
    */
   static setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern {
     return BeetPxDraw.#tryGetEngine(
@@ -107,18 +139,34 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws a single colored pixel.
+   *
+   * @example
+   * ```ts
+   * $d.pixel($v(10,20), $rgb_red);
+   * ```
+   *
+   * @category Shapes
    */
   static pixel(xy: BpxVector2d, color: BpxRgbColor): void {
     BeetPxDraw.#tryGetEngine("pixel").drawApi.drawPixel(xy, color);
   }
 
   /**
-   * TODO: docs
+   * Draws pixels based on a visual 2d representation, defined by {@link BpxPixels}.
+   * Helpful for quickly drawing a shape that you don't have a sprite for in your spritesheet.
    *
-   * Draws pixels based on a visual 2d representation in form of rows
-   *   (designated by new lines) where `#` and `-` stand for a colored
-   *   pixel and a lack of a pixel. Whitespaces are ignored.
+   * @example
+   * ```ts
+   * $d.pixels(BpxPixels.from(`
+   *   #####
+   *   #-#-#
+   *   #-#-#
+   *   #####
+   * `, $v(10,20), $rgb_red);
+   * ```
+   *
+   * @category Shapes
    */
   static pixels(
     pixels: BpxPixels,
@@ -139,7 +187,11 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws a line.
+   *
+   * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   *
+   * @category Shapes
    */
   static line(
     xy: BpxVector2d,
@@ -150,7 +202,11 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws a rectangle, boundary only.
+   *
+   * @param xy Left-top corner.
+   *
+   * @category Shapes
    */
   static rect(
     xy: BpxVector2d,
@@ -161,7 +217,11 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws a rectangle, filled.
+   *
+   * @param xy Left-top corner.
+   *
+   * @category Shapes
    */
   static rectFilled(
     xy: BpxVector2d,
@@ -176,7 +236,11 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws a rectangle, boundary only, and fills the entire canvas *around* the rectangle.
+   *
+   * @param xy Left-top corner.
+   *
+   * @category Shapes
    */
   static rectOutsideFilled(
     xy: BpxVector2d,
@@ -191,7 +255,13 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws an ellipse, boundary only.
+   *
+   * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   *
+   * @param xy Left-top corner of a rectangle that the ellipse would fit into.
+   *
+   * @category Shapes
    */
   static ellipse(
     xy: BpxVector2d,
@@ -202,7 +272,13 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws an ellipse, filled.
+   *
+   * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   *
+   * @param xy Left-top corner of a rectangle that the ellipse would fit into.
+   *
+   * @category Shapes
    */
   static ellipseFilled(
     xy: BpxVector2d,
@@ -217,7 +293,13 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws an ellipse, boundary only, and fills the entire canvas *around* the ellipse.
+   *
+   * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   *
+   * @param xy Left-top corner of a rectangle that the ellipse would fit into.
+   *
+   * @category Shapes
    */
   static ellipseOutsideFilled(
     xy: BpxVector2d,
@@ -230,9 +312,20 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Allows to define a color mapping from the sprite colors to the desired ones.
    *
-   * @returns previous sprite color mapping
+   * @example
+   * ```ts
+   * const prevMapping = $d.setSpriteColorMapping(BpxSpriteColorMapping.from([
+   *   [$rgb_red, $rgb_blue],
+   * ]));
+   * $d.sprite(mySprite, $v(10));
+   * $d.setSpriteColorMapping(prevMapping);
+   * ```
+   *
+   * @returns Previously used color mapping
+   *
+   * @category Sprites
    */
   static setSpriteColorMapping(
     spriteColorMapping: BpxSpriteColorMapping,
@@ -243,7 +336,15 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws a given sprite.
+   *
+   * @example
+   * ```ts
+   * const mySprite = $spr("spritesheet.png")(8,8,0,0);
+   * $d.sprite(mySprite, $v(10));
+   * ```
+   *
+   * @category Sprites
    */
   static sprite(
     sprite: BpxSprite | BpxAnimatedSprite,
@@ -258,19 +359,43 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Sets a font to be used for subsequent text drawing.
    *
-   * @categoryTODO Fonts
-   * @returns - previously used font
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/fonts
+   *
+   * @example
+   * ```ts
+   * const prevFont = $d.setFont($font_saint11Minimal4);
+   * $d.text("hello!", $v(10), $rgb_red);
+   * $d.setFont(prevFont);
+   * ```
+   *
+   * @returns Previously used font
+   *
+   * @category Text
    */
   static setFont(font: BpxFont): BpxFont {
     return BeetPxDraw.#tryGetEngine("setFont").drawApi.setFont(font);
   }
 
   /**
-   * TODO: docs
+   * Sets color markers to be used for subsequent text drawing.
+   * Color markers are used inside text to indicate places where a color should
+   * change to another one.
    *
-   * @returns - previously used color markers
+   * @example
+   * ```ts
+   * const prevMarkers = $d.setTextColorMarkers({
+   *   red_theBest: $rgb_red,
+   *   b: $rgb_blue,
+   * });
+   * $d.text("colors are: green, [b]blue, [red_theBest]red", $v(10), $rgb_green);
+   * $d.setTextColorMarkers(prevMarkers);
+   * ```
+   *
+   * @returns Previously used color markers
+   *
+   * @category Text
    */
   static setTextColorMarkers(
     textColorMarkers: BpxTextColorMarkers,
@@ -281,7 +406,19 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Measures the space that would be occupied by the text if it was drawn on the canvas.
+   *
+   * @example
+   * ```ts
+   * const line1Wh = $d.measureText(textLine1).wh;
+   * const line2Wh = $d.measureText(textLine2).wh;
+   * const line3Wh = $d.measureText(textLine3).wh;
+   * const totalW = Math.max(line1Wh.x, line2Wh.x, line3Wh.x);
+   * const totalH = line1Wh.y + line2Wh.y + line3Wh.y;
+   * const leftTop = $.canvasSize.div(2).sub(totalW / 2, totalH / 2)
+   * ```
+   *
+   * @category Text
    */
   static measureText(
     text: string,
@@ -297,7 +434,17 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Draws a text.
+   *
+   * @example
+   * ```ts
+   * $d.text("hello!\nThe 2nd line", $v(10), $rgb_red);
+   * ```
+   *
+   * @remarks
+   * Use `\n` to split the text into multiple lines (aligned to the left).
+   *
+   * @category Text
    */
   static text(
     text: string,
@@ -312,7 +459,23 @@ export class BeetPxDraw {
   }
 
   /**
-   * TODO: docs
+   * Takes a snapshot of the canvas, so it can be later used together with {@link BpxCanvasSnapshotColorMapping}.
+   * Can be used e.g. for drawing a lighter pixels around light sources.
+   *
+   * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/canvas-snapshot
+   *
+   * @example
+   * ```ts
+   * $d.takeCanvasSnapshot();
+   * $d.ellipseFilled(lightXy.sub(lightRadius), $v(lightRadius * 2), BpxCanvasSnapshotColorMapping.of(
+   *   (color: BpxRgbColor | null): BpxRgbColor | null =>
+   *     color
+   *       ? $rgb((50 + color.r) * 1.25, (30 + color.g) * 1.2, (10 + color.b) * 1.05)
+   *       : null
+   * ));
+   * ```
+   *
+   * @category General
    */
   static takeCanvasSnapshot(): void {
     BeetPxDraw.#tryGetEngine("takeCanvasSnapshot").drawApi.takeCanvasSnapshot();

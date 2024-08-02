@@ -1,7 +1,7 @@
 import { BpxRgbColor } from "../color/RgbColor";
-import { CanvasSnapshot } from "./CanvasSnapshot";
+import { BpxCanvasSnapshot } from "./CanvasSnapshot";
 
-export class CanvasSnapshotForTests implements CanvasSnapshot {
+export class CanvasSnapshotForTests implements BpxCanvasSnapshot {
   readonly #rgbValues: number[];
   readonly #canvasWidth: number;
 

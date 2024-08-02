@@ -1,5 +1,5 @@
 import { BpxBrowserType } from "../browser/BrowserTypeDetector";
-import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
+import { BpxGameInputEvent, BpxGameInputMethod } from "./GameInput";
 import { GameInputSpecialized } from "./GameInputSpecialized";
 import { GamepadMapping } from "./gamepad_mapping/GamepadMapping";
 import { GamepadMapping8BitDo } from "./gamepad_mapping/GamepadMapping8BitDo";
@@ -22,7 +22,7 @@ import { BpxGamepadTypeDetector } from "./GamepadTypeDetector";
 export type BpxGamepadType = "xbox" | "dualsense" | "8bitdo" | "other";
 
 export class GameInputGamepad implements GameInputSpecialized {
-  inputMethod: GameInputMethod = "gamepad";
+  inputMethod: BpxGameInputMethod = "gamepad";
 
   readonly #browserType: BpxBrowserType;
 

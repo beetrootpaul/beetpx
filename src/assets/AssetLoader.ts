@@ -2,7 +2,12 @@ import { decode as fastPngDecode, type DecodedPng } from "fast-png";
 import { Logger } from "../logger/Logger";
 import { Assets, BpxImageUrl, BpxJsonUrl, BpxSoundUrl } from "./Assets";
 
-export type AssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
+/**
+ * @see {@link BpxEngineConfig}'s `assets`
+ *
+ * @category Assets
+ */
+export type BpxAssetsToLoad = Array<BpxImageUrl | BpxSoundUrl | BpxJsonUrl>;
 
 export class AssetLoader {
   readonly #assets: Assets;
@@ -18,8 +23,8 @@ export class AssetLoader {
     this.#decodeAudioData = params.decodeAudioData;
   }
 
-  async loadAssets(assetsToLoad: AssetsToLoad): Promise<void> {
-    const normalizedAssetsToLoad: AssetsToLoad = assetsToLoad
+  async loadAssets(assetsToLoad: BpxAssetsToLoad): Promise<void> {
+    const normalizedAssetsToLoad: BpxAssetsToLoad = assetsToLoad
       .map(url => url.trim())
       .filter(url => url.length > 0);
 

@@ -48,8 +48,6 @@ export class BeetPxUtils {
    * will inform us about such mistake.
    *
    * @param thingThatShouldBeOfTypeNeverAtThisPoint - a value which we expect to be of type `never`
-   *
-   * @group Static methods
    */
   static assertUnreachable(
     thingThatShouldBeOfTypeNeverAtThisPoint: never,
@@ -63,8 +61,6 @@ export class BeetPxUtils {
    *                         But with this param set to `"ignore"` we can change that behaviour.
    *
    * @returns Either `true` or `false`, which changes every `n` frames
-   *
-   * @group Static methods
    */
   static booleanChangingEveryNthFrame(
     n: number,
@@ -81,8 +77,6 @@ export class BeetPxUtils {
    * ```ts
    * clamp(minSpeed, currentSpeed, maxSpeed);
    * ```
-   *
-   * @group Static methods
    */
   static clamp(a: number, b: number, c: number): number {
     return clamp(a, b, c);
@@ -90,8 +84,6 @@ export class BeetPxUtils {
 
   /**
    * Similar to {@link BeetPxDraw.text}, but with a second color specified, to be used as an outline.
-   *
-   * @group Static methods
    */
   static drawTextWithOutline(
     text: string,
@@ -115,8 +107,6 @@ export class BeetPxUtils {
    * const fn = makeItFancy ? doTheFancyTransformation : BeetPxUtils.identity;
    * const newX = fn(x);
    * ```
-   *
-   * @group Static methods
    */
   static identity<Param>(param: Param): Param {
     return identity(param);
@@ -127,8 +117,6 @@ export class BeetPxUtils {
    * Specifically: `lerp(a,b,0) === a` and `lerp(a,b,1) === b`.
    *
    * With `opts: { clamp: true }`, the resulting value cannot is always within bounds of `a` and `b`, even if `t` is below `0` or above `1`.
-   *
-   * @group Static methods
    */
   static lerp(
     a: number,
@@ -149,8 +137,6 @@ export class BeetPxUtils {
    * }
    * const menuItem = menuItems[selected];
    * ```
-   *
-   * @group Static methods
    */
   static mod(value: number, modulus: number): number {
     return mod(value, modulus);
@@ -165,16 +151,12 @@ export class BeetPxUtils {
    * const fn = makeItFancy ? doTheFancyThing : BeetPxUtils.noop;
    * fn();
    * ```
-   *
-   * @group Static methods
    */
   static noop(): void {}
 
   /**
    * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
    * Useful e.g. for iterating over adjacent tiles on the game map.
-   *
-   * @group Static methods
    */
   static offset4Directions(): [
     BpxVector2d,
@@ -188,8 +170,6 @@ export class BeetPxUtils {
   /**
    * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
    * Useful e.g. for iterating over adjacent tiles on the game map, including diagonals.
-   *
-   * @group Static methods
    */
   static offset8Directions(): [
     BpxVector2d,
@@ -206,8 +186,6 @@ export class BeetPxUtils {
 
   /**
    * Picks a random element from a given array.
-   *
-   * @group Static methods
    */
   static randomElementOf<TElement>(array: TElement[]): TElement | undefined {
     return randomElementOf<TElement>(array);
@@ -222,8 +200,6 @@ export class BeetPxUtils {
    *   BeetPxDraw.rect($v(1, 1 + i * 8), $v(40, 7), $rgb_red);
    * });
    * ```
-   *
-   * @group Static methods
    */
   static range(n: number): number[] {
     return range(n);
@@ -237,8 +213,6 @@ export class BeetPxUtils {
    * BeetPxUtils.repeatEachElement(3, ["a", "b"]);
    * // The above produces `["a", "a", "a", "b", "b", "b"]`.
    * ```
-   *
-   * @group Static methods
    */
   static repeatEachElement<TElement>(
     times: number,
@@ -257,8 +231,6 @@ export class BeetPxUtils {
    * }
    * const value = getValue() ?? throwError("Failed to get the value");
    * ```
-   *
-   * @group Static methods
    */
   static throwError(message: string): never {
     throwError(message);
@@ -266,8 +238,6 @@ export class BeetPxUtils {
 
   /**
    * @returns Turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-   *
-   * @group Static methods
    */
   static trigAtan2(x: number, y: number): number {
     return trigAtan2(x, y);
@@ -275,8 +245,6 @@ export class BeetPxUtils {
 
   /**
    * @param turnAngle A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-   *
-   * @group Static methods
    */
   static trigCos(turnAngle: number): number {
     return trigCos(turnAngle);
@@ -284,8 +252,6 @@ export class BeetPxUtils {
 
   /**
    * @param turnAngle A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
-   *
-   * @group Static methods
    */
   static trigSin(turnAngle: number): number {
     return trigSin(turnAngle);

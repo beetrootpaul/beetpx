@@ -3,11 +3,20 @@ import { clamp } from "../utils/clamp";
 import { mod } from "../utils/mod";
 
 /**
- * TODO: docs
+ * A timer implementation, tightly integrated with the game loop.
+ * It automatically counts frames – an amount of update calls.
+ *
+ * Used as a basis for {@link BpxAnimatedSprite}.
+ *
+ * @see {@link $timer}
+ *
+ * @category Core
  */
 export class BpxTimer {
   /**
-   * TODO: docs
+   * @see {@link $timer}
+   *
+   * @group Static factories
    */
   static of(opts: {
     frames: number;
@@ -60,7 +69,7 @@ export class BpxTimer {
   }
 
   /**
-   * TODO: docs
+   * A current counted frame number, incrementing from 0.
    */
   get t(): number {
     return (
@@ -73,28 +82,30 @@ export class BpxTimer {
   }
 
   /**
-   * TODO: docs
+   * A an amount of frames left to be counted, decrementing down to 0.
    */
   get framesLeft(): number {
     return this.#frames - this.t;
   }
 
   /**
-   * TODO: docs
+   * A progress of the counting, gradually incrementing from 0 to 1.
    */
   get progress(): number {
     return this.#frames > 0 ? this.t / this.#frames : 1;
   }
 
   /**
-   * TODO: docs
+   * Whether this timer has finished already.
+   * For looped timers this becomes `true` forever after the first pass.
    */
   get hasFinished(): boolean {
     return this.#tRaw >= this.#frames;
   }
 
   /**
-   * TODO: docs
+   * Whether this timer has finished in the most recent game loop iteration.
+   * For looped timers this becomes `true` at the end of each pass.
    */
   get hasJustFinished(): boolean {
     return (
@@ -108,7 +119,7 @@ export class BpxTimer {
   }
 
   /**
-   * TODO: docs
+   * Pauses the timer.
    */
   pause(): void {
     if (this.#isPaused) return;
@@ -118,7 +129,7 @@ export class BpxTimer {
   }
 
   /**
-   * TODO: docs
+   * Resumes the timer.
    */
   resume(): void {
     if (!this.#isPaused) return;
@@ -129,7 +140,7 @@ export class BpxTimer {
   }
 
   /**
-   * TODO: docs
+   * Restarts the timer from 0.
    */
   restart(): void {
     this.#offsetFrame = this.#fn;

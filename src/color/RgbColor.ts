@@ -65,8 +65,10 @@ export class BpxRgbColor {
    *   // c is BpxPatternColors here
    * } else if (c.type === "sprite_mapping") {
    *   // c is BpxSpriteColorMapping here
-   * } else {
+   * } else if (c.type === "canvas_snapshot_mapping") {
    *   // c is BpxCanvasSnapshotColorMapping here
+   * } else {
+   *   $u.assertUnreachable(c);
    * }
    * ```
    */

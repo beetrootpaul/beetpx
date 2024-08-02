@@ -1,7 +1,10 @@
 import { ScopedLocaleStorage } from "./ScopedLocaleStorage";
 
 /**
- * TODO: docs
+ * A simple JSON-like type constraint for values that can be persisted with use of
+ * {@link BeetPx.savePersistedState}.
+ *
+ * @category Storage
  */
 export type BpxPersistedStateValueConstraints = Record<
   string,

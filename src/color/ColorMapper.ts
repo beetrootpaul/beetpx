@@ -1,7 +1,10 @@
 import { BpxRgbColor } from "./RgbColor";
 
 /**
- * TODO: docs
+ * @see {@link BpxSpriteColorMapping}
+ * @see {@link BpxCanvasSnapshotColorMapping}
+ *
+ * @category Drawing
  */
 export type BpxColorMapper = (
   sourceColor: BpxRgbColor | null,

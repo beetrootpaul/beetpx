@@ -1,8 +1,8 @@
-import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
+import { BpxGameInputEvent, BpxGameInputMethod } from "./GameInput";
 import { GameInputSpecialized } from "./GameInputSpecialized";
 
 export class GameInputKeyboard implements GameInputSpecialized {
-  inputMethod: GameInputMethod = "keyboard";
+  inputMethod: BpxGameInputMethod = "keyboard";
 
   readonly #keyMapping: Map<string, BpxGameInputEvent> = new Map<
     string,
