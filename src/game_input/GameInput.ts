@@ -86,7 +86,7 @@ export class GameInput {
   }
 
   /**
-   * @return If any interaction happened.
+   * @returns If any interaction happened.
    */
   update(params: { skipGameButtons: boolean }): boolean {
     this.#mostRecentInputMethods.clear();

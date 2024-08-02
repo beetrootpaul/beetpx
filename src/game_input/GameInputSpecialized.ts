@@ -6,7 +6,7 @@ export interface GameInputSpecialized {
   startListening(): void;
 
   /**
-   * @return Whether any events were added to eventsCollector
+   * @returns Whether any events were added to eventsCollector
    */
   update(eventsCollector: Set<BpxGameInputEvent>): boolean;
 }

@@ -183,7 +183,7 @@ export class BeetPx {
    * It gets reset to 0 when `BeetPx.restart()` is called.
    * It counts update calls, not draw calls.
    *
-   * @return number
+   * @returns number
    */
   static get frameNumber(): number {
     return this.#tryGetEngine().frameNumber;
@@ -963,7 +963,7 @@ export class BeetPxUtils {
   }
 
   /**
-   * @return turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
+   * @returns turn angle. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   static trigAtan2(x: number, y: number): number {
     return trigAtan2(x, y);
