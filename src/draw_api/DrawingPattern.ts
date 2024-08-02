@@ -1,10 +1,28 @@
+/**
+ * A 4x4 drawing pattern definition of which pixels should be drawn with the `primary`
+ * and which with the `secondary` of {@link BpxPatternColors}.
+ *
+ * @example
+ * ```ts
+ * const prevPattern = $d.setDrawingPattern(BpxDrawingPattern.from(`
+ *   ##--
+ *   ##--
+ *   --##
+ *   --##
+ * `));
+ * $d.rectFilled($v(10), $v(20), BpxPatternColors.of($rgb_red, $rgb_blue));
+ * $d.setDrawingPattern(prevPattern);
+ * ```
+ *
+ * @category Drawing
+ */
 export class BpxDrawingPattern {
   /**
    * Creates a BpxDrawingPattern from a visual representation of 4 columns and 4 rows
    *   (designated by new lines) where `#` and `-` stand for a primary and
    *   a secondary color. Whitespaces are ignored.
    *
-   * @category Drawing
+   * @category Static factories
    */
   static from(ascii: string): BpxDrawingPattern {
     ascii = ascii.replace(/\s/g, "");
@@ -31,11 +49,31 @@ export class BpxDrawingPattern {
     return new BpxDrawingPattern(bits);
   }
 
+  /**
+   * Creates a BpxDrawingPattern from a numeric representation of 4 columns and 4 rows.
+   * Recommended way is to defined the pattern as a binary number, with group separator
+   * put between each 4 digits, e.g. `0b0101_1010_0101_1010`. The `1` stands for the primary
+   * color and the `0` – for the secondary one.
+   *
+   * @category Static factories
+   */
   static of(bits: number): BpxDrawingPattern {
     return new BpxDrawingPattern(bits);
   }
 
+  /**
+   * The pattern used by default, which uses the primary color only.
+   * An equivalent of `BpxDrawingPattern.of(0b1111_1111_1111_1111)`.
+   *
+   * @category Static values
+   */
   static primaryOnly = BpxDrawingPattern.of(0b1111_1111_1111_1111);
+  /**
+   * The pattern which uses the secondary color only.
+   * An equivalent of `BpxDrawingPattern.of(0b0000_0000_0000_0000)`.
+   *
+   * @category Static values
+   */
   static secondaryOnly = BpxDrawingPattern.of(0b0000_0000_0000_0000);
 
   readonly #bits: number;
@@ -49,6 +87,13 @@ export class BpxDrawingPattern {
     this.#bits = bits;
   }
 
+  /**
+   * The method to check whether a primary or a secondary color should be put at a given (X,Y)
+   * when this pattern is applied.
+   *
+   * Usually, you wouldn't have to use this method, since it's already used by internals of
+   * BeetPx drawing API.
+   */
   hasPrimaryColorAt(x: number, y: number): boolean {
     const patternX = x % 4;
     const patternY = y % 4;

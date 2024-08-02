@@ -4,6 +4,18 @@ import { BpxGameInputEvent } from "../GameInput";
 import { Button } from "./Button";
 
 /**
+ * Identifiers of the game buttons.
+ *
+ * @example
+ * ```ts
+ * $.wasButtonJustPressed("X");
+ * ```
+ *
+ * @remarks
+ * - `O` represents the Japanese "Maru" sign, kind of a "Yes". Good for a primary/accept/next button.
+ * - `X` represents the Japanese "Batsu" sign, kind of a "No". Good for a secondary/cancel/back button.
+ * - Lower case `o` and `x` are supported as well, for a convenience.
+ *
  * @category Game input
  */
 export type BpxGameButtonName =
@@ -11,10 +23,8 @@ export type BpxGameButtonName =
   | "right"
   | "up"
   | "down"
-  /** Japanese "Maru" sign, kind of a "Yes", good for a primary/accept/next button */
   | "O"
   | "o"
-  /** Japanese "Batsu" sign, kind of a "No", good for a secondary/cancel/back button */
   | "X"
   | "x"
   | "menu";

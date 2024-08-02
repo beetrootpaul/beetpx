@@ -106,10 +106,6 @@ https://beetrootpaul.itch.io/beetpx-input-tester .
 
 You can find docs at https://beetpx.dev .
 
-⚠️ Please be aware the docs are very raw so far. There are mostly just a list of
-exposed types and classes and constants, and nothing more. This is something to
-be improved before 1.0 release.
-
 ℹ️ For a quick start you can start by typing either `BeetPx.` and checking what
 your IDE suggests. Same for `BeetPxDraw.`, and `BeetPxUtils.`. Their shorthands
 are respectively: `$`, `$d`, and `$u`.
@@ -185,6 +181,11 @@ domain, free to use).
 There is a PICO-8 color palette ready to use, exported as `$rgb_p8`. That
 palette is created by zep and available under a CC-0 license (public domain,
 free to use). For more info see: https://www.lexaloffle.com/pico-8.php?page=faq
+
+### Bresenham's Algorithm implementation
+
+I based the line and ellipse drawing methods on a Bresenham's Algorithm implementation by Alois Zingl:
+http://members.chello.at/easyfilter/bresenham.html
 
 ## Known Issues
 

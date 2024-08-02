@@ -1,6 +1,11 @@
 import { BpxImageUrl } from "../assets/Assets";
 import { BpxVector2d } from "../misc/Vector2d";
 
+/**
+ * @see {@link $spr}
+ *
+ * @category Drawing
+ */
 export type BpxImageBoundSpriteFactory = (
   w: number,
   h: number,
@@ -9,9 +14,19 @@ export type BpxImageBoundSpriteFactory = (
 ) => BpxSprite;
 
 /**
+ * A definition of a sprite,
+ * which can later be used for drawing by {@link BeetPxDraw.sprite}.
+ *
+ * @see {@link $spr}
+ *
  * @category Drawing
  */
 export class BpxSprite {
+  /**
+   * @see {@link $spr}
+   *
+   * @group Static factories
+   */
   static from(
     imageUrl: BpxImageUrl,
     w: number,
@@ -22,6 +37,22 @@ export class BpxSprite {
     return new BpxSprite(imageUrl, w, h, x, y);
   }
 
+  /**
+   * A property helpful for TypeScript type inference, when distinguishing from
+   * other types of sprites.
+   *
+   * @example
+   * ```ts
+   * const s: BpxSprite | BpxAnimatedSprite = getSprite();
+   * if (s.type === "static") {
+   *   // s is BpxSprite here
+   * } else if (s.type === "animated") {
+   *   // s is BpxAnimatedSprite here
+   * } else {
+   *   $u.assertUnreachable(s);
+   * }
+   * ```
+   */
   readonly type = "static";
 
   readonly imageUrl: BpxImageUrl;
@@ -51,6 +82,9 @@ export class BpxSprite {
       .sub(this.xy);
   }
 
+  /**
+   * Creates a new sprite definition, clipped by given sprite coordinates.
+   */
   clipBy(xy1: BpxVector2d, xy2: BpxVector2d): BpxSprite {
     const xy = this.xy.clamp(xy1, xy2);
     const wh = this.xy.add(this.size).clamp(xy1, xy2).sub(xy);

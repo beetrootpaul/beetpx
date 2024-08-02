@@ -25,8 +25,16 @@ type DrawApiOptions = {
   assets: Assets;
 };
 
+/**
+ * Text measurement calculated by a headless text rendering with use of
+ * {@link BeetPxDraw.measureText}.
+ *
+ * @category Drawing
+ */
 export type BpxTextMeasurement = {
+  /** The size of the drawn text. */
   wh: BpxVector2d;
+  /** The offset of the text placement in relation to where it was intended to be placed. Useful when the text is meant to be drawn centered, so it starts half of its width/height to the left/up from the given point. */
   offset: BpxVector2d;
 };
 

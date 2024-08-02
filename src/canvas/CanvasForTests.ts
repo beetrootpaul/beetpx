@@ -3,7 +3,7 @@ import { BpxRgbColor, BpxRgbCssHex } from "../color/RgbColor";
 import { BpxVector2d } from "../misc/Vector2d";
 import { range } from "../utils/range";
 import { Canvas } from "./Canvas";
-import { CanvasSnapshot } from "./CanvasSnapshot";
+import { BpxCanvasSnapshot } from "./CanvasSnapshot";
 import { CanvasSnapshotForTests } from "./CanvasSnapshotForTests";
 
 export class CanvasForTests extends Canvas {
@@ -43,7 +43,7 @@ export class CanvasForTests extends Canvas {
     this.#rgbValues[index] = (color.r << 16) + (color.g << 8) + color.b;
   }
 
-  newSnapshot(): CanvasSnapshot {
+  newSnapshot(): BpxCanvasSnapshot {
     return new CanvasSnapshotForTests(this.#rgbValues.slice(), this.#width);
   }
 

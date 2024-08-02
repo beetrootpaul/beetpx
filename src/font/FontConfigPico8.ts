@@ -7,8 +7,13 @@ import { BpxFontConfig, BpxGlyph } from "./Font";
  *
  * Links:
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the font being available under a CC-0 license
+ *
+ *  @category Fonts
  */
 export class BpxFontConfigPico8 implements BpxFontConfig {
+  /**
+   * @group Static values
+   */
   static readonly spriteSheetUrl = "beetpx/pico-8-font.png";
 
   ascent = 5;

@@ -1,3 +1,11 @@
+/**
+ * The list of browser types the engine detects.
+ * It is tightly related to the gamepad mapping detection.
+ *
+ * @see {@link BeetPx.detectedBrowserType}
+ *
+ * @category Game input
+ */
 export type BpxBrowserType =
   | "chromium"
   | "firefox_windows"

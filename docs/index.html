@@ -115,7 +115,12 @@
       }
 
       #links {
+        margin-bottom: 2rem;
+
         & ol {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+
           list-style-type: none;
           padding-left: 0;
 
@@ -135,9 +140,54 @@
         }
       }
 
+      #sample-games {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+
+        & img {
+          width: 200px;
+        }
+      }
+
       @media (max-width: 810px) or (max-height: 810px) {
         html {
           font-size: 80%;
+        }
+
+        #sample-games img {
+            width: 130px;
+        }
+
+      }
+
+      @media (max-width: 500px) {
+        #sample-games img {
+          width: 110px;
+        }
+      }
+
+      @media (max-width: 440px) {
+        #sample-games img {
+          width: 80px;
+        }
+      }
+
+      @media (max-width: 350px) {
+        #links ol {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        #sample-games img {
+          width: 160px;
+        }
+      }
+
+      @media (max-width: 270px) {
+        #links ol {
+          grid-template-columns: repeat(1, 1fr);
         }
       }
     </style>
@@ -155,10 +205,19 @@
         </section>
         <section id="links">
           <ol>
-            <li><a href="/docs/0.47.0"> Docs </a></li>
+            <li>
+              <a
+                href="/docs/0.47.0/index.html"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Docs
+              </a>
+            </li>
             <li>
               <a
                 href="https://github.com/beetrootpaul/beetpx-examples"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 Examples
@@ -167,6 +226,7 @@
             <li>
               <a
                 href="https://beetrootpaul.itch.io/beetpx-input-tester"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 Input Tester
@@ -175,6 +235,7 @@
             <li>
               <a
                 href="https://github.com/beetrootpaul/beetpx"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 GitHub
@@ -183,17 +244,54 @@
             <li>
               <a
                 href="https://www.npmjs.com/package/@beetpx/beetpx"
+                target="_blank"
                 rel="noopener noreferrer"
               >
                 npm
               </a>
             </li>
             <li>
-              <a href="https://beetrootpaul.com/" rel="noopener noreferrer">
+              <a
+                href="https://beetrootpaul.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 beetrootpaul.com
               </a>
             </li>
           </ol>
+        </section>
+        <section id="sample-games">
+          <a
+            href="https://github.com/beetrootpaul/hat-escape"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="game-example-hat-escape.png"
+              alt="A screen from Hat Escape game"
+            />
+          </a>
+          <a
+            href="https://github.com/beetrootpaul/dart-07-beetpx"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="game-example-dart-07.gif"
+              alt="A screen from Dart-07 game"
+            />
+          </a>
+          <a
+            href="https://github.com/beetrootpaul/towers-of-survival-beetpx"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="game-example-towers-of-survival.png"
+              alt="A screen from Towers of Survival game"
+            />
+          </a>
         </section>
       </main>
     </div>

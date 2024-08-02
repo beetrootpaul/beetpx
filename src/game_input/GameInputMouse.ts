@@ -1,9 +1,9 @@
 import { HtmlTemplate } from "../HtmlTemplate";
-import { BpxGameInputEvent, GameInputMethod } from "./GameInput";
+import { BpxGameInputEvent, BpxGameInputMethod } from "./GameInput";
 import { GameInputSpecialized } from "./GameInputSpecialized";
 
 export class GameInputMouse implements GameInputSpecialized {
-  inputMethod: GameInputMethod = "mouse";
+  inputMethod: BpxGameInputMethod = "mouse";
 
   static mapping: Array<{
     event: BpxGameInputEvent;

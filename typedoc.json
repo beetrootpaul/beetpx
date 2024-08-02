@@ -6,22 +6,35 @@
     "includeFolders": true
   },
   "categoryOrder": [
+    "[i] this list combines categories from both the sidebar and inner details of the pages",
     "API entry points",
-    "Lifecycle",
+    "General",
+    "Core",
+    "Game loop",
+    "Graphics",
     "Drawing",
+    "Colors",
+    "Shapes",
+    "Sprites",
+    "Text",
     "Fonts",
     "Audio",
+    "Assets",
     "Game input",
     "Game pause",
     "Storage",
     "Full screen",
-    "*",
     "Logging",
+    "Debug",
+    "Miscellaneous",
     "Globals",
+    "*",
     "Other"
   ],
   "groupOrder": [
+    "Static values",
     "Static factories",
+    "Static methods",
     "*"
   ]
 }
