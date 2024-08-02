@@ -29,3 +29,4 @@ export class ScreenshotManager {
     }
 }
 _a = ScreenshotManager;
+//# sourceMappingURL=ScreenshotManager.js.map

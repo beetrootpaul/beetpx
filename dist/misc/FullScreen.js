@@ -2,7 +2,6 @@ import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 import { throwError } from "../utils/throwError";
 export class FullScreen {
-    
     static #isFullScreenSupported = !!((typeof document === "undefined") ?
         false
         : document.fullscreenEnabled || document.webkitFullscreenEnabled);
@@ -29,7 +28,6 @@ class FullScreenNoop extends FullScreen {
     }
     toggleFullScreen() { }
 }
-
 class FullScreenSupported extends FullScreen {
     #fullScreenSubject;
     #nativeRequestFullscreen;
@@ -74,3 +72,4 @@ class FullScreenSupported extends FullScreen {
         }
     }
 }
+//# sourceMappingURL=FullScreen.js.map

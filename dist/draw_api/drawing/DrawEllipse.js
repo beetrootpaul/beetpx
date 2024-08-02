@@ -4,15 +4,12 @@ export class DrawEllipse {
     constructor(canvas) {
         this.#canvas = canvas;
     }
-    
     draw(xy, wh, color, fill, pattern) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
-        
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
             xyMaxExclusive.y - xyMinInclusive.y <= 0) {
             return;
         }
-        
         if (!this.#canvas.canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
@@ -22,9 +19,6 @@ export class DrawEllipse {
             this.#canvas.getMostRecentSnapshot()
             : null;
         const p = pattern;
-        
-        
-        
         let a = xyMaxExclusive.x - xyMinInclusive.x - 1;
         let b = xyMaxExclusive.y - xyMinInclusive.y - 1;
         let b1 = b & 1;
@@ -38,9 +32,6 @@ export class DrawEllipse {
         a = 8 * a * a;
         b1 = 8 * b * b;
         do {
-            
-            
-            
             this.#drawPixel(left, top, c1, c2, p, sn);
             this.#drawPixel(right, top, c1, c2, p, sn);
             this.#drawPixel(right, bottom, c1, c2, p, sn);
@@ -61,9 +52,6 @@ export class DrawEllipse {
                     this.#drawPixel(x, bottom, c1, c2, p, sn);
                 }
             }
-            
-            
-            
             const currentErrBeforeStep = currentErr;
             if (2 * currentErrBeforeStep <= errIncrementY) {
                 bottom += 1;
@@ -79,9 +67,6 @@ export class DrawEllipse {
                 currentErr += errIncrementX;
             }
         } while (left <= right);
-        
-        
-        
         while (bottom - top <= b) {
             this.#drawPixel(left - 1, bottom, c1, c2, p, sn);
             this.#drawPixel(right + 1, bottom, c1, c2, p, sn);
@@ -106,9 +91,6 @@ export class DrawEllipse {
             }
             top -= 1;
         }
-        
-        
-        
         if (fill === "outside") {
             for (let x = 0; x < this.#canvas.canvasSize.x; ++x) {
                 for (let y = 0; y < top + 1; ++y) {
@@ -144,3 +126,4 @@ export class DrawEllipse {
         }
     }
 }
+//# sourceMappingURL=DrawEllipse.js.map

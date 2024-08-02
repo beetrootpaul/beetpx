@@ -6,7 +6,7 @@
     "outDir": "./dist",
     "declarationDir": "./.dist/",
     "sourceMap": true,
-    "removeComments": false
+    "removeComments": true
   },
   "exclude": [
     "src/**/*.test.ts",

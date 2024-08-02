@@ -16,7 +16,6 @@ export class CanvasForProduction extends Canvas {
         this.#htmlCanvasContext =
             this.#htmlCanvas.getContext("2d", {
                 colorSpace: "srgb",
-                
                 alpha: true,
             }) ?? throwError("Was unable to obtain '2d' context from <canvas>");
         this.#htmlCanvasContext.imageSmoothingEnabled = false;
@@ -28,7 +27,6 @@ export class CanvasForProduction extends Canvas {
         this.#offscreenContext =
             offscreenCanvas.getContext("2d", {
                 colorSpace: "srgb",
-                
                 alpha: false,
             }) ??
                 throwError("Was unable to obtain '2d' context from OffscreenCanvas");
@@ -70,3 +68,4 @@ export class CanvasForProduction extends Canvas {
         }
     }
 }
+//# sourceMappingURL=CanvasForProduction.js.map

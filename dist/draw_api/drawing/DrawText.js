@@ -37,3 +37,4 @@ export class DrawText {
         }
     }
 }
+//# sourceMappingURL=DrawText.js.map

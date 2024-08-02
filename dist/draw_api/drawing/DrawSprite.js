@@ -15,7 +15,6 @@ export class DrawSprite {
         scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
         sprite = sprite.clipBy($v_0_0, $v(imgW, imgH));
-        
         if (!this.#canvas.canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size.x * scaleXy.x - 1, targetXy.y + sprite.size.y * scaleXy.y - 1)) {
             return;
         }
@@ -47,3 +46,4 @@ export class DrawSprite {
         }
     }
 }
+//# sourceMappingURL=DrawSprite.js.map

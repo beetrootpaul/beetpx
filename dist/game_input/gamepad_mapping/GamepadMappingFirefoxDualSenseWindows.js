@@ -1,25 +1,24 @@
-
 export class GamepadMappingFirefoxDualSenseWindows {
     static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
-            case 0: 
-            case 2: 
+            case 0:
+            case 2:
                 return "button_O";
-            case 1: 
-            case 3: 
+            case 1:
+            case 3:
                 return "button_X";
-            case 9: 
+            case 9:
                 return "button_menu";
         }
         return null;
     }
     eventsForAxisValue(axisIndex, axisValue) {
         switch (axisIndex) {
-            case 0: 
-            case 2: 
+            case 0:
+            case 2:
                 return ((axisValue >
                     GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold) ?
                     ["button_right"]
@@ -27,8 +26,8 @@ export class GamepadMappingFirefoxDualSenseWindows {
                         -GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold) ?
                         ["button_left"]
                         : []);
-            case 1: 
-            case 5: 
+            case 1:
+            case 5:
                 return ((axisValue >
                     GamepadMappingFirefoxDualSenseWindows.#stickAxisThreshold) ?
                     ["button_down"]
@@ -41,3 +40,4 @@ export class GamepadMappingFirefoxDualSenseWindows {
         }
     }
 }
+//# sourceMappingURL=GamepadMappingFirefoxDualSenseWindows.js.map

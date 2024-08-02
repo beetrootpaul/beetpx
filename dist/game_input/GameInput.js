@@ -46,16 +46,11 @@ export class GameInput {
             sgi.startListening();
         }
     }
-    /**
-     * @returns If any interaction happened.
-     */
     update(params) {
         this.#mostRecentInputMethods.clear();
         const events = new Set();
         for (const sgi of this.gameInputsSpecialized) {
             if (sgi.update(events)) {
-                
-                
                 this.#mostRecentInputMethods.add(sgi.inputMethod);
             }
         }
@@ -93,3 +88,4 @@ export class GameInput {
         return this.#eventsCapturedInLastUpdate;
     }
 }
+//# sourceMappingURL=GameInput.js.map

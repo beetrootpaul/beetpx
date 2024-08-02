@@ -15,3 +15,4 @@ export class CanvasSnapshotForTests {
         return BpxRgbColor.of((value & 0xff0000) >> 16, (value & 0x00ff00) >> 8, value & 0x0000ff);
     }
 }
+//# sourceMappingURL=CanvasSnapshotForTests.js.map

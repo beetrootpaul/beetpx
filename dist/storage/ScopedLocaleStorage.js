@@ -14,3 +14,4 @@ export class ScopedLocaleStorage {
         window.localStorage.removeItem(`bpx__${this.#gameId}__${key}`);
     }
 }
+//# sourceMappingURL=ScopedLocaleStorage.js.map

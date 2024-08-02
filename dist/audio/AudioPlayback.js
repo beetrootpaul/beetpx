@@ -4,7 +4,6 @@ import { AudioHelpers } from "./AudioHelpers";
 export class AudioPlayback {
     static playbacksToPauseOnGamePause = new Set();
     static playbacksToMuteOnGamePause = new Set();
-    
     static nextPlaybackId = 1;
     onEnded;
     startedAtMs;
@@ -176,3 +175,4 @@ export class AudioPlayback {
         this.#gainNode.disconnect();
     }
 }
+//# sourceMappingURL=AudioPlayback.js.map

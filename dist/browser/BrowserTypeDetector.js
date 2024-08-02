@@ -2,8 +2,6 @@ export class BrowserTypeDetector {
     static detect(userAgent) {
         const ua = userAgent?.toLowerCase() ?? "";
         if (ua.includes("firefox")) {
-            
-            
             return ua.includes("win64") ? "firefox_windows" : "firefox_other";
         }
         if (ua.includes("chrome"))
@@ -13,3 +11,4 @@ export class BrowserTypeDetector {
         return "other";
     }
 }
+//# sourceMappingURL=BrowserTypeDetector.js.map

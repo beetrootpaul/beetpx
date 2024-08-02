@@ -25,3 +25,4 @@ export class Loading {
         HtmlTemplate.addStartedClass();
     }
 }
+//# sourceMappingURL=Loading.js.map

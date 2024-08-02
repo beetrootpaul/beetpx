@@ -7,3 +7,4 @@ export function offset4Directions() {
         BpxVector2d.of(-1, 1),
     ];
 }
+//# sourceMappingURL=offset4Directions.js.map

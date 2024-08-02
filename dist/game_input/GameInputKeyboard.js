@@ -68,15 +68,8 @@ export class GameInputKeyboard {
             eventsCollector.add(event);
             anythingAdded = true;
         }
-        
-        
-        
-        
-        
-        
-        
-        
         this.#eventsSinceLastUpdate.delete("full_screen");
         return anythingAdded;
     }
 }
+//# sourceMappingURL=GameInputKeyboard.js.map

@@ -1,39 +1,24 @@
-
 export class GamepadMappingFirefox8BitDoWindows {
     static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
-            case 0: 
-            case 4: 
+            case 0:
+            case 4:
                 return "button_O";
-            case 1: 
-            case 3: 
+            case 1:
+            case 3:
                 return "button_X";
-            case 10: 
-            case 11: 
+            case 10:
+            case 11:
                 return "button_menu";
         }
         return null;
     }
     eventsForAxisValue(axisIndex, axisValue) {
-        
         if (axisIndex === 9) {
-            
-            
-            
-            
-            
-            
-            
-            
             const normalizedValue = axisValue * (14 / 2) + 8;
-            
-            
-            
-            
-            
             if (normalizedValue < 0.5 ||
                 normalizedValue > 15.5 ||
                 (normalizedValue > 7.5 && normalizedValue < 8.5)) {
@@ -62,15 +47,15 @@ export class GamepadMappingFirefox8BitDoWindows {
             }
         }
         switch (axisIndex) {
-            case 0: 
-            case 2: 
+            case 0:
+            case 2:
                 return (axisValue > GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold ?
                     ["button_right"]
                     : (axisValue < -GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold) ?
                         ["button_left"]
                         : []);
-            case 1: 
-            case 5: 
+            case 1:
+            case 5:
                 return (axisValue > GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold ?
                     ["button_down"]
                     : (axisValue < -GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold) ?
@@ -81,3 +66,4 @@ export class GamepadMappingFirefox8BitDoWindows {
         }
     }
 }
+//# sourceMappingURL=GamepadMappingFirefox8BitDoWindows.js.map

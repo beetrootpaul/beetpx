@@ -9,8 +9,6 @@ import { AudioPlaybackSequence } from "./AudioPlaybackSequence";
 export class AudioApi {
     static #storageMuteUnmuteKey = "audio_api__muted";
     static #storageMuteUnmuteTrue = "yes";
-    
-    
     static muteUnmuteDefaultFadeMillis = 100;
     #assets;
     #audioContext;
@@ -30,9 +28,6 @@ export class AudioApi {
         this.#stopAllPlaybacks();
         this.#playbacks.clear();
     }
-    
-    
-    
     async tryToResumeAudioContextSuspendedByBrowserForSecurityReasons() {
         Logger.debugBeetPx("AudioApi.tryToResumeAudioContextSuspendedByBrowserForSecurityReasons");
         if (this.#audioContext.state === "running") {
@@ -186,3 +181,4 @@ export class AudioApi {
     }
 }
 _a = AudioApi;
+//# sourceMappingURL=AudioApi.js.map

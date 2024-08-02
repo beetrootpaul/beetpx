@@ -41,3 +41,4 @@ export class PreparedSprites {
         return { ...preparedSprite, cacheHit: false };
     }
 }
+//# sourceMappingURL=PreparedSprites.js.map

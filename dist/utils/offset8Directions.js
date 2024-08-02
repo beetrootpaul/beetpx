@@ -11,3 +11,4 @@ export function offset8Directions() {
         BpxVector2d.of(-1, 0),
     ];
 }
+//# sourceMappingURL=offset8Directions.js.map
