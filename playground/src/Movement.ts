@@ -7,10 +7,8 @@ export class Movement {
   #animation = $aspr("animation.png")(
     48,
     48,
-    $u.repeatEachElement(
-      4,
-      $u.range(12).map((i) => [48 * i, 0]),
-    ),
+    $u.range(12).map((i) => [48 * i, 0]),
+    { frameDuration: 4 },
   );
 
   draw(): void {
