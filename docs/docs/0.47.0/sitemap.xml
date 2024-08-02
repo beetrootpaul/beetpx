@@ -2,298 +2,334 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/index.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/hierarchy.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/modules/API.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/functions/API._aspr.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._d.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/functions/API._font.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._font_pico8.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._font_saint11Minimal4.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._font_saint11Minimal5.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/functions/API._rgb.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_black.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_blue.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_cyan.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_green.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_magenta.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_p8.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_red.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_white.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._rgb_yellow.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/functions/API._spr.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/functions/API._timer.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/functions/API._timerSeq.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._u.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/functions/API._v.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._v_0_0.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API._v_1_1.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API.BEETPX__IS_PROD.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/variables/API.BEETPX__VERSION.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BeetPx.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BeetPxDraw.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BeetPxUtils.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxAnimatedSprite.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxArrangedGlyph.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxAssetsToLoad.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxAudioPlaybackId.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxBrowserType.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/interfaces/API.BpxCanvasSnapshot.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxCanvasSnapshotColorMapping.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxColorMapper.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxDrawingPattern.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxEasing.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxEasingFn.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxEngineConfig.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxFont.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxFontConfig.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxFontConfigPico8.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxFontConfigSaint11Minimal4.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxFontConfigSaint11Minimal5.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxFpsDisplayPlacement.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxGameButtonName.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxGameInputEvent.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxGameInputMethod.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxGamepadType.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxGamepadTypeDetector.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxGlyph.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxImageAsset.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxImageBoundAnimatedSpriteFactory.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxImageBoundSpriteFactory.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxImageUrl.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxJsonAsset.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxJsonUrl.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
-		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxKerningPrevCharMap.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxKerningPrevSegmentMap.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxPalettePico8.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxPatternColors.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxPersistedStateValueConstraints.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxPixels.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/interfaces/API.BpxPrintDebug.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxRgbColor.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxRgbCssHex.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxSoundAsset.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxSoundSequence.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxSoundSequenceEntry.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxSoundSequenceEntrySoundAdditional.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxSoundSequenceEntrySoundMain.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxSoundUrl.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxSprite.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxSpriteColorMapping.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxTextColorMarkers.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
+	</url>
+	<url>
+		<loc>https://beetpx.dev/docs/0.47.0/types/API.BpxTextMeasurement.html</loc>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxTimer.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxTimerSequence.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 	<url>
 		<loc>https://beetpx.dev/docs/0.47.0/classes/API.BpxVector2d.html</loc>
-		<lastmod>2024-08-01T22:15:31.321Z</lastmod>
+		<lastmod>2024-08-02T22:02:47.568Z</lastmod>
 	</url>
 </urlset>
