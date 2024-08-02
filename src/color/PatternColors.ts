@@ -1,15 +1,20 @@
+import { BpxDrawingPattern } from "../draw_api/DrawingPattern";
 import { BpxRgbColor } from "./RgbColor";
 
 /**
- * TODO: docs
+ * A set of two colors, used in combination with {@link BpxDrawingPattern},
+ * where given pixels are colored with either the `primary` or the `secondary`.
  *
- * @categoryTODO Drawing
+ * @category Colors
  */
 export class BpxPatternColors {
   /**
-   * TODO: docs
+   * @example
+   * ```ts
+   * BpxPatternColors.of($rgb_red, $rgb_blue);
+   * ```
    *
-   * @groupTODO Static factories
+   * @group Static factories
    */
   static of(
     primary: BpxRgbColor | null,
@@ -48,11 +53,11 @@ export class BpxPatternColors {
 
   private constructor(
     /**
-     * TODO: docs
+     * The primary color or a transparency (denoted by `null`).
      */
     readonly primary: BpxRgbColor | null,
     /**
-     * TODO: docs
+     * The secondary color or a transparency (denoted by `null`).
      */
     readonly secondary: BpxRgbColor | null,
   ) {}

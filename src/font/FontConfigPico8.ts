@@ -3,42 +3,27 @@ import { BpxSprite } from "../sprite/Sprite";
 import { BpxFontConfig, BpxGlyph } from "./Font";
 
 /**
- * TODO: docs
- *
  * A free to use (CC-0) font created by zep and distributed as part of PICO-8 fantasy console.
  *
  * Links:
  *  - https://www.lexaloffle.com/pico-8.php?page=faq – an info about the font being available under a CC-0 license
+ *
+ *  @category Fonts
  */
 export class BpxFontConfigPico8 implements BpxFontConfig {
   /**
-   * TODO: docs
+   * @group Static values
    */
   static readonly spriteSheetUrl = "beetpx/pico-8-font.png";
 
-  /**
-   * TODO: docs
-   */
   ascent = 5;
-  /**
-   * TODO: docs
-   */
   descent = 0;
-  /**
-   * TODO: docs
-   */
   lineGap = 1;
 
-  /**
-   * TODO: docs
-   */
   mapGrapheme(grapheme: string): string {
     return grapheme.toLowerCase();
   }
 
-  /**
-   * TODO: docs
-   */
   glyphs: Map<string, BpxGlyph> = new Map<string, BpxGlyph>([
     [" ", { type: "whitespace", advance: 4 }],
     //

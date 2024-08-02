@@ -14,19 +14,10 @@ import { GamepadMappingSafari8BitDo } from "./gamepad_mapping/GamepadMappingSafa
 import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard";
 import { BpxGamepadTypeDetector } from "./GamepadTypeDetector";
 
-export const supportedGamepadTypes = [
-  "xbox",
-  "dualsense",
-  "8bitdo",
-  "other",
-] as const;
-
 /**
- * TODO: docs
- *
- * @categoryTODO Game input
+ * @category Game input
  */
-export type BpxGamepadType = (typeof supportedGamepadTypes)[number];
+export type BpxGamepadType = "xbox" | "dualsense" | "8bitdo" | "other";
 
 export class GameInputGamepad implements GameInputSpecialized {
   inputMethod: GameInputMethod = "gamepad";

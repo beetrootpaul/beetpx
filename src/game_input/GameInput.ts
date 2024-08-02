@@ -11,70 +11,30 @@ import { GameInputTouch } from "./GameInputTouch";
 export type GameInputMethod = "gamepad" | "keyboard" | "mouse" | "touch";
 
 /**
- * TODO: docs
+ * Identifiers of the game input events.
  *
- * @categoryTODO Game input
+ * Typically you wouldn't need to use those type values unless dealing
+ * with custom even handling.
+ *
+ * @see {@link BeetPx.getEventsCapturedInLastUpdate}
+ *
+ * @category Game input
  */
 export type BpxGameInputEvent =
-  /**
-   * TODO: docs
-   */
   | null
-  /**
-   * TODO: docs
-   */
   | "button_left"
-  /**
-   * TODO: docs
-   */
   | "button_right"
-  /**
-   * TODO: docs
-   */
   | "button_up"
-  /**
-   * TODO: docs
-   */
   | "button_down"
-  /**
-   * TODO: docs
-   */
   | "button_O"
-  /**
-   * TODO: docs
-   */
   | "button_X"
-  /**
-   * TODO: docs
-   */
   | "button_menu"
-  /**
-   * TODO: docs
-   */
   | "mute_unmute_toggle"
-  /**
-   * TODO: docs
-   */
   | "full_screen"
-  /**
-   * TODO: docs
-   */
   | "take_screenshot"
-  /**
-   * TODO: docs
-   */
   | "browse_screenshots_toggle"
-  /**
-   * TODO: docs
-   */
   | "debug_toggle"
-  /**
-   * TODO: docs
-   */
   | "frame_by_frame_toggle"
-  /**
-   * TODO: docs
-   */
   | "frame_by_frame_step";
 
 export class GameInput {

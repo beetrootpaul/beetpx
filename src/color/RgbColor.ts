@@ -1,4 +1,6 @@
 /**
+ * @see {@link BpxRgbColor}
+ *
  * @category Colors
  */
 export type BpxRgbCssHex = string;

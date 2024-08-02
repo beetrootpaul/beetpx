@@ -2,7 +2,9 @@ import { BpxImageUrl } from "../assets/Assets";
 import { BpxVector2d } from "../misc/Vector2d";
 
 /**
- * TODO: docs
+ * @see {@link $spr}
+ *
+ * @category Drawing
  */
 export type BpxImageBoundSpriteFactory = (
   w: number,

@@ -1,23 +1,35 @@
 import { BpxVector2d } from "../misc/Vector2d";
 
 /**
- * TODO: docs
+ * A 1-bit image rectangular image defined in-code.
+ *
+ * @category Drawing
  */
 export class BpxPixels {
   /**
-   * TODO: docs
+   * @example
+   * ```ts
+   * BpxPixels.from(`
+   *   #####
+   *   #-#-#
+   *   #-#-#
+   *   #####
+   * `);
+   * ```
+   *
+   * @group Static factories
    */
   static from(ascii: string): BpxPixels {
     return new BpxPixels(ascii);
   }
 
   /**
-   * TODO: docs
+   * The `#`/`-` representation of the image, split into rows.
    */
   readonly asciiRows: string[];
 
   /**
-   * TODO: docs
+   * The size of the image.
    */
   readonly size: BpxVector2d;
 

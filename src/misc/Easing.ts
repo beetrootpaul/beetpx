@@ -9,6 +9,8 @@ export type BpxEasingFn = (t: number) => number;
  * @category Miscellaneous
  */
 export class BpxEasing {
+  private constructor() {}
+
   /**
    * @group Static values
    */

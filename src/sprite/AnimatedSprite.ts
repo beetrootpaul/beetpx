@@ -5,7 +5,9 @@ import { repeatEachElement } from "../utils/repeatEachElement";
 import { BpxSprite } from "./Sprite";
 
 /**
- * TODO: docs
+ * @see {@link $aspr}
+ *
+ * @category Drawing
  */
 export type BpxImageBoundAnimatedSpriteFactory = (
   w: number,

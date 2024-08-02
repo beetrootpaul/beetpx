@@ -26,6 +26,7 @@
   "groupOrder": [
     "Static values",
     "Static factories",
+    "Static methods",
     "*"
   ]
 }
