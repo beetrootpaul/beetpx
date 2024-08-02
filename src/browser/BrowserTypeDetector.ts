@@ -1,5 +1,10 @@
 /**
- * TODO: docs
+ * The list of browser types the engine detects. It is tightly related to the
+ * gamepad mapping resolution.
+ *
+ * @see {@link BeetPx.detectedBrowserType}
+ *
+ * @category Miscellaneous
  */
 export type BpxBrowserType =
   | "chromium"

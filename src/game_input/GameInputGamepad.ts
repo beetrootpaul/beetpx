@@ -15,6 +15,8 @@ import { GamepadMappingStandard } from "./gamepad_mapping/GamepadMappingStandard
 import { BpxGamepadTypeDetector } from "./GamepadTypeDetector";
 
 /**
+ * @see {@link BeetPx.getConnectedGamepadTypes}
+ *
  * @category Game input
  */
 export type BpxGamepadType = "xbox" | "dualsense" | "8bitdo" | "other";

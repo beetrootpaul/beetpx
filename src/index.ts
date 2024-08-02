@@ -76,6 +76,7 @@ export type {
 export type { BpxBrowserType } from "./browser/BrowserTypeDetector";
 export type { BpxColorMapper } from "./color/ColorMapper";
 export type { BpxRgbCssHex } from "./color/RgbColor";
+export type { BpxPrintDebug } from "./debug/PrintDebug";
 export type { BpxEngineConfig } from "./Engine";
 export type {
   BpxArrangedGlyph,

@@ -3,7 +3,11 @@ import { AudioApi } from "./AudioApi";
 import { AudioHelpers } from "./AudioHelpers";
 
 /**
- * TODO: docs
+ * An identifier of a played audio. Can be used to e.g. mute a specific sound.
+ *
+ * @see {@link BeetPx.startPlayback}
+ * @see {@link BeetPx.startPlaybackLooped}
+ * @see {@link BeetPx.startPlaybackSequence}
  */
 export type BpxAudioPlaybackId = number;
 

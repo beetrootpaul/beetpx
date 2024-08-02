@@ -18,9 +18,10 @@
     "Game pause",
     "Storage",
     "Full screen",
-    "*",
     "Logging",
+    "Miscellaneous",
     "Globals",
+    "*",
     "Other"
   ],
   "groupOrder": [
