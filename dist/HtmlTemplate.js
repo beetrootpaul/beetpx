@@ -69,3 +69,4 @@ export class HtmlTemplate {
         document.body.classList[isPressed.fullscreen ? "add" : "remove"]("pressed_fullscreen");
     }
 }
+//# sourceMappingURL=HtmlTemplate.js.map

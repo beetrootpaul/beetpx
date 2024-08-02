@@ -1,20 +1,4 @@
 import { BpxPixels } from "../draw_api/Pixels";
-/**
- * A free to use (CC-0) font created by saint11 and distributed on https:
- *
- * Note: only a subset of characters is implemented here:
- * ```
- * . : ! ? ' " * / + -
- * 0 1 2 3 4 5 6 7 8 9
- * % $ ( ) [ ] { } < >
- * A B C D E F G H I J K L M
- * N O P Q R S T U V W X Y Z
- * a b c d e f g h i j k l m
- * n o p q r s t u v w x y z
- * ```
- *
- *  @category Fonts
- */
 export class BpxFontConfigSaint11Minimal5 {
     ascent = 5;
     descent = 0;
@@ -863,3 +847,4 @@ export class BpxFontConfigSaint11Minimal5 {
         ],
     ]);
 }
+//# sourceMappingURL=FontConfigSaint11Minimal5.js.map

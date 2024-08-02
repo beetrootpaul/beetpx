@@ -65,3 +65,4 @@ export class CanvasForTests extends Canvas {
             .join("\n");
     }
 }
+//# sourceMappingURL=CanvasForTests.js.map

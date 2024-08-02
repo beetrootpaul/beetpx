@@ -1,7 +1,3 @@
-/**
- * A mapping which tries to map all the available buttons just in case
- *   any of them will work for the user. Based on the Standard mapping.
- */
 export class GamepadMappingFallback {
     static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
@@ -57,3 +53,4 @@ export class GamepadMappingFallback {
         }
     }
 }
+//# sourceMappingURL=GamepadMappingFallback.js.map

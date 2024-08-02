@@ -1,35 +1,28 @@
-
-/**
- * Here we use Xbox as a default one for all other gamepad types in Firefox,
- *   since my gut feeling is the way `GamepadTypeDetector` detects
- *   DualSense would work for DualShock as well, therefore better assume
- *   there will be more cases of Xbox controller not detected as such.
- */
 export class GamepadMappingFirefoxFallback {
     static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
-            case 1: 
-            case 5: 
+            case 1:
+            case 5:
             case 4:
             case 7:
                 return "button_O";
-            case 2: 
-            case 3: 
+            case 2:
+            case 3:
             case 0:
             case 6:
                 return "button_X";
-            case 12: 
+            case 12:
                 return "button_up";
-            case 13: 
+            case 13:
                 return "button_down";
-            case 14: 
+            case 14:
                 return "button_left";
-            case 15: 
+            case 15:
                 return "button_right";
-            case 16: 
+            case 16:
             case 8:
             case 9:
             case 10:
@@ -41,15 +34,15 @@ export class GamepadMappingFirefoxFallback {
     }
     eventsForAxisValue(axisIndex, axisValue) {
         switch (axisIndex) {
-            case 0: 
-            case 2: 
+            case 0:
+            case 2:
                 return (axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
                     ["button_right"]
                     : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
                         ["button_left"]
                         : []);
-            case 1: 
-            case 3: 
+            case 1:
+            case 3:
                 return (axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
                     ["button_down"]
                     : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
@@ -60,3 +53,4 @@ export class GamepadMappingFirefoxFallback {
         }
     }
 }
+//# sourceMappingURL=GamepadMappingFirefoxFallback.js.map

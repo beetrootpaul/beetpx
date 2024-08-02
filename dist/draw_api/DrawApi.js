@@ -145,3 +145,4 @@ export class DrawApi {
         return this.#canvas.takeSnapshot();
     }
 }
+//# sourceMappingURL=DrawApi.js.map

@@ -45,30 +45,6 @@ export class AssetLoader {
             throw Error(`Assets: could not fetch image file: "${url}"`);
         }
         const arrayBuffer = await httpResponse.arrayBuffer();
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         const decodedPng = fastPngDecode(arrayBuffer);
         if (decodedPng.channels !== 3 && decodedPng.channels !== 4) {
             throw Error(`Assets: only PNG image files with 3 or 4 channels are supported. The file which seems to have ${decodedPng.channels} channels instead: "${url}"`);
@@ -101,8 +77,8 @@ export class AssetLoader {
     }
     #withPathFixed(url) {
         return (url.startsWith("/") ||
-            url.startsWith("http:
-            url.startsWith("https:
+            url.startsWith("http://") ||
+            url.startsWith("https://")) ?
             url
             : `/${url}`;
     }
@@ -110,3 +86,4 @@ export class AssetLoader {
         return httpStatus >= 200 && httpStatus < 300;
     }
 }
+//# sourceMappingURL=AssetLoader.js.map

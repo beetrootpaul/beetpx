@@ -8,3 +8,4 @@ export function booleanChangingEveryNthFrame(n, opts) {
             n
         : true;
 }
+//# sourceMappingURL=booleanChangingEveryNthFrame.js.map

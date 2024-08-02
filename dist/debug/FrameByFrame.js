@@ -9,3 +9,4 @@ export class FrameByFrame {
         Logger.infoBeetPx(`FrameByFrame flag set to: ${this.#active}`);
     }
 }
+//# sourceMappingURL=FrameByFrame.js.map

@@ -4,19 +4,12 @@ export class DrawLine {
     constructor(canvas) {
         this.#canvas = canvas;
     }
-    
     draw(xy, wh, color, pattern) {
-        
-        
-        
         const xyStart = xy.round();
         const xyEnd = xy.add(wh).round();
         if (xyEnd.x - xyStart.x === 0 || xyEnd.y - xyStart.y === 0) {
             return;
         }
-        
-        
-        
         wh = xyEnd.sub(xyStart);
         const whSub1 = wh.sub(wh.sign());
         const c1 = color.type === "pattern" ? color.primary : color;
@@ -25,24 +18,15 @@ export class DrawLine {
             this.#canvas.getMostRecentSnapshot()
             : null;
         const fp = pattern;
-        
-        
-        
         let dXy = whSub1.abs().mul($v(1, -1));
         let currentXy = xyStart;
         const targetXy = xyStart.add(whSub1);
         const step = whSub1.sign();
         let err = dXy.x + dXy.y;
         while (true) {
-            
-            
-            
             this.#drawPixel(currentXy.x, currentXy.y, c1, c2, fp, sn);
             if (currentXy.eq(targetXy))
                 break;
-            
-            
-            
             const errBeforeStep = err;
             if (2 * errBeforeStep >= dXy.y) {
                 currentXy = currentXy.add($v(step.x, 0));
@@ -78,3 +62,4 @@ export class DrawLine {
         }
     }
 }
+//# sourceMappingURL=DrawLine.js.map

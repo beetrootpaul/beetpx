@@ -3,3 +3,4 @@ export function randomElementOf(array) {
         return undefined;
     return array[Math.floor(Math.random() * array.length)];
 }
+//# sourceMappingURL=randomElementOf.js.map

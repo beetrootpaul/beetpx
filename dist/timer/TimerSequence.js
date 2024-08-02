@@ -1,29 +1,13 @@
 import { BeetPx } from "../";
 import { BpxTimer } from "./Timer";
-/**
- * A timer sequence, which is a more advanced version of the {@link BpxTimer}.
- * It allows to define a complex set of intervals and looping with use
- * of multiple `intro` and `loop` phases.
- *
- * @see {@link $timerSeq}
- *
- * @category Core
- */
 export class BpxTimerSequence {
-    /**
-     * @see {@link $timerSeq}
-     *
-     * @group Static factories
-     */
     static of(params, opts) {
         return new BpxTimerSequence(params, opts);
     }
-    
     #firstIterationPhases;
     #loopPhases;
     #firstIterationFrames;
     #loopFrames;
-    
     #firstIterationOffset;
     #ignoreGamePause;
     #onGamePause;
@@ -73,9 +57,6 @@ export class BpxTimerSequence {
         if (this.#recentlyComputedNow?.frameNumber === (this.#pausedFrame ?? this.#fn)) {
             return this.#recentlyComputedNow.value;
         }
-        
-        
-        
         if (!this.#loopTimer ||
             (this.#pausedFrame ?? this.#fn) <
                 this.#firstIterationOffset + this.#firstIterationFrames) {
@@ -105,9 +86,6 @@ export class BpxTimerSequence {
                 t: firstIterationT - offset,
             };
         }
-        
-        
-        
         const loopT = this.#loopTimer.t;
         let offset = 0;
         let prev = this.#firstIterationPhases[this.#firstIterationPhases.length - 1] ?? null;
@@ -132,17 +110,11 @@ export class BpxTimerSequence {
             t: loopT - offset,
         };
     }
-    /**
-     * The name of the phase which has finished in the recent game loop iteration.
-     */
     get justFinishedPhase() {
         return this.hasJustFinishedOverall || this.#now.t === 0 ?
             this.#now.recentlyFinishedPhase
             : null;
     }
-    /**
-     * The name of the currently counted phase.
-     */
     get currentPhase() {
         return this.#now.phase?.name ?? null;
     }
@@ -151,75 +123,39 @@ export class BpxTimerSequence {
             BeetPx.frameNumber
             : BeetPx.frameNumberOutsidePause;
     }
-    /**
-     * A current counted frame number within the current phase, incrementing from 0.
-     */
     get t() {
         return this.#now.t;
     }
-    /**
-     * A progress of the counting for the current phase, gradually incrementing from 0 to 1.
-     */
     get progress() {
         return this.#now.phase && this.#now.phase.frames > 0 ?
             this.#now.t / this.#now.phase.frames
             : 1;
     }
-    /**
-     * A an amount of frames left to be counted in the current phase, decrementing down to 0.
-     */
     get framesLeft() {
         return this.#now.phase ? this.#now.phase.frames - this.#now.t : 0;
     }
-    /**
-     * A current counted frame number for the entire sequence (intro + 1 loop pass),
-     * incrementing from 0.
-     * After the first loop pass, the intro is no longer taken into account in the calculation.
-     */
     get tOverall() {
         return this.#firstIterationTimer.hasFinished ?
             (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
             : this.#firstIterationTimer.t;
     }
-    /**
-     * A an amount of frames left to be counted for the entire sequence (intro + 1 loop pass),
-     * decrementing down to 0.
-     * After the first loop pass, the intro is no longer taken into account in the calculation.
-     */
     get framesLeftOverall() {
         return this.#firstIterationTimer.hasFinished ?
             (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
             : this.#firstIterationTimer.framesLeft;
     }
-    /**
-     * A progress of the counting for the entire sequence (intro + 1 loop pass),
-     * gradually incrementing from 0 to 1.
-     * After the first loop pass, the intro is no longer taken into account in the calculation.
-     */
     get progressOverall() {
         return this.#firstIterationTimer.hasFinished ?
             (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
             : this.#firstIterationTimer.progress;
     }
-    /**
-     * Whether this timer has finished already the entire sequence (intro + 1 loop pass).
-     * This becomes `true` forever afterwards.
-     */
     get hasFinishedOverall() {
         return this.#firstIterationTimer.hasFinished;
     }
-    /**
-     * Whether this timer has finished the entire sequence (intro + 1 loop pass)
-     * in the most recent game loop iteration.
-     * After the first loop pass, the intro is no longer taken into account.
-     */
     get hasJustFinishedOverall() {
         return (this.#loopTimer?.hasJustFinished ||
             this.#firstIterationTimer.hasJustFinished);
     }
-    /**
-     * Pauses the timer.
-     */
     pause() {
         if (this.#isPaused)
             return;
@@ -228,9 +164,6 @@ export class BpxTimerSequence {
         this.#firstIterationTimer.pause();
         this.#loopTimer?.pause();
     }
-    /**
-     * Resumes the timer.
-     */
     resume() {
         if (!this.#isPaused)
             return;
@@ -240,9 +173,6 @@ export class BpxTimerSequence {
         this.#firstIterationTimer.resume();
         this.#loopTimer?.resume();
     }
-    /**
-     * Restarts the timer from 0.
-     */
     restart() {
         this.#firstIterationOffset = this.#fn;
         this.#isPaused = false;
@@ -259,3 +189,4 @@ export class BpxTimerSequence {
         }
     }
 }
+//# sourceMappingURL=TimerSequence.js.map

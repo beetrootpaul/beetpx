@@ -11,3 +11,4 @@ export class StorageApi {
         ScopedLocaleStorage.removeItem(StorageApi.#key);
     }
 }
+//# sourceMappingURL=StorageApi.js.map

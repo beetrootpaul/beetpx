@@ -1,38 +1,23 @@
-
 export class GamepadMappingFirefoxDualSenseOther {
     static #stickAxisThreshold = 0.6;
     eventForButton(buttonIndex, button) {
         if (!button.pressed)
             return null;
         switch (buttonIndex) {
-            case 0: 
-            case 2: 
+            case 0:
+            case 2:
                 return "button_O";
-            case 1: 
-            case 3: 
+            case 1:
+            case 3:
                 return "button_X";
-            case 9: 
+            case 9:
                 return "button_menu";
         }
         return null;
     }
     eventsForAxisValue(axisIndex, axisValue) {
-        
         if (axisIndex === 4) {
-            
-            
-            
-            
-            
-            
-            
-            
             const normalizedValue = axisValue * (14 / 2) + 8;
-            
-            
-            
-            
-            
             if (normalizedValue < 0.5 ||
                 normalizedValue > 15.5 ||
                 (normalizedValue > 7.5 && normalizedValue < 8.5)) {
@@ -61,15 +46,15 @@ export class GamepadMappingFirefoxDualSenseOther {
             }
         }
         switch (axisIndex) {
-            case 0: 
-            case 2: 
+            case 0:
+            case 2:
                 return (axisValue > GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold ?
                     ["button_right"]
                     : (axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold) ?
                         ["button_left"]
                         : []);
-            case 1: 
-            case 3: 
+            case 1:
+            case 3:
                 return (axisValue > GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold ?
                     ["button_down"]
                     : (axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold) ?
@@ -80,3 +65,4 @@ export class GamepadMappingFirefoxDualSenseOther {
         }
     }
 }
+//# sourceMappingURL=GamepadMappingFirefoxDualSenseOther.js.map

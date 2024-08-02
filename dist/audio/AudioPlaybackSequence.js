@@ -78,3 +78,4 @@ export class AudioPlaybackSequence extends AudioPlayback {
         return ABU.concat(...mixedBuffers);
     }
 }
+//# sourceMappingURL=AudioPlaybackSequence.js.map

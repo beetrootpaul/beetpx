@@ -28,7 +28,6 @@ export class GameInputGamepad {
         this.#browserType = params.browserType;
     }
     startListening() {
-        
     }
     update(eventsCollector) {
         let wasAnyEventDetected = false;
@@ -83,9 +82,6 @@ export class GameInputGamepad {
                 this.#mappings.safari8bitdo
                 : this.#mappings["8bitdo"];
         }
-        
-        
-        
         if (gamepad.mapping === "standard") {
             return gamepadType === "dualsense" ?
                 this.#mappings.dualSense
@@ -96,3 +92,4 @@ export class GameInputGamepad {
         }
     }
 }
+//# sourceMappingURL=GameInputGamepad.js.map

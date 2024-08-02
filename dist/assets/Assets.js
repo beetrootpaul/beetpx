@@ -25,3 +25,4 @@ export class Assets {
             throwError(`Assets: There is no JSON loaded for: ${jsonUrl}`));
     }
 }
+//# sourceMappingURL=Assets.js.map

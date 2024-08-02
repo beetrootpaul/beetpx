@@ -15,3 +15,4 @@ export class CanvasSnapshotForProduction {
         return BpxRgbColor.of(this.#imageDataData[dataIndex], this.#imageDataData[dataIndex + 1], this.#imageDataData[dataIndex + 2]);
     }
 }
+//# sourceMappingURL=CanvasSnapshotForProduction.js.map

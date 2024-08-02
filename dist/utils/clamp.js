@@ -7,3 +7,4 @@ export function clamp(a, b, c) {
             : a > c ? c
                 : a);
 }
+//# sourceMappingURL=clamp.js.map

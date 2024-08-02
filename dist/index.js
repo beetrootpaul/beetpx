@@ -1,7 +1,3 @@
-/**
- * @module API
- */
-
 export { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 export { BpxPalettePico8 } from "./color/PalettePico8";
 export { BpxPatternColors } from "./color/PatternColors";
@@ -20,10 +16,8 @@ export { BpxAnimatedSprite } from "./sprite/AnimatedSprite";
 export { BpxSprite } from "./sprite/Sprite";
 export { BpxTimer } from "./timer/Timer";
 export { BpxTimerSequence } from "./timer/TimerSequence";
-
 export { $, BeetPx } from "./BeetPx";
 export { $d, BeetPxDraw } from "./BeetPxDraw";
 export { $u, BeetPxUtils } from "./BeetPxUtils";
-
 export * from "./shorthands";
-
+//# sourceMappingURL=index.js.map

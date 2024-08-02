@@ -12,3 +12,4 @@ export function drawTextWithOutline(text, canvasXy1, textColor, outlineColor, op
         scaleXy: opts?.scaleXy,
     });
 }
+//# sourceMappingURL=drawTextWithOutline.js.map

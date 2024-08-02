@@ -51,15 +51,8 @@ export class GameInputMouse {
             eventsCollector.add(event);
             anythingAdded = true;
         }
-        
-        
-        
-        
-        
-        
-        
-        
         this.#eventsSinceLastUpdate.delete("full_screen");
         return anythingAdded;
     }
 }
+//# sourceMappingURL=GameInputMouse.js.map

@@ -13,9 +13,6 @@ export class Canvas {
         this.#maxX = this.canvasSize.x - 1;
         this.#maxY = this.canvasSize.y - 1;
     }
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
     setClippingRegion(xy, wh) {
         const prev = [
             BpxVector2d.of(this.#minX, this.#minY),
@@ -28,9 +25,6 @@ export class Canvas {
         this.#maxY = xyMaxExclusive.y - 1;
         return prev;
     }
-    /**
-     * @returns - previous clipping region in form of an array: [xy, wh]
-     */
     removeClippingRegion() {
         return this.setClippingRegion(BpxVector2d.of(0, 0), this.canvasSize);
     }
@@ -54,3 +48,4 @@ export class Canvas {
         this.doRender();
     }
 }
+//# sourceMappingURL=Canvas.js.map

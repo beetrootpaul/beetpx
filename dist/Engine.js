@@ -48,11 +48,7 @@ export class Engine {
     #currentFrameNumber = 0;
     #currentFrameNumberOutsidePause = 0;
     #renderingFps = 1;
-    
-    
-    
     #wasUpdateCalledAtLeastOnce = false;
-    
     #alreadyResumedAudioContext = false;
     get frameNumber() {
         return this.#currentFrameNumber;
@@ -73,19 +69,14 @@ export class Engine {
         ScopedLocaleStorage.gameId = engineConfig.gameId;
         window.addEventListener("error", event => {
             HtmlTemplate.showError(event.message);
-            
-            
             this.audioApi
                 ?.getAudioContext()
                 .suspend()
                 .then(() => { });
-            
             return true;
         });
         window.addEventListener("unhandledrejection", event => {
             HtmlTemplate.showError(event.reason);
-            
-            
             this.audioApi
                 ?.getAudioContext()
                 .suspend()
@@ -201,13 +192,6 @@ export class Engine {
         }
         this.#isStarted = true;
         if (this.#config.requireConfirmationOnTabClose) {
-            
-            
-            
-            
-            
-            
-            
             window.addEventListener("beforeunload", event => {
                 event.preventDefault();
                 event.returnValue = "";
@@ -308,3 +292,4 @@ export class Engine {
         });
     }
 }
+//# sourceMappingURL=Engine.js.map

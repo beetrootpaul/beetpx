@@ -26,7 +26,6 @@ export class GameLoop {
         this.#accumulatedDeltaTimeMillis = 0;
         this.#requestAnimationFrameFn(this.#tick);
     }
-    
     #tick = (currentTimeMillis) => {
         if (this.#documentVisibilityStateProvider.visibilityState === "hidden") {
             this.#previousTimeMillis = currentTimeMillis;
@@ -54,3 +53,4 @@ export class GameLoop {
     };
 }
 _a = GameLoop;
+//# sourceMappingURL=GameLoop.js.map

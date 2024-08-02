@@ -119,9 +119,6 @@ export class GameInputTouch {
         document.addEventListener("touchend", this.#handleTouchEvent.bind(this));
     }
     #handleTouchEvent(touchEvent) {
-        
-        
-        
         touchEvent.preventDefault();
         for (const touch of touchEvent.changedTouches) {
             if (touchEvent.type === "touchmove") {
@@ -178,14 +175,6 @@ export class GameInputTouch {
                     }
                 }
             }
-            
-            
-            
-            
-            
-            
-            
-            
             if (ongoingEvents & _a.#bitMasks.fullScreen) {
                 this.#ongoingTouches.set(touchIdentifier, ongoingEvents & ~_a.#bitMasks.fullScreen);
             }
@@ -194,3 +183,4 @@ export class GameInputTouch {
     }
 }
 _a = GameInputTouch;
+//# sourceMappingURL=GameInputTouch.js.map

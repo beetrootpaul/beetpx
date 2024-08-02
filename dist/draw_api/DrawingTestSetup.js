@@ -10,3 +10,4 @@ export function drawingTestSetup(canvasWidth, canvasHeight, canvasBgColor) {
     });
     return { canvas, assets, drawApi };
 }
+//# sourceMappingURL=DrawingTestSetup.js.map

@@ -6,7 +6,6 @@ export class DrawRect {
     }
     draw(xy, wh, color, fill, pattern) {
         const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
-        
         if (!this.#canvas.canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }
@@ -16,7 +15,6 @@ export class DrawRect {
             this.#canvas.getMostRecentSnapshot()
             : null;
         const fp = pattern;
-        
         for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
             this.#drawPixel(x, xyMinInclusive.y, c1, c2, fp, sn);
             this.#drawPixel(x, xyMaxExclusive.y - 1, c1, c2, fp, sn);
@@ -26,7 +24,6 @@ export class DrawRect {
             this.#drawPixel(xyMaxExclusive.x - 1, y, c1, c2, fp, sn);
         }
         if (fill === "inside") {
-            
             for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
                 for (let y = xyMinInclusive.y + 1; y < xyMaxExclusive.y - 1; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
@@ -34,43 +31,34 @@ export class DrawRect {
             }
         }
         else if (fill === "outside") {
-            
             for (let x = 0; x < xyMinInclusive.x; x += 1) {
-                
                 for (let y = 0; y < xyMinInclusive.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
-                
                 for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
-                
                 for (let y = xyMaxExclusive.y; y < this.#canvas.canvasSize.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
             }
-            
             for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
                 for (let y = 0; y < xyMinInclusive.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
             }
-            
             for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {
                 for (let y = xyMaxExclusive.y; y < this.#canvas.canvasSize.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
             }
             for (let x = xyMaxExclusive.x; x < this.#canvas.canvasSize.x; x += 1) {
-                
                 for (let y = 0; y < xyMinInclusive.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
-                
                 for (let y = xyMinInclusive.y; y < xyMaxExclusive.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
-                
                 for (let y = xyMaxExclusive.y; y < this.#canvas.canvasSize.y; y += 1) {
                     this.#drawPixel(x, y, c1, c2, fp, sn);
                 }
@@ -101,3 +89,4 @@ export class DrawRect {
         }
     }
 }
+//# sourceMappingURL=DrawRect.js.map

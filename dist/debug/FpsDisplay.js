@@ -21,7 +21,6 @@ export class FpsDisplay {
     #recentSamples;
     #nextSampleIndex;
     #lastCalculatedAverageFps;
-    
     drawRenderingFps(renderingFps) {
         this.#recentSamples[this.#nextSampleIndex] = renderingFps;
         this.#nextSampleIndex = mod(this.#nextSampleIndex + 1, this.#recentSamples.length);
@@ -39,3 +38,4 @@ export class FpsDisplay {
         this.#drawApi.setFont(prevFont);
     }
 }
+//# sourceMappingURL=FpsDisplay.js.map
