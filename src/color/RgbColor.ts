@@ -1,27 +1,33 @@
 /**
- * TODO: docs
+ * @category Colors
  */
 export type BpxRgbCssHex = string;
 
 /**
- * TODO: docs
+ * A representation of a RGB, fully opaque color
  *
- * @categoryTODO Drawing
+ * @category Colors
  */
 export class BpxRgbColor {
   /**
-   * TODO: docs
+   * @example
+   * ```ts
+   * BpxRgbColor.of(255, 0, 77);
+   * ```
    *
-   * @groupTODO Static factories
+   * @group Static factories
    */
   static of(r: number, g: number, b: number): BpxRgbColor {
     return new BpxRgbColor(r, g, b);
   }
 
   /**
-   * TODO: docs
+   * @example
+   * ```ts
+   * BpxRgbColor.fromCssHex("#FF004D");
+   * ```
    *
-   * @groupTODO Static factories
+   * @group Static factories
    */
   static fromCssHex(cssHex: BpxRgbCssHex): BpxRgbColor {
     if (!/^#[0-9a-fA-F]{6}$/.test(cssHex)) {
@@ -37,27 +43,49 @@ export class BpxRgbColor {
   }
 
   /**
-   * TODO: docs
+   * A property helpful for TypeScript type inference, when distinguishing from
+   * other types of colors.
+   *
+   * @example
+   * ```ts
+   * const c:
+   *   | null
+   *   | BpxRgbColor
+   *   | BpxPatternColors
+   *   | BpxSpriteColorMapping
+   *   | BpxCanvasSnapshotColorMapping
+   *   = getColor();
+   * if (c == null) {
+   *   // c is transparent here
+   * } else if (c.type === "rgb") {
+   *   // c is BpxRgbColor here
+   * } else if (c.type === "pattern") {
+   *   // c is BpxPatternColors here
+   * } else if (c.type === "sprite_mapping") {
+   *   // c is BpxSpriteColorMapping here
+   * } else {
+   *   // c is BpxCanvasSnapshotColorMapping here
+   * }
+   * ```
    */
   readonly type = "rgb";
 
   /**
-   * TODO: docs
-   *
-   * values between 0 and 255
+   * A red component, an integer between 0 and 255.
    */
   readonly r: number;
   /**
-   * TODO: docs
+   A green component, an integer between 0 and 255.
    */
   readonly g: number;
   /**
-   * TODO: docs
+   A blue component, an integer between 0 and 255.
    */
   readonly b: number;
 
   /**
-   * TODO: docs
+   * A hex representation of this color. Can be used e.g. for CSS.
+   * Or just for simple way to store a color as a single value.
    */
   readonly cssHex: BpxRgbCssHex;
 
@@ -74,14 +102,14 @@ export class BpxRgbColor {
   }
 
   /**
-   * TODO: docs
+   * Checks if this color has same red, green, and blue components as the other one.
    */
   isSameAs(another: BpxRgbColor): boolean {
     return another.r === this.r && another.g === this.g && another.b === this.b;
   }
 
   /**
-   * TODO: docs
+   * Returns an array containing red, green, and blue components of this color.
    */
   asArray(): [r: number, g: number, b: number] {
     return [this.r, this.g, this.b];

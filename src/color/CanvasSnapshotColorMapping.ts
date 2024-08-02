@@ -14,7 +14,30 @@ export class BpxCanvasSnapshotColorMapping {
   }
 
   /**
-   * TODO: docs
+   * A property helpful for TypeScript type inference, when distinguishing from
+   * other types of colors.
+   *
+   * @example
+   * ```ts
+   * const c:
+   *   | null
+   *   | BpxRgbColor
+   *   | BpxPatternColors
+   *   | BpxSpriteColorMapping
+   *   | BpxCanvasSnapshotColorMapping
+   *   = getColor();
+   * if (c == null) {
+   *   // c is transparent here
+   * } else if (c.type === "rgb") {
+   *   // c is BpxRgbColor here
+   * } else if (c.type === "pattern") {
+   *   // c is BpxPatternColors here
+   * } else if (c.type === "sprite_mapping") {
+   *   // c is BpxSpriteColorMapping here
+   * } else {
+   *   // c is BpxCanvasSnapshotColorMapping here
+   * }
+   * ```
    */
   readonly type = "canvas_snapshot_mapping";
 

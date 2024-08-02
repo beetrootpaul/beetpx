@@ -18,9 +18,27 @@ import { identity } from "./utils/identity";
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxAnimatedSprite.from}. The difference is, in this
+ * one the `imageUrl` is passed first and a new function is created out of it,
+ * so you can use it to defined animated sprites without passing that URL
+ * over and over.
  *
- * A shorthand for {@link BpxAnimatedSprite.from}
+ * @example
+ * ```ts
+ * const a = $aspr("spritesheet.png");
+ * const animation1 = a(8, 8, [
+ *   [0,0],
+ *   [8,0],
+ *   [16,0],
+ * ]);
+ * const animation2 = a(16, 8, [
+ *   [0,8],
+ *   [16,8],
+ *   [90,90],
+ * ], { frameDuration: 3 });
+ * ```
+ *
+ * @category Drawing
  */
 export function $aspr(
   imageUrl: BpxImageUrl,
@@ -42,9 +60,16 @@ export function $aspr(
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxFont.of}.
+ *
+ * @category Fonts
  */
 export function $font(config: Partial<BpxFontConfig>): BpxFont;
+/**
+ * A shorthand for {@link BpxFont.basedOn}.
+ *
+ * @category Fonts
+ */
 export function $font(
   baseFont: BpxFont,
   extendedConfig: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
@@ -59,24 +84,37 @@ export function $font(
 }
 
 /**
- * TODO: docs
+ * A built-in font based on {@link BpxFontConfigPico8}
+ *
+ * @category Fonts
  */
 export const $font_pico8 = $font(new BpxFontConfigPico8());
 /**
- * TODO: docs
+ * A built-in font based on {@link BpxFontConfigSaint11Minimal4}
+ *
+ * @category Fonts
  */
 export const $font_saint11Minimal4 = $font(new BpxFontConfigSaint11Minimal4());
 /**
- * TODO: docs
+ * A built-in font based on {@link BpxFontConfigSaint11Minimal5}
+ *
+ * @category Fonts
  */
 export const $font_saint11Minimal5 = $font(new BpxFontConfigSaint11Minimal5());
 
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxRgbColor.of}.
+ *
+ * @category Colors
  */
 export function $rgb(r: number, g: number, b: number): BpxRgbColor;
+/**
+ * A shorthand for {@link BpxRgbColor.fromCssHex}.
+ *
+ * @category Colors
+ */
 export function $rgb(cssHex: string): BpxRgbColor;
 export function $rgb(
   rOrCssHex: string | number,
@@ -89,40 +127,58 @@ export function $rgb(
 }
 
 /**
- * TODO: docs
+ * A built-in color `"#000000`
+ *
+ * @category Colors
  */
 export const $rgb_black = $rgb("#000000");
 /**
- * TODO: docs
+ * A built-in color `"#ffffff`
+ *
+ * @category Colors
  */
 export const $rgb_white = $rgb("#ffffff");
 /**
- * TODO: docs
+ * A built-in color `"#ff0000`
+ *
+ * @category Colors
  */
 export const $rgb_red = $rgb("#ff0000");
 /**
- * TODO: docs
+ * A built-in color `"#00ff00`
+ *
+ * @category Colors
  */
 export const $rgb_green = $rgb("#00ff00");
 /**
- * TODO: docs
+ * A built-in color `"#0000ff`
+ *
+ * @category Colors
  */
 export const $rgb_blue = $rgb("#0000ff");
 /**
- * TODO: docs
+ * A built-in color `"#00ffff`
+ *
+ * @category Colors
  */
 export const $rgb_cyan = $rgb("#00ffff");
 /**
- * TODO: docs
+ * A built-in color `"#ff00ff`
+ *
+ * @category Colors
  */
 export const $rgb_magenta = $rgb("#ff00ff");
 /**
- * TODO: docs
+ * A built-in color `"#ffff00`
+ *
+ * @category Colors
  */
 export const $rgb_yellow = $rgb("#ffff00");
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxPalettePico8}
+ *
+ * @category Colors
  */
 export const $rgb_p8 = BpxPalettePico8;
 
