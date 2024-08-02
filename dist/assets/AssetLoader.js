@@ -42,7 +42,7 @@ export class AssetLoader {
         Logger.infoBeetPx(`Assets: loading image "${url}"`);
         const httpResponse = await fetch(this.#withPathFixed(url));
         if (!this.#is2xx(httpResponse.status)) {
-            throw Error(`Assets: could not fetch PNG file: "${url}"`);
+            throw Error(`Assets: could not fetch image file: "${url}"`);
         }
         const arrayBuffer = await httpResponse.arrayBuffer();
         
