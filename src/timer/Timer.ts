@@ -9,7 +9,7 @@ export class BpxTimer {
   /**
    * TODO: docs
    */
-  static for(opts: {
+  static of(opts: {
     frames: number;
     loop: boolean;
     paused: boolean;

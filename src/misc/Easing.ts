@@ -1,34 +1,32 @@
 /**
- * TODO: docs
+ * @category Miscellaneous
  */
 export type BpxEasingFn = (t: number) => number;
 
 /**
- * TODO: docs
+ * A collection of easing functions.
+ *
+ * @category Miscellaneous
  */
 export class BpxEasing {
   /**
-   * TODO: docs
+   * @group Static values
    */
   static linear: BpxEasingFn = (t: number) => t;
-
   /**
-   * TODO: docs
+   * @group Static values
    */
   static inQuadratic: BpxEasingFn = (t: number) => t ** 2;
-
   /**
-   * TODO: docs
+   * @group Static values
    */
   static outQuadratic: BpxEasingFn = (t: number) => 1 - (t - 1) ** 2;
-
   /**
-   * TODO: docs
+   * @group Static values
    */
   static inQuartic: BpxEasingFn = (t: number) => t ** 4;
-
   /**
-   * TODO: docs
+   * @group Static values
    */
   static outQuartic: BpxEasingFn = (t: number) => 1 - (t - 1) ** 4;
 }

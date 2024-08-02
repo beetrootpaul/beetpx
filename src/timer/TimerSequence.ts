@@ -86,7 +86,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
     this.#firstIterationOffset = this.#fn + opts.delayFrames;
 
-    this.#firstIterationTimer = BpxTimer.for({
+    this.#firstIterationTimer = BpxTimer.of({
       frames: this.#firstIterationFrames,
       loop: false,
       paused: opts.paused,
@@ -95,7 +95,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
     });
     this.#loopTimer =
       this.#loopPhases.length > 0 ?
-        BpxTimer.for({
+        BpxTimer.of({
           frames: this.#loopFrames,
           loop: true,
           paused: opts.paused,
@@ -316,7 +316,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
     this.#firstIterationTimer.restart();
     if (this.#loopTimer) {
-      this.#loopTimer = BpxTimer.for({
+      this.#loopTimer = BpxTimer.of({
         frames: this.#loopFrames,
         loop: true,
         paused: false,

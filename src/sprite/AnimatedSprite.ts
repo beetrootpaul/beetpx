@@ -87,7 +87,7 @@ export class BpxAnimatedSprite {
       ),
     );
 
-    this.#loop = BpxTimer.for({
+    this.#loop = BpxTimer.of({
       frames: this.#sprites.length,
       loop: true,
       paused: opts.paused,

@@ -20,7 +20,7 @@ import { identity } from "./utils/identity";
 /**
  * A shorthand for {@link BpxAnimatedSprite.from}. The difference is, in this
  * one the `imageUrl` is passed first and a new function is created out of it,
- * so you can use it to defined animated sprites without passing that URL
+ * so you can use it to define animated sprites without passing that URL
  * over and over.
  *
  * @example
@@ -127,49 +127,49 @@ export function $rgb(
 }
 
 /**
- * A built-in color `"#000000`
+ * A shorthand for `$rgb("#000000")`.
  *
  * @category Colors
  */
 export const $rgb_black = $rgb("#000000");
 /**
- * A built-in color `"#ffffff`
+ * A shorthand for `$rgb("#ffffff")`.
  *
  * @category Colors
  */
 export const $rgb_white = $rgb("#ffffff");
 /**
- * A built-in color `"#ff0000`
+ * A shorthand for `$rgb("#ff0000")`.
  *
  * @category Colors
  */
 export const $rgb_red = $rgb("#ff0000");
 /**
- * A built-in color `"#00ff00`
+ * A shorthand for `$rgb("#00ff00")`.
  *
  * @category Colors
  */
 export const $rgb_green = $rgb("#00ff00");
 /**
- * A built-in color `"#0000ff`
+ * A shorthand for `$rgb("#0000ff")`.
  *
  * @category Colors
  */
 export const $rgb_blue = $rgb("#0000ff");
 /**
- * A built-in color `"#00ffff`
+ * A shorthand for `$rgb("#00ffff")`.
  *
  * @category Colors
  */
 export const $rgb_cyan = $rgb("#00ffff");
 /**
- * A built-in color `"#ff00ff`
+ * A shorthand for `$rgb("#ff00ff")`.
  *
  * @category Colors
  */
 export const $rgb_magenta = $rgb("#ff00ff");
 /**
- * A built-in color `"#ffff00`
+ * A shorthand for `$rgb("#ffff00")`.
  *
  * @category Colors
  */
@@ -185,7 +185,19 @@ export const $rgb_p8 = BpxPalettePico8;
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxSprite.from}. The difference is, in this
+ * one the `imageUrl` is passed first and a new function is created out of it,
+ * so you can use it to define sprites without passing that URL
+ * over and over.
+ *
+ * @example
+ * ```ts
+ * const s = $spr("spritesheet.png");
+ * const sprite1 = a(8, 8, 0, 0);
+ * const sprite2 = a(16, 8, 90, 90);
+ * ```
+ *
+ * @category Drawing
  */
 export function $spr(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory {
   return (w: number, h: number, x: number, y: number) =>
@@ -195,7 +207,14 @@ export function $spr(imageUrl: BpxImageUrl): BpxImageBoundSpriteFactory {
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxTimer.of}.
+ *
+ * @example
+ * ```ts
+ * $timer(60, { loop: true });
+ * ```
+ *
+ * @category Core
  */
 export function $timer(
   frames: number,
@@ -206,7 +225,7 @@ export function $timer(
     onGamePause?: "pause" | "ignore";
   },
 ): BpxTimer {
-  return BpxTimer.for({
+  return BpxTimer.of({
     frames,
     loop: opts?.loop ?? false,
     paused: opts?.paused ?? false,
@@ -216,7 +235,26 @@ export function $timer(
 }
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxTimerSequence.of}.
+ *
+ * @example
+ * ```ts
+ * $timerSeq({
+ *   intro: [
+ *     ["entrance", 8],
+ *   ],
+ *   loop: [
+ *     ["attack1", 60],
+ *     ["pause1", 60],
+ *     ["attack2", 120],
+ *     ["pause2", 90],
+ *   ],
+ * }, {
+ *   paused: true,
+ * });
+ * ```
+ *
+ * @category Core
  */
 export function $timerSeq<TPhaseName extends string>(
   params: {
@@ -245,20 +283,41 @@ export function $timerSeq<TPhaseName extends string>(
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * TODO: docs
+ * A shorthand for {@link BpxVector2d.of}.
+ *
+ * @example
+ * ```ts
+ * $v(16); // same as `$v(16, 16)`
+ * ```
+ *
+ * @category Core
  */
 export function $v(value: number): BpxVector2d;
+/**
+ * A shorthand for {@link BpxVector2d.of}.
+ *
+ * @example
+ * ```ts
+ * $v(16, 32);
+ * ```
+ *
+ * @category Core
+ */
 export function $v(x: number, y: number): BpxVector2d;
 export function $v(valueOrX: number, maybeY?: number): BpxVector2d {
   return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
 }
 
 /**
- * TODO: docs
+ * A shorthand for `$v(0, 0)`.
+ *
+ * @category Core
  */
 export const $v_0_0 = $v(0, 0);
 /**
- * TODO: docs
+ * A shorthand for `$v(0, 0)`.
+ *
+ * @category Core
  */
 export const $v_1_1 = $v(1, 1);
 

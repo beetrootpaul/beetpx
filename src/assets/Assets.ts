@@ -2,56 +2,130 @@ import { type PngDataArray } from "fast-png";
 import { throwError } from "../utils/throwError";
 
 /**
- * TODO: docs
+ * @see {@link BpxImageAsset}
+ *
+ * @category Assets
  */
 export type BpxImageUrl = string;
+
 /**
- * TODO: docs
+ * @see {@link BpxSoundAsset}
+ *
+ * @category Assets
  */
 export type BpxSoundUrl = string;
+
 /**
- * TODO: docs
+ * @see {@link BpxJsonAsset}
+ *
+ * @category Assets
  */
 export type BpxJsonUrl = string;
 
 /**
- * TODO: docs
+ * @example
+ * ```ts
+ * const sprite1Url: BpxImageUrl = "spritesheet.png"; // refers to `./public/spritesheet.png`
+ * const sprite2Url: BpxImageUrl = "https://the.url/of/another-spritesheet.png";
+ *
+ * let sprite1: BpxSprite;
+ * let sprite2: BpxSprite;
+ *
+ * $.setOnStarted(() => {
+ *   sprite1 = $spr(sprite1Url)(8,8,0,0);
+ *   sprite2 = $spr(sprite2Url)(8,8,0,0);
+ * });
+ *
+ * $.start({
+ *   // ...,
+ *  assets: [
+ *    sprite1Url,
+ *    sprite2Url,
+ *  ],
+ * });
+ * ```
+ *
+ * @category Assets
  */
 export type BpxImageAsset = {
   /**
-   * TODO: docs
+   * Image's width in pixels.
    */
   width: number;
   /**
-   * TODO: docs
+   * Image's height in pixels.
    */
   height: number;
   /**
-   * TODO: docs
+   * Number of image channels.
    */
   channels: 3 | 4;
   /**
-   * TODO: docs
+   * The actual image data.
    */
   rgba8bitData: PngDataArray;
 };
 
 /**
- * TODO: docs
+ * @example
+ * ```ts
+ * const musicUrl: BpxSoundUrl = "music.flac"; // refers to `./public/music.flac`
+ * const sfxUrl: BpxSoundUrl = "https://the.url/of/sfx.wav";
+ *
+ * let playback1: BpxAudioPlaybackId;
+ * let playback2: BpxAudioPlaybackId;
+ *
+ * $.setOnStarted(() => {
+ *   playback1 = $.startPlayback(musicUrl);
+ *   playback2 = $.startPlayback(sfxUrl);
+ * });
+ *
+ * $.start({
+ *   // ...,
+ *  assets: [
+ *    musicUrl,
+ *    sfxUrl,
+ *  ],
+ * });
+ * ```
+ *
+ * @category Assets
  */
 export type BpxSoundAsset = {
   /**
-   * TODO: docs
+   * The actual sound data.
    */
   audioBuffer: AudioBuffer;
 };
 
 /**
- * TODO: docs
+ * @example
+ * ```ts
+ * const statsUrl: BpxJsonUrl = "level.ldtk"; // refers to `./public/stats.json`
+ * const levelUrl: BpxJsonUrl = "https://the.url/of/level.ldtk";
+ *
+ * let stats: BpxJsonAsset;
+ * let level: BpxJsonAsset;
+ *
+ * $.setOnStarted(() => {
+ *   const stats: BpxJsonAsset = $.getJsonAsset(statsUrl);
+ *   const level: BpxJsonAsset = $.getJsonAsset(levelUrl);
+ * });
+ *
+ * $.start({
+ *   // ...,
+ *  assets: [
+ *    statsUrl,
+ *    levelUrl,
+ *  ],
+ * });
+ * ```
+ *
+ * @category Assets
  */
 export type BpxJsonAsset = {
   /**
-   * TODO: docs
+   * A content of the fetched JSON file.
    */
   json: any;
 };

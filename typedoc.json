@@ -8,10 +8,12 @@
   "categoryOrder": [
     "API entry points",
     "Lifecycle",
+    "Core",
     "Drawing",
     "Colors",
     "Fonts",
     "Audio",
+    "Assets",
     "Game input",
     "Game pause",
     "Storage",
@@ -22,6 +24,7 @@
     "Other"
   ],
   "groupOrder": [
+    "Static values",
     "Static factories",
     "*"
   ]

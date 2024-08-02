@@ -94,17 +94,41 @@ declare global {
   }
 
   /**
-   * TODO: docs
+   * A constant injected into global namespace during the build process.
+   * Indicates whether the build is meant to be used for production
+   * deployment (when run with `beetpx build`) or for development purposes
+   * (when run with `beetpx dev`).
+   *
+   * @example
+   * ```ts
+   * $.start({
+   *   // ...,
+   *   requireConfirmationOnTabClose: BEETPX__IS_PROD,
+   *   debugMode: {
+   *     available: !BEETPX__IS_PROD,
+   *   },
+   *   frameByFrame: {
+   *     available: !BEETPX__VERSION,
+   *   },
+   * });
+   * ```
    *
    * @notExported
-   * @categoryTODO Globals
+   * @category Globals
    */
   const BEETPX__IS_PROD: boolean;
+
   /**
-   * TODO: docs
+   * A constant injected into global namespace during the build process.
+   * Holds a version string of a BeetPx the game was built with.
+   *
+   * @example
+   * ```ts
+   * $.logDebug(`BeetPx version: ${BEETPX__VERSION}`);
+   * ```
    *
    * @notExported
-   * @categoryTODO Globals
+   * @category Globals
    */
   const BEETPX__VERSION: string;
 }
