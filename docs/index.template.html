@@ -116,6 +116,9 @@
 
       #links {
         & ol {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+
           list-style-type: none;
           padding-left: 0;
 
@@ -138,6 +141,18 @@
       @media (max-width: 810px) or (max-height: 810px) {
         html {
           font-size: 80%;
+        }
+      }
+
+      @media (max-width: 340px) {
+        #links ol {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 270px) {
+        #links ol {
+          grid-template-columns: repeat(1, 1fr);
         }
       }
     </style>
