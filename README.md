@@ -106,10 +106,6 @@ https://beetrootpaul.itch.io/beetpx-input-tester .
 
 You can find docs at https://beetpx.dev .
 
-⚠️ Please be aware the docs are very raw so far. There are mostly just a list of
-exposed types and classes and constants, and nothing more. This is something to
-be improved before 1.0 release.
-
 ℹ️ For a quick start you can start by typing either `BeetPx.` and checking what
 your IDE suggests. Same for `BeetPxDraw.`, and `BeetPxUtils.`. Their shorthands
 are respectively: `$`, `$d`, and `$u`.
