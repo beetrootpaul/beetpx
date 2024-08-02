@@ -182,6 +182,11 @@ There is a PICO-8 color palette ready to use, exported as `$rgb_p8`. That
 palette is created by zep and available under a CC-0 license (public domain,
 free to use). For more info see: https://www.lexaloffle.com/pico-8.php?page=faq
 
+### Bresenham's Algorithm implementation
+
+I based the line and ellipse drawing methods on a Bresenham's Algorithm implementation by Alois Zingl:
+http://members.chello.at/easyfilter/bresenham.html
+
 ## Known Issues
 
 - Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast
