@@ -403,7 +403,7 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     magnitude(): number;
     /**
-     * @returns A vector of same angle, but of length 1.
+     * @returns A vector of same angle, but of length 1. Or 0, if the original vector was 0.
      */
     normalize(): BpxVector2d;
     /**

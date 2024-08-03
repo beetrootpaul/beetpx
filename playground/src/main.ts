@@ -1,4 +1,4 @@
-import { $, $d, $rgb_p8, $v } from "../../src";
+import { $, $d, $rgb_p8, $v, $v_0_0, BpxVector2d } from "../../src";
 import { Movement } from "./Movement";
 import { Music } from "./Music";
 import { PauseMenu } from "./PauseMenu";
@@ -8,17 +8,23 @@ let pauseMenu: PauseMenu;
 let music: Music;
 let movement: Movement;
 let vfx: Vfx;
+let dot: BpxVector2d;
 
 $.setOnStarted(() => {
   pauseMenu = new PauseMenu();
   music = new Music();
   movement = new Movement();
   vfx = new Vfx({ loopFrames: Music.beatFrames });
+  dot = $.canvasSize.div(2);
 });
 
 $.setOnUpdate(() => {
   if ($.isPaused) {
     pauseMenu.update();
+  } else {
+    dot = dot
+      .add($.getPressedDirection().normalize().mul(1.5))
+      .clamp($v_0_0, $.canvasSize.sub(1));
   }
 });
 
@@ -34,6 +40,8 @@ $.setOnDraw(() => {
   if ($.isButtonPressed("X")) {
     $d.text("X", $v(18, 32), $rgb_p8.lemon);
   }
+
+  $d.pixel(dot, $rgb_p8.white);
 
   if ($.isPaused) {
     pauseMenu.draw();
@@ -55,6 +63,6 @@ $.start({
     available: !BEETPX__IS_PROD,
   },
   frameByFrame: {
-    available: !BEETPX__VERSION,
+    available: !BEETPX__IS_PROD,
   },
 });

@@ -124,6 +124,14 @@ describe("Vector2d", () => {
       expect($v(1, -1).normalize().y).toBeCloseTo(-Math.sqrt(2) / 2, 15);
       expect($v(-1, -1).normalize().x).toBeCloseTo(-Math.sqrt(2) / 2, 15);
       expect($v(-1, -1).normalize().y).toBeCloseTo(-Math.sqrt(2) / 2, 15);
+
+      expect($v(0, 0).normalize()).toEqual($v(0, 0));
+      expect($v(0, 0.00000001).normalize()).toEqual($v(0, 1));
+      expect($v(-0.00000001, 0).normalize()).toEqual($v(-1, 0));
+      expect($v(0, 0.00000001).round().normalize()).toEqual($v(0, 0));
+      expect($v(0, 0.00000001).floor().normalize()).toEqual($v(0, 0));
+      expect($v(-0.00000001, 0).round().normalize()).toEqual($v(0, 0));
+      expect($v(-0.00000001, 0).ceil().normalize()).toEqual($v(0, 0));
     });
 
     test("#sign", () => {
