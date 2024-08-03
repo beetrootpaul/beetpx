@@ -141,13 +141,16 @@ export class AssetLoader {
   }
 
   #withPathFixed(url: string): string {
-    return (
-        url.startsWith("/") ||
-          url.startsWith("http://") ||
-          url.startsWith("https://")
-      ) ?
-        url
-      : `/${url}`;
+    if (BEETPX__IS_PROD) {
+      return url;
+    }
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      return url;
+    }
+    // A fix for the local dev build, which serves the game under `.beetpx/dev/index.html`,
+    //   but the `public/` assets are served under `/`. By appending the `/` prefix
+    //   we make all assets be expected at the root level instead of the `.beetpx/dev/` level.
+    return url.startsWith("/") ? url : `/${url}`;
   }
 
   #is2xx(httpStatus: number): boolean {

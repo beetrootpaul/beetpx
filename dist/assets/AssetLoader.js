@@ -76,11 +76,13 @@ export class AssetLoader {
         this.#assets.addJsonAsset(url, { json });
     }
     #withPathFixed(url) {
-        return (url.startsWith("/") ||
-            url.startsWith("http://") ||
-            url.startsWith("https://")) ?
-            url
-            : `/${url}`;
+        if (BEETPX__IS_PROD) {
+            return url;
+        }
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            return url;
+        }
+        return url.startsWith("/") ? url : `/${url}`;
     }
     #is2xx(httpStatus) {
         return httpStatus >= 200 && httpStatus < 300;
