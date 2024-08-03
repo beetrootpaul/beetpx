@@ -2,13 +2,13 @@ import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 import { ScopedLocaleStorage } from "../storage/ScopedLocaleStorage";
 export class DebugMode {
-    static #storageDebugDisabledKey = "debug__disabled";
-    static #storageDebugDisabledTrue = "yes";
+    static #storageDebugEnabledKey = "debug__enabled";
+    static #storageDebugEnabledTrue = "yes";
     static #enabled = false;
     static loadFromStorage() {
         this.#enabled =
-            ScopedLocaleStorage.getItem(this.#storageDebugDisabledKey) !==
-                this.#storageDebugDisabledTrue;
+            ScopedLocaleStorage.getItem(this.#storageDebugEnabledKey) ===
+                this.#storageDebugEnabledTrue;
         HtmlTemplate.updateDebugClass(this.enabled);
     }
     static get enabled() {
@@ -19,10 +19,10 @@ export class DebugMode {
         Logger.infoBeetPx(`Debug flag set to: ${this.#enabled}`);
         HtmlTemplate.updateDebugClass(this.enabled);
         if (this.#enabled) {
-            ScopedLocaleStorage.removeItem(this.#storageDebugDisabledKey);
+            ScopedLocaleStorage.setItem(this.#storageDebugEnabledKey, this.#storageDebugEnabledTrue);
         }
         else {
-            ScopedLocaleStorage.setItem(this.#storageDebugDisabledKey, this.#storageDebugDisabledTrue);
+            ScopedLocaleStorage.removeItem(this.#storageDebugEnabledKey);
         }
     }
 }

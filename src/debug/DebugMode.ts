@@ -3,15 +3,15 @@ import { Logger } from "../logger/Logger";
 import { ScopedLocaleStorage } from "../storage/ScopedLocaleStorage";
 
 export class DebugMode {
-  static readonly #storageDebugDisabledKey = "debug__disabled";
-  static readonly #storageDebugDisabledTrue = "yes";
+  static readonly #storageDebugEnabledKey = "debug__enabled";
+  static readonly #storageDebugEnabledTrue = "yes";
 
   static #enabled = false;
 
   static loadFromStorage(): void {
     this.#enabled =
-      ScopedLocaleStorage.getItem(this.#storageDebugDisabledKey) !==
-      this.#storageDebugDisabledTrue;
+      ScopedLocaleStorage.getItem(this.#storageDebugEnabledKey) ===
+      this.#storageDebugEnabledTrue;
 
     HtmlTemplate.updateDebugClass(this.enabled);
   }
@@ -28,12 +28,12 @@ export class DebugMode {
     HtmlTemplate.updateDebugClass(this.enabled);
 
     if (this.#enabled) {
-      ScopedLocaleStorage.removeItem(this.#storageDebugDisabledKey);
-    } else {
       ScopedLocaleStorage.setItem(
-        this.#storageDebugDisabledKey,
-        this.#storageDebugDisabledTrue,
+        this.#storageDebugEnabledKey,
+        this.#storageDebugEnabledTrue,
       );
+    } else {
+      ScopedLocaleStorage.removeItem(this.#storageDebugEnabledKey);
     }
   }
 }
