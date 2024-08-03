@@ -36,6 +36,8 @@ export class BpxVector2d {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
     normalize() {
+        if (this.x === 0 && this.y === 0)
+            return new BpxVector2d(0, 0);
         const m = this.magnitude();
         return new BpxVector2d(this.x / m, this.y / m);
     }

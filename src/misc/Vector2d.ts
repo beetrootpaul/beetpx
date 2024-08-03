@@ -119,9 +119,10 @@ export class BpxVector2d implements BpxPrintDebug {
   }
 
   /**
-   * @returns A vector of same angle, but of length 1.
+   * @returns A vector of same angle, but of length 1. Or 0, if the original vector was 0.
    */
   normalize(): BpxVector2d {
+    if (this.x === 0 && this.y === 0) return new BpxVector2d(0, 0);
     const m = this.magnitude();
     return new BpxVector2d(this.x / m, this.y / m);
   }
