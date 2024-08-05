@@ -415,6 +415,10 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     abs(): BpxVector2d;
     /**
+     * @returns A vector in which each component is a negative of the original value.
+     */
+    negative(): BpxVector2d;
+    /**
      * @returns A vector in which each component is a floor rounding of the original value.
      */
     floor(): BpxVector2d;

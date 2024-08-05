@@ -142,6 +142,13 @@ export class BpxVector2d implements BpxPrintDebug {
   }
 
   /**
+   * @returns A vector in which each component is a negative of the original value.
+   */
+  negative(): BpxVector2d {
+    return new BpxVector2d(-this.x, -this.y);
+  }
+
+  /**
    * @returns A vector in which each component is a floor rounding of the original value.
    */
   floor(): BpxVector2d {

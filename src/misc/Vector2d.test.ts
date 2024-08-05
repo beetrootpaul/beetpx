@@ -146,6 +146,14 @@ describe("Vector2d", () => {
       expect($v(0, 0).abs()).toEqual($v(0, 0));
     });
 
+    test("#negative", () => {
+      expect($v(12.34, -12.34).negative()).toEqual($v(-12.34, 12.34));
+      expect($v(-12.34, 12.34).negative()).toEqual($v(12.34, -12.34));
+      // The `Math.abs` trick is here just to work around the `-0` vs `+0`
+      // inequality in tests.
+      expect($v(0, 0).negative().asArray().map(Math.abs)).toEqual([0, 0]);
+    });
+
     test("#floor", () => {
       expect($v(10, 20).floor()).toEqual($v(10, 20));
       expect($v(10.1, 20.9).floor()).toEqual($v(10, 20));
