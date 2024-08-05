@@ -322,7 +322,19 @@ export function $v(valueOrX: number, maybeY?: number): BpxVector2d {
  */
 export const $v_0_0 = $v(0, 0);
 /**
- * A shorthand for `$v(0, 0)`.
+ * A shorthand for `$v(0, 1)`.
+ *
+ * @category Core
+ */
+export const $v_0_1 = $v(0, 1);
+/**
+ * A shorthand for `$v(1, 0)`.
+ *
+ * @category Core
+ */
+export const $v_1_0 = $v(1, 0);
+/**
+ * A shorthand for `$v(1, 1)`.
  *
  * @category Core
  */

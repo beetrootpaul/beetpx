@@ -144,8 +144,11 @@ export class BpxVector2d implements BpxPrintDebug {
   /**
    * @returns A vector in which each component is a negative of the original value.
    */
-  negative(): BpxVector2d {
-    return new BpxVector2d(-this.x, -this.y);
+  neg(): BpxVector2d {
+    return new BpxVector2d(
+      this.x === 0 ? 0 : -this.x,
+      this.y === 0 ? 0 : -this.y,
+    );
   }
 
   /**

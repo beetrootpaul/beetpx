@@ -63,5 +63,7 @@ export function $v(valueOrX, maybeY) {
     return BpxVector2d.of(valueOrX, maybeY ?? valueOrX);
 }
 export const $v_0_0 = $v(0, 0);
+export const $v_0_1 = $v(0, 1);
+export const $v_1_0 = $v(1, 0);
 export const $v_1_1 = $v(1, 1);
 //# sourceMappingURL=shorthands.js.map
