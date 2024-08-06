@@ -18,7 +18,9 @@
   - [Credits](#credits)
     - [Fonts](#fonts)
     - [Color Palettes](#color-palettes)
+    - [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
   - [Known Issues](#known-issues)
+  - [Release Notes](#release-notes) _ [v0.51.2](#v0512) _ [v0.51.1](#v0511)
   <!-- TOC -->
 
 ---
@@ -196,3 +198,17 @@ http://members.chello.at/easyfilter/bresenham.html
   previous page by swiping the finger from the left edge. Which means, it is
   possible to accidentally close the game (while playing it on e.g. itch.io)
   when trying to use game touch buttons.
+
+## Release Notes
+
+### v0.51.2
+
+- Console GUI on touch devices: fixed the "O" button's press animation
+- BpxVector2d: added `neg()` method
+- BpxVector2d: added `$v_0_1` shorthand
+- BpxVector2d: added `$v_1_0` shorthand
+
+### v0.51.1
+
+- BpxVector2d: fixed `normalize()` method so it treats `(0,0)` vector in a
+  special by returning the `(0,0)`
