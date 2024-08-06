@@ -47,6 +47,9 @@ export class BpxVector2d {
     abs() {
         return new BpxVector2d(Math.abs(this.x), Math.abs(this.y));
     }
+    neg() {
+        return new BpxVector2d(this.x === 0 ? 0 : -this.x, this.y === 0 ? 0 : -this.y);
+    }
     floor() {
         return new BpxVector2d(Math.floor(this.x), Math.floor(this.y));
     }

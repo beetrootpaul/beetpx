@@ -415,6 +415,10 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     abs(): BpxVector2d;
     /**
+     * @returns A vector in which each component is a negative of the original value.
+     */
+    neg(): BpxVector2d;
+    /**
      * @returns A vector in which each component is a floor rounding of the original value.
      */
     floor(): BpxVector2d;
@@ -427,6 +431,8 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     round(): BpxVector2d;
     /**
+     * This method is an equivalent of calling {@link BeetPxUtils.trigAtan2} with both `x` and `y` of this vector as the params.
+     *
      * @returns The "turn" of the vector. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
      */
     toAngle(): number;
@@ -3180,7 +3186,19 @@ declare function $v(x: number, y: number): BpxVector2d;
  */
 declare const $v_0_0: BpxVector2d;
 /**
- * A shorthand for `$v(0, 0)`.
+ * A shorthand for `$v(0, 1)`.
+ *
+ * @category Core
+ */
+declare const $v_0_1: BpxVector2d;
+/**
+ * A shorthand for `$v(1, 0)`.
+ *
+ * @category Core
+ */
+declare const $v_1_0: BpxVector2d;
+/**
+ * A shorthand for `$v(1, 1)`.
  *
  * @category Core
  */
@@ -3233,4 +3251,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_1_1, BeetPx, BeetPxDraw, BeetPxUtils, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAssetsToLoad, type BpxAudioPlaybackId, type BpxBrowserType, type BpxCanvasSnapshot, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxFpsDisplayPlacement, type BpxGameButtonName, type BpxGameInputEvent, type BpxGameInputMethod, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevSegmentMap, BpxPalettePico8, BpxPatternColors, type BpxPersistedStateValueConstraints, BpxPixels, type BpxPrintDebug, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundSequenceEntrySoundAdditional, type BpxSoundSequenceEntrySoundMain, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, type BpxTextMeasurement, BpxTimer, BpxTimerSequence, BpxVector2d };
+export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_0_1, $v_1_0, $v_1_1, BeetPx, BeetPxDraw, BeetPxUtils, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAssetsToLoad, type BpxAudioPlaybackId, type BpxBrowserType, type BpxCanvasSnapshot, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxFpsDisplayPlacement, type BpxGameButtonName, type BpxGameInputEvent, type BpxGameInputMethod, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevSegmentMap, BpxPalettePico8, BpxPatternColors, type BpxPersistedStateValueConstraints, BpxPixels, type BpxPrintDebug, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundSequenceEntrySoundAdditional, type BpxSoundSequenceEntrySoundMain, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, type BpxTextMeasurement, BpxTimer, BpxTimerSequence, BpxVector2d };

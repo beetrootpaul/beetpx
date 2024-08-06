@@ -146,6 +146,12 @@ describe("Vector2d", () => {
       expect($v(0, 0).abs()).toEqual($v(0, 0));
     });
 
+    test("#neg", () => {
+      expect($v(12.34, -12.34).neg()).toEqual($v(-12.34, 12.34));
+      expect($v(-12.34, 12.34).neg()).toEqual($v(12.34, -12.34));
+      expect($v(0, 0).neg()).toEqual($v(0, 0));
+    });
+
     test("#floor", () => {
       expect($v(10, 20).floor()).toEqual($v(10, 20));
       expect($v(10.1, 20.9).floor()).toEqual($v(10, 20));
