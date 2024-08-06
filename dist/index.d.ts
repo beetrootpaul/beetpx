@@ -1123,7 +1123,7 @@ type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number
  * It has a form of a collection sprites, originated from the
  * same sprite sheet.
  *
- * @examples
+ * @example
  * ```ts
  * let myAnimation: BpxAnimatedSprite;
  *

@@ -7,21 +7,22 @@
 ---
 
 <!-- TOC -->
-
-- [BeetPx](#beetpx)
-  - [Getting Started](#getting-started)
-    - [Examples](#examples)
-  - [Game Controls](#game-controls)
-  - [API](#api)
-  - [Development Setup](#development-setup)
-  - [The Origin](#the-origin)
-  - [Credits](#credits)
-    - [Fonts](#fonts)
-    - [Color Palettes](#color-palettes)
-    - [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
-  - [Known Issues](#known-issues)
-  - [Release Notes](#release-notes) _ [v0.51.2](#v0512) _ [v0.51.1](#v0511)
-  <!-- TOC -->
+* [BeetPx](#beetpx)
+  * [Getting Started](#getting-started)
+    * [Examples](#examples)
+  * [Game Controls](#game-controls)
+  * [API](#api)
+  * [Development Setup](#development-setup)
+  * [The Origin](#the-origin)
+  * [Credits](#credits)
+    * [Fonts](#fonts)
+    * [Color Palettes](#color-palettes)
+    * [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
+  * [Known Issues](#known-issues)
+  * [Release Notes](#release-notes)
+    * [v0.51.2](#v0512)
+    * [v0.51.1](#v0511)
+<!-- TOC -->
 
 ---
 
