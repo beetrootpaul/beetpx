@@ -173,6 +173,8 @@ export class BpxVector2d implements BpxPrintDebug {
   }
 
   /**
+   * This method is an equivalent of calling {@link BeetPxUtils.trigAtan2} with both `x` and `y` of this vector as the params.
+   *
    * @returns The "turn" of the vector. A full circle turn = 1. In other words: 0 deg = 0 turn, 90 deg = 0.25 turn, 180 deg = 0.5 turn, 270 deg = 0.75 turn.
    */
   toAngle(): number {
