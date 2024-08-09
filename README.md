@@ -202,6 +202,10 @@ http://members.chello.at/easyfilter/bresenham.html
 
 ## Release Notes
 
+### v0.51.3
+
+- BpxAnimatedSprite: added `t` computed property
+
 ### v0.51.2
 
 - Console GUI on touch devices: fixed the "O" button's press animation
