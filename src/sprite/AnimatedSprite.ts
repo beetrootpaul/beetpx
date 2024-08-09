@@ -103,6 +103,8 @@ export class BpxAnimatedSprite {
   readonly #sprites: BpxSprite[];
   readonly #loop: BpxTimer;
 
+  readonly #frameDuration: number;
+
   private constructor(
     params: {
       imageUrl: BpxImageUrl;
@@ -134,6 +136,8 @@ export class BpxAnimatedSprite {
       delayFrames: 0,
       onGamePause: opts.onGamePause,
     });
+
+    this.#frameDuration = opts.frameDuration;
   }
 
   /**
@@ -141,6 +145,13 @@ export class BpxAnimatedSprite {
    */
   get current(): BpxSprite {
     return this.#sprites[this.#loop.t]!;
+  }
+
+  /**
+   * An index of the sprite from the list of sprites of this animation.
+   */
+  get t(): number {
+    return Math.floor(this.#loop.t / this.#frameDuration);
   }
 
   /**

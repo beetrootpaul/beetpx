@@ -19,6 +19,7 @@ describe("AnimatedSprite", () => {
 
     expect(sprite.imageUrl).toEqual("any.image.url");
     expect(sprite.size).toEqual($v(90, 91));
+    expect(sprite.t).toEqual(0);
 
     expect(sprite.current.size).toEqual($v(90, 91));
     expect(sprite.current.xy).toEqual($v(1, 10));
@@ -56,19 +57,25 @@ describe("AnimatedSprite", () => {
       [3, 30],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
 
     range(xys.length).forEach(() => {
       incrementFrameNumber();
     });
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
   });
 
@@ -80,24 +87,34 @@ describe("AnimatedSprite", () => {
     ];
     const frameDuration = 3;
     const sprite = $aspr("any.image.url")(90, 91, xys, { frameDuration });
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
 
     range(xys.length * frameDuration).forEach(() => {
@@ -105,10 +122,13 @@ describe("AnimatedSprite", () => {
     });
 
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
   });
 
@@ -120,16 +140,20 @@ describe("AnimatedSprite", () => {
       [3, 30],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
     incrementFrameNumber();
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
 
     nextFrameNumberWillBe(503);
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
 
     nextFrameNumberWillBe(502);
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
   });
 
@@ -140,16 +164,21 @@ describe("AnimatedSprite", () => {
       [3, 30],
     ];
     const sprite1 = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite1.t).toEqual(0);
     expect(sprite1.current.xy).toEqual($v(1, 10));
 
     incrementFrameNumber();
+    expect(sprite1.t).toEqual(1);
     expect(sprite1.current.xy).toEqual($v(2, 20));
 
     const sprite2 = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite2.t).toEqual(0);
     expect(sprite2.current.xy).toEqual($v(1, 10));
 
     incrementFrameNumber();
+    expect(sprite1.t).toEqual(2);
     expect(sprite1.current.xy).toEqual($v(3, 30));
+    expect(sprite2.t).toEqual(1);
     expect(sprite2.current.xy).toEqual($v(2, 20));
   });
 
@@ -162,58 +191,77 @@ describe("AnimatedSprite", () => {
       [5, 50],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.pause();
 
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.resume();
 
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     sprite.pause();
 
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     incrementFrameNumber();
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     sprite.resume();
 
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     incrementFrameNumber();
+    expect(sprite.t).toEqual(4);
     expect(sprite.current.xy).toEqual($v(5, 50));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     range(xys.length).forEach(() => {
       incrementFrameNumber();
     });
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
 
     sprite.pause();
 
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
   });
 
@@ -224,8 +272,10 @@ describe("AnimatedSprite", () => {
       [3, 30],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.pause();
@@ -233,23 +283,29 @@ describe("AnimatedSprite", () => {
     sprite.pause();
     sprite.pause();
 
-    expect(sprite.current.xy).toEqual($v(2, 20));
-    incrementFrameNumber();
-    expect(sprite.current.xy).toEqual($v(2, 20));
-
-    sprite.pause();
-    sprite.pause();
-    sprite.pause();
-    sprite.pause();
-
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
+    expect(sprite.current.xy).toEqual($v(2, 20));
+
+    sprite.pause();
+    sprite.pause();
+    sprite.pause();
+    sprite.pause();
+
+    expect(sprite.t).toEqual(1);
+    expect(sprite.current.xy).toEqual($v(2, 20));
+    incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.resume();
 
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
   });
 
@@ -260,14 +316,18 @@ describe("AnimatedSprite", () => {
       [3, 30],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.pause();
 
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.resume();
@@ -275,8 +335,10 @@ describe("AnimatedSprite", () => {
     sprite.resume();
     sprite.resume();
 
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
 
     sprite.resume();
@@ -284,8 +346,10 @@ describe("AnimatedSprite", () => {
     sprite.resume();
     sprite.resume();
 
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
   });
 
@@ -296,14 +360,18 @@ describe("AnimatedSprite", () => {
       [3, 30],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.resume();
 
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
   });
 
@@ -314,24 +382,32 @@ describe("AnimatedSprite", () => {
       [3, 30],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.restart();
 
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
 
     sprite.restart();
 
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
   });
 
@@ -344,60 +420,74 @@ describe("AnimatedSprite", () => {
       [5, 50],
     ];
     const sprite = $aspr("any.image.url")(90, 91, xys);
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
     incrementFrameNumber();
     incrementFrameNumber();
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     sprite.pause();
 
     incrementFrameNumber();
     incrementFrameNumber();
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     sprite.restart();
 
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.pause();
 
     incrementFrameNumber();
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.restart();
 
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.pause();
 
     incrementFrameNumber();
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
 
     sprite.resume();
 
     incrementFrameNumber();
+    expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
 
     incrementFrameNumber();
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     sprite.pause();
 
     incrementFrameNumber();
     incrementFrameNumber();
+    expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
 
     sprite.restart();
 
+    expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
     incrementFrameNumber();
+    expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
   });
 });

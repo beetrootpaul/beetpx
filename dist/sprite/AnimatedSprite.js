@@ -15,6 +15,7 @@ export class BpxAnimatedSprite {
     size;
     #sprites;
     #loop;
+    #frameDuration;
     constructor(params, opts) {
         this.imageUrl = params.imageUrl;
         this.size = BpxVector2d.of(params.w, params.h).abs().round();
@@ -26,9 +27,13 @@ export class BpxAnimatedSprite {
             delayFrames: 0,
             onGamePause: opts.onGamePause,
         });
+        this.#frameDuration = opts.frameDuration;
     }
     get current() {
         return this.#sprites[this.#loop.t];
+    }
+    get t() {
+        return Math.floor(this.#loop.t / this.#frameDuration);
     }
     pause() {
         this.#loop.pause();

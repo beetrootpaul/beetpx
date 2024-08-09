@@ -1185,6 +1185,10 @@ declare class BpxAnimatedSprite {
      */
     get current(): BpxSprite;
     /**
+     * An index of the sprite from the list of sprites of this animation.
+     */
+    get t(): number;
+    /**
      * Pauses the animation.
      */
     pause(): void;
