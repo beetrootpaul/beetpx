@@ -20,6 +20,8 @@
     * [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
   * [Known Issues](#known-issues)
   * [Release Notes](#release-notes)
+    * [v0.52.0](#v0520)
+    * [v0.51.3](#v0513)
     * [v0.51.2](#v0512)
     * [v0.51.1](#v0511)
 <!-- TOC -->
@@ -202,18 +204,24 @@ http://members.chello.at/easyfilter/bresenham.html
 
 ## Release Notes
 
+### v0.52.0
+
+- Game loop: Fixed an issue of timers and animations behaving in the draw callback 
+  like if the next frame has already happened, even though its update callback was 
+  not called yet.
+
 ### v0.51.3
 
-- BpxAnimatedSprite: added `t` computed property
+- BpxAnimatedSprite: Added `t` computed property
 
 ### v0.51.2
 
-- Console GUI on touch devices: fixed the "O" button's press animation
-- BpxVector2d: added `neg()` method
-- BpxVector2d: added `$v_0_1` shorthand
-- BpxVector2d: added `$v_1_0` shorthand
+- Console GUI on touch devices: Fixed the "O" button's press animation
+- BpxVector2d: Added `neg()` method
+- BpxVector2d: Added `$v_0_1` shorthand
+- BpxVector2d: Added `$v_1_0` shorthand
 
 ### v0.51.1
 
-- BpxVector2d: fixed `normalize()` method so it treats `(0,0)` vector in a
+- BpxVector2d: Fixed `normalize()` method so it treats `(0,0)` vector in a
   special by returning the `(0,0)`
