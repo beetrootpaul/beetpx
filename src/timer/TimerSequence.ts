@@ -216,6 +216,7 @@ export class BpxTimerSequence<TPhaseName extends string> {
     return this.#now.phase?.name ?? null;
   }
 
+  // frame number
   get #fn(): number {
     return this.#ignoreGamePause ?
         BeetPx.frameNumber

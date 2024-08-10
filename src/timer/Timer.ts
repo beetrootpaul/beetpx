@@ -58,6 +58,7 @@ export class BpxTimer {
     }
   }
 
+  // frame number
   get #fn(): number {
     return this.#ignoreGamePause ?
         BeetPx.frameNumber

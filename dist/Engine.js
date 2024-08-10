@@ -45,6 +45,7 @@ export class Engine {
     #onStarted;
     #onUpdate;
     #onDraw;
+    #onPreUpdate;
     #currentFrameNumber = 0;
     #currentFrameNumberOutsidePause = 0;
     #renderingFps = 1;
@@ -175,16 +176,19 @@ export class Engine {
         this.#onDraw = onDraw;
     }
     restart() {
-        this.#currentFrameNumber = 0;
-        this.#currentFrameNumberOutsidePause = 0;
-        this.audioApi.restart();
-        this.drawApi.clearCanvas($rgb_black);
-        AudioPlayback.playbacksToPauseOnGamePause.clear();
-        AudioPlayback.playbacksToMuteOnGamePause.clear();
-        GamePause.deactivate();
-        this.isInsideDrawOrStartedCallback = true;
-        this.#onStarted?.();
-        this.isInsideDrawOrStartedCallback = false;
+        this.#onPreUpdate = () => {
+            this.#onPreUpdate = undefined;
+            this.#currentFrameNumber = 0;
+            this.#currentFrameNumberOutsidePause = 0;
+            this.audioApi.restart();
+            this.drawApi.clearCanvas($rgb_black);
+            AudioPlayback.playbacksToPauseOnGamePause.clear();
+            AudioPlayback.playbacksToMuteOnGamePause.clear();
+            GamePause.deactivate();
+            this.isInsideDrawOrStartedCallback = true;
+            this.#onStarted?.();
+            this.isInsideDrawOrStartedCallback = false;
+        };
     }
     async #startGame() {
         if (this.#isStarted) {
@@ -198,97 +202,105 @@ export class Engine {
                 return "";
             });
         }
-        this.#currentFrameNumber = 0;
-        this.#currentFrameNumberOutsidePause = 0;
         await this.#loading.showStartScreen();
-        this.isInsideDrawOrStartedCallback = true;
-        this.#onStarted?.();
-        this.isInsideDrawOrStartedCallback = false;
         this.gameInput.startListening();
-        this.#gameLoop.start({
-            updateFn: () => {
-                if (this.#screenshotManager) {
-                    if (this.gameInput.buttonBrowseScreenshots.wasJustPressed) {
-                        this.#screenshotManager.isBrowsing =
-                            !this.#screenshotManager.isBrowsing;
-                        HtmlTemplate.updateBrowsingScreenshotsClass(this.#screenshotManager.isBrowsing);
-                    }
-                }
-                if (this.#screenshotManager) {
-                    if (this.gameInput.buttonTakeScreenshot.wasJustPressed) {
-                        this.#screenshotManager.addScreenshot(this.#canvas.asDataUrl());
-                    }
-                }
-                if (this.gameInput.buttonFullScreen.wasJustPressed) {
-                    this.fullScreen.toggleFullScreen();
-                }
-                if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
-                    if (this.audioApi.isAudioMuted()) {
-                        this.audioApi.unmuteAudio();
-                    }
-                    else {
-                        this.audioApi.muteAudio();
-                    }
-                }
-                if (this.gameInput.gameButtons.wasJustPressed("menu")) {
-                    if (GamePause.isActive) {
-                        GamePause.deactivate();
-                    }
-                    else {
-                        GamePause.activate();
-                    }
-                }
-                GamePause.update();
-                if (this.gameInput.buttonDebugToggle.wasJustPressed) {
-                    DebugMode.enabled = !DebugMode.enabled;
-                }
-                if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
-                    FrameByFrame.active = !FrameByFrame.active;
-                }
-                const shouldUpdate = !FrameByFrame.active ||
-                    this.gameInput.buttonFrameByFrameStep.wasJustPressed;
-                const hasAnyInteractionHappened = this.gameInput.update({
-                    skipGameButtons: !shouldUpdate,
-                });
-                if (hasAnyInteractionHappened && !this.#alreadyResumedAudioContext) {
-                    this.audioApi
-                        .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
-                        .then(resumed => {
-                        if (resumed) {
-                            this.#alreadyResumedAudioContext = true;
-                        }
-                    });
-                }
-                if (shouldUpdate) {
-                    if (FrameByFrame.active) {
-                        Logger.infoBeetPx(`Running onUpdate for frame: ${this.#currentFrameNumber}`);
-                    }
-                    this.#onUpdate?.();
-                    this.#wasUpdateCalledAtLeastOnce = true;
-                    this.#currentFrameNumber =
-                        this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
+        this.#onPreUpdate = () => {
+            this.#onPreUpdate = undefined;
+            this.#currentFrameNumber = 0;
+            this.#currentFrameNumberOutsidePause = 0;
+            this.isInsideDrawOrStartedCallback = true;
+            this.#onStarted?.();
+            this.isInsideDrawOrStartedCallback = false;
+        };
+        const updateFn = () => {
+            const shouldUpdate = !FrameByFrame.active ||
+                this.gameInput.buttonFrameByFrameStep.wasJustPressed;
+            if (shouldUpdate) {
+                this.#currentFrameNumber =
+                    this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
+                        0
+                        : this.#currentFrameNumber + 1;
+                if (!GamePause.isActive) {
+                    this.#currentFrameNumberOutsidePause =
+                        this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER ?
                             0
-                            : this.#currentFrameNumber + 1;
-                    if (!GamePause.isActive) {
-                        this.#currentFrameNumberOutsidePause =
-                            this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER ?
-                                0
-                                : this.#currentFrameNumberOutsidePause + 1;
-                    }
+                            : this.#currentFrameNumberOutsidePause + 1;
                 }
-            },
-            renderFn: renderingFps => {
-                this.#renderingFps = renderingFps;
-                this.isInsideDrawOrStartedCallback = true;
-                if (this.#wasUpdateCalledAtLeastOnce) {
-                    this.#onDraw?.();
-                    if (DebugMode.enabled) {
-                        this.#fpsDisplay?.drawRenderingFps(renderingFps);
-                    }
+                this.#onPreUpdate?.();
+            }
+            if (this.#screenshotManager) {
+                if (this.gameInput.buttonBrowseScreenshots.wasJustPressed) {
+                    this.#screenshotManager.isBrowsing =
+                        !this.#screenshotManager.isBrowsing;
+                    HtmlTemplate.updateBrowsingScreenshotsClass(this.#screenshotManager.isBrowsing);
                 }
-                this.isInsideDrawOrStartedCallback = false;
-                this.#canvas.render();
-            },
+            }
+            if (this.#screenshotManager) {
+                if (this.gameInput.buttonTakeScreenshot.wasJustPressed) {
+                    this.#screenshotManager.addScreenshot(this.#canvas.asDataUrl());
+                }
+            }
+            if (this.gameInput.buttonFullScreen.wasJustPressed) {
+                this.fullScreen.toggleFullScreen();
+            }
+            if (this.gameInput.buttonMuteUnmute.wasJustPressed) {
+                if (this.audioApi.isAudioMuted()) {
+                    this.audioApi.unmuteAudio();
+                }
+                else {
+                    this.audioApi.muteAudio();
+                }
+            }
+            if (this.gameInput.gameButtons.wasJustPressed("menu")) {
+                if (GamePause.isActive) {
+                    GamePause.deactivate();
+                }
+                else {
+                    GamePause.activate();
+                }
+            }
+            GamePause.update();
+            if (this.gameInput.buttonDebugToggle.wasJustPressed) {
+                DebugMode.enabled = !DebugMode.enabled;
+            }
+            if (this.gameInput.buttonFrameByFrameToggle.wasJustPressed) {
+                FrameByFrame.active = !FrameByFrame.active;
+            }
+            const hasAnyInteractionHappened = this.gameInput.update({
+                skipGameButtons: !shouldUpdate,
+            });
+            if (hasAnyInteractionHappened && !this.#alreadyResumedAudioContext) {
+                this.audioApi
+                    .tryToResumeAudioContextSuspendedByBrowserForSecurityReasons()
+                    .then(resumed => {
+                    if (resumed) {
+                        this.#alreadyResumedAudioContext = true;
+                    }
+                });
+            }
+            if (shouldUpdate) {
+                if (FrameByFrame.active) {
+                    Logger.infoBeetPx(`Running onUpdate for frame: ${this.#currentFrameNumber}`);
+                }
+                this.#onUpdate?.();
+                this.#wasUpdateCalledAtLeastOnce = true;
+            }
+        };
+        const renderFn = (renderingFps) => {
+            this.#renderingFps = renderingFps;
+            this.isInsideDrawOrStartedCallback = true;
+            if (this.#wasUpdateCalledAtLeastOnce) {
+                this.#onDraw?.();
+                if (DebugMode.enabled) {
+                    this.#fpsDisplay?.drawRenderingFps(renderingFps);
+                }
+            }
+            this.isInsideDrawOrStartedCallback = false;
+            this.#canvas.render();
+        };
+        this.#gameLoop.start({
+            updateFn,
+            renderFn,
         });
     }
 }
