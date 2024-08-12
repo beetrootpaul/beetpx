@@ -10,7 +10,7 @@ import { BpxGamepadType } from "./GameInputGamepad";
  * @example
  * ```ts
  * window.addEventListener("gamepadconnected", (gamepadEvent) => {
- *   $.logDebug(`Connected: ${BpxGamepadTypeDetector.detect(gamepadEvent.gamepad))}`);
+ *   $x.logDebug(`Connected: ${BpxGamepadTypeDetector.detect(gamepadEvent.gamepad))}`);
  * });
  * ```
  * @category Game input

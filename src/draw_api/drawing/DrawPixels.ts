@@ -24,7 +24,7 @@ export class DrawPixels {
     pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-    scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
+    scaleXy = BpxVector2d.maxOf(scaleXy.floor(), $v_0_0);
 
     for (let bitsY = 0; bitsY < pixels.asciiRows.length; bitsY += 1) {
       const yBase =

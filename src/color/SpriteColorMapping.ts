@@ -63,8 +63,8 @@ export class BpxSpriteColorMapping {
    *
    * @group Static factories
    */
-  static of(mapping: BpxColorMapper): BpxSpriteColorMapping {
-    return new BpxSpriteColorMapping(mapping);
+  static of(mapper: BpxColorMapper): BpxSpriteColorMapping {
+    return new BpxSpriteColorMapping(mapper);
   }
 
   /**

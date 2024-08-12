@@ -11,7 +11,7 @@ import { BpxSoundUrl } from "../assets/Assets";
  * @example
  * ```ts
  *  const halfDuration = (fullSoundDurationMs: number) => fullSoundDurationMs * 16 / 32;
- *  $.startPlaybackSequence({
+ *  $x.startPlaybackSequence({
  *    intro: [
  *      [{ url: "intro1Melody.flac", durationMs: halfDuration }],
  *      [{ url: "intro2Melody.flac", durationMs: halfDuration }, { url: "intro2Bass.flac" }],

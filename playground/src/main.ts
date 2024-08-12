@@ -1,11 +1,11 @@
 import {
-  $,
   $d,
   $rgb_p8,
   $timer,
   $timerSeq,
   $v,
   $v_0_0,
+  $x,
   BpxTimer,
   BpxTimerSequence,
   BpxVector2d,
@@ -25,12 +25,12 @@ let t: BpxTimer;
 let tseq: BpxTimerSequence<"_i_1" | "_i__2" | "one" | "TWO">;
 let t2: BpxTimer | undefined;
 
-$.setOnStarted(() => {
+$x.setOnStarted(() => {
   pauseMenu = new PauseMenu();
   music = new Music();
   movement = new Movement();
   vfx = new Vfx({ loopFrames: Music.beatFrames });
-  dot = $.canvasSize.div(2);
+  dot = $x.canvasSize.div(2);
   t = $timer(3, { loop: true });
   tseq = $timerSeq({
     intro: [
@@ -45,24 +45,24 @@ $.setOnStarted(() => {
   // console.log("___ started ___", t.t, tseq.currentPhase, tseq.t, t2?.t);
 });
 
-$.setOnUpdate(() => {
-  if ($.isPaused) {
+$x.setOnUpdate(() => {
+  if ($x.isPaused) {
     pauseMenu.update();
   } else {
     dot = dot
-      .add($.getPressedDirection().normalize().mul(1.5))
-      .clamp($v_0_0, $.canvasSize.sub(1));
+      .add($x.getPressedDirection().normalize().mul(1.5))
+      .clamp($v_0_0, $x.canvasSize.sub(1));
   }
 
-  if ($.wasButtonJustPressed("x") && $.wasButtonJustPressed("o")) {
+  if ($x.wasButtonJustPressed("x") && $x.wasButtonJustPressed("o")) {
     t.restart();
     tseq.restart();
     t2?.restart();
-  } else if ($.wasButtonJustPressed("x")) {
+  } else if ($x.wasButtonJustPressed("x")) {
     t.pause();
     tseq.pause();
     t2?.pause();
-  } else if ($.wasButtonJustPressed("o")) {
+  } else if ($x.wasButtonJustPressed("o")) {
     t.resume();
     tseq.resume();
     t2?.resume();
@@ -74,15 +74,15 @@ $.setOnUpdate(() => {
 
   // console.log("UPDATE", t.t, tseq.currentPhase, tseq.t, t2?.t);
 
-  if ($.wasButtonJustPressed("menu")) {
-    $.restart();
+  if ($x.wasButtonJustPressed("menu")) {
+    $x.restart();
     return;
   }
 
-  console.log("RIM:", $.getRecentInputMethods());
+  console.log("RIM:", $x.getRecentInputMethods());
 });
 
-$.setOnDraw(() => {
+$x.setOnDraw(() => {
   // console.log("draw", t.t, tseq.currentPhase, tseq.t, t2?.t);
 
   $d.clearCanvas($rgb_p8.storm);
@@ -90,21 +90,21 @@ $.setOnDraw(() => {
   vfx.draw();
   movement.draw();
 
-  if ($.isButtonPressed("O")) {
+  if ($x.isButtonPressed("O")) {
     $d.text("O", $v(8, 32), $rgb_p8.lemon);
   }
-  if ($.isButtonPressed("X")) {
+  if ($x.isButtonPressed("X")) {
     $d.text("X", $v(18, 32), $rgb_p8.lemon);
   }
 
   $d.pixel(dot, $rgb_p8.white);
 
-  if ($.isPaused) {
+  if ($x.isPaused) {
     pauseMenu.draw();
   }
 });
 
-$.start({
+$x.start({
   gameId: "beetpx-playground",
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],

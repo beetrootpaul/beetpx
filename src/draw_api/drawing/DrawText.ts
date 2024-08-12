@@ -40,7 +40,7 @@ export class DrawText {
     pattern: BpxDrawingPattern,
   ): void {
     canvasXy = canvasXy.round();
-    scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
+    scaleXy = BpxVector2d.maxOf(scaleXy.floor(), $v_0_0);
 
     for (const arrangedGlyph of font.arrangeGlyphsFor(
       text,

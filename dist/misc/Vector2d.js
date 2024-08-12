@@ -17,14 +17,14 @@ export class BpxVector2d {
         this.x = x;
         this.y = y;
     }
-    static min(xy1, xy2) {
+    static minOf(xy1, xy2) {
         return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
     }
-    static max(xy1, xy2) {
+    static maxOf(xy1, xy2) {
         return new BpxVector2d(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y));
     }
-    static minMax(xy1, xy2) {
-        return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
+    static minMaxOf(xy1, xy2) {
+        return [BpxVector2d.minOf(xy1, xy2), BpxVector2d.maxOf(xy1, xy2)];
     }
     static lerp(xy1, xy2, t, opts) {
         return new BpxVector2d(lerp(xy1.x, xy2.x, t, opts), lerp(xy1.y, xy2.y, t, opts));
@@ -62,30 +62,30 @@ export class BpxVector2d {
     toAngle() {
         return trigAtan2(this.x, this.y);
     }
-    eq(otherOrValue) {
-        return typeof otherOrValue !== "number" ?
-            this.x === otherOrValue.x && this.y === otherOrValue.y
-            : this.x === otherOrValue && this.y === otherOrValue;
+    eq(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number" ?
+            this.x === otherOrValueOrX.x && this.y === otherOrValueOrX.y
+            : this.x === otherOrValueOrX && this.y === (maybeY ?? otherOrValueOrX);
     }
-    gt(otherOrValue) {
-        return typeof otherOrValue !== "number" ?
-            this.x > otherOrValue.x && this.y > otherOrValue.y
-            : this.x > otherOrValue && this.y > otherOrValue;
+    gt(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number" ?
+            this.x > otherOrValueOrX.x && this.y > otherOrValueOrX.y
+            : this.x > otherOrValueOrX && this.y > (maybeY ?? otherOrValueOrX);
     }
-    gte(otherOrValue) {
-        return typeof otherOrValue !== "number" ?
-            this.x >= otherOrValue.x && this.y >= otherOrValue.y
-            : this.x >= otherOrValue && this.y >= otherOrValue;
+    gte(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number" ?
+            this.x >= otherOrValueOrX.x && this.y >= otherOrValueOrX.y
+            : this.x >= otherOrValueOrX && this.y >= (maybeY ?? otherOrValueOrX);
     }
-    lt(otherOrValue) {
-        return typeof otherOrValue !== "number" ?
-            this.x < otherOrValue.x && this.y < otherOrValue.y
-            : this.x < otherOrValue && this.y < otherOrValue;
+    lt(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number" ?
+            this.x < otherOrValueOrX.x && this.y < otherOrValueOrX.y
+            : this.x < otherOrValueOrX && this.y < (maybeY ?? otherOrValueOrX);
     }
-    lte(otherOrValue) {
-        return typeof otherOrValue !== "number" ?
-            this.x <= otherOrValue.x && this.y <= otherOrValue.y
-            : this.x <= otherOrValue && this.y <= otherOrValue;
+    lte(otherOrValueOrX, maybeY) {
+        return typeof otherOrValueOrX !== "number" ?
+            this.x <= otherOrValueOrX.x && this.y <= otherOrValueOrX.y
+            : this.x <= otherOrValueOrX && this.y <= (maybeY ?? otherOrValueOrX);
     }
     clamp(xy1, xy2) {
         return new BpxVector2d(clamp(xy1.x, this.x, xy2.x), clamp(xy1.y, this.y, xy2.y));

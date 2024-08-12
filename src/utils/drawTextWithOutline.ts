@@ -1,7 +1,7 @@
 import { BeetPxDraw } from "../";
 import type { BpxRgbColor } from "../color/RgbColor";
 import type { BpxVector2d } from "../misc/Vector2d";
-import { offset8Directions } from "./offset8Directions";
+import { adjacent8 } from "./adjacent8";
 
 export function drawTextWithOutline(
   text: string,
@@ -13,7 +13,7 @@ export function drawTextWithOutline(
     scaleXy?: BpxVector2d;
   },
 ): void {
-  for (const offset of offset8Directions()) {
+  for (const offset of adjacent8()) {
     BeetPxDraw.text(text, canvasXy1.add(offset), outlineColor, {
       centerXy: opts?.centerXy,
       scaleXy: opts?.scaleXy,

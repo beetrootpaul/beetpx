@@ -277,7 +277,7 @@ export class BpxFont {
    *
    * @example
    * ```ts
-   * $.start({
+   * $x.start({
    *   // ...
    *   assets: [
    *     ...myFont.spriteSheetUrls

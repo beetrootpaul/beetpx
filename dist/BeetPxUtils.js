@@ -1,3 +1,5 @@
+import { adjacent4 } from "./utils/adjacent4";
+import { adjacent8 } from "./utils/adjacent8";
 import { assertUnreachable } from "./utils/assertUnreachable";
 import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFrame";
 import { clamp } from "./utils/clamp";
@@ -5,8 +7,6 @@ import { drawTextWithOutline } from "./utils/drawTextWithOutline";
 import { identity } from "./utils/identity";
 import { lerp } from "./utils/lerp";
 import { mod } from "./utils/mod";
-import { offset4Directions } from "./utils/offset4Directions";
-import { offset8Directions } from "./utils/offset8Directions";
 import { randomElementOf } from "./utils/randomElementOf";
 import { range } from "./utils/range";
 import { repeatEachElement } from "./utils/repeatEachElement";
@@ -38,11 +38,11 @@ export class BeetPxUtils {
         return mod(value, modulus);
     }
     static noop() { }
-    static offset4Directions() {
-        return offset4Directions();
+    static adjacent4() {
+        return adjacent4();
     }
-    static offset8Directions() {
-        return offset8Directions();
+    static adjacent8() {
+        return adjacent8();
     }
     static randomElementOf(array) {
         return randomElementOf(array);

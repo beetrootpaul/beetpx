@@ -29,7 +29,7 @@ export class DrawSprite {
     pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-    scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
+    scaleXy = BpxVector2d.maxOf(scaleXy.floor(), $v_0_0);
 
     const {
       width: imgW,
@@ -75,16 +75,14 @@ export class DrawSprite {
 
             if (this.#canvas.canSetAt(canvasX, canvasY)) {
               if (pattern.hasPrimaryColorAt(canvasX, canvasY)) {
-                const color = preparedSprite.colors[spriteX]![spriteY];
-                if (color) {
-                  const mappedColor = colorMapping.getMappedColor(
-                    color,
-                    spriteX,
-                    spriteY,
-                  );
-                  if (mappedColor) {
-                    this.#canvas.set(mappedColor, canvasX, canvasY);
-                  }
+                const color = preparedSprite.colors[spriteX]![spriteY]!;
+                const mappedColor = colorMapping.getMappedColor(
+                  color,
+                  spriteX,
+                  spriteY,
+                );
+                if (mappedColor) {
+                  this.#canvas.set(mappedColor, canvasX, canvasY);
                 }
               }
             }

@@ -12,7 +12,7 @@ export class DrawSprite {
     }
     draw(sprite, sourceImageAsset, targetXy, scaleXy, flipXy, colorMapping, pattern) {
         targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-        scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
+        scaleXy = BpxVector2d.maxOf(scaleXy.floor(), $v_0_0);
         const { width: imgW, height: imgH, channels: imgChannels, rgba8bitData: imgBytes, } = sourceImageAsset;
         sprite = sprite.clipBy($v_0_0, $v(imgW, imgH));
         if (!this.#canvas.canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size.x * scaleXy.x - 1, targetXy.y + sprite.size.y * scaleXy.y - 1)) {
@@ -32,11 +32,9 @@ export class DrawSprite {
                         if (this.#canvas.canSetAt(canvasX, canvasY)) {
                             if (pattern.hasPrimaryColorAt(canvasX, canvasY)) {
                                 const color = preparedSprite.colors[spriteX][spriteY];
-                                if (color) {
-                                    const mappedColor = colorMapping.getMappedColor(color, spriteX, spriteY);
-                                    if (mappedColor) {
-                                        this.#canvas.set(mappedColor, canvasX, canvasY);
-                                    }
+                                const mappedColor = colorMapping.getMappedColor(color, spriteX, spriteY);
+                                if (mappedColor) {
+                                    this.#canvas.set(mappedColor, canvasX, canvasY);
                                 }
                             }
                         }

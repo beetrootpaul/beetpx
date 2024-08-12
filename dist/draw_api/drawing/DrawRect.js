@@ -5,7 +5,7 @@ export class DrawRect {
         this.#canvas = canvas;
     }
     draw(xy, wh, color, fill, pattern) {
-        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMaxOf(xy.round(), xy.add(wh).round());
         if (!this.#canvas.canSetAny(xyMinInclusive.x, xyMinInclusive.y, xyMaxExclusive.x - 1, xyMaxExclusive.y - 1)) {
             return;
         }

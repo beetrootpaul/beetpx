@@ -197,5 +197,5 @@ export class BeetPx {
         return this.#tryGetEngine().assets.getJsonAsset(jsonUrl);
     }
 }
-export const $ = BeetPx;
+export const $x = BeetPx;
 //# sourceMappingURL=BeetPx.js.map

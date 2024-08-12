@@ -31,12 +31,12 @@ export type BpxJsonUrl = string;
  * let sprite1: BpxSprite;
  * let sprite2: BpxSprite;
  *
- * $.setOnStarted(() => {
+ * $x.setOnStarted(() => {
  *   sprite1 = $spr(sprite1Url)(8,8,0,0);
  *   sprite2 = $spr(sprite2Url)(8,8,0,0);
  * });
  *
- * $.start({
+ * $x.start({
  *   // ...,
  *  assets: [
  *    sprite1Url,
@@ -75,12 +75,12 @@ export type BpxImageAsset = {
  * let playback1: BpxAudioPlaybackId;
  * let playback2: BpxAudioPlaybackId;
  *
- * $.setOnStarted(() => {
- *   playback1 = $.startPlayback(musicUrl);
- *   playback2 = $.startPlayback(sfxUrl);
+ * $x.setOnStarted(() => {
+ *   playback1 = $x.startPlayback(musicUrl);
+ *   playback2 = $x.startPlayback(sfxUrl);
  * });
  *
- * $.start({
+ * $x.start({
  *   // ...,
  *  assets: [
  *    musicUrl,
@@ -107,12 +107,12 @@ export type BpxSoundAsset = {
  * let stats: BpxJsonAsset;
  * let level: BpxJsonAsset;
  *
- * $.setOnStarted(() => {
- *   const stats: BpxJsonAsset = $.getJsonAsset(statsUrl);
- *   const level: BpxJsonAsset = $.getJsonAsset(levelUrl);
+ * $x.setOnStarted(() => {
+ *   const stats: BpxJsonAsset = $x.getJsonAsset(statsUrl);
+ *   const level: BpxJsonAsset = $x.getJsonAsset(levelUrl);
  * });
  *
- * $.start({
+ * $x.start({
  *   // ...,
  *  assets: [
  *    statsUrl,

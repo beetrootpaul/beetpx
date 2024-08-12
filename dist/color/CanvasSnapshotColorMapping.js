@@ -1,6 +1,6 @@
 export class BpxCanvasSnapshotColorMapping {
-    static of(mapping) {
-        return new BpxCanvasSnapshotColorMapping(mapping);
+    static of(mapper) {
+        return new BpxCanvasSnapshotColorMapping(mapper);
     }
     type = "canvas_snapshot_mapping";
     #mapping;

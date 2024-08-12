@@ -22,7 +22,7 @@ export class DrawRect {
     fill: RectFillMode,
     pattern: BpxDrawingPattern,
   ): void {
-    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMaxOf(
       xy.round(),
       xy.add(wh).round(),
     );

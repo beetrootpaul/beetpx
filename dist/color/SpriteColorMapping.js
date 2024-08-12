@@ -9,8 +9,8 @@ export class BpxSpriteColorMapping {
             return typeof mapped === "undefined" ? spriteColor : mapped;
         });
     }
-    static of(mapping) {
-        return new BpxSpriteColorMapping(mapping);
+    static of(mapper) {
+        return new BpxSpriteColorMapping(mapper);
     }
     type = "sprite_mapping";
     #mapping;

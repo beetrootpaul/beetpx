@@ -31,7 +31,7 @@ export type BpxImageBoundAnimatedSpriteFactory = (
  * ```ts
  * let myAnimation: BpxAnimatedSprite;
  *
- * $.setOnStarted(() => {
+ * $x.setOnStarted(() => {
  *   myAnimation = $aspr("spritesheet.png")(8, 8, [
  *     [0,0],
  *     [8,0],

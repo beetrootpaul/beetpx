@@ -20,7 +20,7 @@ export class DrawText {
     }
     draw(text, font, canvasXy, color, colorMarkers, scaleXy, pattern) {
         canvasXy = canvasXy.round();
-        scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
+        scaleXy = BpxVector2d.maxOf(scaleXy.floor(), $v_0_0);
         for (const arrangedGlyph of font.arrangeGlyphsFor(text, color, colorMarkers)) {
             if (arrangedGlyph.type === "line_break")
                 continue;

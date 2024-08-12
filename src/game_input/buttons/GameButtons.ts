@@ -8,7 +8,7 @@ import { Button } from "./Button";
  *
  * @example
  * ```ts
- * $.wasButtonJustPressed("X");
+ * $x.wasButtonJustPressed("X");
  * ```
  *
  * @remarks
