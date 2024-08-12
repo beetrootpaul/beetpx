@@ -204,6 +204,11 @@ http://members.chello.at/easyfilter/bresenham.html
 
 ## Release Notes
 
+### v0.52.1
+
+- Game input: Fixed an issue of `"touch"` input method not being listed among others 
+  in a set returned by `BeetPx.getRecentInputMethods()`.
+
 ### v0.52.0
 
 - Game loop: Fixed an issue of timers and animations behaving in the draw callback 
