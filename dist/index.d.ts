@@ -27,12 +27,12 @@ type BpxJsonUrl = string;
  * let sprite1: BpxSprite;
  * let sprite2: BpxSprite;
  *
- * $.setOnStarted(() => {
+ * $x.setOnStarted(() => {
  *   sprite1 = $spr(sprite1Url)(8,8,0,0);
  *   sprite2 = $spr(sprite2Url)(8,8,0,0);
  * });
  *
- * $.start({
+ * $x.start({
  *   // ...,
  *  assets: [
  *    sprite1Url,
@@ -70,12 +70,12 @@ type BpxImageAsset = {
  * let playback1: BpxAudioPlaybackId;
  * let playback2: BpxAudioPlaybackId;
  *
- * $.setOnStarted(() => {
- *   playback1 = $.startPlayback(musicUrl);
- *   playback2 = $.startPlayback(sfxUrl);
+ * $x.setOnStarted(() => {
+ *   playback1 = $x.startPlayback(musicUrl);
+ *   playback2 = $x.startPlayback(sfxUrl);
  * });
  *
- * $.start({
+ * $x.start({
  *   // ...,
  *  assets: [
  *    musicUrl,
@@ -101,12 +101,12 @@ type BpxSoundAsset = {
  * let stats: BpxJsonAsset;
  * let level: BpxJsonAsset;
  *
- * $.setOnStarted(() => {
- *   const stats: BpxJsonAsset = $.getJsonAsset(statsUrl);
- *   const level: BpxJsonAsset = $.getJsonAsset(levelUrl);
+ * $x.setOnStarted(() => {
+ *   const stats: BpxJsonAsset = $x.getJsonAsset(statsUrl);
+ *   const level: BpxJsonAsset = $x.getJsonAsset(levelUrl);
  * });
  *
- * $.start({
+ * $x.start({
  *   // ...,
  *  assets: [
  *    statsUrl,
@@ -153,7 +153,7 @@ type BpxAudioPlaybackId = number;
  * @example
  * ```ts
  *  const halfDuration = (fullSoundDurationMs: number) => fullSoundDurationMs * 16 / 32;
- *  $.startPlaybackSequence({
+ *  $x.startPlaybackSequence({
  *    intro: [
  *      [{ url: "intro1Melody.flac", durationMs: halfDuration }],
  *      [{ url: "intro2Melody.flac", durationMs: halfDuration }, { url: "intro2Bass.flac" }],
@@ -1093,7 +1093,7 @@ declare class BpxFont {
      *
      * @example
      * ```ts
-     * $.start({
+     * $x.start({
      *   // ...
      *   assets: [
      *     ...myFont.spriteSheetUrls
@@ -1147,7 +1147,7 @@ type BpxImageBoundAnimatedSpriteFactory = (w: number, h: number, xys: [x: number
  * ```ts
  * let myAnimation: BpxAnimatedSprite;
  *
- * $.setOnStarted(() => {
+ * $x.setOnStarted(() => {
  *   myAnimation = $aspr("spritesheet.png")(8, 8, [
  *     [0,0],
  *     [8,0],
@@ -1309,7 +1309,7 @@ type BpxFpsDisplayPlacement = "top-left" | "top-right" | "bottom-left" | "bottom
  *
  * @example
  * ```ts
- * $.wasButtonJustPressed("X");
+ * $x.wasButtonJustPressed("X");
  * ```
  *
  * @remarks
@@ -1408,7 +1408,7 @@ type BpxEngineConfig = {
      *
      * @example
      * ```ts
-     * $.start({
+     * $x.start({
      *   // ...
      *   assets: [
      *     "spriteshet.png",    // refers to `./public/spriteshet.png`
@@ -1427,9 +1427,9 @@ type BpxEngineConfig = {
      *
      * @example
      * ```ts
-     * $.setOnDraw(() => {
+     * $x.setOnDraw(() => {
      *   // ...
-     *   if ($.isPaused) {
+     *   if ($x.isPaused) {
      *     pauseMenu.draw();
      *   }
      * });
@@ -1450,7 +1450,7 @@ type BpxEngineConfig = {
      *
      * @example
      * ```ts
-     * $.start({
+     * $x.start({
      *   // ...,
      *   requireConfirmationOnTabClose: BEETPX__IS_PROD,
      * });
@@ -1475,7 +1475,7 @@ type BpxEngineConfig = {
      * @example
      * ```ts
      * $d.sprite(playerSprite, xy);
-     * if ($.debug) {
+     * if ($x.debug) {
      *   $d.rect(xy, playerSprite.size, $rgb_red);
      * }
      * ```
@@ -1749,7 +1749,7 @@ declare class BpxFontConfigSaint11Minimal5 implements BpxFontConfig {
  * @example
  * ```ts
  * window.addEventListener("gamepadconnected", (gamepadEvent) => {
- *   $.logDebug(`Connected: ${BpxGamepadTypeDetector.detect(gamepadEvent.gamepad))}`);
+ *   $x.logDebug(`Connected: ${BpxGamepadTypeDetector.detect(gamepadEvent.gamepad))}`);
  * });
  * ```
  * @category Game input
@@ -1935,19 +1935,19 @@ declare class BeetPx {
      *
      * @example
      * ```ts
-     * $.setOnStarted(() => {
+     * $x.setOnStarted(() => {
      *   // ...
      * });
      *
-     * $.setOnUpdate(() => {
+     * $x.setOnUpdate(() => {
      *   // ...
      * });
      *
-     * $.setOnDraw(() => {
+     * $x.setOnDraw(() => {
      *   // ...
      * });
      *
-     * $.start({
+     * $x.start({
      *   gameId: "my-game",
      *   // ...
      * });
@@ -2026,20 +2026,20 @@ declare class BeetPx {
      * const inputManager = MySpecialInputManager();
      * let gameLogic: MyComplexGameLogic;
      *
-     * $.setOnStarted(() => {
+     * $x.setOnStarted(() => {
      *   gameLogic = new MyComplexGameLogic();
      *   inputManager.reset();
      * });
      *
-     * $.setOnUpdate(() => {
+     * $x.setOnUpdate(() => {
      *   // ...
      * });
      *
-     * $.setOnDraw(() => {
+     * $x.setOnDraw(() => {
      *   // ...
      * });
      *
-     * $.start({
+     * $x.start({
      *   // ...
      * });
      * ```
@@ -2056,21 +2056,21 @@ declare class BeetPx {
      * const speed = 6;
      * let player;
      *
-     * $.setOnStarted(() => {
+     * $x.setOnStarted(() => {
      *   // ...
      * });
      *
-     * $.setOnUpdate(() => {
+     * $x.setOnUpdate(() => {
      *   player.setPosition(
-     *     player.position.mul($.getPressedDirection()).mul(speed)
+     *     player.position.mul($x.getPressedDirection()).mul(speed)
      *   );
      * });
      *
-     * $.setOnDraw(() => {
+     * $x.setOnDraw(() => {
      *   // ...
      * });
      *
-     * $.start({
+     * $x.start({
      *   // ...
      * });
      * ```
@@ -2090,20 +2090,20 @@ declare class BeetPx {
      *
      * @example
      * ```ts
-     * $.setOnStarted(() => {
+     * $x.setOnStarted(() => {
      *   // ...
      * });
      *
-     * $.setOnUpdate(() => {
+     * $x.setOnUpdate(() => {
      *   // ...
      * });
      *
-     * $.setOnDraw(() => {
+     * $x.setOnDraw(() => {
      *   $d.clearCanvas($rgb_blue);
      *   $d.pixel($v(10,20), $rgb_red);
      * });
      *
-     * $.start({
+     * $x.start({
      *   // ...
      * });
      * ```
@@ -2117,7 +2117,7 @@ declare class BeetPx {
      * Restarts the entire game.
      *
      * It is important to properly set the game initialization logic through the {@link BeetPx.setOnStarted},
-     * so the `$.restart()` will result with a properly restarted game.
+     * so the `$x.restart()` will result with a properly restarted game.
      *
      * An example usage would be to implement a game pause menu, with the "restart the game" as
      * one of available options.
@@ -2262,7 +2262,7 @@ declare class BeetPx {
      *
      * @example
      * ```ts
-     * this.position += $.getPressedDirection().mul(this.speed);
+     * this.position += $x.getPressedDirection().mul(this.speed);
      * ```
      *
      * @category Game input
@@ -2508,7 +2508,7 @@ declare class BeetPx {
  *
  * @category API entry points
  */
-declare const $: typeof BeetPx;
+declare const $x: typeof BeetPx;
 
 /**
  * One of 3 main API entry points. This one provides you with the drawing
@@ -2763,7 +2763,7 @@ declare class BeetPxDraw {
      * const line3Wh = $d.measureText(textLine3).wh;
      * const totalW = Math.max(line1Wh.x, line2Wh.x, line3Wh.x);
      * const totalH = line1Wh.y + line2Wh.y + line3Wh.y;
-     * const leftTop = $.canvasSize.div(2).sub(totalW / 2, totalH / 2)
+     * const leftTop = $x.canvasSize.div(2).sub(totalW / 2, totalH / 2)
      * ```
      *
      * @category Text
@@ -2893,7 +2893,7 @@ declare class BeetPxUtils {
      *
      * @example
      * ```ts
-     * if ($.wasButtonJustPressed("up")) {
+     * if ($x.wasButtonJustPressed("up")) {
      *   selected = BeetPxUtils.mod(selected - 1);
      * }
      * const menuItem = menuItems[selected];
@@ -3238,7 +3238,7 @@ declare global {
      *
      * @example
      * ```ts
-     * $.start({
+     * $x.start({
      *   // ...,
      *   requireConfirmationOnTabClose: BEETPX__IS_PROD,
      *   debugMode: {
@@ -3260,7 +3260,7 @@ declare global {
      *
      * @example
      * ```ts
-     * $.logDebug(`BeetPx version: ${BEETPX__VERSION}`);
+     * $x.logDebug(`BeetPx version: ${BEETPX__VERSION}`);
      * ```
      *
      * @notExported
@@ -3269,4 +3269,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { $, $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_0_1, $v_1_0, $v_1_1, BeetPx, BeetPxDraw, BeetPxUtils, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAssetsToLoad, type BpxAudioPlaybackId, type BpxBrowserType, type BpxCanvasSnapshot, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxFpsDisplayPlacement, type BpxGameButtonName, type BpxGameInputEvent, type BpxGameInputMethod, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevSegmentMap, BpxPalettePico8, BpxPatternColors, type BpxPersistedStateValueConstraints, BpxPixels, type BpxPrintDebug, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundSequenceEntrySoundAdditional, type BpxSoundSequenceEntrySoundMain, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, type BpxTextMeasurement, BpxTimer, BpxTimerSequence, BpxVector2d };
+export { $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_0_1, $v_1_0, $v_1_1, $x, BeetPx, BeetPxDraw, BeetPxUtils, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAssetsToLoad, type BpxAudioPlaybackId, type BpxBrowserType, type BpxCanvasSnapshot, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxFpsDisplayPlacement, type BpxGameButtonName, type BpxGameInputEvent, type BpxGameInputMethod, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevSegmentMap, BpxPalettePico8, BpxPatternColors, type BpxPersistedStateValueConstraints, BpxPixels, type BpxPrintDebug, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundSequenceEntrySoundAdditional, type BpxSoundSequenceEntrySoundMain, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, type BpxTextMeasurement, BpxTimer, BpxTimerSequence, BpxVector2d };

@@ -79,7 +79,7 @@ export type BpxEngineConfig = {
    *
    * @example
    * ```ts
-   * $.start({
+   * $x.start({
    *   // ...
    *   assets: [
    *     "spriteshet.png",    // refers to `./public/spriteshet.png`
@@ -99,9 +99,9 @@ export type BpxEngineConfig = {
    *
    * @example
    * ```ts
-   * $.setOnDraw(() => {
+   * $x.setOnDraw(() => {
    *   // ...
-   *   if ($.isPaused) {
+   *   if ($x.isPaused) {
    *     pauseMenu.draw();
    *   }
    * });
@@ -122,7 +122,7 @@ export type BpxEngineConfig = {
    *
    * @example
    * ```ts
-   * $.start({
+   * $x.start({
    *   // ...,
    *   requireConfirmationOnTabClose: BEETPX__IS_PROD,
    * });
@@ -149,7 +149,7 @@ export type BpxEngineConfig = {
    * @example
    * ```ts
    * $d.sprite(playerSprite, xy);
-   * if ($.debug) {
+   * if ($x.debug) {
    *   $d.rect(xy, playerSprite.size, $rgb_red);
    * }
    * ```

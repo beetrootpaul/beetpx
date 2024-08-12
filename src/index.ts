@@ -24,7 +24,7 @@ declare global {
    *
    * @example
    * ```ts
-   * $.start({
+   * $x.start({
    *   // ...,
    *   requireConfirmationOnTabClose: BEETPX__IS_PROD,
    *   debugMode: {
@@ -47,7 +47,7 @@ declare global {
    *
    * @example
    * ```ts
-   * $.logDebug(`BeetPx version: ${BEETPX__VERSION}`);
+   * $x.logDebug(`BeetPx version: ${BEETPX__VERSION}`);
    * ```
    *
    * @notExported
@@ -123,7 +123,7 @@ export { BpxTimerSequence } from "./timer/TimerSequence";
 
 /////////////////////////////////////////////////////////////////////////////
 
-export { $, BeetPx } from "./BeetPx";
+export { $x, BeetPx } from "./BeetPx";
 export { $d, BeetPxDraw } from "./BeetPxDraw";
 export { $u, BeetPxUtils } from "./BeetPxUtils";
 

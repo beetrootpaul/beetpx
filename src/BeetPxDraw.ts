@@ -415,7 +415,7 @@ export class BeetPxDraw {
    * const line3Wh = $d.measureText(textLine3).wh;
    * const totalW = Math.max(line1Wh.x, line2Wh.x, line3Wh.x);
    * const totalH = line1Wh.y + line2Wh.y + line3Wh.y;
-   * const leftTop = $.canvasSize.div(2).sub(totalW / 2, totalH / 2)
+   * const leftTop = $x.canvasSize.div(2).sub(totalW / 2, totalH / 2)
    * ```
    *
    * @category Text

@@ -1,9 +1,9 @@
-import { $, $aspr, $d, $timer, $u, $v } from "../../src";
+import { $aspr, $d, $timer, $u, $v, $x } from "../../src";
 
 export class Movement {
   static assetUrls = ["animation.png"];
 
-  #timer = $timer($.canvasSize.x, { loop: true });
+  #timer = $timer($x.canvasSize.x, { loop: true });
   #animation = $aspr("animation.png")(
     48,
     48,
@@ -16,7 +16,7 @@ export class Movement {
       this.#animation.current,
       $v(
         this.#timer.t,
-        $.canvasSize.y * (0.5 + 0.5 * $u.trigCos(this.#timer.progress)),
+        $x.canvasSize.y * (0.5 + 0.5 * $u.trigCos(this.#timer.progress)),
       ),
       { centerXy: [true, true] },
     );

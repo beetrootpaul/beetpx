@@ -132,7 +132,7 @@ export class BeetPxUtils {
    *
    * @example
    * ```ts
-   * if ($.wasButtonJustPressed("up")) {
+   * if ($x.wasButtonJustPressed("up")) {
    *   selected = BeetPxUtils.mod(selected - 1);
    * }
    * const menuItem = menuItems[selected];

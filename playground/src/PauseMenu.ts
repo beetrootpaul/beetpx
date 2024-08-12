@@ -1,11 +1,11 @@
 import {
-  $,
   $d,
   $rgb,
   $rgb_p8,
   $u,
   $v,
   $v_0_0,
+  $x,
   BpxCanvasSnapshotColorMapping,
   BpxColorMapper,
 } from "../../src";
@@ -19,38 +19,38 @@ export class PauseMenu {
   #selectedItem = 0;
 
   constructor() {
-    $.startPlaybackLooped("music_base.flac", {
+    $x.startPlaybackLooped("music_base.flac", {
       onGamePause: "ignore",
     });
   }
 
   update() {
-    if ($.wasJustPaused) {
+    if ($x.wasJustPaused) {
       this.#selectedItem = 0;
     }
 
-    if ($.wasButtonJustPressed("O")) {
+    if ($x.wasButtonJustPressed("O")) {
       if (this.#selectedItem === 0) {
-        $.resume();
+        $x.resume();
       } else if (this.#selectedItem === 1) {
-        if ($.isAudioMuted()) {
-          $.unmuteAudio();
+        if ($x.isAudioMuted()) {
+          $x.unmuteAudio();
         } else {
-          $.muteAudio();
+          $x.muteAudio();
         }
       } else if (this.#selectedItem === 2) {
-        $.restart();
+        $x.restart();
       }
     }
 
-    if ($.wasButtonJustPressed("X")) {
-      $.resume();
+    if ($x.wasButtonJustPressed("X")) {
+      $x.resume();
     }
 
-    if ($.wasButtonJustPressed("down")) {
+    if ($x.wasButtonJustPressed("down")) {
       this.#selectedItem += 1;
     }
-    if ($.wasButtonJustPressed("up")) {
+    if ($x.wasButtonJustPressed("up")) {
       this.#selectedItem -= 1;
     }
     this.#selectedItem = $u.mod(this.#selectedItem, 3);
@@ -60,7 +60,7 @@ export class PauseMenu {
     $d.takeCanvasSnapshot();
     $d.rectFilled(
       $v_0_0,
-      $.canvasSize,
+      $x.canvasSize,
       BpxCanvasSnapshotColorMapping.of(PauseMenu.#dimColors),
     );
 
@@ -70,7 +70,7 @@ export class PauseMenu {
       this.#selectedItem === itemIndex ? $rgb_p8.white : $rgb_p8.slate;
     const opts = { scaleXy: $v(3, 3) };
     $d.text("resume", xy(0), color(0), opts);
-    $d.text($.isAudioMuted() ? "unmute" : "mute", xy(1), color(1), opts);
+    $d.text($x.isAudioMuted() ? "unmute" : "mute", xy(1), color(1), opts);
     $d.text("restart", xy(2), color(2), opts);
   }
 }

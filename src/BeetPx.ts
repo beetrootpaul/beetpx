@@ -74,19 +74,19 @@ export class BeetPx {
    *
    * @example
    * ```ts
-   * $.setOnStarted(() => {
+   * $x.setOnStarted(() => {
    *   // ...
    * });
    *
-   * $.setOnUpdate(() => {
+   * $x.setOnUpdate(() => {
    *   // ...
    * });
    *
-   * $.setOnDraw(() => {
+   * $x.setOnDraw(() => {
    *   // ...
    * });
    *
-   * $.start({
+   * $x.start({
    *   gameId: "my-game",
    *   // ...
    * });
@@ -220,20 +220,20 @@ export class BeetPx {
    * const inputManager = MySpecialInputManager();
    * let gameLogic: MyComplexGameLogic;
    *
-   * $.setOnStarted(() => {
+   * $x.setOnStarted(() => {
    *   gameLogic = new MyComplexGameLogic();
    *   inputManager.reset();
    * });
    *
-   * $.setOnUpdate(() => {
+   * $x.setOnUpdate(() => {
    *   // ...
    * });
    *
-   * $.setOnDraw(() => {
+   * $x.setOnDraw(() => {
    *   // ...
    * });
    *
-   * $.start({
+   * $x.start({
    *   // ...
    * });
    * ```
@@ -257,21 +257,21 @@ export class BeetPx {
    * const speed = 6;
    * let player;
    *
-   * $.setOnStarted(() => {
+   * $x.setOnStarted(() => {
    *   // ...
    * });
    *
-   * $.setOnUpdate(() => {
+   * $x.setOnUpdate(() => {
    *   player.setPosition(
-   *     player.position.mul($.getPressedDirection()).mul(speed)
+   *     player.position.mul($x.getPressedDirection()).mul(speed)
    *   );
    * });
    *
-   * $.setOnDraw(() => {
+   * $x.setOnDraw(() => {
    *   // ...
    * });
    *
-   * $.start({
+   * $x.start({
    *   // ...
    * });
    * ```
@@ -298,20 +298,20 @@ export class BeetPx {
    *
    * @example
    * ```ts
-   * $.setOnStarted(() => {
+   * $x.setOnStarted(() => {
    *   // ...
    * });
    *
-   * $.setOnUpdate(() => {
+   * $x.setOnUpdate(() => {
    *   // ...
    * });
    *
-   * $.setOnDraw(() => {
+   * $x.setOnDraw(() => {
    *   $d.clearCanvas($rgb_blue);
    *   $d.pixel($v(10,20), $rgb_red);
    * });
    *
-   * $.start({
+   * $x.start({
    *   // ...
    * });
    * ```
@@ -332,7 +332,7 @@ export class BeetPx {
    * Restarts the entire game.
    *
    * It is important to properly set the game initialization logic through the {@link BeetPx.setOnStarted},
-   * so the `$.restart()` will result with a properly restarted game.
+   * so the `$x.restart()` will result with a properly restarted game.
    *
    * An example usage would be to implement a game pause menu, with the "restart the game" as
    * one of available options.
@@ -534,7 +534,7 @@ export class BeetPx {
    *
    * @example
    * ```ts
-   * this.position += $.getPressedDirection().mul(this.speed);
+   * this.position += $x.getPressedDirection().mul(this.speed);
    * ```
    *
    * @category Game input
@@ -897,6 +897,6 @@ export class BeetPx {
  *
  * @category API entry points
  */
-export const $ = BeetPx;
+export const $x = BeetPx;
 
 /////////////////////////////////////////////////////////////////////////////

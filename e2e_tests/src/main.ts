@@ -1,3 +1,1 @@
-import { $ } from "../../src";
-
-$.start({ gameId: "e2e-tests" });
+$x.start({ gameId: "e2e-tests" });
