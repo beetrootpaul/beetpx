@@ -2892,20 +2892,14 @@ declare class BeetPxUtils {
      */
     static noop(): void;
     /**
-     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
-     * Useful e.g. for iterating over adjacent tiles on the game map.
+     * Generates a list of XY to add to a given coordinate in order to get all adjacent pixels in 4 directions
+     * (left/up/right/down).
      */
-    static offset4Directions(): [
-        BpxVector2d,
-        BpxVector2d,
-        BpxVector2d,
-        BpxVector2d
-    ];
+    static adjacent4(): [BpxVector2d, BpxVector2d, BpxVector2d, BpxVector2d];
     /**
-     * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
-     * Useful e.g. for iterating over adjacent tiles on the game map, including diagonals.
+     * Generates a list of XY to add to a given coordinate in order to get all adjacent pixels in 8 directions.
      */
-    static offset8Directions(): [
+    static adjacent8(): [
         BpxVector2d,
         BpxVector2d,
         BpxVector2d,

@@ -6,6 +6,8 @@
 
 import { BpxRgbColor } from "./color/RgbColor";
 import { BpxVector2d } from "./misc/Vector2d";
+import { adjacent4 } from "./utils/adjacent4";
+import { adjacent8 } from "./utils/adjacent8";
 import { assertUnreachable } from "./utils/assertUnreachable";
 import { booleanChangingEveryNthFrame } from "./utils/booleanChangingEveryNthFrame";
 import { clamp } from "./utils/clamp";
@@ -13,8 +15,6 @@ import { drawTextWithOutline } from "./utils/drawTextWithOutline";
 import { identity } from "./utils/identity";
 import { lerp } from "./utils/lerp";
 import { mod } from "./utils/mod";
-import { offset4Directions } from "./utils/offset4Directions";
-import { offset8Directions } from "./utils/offset8Directions";
 import { randomElementOf } from "./utils/randomElementOf";
 import { range } from "./utils/range";
 import { repeatEachElement } from "./utils/repeatEachElement";
@@ -155,23 +155,17 @@ export class BeetPxUtils {
   static noop(): void {}
 
   /**
-   * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 4 directions.
-   * Useful e.g. for iterating over adjacent tiles on the game map.
+   * Generates a list of XY to add to a given coordinate in order to get all adjacent pixels in 4 directions
+   * (left/up/right/down).
    */
-  static offset4Directions(): [
-    BpxVector2d,
-    BpxVector2d,
-    BpxVector2d,
-    BpxVector2d,
-  ] {
-    return offset4Directions();
+  static adjacent4(): [BpxVector2d, BpxVector2d, BpxVector2d, BpxVector2d] {
+    return adjacent4();
   }
 
   /**
-   * Generates a list of XY to add to a given coordinate in order to get all offsets by 1 pixel in 8 directions.
-   * Useful e.g. for iterating over adjacent tiles on the game map, including diagonals.
+   * Generates a list of XY to add to a given coordinate in order to get all adjacent pixels in 8 directions.
    */
-  static offset8Directions(): [
+  static adjacent8(): [
     BpxVector2d,
     BpxVector2d,
     BpxVector2d,
@@ -181,7 +175,7 @@ export class BeetPxUtils {
     BpxVector2d,
     BpxVector2d,
   ] {
-    return offset8Directions();
+    return adjacent8();
   }
 
   /**

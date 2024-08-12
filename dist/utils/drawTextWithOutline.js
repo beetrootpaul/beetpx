@@ -1,7 +1,7 @@
 import { BeetPxDraw } from "../";
-import { offset8Directions } from "./offset8Directions";
+import { adjacent8 } from "./adjacent8";
 export function drawTextWithOutline(text, canvasXy1, textColor, outlineColor, opts) {
-    for (const offset of offset8Directions()) {
+    for (const offset of adjacent8()) {
         BeetPxDraw.text(text, canvasXy1.add(offset), outlineColor, {
             centerXy: opts?.centerXy,
             scaleXy: opts?.scaleXy,
