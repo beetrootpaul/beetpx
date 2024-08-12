@@ -445,6 +445,10 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     eq(value: number): boolean;
     /**
+     * @returns If the vector has both of its components equal to a given x and y.
+     */
+    eq(x: number, y: number): boolean;
+    /**
      * @returns If the vector has both of its components greater than the same components of a given vector.
      */
     gt(other: BpxVector2d): boolean;
@@ -452,6 +456,10 @@ declare class BpxVector2d implements BpxPrintDebug {
      * @returns If the vector has both of its components greater than a given value.
      */
     gt(value: number): boolean;
+    /**
+     * @returns If the vector has both of its components greater than a given x and y.
+     */
+    gt(x: number, y: number): boolean;
     /**
      * @returns If the vector has both of its components greater or equal to the same components of a given vector.
      */
@@ -461,6 +469,10 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     gte(value: number): boolean;
     /**
+     * @returns If the vector has both of its components greater or equal to a given x and y.
+     */
+    gte(x: number, y: number): boolean;
+    /**
      * @returns If the vector has both of its components lower than the same components of a given vector.
      */
     lt(other: BpxVector2d): boolean;
@@ -469,6 +481,10 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     lt(value: number): boolean;
     /**
+     * @returns If the vector has both of its components lower than a given x and y.
+     */
+    lt(x: number, y: number): boolean;
+    /**
      * @returns If the vector has both of its components lower or equal to the same components of a given vector.
      */
     lte(other: BpxVector2d): boolean;
@@ -476,6 +492,10 @@ declare class BpxVector2d implements BpxPrintDebug {
      * @returns If the vector has both of its components lower or equal to a given value.
      */
     lte(value: number): boolean;
+    /**
+     * @returns If the vector has both of its components lower or equal to a given x and y.
+     */
+    lte(x: number, y: number): boolean;
     /**
      * @returns Creates a vector with X and Y passed through the {@link BeetPxUtils.clamp} individually.
      */

@@ -189,10 +189,14 @@ export class BpxVector2d implements BpxPrintDebug {
    * @returns If the vector has both of its components equal to a given value.
    */
   eq(value: number): boolean;
-  eq(otherOrValue: BpxVector2d | number): boolean {
-    return typeof otherOrValue !== "number" ?
-        this.x === otherOrValue.x && this.y === otherOrValue.y
-      : this.x === otherOrValue && this.y === otherOrValue;
+  /**
+   * @returns If the vector has both of its components equal to a given x and y.
+   */
+  eq(x: number, y: number): boolean;
+  eq(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
+    return typeof otherOrValueOrX !== "number" ?
+        this.x === otherOrValueOrX.x && this.y === otherOrValueOrX.y
+      : this.x === otherOrValueOrX && this.y === (maybeY ?? otherOrValueOrX);
   }
 
   /**
@@ -203,10 +207,14 @@ export class BpxVector2d implements BpxPrintDebug {
    * @returns If the vector has both of its components greater than a given value.
    */
   gt(value: number): boolean;
-  gt(otherOrValue: BpxVector2d | number): boolean {
-    return typeof otherOrValue !== "number" ?
-        this.x > otherOrValue.x && this.y > otherOrValue.y
-      : this.x > otherOrValue && this.y > otherOrValue;
+  /**
+   * @returns If the vector has both of its components greater than a given x and y.
+   */
+  gt(x: number, y: number): boolean;
+  gt(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
+    return typeof otherOrValueOrX !== "number" ?
+        this.x > otherOrValueOrX.x && this.y > otherOrValueOrX.y
+      : this.x > otherOrValueOrX && this.y > (maybeY ?? otherOrValueOrX);
   }
 
   /**
@@ -217,10 +225,14 @@ export class BpxVector2d implements BpxPrintDebug {
    * @returns If the vector has both of its components greater or equal to a given value.
    */
   gte(value: number): boolean;
-  gte(otherOrValue: BpxVector2d | number): boolean {
-    return typeof otherOrValue !== "number" ?
-        this.x >= otherOrValue.x && this.y >= otherOrValue.y
-      : this.x >= otherOrValue && this.y >= otherOrValue;
+  /**
+   * @returns If the vector has both of its components greater or equal to a given x and y.
+   */
+  gte(x: number, y: number): boolean;
+  gte(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
+    return typeof otherOrValueOrX !== "number" ?
+        this.x >= otherOrValueOrX.x && this.y >= otherOrValueOrX.y
+      : this.x >= otherOrValueOrX && this.y >= (maybeY ?? otherOrValueOrX);
   }
 
   /**
@@ -231,10 +243,14 @@ export class BpxVector2d implements BpxPrintDebug {
    * @returns If the vector has both of its components lower than a given value.
    */
   lt(value: number): boolean;
-  lt(otherOrValue: BpxVector2d | number): boolean {
-    return typeof otherOrValue !== "number" ?
-        this.x < otherOrValue.x && this.y < otherOrValue.y
-      : this.x < otherOrValue && this.y < otherOrValue;
+  /**
+   * @returns If the vector has both of its components lower than a given x and y.
+   */
+  lt(x: number, y: number): boolean;
+  lt(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
+    return typeof otherOrValueOrX !== "number" ?
+        this.x < otherOrValueOrX.x && this.y < otherOrValueOrX.y
+      : this.x < otherOrValueOrX && this.y < (maybeY ?? otherOrValueOrX);
   }
 
   /**
@@ -245,10 +261,14 @@ export class BpxVector2d implements BpxPrintDebug {
    * @returns If the vector has both of its components lower or equal to a given value.
    */
   lte(value: number): boolean;
-  lte(otherOrValue: BpxVector2d | number): boolean {
-    return typeof otherOrValue !== "number" ?
-        this.x <= otherOrValue.x && this.y <= otherOrValue.y
-      : this.x <= otherOrValue && this.y <= otherOrValue;
+  /**
+   * @returns If the vector has both of its components lower or equal to a given x and y.
+   */
+  lte(x: number, y: number): boolean;
+  lte(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
+    return typeof otherOrValueOrX !== "number" ?
+        this.x <= otherOrValueOrX.x && this.y <= otherOrValueOrX.y
+      : this.x <= otherOrValueOrX && this.y <= (maybeY ?? otherOrValueOrX);
   }
 
   /**

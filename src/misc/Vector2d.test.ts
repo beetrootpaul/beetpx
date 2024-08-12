@@ -185,6 +185,10 @@ describe("Vector2d", () => {
       expect($v(10, -20).eq($v(99, -20))).toBe(false);
       expect($v(10, -20).eq($v(10, -99))).toBe(false);
 
+      expect($v(10, -20).eq(10, -20)).toBe(true);
+      expect($v(10, -20).eq(99, -20)).toBe(false);
+      expect($v(10, -20).eq(10, -99)).toBe(false);
+
       expect($v(123, 123).eq(123)).toBe(true);
       expect($v(123, 123).eq(999)).toBe(false);
       expect($v(123, 999).eq(123)).toBe(false);
@@ -195,6 +199,15 @@ describe("Vector2d", () => {
       expect($v(20, -80).gt($v(10, -90))).toBe(true);
       expect($v(20, -80).gt($v(20, -90))).toBe(false);
       expect($v(20, -80).gt($v(10, -80))).toBe(false);
+
+      expect($v(20, -80).gt(10, -90)).toBe(true);
+      expect($v(20, -80).gt(20, -90)).toBe(false);
+      expect($v(20, -80).gt(10, -80)).toBe(false);
+
+      expect($v(20, -80).gt(-81)).toBe(true);
+      expect($v(-80, 20).gt(-81)).toBe(true);
+      expect($v(20, -80).gt(-80)).toBe(false);
+      expect($v(-80, 20).gt(-80)).toBe(false);
     });
 
     test("#gte", () => {
@@ -202,12 +215,31 @@ describe("Vector2d", () => {
       expect($v(20, -80).gte($v(20, -80))).toBe(true);
       expect($v(20, -80).gte($v(21, -90))).toBe(false);
       expect($v(20, -80).gte($v(10, -79))).toBe(false);
+
+      expect($v(20, -80).gte(10, -90)).toBe(true);
+      expect($v(20, -80).gte(20, -80)).toBe(true);
+      expect($v(20, -80).gte(21, -90)).toBe(false);
+      expect($v(20, -80).gte(10, -79)).toBe(false);
+
+      expect($v(20, -80).gte(-80)).toBe(true);
+      expect($v(-80, 20).gte(-80)).toBe(true);
+      expect($v(20, -80).gte(-79)).toBe(false);
+      expect($v(-80, 20).gte(-79)).toBe(false);
     });
 
     test("#lt", () => {
       expect($v(20, -80).lt($v(30, -70))).toBe(true);
       expect($v(20, -80).lt($v(20, -70))).toBe(false);
       expect($v(20, -80).lt($v(30, -80))).toBe(false);
+
+      expect($v(20, -80).lt(30, -70)).toBe(true);
+      expect($v(20, -80).lt(20, -70)).toBe(false);
+      expect($v(20, -80).lt(30, -80)).toBe(false);
+
+      expect($v(20, -80).lt(21)).toBe(true);
+      expect($v(-80, 20).lt(21)).toBe(true);
+      expect($v(20, -80).lt(20)).toBe(false);
+      expect($v(-80, 20).lt(20)).toBe(false);
     });
 
     test("#lte", () => {
@@ -215,6 +247,16 @@ describe("Vector2d", () => {
       expect($v(20, -80).lte($v(20, -80))).toBe(true);
       expect($v(20, -80).lte($v(19, -70))).toBe(false);
       expect($v(20, -80).lte($v(30, -81))).toBe(false);
+
+      expect($v(20, -80).lte(30, -70)).toBe(true);
+      expect($v(20, -80).lte(20, -80)).toBe(true);
+      expect($v(20, -80).lte(19, -70)).toBe(false);
+      expect($v(20, -80).lte(30, -81)).toBe(false);
+
+      expect($v(20, -80).lte(20)).toBe(true);
+      expect($v(-80, 20).lte(20)).toBe(true);
+      expect($v(20, -80).lte(19)).toBe(false);
+      expect($v(-80, 20).lte(19)).toBe(false);
     });
 
     test("#clamp", () => {
@@ -230,28 +272,33 @@ describe("Vector2d", () => {
     });
 
     test("#mod", () => {
-      expect($v(123.5, -123.5).mod(100)).toEqual($v(23.5, 76.5));
+      expect($v(123.5, -123.5).mod($v(10, 2))).toEqual($v(3.5, 0.5));
       expect($v(123.5, -123.5).mod(10, 2)).toEqual($v(3.5, 0.5));
+      expect($v(123.5, -123.5).mod(100)).toEqual($v(23.5, 76.5));
     });
 
     test("#add", () => {
-      expect($v(11, -222).add(123)).toEqual($v(134, -99));
+      expect($v(11, -222).add($v(-1, -22))).toEqual($v(10, -244));
       expect($v(11, -222).add(-1, -22)).toEqual($v(10, -244));
+      expect($v(11, -222).add(123)).toEqual($v(134, -99));
     });
 
     test("#sub", () => {
-      expect($v(11, -222).sub(123)).toEqual($v(-112, -345));
+      expect($v(11, -222).sub($v(-1, -22))).toEqual($v(12, -200));
       expect($v(11, -222).sub(-1, -22)).toEqual($v(12, -200));
+      expect($v(11, -222).sub(123)).toEqual($v(-112, -345));
     });
 
     test("#mul", () => {
-      expect($v(11, -222).mul(3)).toEqual($v(33, -666));
+      expect($v(11, -222).mul($v(-2, -4))).toEqual($v(-22, 888));
       expect($v(11, -222).mul(-2, -4)).toEqual($v(-22, 888));
+      expect($v(11, -222).mul(3)).toEqual($v(33, -666));
     });
 
     test("#div", () => {
-      expect($v(22, -33).div(11)).toEqual($v(2, -3));
+      expect($v(22, -33).div($v(-11, 11))).toEqual($v(-2, -3));
       expect($v(22, -33).div(-11, 11)).toEqual($v(-2, -3));
+      expect($v(22, -33).div(11)).toEqual($v(2, -3));
     });
   });
 
