@@ -612,7 +612,7 @@ declare class BpxCanvasSnapshotColorMapping {
     /**
      * @group Static factories
      */
-    static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping;
+    static of(mapper: BpxColorMapper): BpxCanvasSnapshotColorMapping;
     /**
      * A property helpful for TypeScript type inference, when distinguishing from
      * other types of colors.
@@ -753,7 +753,7 @@ declare class BpxSpriteColorMapping {
      *
      * @group Static factories
      */
-    static of(mapping: BpxColorMapper): BpxSpriteColorMapping;
+    static of(mapper: BpxColorMapper): BpxSpriteColorMapping;
     /**
      * A property helpful for TypeScript type inference, when distinguishing from
      * other types of colors.

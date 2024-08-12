@@ -13,8 +13,8 @@ export class BpxCanvasSnapshotColorMapping {
   /**
    * @group Static factories
    */
-  static of(mapping: BpxColorMapper): BpxCanvasSnapshotColorMapping {
-    return new BpxCanvasSnapshotColorMapping(mapping);
+  static of(mapper: BpxColorMapper): BpxCanvasSnapshotColorMapping {
+    return new BpxCanvasSnapshotColorMapping(mapper);
   }
 
   /**
