@@ -20,6 +20,8 @@
     * [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
   * [Known Issues](#known-issues)
   * [Release Notes](#release-notes)
+    * [v0.53.0](#v0530)
+    * [v0.52.1](#v0521)
     * [v0.52.0](#v0520)
     * [v0.51.3](#v0513)
     * [v0.51.2](#v0512)
@@ -204,6 +206,24 @@ http://members.chello.at/easyfilter/bresenham.html
 
 ## Release Notes
 
+### v0.53.0
+
+- Renamed `$` to `$x` for a better auto-import experience in WebStorm IDE.  
+- Drawing: Transparent (`null`) sprite pixels are now passed to the `BpxSpriteColorMapping`
+  as well.
+- `BeetPxUtils`: Fixed `offset4Directions()` to return left/up/right/down 
+  instead of diagonals.
+- `BeetPxUtils`: Renamed `offset4Directions()` to `adjacent4()`. 
+- `BeetPxUtils`: Renamed `offset8Directions()` to `adjacent8()`. 
+- `BpxVector2d`: Renamed `min(…)` to `minOf(…)`.
+- `BpxVector2d`: Renamed `max(…)` to `maxOf(…)`.
+- `BpxVector2d`: Renamed `minMax(…)` to `minMaxOf(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `eq(…)`. 
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gt(…)`. 
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gte(…)`. 
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lt(…)`. 
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lte(…)`. 
+
 ### v0.52.1
 
 - Game input: Fixed an issue of `"touch"` input method not being listed among others 
@@ -217,16 +237,16 @@ http://members.chello.at/easyfilter/bresenham.html
 
 ### v0.51.3
 
-- BpxAnimatedSprite: Added `t` computed property
+- `BpxAnimatedSprite`: Added `t` computed property.
 
 ### v0.51.2
 
-- Console GUI on touch devices: Fixed the "O" button's press animation
-- BpxVector2d: Added `neg()` method
-- BpxVector2d: Added `$v_0_1` shorthand
-- BpxVector2d: Added `$v_1_0` shorthand
+- Console GUI on touch devices: Fixed the "O" button's press animation.
+- `BpxVector2d`: Added `neg()` method.
+- `BpxVector2d`: Added `$v_0_1` shorthand.
+- `BpxVector2d`: Added `$v_1_0` shorthand.
 
 ### v0.51.1
 
-- BpxVector2d: Fixed `normalize()` method so it treats `(0,0)` vector in a
-  special by returning the `(0,0)`
+- `BpxVector2d`: Fixed `normalize()` method so it treats `(0,0)` vector in a
+  special by returning the `(0,0)`.
