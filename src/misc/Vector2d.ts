@@ -55,7 +55,7 @@ export class BpxVector2d implements BpxPrintDebug {
    *
    * @group Static factories
    */
-  static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
+  static minOf(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
   }
 
@@ -64,25 +64,25 @@ export class BpxVector2d implements BpxPrintDebug {
    *
    * @group Static factories
    */
-  static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
+  static maxOf(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d {
     return new BpxVector2d(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y));
   }
 
   /**
-   * An equivalent of `[BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)]`.
+   * An equivalent of `[BpxVector2d.minOf(xy1, xy2), BpxVector2d.maxOf(xy1, xy2)]`.
    *
    * @example
    * ```ts
-   * const [minV, maxV] = BpxVector2d.minMax(v1, v2);
+   * const [minV, maxV] = BpxVector2d.minMaxOf(v1, v2);
    * ```
    *
    * @group Static factories
    */
-  static minMax(
+  static minMaxOf(
     xy1: BpxVector2d,
     xy2: BpxVector2d,
   ): [BpxVector2d, BpxVector2d] {
-    return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
+    return [BpxVector2d.minOf(xy1, xy2), BpxVector2d.maxOf(xy1, xy2)];
   }
 
   /**
@@ -112,7 +112,7 @@ export class BpxVector2d implements BpxPrintDebug {
   }
 
   /**
-   * @returns A magnitude of the vector, which is `sqrt(x^2 + y^2)`.
+   * @returns A magnitude (length) of the vector, which is `sqrt(x^2 + y^2)`.
    */
   magnitude(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);

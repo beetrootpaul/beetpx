@@ -43,26 +43,30 @@ describe("Vector2d", () => {
   });
 
   describe("basics", () => {
-    test("#min", () => {
-      expect(BpxVector2d.min($v(111, 999), $v(888, 222))).toEqual($v(111, 222));
-      expect(BpxVector2d.min($v(-111, -999), $v(-888, -222))).toEqual(
+    test("#minOf", () => {
+      expect(BpxVector2d.minOf($v(111, 999), $v(888, 222))).toEqual(
+        $v(111, 222),
+      );
+      expect(BpxVector2d.minOf($v(-111, -999), $v(-888, -222))).toEqual(
         $v(-888, -999),
       );
     });
 
-    test("#max", () => {
-      expect(BpxVector2d.max($v(111, 999), $v(888, 222))).toEqual($v(888, 999));
-      expect(BpxVector2d.max($v(-111, -999), $v(-888, -222))).toEqual(
+    test("#maxOf", () => {
+      expect(BpxVector2d.maxOf($v(111, 999), $v(888, 222))).toEqual(
+        $v(888, 999),
+      );
+      expect(BpxVector2d.maxOf($v(-111, -999), $v(-888, -222))).toEqual(
         $v(-111, -222),
       );
     });
 
-    test("#minMax", () => {
+    test("#minMaxOf", () => {
       expect(
-        BpxVector2d.minMax($v(111, 999), $v(888, 222)).map(v => v),
+        BpxVector2d.minMaxOf($v(111, 999), $v(888, 222)).map(v => v),
       ).toEqual([$v(111, 222), $v(888, 999)]);
       expect(
-        BpxVector2d.minMax($v(-111, -999), $v(-888, -222)).map(v => v),
+        BpxVector2d.minMaxOf($v(-111, -999), $v(-888, -222)).map(v => v),
       ).toEqual([$v(-888, -999), $v(-111, -222)]);
     });
 

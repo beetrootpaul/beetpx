@@ -368,24 +368,24 @@ declare class BpxVector2d implements BpxPrintDebug {
      *
      * @group Static factories
      */
-    static min(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static minOf(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     /**
      * Creates a vector which has the highest X and Y from two other given vectors.
      *
      * @group Static factories
      */
-    static max(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
+    static maxOf(xy1: BpxVector2d, xy2: BpxVector2d): BpxVector2d;
     /**
-     * An equivalent of `[BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)]`.
+     * An equivalent of `[BpxVector2d.minOf(xy1, xy2), BpxVector2d.maxOf(xy1, xy2)]`.
      *
      * @example
      * ```ts
-     * const [minV, maxV] = BpxVector2d.minMax(v1, v2);
+     * const [minV, maxV] = BpxVector2d.minMaxOf(v1, v2);
      * ```
      *
      * @group Static factories
      */
-    static minMax(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
+    static minMaxOf(xy1: BpxVector2d, xy2: BpxVector2d): [BpxVector2d, BpxVector2d];
     /**
      * Creates a vector with X and Y passed through the {@link BeetPxUtils.lerp} individually.
      *
@@ -399,7 +399,7 @@ declare class BpxVector2d implements BpxPrintDebug {
      */
     asArray(): [number, number];
     /**
-     * @returns A magnitude of the vector, which is `sqrt(x^2 + y^2)`.
+     * @returns A magnitude (length) of the vector, which is `sqrt(x^2 + y^2)`.
      */
     magnitude(): number;
     /**

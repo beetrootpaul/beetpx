@@ -23,7 +23,7 @@ export class DrawEllipse {
     fill: EllipseFillMode,
     pattern: BpxDrawingPattern,
   ): void {
-    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(
+    const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMaxOf(
       xy.round(),
       xy.add(wh).round(),
     );

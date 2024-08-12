@@ -17,14 +17,14 @@ export class BpxVector2d {
         this.x = x;
         this.y = y;
     }
-    static min(xy1, xy2) {
+    static minOf(xy1, xy2) {
         return new BpxVector2d(Math.min(xy1.x, xy2.x), Math.min(xy1.y, xy2.y));
     }
-    static max(xy1, xy2) {
+    static maxOf(xy1, xy2) {
         return new BpxVector2d(Math.max(xy1.x, xy2.x), Math.max(xy1.y, xy2.y));
     }
-    static minMax(xy1, xy2) {
-        return [BpxVector2d.min(xy1, xy2), BpxVector2d.max(xy1, xy2)];
+    static minMaxOf(xy1, xy2) {
+        return [BpxVector2d.minOf(xy1, xy2), BpxVector2d.maxOf(xy1, xy2)];
     }
     static lerp(xy1, xy2, t, opts) {
         return new BpxVector2d(lerp(xy1.x, xy2.x, t, opts), lerp(xy1.y, xy2.y, t, opts));

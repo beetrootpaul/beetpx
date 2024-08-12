@@ -29,7 +29,7 @@ export class DrawSprite {
     pattern: BpxDrawingPattern,
   ): void {
     targetXy = this.#options.disableRounding ? targetXy : targetXy.round();
-    scaleXy = BpxVector2d.max(scaleXy.floor(), $v_0_0);
+    scaleXy = BpxVector2d.maxOf(scaleXy.floor(), $v_0_0);
 
     const {
       width: imgW,

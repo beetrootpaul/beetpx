@@ -18,7 +18,7 @@ export class Canvas {
             BpxVector2d.of(this.#minX, this.#minY),
             BpxVector2d.of(this.#maxX - this.#minX + 1, this.#maxY - this.#minY + 1),
         ];
-        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMaxOf(xy.round(), xy.add(wh).round());
         this.#minX = xyMinInclusive.x;
         this.#minY = xyMinInclusive.y;
         this.#maxX = xyMaxExclusive.x - 1;

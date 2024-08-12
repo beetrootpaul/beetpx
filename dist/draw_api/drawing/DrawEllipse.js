@@ -5,7 +5,7 @@ export class DrawEllipse {
         this.#canvas = canvas;
     }
     draw(xy, wh, color, fill, pattern) {
-        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMax(xy.round(), xy.add(wh).round());
+        const [xyMinInclusive, xyMaxExclusive] = BpxVector2d.minMaxOf(xy.round(), xy.add(wh).round());
         if (xyMaxExclusive.x - xyMinInclusive.x <= 0 ||
             xyMaxExclusive.y - xyMinInclusive.y <= 0) {
             return;
