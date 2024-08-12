@@ -206,6 +206,7 @@ export class GameInputTouch implements GameInputSpecialized {
         if ((ongoingEvents & bitMask) === bitMask) {
           for (const event of events) {
             eventsCollector.add(event);
+            anythingAdded = true;
           }
         }
       }

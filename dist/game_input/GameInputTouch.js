@@ -172,6 +172,7 @@ export class GameInputTouch {
                 if ((ongoingEvents & bitMask) === bitMask) {
                     for (const event of events) {
                         eventsCollector.add(event);
+                        anythingAdded = true;
                     }
                 }
             }

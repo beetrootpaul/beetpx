@@ -42,7 +42,7 @@ $.setOnStarted(() => {
       ["TWO", 3],
     ],
   });
-  console.log("___ started ___", t.t, tseq.currentPhase, tseq.t, t2?.t);
+  // console.log("___ started ___", t.t, tseq.currentPhase, tseq.t, t2?.t);
 });
 
 $.setOnUpdate(() => {
@@ -72,16 +72,18 @@ $.setOnUpdate(() => {
     t2 = $timer(3, { loop: true });
   }
 
-  console.log("UPDATE", t.t, tseq.currentPhase, tseq.t, t2?.t);
+  // console.log("UPDATE", t.t, tseq.currentPhase, tseq.t, t2?.t);
 
   if ($.wasButtonJustPressed("menu")) {
     $.restart();
     return;
   }
+
+  console.log("RIM:", $.getRecentInputMethods());
 });
 
 $.setOnDraw(() => {
-  console.log("draw", t.t, tseq.currentPhase, tseq.t, t2?.t);
+  // console.log("draw", t.t, tseq.currentPhase, tseq.t, t2?.t);
 
   $d.clearCanvas($rgb_p8.storm);
 
@@ -118,6 +120,6 @@ $.start({
   },
   frameByFrame: {
     available: !BEETPX__IS_PROD,
-    activateOnStart: true,
+    activateOnStart: false,
   },
 });
