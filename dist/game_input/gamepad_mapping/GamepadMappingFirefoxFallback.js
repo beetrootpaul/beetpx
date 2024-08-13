@@ -36,18 +36,18 @@ export class GamepadMappingFirefoxFallback {
         switch (axisIndex) {
             case 0:
             case 2:
-                return (axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-                    ["button_right"]
-                    : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-                        ["button_left"]
-                        : []);
+                return axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold
+                    ? ["button_right"]
+                    : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold
+                        ? ["button_left"]
+                        : [];
             case 1:
             case 3:
-                return (axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-                    ["button_down"]
-                    : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-                        ["button_up"]
-                        : []);
+                return axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold
+                    ? ["button_down"]
+                    : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold
+                        ? ["button_up"]
+                        : [];
             default:
                 return [];
         }

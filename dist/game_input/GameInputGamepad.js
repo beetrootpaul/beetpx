@@ -64,13 +64,13 @@ export class GameInputGamepad {
         if (this.#browserType === "firefox_windows" ||
             this.#browserType === "firefox_other") {
             if (gamepadType === "dualsense") {
-                return this.#browserType === "firefox_windows" ?
-                    this.#mappings.firefoxDualSenseWindows
+                return this.#browserType === "firefox_windows"
+                    ? this.#mappings.firefoxDualSenseWindows
                     : this.#mappings.firefoxDualSenseOther;
             }
             else if (gamepadType === "8bitdo") {
-                return this.#browserType === "firefox_windows" ?
-                    this.#mappings.firefox8bitdoWindows
+                return this.#browserType === "firefox_windows"
+                    ? this.#mappings.firefox8bitdoWindows
                     : this.#mappings.firefox8bitdoOther;
             }
             else {
@@ -78,13 +78,13 @@ export class GameInputGamepad {
             }
         }
         if (gamepadType === "8bitdo") {
-            return this.#browserType === "safari" ?
-                this.#mappings.safari8bitdo
+            return this.#browserType === "safari"
+                ? this.#mappings.safari8bitdo
                 : this.#mappings["8bitdo"];
         }
         if (gamepad.mapping === "standard") {
-            return gamepadType === "dualsense" ?
-                this.#mappings.dualSense
+            return gamepadType === "dualsense"
+                ? this.#mappings.dualSense
                 : this.#mappings.standard;
         }
         else {

@@ -277,9 +277,8 @@ function runDevCommand(params) {
       server: {
         port: port ?? undefined,
         strictPort: !!port,
-        open:
-          open ?
-            path.relative(
+        open: open
+          ? path.relative(
               gameCodebase.root,
               path.resolve(gameCodebase.bpxDevDir, "index.html"),
             )
@@ -447,9 +446,9 @@ async function runZipCommand(params) {
   const sizeKibibytes = sizeBytes / 1024;
   const sizeMebibytes = sizeKibibytes / 1024;
   const sizePart =
-    sizeKibibytes >= 1024 ?
-      `${sizeMebibytes.toFixed(1)} MiB`
-    : `${sizeKibibytes.toFixed(0)} KiB`;
+    sizeKibibytes >= 1024
+      ? `${sizeMebibytes.toFixed(1)} MiB`
+      : `${sizeKibibytes.toFixed(0)} KiB`;
   console.log(
     `Zip got created in: ${path.relative(
       process.cwd(),

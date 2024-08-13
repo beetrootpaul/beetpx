@@ -74,22 +74,18 @@ export class GamepadMappingSafari8BitDo implements GamepadMapping {
     switch (axisIndex) {
       case 0: // left stick, horizontal
       case 2: // right stick, horizontal
-        return (
-          axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-            ["button_right"]
-          : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-            ["button_left"]
-          : []
-        );
+        return axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold
+          ? ["button_right"]
+          : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold
+            ? ["button_left"]
+            : [];
       case 1: // left stick, vertical
       case 3: // right stick, vertical
-        return (
-          axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-            ["button_down"]
-          : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-            ["button_up"]
-          : []
-        );
+        return axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold
+          ? ["button_down"]
+          : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold
+            ? ["button_up"]
+            : [];
       default:
         return [];
     }

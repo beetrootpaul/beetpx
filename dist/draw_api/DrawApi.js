@@ -120,8 +120,8 @@ export class DrawApi {
             else {
                 maxLineNumber = Math.max(maxLineNumber, arrangedGlyph.lineNumber);
                 maxX = Math.max(maxX, arrangedGlyph.leftTop.x +
-                    (arrangedGlyph.type === "sprite" ?
-                        arrangedGlyph.sprite.size.x
+                    (arrangedGlyph.type === "sprite"
+                        ? arrangedGlyph.sprite.size.x
                         : arrangedGlyph.pixels.size.x));
             }
         }

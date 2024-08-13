@@ -27,18 +27,18 @@ export class GamepadMappingDualSense {
         switch (axisIndex) {
             case 0:
             case 2:
-                return (axisValue > GamepadMappingDualSense.#stickAxisThreshold ?
-                    ["button_right"]
-                    : axisValue < -GamepadMappingDualSense.#stickAxisThreshold ?
-                        ["button_left"]
-                        : []);
+                return axisValue > GamepadMappingDualSense.#stickAxisThreshold
+                    ? ["button_right"]
+                    : axisValue < -GamepadMappingDualSense.#stickAxisThreshold
+                        ? ["button_left"]
+                        : [];
             case 1:
             case 3:
-                return (axisValue > GamepadMappingDualSense.#stickAxisThreshold ?
-                    ["button_down"]
-                    : axisValue < -GamepadMappingDualSense.#stickAxisThreshold ?
-                        ["button_up"]
-                        : []);
+                return axisValue > GamepadMappingDualSense.#stickAxisThreshold
+                    ? ["button_down"]
+                    : axisValue < -GamepadMappingDualSense.#stickAxisThreshold
+                        ? ["button_up"]
+                        : [];
             default:
                 return [];
         }

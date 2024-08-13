@@ -38,8 +38,8 @@ export class BpxTimerSequence {
             onGamePause: this.#onGamePause,
         });
         this.#loopTimer =
-            this.#loopPhases.length > 0 ?
-                BpxTimer.of({
+            this.#loopPhases.length > 0
+                ? BpxTimer.of({
                     frames: this.#loopFrames,
                     loop: true,
                     paused: opts.paused,
@@ -79,8 +79,8 @@ export class BpxTimerSequence {
             }
             let curr = this.#firstIterationPhases[i] ?? null;
             return {
-                recentlyFinishedPhase: this.#firstIterationTimer.hasJustFinished ?
-                    (curr?.name ?? null)
+                recentlyFinishedPhase: this.#firstIterationTimer.hasJustFinished
+                    ? (curr?.name ?? null)
                     : (prev?.name ?? null),
                 phase: curr,
                 t: firstIterationT - offset,
@@ -111,42 +111,42 @@ export class BpxTimerSequence {
         };
     }
     get justFinishedPhase() {
-        return this.hasJustFinishedOverall || this.#now.t === 0 ?
-            this.#now.recentlyFinishedPhase
+        return this.hasJustFinishedOverall || this.#now.t === 0
+            ? this.#now.recentlyFinishedPhase
             : null;
     }
     get currentPhase() {
         return this.#now.phase?.name ?? null;
     }
     get #fn() {
-        return this.#ignoreGamePause ?
-            BeetPx.frameNumber
+        return this.#ignoreGamePause
+            ? BeetPx.frameNumber
             : BeetPx.frameNumberOutsidePause;
     }
     get t() {
         return this.#now.t;
     }
     get progress() {
-        return this.#now.phase && this.#now.phase.frames > 0 ?
-            this.#now.t / this.#now.phase.frames
+        return this.#now.phase && this.#now.phase.frames > 0
+            ? this.#now.t / this.#now.phase.frames
             : 1;
     }
     get framesLeft() {
         return this.#now.phase ? this.#now.phase.frames - this.#now.t : 0;
     }
     get tOverall() {
-        return this.#firstIterationTimer.hasFinished ?
-            (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
+        return this.#firstIterationTimer.hasFinished
+            ? (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
             : this.#firstIterationTimer.t;
     }
     get framesLeftOverall() {
-        return this.#firstIterationTimer.hasFinished ?
-            (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
+        return this.#firstIterationTimer.hasFinished
+            ? (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
             : this.#firstIterationTimer.framesLeft;
     }
     get progressOverall() {
-        return this.#firstIterationTimer.hasFinished ?
-            (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
+        return this.#firstIterationTimer.hasFinished
+            ? (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
             : this.#firstIterationTimer.progress;
     }
     get hasFinishedOverall() {

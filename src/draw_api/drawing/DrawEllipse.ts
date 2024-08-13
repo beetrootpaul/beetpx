@@ -53,9 +53,9 @@ export class DrawEllipse {
     const c2: BpxRgbColor | null =
       color.type === "pattern" ? color.secondary : null;
     const sn =
-      c1?.type === "canvas_snapshot_mapping" ?
-        this.#canvas.getMostRecentSnapshot()
-      : null;
+      c1?.type === "canvas_snapshot_mapping"
+        ? this.#canvas.getMostRecentSnapshot()
+        : null;
 
     const p = pattern;
 

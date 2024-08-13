@@ -52,22 +52,18 @@ export class GamepadMappingFallback implements GamepadMapping {
     switch (axisIndex) {
       case 0:
       case 2:
-        return (
-          axisValue > GamepadMappingFallback.#stickAxisThreshold ?
-            ["button_right"]
-          : axisValue < -GamepadMappingFallback.#stickAxisThreshold ?
-            ["button_left"]
-          : []
-        );
+        return axisValue > GamepadMappingFallback.#stickAxisThreshold
+          ? ["button_right"]
+          : axisValue < -GamepadMappingFallback.#stickAxisThreshold
+            ? ["button_left"]
+            : [];
       case 1:
       case 3:
-        return (
-          axisValue > GamepadMappingFallback.#stickAxisThreshold ?
-            ["button_down"]
-          : axisValue < -GamepadMappingFallback.#stickAxisThreshold ?
-            ["button_up"]
-          : []
-        );
+        return axisValue > GamepadMappingFallback.#stickAxisThreshold
+          ? ["button_down"]
+          : axisValue < -GamepadMappingFallback.#stickAxisThreshold
+            ? ["button_up"]
+            : [];
       default:
         return [];
     }

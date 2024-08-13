@@ -90,9 +90,8 @@ export class AudioPlaybackSequence extends AudioPlayback {
       }
     });
 
-    let offsetMs =
-      this.pausedAtMs ?
-        this.pausedAtMs - this.startedAtMs - this.accumulatedPauseMs
+    let offsetMs = this.pausedAtMs
+      ? this.pausedAtMs - this.startedAtMs - this.accumulatedPauseMs
       : 0;
     if (offsetMs > this.#introDurationMs) {
       offsetMs =
@@ -118,9 +117,9 @@ export class AudioPlaybackSequence extends AudioPlayback {
     const mainSoundDurationMs: number = mainSoundBuffer.duration * 1000;
 
     const durationMs: number =
-      typeof firstSound !== "string" && firstSound.durationMs ?
-        firstSound.durationMs(mainSoundDurationMs)
-      : mainSoundDurationMs;
+      typeof firstSound !== "string" && firstSound.durationMs
+        ? firstSound.durationMs(mainSoundDurationMs)
+        : mainSoundDurationMs;
 
     const firstBuffer: AudioBuffer = ABU.resize(
       mainSoundBuffer,

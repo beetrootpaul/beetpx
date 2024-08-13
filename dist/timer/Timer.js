@@ -23,19 +23,19 @@ export class BpxTimer {
         }
     }
     get #fn() {
-        return this.#ignoreGamePause ?
-            BeetPx.frameNumber
+        return this.#ignoreGamePause
+            ? BeetPx.frameNumber
             : BeetPx.frameNumberOutsidePause;
     }
     get #tRaw() {
         return (this.#pausedFrame ?? this.#fn) - this.#offsetFrame;
     }
     get t() {
-        return (this.#loop ?
-            this.#tRaw >= 0 ?
-                mod(this.#tRaw, this.#frames)
+        return this.#loop
+            ? this.#tRaw >= 0
+                ? mod(this.#tRaw, this.#frames)
                 : 0
-            : clamp(0, this.#tRaw, this.#frames));
+            : clamp(0, this.#tRaw, this.#frames);
     }
     get framesLeft() {
         return this.#frames - this.t;
@@ -47,12 +47,13 @@ export class BpxTimer {
         return this.#tRaw >= this.#frames;
     }
     get hasJustFinished() {
-        return (this.#frames > 0 ?
-            this.#loop ?
-                this.#tRaw > 0 && this.t === 0
+        return this.#frames > 0
+            ? this.#loop
+                ? this.#tRaw > 0 && this.t === 0
                 : this.#tRaw === this.#frames
-            : this.#loop ? true
-                : this.#tRaw === 0);
+            : this.#loop
+                ? true
+                : this.#tRaw === 0;
     }
     pause() {
         if (this.#isPaused)

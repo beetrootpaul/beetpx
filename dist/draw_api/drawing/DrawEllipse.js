@@ -15,8 +15,8 @@ export class DrawEllipse {
         }
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = c1?.type === "canvas_snapshot_mapping" ?
-            this.#canvas.getMostRecentSnapshot()
+        const sn = c1?.type === "canvas_snapshot_mapping"
+            ? this.#canvas.getMostRecentSnapshot()
             : null;
         const p = pattern;
         let a = xyMaxExclusive.x - xyMinInclusive.x - 1;

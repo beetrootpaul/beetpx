@@ -60,8 +60,8 @@ export class BpxTimer {
 
   // frame number
   get #fn(): number {
-    return this.#ignoreGamePause ?
-        BeetPx.frameNumber
+    return this.#ignoreGamePause
+      ? BeetPx.frameNumber
       : BeetPx.frameNumberOutsidePause;
   }
 
@@ -73,13 +73,11 @@ export class BpxTimer {
    * A current counted frame number, incrementing from 0.
    */
   get t(): number {
-    return (
-      this.#loop ?
-        this.#tRaw >= 0 ?
-          mod(this.#tRaw, this.#frames)
+    return this.#loop
+      ? this.#tRaw >= 0
+        ? mod(this.#tRaw, this.#frames)
         : 0
-      : clamp(0, this.#tRaw, this.#frames)
-    );
+      : clamp(0, this.#tRaw, this.#frames);
   }
 
   /**
@@ -109,14 +107,13 @@ export class BpxTimer {
    * For looped timers this becomes `true` at the end of each pass.
    */
   get hasJustFinished(): boolean {
-    return (
-      this.#frames > 0 ?
-        this.#loop ?
-          this.#tRaw > 0 && this.t === 0
+    return this.#frames > 0
+      ? this.#loop
+        ? this.#tRaw > 0 && this.t === 0
         : this.#tRaw === this.#frames
-      : this.#loop ? true
-      : this.#tRaw === 0
-    );
+      : this.#loop
+        ? true
+        : this.#tRaw === 0;
   }
 
   /**

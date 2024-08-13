@@ -17,11 +17,10 @@ declare global {
 
 export abstract class FullScreen {
   // noinspection PointlessBooleanExpressionJS
-  static readonly #isFullScreenSupported: boolean = !!((
-    typeof document === "undefined"
-  ) ?
-    false
-  : document.fullscreenEnabled || document.webkitFullscreenEnabled);
+  static readonly #isFullScreenSupported: boolean = !!(typeof document ===
+  "undefined"
+    ? false
+    : document.fullscreenEnabled || document.webkitFullscreenEnabled);
 
   isFullScreenSupported(): boolean {
     return FullScreen.#isFullScreenSupported;
@@ -30,8 +29,8 @@ export abstract class FullScreen {
   abstract isInFullScreen(): boolean;
 
   static create(): FullScreen {
-    return FullScreen.#isFullScreenSupported ?
-        new FullScreenSupported()
+    return FullScreen.#isFullScreenSupported
+      ? new FullScreenSupported()
       : new FullScreenNoop();
   }
 
