@@ -48,18 +48,20 @@ export class GamepadMappingFirefoxDualSenseOther {
         switch (axisIndex) {
             case 0:
             case 2:
-                return (axisValue > GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold ?
-                    ["button_right"]
-                    : (axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold) ?
-                        ["button_left"]
-                        : []);
+                return axisValue >
+                    GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
+                    ? ["button_right"]
+                    : axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
+                        ? ["button_left"]
+                        : [];
             case 1:
             case 3:
-                return (axisValue > GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold ?
-                    ["button_down"]
-                    : (axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold) ?
-                        ["button_up"]
-                        : []);
+                return axisValue >
+                    GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
+                    ? ["button_down"]
+                    : axisValue < -GamepadMappingFirefoxDualSenseOther.#stickAxisThreshold
+                        ? ["button_up"]
+                        : [];
             default:
                 return [];
         }

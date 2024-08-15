@@ -16,16 +16,16 @@ export function $aspr(imageUrl) {
     };
 }
 export function $font(baseFontOrConfig, extendedConfig) {
-    return baseFontOrConfig instanceof BpxFont ?
-        BpxFont.basedOn(baseFontOrConfig, extendedConfig ?? identity)
+    return baseFontOrConfig instanceof BpxFont
+        ? BpxFont.basedOn(baseFontOrConfig, extendedConfig ?? identity)
         : BpxFont.of(baseFontOrConfig);
 }
 export const $font_pico8 = $font(new BpxFontConfigPico8());
 export const $font_saint11Minimal4 = $font(new BpxFontConfigSaint11Minimal4());
 export const $font_saint11Minimal5 = $font(new BpxFontConfigSaint11Minimal5());
 export function $rgb(rOrCssHex, g, b) {
-    return typeof rOrCssHex === "string" ?
-        BpxRgbColor.fromCssHex(rOrCssHex)
+    return typeof rOrCssHex === "string"
+        ? BpxRgbColor.fromCssHex(rOrCssHex)
         : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
 export const $rgb_black = $rgb("#000000");

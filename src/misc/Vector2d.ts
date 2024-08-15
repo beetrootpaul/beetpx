@@ -194,8 +194,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   eq(x: number, y: number): boolean;
   eq(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
-    return typeof otherOrValueOrX !== "number" ?
-        this.x === otherOrValueOrX.x && this.y === otherOrValueOrX.y
+    return typeof otherOrValueOrX !== "number"
+      ? this.x === otherOrValueOrX.x && this.y === otherOrValueOrX.y
       : this.x === otherOrValueOrX && this.y === (maybeY ?? otherOrValueOrX);
   }
 
@@ -212,8 +212,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   gt(x: number, y: number): boolean;
   gt(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
-    return typeof otherOrValueOrX !== "number" ?
-        this.x > otherOrValueOrX.x && this.y > otherOrValueOrX.y
+    return typeof otherOrValueOrX !== "number"
+      ? this.x > otherOrValueOrX.x && this.y > otherOrValueOrX.y
       : this.x > otherOrValueOrX && this.y > (maybeY ?? otherOrValueOrX);
   }
 
@@ -230,8 +230,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   gte(x: number, y: number): boolean;
   gte(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
-    return typeof otherOrValueOrX !== "number" ?
-        this.x >= otherOrValueOrX.x && this.y >= otherOrValueOrX.y
+    return typeof otherOrValueOrX !== "number"
+      ? this.x >= otherOrValueOrX.x && this.y >= otherOrValueOrX.y
       : this.x >= otherOrValueOrX && this.y >= (maybeY ?? otherOrValueOrX);
   }
 
@@ -248,8 +248,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   lt(x: number, y: number): boolean;
   lt(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
-    return typeof otherOrValueOrX !== "number" ?
-        this.x < otherOrValueOrX.x && this.y < otherOrValueOrX.y
+    return typeof otherOrValueOrX !== "number"
+      ? this.x < otherOrValueOrX.x && this.y < otherOrValueOrX.y
       : this.x < otherOrValueOrX && this.y < (maybeY ?? otherOrValueOrX);
   }
 
@@ -266,8 +266,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   lte(x: number, y: number): boolean;
   lte(otherOrValueOrX: BpxVector2d | number, maybeY?: number): boolean {
-    return typeof otherOrValueOrX !== "number" ?
-        this.x <= otherOrValueOrX.x && this.y <= otherOrValueOrX.y
+    return typeof otherOrValueOrX !== "number"
+      ? this.x <= otherOrValueOrX.x && this.y <= otherOrValueOrX.y
       : this.x <= otherOrValueOrX && this.y <= (maybeY ?? otherOrValueOrX);
   }
 
@@ -300,8 +300,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   mod(x: number, y: number): BpxVector2d;
   mod(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
-    return typeof otherOrValueOrX !== "number" ?
-        new BpxVector2d(
+    return typeof otherOrValueOrX !== "number"
+      ? new BpxVector2d(
           mod(this.x, otherOrValueOrX.x),
           mod(this.y, otherOrValueOrX.y),
         )
@@ -324,8 +324,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   add(x: number, y: number): BpxVector2d;
   add(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
-    return typeof otherOrValueOrX !== "number" ?
-        new BpxVector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
+    return typeof otherOrValueOrX !== "number"
+      ? new BpxVector2d(this.x + otherOrValueOrX.x, this.y + otherOrValueOrX.y)
       : new BpxVector2d(
           this.x + otherOrValueOrX,
           this.y + (maybeY ?? otherOrValueOrX),
@@ -345,8 +345,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   sub(x: number, y: number): BpxVector2d;
   sub(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
-    return typeof otherOrValueOrX !== "number" ?
-        new BpxVector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
+    return typeof otherOrValueOrX !== "number"
+      ? new BpxVector2d(this.x - otherOrValueOrX.x, this.y - otherOrValueOrX.y)
       : new BpxVector2d(
           this.x - otherOrValueOrX,
           this.y - (maybeY ?? otherOrValueOrX),
@@ -366,8 +366,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   mul(x: number, y: number): BpxVector2d;
   mul(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
-    return typeof otherOrValueOrX !== "number" ?
-        new BpxVector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
+    return typeof otherOrValueOrX !== "number"
+      ? new BpxVector2d(this.x * otherOrValueOrX.x, this.y * otherOrValueOrX.y)
       : new BpxVector2d(
           this.x * otherOrValueOrX,
           this.y * (maybeY ?? otherOrValueOrX),
@@ -387,8 +387,8 @@ export class BpxVector2d implements BpxPrintDebug {
    */
   div(x: number, y: number): BpxVector2d;
   div(otherOrValueOrX: BpxVector2d | number, maybeY?: number): BpxVector2d {
-    return typeof otherOrValueOrX !== "number" ?
-        new BpxVector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
+    return typeof otherOrValueOrX !== "number"
+      ? new BpxVector2d(this.x / otherOrValueOrX.x, this.y / otherOrValueOrX.y)
       : new BpxVector2d(
           this.x / otherOrValueOrX,
           this.y / (maybeY ?? otherOrValueOrX),

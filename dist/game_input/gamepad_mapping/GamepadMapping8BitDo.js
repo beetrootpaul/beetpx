@@ -49,17 +49,18 @@ export class GamepadMapping8BitDo {
         switch (axisIndex) {
             case 0:
             case 2:
-                return (axisValue > GamepadMapping8BitDo.#stickAxisThreshold ?
-                    ["button_right"]
-                    : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold ?
-                        ["button_left"]
-                        : []);
+                return axisValue > GamepadMapping8BitDo.#stickAxisThreshold
+                    ? ["button_right"]
+                    : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold
+                        ? ["button_left"]
+                        : [];
             case 1:
             case 5:
-                return (axisValue > GamepadMapping8BitDo.#stickAxisThreshold ? ["button_down"]
-                    : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold ?
-                        ["button_up"]
-                        : []);
+                return axisValue > GamepadMapping8BitDo.#stickAxisThreshold
+                    ? ["button_down"]
+                    : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold
+                        ? ["button_up"]
+                        : [];
             default:
                 return [];
         }

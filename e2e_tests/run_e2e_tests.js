@@ -73,9 +73,8 @@ function runTest(testFile, isProd) {
     .trim();
 
   const commandArgsSafe = commandArgs.replaceAll('"', '\\"');
-  const command =
-    isProd ?
-      `../cli/beetpx-cli.cjs build ${commandArgsSafe} && ../cli/beetpx-cli.cjs preview --port 9999`
+  const command = isProd
+    ? `../cli/beetpx-cli.cjs build ${commandArgsSafe} && ../cli/beetpx-cli.cjs preview --port 9999`
     : `../cli/beetpx-cli.cjs dev --port 9999 ${commandArgsSafe}`;
 
   fs.writeFileSync(

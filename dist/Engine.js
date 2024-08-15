@@ -104,14 +104,19 @@ export class Engine {
         this.#assetsToLoad.push(...$font_pico8.spriteSheetUrls);
         this.#assetsToLoad.push(...$font_saint11Minimal4.spriteSheetUrls);
         this.#assetsToLoad.push(...$font_saint11Minimal5.spriteSheetUrls);
-        const fixedTimestepFps = engineConfig.fixedTimestep === "60fps" ? 60
-            : engineConfig.fixedTimestep === "30fps" ? 30
+        const fixedTimestepFps = engineConfig.fixedTimestep === "60fps"
+            ? 60
+            : engineConfig.fixedTimestep === "30fps"
+                ? 30
                 : throwError(`Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`);
         this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
         this.canvasSize =
-            engineConfig.canvasSize === "64x64" ? $v(64, 64)
-                : engineConfig.canvasSize === "128x128" ? $v(128, 128)
-                    : engineConfig.canvasSize === "256x256" ? $v(256, 256)
+            engineConfig.canvasSize === "64x64"
+                ? $v(64, 64)
+                : engineConfig.canvasSize === "128x128"
+                    ? $v(128, 128)
+                    : engineConfig.canvasSize === "256x256"
+                        ? $v(256, 256)
                         : throwError(`Unsupported canvasSize: "${engineConfig.canvasSize}"`);
         this.gameInput = new GameInput({
             enableScreenshots: engineConfig.screenshots?.available ?? false,
@@ -217,13 +222,13 @@ export class Engine {
                 this.gameInput.buttonFrameByFrameStep.wasJustPressed;
             if (shouldUpdate) {
                 this.#currentFrameNumber =
-                    this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER ?
-                        0
+                    this.#currentFrameNumber >= Number.MAX_SAFE_INTEGER
+                        ? 0
                         : this.#currentFrameNumber + 1;
                 if (!GamePause.isActive) {
                     this.#currentFrameNumberOutsidePause =
-                        this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER ?
-                            0
+                        this.#currentFrameNumberOutsidePause >= Number.MAX_SAFE_INTEGER
+                            ? 0
                             : this.#currentFrameNumberOutsidePause + 1;
                 }
                 this.#onPreUpdate?.();

@@ -143,7 +143,9 @@ export class AudioApi {
         opts ??= {};
         Logger.debugBeetPx(`AudioApi.#stopAllPlaybacks (fadeOutMillis: ${opts.fadeOutMillis})`);
         for (const playback of this.#playbacks.values()) {
-            playback.stop(this.#isMuted ? 0 : ((opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis)));
+            playback.stop(this.#isMuted
+                ? 0
+                : (opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis));
         }
     }
     stopPlayback(playbackId, opts) {
@@ -151,7 +153,9 @@ export class AudioApi {
         Logger.debugBeetPx(`AudioApi.stopPlayback (fadeOutMillis: ${opts.fadeOutMillis})`);
         this.#playbacks
             .get(playbackId)
-            ?.stop(this.#isMuted ? 0 : ((opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis)));
+            ?.stop(this.#isMuted
+            ? 0
+            : (opts.fadeOutMillis ?? _a.muteUnmuteDefaultFadeMillis));
     }
     pausePlayback(playbackId) {
         Logger.debugBeetPx(`AudioApi.pausePlayback`);

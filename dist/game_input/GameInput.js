@@ -18,7 +18,9 @@ export class GameInput {
     buttonFrameByFrameStep;
     #eventsCapturedInLastUpdate = new Set();
     #mostRecentInputMethods = new Set();
+    isTouchAvailable;
     constructor(params) {
+        this.isTouchAvailable = window.matchMedia("(pointer: coarse)").matches;
         this.gameInputGamepad = new GameInputGamepad({
             browserType: params.browserType,
         });
@@ -29,9 +31,11 @@ export class GameInput {
                 enableDebugToggle: params.enableDebugToggle,
                 enableFrameByFrameControls: params.enableFrameByFrameControls,
             }),
-            new GameInputTouch(),
             this.gameInputGamepad,
         ];
+        if (this.isTouchAvailable) {
+            this.gameInputsSpecialized.push(new GameInputTouch());
+        }
         this.gameButtons = new GameButtons();
         this.buttonFullScreen = new Button();
         this.buttonMuteUnmute = new Button();

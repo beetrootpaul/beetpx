@@ -14,8 +14,8 @@ export class DrawLine {
         const whSub1 = wh.sub(wh.sign());
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = c1?.type === "canvas_snapshot_mapping" ?
-            this.#canvas.getMostRecentSnapshot()
+        const sn = c1?.type === "canvas_snapshot_mapping"
+            ? this.#canvas.getMostRecentSnapshot()
             : null;
         const fp = pattern;
         let dXy = whSub1.abs().mul($v(1, -1));

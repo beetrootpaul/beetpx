@@ -9,8 +9,8 @@
   },
   "scripts": {
     "test": "vitest run",
-    "start": "beetpx dev --open",
-    "prod": "beetpx build && beetpx preview --open",
+    "start": "beetpx dev --open --htmlDeviceColor \"#664411\"",
+    "prod": "beetpx build --htmlDeviceColor \"#114466\" && beetpx preview --open",
     "zip": "beetpx build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/",
     "tsc": "tsc",

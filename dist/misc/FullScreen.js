@@ -2,15 +2,16 @@ import { HtmlTemplate } from "../HtmlTemplate";
 import { Logger } from "../logger/Logger";
 import { throwError } from "../utils/throwError";
 export class FullScreen {
-    static #isFullScreenSupported = !!((typeof document === "undefined") ?
-        false
+    static #isFullScreenSupported = !!(typeof document ===
+        "undefined"
+        ? false
         : document.fullscreenEnabled || document.webkitFullscreenEnabled);
     isFullScreenSupported() {
         return FullScreen.#isFullScreenSupported;
     }
     static create() {
-        return FullScreen.#isFullScreenSupported ?
-            new FullScreenSupported()
+        return FullScreen.#isFullScreenSupported
+            ? new FullScreenSupported()
             : new FullScreenNoop();
     }
 }

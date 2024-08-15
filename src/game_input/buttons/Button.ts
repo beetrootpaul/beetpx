@@ -46,13 +46,11 @@ export class Button {
       if (this.#wasJustToggled && this.#isRepeatingEnabled) {
         this.#repeatingTimer = $timerSeq(
           {
-            intro:
-              this.#firstRepeatFrames ?
-                [["first", this.#firstRepeatFrames]]
+            intro: this.#firstRepeatFrames
+              ? [["first", this.#firstRepeatFrames]]
               : undefined,
-            loop:
-              this.#loopedRepeatFrames ?
-                [["looped", this.#loopedRepeatFrames]]
+            loop: this.#loopedRepeatFrames
+              ? [["looped", this.#loopedRepeatFrames]]
               : undefined,
           },
           { onGamePause: "ignore" },

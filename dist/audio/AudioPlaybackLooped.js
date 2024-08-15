@@ -29,8 +29,8 @@ export class AudioPlaybackLooped extends AudioPlayback {
                 this.onEnded();
             }
         });
-        const offsetMs = this.pausedAtMs ?
-            (this.pausedAtMs - this.startedAtMs - this.accumulatedPauseMs) %
+        const offsetMs = this.pausedAtMs
+            ? (this.pausedAtMs - this.startedAtMs - this.accumulatedPauseMs) %
                 this.#loopDurationMs
             : 0;
         this.#sourceNode.start(0, offsetMs / 1000);

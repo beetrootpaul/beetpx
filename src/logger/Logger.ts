@@ -11,14 +11,12 @@ export class Logger {
     if (DebugMode.enabled) {
       console.debug(
         ...args.map(value =>
-          (
-            value != null &&
-            typeof value === "object" &&
-            "__printDebug" in value &&
-            typeof value.__printDebug === "function"
-          ) ?
-            value.__printDebug()
-          : value,
+          value != null &&
+          typeof value === "object" &&
+          "__printDebug" in value &&
+          typeof value.__printDebug === "function"
+            ? value.__printDebug()
+            : value,
         ),
       );
     }
@@ -31,14 +29,12 @@ export class Logger {
   static info(...args: unknown[]): void {
     console.info(
       ...args.map(value =>
-        (
-          value != null &&
-          typeof value === "object" &&
-          "__printDebug" in value &&
-          typeof value.__printDebug === "function"
-        ) ?
-          value.__printDebug()
-        : value,
+        value != null &&
+        typeof value === "object" &&
+        "__printDebug" in value &&
+        typeof value.__printDebug === "function"
+          ? value.__printDebug()
+          : value,
       ),
     );
   }
@@ -50,14 +46,12 @@ export class Logger {
   static warn(...args: unknown[]): void {
     console.warn(
       ...args.map(value =>
-        (
-          value != null &&
-          typeof value === "object" &&
-          "__printDebug" in value &&
-          typeof value.__printDebug === "function"
-        ) ?
-          value.__printDebug()
-        : value,
+        value != null &&
+        typeof value === "object" &&
+        "__printDebug" in value &&
+        typeof value.__printDebug === "function"
+          ? value.__printDebug()
+          : value,
       ),
     );
   }
@@ -69,14 +63,12 @@ export class Logger {
   static error(...args: unknown[]): void {
     console.error(
       ...args.map(value =>
-        (
-          value != null &&
-          typeof value === "object" &&
-          "__printDebug" in value &&
-          typeof value.__printDebug === "function"
-        ) ?
-          value.__printDebug()
-        : value,
+        value != null &&
+        typeof value === "object" &&
+        "__printDebug" in value &&
+        typeof value.__printDebug === "function"
+          ? value.__printDebug()
+          : value,
       ),
     );
   }

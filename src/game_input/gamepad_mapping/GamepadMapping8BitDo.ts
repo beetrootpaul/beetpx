@@ -183,21 +183,18 @@ export class GamepadMapping8BitDo implements GamepadMapping {
     switch (axisIndex) {
       case 0: // left stick, horizontal
       case 2: // right stick, horizontal
-        return (
-          axisValue > GamepadMapping8BitDo.#stickAxisThreshold ?
-            ["button_right"]
-          : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold ?
-            ["button_left"]
-          : []
-        );
+        return axisValue > GamepadMapping8BitDo.#stickAxisThreshold
+          ? ["button_right"]
+          : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold
+            ? ["button_left"]
+            : [];
       case 1: // left stick, vertical
       case 5: // right stick, vertical
-        return (
-          axisValue > GamepadMapping8BitDo.#stickAxisThreshold ? ["button_down"]
-          : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold ?
-            ["button_up"]
-          : []
-        );
+        return axisValue > GamepadMapping8BitDo.#stickAxisThreshold
+          ? ["button_down"]
+          : axisValue < -GamepadMapping8BitDo.#stickAxisThreshold
+            ? ["button_up"]
+            : [];
       default:
         return [];
     }

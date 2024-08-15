@@ -49,18 +49,20 @@ export class GamepadMappingFirefox8BitDoWindows {
         switch (axisIndex) {
             case 0:
             case 2:
-                return (axisValue > GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold ?
-                    ["button_right"]
-                    : (axisValue < -GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold) ?
-                        ["button_left"]
-                        : []);
+                return axisValue >
+                    GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold
+                    ? ["button_right"]
+                    : axisValue < -GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold
+                        ? ["button_left"]
+                        : [];
             case 1:
             case 5:
-                return (axisValue > GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold ?
-                    ["button_down"]
-                    : (axisValue < -GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold) ?
-                        ["button_up"]
-                        : []);
+                return axisValue >
+                    GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold
+                    ? ["button_down"]
+                    : axisValue < -GamepadMappingFirefox8BitDoWindows.#stickAxisThreshold
+                        ? ["button_up"]
+                        : [];
             default:
                 return [];
         }

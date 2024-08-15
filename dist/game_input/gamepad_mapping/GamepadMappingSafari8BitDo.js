@@ -28,18 +28,18 @@ export class GamepadMappingSafari8BitDo {
         switch (axisIndex) {
             case 0:
             case 2:
-                return (axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-                    ["button_right"]
-                    : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-                        ["button_left"]
-                        : []);
+                return axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold
+                    ? ["button_right"]
+                    : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold
+                        ? ["button_left"]
+                        : [];
             case 1:
             case 3:
-                return (axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-                    ["button_down"]
-                    : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold ?
-                        ["button_up"]
-                        : []);
+                return axisValue > GamepadMappingSafari8BitDo.#stickAxisThreshold
+                    ? ["button_down"]
+                    : axisValue < -GamepadMappingSafari8BitDo.#stickAxisThreshold
+                        ? ["button_up"]
+                        : [];
             default:
                 return [];
         }

@@ -105,15 +105,15 @@ export class BpxTimerSequence<TPhaseName extends string> {
       onGamePause: this.#onGamePause,
     });
     this.#loopTimer =
-      this.#loopPhases.length > 0 ?
-        BpxTimer.of({
-          frames: this.#loopFrames,
-          loop: true,
-          paused: opts.paused,
-          delayFrames: opts.delayFrames + this.#firstIterationFrames,
-          onGamePause: this.#onGamePause,
-        })
-      : null;
+      this.#loopPhases.length > 0
+        ? BpxTimer.of({
+            frames: this.#loopFrames,
+            loop: true,
+            paused: opts.paused,
+            delayFrames: opts.delayFrames + this.#firstIterationFrames,
+            onGamePause: this.#onGamePause,
+          })
+        : null;
 
     this.#isPaused = false;
     this.#pausedFrame = null;
@@ -159,9 +159,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
       let curr = this.#firstIterationPhases[i] ?? null;
 
       return {
-        recentlyFinishedPhase:
-          this.#firstIterationTimer.hasJustFinished ?
-            (curr?.name ?? null)
+        recentlyFinishedPhase: this.#firstIterationTimer.hasJustFinished
+          ? (curr?.name ?? null)
           : (prev?.name ?? null),
         phase: curr,
         t: firstIterationT - offset,
@@ -204,8 +203,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
    * The name of the phase which has finished in the recent game loop iteration.
    */
   get justFinishedPhase(): TPhaseName | null {
-    return this.hasJustFinishedOverall || this.#now.t === 0 ?
-        this.#now.recentlyFinishedPhase
+    return this.hasJustFinishedOverall || this.#now.t === 0
+      ? this.#now.recentlyFinishedPhase
       : null;
   }
 
@@ -218,8 +217,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
 
   // frame number
   get #fn(): number {
-    return this.#ignoreGamePause ?
-        BeetPx.frameNumber
+    return this.#ignoreGamePause
+      ? BeetPx.frameNumber
       : BeetPx.frameNumberOutsidePause;
   }
 
@@ -234,8 +233,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
    * A progress of the counting for the current phase, gradually incrementing from 0 to 1.
    */
   get progress(): number {
-    return this.#now.phase && this.#now.phase.frames > 0 ?
-        this.#now.t / this.#now.phase.frames
+    return this.#now.phase && this.#now.phase.frames > 0
+      ? this.#now.t / this.#now.phase.frames
       : 1;
   }
 
@@ -252,8 +251,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
    * After the first loop pass, the intro is no longer taken into account in the calculation.
    */
   get tOverall(): number {
-    return this.#firstIterationTimer.hasFinished ?
-        (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
+    return this.#firstIterationTimer.hasFinished
+      ? (this.#loopTimer?.t ?? this.#firstIterationTimer.t)
       : this.#firstIterationTimer.t;
   }
 
@@ -263,8 +262,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
    * After the first loop pass, the intro is no longer taken into account in the calculation.
    */
   get framesLeftOverall(): number {
-    return this.#firstIterationTimer.hasFinished ?
-        (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
+    return this.#firstIterationTimer.hasFinished
+      ? (this.#loopTimer?.framesLeft ?? this.#firstIterationTimer.framesLeft)
       : this.#firstIterationTimer.framesLeft;
   }
 
@@ -274,8 +273,8 @@ export class BpxTimerSequence<TPhaseName extends string> {
    * After the first loop pass, the intro is no longer taken into account in the calculation.
    */
   get progressOverall(): number {
-    return this.#firstIterationTimer.hasFinished ?
-        (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
+    return this.#firstIterationTimer.hasFinished
+      ? (this.#loopTimer?.progress ?? this.#firstIterationTimer.progress)
       : this.#firstIterationTimer.progress;
   }
 

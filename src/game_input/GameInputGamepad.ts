@@ -100,12 +100,12 @@ export class GameInputGamepad implements GameInputSpecialized {
       this.#browserType === "firefox_other"
     ) {
       if (gamepadType === "dualsense") {
-        return this.#browserType === "firefox_windows" ?
-            this.#mappings.firefoxDualSenseWindows
+        return this.#browserType === "firefox_windows"
+          ? this.#mappings.firefoxDualSenseWindows
           : this.#mappings.firefoxDualSenseOther;
       } else if (gamepadType === "8bitdo") {
-        return this.#browserType === "firefox_windows" ?
-            this.#mappings.firefox8bitdoWindows
+        return this.#browserType === "firefox_windows"
+          ? this.#mappings.firefox8bitdoWindows
           : this.#mappings.firefox8bitdoOther;
       } else {
         return this.#mappings.firefoxOther;
@@ -113,8 +113,8 @@ export class GameInputGamepad implements GameInputSpecialized {
     }
 
     if (gamepadType === "8bitdo") {
-      return this.#browserType === "safari" ?
-          this.#mappings.safari8bitdo
+      return this.#browserType === "safari"
+        ? this.#mappings.safari8bitdo
         : this.#mappings["8bitdo"];
     }
 
@@ -122,8 +122,8 @@ export class GameInputGamepad implements GameInputSpecialized {
     //   Firefox claims the `mapping` of Xbox One controller is `"standard"`,
     //   while it is not…
     if (gamepad.mapping === "standard") {
-      return gamepadType === "dualsense" ?
-          this.#mappings.dualSense
+      return gamepadType === "dualsense"
+        ? this.#mappings.dualSense
         : this.#mappings.standard;
     } else {
       return this.#mappings.other;

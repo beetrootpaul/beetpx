@@ -8,8 +8,8 @@ export class BpxCanvasSnapshotColorMapping {
         this.#mapping = mapping;
     }
     getMappedColor(snapshot, canvasX, canvasY) {
-        return snapshot ?
-            this.#mapping(snapshot.getColorAt(canvasX, canvasY), canvasX, canvasY)
+        return snapshot
+            ? this.#mapping(snapshot.getColorAt(canvasX, canvasY), canvasX, canvasY)
             : null;
     }
 }

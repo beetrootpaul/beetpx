@@ -578,6 +578,15 @@ export class BeetPx {
   }
 
   /**
+   * Tells whether a current device has touch capabilities.
+   *
+   * @category Game input
+   */
+  static isTouchInputMethodAvailable(): boolean {
+    return this.#tryGetEngine().gameInput.isTouchAvailable;
+  }
+
+  /**
    * @category Game input
    */
   static getConnectedGamepadTypes(): Set<BpxGamepadType> {

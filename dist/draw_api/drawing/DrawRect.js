@@ -11,8 +11,8 @@ export class DrawRect {
         }
         const c1 = color.type === "pattern" ? color.primary : color;
         const c2 = color.type === "pattern" ? color.secondary : null;
-        const sn = c1?.type === "canvas_snapshot_mapping" ?
-            this.#canvas.getMostRecentSnapshot()
+        const sn = c1?.type === "canvas_snapshot_mapping"
+            ? this.#canvas.getMostRecentSnapshot()
             : null;
         const fp = pattern;
         for (let x = xyMinInclusive.x; x < xyMaxExclusive.x; x += 1) {

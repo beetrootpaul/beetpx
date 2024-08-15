@@ -101,22 +101,18 @@ export class GamepadMappingFirefoxFallback implements GamepadMapping {
     switch (axisIndex) {
       case 0: // left stick, horizontal
       case 2: // right stick, horizontal
-        return (
-          axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-            ["button_right"]
-          : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-            ["button_left"]
-          : []
-        );
+        return axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold
+          ? ["button_right"]
+          : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold
+            ? ["button_left"]
+            : [];
       case 1: // left stick, vertical
       case 3: // right stick, vertical
-        return (
-          axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-            ["button_down"]
-          : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold ?
-            ["button_up"]
-          : []
-        );
+        return axisValue > GamepadMappingFirefoxFallback.#stickAxisThreshold
+          ? ["button_down"]
+          : axisValue < -GamepadMappingFirefoxFallback.#stickAxisThreshold
+            ? ["button_up"]
+            : [];
       default:
         return [];
     }

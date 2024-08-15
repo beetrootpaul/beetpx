@@ -78,8 +78,8 @@ export function $font(
   baseFontOrConfig: BpxFont | Partial<BpxFontConfig>,
   extendedConfig?: (baseFontConfig: BpxFontConfig) => BpxFontConfig,
 ): BpxFont {
-  return baseFontOrConfig instanceof BpxFont ?
-      BpxFont.basedOn(baseFontOrConfig, extendedConfig ?? identity)
+  return baseFontOrConfig instanceof BpxFont
+    ? BpxFont.basedOn(baseFontOrConfig, extendedConfig ?? identity)
     : BpxFont.of(baseFontOrConfig);
 }
 
@@ -121,8 +121,8 @@ export function $rgb(
   g?: number,
   b?: number,
 ): BpxRgbColor {
-  return typeof rOrCssHex === "string" ?
-      BpxRgbColor.fromCssHex(rOrCssHex)
+  return typeof rOrCssHex === "string"
+    ? BpxRgbColor.fromCssHex(rOrCssHex)
     : BpxRgbColor.of(rOrCssHex, g ?? 0, b ?? 0);
 }
 

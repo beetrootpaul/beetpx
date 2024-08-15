@@ -4,7 +4,7 @@
   "bracketSpacing": true,
   "endOfLine": "lf",
   "embeddedLanguageFormatting": "off",
-  "experimentalTernaries": true,
+  "experimentalTernaries": false,
   "plugins": ["prettier-plugin-organize-imports"],
   "printWidth": 80,
   "proseWrap": "always",
