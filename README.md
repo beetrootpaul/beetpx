@@ -20,6 +20,7 @@
     * [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
   * [Known Issues](#known-issues)
   * [Release Notes](#release-notes)
+    * [v0.54.0](#v0540)
     * [v0.53.0](#v0530)
     * [v0.52.1](#v0521)
     * [v0.52.0](#v0520)
@@ -205,6 +206,11 @@ http://members.chello.at/easyfilter/bresenham.html
   when trying to use game touch buttons.
 
 ## Release Notes
+
+### v0.54.0
+
+- CLI: Added `--htmlDeviceColor` option.  
+- `BeetPx:`: Added `isTouchInputMethodAvailable()`.  
 
 ### v0.53.0
 
