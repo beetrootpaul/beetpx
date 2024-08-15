@@ -33,6 +33,16 @@ const yargsBuilderHtmlIcon = {
   },
 };
 
+const yargsBuilderHtmlDeviceColor = {
+  htmlDeviceColor: {
+    type: "string",
+    describe:
+      "A color to be used as the virtual device's body. Has to be in a #000000 format.",
+    demandOption: false,
+    requiresArg: true,
+  },
+};
+
 const yargsBuilderPort = {
   port: {
     type: "number",
@@ -68,6 +78,7 @@ const argv = require("yargs")
       ...yargsBuilderConstants,
       ...yargsBuilderHtmlTitle,
       ...yargsBuilderHtmlIcon,
+      ...yargsBuilderHtmlDeviceColor,
       ...yargsBuilderPort,
       ...yargsBuilderOpen,
     },
@@ -76,6 +87,7 @@ const argv = require("yargs")
     ...yargsBuilderConstants,
     ...yargsBuilderHtmlTitle,
     ...yargsBuilderHtmlIcon,
+    ...yargsBuilderHtmlDeviceColor,
   })
   .command("preview", "Starts a production-ready bundle of the game.", {
     ...yargsBuilderPort,
@@ -101,6 +113,16 @@ const argv = require("yargs")
         htmlIcon,
       )}"`,
     );
+  })
+  .check((argv, options) => {
+    const { htmlDeviceColor } = argv;
+    if (!htmlDeviceColor) {
+      return true;
+    }
+    if (/^#[0-9a-fA-F]{6}$/.test(htmlDeviceColor)) {
+      return true;
+    }
+    throw Error(`htmlDeviceColor has to be in a #000000 format`);
   })
   .alias({
     h: "help",
@@ -169,6 +191,7 @@ if (argv._.includes("dev") || argv._.length <= 0) {
         bpxCodebase.templatesDir,
         bpxCodebase.templateFileNames.defaultIcon,
       ),
+    htmlDeviceColor: argv.htmlDeviceColor ?? "#4b4158",
     port: argv.port ?? undefined,
     open: argv.open ?? false,
   });
@@ -182,6 +205,7 @@ if (argv._.includes("dev") || argv._.length <= 0) {
         bpxCodebase.templatesDir,
         bpxCodebase.templateFileNames.defaultIcon,
       ),
+    htmlDeviceColor: argv.htmlDeviceColor ?? "#4b4158",
   });
 } else if (argv._.includes("preview")) {
   runPreviewCommand({
@@ -241,7 +265,8 @@ function WatchPublicDir() {
 }
 
 function runDevCommand(params) {
-  const { constants, htmlTitle, htmlIconFile, port, open } = params;
+  const { constants, htmlTitle, htmlIconFile, htmlDeviceColor, port, open } =
+    params;
 
   if (fs.existsSync(gameCodebase.bpxDevDir)) {
     fs.rmSync(gameCodebase.bpxDevDir, { recursive: true });
@@ -254,6 +279,7 @@ function runDevCommand(params) {
   generateHtmlFile(gameCodebase.bpxDevDir, {
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
+    htmlDeviceColor: htmlDeviceColor,
     constants: {
       ...constants,
       BEETPX__IS_PROD: false,
@@ -307,7 +333,7 @@ function runDevCommand(params) {
 }
 
 function runBuildCommand(params) {
-  const { constants, htmlTitle, htmlIconFile } = params;
+  const { constants, htmlTitle, htmlIconFile, htmlDeviceColor } = params;
 
   if (fs.existsSync(gameCodebase.bpxBuildDir)) {
     fs.rmSync(gameCodebase.bpxBuildDir, { recursive: true });
@@ -321,6 +347,7 @@ function runBuildCommand(params) {
   generateHtmlFile(gameCodebase.bpxBuildDir, {
     htmlTitle: htmlTitle,
     htmlIconFile: htmlIconFile,
+    htmlDeviceColor: htmlDeviceColor,
     constants: {
       ...constants,
       BEETPX__IS_PROD: true,
@@ -458,7 +485,7 @@ async function runZipCommand(params) {
 }
 
 function generateHtmlFile(outputBaseDir, params) {
-  const { htmlTitle, htmlIconFile, constants } = params;
+  const { htmlTitle, htmlIconFile, htmlDeviceColor, constants } = params;
 
   let content = fs.readFileSync(
     path.resolve(
@@ -477,6 +504,11 @@ function generateHtmlFile(outputBaseDir, params) {
   const htmlIconSlot = "__BPX__HTML_ICON_BASE64__";
   while (content.indexOf(htmlIconSlot) >= 0) {
     content = content.replace(htmlIconSlot, htmlIconBase64);
+  }
+
+  const htmlDeviceColorSlot = "__BPX__HTML_DEVICE_COLOR__";
+  while (content.indexOf(htmlDeviceColorSlot) >= 0) {
+    content = content.replace(htmlDeviceColorSlot, htmlDeviceColor);
   }
 
   const htmlWindowConstantsSlot = "__BPX__WINDOW_CONSTANTS__";
