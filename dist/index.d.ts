@@ -2291,6 +2291,12 @@ declare class BeetPx {
      */
     static getRecentInputMethods(): Set<BpxGameInputMethod>;
     /**
+     * Tells whether a current device has touch capabilities.
+     *
+     * @category Game input
+     */
+    static isTouchInputMethodAvailable(): boolean;
+    /**
      * @category Game input
      */
     static getConnectedGamepadTypes(): Set<BpxGamepadType>;

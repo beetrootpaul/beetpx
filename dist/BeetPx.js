@@ -127,6 +127,9 @@ export class BeetPx {
     static getRecentInputMethods() {
         return this.#tryGetEngine().gameInput.getRecentInputMethods();
     }
+    static isTouchInputMethodAvailable() {
+        return this.#tryGetEngine().gameInput.isTouchAvailable;
+    }
     static getConnectedGamepadTypes() {
         return this.#tryGetEngine().gameInput.getConnectedGamepadTypes();
     }

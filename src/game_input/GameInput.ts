@@ -60,12 +60,16 @@ export class GameInput {
 
   #mostRecentInputMethods: Set<BpxGameInputMethod> = new Set();
 
+  readonly isTouchAvailable: boolean;
+
   constructor(params: {
     enableScreenshots: boolean;
     enableDebugToggle: boolean;
     enableFrameByFrameControls: boolean;
     browserType: BpxBrowserType;
   }) {
+    this.isTouchAvailable = window.matchMedia("(pointer: coarse)").matches;
+
     this.gameInputGamepad = new GameInputGamepad({
       browserType: params.browserType,
     });
@@ -76,9 +80,11 @@ export class GameInput {
         enableDebugToggle: params.enableDebugToggle,
         enableFrameByFrameControls: params.enableFrameByFrameControls,
       }),
-      new GameInputTouch(),
       this.gameInputGamepad,
     ];
+    if (this.isTouchAvailable) {
+      this.gameInputsSpecialized.push(new GameInputTouch());
+    }
 
     this.gameButtons = new GameButtons();
 

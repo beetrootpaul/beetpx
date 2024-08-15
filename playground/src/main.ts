@@ -5,6 +5,7 @@ import {
   $timerSeq,
   $v,
   $v_0_0,
+  $v_1_1,
   $x,
   BpxTimer,
   BpxTimerSequence,
@@ -98,6 +99,12 @@ $x.setOnDraw(() => {
   }
 
   $d.pixel(dot, $rgb_p8.white);
+
+  $d.text(
+    $x.isTouchInputMethodAvailable() ? "TOUCH" : "no touch",
+    $v_1_1,
+    $rgb_p8.sky,
+  );
 
   if ($x.isPaused) {
     pauseMenu.draw();
