@@ -1382,7 +1382,7 @@ type BpxEngineConfig = {
      *
      * During the game, this value (as a {@link BpxVector2d} can be obtained with {@link BeetPx.canvasSize}.
      */
-    canvasSize?: "64x64" | "128x128" | "256x256";
+    canvasSize?: "64x64" | "128x128" | "256x256" | "192x108";
     /**
      * The desired frequency of update calls. This is a basis for all time-based computations
      * in the game, since BeetPx has no notion of the real time, nor delta time between update calls.

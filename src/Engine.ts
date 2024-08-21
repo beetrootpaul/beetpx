@@ -51,7 +51,7 @@ export type BpxEngineConfig = {
    *
    * During the game, this value (as a {@link BpxVector2d} can be obtained with {@link BeetPx.canvasSize}.
    */
-  canvasSize?: "64x64" | "128x128" | "256x256";
+  canvasSize?: "64x64" | "128x128" | "256x256" | "192x108";
 
   /**
    * The desired frequency of update calls. This is a basis for all time-based computations
@@ -352,9 +352,11 @@ export class Engine {
           ? $v(128, 128)
           : engineConfig.canvasSize === "256x256"
             ? $v(256, 256)
-            : throwError(
-                `Unsupported canvasSize: "${engineConfig.canvasSize}"`,
-              );
+            : engineConfig.canvasSize === "192x108"
+              ? $v(192, 108)
+              : throwError(
+                  `Unsupported canvasSize: "${engineConfig.canvasSize}"`,
+                );
 
     this.gameInput = new GameInput({
       enableScreenshots: engineConfig.screenshots?.available ?? false,

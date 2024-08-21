@@ -113,7 +113,7 @@ $x.setOnDraw(() => {
 
 $x.start({
   gameId: "beetpx-playground",
-  canvasSize: "256x256",
+  canvasSize: "192x108",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
   gamePause: {
     available: false,

@@ -40,6 +40,7 @@ BeetPx.start({ ...anyConfig, fixedTimestep: null });
 BeetPx.start({ ...anyConfig, canvasSize: "64x64" });
 BeetPx.start({ ...anyConfig, canvasSize: "128x128" });
 BeetPx.start({ ...anyConfig, canvasSize: "256x256" });
+BeetPx.start({ ...anyConfig, canvasSize: "192x108" });
 
 //
 // context: canvasSize
