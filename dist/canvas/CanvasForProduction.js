@@ -52,6 +52,7 @@ export class CanvasForProduction extends Canvas {
     doRender() {
         this.#offscreenContext.putImageData(this.#offscreenImageData, 0, 0);
         const htmlCanvasSize = BpxVector2d.of(this.#htmlCanvas.width, this.#htmlCanvas.height);
+        console.log(htmlCanvasSize.__printDebug());
         const scaleToFill = Math.max(1, Math.min(htmlCanvasSize.div(this.canvasSize).floor().x, htmlCanvasSize.div(this.canvasSize).floor().y));
         const centeringOffset = htmlCanvasSize
             .sub(this.canvasSize.mul(scaleToFill))

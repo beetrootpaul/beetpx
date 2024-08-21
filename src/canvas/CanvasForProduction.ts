@@ -96,6 +96,7 @@ export class CanvasForProduction extends Canvas {
       this.#htmlCanvas.width,
       this.#htmlCanvas.height,
     );
+    console.log(htmlCanvasSize.__printDebug());
     const scaleToFill = Math.max(
       1,
       Math.min(
