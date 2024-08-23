@@ -820,7 +820,9 @@ export class BeetPx {
   static savePersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(value: PersistedStateValue): void {
-    this.#tryGetEngine().storageApi.savePersistedState(value);
+    this.#tryGetEngine().storageApi.savePersistedState<PersistedStateValue>(
+      value,
+    );
   }
 
   /**
@@ -835,8 +837,8 @@ export class BeetPx {
    */
   static loadPersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
-  >(): PersistedStateValue | null {
-    return this.#tryGetEngine().storageApi.loadPersistedState();
+  >(): Partial<PersistedStateValue> | null {
+    return this.#tryGetEngine().storageApi.loadPersistedState<PersistedStateValue>();
   }
 
   /**

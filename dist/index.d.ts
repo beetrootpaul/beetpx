@@ -1363,7 +1363,7 @@ declare global {
  *
  * @category Storage
  */
-type BpxPersistedStateValueConstraints = Record<string, string | number | boolean | null>;
+type BpxPersistedStateValueConstraints = Record<string, string | number | boolean | null | undefined>;
 
 /**
  * The configuration of the BeetPx engine. Passed into {@link BeetPx.start}.
@@ -2464,7 +2464,7 @@ declare class BeetPx {
      *
      * @category Storage
      */
-    static loadPersistedState<PersistedStateValue extends BpxPersistedStateValueConstraints>(): PersistedStateValue | null;
+    static loadPersistedState<PersistedStateValue extends BpxPersistedStateValueConstraints>(): Partial<PersistedStateValue> | null;
     /**
      * Allows to completely remove the previously persisted data.
      *
