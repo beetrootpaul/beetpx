@@ -46,6 +46,9 @@ export class DrawApi {
     removeClippingRegion() {
         return this.#canvas.removeClippingRegion();
     }
+    getCameraXy() {
+        return this.cameraXy;
+    }
     setCameraXy(xy) {
         const prev = this.cameraXy;
         this.cameraXy = xy;

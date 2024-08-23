@@ -94,7 +94,20 @@ export class BeetPxDraw {
   }
 
   /**
-   * Sets a new XY (left-top corner) of a camera's viewport
+   * Gets a XY (left-top corner) of a camera's view. Could be used e.g.
+   * for drawing a game's HUD, or anything else that should be positioned against
+   * the viewport and against the global game canvas' coordinates.
+   *
+   * @returns Current camera's XY.
+   *
+   * @category General
+   */
+  static get cameraXy(): BpxVector2d {
+    return BeetPxDraw.#tryGetEngine("setCameraXy").drawApi.getCameraXy();
+  }
+
+  /**
+   * Sets a new XY (left-top corner) of a camera's view
    *
    * @example
    * ```ts

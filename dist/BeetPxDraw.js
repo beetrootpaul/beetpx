@@ -20,6 +20,9 @@ export class BeetPxDraw {
     static removeClippingRegion() {
         return BeetPxDraw.#tryGetEngine("removeClippingRegion").drawApi.removeClippingRegion();
     }
+    static get cameraXy() {
+        return BeetPxDraw.#tryGetEngine("setCameraXy").drawApi.getCameraXy();
+    }
     static setCameraXy(xy) {
         return BeetPxDraw.#tryGetEngine("setCameraXy").drawApi.setCameraXy(xy);
     }

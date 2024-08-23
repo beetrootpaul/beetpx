@@ -84,7 +84,12 @@ $x.setOnUpdate(() => {
 $x.setOnDraw(() => {
   // console.log("draw", t.t, tseq.currentPhase, tseq.t, t2?.t);
 
-  $d.clearCanvas($rgb_p8.storm);
+  $d.clearCanvas($rgb_p8.black);
+  $d.rectFilled($v_0_0, $x.canvasSize, $rgb_p8.storm);
+
+  $d.setCameraXy($v(-10, -10));
+  $d.pixel($v_0_0, $rgb_p8.ember);
+  $d.pixel($d.cameraXy, $rgb_p8.lemon);
 
   vfx.draw();
   movement.draw();
