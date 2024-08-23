@@ -256,15 +256,17 @@ export class Engine {
                     this.audioApi.muteAudio();
                 }
             }
-            if (this.gameInput.gameButtons.wasJustPressed("menu")) {
-                if (GamePause.isActive) {
-                    GamePause.deactivate();
+            if (shouldUpdate) {
+                if (this.gameInput.gameButtons.wasJustPressed("menu")) {
+                    if (GamePause.isActive) {
+                        GamePause.deactivate();
+                    }
+                    else {
+                        GamePause.activate();
+                    }
                 }
-                else {
-                    GamePause.activate();
-                }
+                GamePause.earlyUpdate();
             }
-            GamePause.update();
             if (this.gameInput.buttonDebugToggle.wasJustPressed) {
                 DebugMode.enabled = !DebugMode.enabled;
             }
@@ -289,6 +291,7 @@ export class Engine {
                 }
                 this.#onUpdate?.();
                 this.#wasUpdateCalledAtLeastOnce = true;
+                GamePause.lateUpdate();
             }
         };
         const renderFn = (renderingFps) => {

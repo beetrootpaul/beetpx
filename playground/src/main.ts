@@ -73,14 +73,12 @@ $x.setOnUpdate(() => {
     t2 = $timer(3, { loop: true });
   }
 
-  // console.log("UPDATE", t.t, tseq.currentPhase, tseq.t, t2?.t);
-
-  if ($x.wasButtonJustPressed("menu")) {
-    $x.restart();
-    return;
+  if ($x.wasJustPaused) {
+    console.log("PAUSED", Date.now());
   }
-
-  console.log("RIM:", $x.getRecentInputMethods());
+  if ($x.wasJustResumed) {
+    console.log("resumed", Date.now());
+  }
 });
 
 $x.setOnDraw(() => {
@@ -116,7 +114,7 @@ $x.start({
   canvasSize: "256x256",
   assets: [...Movement.assetUrls, ...Music.assetUrls],
   gamePause: {
-    available: false,
+    available: true,
   },
   requireConfirmationOnTabClose: BEETPX__IS_PROD,
   screenshots: {

@@ -15,7 +15,7 @@ export class GamePause {
     static get wasJustDeactivated() {
         return this.#isEnabled ? !this.#isActive && this.#prevIsActive : false;
     }
-    static update() {
+    static earlyUpdate() {
         if (!this.#isEnabled)
             return;
         if (GamePause.wasJustActivated) {
@@ -34,6 +34,10 @@ export class GamePause {
                 playback.unmuteByEngine();
             }
         }
+    }
+    static lateUpdate() {
+        if (!this.#isEnabled)
+            return;
         this.#prevIsActive = this.#isActive;
     }
     static activate() {
