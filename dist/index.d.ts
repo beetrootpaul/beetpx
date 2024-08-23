@@ -311,7 +311,7 @@ interface BpxCanvasSnapshot {
  *
  * @category Drawing
  */
-type BpxColorMapper = (sourceColor: BpxRgbColor | null, x: number, y: number) => BpxRgbColor | null;
+type BpxColorMapper = (sourceColor: BpxRgbColor | null, x?: number, y?: number) => BpxRgbColor | null;
 
 /**
  * An interface to extend if you want to define `__printDebug()` – a convenience method used by
