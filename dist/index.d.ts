@@ -1532,7 +1532,8 @@ type BpxEngineConfig = {
  */
 type BpxEasingFn = (t: number) => number;
 /**
- * A collection of easing functions.
+ * A collection of easing functions. Based on
+ * ["Animation Curves cheat sheet/library" PICO-8 cart by ValerADHD](https://www.lexaloffle.com/bbs/?tid=40577).
  *
  * @category Miscellaneous
  */
@@ -1553,11 +1554,67 @@ declare class BpxEasing {
     /**
      * @group Static values
      */
+    static inOutQuadratic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInQuadratic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
     static inQuartic: BpxEasingFn;
     /**
      * @group Static values
      */
     static outQuartic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOutQuartic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInQuartic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOutOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOutElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inBounce: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outBounce: BpxEasingFn;
 }
 
 /**
