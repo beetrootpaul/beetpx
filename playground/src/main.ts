@@ -57,7 +57,7 @@ $x.setOnUpdate(() => {
       .clamp($v_0_0, $x.canvasSize.sub(1));
   }
 
-  bgXy = bgXy.add($x.getPressedDirection().normalize().mul(2));
+  bgXy = bgXy.add($x.getPressedDirection().normalize().mul(8));
 
   if ($x.wasButtonJustPressed("x") && $x.wasButtonJustPressed("o")) {
     t.restart();
@@ -90,7 +90,10 @@ $x.setOnDraw(() => {
 
   $d.clearCanvas($rgb_p8.black);
   $d.setCameraXy($v(-10, -20));
-  $d.sprite($spr("big_image.png")(1280, 1280, 0, 0), bgXy);
+  $d.sprite($spr("big_image.png")(1280, 1280, 0, 0), bgXy, {
+    flipXy: [true, false],
+    scaleXy: $v(2, 3),
+  });
 
   // vfx.draw();
   // movement.draw();
