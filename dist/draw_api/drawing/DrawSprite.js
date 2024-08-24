@@ -18,11 +18,11 @@ export class DrawSprite {
         if (!this.#canvas.canSetAny(targetXy.x, targetXy.y, targetXy.x + sprite.size.x * scaleXy.x - 1, targetXy.y + sprite.size.y * scaleXy.y - 1)) {
             return;
         }
-        const preparedSprite = this.#preparedSprites.prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels);
-        for (let spriteY = 0; spriteY < preparedSprite.h; spriteY += 1) {
+        const ps = this.#preparedSprites.prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels);
+        for (let spriteY = 0; spriteY < ps.h; spriteY += 1) {
             const canvasYBase = targetXy.y +
                 (flipXy[1] ? sprite.size.y - 1 - spriteY : spriteY) * scaleXy.y;
-            for (let spriteX = 0; spriteX < preparedSprite.w; spriteX += 1) {
+            for (let spriteX = 0; spriteX < ps.w; spriteX += 1) {
                 const canvasXBase = targetXy.x +
                     (flipXy[0] ? sprite.size.x - 1 - spriteX : spriteX) * scaleXy.x;
                 for (let yScaledStep = 0; yScaledStep < scaleXy.y; ++yScaledStep) {
@@ -31,7 +31,7 @@ export class DrawSprite {
                         const canvasY = canvasYBase + yScaledStep;
                         if (this.#canvas.canSetAt(canvasX, canvasY)) {
                             if (pattern.hasPrimaryColorAt(canvasX, canvasY)) {
-                                const color = preparedSprite.colors[spriteX][spriteY];
+                                const color = ps.colors[spriteX][spriteY];
                                 const mappedColor = colorMapping.getMappedColor(color, spriteX, spriteY);
                                 if (mappedColor) {
                                     this.#canvas.set(mappedColor, canvasX, canvasY);

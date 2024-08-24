@@ -1,11 +1,11 @@
 import {
   $d,
   $rgb_p8,
+  $spr,
   $timer,
   $timerSeq,
   $v,
   $v_0_0,
-  $v_1_1,
   $x,
   BpxTimer,
   BpxTimerSequence,
@@ -25,6 +25,8 @@ let dot: BpxVector2d;
 let t: BpxTimer;
 let tseq: BpxTimerSequence<"_i_1" | "_i__2" | "one" | "TWO">;
 let t2: BpxTimer | undefined;
+
+let bgXy = $v_0_0;
 
 $x.setOnStarted(() => {
   pauseMenu = new PauseMenu();
@@ -54,6 +56,8 @@ $x.setOnUpdate(() => {
       .add($x.getPressedDirection().normalize().mul(1.5))
       .clamp($v_0_0, $x.canvasSize.sub(1));
   }
+
+  bgXy = bgXy.add($x.getPressedDirection().normalize().mul(2));
 
   if ($x.wasButtonJustPressed("x") && $x.wasButtonJustPressed("o")) {
     t.restart();
@@ -85,29 +89,18 @@ $x.setOnDraw(() => {
   // console.log("draw", t.t, tseq.currentPhase, tseq.t, t2?.t);
 
   $d.clearCanvas($rgb_p8.black);
-  $d.rectFilled($v_0_0, $x.canvasSize, $rgb_p8.storm);
+  $d.setCameraXy($v(-10, -20));
+  $d.sprite($spr("big_image.png")(1280, 1280, 0, 0), bgXy);
 
-  $d.setCameraXy($v(-10, -10));
-  $d.pixel($v_0_0, $rgb_p8.ember);
-  $d.pixel($d.cameraXy, $rgb_p8.lemon);
+  // vfx.draw();
+  // movement.draw();
 
-  vfx.draw();
-  movement.draw();
-
-  if ($x.isButtonPressed("O")) {
-    $d.text("O", $v(8, 32), $rgb_p8.lemon);
-  }
-  if ($x.isButtonPressed("X")) {
-    $d.text("X", $v(18, 32), $rgb_p8.lemon);
-  }
-
-  $d.pixel(dot, $rgb_p8.white);
-
-  $d.text(
-    $x.isTouchInputMethodAvailable() ? "TOUCH" : "no touch",
-    $v_1_1,
-    $rgb_p8.sky,
-  );
+  // if ($x.isButtonPressed("O")) {
+  //   $d.text("O", $v(8, 32), $rgb_p8.lemon);
+  // }
+  // if ($x.isButtonPressed("X")) {
+  //   $d.text("X", $v(18, 32), $rgb_p8.lemon);
+  // }
 
   if ($x.isPaused) {
     pauseMenu.draw();
@@ -116,8 +109,8 @@ $x.setOnDraw(() => {
 
 $x.start({
   gameId: "beetpx-playground",
-  canvasSize: "256x256",
-  assets: [...Movement.assetUrls, ...Music.assetUrls],
+  canvasSize: "64x64",
+  assets: [...Movement.assetUrls, ...Music.assetUrls, "big_image.png"],
   gamePause: {
     available: true,
   },
@@ -127,6 +120,9 @@ $x.start({
   },
   debugMode: {
     available: !BEETPX__IS_PROD,
+    fpsDisplay: {
+      enabled: true,
+    },
   },
   frameByFrame: {
     available: !BEETPX__IS_PROD,
