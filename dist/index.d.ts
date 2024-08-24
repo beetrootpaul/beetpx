@@ -311,7 +311,7 @@ interface BpxCanvasSnapshot {
  *
  * @category Drawing
  */
-type BpxColorMapper = (sourceColor: BpxRgbColor | null, x: number, y: number) => BpxRgbColor | null;
+type BpxColorMapper = (sourceColor: BpxRgbColor | null, x?: number, y?: number) => BpxRgbColor | null;
 
 /**
  * An interface to extend if you want to define `__printDebug()` – a convenience method used by
@@ -1363,7 +1363,7 @@ declare global {
  *
  * @category Storage
  */
-type BpxPersistedStateValueConstraints = Record<string, string | number | boolean | null>;
+type BpxPersistedStateValueConstraints = Record<string, string | number | boolean | null | undefined>;
 
 /**
  * The configuration of the BeetPx engine. Passed into {@link BeetPx.start}.
@@ -1532,7 +1532,8 @@ type BpxEngineConfig = {
  */
 type BpxEasingFn = (t: number) => number;
 /**
- * A collection of easing functions.
+ * A collection of easing functions. Based on
+ * ["Animation Curves cheat sheet/library" PICO-8 cart by ValerADHD](https://www.lexaloffle.com/bbs/?tid=40577).
  *
  * @category Miscellaneous
  */
@@ -1553,11 +1554,67 @@ declare class BpxEasing {
     /**
      * @group Static values
      */
+    static inOutQuadratic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInQuadratic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
     static inQuartic: BpxEasingFn;
     /**
      * @group Static values
      */
     static outQuartic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOutQuartic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInQuartic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOutOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInOvershoot: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inOutElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outInElastic: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static inBounce: BpxEasingFn;
+    /**
+     * @group Static values
+     */
+    static outBounce: BpxEasingFn;
 }
 
 /**
@@ -2464,7 +2521,7 @@ declare class BeetPx {
      *
      * @category Storage
      */
-    static loadPersistedState<PersistedStateValue extends BpxPersistedStateValueConstraints>(): PersistedStateValue | null;
+    static loadPersistedState<PersistedStateValue extends BpxPersistedStateValueConstraints>(): Partial<PersistedStateValue> | null;
     /**
      * Allows to completely remove the previously persisted data.
      *
@@ -2559,7 +2616,17 @@ declare class BeetPxDraw {
      */
     static removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d];
     /**
-     * Sets a new XY (left-top corner) of a camera's viewport
+     * Gets a XY (left-top corner) of a camera's view. Could be used e.g.
+     * for drawing a game's HUD, or anything else that should be positioned against
+     * the viewport and against the global game canvas' coordinates.
+     *
+     * @returns Current camera's XY.
+     *
+     * @category General
+     */
+    static get cameraXy(): BpxVector2d;
+    /**
+     * Sets a new XY (left-top corner) of a camera's view
      *
      * @example
      * ```ts

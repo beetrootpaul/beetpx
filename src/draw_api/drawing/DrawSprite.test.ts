@@ -818,6 +818,146 @@ describe("DrawSprite", () => {
     });
   });
 
+  test("scaled flipped sprite vs canvas clipping: left edge", () => {
+    const dts = drawingTestSetup(10, 8, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      image: `
+        . . . . . . .
+        . . # : % = .
+        . . # : = % .
+        . . # % : = .
+        . . . . . . .
+      `,
+    });
+    const s = $spr(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.drawSprite(s(4, 3, 2, 1), $v(-2, 1), {
+      flipXy: [true, true],
+      scaleXy: $v(2),
+    });
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      expectedImageAsAscii: `
+        - - - - - - - - - -
+        : : % % # # - - - -
+        : : % % # # - - - -
+        = = : : # # - - - -
+        = = : : # # - - - -
+        % % : : # # - - - -
+        % % : : # # - - - -
+        - - - - - - - - - -
+      `,
+    });
+  });
+
+  test("scaled flipped sprite vs canvas clipping: right edge", () => {
+    const dts = drawingTestSetup(10, 8, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      image: `
+        . . . . . . .
+        . . # : % = .
+        . . # : = % .
+        . . # % : = .
+        . . . . . . .
+      `,
+    });
+    const s = $spr(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.drawSprite(s(4, 3, 2, 1), $v(4, 1), {
+      flipXy: [true, true],
+      scaleXy: $v(2),
+    });
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - = = : : % %
+        - - - - = = : : % %
+        - - - - % % = = : :
+        - - - - % % = = : :
+        - - - - = = % % : :
+        - - - - = = % % : :
+        - - - - - - - - - -
+      `,
+    });
+  });
+
+  test("scaled flipped sprite vs canvas clipping: top edge", () => {
+    const dts = drawingTestSetup(10, 8, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      image: `
+        . . . . . . .
+        . . # : % = .
+        . . # : = % .
+        . . # % : = .
+        . . . . . . .
+      `,
+    });
+    const s = $spr(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.drawSprite(s(4, 3, 2, 1), $v(1, -2), {
+      flipXy: [true, true],
+      scaleXy: $v(2),
+    });
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      expectedImageAsAscii: `
+        - % % = = : : # # -
+        - % % = = : : # # -
+        - = = % % : : # # -
+        - = = % % : : # # -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+      `,
+    });
+  });
+
+  test("scaled flipped sprite vs canvas clipping: bottom edge", () => {
+    const dts = drawingTestSetup(10, 8, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      image: `
+        . . . . . . .
+        . . # : % = .
+        . . # : = % .
+        . . # % : = .
+        . . . . . . .
+      `,
+    });
+    const s = $spr(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.drawSprite(s(4, 3, 2, 1), $v(1, 4), {
+      flipXy: [true, true],
+      scaleXy: $v(2),
+    });
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4, ".": c5 },
+      expectedImageAsAscii: `
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - - - - - - - - - -
+        - = = : : % % # # -
+        - = = : : % % # # -
+        - % % = = : : # # -
+        - % % = = : : # # -
+      `,
+    });
+  });
+
   test("transparency", () => {
     const dts = drawingTestSetup(4, 4, c0);
     const image = new TestImage({

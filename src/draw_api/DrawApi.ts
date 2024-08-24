@@ -90,6 +90,10 @@ export class DrawApi {
     return this.#canvas.removeClippingRegion();
   }
 
+  getCameraXy(): BpxVector2d {
+    return this.cameraXy;
+  }
+
   setCameraXy(xy: BpxVector2d): BpxVector2d {
     const prev = this.cameraXy;
     this.cameraXy = xy;

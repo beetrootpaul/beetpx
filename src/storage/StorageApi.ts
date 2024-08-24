@@ -8,7 +8,7 @@ import { ScopedLocaleStorage } from "./ScopedLocaleStorage";
  */
 export type BpxPersistedStateValueConstraints = Record<
   string,
-  string | number | boolean | null
+  string | number | boolean | null | undefined
 >;
 
 export class StorageApi {
@@ -22,10 +22,10 @@ export class StorageApi {
 
   loadPersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
-  >(): PersistedStateValue | null {
+  >(): Partial<PersistedStateValue> | null {
     return ScopedLocaleStorage.getItem(
       StorageApi.#key,
-    ) as PersistedStateValue | null;
+    ) as Partial<PersistedStateValue> | null;
   }
 
   clearPersistedState(): void {

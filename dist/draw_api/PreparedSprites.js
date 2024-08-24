@@ -2,7 +2,7 @@ import { $rgb } from "../shorthands";
 import { range } from "../utils/range";
 export class PreparedSprites {
     #cache = new Map();
-    prepareOrGetFromCache(sprite, imgBytes, imgW, imgChannels) {
+    prepareOrGetFromCache(sprite, flipXy, imgBytes, imgW, imgChannels) {
         const key = sprite.imageUrl +
             "::" +
             sprite.xy.x.toString() +
@@ -11,19 +11,23 @@ export class PreparedSprites {
             ":" +
             sprite.size.x.toString() +
             ":" +
-            sprite.size.y.toString();
+            sprite.size.y.toString() +
+            ":" +
+            flipXy[0].toString() +
+            ":" +
+            flipXy[1].toString();
         if (this.#cache.has(key)) {
             return this.#cache.get(key);
         }
         const w = sprite.size.x;
         const h = sprite.size.y;
         const colors = range(w).map(() => range(h).map(() => null));
-        for (let spriteY = 0; spriteY < h; ++spriteY) {
-            const imgY = sprite.xy.y + spriteY;
-            for (let spriteX = 0; spriteX < w; ++spriteX) {
-                const imgX = sprite.xy.x + spriteX;
+        for (let sY = 0; sY < h; ++sY) {
+            const imgY = sprite.xy.y + (flipXy[1] ? h - sY - 1 : sY);
+            for (let sX = 0; sX < w; ++sX) {
+                const imgX = sprite.xy.x + (flipXy[0] ? w - sX - 1 : sX);
                 const imgIndex = (imgY * imgW + imgX) * imgChannels;
-                colors[spriteX][spriteY] =
+                colors[sX][sY] =
                     imgChannels === 3
                         ? $rgb(imgBytes[imgIndex], imgBytes[imgIndex + 1], imgBytes[imgIndex + 2])
                         : imgBytes[imgIndex + 3] >= 0xff / 2

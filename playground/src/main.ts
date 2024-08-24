@@ -5,8 +5,8 @@ import {
   $timerSeq,
   $v,
   $v_0_0,
-  $v_1_1,
   $x,
+  BpxEasing,
   BpxTimer,
   BpxTimerSequence,
   BpxVector2d,
@@ -25,6 +25,8 @@ let dot: BpxVector2d;
 let t: BpxTimer;
 let tseq: BpxTimerSequence<"_i_1" | "_i__2" | "one" | "TWO">;
 let t2: BpxTimer | undefined;
+
+let bgXy = $v_0_0;
 
 $x.setOnStarted(() => {
   pauseMenu = new PauseMenu();
@@ -55,6 +57,8 @@ $x.setOnUpdate(() => {
       .clamp($v_0_0, $x.canvasSize.sub(1));
   }
 
+  bgXy = bgXy.add($x.getPressedDirection().normalize().mul(8));
+
   if ($x.wasButtonJustPressed("x") && $x.wasButtonJustPressed("o")) {
     t.restart();
     tseq.restart();
@@ -73,50 +77,82 @@ $x.setOnUpdate(() => {
     t2 = $timer(3, { loop: true });
   }
 
-  // console.log("UPDATE", t.t, tseq.currentPhase, tseq.t, t2?.t);
-
-  if ($x.wasButtonJustPressed("menu")) {
-    $x.restart();
-    return;
+  if ($x.wasJustPaused) {
+    console.log("PAUSED", Date.now());
   }
-
-  console.log("RIM:", $x.getRecentInputMethods());
+  if ($x.wasJustResumed) {
+    console.log("resumed", Date.now());
+  }
 });
 
 $x.setOnDraw(() => {
-  // console.log("draw", t.t, tseq.currentPhase, tseq.t, t2?.t);
+  $d.clearCanvas($rgb_p8.black);
 
-  $d.clearCanvas($rgb_p8.storm);
+  const wOuter = 48;
+  const hOuter = 48;
+  const wInner = 32;
+  const hInner = 32;
 
-  vfx.draw();
-  movement.draw();
+  const rowLimit = Math.floor($x.canvasSize.x / wOuter);
 
-  if ($x.isButtonPressed("O")) {
-    $d.text("O", $v(8, 32), $rgb_p8.lemon);
-  }
-  if ($x.isButtonPressed("X")) {
-    $d.text("X", $v(18, 32), $rgb_p8.lemon);
-  }
+  const t = ($x.frameNumber % 60) / 60;
 
-  $d.pixel(dot, $rgb_p8.white);
+  [
+    //
+    BpxEasing.linear,
+    //
+    BpxEasing.inQuadratic,
+    BpxEasing.outQuadratic,
+    BpxEasing.inOutQuadratic,
+    BpxEasing.outInQuadratic,
+    //
+    BpxEasing.inQuartic,
+    BpxEasing.outQuartic,
+    BpxEasing.inOutQuartic,
+    BpxEasing.outInQuartic,
+    //
+    BpxEasing.inOvershoot,
+    BpxEasing.outOvershoot,
+    BpxEasing.inOutOvershoot,
+    BpxEasing.outInOvershoot,
+    //
+    BpxEasing.inElastic,
+    BpxEasing.outElastic,
+    BpxEasing.inOutElastic,
+    BpxEasing.outInElastic,
+    //
+    BpxEasing.inBounce,
+    BpxEasing.outBounce,
+    //
+  ].forEach((fn, i) => {
+    const xOuter = (i % rowLimit) * wOuter;
+    const yOuter = Math.floor(i / rowLimit) * hOuter;
+    $d.rect($v(xOuter, yOuter), $v(wOuter, hOuter), $rgb_p8.storm);
 
-  $d.text(
-    $x.isTouchInputMethodAvailable() ? "TOUCH" : "no touch",
-    $v_1_1,
-    $rgb_p8.sky,
-  );
+    const xInner = xOuter + (wOuter - wInner) / 2;
+    const yInner = yOuter + (hOuter - hInner) / 2;
+    $d.rect($v(xInner, yInner), $v(wInner, hInner), $rgb_p8.storm);
 
-  if ($x.isPaused) {
-    pauseMenu.draw();
-  }
+    for (let x = 0; x < wInner; x++) {
+      const y = wInner * fn(x / wInner);
+      $d.pixel($v(xInner + x, yInner + y), $rgb_p8.white);
+    }
+  });
+
+  // vfx.draw();
+  // movement.draw();
+  //
+  // if ($x.isPaused) {
+  //   pauseMenu.draw();
+  // }
 });
 
 $x.start({
   gameId: "beetpx-playground",
   canvasSize: "256x256",
-  assets: [...Movement.assetUrls, ...Music.assetUrls],
+  assets: [...Movement.assetUrls, ...Music.assetUrls, "big_image.png"],
   gamePause: {
-    available: false,
+    available: true,
   },
   requireConfirmationOnTabClose: BEETPX__IS_PROD,
   screenshots: {
@@ -124,6 +160,9 @@ $x.start({
   },
   debugMode: {
     available: !BEETPX__IS_PROD,
+    fpsDisplay: {
+      // enabled: true,
+    },
   },
   frameByFrame: {
     available: !BEETPX__IS_PROD,

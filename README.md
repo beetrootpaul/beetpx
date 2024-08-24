@@ -72,16 +72,16 @@ Also, you might want to take a look at how following projects are using BeetPx:
 The BeetPx engine supports a following sets of game buttons and their mappings
 from physical devices:
 
-| game button                          | keyboard               | DualSense controller | Xbox controller |
-| ------------------------------------ | ---------------------- | -------------------- | --------------- |
-| **O** (Maru)                         | `C` / `J` / `O`        | circle / square      | `A` / `Y`       |
-| **X** (Batsu)                        | `X` / `K`              | cross / triangle     | `B` / `X`       |
-| **menu**                             | `P` / `return` / `esc` | menu                 | menu            |
-| **directions**                       | arrows / `WSAD`        | D-pad / sticks       | D-pad / sticks  |
-| **mute/unmute**                      | `M`                    |                      |                 |
-| **full screen**                      | `F`                    |                      |                 |
-| **take screenshot** (if enabled)     | `]`                    |                      |                 |
-| **browser screenshots** (fi enabled) | `}`                    |                      |                 |
+| game button                         | keyboard               | DualSense controller | Xbox controller |
+|-------------------------------------| ---------------------- | -------------------- | --------------- |
+| **O** (Maru)                        | `C` / `J` / `O`        | circle / square      | `A` / `Y`       |
+| **X** (Batsu)                       | `X` / `K`              | cross / triangle     | `B` / `X`       |
+| **menu**                            | `P` / `return` / `esc` | menu                 | menu            |
+| **directions**                      | arrows / `WSAD`        | D-pad / sticks       | D-pad / sticks  |
+| **mute/unmute**                     | `M`                    |                      |                 |
+| **full screen**                     | `F`                    |                      |                 |
+| **take screenshot** (if enabled)    | `]`                    |                      |                 |
+| **browse screenshots** (if enabled) | `}`                    |                      |                 |
 
 Regarding the main game buttons on a keyboard, the intention is basically to
 either play with left hand on `X`+`C` and right hand on arrows, or to place the
@@ -133,7 +133,7 @@ and all tests as well as the compilation happen in a pre-commit hook.
 ## The Origin
 
 My idea for BeetPx came from a good time I had working on mini games in
-[PICO-8](https://www.lexaloffle.com/pico-8.php). That fantasy consoles hit a
+[PICO-8](https://www.lexaloffle.com/pico-8.php). That fantasy console hit a
 very sweet spot for me: in PICO-8 you are creating low resolution pixel art
 games, to do so you use a globally available simple API, and all your creations
 can easily run in a desktop browser or a mobile one.
@@ -144,25 +144,25 @@ There are though some areas I would like differently:
   I had to use a custom version of Lua, which meant difficulties in finding a
   decent extension for an IDE of my choice.
 - PICO-8 has a token limit, which generally means a limit on how much code you
-  are allowed to write and an incentive to use a short language constructs as
-  possible rather than optimizing for a code maintenance. I understand this is a
+  are allowed to write and an incentive to use a shorter language constructs
+  rather than optimizing for a code maintenance. I understand this is a
   heated topic in PICO-8 community and I also see advantages of the limited
   approach – e.g. it helps to keep games low scoped and, in result finish them!
   Also, it is sometimes a real fun to come with clever solutions for hunting
-  tokens down 😄. But when it comes to my personal preferences, I more often was
+  tokens down 😄. But, when it comes to my personal preferences, I more often was
   frustrated by the token limit rather then enjoying it.
-- There is a minor issues with a browser build of PICO-8 games, where the long
-  press of a in-game button on iOS Safari results with a system text selection
-  to appear and prevents from playing a game smoothly. Of course, this is
+- There is (was?) a minor issue with a browser build of PICO-8 games, where the long
+  press of a in-game button on iOS Safari makes a system text selection
+  to appear and prevents user from playing a game in a smoothly manner. Of course, this is
   something I could work around by adjusting an HTML template exported from
   PICO-8. But since I decided to create my own engine, I am able to take care of
   browser iOS experience and do it the way I like.
 - Last but not least: I just wanted to have something created for public,
   [available on npm](https://www.npmjs.com/package/@beetpx/beetpx), something I
-  feel I am capable to do and can be proud of later ☺️
+  feel I am capable to do and can be proud of later on ☺️
 
 That being said, I am very grateful that PICO-8 exists and there is a big
-community around it. If not for PICO-8, BeetPx would never be created 💛
+and helpful community around it. If not for PICO-8, BeetPx would never be created 💛
 
 ## Credits
 

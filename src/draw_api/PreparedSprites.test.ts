@@ -25,6 +25,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(20, 30, 0, 1),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
@@ -35,6 +36,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(20, 30, 0, 1),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
@@ -45,6 +47,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(20, 30, 1, 1),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
@@ -53,6 +56,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(20, 30, 0, 2),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
@@ -61,6 +65,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(21, 30, 0, 1),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
@@ -69,6 +74,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(20, 31, 0, 1),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
@@ -79,6 +85,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(20, 30, 0, 1),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
@@ -89,6 +96,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image2")(20, 30, 0, 1),
+        [true, false],
         pngData2,
         imgW2,
         imgChannels2,
@@ -97,6 +105,7 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image2")(20, 30, 0, 1),
+        [true, false],
         pngData2,
         imgW2,
         imgChannels2,
@@ -107,6 +116,38 @@ describe("PreparedSprites", () => {
     expect(
       preparedSprites.prepareOrGetFromCache(
         $spr("image1")(20, 30, 0, 1),
+        [true, false],
+        pngData1,
+        imgW1,
+        imgChannels1,
+      ).cacheHit,
+    ).toBe(true);
+
+    // a sprite of same xy and wh, but another flip
+    expect(
+      preparedSprites.prepareOrGetFromCache(
+        $spr("image1")(20, 30, 0, 1),
+        [false, true],
+        pngData2,
+        imgW2,
+        imgChannels2,
+      ).cacheHit,
+    ).toBe(false);
+    expect(
+      preparedSprites.prepareOrGetFromCache(
+        $spr("image1")(20, 30, 0, 1),
+        [false, true],
+        pngData2,
+        imgW2,
+        imgChannels2,
+      ).cacheHit,
+    ).toBe(true);
+
+    // and the first sprite once again
+    expect(
+      preparedSprites.prepareOrGetFromCache(
+        $spr("image1")(20, 30, 0, 1),
+        [true, false],
         pngData1,
         imgW1,
         imgChannels1,
