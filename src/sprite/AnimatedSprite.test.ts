@@ -193,76 +193,95 @@ describe("AnimatedSprite", () => {
     const sprite = $aspr("any.image.url")(90, 91, xys);
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
 
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.resume();
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
 
     incrementFrameNumber();
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(true);
 
     incrementFrameNumber();
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(true);
     incrementFrameNumber();
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.resume();
 
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(false);
 
     incrementFrameNumber();
     expect(sprite.t).toEqual(4);
     expect(sprite.current.xy).toEqual($v(5, 50));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
     range(xys.length).forEach(() => {
       incrementFrameNumber();
     });
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(true);
     incrementFrameNumber();
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(true);
   });
 
   test("pause more than once", () => {
@@ -274,9 +293,11 @@ describe("AnimatedSprite", () => {
     const sprite = $aspr("any.image.url")(90, 91, xys);
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
     sprite.pause();
@@ -285,9 +306,11 @@ describe("AnimatedSprite", () => {
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.pause();
     sprite.pause();
@@ -296,17 +319,21 @@ describe("AnimatedSprite", () => {
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.resume();
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
   });
 
   test("resume more than once", () => {
@@ -318,17 +345,21 @@ describe("AnimatedSprite", () => {
     const sprite = $aspr("any.image.url")(90, 91, xys);
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.resume();
     sprite.resume();
@@ -337,9 +368,11 @@ describe("AnimatedSprite", () => {
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.resume();
     sprite.resume();
@@ -348,9 +381,11 @@ describe("AnimatedSprite", () => {
 
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
   });
 
   test("resume without pausing first", () => {
@@ -362,17 +397,21 @@ describe("AnimatedSprite", () => {
     const sprite = $aspr("any.image.url")(90, 91, xys);
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.resume();
 
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
   });
 
   test("restart", () => {
@@ -422,11 +461,13 @@ describe("AnimatedSprite", () => {
     const sprite = $aspr("any.image.url")(90, 91, xys);
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     incrementFrameNumber();
     incrementFrameNumber();
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
@@ -434,14 +475,17 @@ describe("AnimatedSprite", () => {
     incrementFrameNumber();
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.restart();
 
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
@@ -449,14 +493,17 @@ describe("AnimatedSprite", () => {
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.restart();
 
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
@@ -464,16 +511,19 @@ describe("AnimatedSprite", () => {
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.resume();
 
     incrementFrameNumber();
     expect(sprite.t).toEqual(2);
     expect(sprite.current.xy).toEqual($v(3, 30));
+    expect(sprite.isPaused).toEqual(false);
 
     incrementFrameNumber();
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(false);
 
     sprite.pause();
 
@@ -481,14 +531,17 @@ describe("AnimatedSprite", () => {
     incrementFrameNumber();
     expect(sprite.t).toEqual(3);
     expect(sprite.current.xy).toEqual($v(4, 40));
+    expect(sprite.isPaused).toEqual(true);
 
     sprite.restart();
 
     expect(sprite.t).toEqual(0);
     expect(sprite.current.xy).toEqual($v(1, 10));
+    expect(sprite.isPaused).toEqual(false);
     incrementFrameNumber();
     expect(sprite.t).toEqual(1);
     expect(sprite.current.xy).toEqual($v(2, 20));
+    expect(sprite.isPaused).toEqual(false);
   });
 });
 

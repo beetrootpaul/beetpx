@@ -299,6 +299,13 @@ export class BpxTimerSequence<TPhaseName extends string> {
   }
 
   /**
+   * Whether the timer is paused.
+   */
+  get isPaused(): boolean {
+    return this.#isPaused;
+  }
+
+  /**
    * Pauses the timer.
    */
   pause(): void {

@@ -35,6 +35,9 @@ export class BpxAnimatedSprite {
     get t() {
         return Math.floor(this.#loop.t / this.#frameDuration);
     }
+    get isPaused() {
+        return this.#loop.isPaused;
+    }
     pause() {
         this.#loop.pause();
     }

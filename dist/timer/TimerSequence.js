@@ -156,6 +156,9 @@ export class BpxTimerSequence {
         return (this.#loopTimer?.hasJustFinished ||
             this.#firstIterationTimer.hasJustFinished);
     }
+    get isPaused() {
+        return this.#isPaused;
+    }
     pause() {
         if (this.#isPaused)
             return;

@@ -55,6 +55,9 @@ export class BpxTimer {
                 ? true
                 : this.#tRaw === 0;
     }
+    get isPaused() {
+        return this.#isPaused;
+    }
     pause() {
         if (this.#isPaused)
             return;

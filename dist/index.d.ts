@@ -1209,6 +1209,10 @@ declare class BpxAnimatedSprite {
      */
     get t(): number;
     /**
+     * Whether the animation is paused.
+     */
+    get isPaused(): boolean;
+    /**
      * Pauses the animation.
      */
     pause(): void;
@@ -1867,6 +1871,10 @@ declare class BpxTimer {
      */
     get hasJustFinished(): boolean;
     /**
+     * Whether the timer is paused.
+     */
+    get isPaused(): boolean;
+    /**
      * Pauses the timer.
      */
     pause(): void;
@@ -1954,6 +1962,10 @@ declare class BpxTimerSequence<TPhaseName extends string> {
      * After the first loop pass, the intro is no longer taken into account.
      */
     get hasJustFinishedOverall(): boolean;
+    /**
+     * Whether the timer is paused.
+     */
+    get isPaused(): boolean;
     /**
      * Pauses the timer.
      */
