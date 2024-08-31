@@ -1,6 +1,6 @@
 import { BpxCanvasSnapshot } from "../canvas/CanvasSnapshot";
 import { BpxColorMapper } from "./ColorMapper";
-import { BpxRgbColor } from "./RgbColor";
+import { BpxRgbColor, BpxRgbCssHex } from "./RgbColor";
 
 /**
  * @see {@link BeetPxDraw.takeCanvasSnapshot}
@@ -11,6 +11,45 @@ import { BpxRgbColor } from "./RgbColor";
  */
 export class BpxCanvasSnapshotColorMapping {
   /**
+   * Creates a simplified color mapping, based on a map of canvas snapshot colors to the new ones.
+   *
+   * @example
+   * ```ts
+   * BpxCanvasSnapshotColorMapping.from([
+   *   [$rgb_red, $rgb_green],
+   *   [$rgb_blue, $rgb_green],
+   *   [$rgb_yellow, $rgb_red],
+   * ]);
+   * ```
+   *
+   * @group Static factories
+   */
+  static from(
+    colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor]>,
+  ): BpxCanvasSnapshotColorMapping {
+    const map = new Map<BpxRgbCssHex, BpxRgbColor>(
+      colorMappingEntries.map(([from, to]) => [from.cssHex, to]),
+    );
+    return new BpxCanvasSnapshotColorMapping((canvasSnapshotColor, _x, _y) => {
+      if (!canvasSnapshotColor) return canvasSnapshotColor;
+      const mapped = map.get(canvasSnapshotColor.cssHex);
+      return typeof mapped === "undefined" ? canvasSnapshotColor : mapped;
+    });
+  }
+
+  /**
+   * Creates a color mapping which uses a function to map a canvas snapshot color
+   * into a new one.
+   *
+   * @example
+   * ```ts
+   * BpxCanvasSnapshotColorMapping.of((color: BpxRgbColor | null, spriteX: number, spriteY: number) =>
+   *   color
+   *     ? $rgb(255 - color.r, 255 - color.g, 255 - color.b)
+   *     : null
+   * );
+   * ```
+   *
    * @group Static factories
    */
   static of(mapper: BpxColorMapper): BpxCanvasSnapshotColorMapping {

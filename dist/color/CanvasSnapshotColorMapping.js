@@ -1,4 +1,13 @@
 export class BpxCanvasSnapshotColorMapping {
+    static from(colorMappingEntries) {
+        const map = new Map(colorMappingEntries.map(([from, to]) => [from.cssHex, to]));
+        return new BpxCanvasSnapshotColorMapping((canvasSnapshotColor, _x, _y) => {
+            if (!canvasSnapshotColor)
+                return canvasSnapshotColor;
+            const mapped = map.get(canvasSnapshotColor.cssHex);
+            return typeof mapped === "undefined" ? canvasSnapshotColor : mapped;
+        });
+    }
     static of(mapper) {
         return new BpxCanvasSnapshotColorMapping(mapper);
     }
