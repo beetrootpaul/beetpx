@@ -1,19 +1,19 @@
 import { expect, test } from "vitest";
-import { randomElementOf } from "./randomElementOf";
+import { randOf } from "./randOf";
 import { range } from "./range";
 import { throwError } from "./throwError";
 
-test("randomElementOf", () => {
-  expect(randomElementOf([])).toBeUndefined();
+test("randOf", () => {
+  expect(randOf([])).toBeUndefined();
 
-  expect(randomElementOf([123])).toEqual(123);
+  expect(randOf([123])).toEqual(123);
 
   const expectedSamplesPerElement = 100;
   const elements = [0, 1, 2];
   const results = elements.map(() => 0);
   range(elements.length * expectedSamplesPerElement).forEach(() => {
     const pickedElement =
-      randomElementOf(elements) ?? throwError("element should be defined");
+      randOf(elements) ?? throwError("element should be defined");
     results[pickedElement]! += 1;
   });
   const acceptedDiff = 0.3 * expectedSamplesPerElement;

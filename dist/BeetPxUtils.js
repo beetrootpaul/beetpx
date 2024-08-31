@@ -7,7 +7,9 @@ import { drawTextWithOutline } from "./utils/drawTextWithOutline";
 import { identity } from "./utils/identity";
 import { lerp } from "./utils/lerp";
 import { mod } from "./utils/mod";
-import { randomElementOf } from "./utils/randomElementOf";
+import { rand } from "./utils/rand";
+import { randInt } from "./utils/randInt";
+import { randOf } from "./utils/randOf";
 import { range } from "./utils/range";
 import { repeatEachElement } from "./utils/repeatEachElement";
 import { throwError } from "./utils/throwError";
@@ -44,8 +46,14 @@ export class BeetPxUtils {
     static adjacent8() {
         return adjacent8();
     }
-    static randomElementOf(array) {
-        return randomElementOf(array);
+    static rand(minInclusive, maxExclusive) {
+        return rand(minInclusive, maxExclusive);
+    }
+    static randInt(minInclusive, maxExclusive) {
+        return randInt(minInclusive, maxExclusive);
+    }
+    static randOf(array) {
+        return randOf(array);
     }
     static range(n) {
         return range(n);

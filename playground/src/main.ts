@@ -3,6 +3,7 @@ import {
   $rgb_p8,
   $timer,
   $timerSeq,
+  $u,
   $v,
   $v_0_0,
   $x,
@@ -27,6 +28,8 @@ let tseq: BpxTimerSequence<"_i_1" | "_i__2" | "one" | "TWO">;
 let t2: BpxTimer | undefined;
 
 let bgXy = $v_0_0;
+
+const distribution = [0, 0, 0, 0, 0, 0, 0, 0];
 
 $x.setOnStarted(() => {
   pauseMenu = new PauseMenu();
@@ -83,6 +86,8 @@ $x.setOnUpdate(() => {
   if ($x.wasJustResumed) {
     console.log("resumed", Date.now());
   }
+
+  distribution[$u.randInt(-2, 5) + 2]! += 1;
 });
 
 $x.setOnDraw(() => {
@@ -145,6 +150,10 @@ $x.setOnDraw(() => {
   // if ($x.isPaused) {
   //   pauseMenu.draw();
   // }
+
+  for (let i = 0; i < 8; i++) {
+    $d.line($v(8 + i * 8, 8), $v(1, distribution[i]!), $rgb_p8.ember);
+  }
 });
 
 $x.start({

@@ -3042,9 +3042,17 @@ declare class BeetPxUtils {
         BpxVector2d
     ];
     /**
+     * Picks a random value from a given range.
+     */
+    static rand(minInclusive: number, maxExclusive: number): number;
+    /**
+     * Picks a random integer value from a given range.
+     */
+    static randInt(minInclusive: number, maxExclusive: number): number;
+    /**
      * Picks a random element from a given array.
      */
-    static randomElementOf<TElement>(array: TElement[]): TElement | undefined;
+    static randOf<TElement>(array: TElement[]): TElement | undefined;
     /**
      * Generates an array from `0` to `n-1`. Useful when we want to do a thing N times.
      *
