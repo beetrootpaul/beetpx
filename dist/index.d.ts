@@ -3046,9 +3046,17 @@ declare class BeetPxUtils {
      */
     static rand(minInclusive: number, maxExclusive: number): number;
     /**
+     * Picks a random vector from a given range.
+     */
+    static rand(minInclusive: BpxVector2d, maxExclusive: BpxVector2d): BpxVector2d;
+    /**
      * Picks a random integer value from a given range.
      */
     static randInt(minInclusive: number, maxExclusive: number): number;
+    /**
+     * Picks a random integer vector from a given range.
+     */
+    static randInt(minInclusive: BpxVector2d, maxExclusive: BpxVector2d): BpxVector2d;
     /**
      * Picks a random element from a given array.
      */

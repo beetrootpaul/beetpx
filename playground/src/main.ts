@@ -87,7 +87,7 @@ $x.setOnUpdate(() => {
     console.log("resumed", Date.now());
   }
 
-  distribution[$u.randInt(-2, 5) + 2]! += 1;
+  distribution[$u.randInt($v(0, 4), $v(2, 6)).y]! += 1;
 });
 
 $x.setOnDraw(() => {

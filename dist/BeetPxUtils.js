@@ -1,3 +1,4 @@
+import { BpxVector2d } from "./misc/Vector2d";
 import { adjacent4 } from "./utils/adjacent4";
 import { adjacent8 } from "./utils/adjacent8";
 import { assertUnreachable } from "./utils/assertUnreachable";
@@ -47,10 +48,14 @@ export class BeetPxUtils {
         return adjacent8();
     }
     static rand(minInclusive, maxExclusive) {
-        return rand(minInclusive, maxExclusive);
+        return typeof minInclusive !== "number" || typeof maxExclusive !== "number"
+            ? BpxVector2d.of(rand(typeof minInclusive !== "number" ? minInclusive.x : minInclusive, typeof maxExclusive !== "number" ? maxExclusive.x : maxExclusive), rand(typeof minInclusive !== "number" ? minInclusive.y : minInclusive, typeof maxExclusive !== "number" ? maxExclusive.y : maxExclusive))
+            : rand(minInclusive, maxExclusive);
     }
     static randInt(minInclusive, maxExclusive) {
-        return randInt(minInclusive, maxExclusive);
+        return typeof minInclusive !== "number" || typeof maxExclusive !== "number"
+            ? BpxVector2d.of(randInt(typeof minInclusive !== "number" ? minInclusive.x : minInclusive, typeof maxExclusive !== "number" ? maxExclusive.x : maxExclusive), randInt(typeof minInclusive !== "number" ? minInclusive.y : minInclusive, typeof maxExclusive !== "number" ? maxExclusive.y : maxExclusive))
+            : randInt(minInclusive, maxExclusive);
     }
     static randOf(array) {
         return randOf(array);

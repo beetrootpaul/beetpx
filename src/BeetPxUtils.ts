@@ -183,15 +183,59 @@ export class BeetPxUtils {
   /**
    * Picks a random value from a given range.
    */
-  static rand(minInclusive: number, maxExclusive: number): number {
-    return rand(minInclusive, maxExclusive);
+  static rand(minInclusive: number, maxExclusive: number): number;
+  /**
+   * Picks a random vector from a given range.
+   */
+  static rand(
+    minInclusive: BpxVector2d,
+    maxExclusive: BpxVector2d,
+  ): BpxVector2d;
+  static rand(
+    minInclusive: number | BpxVector2d,
+    maxExclusive: number | BpxVector2d,
+  ): number | BpxVector2d {
+    return typeof minInclusive !== "number" || typeof maxExclusive !== "number"
+      ? BpxVector2d.of(
+          rand(
+            typeof minInclusive !== "number" ? minInclusive.x : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.x : maxExclusive,
+          ),
+          rand(
+            typeof minInclusive !== "number" ? minInclusive.y : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.y : maxExclusive,
+          ),
+        )
+      : rand(minInclusive, maxExclusive);
   }
 
   /**
    * Picks a random integer value from a given range.
    */
-  static randInt(minInclusive: number, maxExclusive: number): number {
-    return randInt(minInclusive, maxExclusive);
+  static randInt(minInclusive: number, maxExclusive: number): number;
+  /**
+   * Picks a random integer vector from a given range.
+   */
+  static randInt(
+    minInclusive: BpxVector2d,
+    maxExclusive: BpxVector2d,
+  ): BpxVector2d;
+  static randInt(
+    minInclusive: number | BpxVector2d,
+    maxExclusive: number | BpxVector2d,
+  ): number | BpxVector2d {
+    return typeof minInclusive !== "number" || typeof maxExclusive !== "number"
+      ? BpxVector2d.of(
+          randInt(
+            typeof minInclusive !== "number" ? minInclusive.x : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.x : maxExclusive,
+          ),
+          randInt(
+            typeof minInclusive !== "number" ? minInclusive.y : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.y : maxExclusive,
+          ),
+        )
+      : randInt(minInclusive, maxExclusive);
   }
 
   /**
