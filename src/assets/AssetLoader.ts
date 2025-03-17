@@ -3,7 +3,7 @@ import { Logger } from "../logger/Logger";
 import { Assets, BpxImageUrl, BpxJsonUrl, BpxSoundUrl } from "./Assets";
 
 /**
- * @see {@link BpxEngineConfig}'s `assets`
+ * @see {@link BpxFrameworkConfig}'s `assets`
  *
  * @category Assets
  */

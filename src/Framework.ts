@@ -34,11 +34,11 @@ import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
 
 /**
- * The configuration of the BeetPx engine. Passed into {@link BeetPx.start}.
+ * The configuration of the BeetPx framework. Passed into {@link BeetPx.start}.
  *
  * @category Core
  */
-export type BpxEngineConfig = {
+export type BpxFrameworkConfig = {
   /**
    * Used for scoping localStorage keys, so two different games won't override their persisted state.
    *
@@ -56,7 +56,7 @@ export type BpxEngineConfig = {
   /**
    * The desired frequency of update calls. This is a basis for all time-based computations
    * in the game, since BeetPx has no notion of the real time, nor delta time between update calls.
-   * The entire engine is based in a fixed timestep computations, where you can expect each game loop
+   * The entire framework is based in a fixed timestep computations, where you can expect each game loop
    * iteration to happen after the similar amount of time from the previous one.
    *
    * 60 FPS games looks smoother, but require more performant machine, if the game logic is
@@ -206,14 +206,14 @@ export type BpxEngineConfig = {
   };
 };
 
-export type OnEngineInitialized = {
+export type OnFrameworkInitialized = {
   startGame: () => Promise<void>;
 };
 
-export class Engine {
-  static engineSingleton: Engine | undefined;
+export class Framework {
+  static frameworkSingleton: Framework | undefined;
 
-  readonly #config: BpxEngineConfig;
+  readonly #config: BpxFrameworkConfig;
 
   readonly #assetsToLoad: BpxAssetsToLoad;
 
@@ -278,13 +278,13 @@ export class Engine {
     return this.#browserType;
   }
 
-  constructor(engineConfig: BpxEngineConfig) {
-    this.#config = engineConfig;
+  constructor(frameworkConfig: BpxFrameworkConfig) {
+    this.#config = frameworkConfig;
 
-    engineConfig.canvasSize ??= "128x128";
-    engineConfig.fixedTimestep ??= "60fps";
+    frameworkConfig.canvasSize ??= "128x128";
+    frameworkConfig.fixedTimestep ??= "60fps";
 
-    ScopedLocaleStorage.gameId = engineConfig.gameId;
+    ScopedLocaleStorage.gameId = frameworkConfig.gameId;
 
     window.addEventListener("error", event => {
       HtmlTemplate.showError(event.message);
@@ -307,59 +307,60 @@ export class Engine {
         .then(() => {});
     });
 
-    if (engineConfig.gamePause?.available) {
+    if (frameworkConfig.gamePause?.available) {
       GamePause.enable();
     }
 
     DebugMode.loadFromStorage();
-    if (!engineConfig.debugMode?.available) {
+    if (!frameworkConfig.debugMode?.available) {
       DebugMode.enabled = false;
     } else {
-      if (engineConfig.debugMode.forceEnabledOnStart) {
+      if (frameworkConfig.debugMode.forceEnabledOnStart) {
         DebugMode.enabled = true;
       }
     }
 
     if (
-      engineConfig.frameByFrame?.available &&
-      engineConfig.frameByFrame?.activateOnStart
+      frameworkConfig.frameByFrame?.available &&
+      frameworkConfig.frameByFrame?.activateOnStart
     ) {
       FrameByFrame.active = true;
     }
 
-    Logger.debugBeetPx("Engine init params:", engineConfig);
+    Logger.debugBeetPx("Framework init params:", frameworkConfig);
 
-    this.#assetsToLoad = engineConfig.assets ?? [];
+    this.#assetsToLoad = frameworkConfig.assets ?? [];
     this.#assetsToLoad.push(...$font_pico8.spriteSheetUrls);
     this.#assetsToLoad.push(...$font_saint11Minimal4.spriteSheetUrls);
     this.#assetsToLoad.push(...$font_saint11Minimal5.spriteSheetUrls);
 
     const fixedTimestepFps =
-      engineConfig.fixedTimestep === "60fps"
+      frameworkConfig.fixedTimestep === "60fps"
         ? 60
-        : engineConfig.fixedTimestep === "30fps"
+        : frameworkConfig.fixedTimestep === "30fps"
           ? 30
           : throwError(
-              `Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`,
+              `Unsupported fixedTimestep: "${frameworkConfig.fixedTimestep}"`,
             );
 
     this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
 
     this.canvasSize =
-      engineConfig.canvasSize === "64x64"
+      frameworkConfig.canvasSize === "64x64"
         ? $v(64, 64)
-        : engineConfig.canvasSize === "128x128"
+        : frameworkConfig.canvasSize === "128x128"
           ? $v(128, 128)
-          : engineConfig.canvasSize === "256x256"
+          : frameworkConfig.canvasSize === "256x256"
             ? $v(256, 256)
             : throwError(
-                `Unsupported canvasSize: "${engineConfig.canvasSize}"`,
+                `Unsupported canvasSize: "${frameworkConfig.canvasSize}"`,
               );
 
     this.gameInput = new GameInput({
-      enableScreenshots: engineConfig.screenshots?.available ?? false,
-      enableDebugToggle: engineConfig.debugMode?.available ?? false,
-      enableFrameByFrameControls: engineConfig.frameByFrame?.available ?? false,
+      enableScreenshots: frameworkConfig.screenshots?.available ?? false,
+      enableDebugToggle: frameworkConfig.debugMode?.available ?? false,
+      enableFrameByFrameControls:
+        frameworkConfig.frameByFrame?.available ?? false,
       browserType: this.#browserType,
     });
 
@@ -414,19 +415,19 @@ export class Engine {
       assets: this.assets,
     });
 
-    if (engineConfig.debugMode?.fpsDisplay?.enabled) {
+    if (frameworkConfig.debugMode?.fpsDisplay?.enabled) {
       this.#fpsDisplay = new FpsDisplay(this.drawApi, this.canvasSize, {
-        color: engineConfig.debugMode.fpsDisplay.color,
-        placement: engineConfig.debugMode.fpsDisplay.placement,
+        color: frameworkConfig.debugMode.fpsDisplay.color,
+        placement: frameworkConfig.debugMode.fpsDisplay.placement,
       });
     }
 
-    if (engineConfig?.screenshots?.available) {
+    if (frameworkConfig?.screenshots?.available) {
       this.#screenshotManager = new ScreenshotManager();
     }
   }
 
-  async init(): Promise<OnEngineInitialized> {
+  async init(): Promise<OnFrameworkInitialized> {
     await this.#assetLoader.loadAssets(this.#assetsToLoad);
     return {
       startGame: this.#startGame.bind(this),

@@ -21,8 +21,8 @@ import { $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb_black, 
 import { ScopedLocaleStorage } from "./storage/ScopedLocaleStorage";
 import { StorageApi } from "./storage/StorageApi";
 import { throwError } from "./utils/throwError";
-export class Engine {
-    static engineSingleton;
+export class Framework {
+    static frameworkSingleton;
     #config;
     #assetsToLoad;
     #browserType;
@@ -63,11 +63,11 @@ export class Engine {
     get detectedBrowserType() {
         return this.#browserType;
     }
-    constructor(engineConfig) {
-        this.#config = engineConfig;
-        engineConfig.canvasSize ??= "128x128";
-        engineConfig.fixedTimestep ??= "60fps";
-        ScopedLocaleStorage.gameId = engineConfig.gameId;
+    constructor(frameworkConfig) {
+        this.#config = frameworkConfig;
+        frameworkConfig.canvasSize ??= "128x128";
+        frameworkConfig.fixedTimestep ??= "60fps";
+        ScopedLocaleStorage.gameId = frameworkConfig.gameId;
         window.addEventListener("error", event => {
             HtmlTemplate.showError(event.message);
             this.audioApi
@@ -83,45 +83,45 @@ export class Engine {
                 .suspend()
                 .then(() => { });
         });
-        if (engineConfig.gamePause?.available) {
+        if (frameworkConfig.gamePause?.available) {
             GamePause.enable();
         }
         DebugMode.loadFromStorage();
-        if (!engineConfig.debugMode?.available) {
+        if (!frameworkConfig.debugMode?.available) {
             DebugMode.enabled = false;
         }
         else {
-            if (engineConfig.debugMode.forceEnabledOnStart) {
+            if (frameworkConfig.debugMode.forceEnabledOnStart) {
                 DebugMode.enabled = true;
             }
         }
-        if (engineConfig.frameByFrame?.available &&
-            engineConfig.frameByFrame?.activateOnStart) {
+        if (frameworkConfig.frameByFrame?.available &&
+            frameworkConfig.frameByFrame?.activateOnStart) {
             FrameByFrame.active = true;
         }
-        Logger.debugBeetPx("Engine init params:", engineConfig);
-        this.#assetsToLoad = engineConfig.assets ?? [];
+        Logger.debugBeetPx("Framework init params:", frameworkConfig);
+        this.#assetsToLoad = frameworkConfig.assets ?? [];
         this.#assetsToLoad.push(...$font_pico8.spriteSheetUrls);
         this.#assetsToLoad.push(...$font_saint11Minimal4.spriteSheetUrls);
         this.#assetsToLoad.push(...$font_saint11Minimal5.spriteSheetUrls);
-        const fixedTimestepFps = engineConfig.fixedTimestep === "60fps"
+        const fixedTimestepFps = frameworkConfig.fixedTimestep === "60fps"
             ? 60
-            : engineConfig.fixedTimestep === "30fps"
+            : frameworkConfig.fixedTimestep === "30fps"
                 ? 30
-                : throwError(`Unsupported fixedTimestep: "${engineConfig.fixedTimestep}"`);
+                : throwError(`Unsupported fixedTimestep: "${frameworkConfig.fixedTimestep}"`);
         this.#browserType = BrowserTypeDetector.detect(navigator.userAgent);
         this.canvasSize =
-            engineConfig.canvasSize === "64x64"
+            frameworkConfig.canvasSize === "64x64"
                 ? $v(64, 64)
-                : engineConfig.canvasSize === "128x128"
+                : frameworkConfig.canvasSize === "128x128"
                     ? $v(128, 128)
-                    : engineConfig.canvasSize === "256x256"
+                    : frameworkConfig.canvasSize === "256x256"
                         ? $v(256, 256)
-                        : throwError(`Unsupported canvasSize: "${engineConfig.canvasSize}"`);
+                        : throwError(`Unsupported canvasSize: "${frameworkConfig.canvasSize}"`);
         this.gameInput = new GameInput({
-            enableScreenshots: engineConfig.screenshots?.available ?? false,
-            enableDebugToggle: engineConfig.debugMode?.available ?? false,
-            enableFrameByFrameControls: engineConfig.frameByFrame?.available ?? false,
+            enableScreenshots: frameworkConfig.screenshots?.available ?? false,
+            enableDebugToggle: frameworkConfig.debugMode?.available ?? false,
+            enableFrameByFrameControls: frameworkConfig.frameByFrame?.available ?? false,
             browserType: this.#browserType,
         });
         this.#gameLoop = new GameLoop({
@@ -155,13 +155,13 @@ export class Engine {
             canvas: this.#canvas,
             assets: this.assets,
         });
-        if (engineConfig.debugMode?.fpsDisplay?.enabled) {
+        if (frameworkConfig.debugMode?.fpsDisplay?.enabled) {
             this.#fpsDisplay = new FpsDisplay(this.drawApi, this.canvasSize, {
-                color: engineConfig.debugMode.fpsDisplay.color,
-                placement: engineConfig.debugMode.fpsDisplay.placement,
+                color: frameworkConfig.debugMode.fpsDisplay.color,
+                placement: frameworkConfig.debugMode.fpsDisplay.placement,
             });
         }
-        if (engineConfig?.screenshots?.available) {
+        if (frameworkConfig?.screenshots?.available) {
             this.#screenshotManager = new ScreenshotManager();
         }
     }
@@ -312,4 +312,4 @@ export class Engine {
         });
     }
 }
-//# sourceMappingURL=Engine.js.map
+//# sourceMappingURL=Framework.js.map

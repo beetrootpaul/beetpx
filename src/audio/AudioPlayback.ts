@@ -26,9 +26,9 @@ export abstract class AudioPlayback {
   protected pausedAtMs: number | null;
   protected accumulatedPauseMs: number;
 
-  protected isPausedByEngine: boolean;
+  protected isPausedByFramework: boolean;
   protected isPausedByGame: boolean;
-  #isMutedByEngine: boolean;
+  #isMutedByFramework: boolean;
   #isMutedByGame: boolean;
 
   abstract readonly id: BpxAudioPlaybackId;
@@ -67,9 +67,9 @@ export abstract class AudioPlayback {
     this.#gainNode.connect(this.#targetNode);
 
     this.isPausedByGame = false;
-    this.isPausedByEngine = false;
+    this.isPausedByFramework = false;
     this.#isMutedByGame = muteOnStart;
-    this.#isMutedByEngine = false;
+    this.#isMutedByFramework = false;
 
     this.startedAtMs = this.#audioContext.currentTime * 1000;
     this.pausedAtMs = null;
@@ -84,26 +84,26 @@ export abstract class AudioPlayback {
     if (this.#isMutedByGame) return;
     this.#isMutedByGame = true;
 
-    if (this.#isMutedByEngine) return;
+    if (this.#isMutedByFramework) return;
 
-    if (this.isPausedByGame || this.isPausedByEngine) {
+    if (this.isPausedByGame || this.isPausedByFramework) {
       return;
     }
 
     this.#muteImpl(fadeOutMillis);
   }
 
-  muteByEngine(): void {
+  muteByFramework(): void {
     Logger.debugBeetPx(
-      `AudioPlayback.muteByEngine (id: ${this.id}, type: ${this.type})`,
+      `AudioPlayback.muteByFramework (id: ${this.id}, type: ${this.type})`,
     );
 
-    if (this.#isMutedByEngine) return;
-    this.#isMutedByEngine = true;
+    if (this.#isMutedByFramework) return;
+    this.#isMutedByFramework = true;
 
     if (this.#isMutedByGame) return;
 
-    if (this.isPausedByGame || this.isPausedByEngine) {
+    if (this.isPausedByGame || this.isPausedByFramework) {
       return;
     }
 
@@ -126,26 +126,26 @@ export abstract class AudioPlayback {
     if (!this.#isMutedByGame) return;
     this.#isMutedByGame = false;
 
-    if (this.#isMutedByEngine) return;
+    if (this.#isMutedByFramework) return;
 
-    if (this.isPausedByGame || this.isPausedByEngine) {
+    if (this.isPausedByGame || this.isPausedByFramework) {
       return;
     }
 
     this.#unmuteImpl(fadeInMillis);
   }
 
-  unmuteByEngine(): void {
+  unmuteByFramework(): void {
     Logger.debugBeetPx(
-      `AudioPlayback.unmuteByEngine (id: ${this.id}, type: ${this.type})`,
+      `AudioPlayback.unmuteByFramework (id: ${this.id}, type: ${this.type})`,
     );
 
-    if (!this.#isMutedByEngine) return;
-    this.#isMutedByEngine = false;
+    if (!this.#isMutedByFramework) return;
+    this.#isMutedByFramework = false;
 
     if (this.#isMutedByGame) return;
 
-    if (this.isPausedByGame || this.isPausedByEngine) {
+    if (this.isPausedByGame || this.isPausedByFramework) {
       return;
     }
 
@@ -165,7 +165,7 @@ export abstract class AudioPlayback {
       `AudioPlayback.stop (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`,
     );
 
-    if (this.isPausedByGame || this.isPausedByEngine) {
+    if (this.isPausedByGame || this.isPausedByFramework) {
       this.onEnded();
       return;
     }
@@ -176,7 +176,7 @@ export abstract class AudioPlayback {
       fadeOutMillis,
       () => {
         this.stopAllNodes();
-        if (!this.isPausedByGame && !this.isPausedByEngine) {
+        if (!this.isPausedByGame && !this.isPausedByFramework) {
           this.onEnded();
         }
       },
@@ -191,18 +191,18 @@ export abstract class AudioPlayback {
     if (this.isPausedByGame) return;
     this.isPausedByGame = true;
 
-    if (this.isPausedByEngine) return;
+    if (this.isPausedByFramework) return;
 
     this.#pauseImpl();
   }
 
-  pauseByEngine(): void {
+  pauseByFramework(): void {
     Logger.debugBeetPx(
-      `AudioPlayback.pauseByEngine (id: ${this.id}, type: ${this.type}})`,
+      `AudioPlayback.pauseByFramework (id: ${this.id}, type: ${this.type}})`,
     );
 
-    if (this.isPausedByEngine) return;
-    this.isPausedByEngine = true;
+    if (this.isPausedByFramework) return;
+    this.isPausedByFramework = true;
 
     if (this.isPausedByGame) return;
 
@@ -230,18 +230,18 @@ export abstract class AudioPlayback {
     if (!this.isPausedByGame) return;
     this.isPausedByGame = false;
 
-    if (this.isPausedByEngine) return;
+    if (this.isPausedByFramework) return;
 
     this.#resumeImpl();
   }
 
-  resumeByEngine(): void {
+  resumeByFramework(): void {
     Logger.debugBeetPx(
-      `AudioPlayback.resumeByEngine (id: ${this.id}, type: ${this.type})`,
+      `AudioPlayback.resumeByFramework (id: ${this.id}, type: ${this.type})`,
     );
 
-    if (!this.isPausedByEngine) return;
-    this.isPausedByEngine = false;
+    if (!this.isPausedByFramework) return;
+    this.isPausedByFramework = false;
 
     if (this.isPausedByGame) return;
 
@@ -251,7 +251,7 @@ export abstract class AudioPlayback {
   #resumeImpl(): void {
     this.#gainNode = this.#audioContext.createGain();
     this.#gainNode.gain.value =
-      this.#isMutedByGame || this.isPausedByEngine ? 0 : 1;
+      this.#isMutedByGame || this.isPausedByFramework ? 0 : 1;
     this.#gainNode.connect(this.#targetNode);
 
     this.setupAndStartNodes();
@@ -262,7 +262,7 @@ export abstract class AudioPlayback {
       this.pausedAtMs = null;
     }
 
-    if (!this.#isMutedByGame && !this.isPausedByEngine) {
+    if (!this.#isMutedByGame && !this.isPausedByFramework) {
       AudioHelpers.unmuteGain(
         this.#gainNode,
         this.#audioContext.currentTime,

@@ -3,7 +3,7 @@
   "version": "0.54.0",
   "author": "Beetroot Paul",
   "license": "MIT",
-  "description": "A TypeScript engine for pixel art browser games.",
+  "description": "A TypeScript framework for pixel art browser games.",
   "keywords": [
     "beetpx",
     "browser",

@@ -1,6 +1,6 @@
-import { BeetPx, BpxEngineConfig } from "./";
+import { BeetPx, BpxFrameworkConfig } from "./";
 
-const anyConfig: BpxEngineConfig = {
+const anyConfig: BpxFrameworkConfig = {
   gameId: "any-id",
 };
 

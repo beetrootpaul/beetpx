@@ -125,7 +125,7 @@ type BpxJsonAsset = {
 };
 
 /**
- * @see {@link BpxEngineConfig}'s `assets`
+ * @see {@link BpxFrameworkConfig}'s `assets`
  *
  * @category Assets
  */
@@ -200,7 +200,7 @@ type BpxSoundSequenceEntrySoundAdditional = BpxSoundUrl | {
 };
 
 /**
- * The list of browser types the engine detects.
+ * The list of browser types the framework detects.
  * It is tightly related to the gamepad mapping detection.
  *
  * @see {@link BeetPx.detectedBrowserType}
@@ -1329,7 +1329,7 @@ type BpxTextMeasurement = {
 };
 
 /**
- * @see {@link BpxEngineConfig}'s `debugMode.fpsDisplay.placement`
+ * @see {@link BpxFrameworkConfig}'s `debugMode.fpsDisplay.placement`
  *
  * @category Debug
  */
@@ -1397,11 +1397,11 @@ declare global {
 type BpxPersistedStateValueConstraints = Record<string, string | number | boolean | null | undefined>;
 
 /**
- * The configuration of the BeetPx engine. Passed into {@link BeetPx.start}.
+ * The configuration of the BeetPx framework. Passed into {@link BeetPx.start}.
  *
  * @category Core
  */
-type BpxEngineConfig = {
+type BpxFrameworkConfig = {
     /**
      * Used for scoping localStorage keys, so two different games won't override their persisted state.
      *
@@ -1417,7 +1417,7 @@ type BpxEngineConfig = {
     /**
      * The desired frequency of update calls. This is a basis for all time-based computations
      * in the game, since BeetPx has no notion of the real time, nor delta time between update calls.
-     * The entire engine is based in a fixed timestep computations, where you can expect each game loop
+     * The entire framework is based in a fixed timestep computations, where you can expect each game loop
      * iteration to happen after the similar amount of time from the previous one.
      *
      * 60 FPS games looks smoother, but require more performant machine, if the game logic is
@@ -2051,17 +2051,17 @@ declare class BeetPx {
      *
      * @category Game loop
      */
-    static start(config: BpxEngineConfig): Promise<void>;
+    static start(config: BpxFrameworkConfig): Promise<void>;
     /**
      * Let's you know whether the debug mode is on or off. To be used in combination with:
-     * - {@link BpxEngineConfig}'s `debugMode.available` set to `true`
+     * - {@link BpxFrameworkConfig}'s `debugMode.available` set to `true`
      * - `;` key used to toggle the debug mode on/off
      *
      * @category Debug
      */
     static get debug(): boolean;
     /**
-     * The canvas size as set in {@link BpxEngineConfig}'s `canvasSize`.
+     * The canvas size as set in {@link BpxFrameworkConfig}'s `canvasSize`.
      *
      * @category Graphics
      */
@@ -2090,14 +2090,14 @@ declare class BeetPx {
      * The effective FPS (frames per second) of render calls. This does *not* count the update calls.
      *
      * This value is used (with some averaging, to avoid quickly changing number) in the FPS display,
-     * which is active in debug mode if {@link BpxEngineConfig}'s
+     * which is active in debug mode if {@link BpxFrameworkConfig}'s
      * `debugMode.fpsDisplay.enabled` is set to `true`.
      *
      * @category Game loop
      */
     static get renderingFps(): number;
     /**
-     * The type of a browser detected by the engine.
+     * The type of browser detected by the framework.
      * It is tightly related to the gamepad mapping detection.
      *
      * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/input-tester
@@ -2171,7 +2171,7 @@ declare class BeetPx {
      * });
      * ```
      *
-     * @see {@link BpxEngineConfig.fixedTimestep}
+     * @see {@link BpxFrameworkConfig.fixedTimestep}
      *
      * @category Game loop
      */
@@ -2204,7 +2204,7 @@ declare class BeetPx {
      * });
      * ```
      *
-     * @see {@link BpxEngineConfig.fixedTimestep}
+     * @see {@link BpxFrameworkConfig.fixedTimestep}
      *
      * @category Game loop
      */
@@ -2228,7 +2228,7 @@ declare class BeetPx {
      * You can implement {@link BpxPrintDebug} on a given object if you want
      * it to be printed out in a custom way.
      *
-     * @see {@link BpxEngineConfig.debugMode}
+     * @see {@link BpxFrameworkConfig.debugMode}
      * @see {@link BpxPrintDebug}
      *
      * @category Logging
@@ -2292,7 +2292,7 @@ declare class BeetPx {
      */
     static get wasJustResumed(): boolean;
     /**
-     * Pauses the game. This works only if {@link BpxEngineConfig.gamePause}'s `available` is set to `true`.
+     * Pauses the game. This works only if {@link BpxFrameworkConfig.gamePause}'s `available` is set to `true`.
      *
      * The game pauses is by default toggled with the "menu" button, but this method allows you
      * to add other ways of activating the pause.
@@ -2303,7 +2303,7 @@ declare class BeetPx {
      */
     static pause(): void;
     /**
-     * Resumes the game. This works only if {@link BpxEngineConfig.gamePause}'s `available` is set to `true`.
+     * Resumes the game. This works only if {@link BpxFrameworkConfig.gamePause}'s `available` is set to `true`.
      *
      * The game pauses is by default toggled with the "menu" button, but this method allows you
      * to add other ways of deactivating the pause.
@@ -2574,7 +2574,7 @@ declare class BeetPx {
      * as the image retrieval happens under the hood for operations
      * like sprite drawing.
      *
-     * @see {@link BpxEngineConfig}'a `assets`
+     * @see {@link BpxFrameworkConfig}'a `assets`
      *
      * @category Assets
      */
@@ -2586,7 +2586,7 @@ declare class BeetPx {
      * as the sound retrieval happens under the hood for operations
      * like music playing.
      *
-     * @see {@link BpxEngineConfig}'a `assets`
+     * @see {@link BpxFrameworkConfig}'a `assets`
      *
      * @category Assets
      */
@@ -2599,7 +2599,7 @@ declare class BeetPx {
      * Example use case for this method is when you develop your game level in [LDtk](https://ldtk.io/)
      * and want to read the level's file in the game code.
      *
-     * @see {@link BpxEngineConfig}'a `assets`
+     * @see {@link BpxFrameworkConfig}'a `assets`
      *
      * @category Assets
      */
@@ -3397,4 +3397,4 @@ declare global {
     const BEETPX__VERSION: string;
 }
 
-export { $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_0_1, $v_1_0, $v_1_1, $x, BeetPx, BeetPxDraw, BeetPxUtils, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAssetsToLoad, type BpxAudioPlaybackId, type BpxBrowserType, type BpxCanvasSnapshot, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, type BpxEngineConfig, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxFpsDisplayPlacement, type BpxGameButtonName, type BpxGameInputEvent, type BpxGameInputMethod, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevSegmentMap, BpxPalettePico8, BpxPatternColors, type BpxPersistedStateValueConstraints, BpxPixels, type BpxPrintDebug, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundSequenceEntrySoundAdditional, type BpxSoundSequenceEntrySoundMain, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, type BpxTextMeasurement, BpxTimer, BpxTimerSequence, BpxVector2d };
+export { $aspr, $d, $font, $font_pico8, $font_saint11Minimal4, $font_saint11Minimal5, $rgb, $rgb_black, $rgb_blue, $rgb_cyan, $rgb_green, $rgb_magenta, $rgb_p8, $rgb_red, $rgb_white, $rgb_yellow, $spr, $timer, $timerSeq, $u, $v, $v_0_0, $v_0_1, $v_1_0, $v_1_1, $x, BeetPx, BeetPxDraw, BeetPxUtils, BpxAnimatedSprite, type BpxArrangedGlyph, type BpxAssetsToLoad, type BpxAudioPlaybackId, type BpxBrowserType, type BpxCanvasSnapshot, BpxCanvasSnapshotColorMapping, type BpxColorMapper, BpxDrawingPattern, BpxEasing, type BpxEasingFn, BpxFont, type BpxFontConfig, BpxFontConfigPico8, BpxFontConfigSaint11Minimal4, BpxFontConfigSaint11Minimal5, type BpxFpsDisplayPlacement, type BpxFrameworkConfig, type BpxGameButtonName, type BpxGameInputEvent, type BpxGameInputMethod, type BpxGamepadType, BpxGamepadTypeDetector, type BpxGlyph, type BpxImageAsset, type BpxImageBoundAnimatedSpriteFactory, type BpxImageBoundSpriteFactory, type BpxImageUrl, type BpxJsonAsset, type BpxJsonUrl, type BpxKerningPrevSegmentMap, BpxPalettePico8, BpxPatternColors, type BpxPersistedStateValueConstraints, BpxPixels, type BpxPrintDebug, BpxRgbColor, type BpxRgbCssHex, type BpxSoundAsset, type BpxSoundSequence, type BpxSoundSequenceEntry, type BpxSoundSequenceEntrySoundAdditional, type BpxSoundSequenceEntrySoundMain, type BpxSoundUrl, BpxSprite, BpxSpriteColorMapping, type BpxTextColorMarkers, type BpxTextMeasurement, BpxTimer, BpxTimerSequence, BpxVector2d };

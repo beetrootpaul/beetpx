@@ -2,7 +2,7 @@
 
 <img src="logo/BeetPx_logo_x5.png" width="80" alt="BeetP logo">
 
-> A TypeScript engine for pixel art browser games.
+> A TypeScript framework for pixel art browser games.
 
 ---
 
@@ -69,7 +69,7 @@ Also, you might want to take a look at how following projects are using BeetPx:
 
 <img src="misc/beetpx_controls.png" width="640">
 
-The BeetPx engine supports a following sets of game buttons and their mappings
+The BeetPx framework supports a following sets of game buttons and their mappings
 from physical devices:
 
 | game button                         | keyboard               | DualSense controller | Xbox controller |
@@ -92,13 +92,13 @@ should they use – there is a chance they would try with just `O`+`X` on their
 keyboard.
 
 Regarding th game controllers – other controllers might works as well. For
-example, this engine has an implemented support for **8BitDo Lite 2**.
+example, this framework has an implemented support for **8BitDo Lite 2**.
 
 There are also **touch controls** in form of GUI buttons resembling a physical
 ones. You can see and use them on touch devices like e.g. an iPhone.
 
 Dev controls meant to be used by the game developer themselves and gated behind
-related engine config fields:
+related framework config fields:
 
 - **toggle debug**:
   - on keyboard: `;`
@@ -155,7 +155,7 @@ There are though some areas I would like differently:
   press of a in-game button on iOS Safari makes a system text selection
   to appear and prevents user from playing a game in a smoothly manner. Of course, this is
   something I could work around by adjusting an HTML template exported from
-  PICO-8. But since I decided to create my own engine, I am able to take care of
+  PICO-8. But since I decided to create my own framework, I am able to take care of
   browser iOS experience and do it the way I like.
 - Last but not least: I just wanted to have something created for public,
   [available on npm](https://www.npmjs.com/package/@beetpx/beetpx), something I

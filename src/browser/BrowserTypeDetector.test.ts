@@ -4,7 +4,7 @@ import { BpxBrowserType, BrowserTypeDetector } from "./BrowserTypeDetector";
 describe("BrowserTypeDetector", () => {
   (
     [
-      // macOS Ventura 13.5.2 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Engine Version 118.0.5993.88
+      // macOS Ventura 13.5.2 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Framework Version 118.0.5993.88
       [
         "chromium",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36",

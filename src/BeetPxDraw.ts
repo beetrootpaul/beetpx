@@ -4,7 +4,7 @@
 //       by TypeDoc looks like.
 //
 
-import { Engine } from "./Engine";
+import { Framework } from "./Framework";
 import { BpxCanvasSnapshotColorMapping } from "./color/CanvasSnapshotColorMapping";
 import { BpxPatternColors } from "./color/PatternColors";
 import { BpxRgbColor } from "./color/RgbColor";
@@ -38,18 +38,18 @@ import { BpxSprite } from "./sprite/Sprite";
 export class BeetPxDraw {
   private constructor() {}
 
-  static #tryGetEngine(calledFnName: string): Engine {
-    if (!Engine.engineSingleton) {
+  static #tryGetFramework(calledFnName: string): Framework {
+    if (!Framework.frameworkSingleton) {
       throw Error(
         `Tried to access BeetPx API without calling BeetPx.start(…) first.`,
       );
     }
-    if (!Engine.engineSingleton.isInsideDrawOrStartedCallback) {
+    if (!Framework.frameworkSingleton.isInsideDrawOrStartedCallback) {
       Logger.warnBeetPx(
         `Used "${calledFnName}" outside of either "setOnDraw" or "setOnStarted" callback.`,
       );
     }
-    return Engine.engineSingleton;
+    return Framework.frameworkSingleton;
   }
 
   /**
@@ -60,7 +60,7 @@ export class BeetPxDraw {
    * @category General
    */
   static clearCanvas(color: BpxRgbColor): void {
-    BeetPxDraw.#tryGetEngine("clearCanvas").drawApi.clearCanvas(color);
+    BeetPxDraw.#tryGetFramework("clearCanvas").drawApi.clearCanvas(color);
   }
 
   /**
@@ -75,7 +75,7 @@ export class BeetPxDraw {
     xy: BpxVector2d,
     wh: BpxVector2d,
   ): [xy: BpxVector2d, wh: BpxVector2d] {
-    return BeetPxDraw.#tryGetEngine(
+    return BeetPxDraw.#tryGetFramework(
       "setClippingRegion",
     ).drawApi.setClippingRegion(xy, wh);
   }
@@ -88,7 +88,7 @@ export class BeetPxDraw {
    * @category General
    */
   static removeClippingRegion(): [xy: BpxVector2d, wh: BpxVector2d] {
-    return BeetPxDraw.#tryGetEngine(
+    return BeetPxDraw.#tryGetFramework(
       "removeClippingRegion",
     ).drawApi.removeClippingRegion();
   }
@@ -103,7 +103,7 @@ export class BeetPxDraw {
    * @category General
    */
   static get cameraXy(): BpxVector2d {
-    return BeetPxDraw.#tryGetEngine("setCameraXy").drawApi.getCameraXy();
+    return BeetPxDraw.#tryGetFramework("setCameraXy").drawApi.getCameraXy();
   }
 
   /**
@@ -121,7 +121,7 @@ export class BeetPxDraw {
    * @category General
    */
   static setCameraXy(xy: BpxVector2d): BpxVector2d {
-    return BeetPxDraw.#tryGetEngine("setCameraXy").drawApi.setCameraXy(xy);
+    return BeetPxDraw.#tryGetFramework("setCameraXy").drawApi.setCameraXy(xy);
   }
 
   /**
@@ -146,7 +146,7 @@ export class BeetPxDraw {
    * @category General
    */
   static setDrawingPattern(pattern: BpxDrawingPattern): BpxDrawingPattern {
-    return BeetPxDraw.#tryGetEngine(
+    return BeetPxDraw.#tryGetFramework(
       "setDrawingPattern",
     ).drawApi.setDrawingPattern(pattern);
   }
@@ -162,7 +162,7 @@ export class BeetPxDraw {
    * @category Shapes
    */
   static pixel(xy: BpxVector2d, color: BpxRgbColor): void {
-    BeetPxDraw.#tryGetEngine("pixel").drawApi.drawPixel(xy, color);
+    BeetPxDraw.#tryGetFramework("pixel").drawApi.drawPixel(xy, color);
   }
 
   /**
@@ -191,7 +191,7 @@ export class BeetPxDraw {
       flipXy?: [boolean, boolean];
     },
   ): void {
-    BeetPxDraw.#tryGetEngine("pixels").drawApi.drawPixels(
+    BeetPxDraw.#tryGetFramework("pixels").drawApi.drawPixels(
       pixels,
       xy,
       color,
@@ -211,7 +211,7 @@ export class BeetPxDraw {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    BeetPxDraw.#tryGetEngine("line").drawApi.drawLine(xy, wh, color);
+    BeetPxDraw.#tryGetFramework("line").drawApi.drawLine(xy, wh, color);
   }
 
   /**
@@ -226,7 +226,7 @@ export class BeetPxDraw {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    BeetPxDraw.#tryGetEngine("rect").drawApi.drawRect(xy, wh, color);
+    BeetPxDraw.#tryGetFramework("rect").drawApi.drawRect(xy, wh, color);
   }
 
   /**
@@ -241,7 +241,7 @@ export class BeetPxDraw {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    BeetPxDraw.#tryGetEngine("rectFilled").drawApi.drawRectFilled(
+    BeetPxDraw.#tryGetFramework("rectFilled").drawApi.drawRectFilled(
       xy,
       wh,
       color,
@@ -260,11 +260,9 @@ export class BeetPxDraw {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    BeetPxDraw.#tryGetEngine("rectOutsideFilled").drawApi.drawRectOutsideFilled(
-      xy,
-      wh,
-      color,
-    );
+    BeetPxDraw.#tryGetFramework(
+      "rectOutsideFilled",
+    ).drawApi.drawRectOutsideFilled(xy, wh, color);
   }
 
   /**
@@ -281,7 +279,7 @@ export class BeetPxDraw {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    BeetPxDraw.#tryGetEngine("ellipse").drawApi.drawEllipse(xy, wh, color);
+    BeetPxDraw.#tryGetFramework("ellipse").drawApi.drawEllipse(xy, wh, color);
   }
 
   /**
@@ -298,7 +296,7 @@ export class BeetPxDraw {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    BeetPxDraw.#tryGetEngine("ellipseFilled").drawApi.drawEllipseFilled(
+    BeetPxDraw.#tryGetFramework("ellipseFilled").drawApi.drawEllipseFilled(
       xy,
       wh,
       color,
@@ -319,7 +317,7 @@ export class BeetPxDraw {
     wh: BpxVector2d,
     color: BpxRgbColor | BpxPatternColors | BpxCanvasSnapshotColorMapping,
   ): void {
-    BeetPxDraw.#tryGetEngine(
+    BeetPxDraw.#tryGetFramework(
       "ellipseOutsideFilled",
     ).drawApi.drawEllipseOutsideFilled(xy, wh, color);
   }
@@ -343,7 +341,7 @@ export class BeetPxDraw {
   static setSpriteColorMapping(
     spriteColorMapping: BpxSpriteColorMapping,
   ): BpxSpriteColorMapping {
-    return BeetPxDraw.#tryGetEngine(
+    return BeetPxDraw.#tryGetFramework(
       "setSpriteColorMapping",
     ).drawApi.setSpriteColorMapping(spriteColorMapping);
   }
@@ -368,7 +366,7 @@ export class BeetPxDraw {
       flipXy?: [boolean, boolean];
     },
   ): void {
-    BeetPxDraw.#tryGetEngine("sprite").drawApi.drawSprite(sprite, xy, opts);
+    BeetPxDraw.#tryGetFramework("sprite").drawApi.drawSprite(sprite, xy, opts);
   }
 
   /**
@@ -388,7 +386,7 @@ export class BeetPxDraw {
    * @category Text
    */
   static setFont(font: BpxFont): BpxFont {
-    return BeetPxDraw.#tryGetEngine("setFont").drawApi.setFont(font);
+    return BeetPxDraw.#tryGetFramework("setFont").drawApi.setFont(font);
   }
 
   /**
@@ -413,7 +411,7 @@ export class BeetPxDraw {
   static setTextColorMarkers(
     textColorMarkers: BpxTextColorMarkers,
   ): BpxTextColorMarkers {
-    return BeetPxDraw.#tryGetEngine(
+    return BeetPxDraw.#tryGetFramework(
       "setTextColorMarkers",
     ).drawApi.setTextColorMarkers(textColorMarkers);
   }
@@ -440,7 +438,7 @@ export class BeetPxDraw {
       scaleXy?: BpxVector2d;
     },
   ): BpxTextMeasurement {
-    return BeetPxDraw.#tryGetEngine("measureText").drawApi.measureText(
+    return BeetPxDraw.#tryGetFramework("measureText").drawApi.measureText(
       text,
       opts,
     );
@@ -468,7 +466,7 @@ export class BeetPxDraw {
       scaleXy?: BpxVector2d;
     },
   ): void {
-    BeetPxDraw.#tryGetEngine("text").drawApi.drawText(text, xy, color, opts);
+    BeetPxDraw.#tryGetFramework("text").drawApi.drawText(text, xy, color, opts);
   }
 
   /**
@@ -491,7 +489,9 @@ export class BeetPxDraw {
    * @category General
    */
   static takeCanvasSnapshot(): void {
-    BeetPxDraw.#tryGetEngine("takeCanvasSnapshot").drawApi.takeCanvasSnapshot();
+    BeetPxDraw.#tryGetFramework(
+      "takeCanvasSnapshot",
+    ).drawApi.takeCanvasSnapshot();
   }
 }
 

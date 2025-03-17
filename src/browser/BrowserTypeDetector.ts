@@ -1,5 +1,5 @@
 /**
- * The list of browser types the engine detects.
+ * The list of browser types the framework detects.
  * It is tightly related to the gamepad mapping detection.
  *
  * @see {@link BeetPx.detectedBrowserType}
