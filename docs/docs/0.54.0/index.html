@@ -1,6 +1,6 @@
 <!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><link rel="canonical" href="https://beetpx.dev/docs/0.54.0/"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@beetpx/beetpx - v0.54.0</title><meta name="description" content="Documentation for @beetpx/beetpx"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="https://beetpx.dev" class="title">@beetpx/beetpx - v0.54.0</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>@beetpx/beetpx - v0.54.0</h2></div><div class="tsd-panel tsd-typography"><a id="md:beetpx" class="tsd-anchor"></a><h1 class="tsd-anchor-link">BeetPx<a href="#md:beetpx" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><img src="media/BeetPx_logo_x5.png" width="80" alt="BeetP logo">
 <blockquote>
-<p>A TypeScript engine for pixel art browser games.</p>
+<p>A TypeScript framework for pixel art browser games.</p>
 </blockquote>
 <hr>
 <!-- TOC -->
@@ -85,7 +85,7 @@ BeetPx game. Then run:</p>
 </tbody>
 </table>
 <a id="md:game-controls" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Game Controls<a href="#md:game-controls" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><img src="media/beetpx_controls.png" width="640">
-<p>The BeetPx engine supports a following sets of game buttons and their mappings
+<p>The BeetPx framework supports a following sets of game buttons and their mappings
 from physical devices:</p>
 <table>
 <thead>
@@ -140,7 +140,7 @@ from physical devices:</p>
 <td></td>
 </tr>
 <tr>
-<td><strong>browser screenshots</strong> (fi enabled)</td>
+<td><strong>browse screenshots</strong> (if enabled)</td>
 <td><code>}</code></td>
 <td></td>
 <td></td>
@@ -155,11 +155,11 @@ uses the &quot;⭕️&quot; and &quot;❌&quot; on their sprites and a player do
 should they use – there is a chance they would try with just <code>O</code>+<code>X</code> on their
 keyboard.</p>
 <p>Regarding th game controllers – other controllers might works as well. For
-example, this engine has an implemented support for <strong>8BitDo Lite 2</strong>.</p>
+example, this framework has an implemented support for <strong>8BitDo Lite 2</strong>.</p>
 <p>There are also <strong>touch controls</strong> in form of GUI buttons resembling a physical
 ones. You can see and use them on touch devices like e.g. an iPhone.</p>
 <p>Dev controls meant to be used by the game developer themselves and gated behind
-related engine config fields:</p>
+related framework config fields:</p>
 <ul>
 <li><strong>toggle debug</strong>:
 <ul>
@@ -191,7 +191,7 @@ sure you use the same Node.js version as which is specified in <code>.nvmrc</cod
 <p>There is no CI configured for this project. For now, it is developed by me only,
 and all tests as well as the compilation happen in a pre-commit hook.</p>
 <a id="md:the-origin" class="tsd-anchor"></a><h2 class="tsd-anchor-link">The Origin<a href="#md:the-origin" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>My idea for BeetPx came from a good time I had working on mini games in
-<a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>. That fantasy consoles hit a
+<a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>. That fantasy console hit a
 very sweet spot for me: in PICO-8 you are creating low resolution pixel art
 games, to do so you use a globally available simple API, and all your creations
 can easily run in a desktop browser or a mobile one.</p>
@@ -201,25 +201,25 @@ can easily run in a desktop browser or a mobile one.</p>
 I had to use a custom version of Lua, which meant difficulties in finding a
 decent extension for an IDE of my choice.</li>
 <li>PICO-8 has a token limit, which generally means a limit on how much code you
-are allowed to write and an incentive to use a short language constructs as
-possible rather than optimizing for a code maintenance. I understand this is a
+are allowed to write and an incentive to use a shorter language constructs
+rather than optimizing for a code maintenance. I understand this is a
 heated topic in PICO-8 community and I also see advantages of the limited
 approach – e.g. it helps to keep games low scoped and, in result finish them!
 Also, it is sometimes a real fun to come with clever solutions for hunting
-tokens down 😄. But when it comes to my personal preferences, I more often was
+tokens down 😄. But, when it comes to my personal preferences, I more often was
 frustrated by the token limit rather then enjoying it.</li>
-<li>There is a minor issues with a browser build of PICO-8 games, where the long
-press of a in-game button on iOS Safari results with a system text selection
-to appear and prevents from playing a game smoothly. Of course, this is
+<li>There is (was?) a minor issue with a browser build of PICO-8 games, where the long
+press of a in-game button on iOS Safari makes a system text selection
+to appear and prevents user from playing a game in a smoothly manner. Of course, this is
 something I could work around by adjusting an HTML template exported from
-PICO-8. But since I decided to create my own engine, I am able to take care of
+PICO-8. But since I decided to create my own framework, I am able to take care of
 browser iOS experience and do it the way I like.</li>
 <li>Last but not least: I just wanted to have something created for public,
 <a href="https://www.npmjs.com/package/@beetpx/beetpx">available on npm</a>, something I
-feel I am capable to do and can be proud of later ☺️</li>
+feel I am capable to do and can be proud of later on ☺️</li>
 </ul>
 <p>That being said, I am very grateful that PICO-8 exists and there is a big
-community around it. If not for PICO-8, BeetPx would never be created 💛</p>
+and helpful community around it. If not for PICO-8, BeetPx would never be created 💛</p>
 <a id="md:credits" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Credits<a href="#md:credits" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:fonts" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Fonts<a href="#md:fonts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>While you are able (and encouraged) to define your own font (as an
 implementation of <code>BpxFont</code> interface), there are 3 fonts ready to use in BeetPx
 out of the box:</p>
@@ -238,8 +238,7 @@ domain, free to use).</p>
 palette is created by zep and available under a CC-0 license (public domain,
 free to use). For more info see: <a href="https://www.lexaloffle.com/pico-8.php?page=faq">https://www.lexaloffle.com/pico-8.php?page=faq</a></p>
 <a id="md:bresenhams-algorithm-implementation" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Bresenham's Algorithm implementation<a href="#md:bresenhams-algorithm-implementation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>I based the line and ellipse drawing methods on a Bresenham's Algorithm
-implementation by Alois Zingl:
-<a href="http://members.chello.at/easyfilter/bresenham.html">http://members.chello.at/easyfilter/bresenham.html</a></p>
+implementation by Alois Zingl: <a href="http://members.chello.at/easyfilter/bresenham.html">http://members.chello.at/easyfilter/bresenham.html</a> and <a href="https://github.com/zingl/Bresenham">https://github.com/zingl/Bresenham</a></p>
 <a id="md:known-issues" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Known Issues<a href="#md:known-issues" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
 <li>Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast
 paced games.</li>
@@ -294,7 +293,7 @@ special by returning the <code>(0,0)</code>.</li>
 </div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:beetpx"><span>Beet<wbr/>Px</span></a><ul><li><a href="#md:getting-started"><span>Getting <wbr/>Started</span></a></li><li><ul><li><a href="#md:examples"><span>Examples</span></a></li></ul></li><li><a href="#md:game-controls"><span>Game <wbr/>Controls</span></a></li><li><a href="#md:api"><span>API</span></a></li><li><a href="#md:development-setup"><span>Development <wbr/>Setup</span></a></li><li><a href="#md:the-origin"><span>The <wbr/>Origin</span></a></li><li><a href="#md:credits"><span>Credits</span></a></li><li><ul><li><a href="#md:fonts"><span>Fonts</span></a></li><li><a href="#md:color-palettes"><span>Color <wbr/>Palettes</span></a></li><li><a href="#md:bresenhams-algorithm-implementation"><span>Bresenham&#39;s <wbr/>Algorithm implementation</span></a></li></ul></li><li><a href="#md:known-issues"><span>Known <wbr/>Issues</span></a></li><li><a href="#md:release-notes"><span>Release <wbr/>Notes</span></a></li><li><ul><li><a href="#md:v0540"><span>v0.54.0</span></a></li><li><a href="#md:v0530"><span>v0.53.0</span></a></li><li><a href="#md:v0521"><span>v0.52.1</span></a></li><li><a href="#md:v0520"><span>v0.52.0</span></a></li><li><a href="#md:v0513"><span>v0.51.3</span></a></li><li><a href="#md:v0512"><span>v0.51.2</span></a></li><li><a href="#md:v0511"><span>v0.51.1</span></a></li></ul></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@beetpx/beetpx - v0.54.0</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a><br>
             <span id="generation-date"></span>
             <script>
-                window.GENERATION_DATE = 1723717796978;
+                window.GENERATION_DATE = 1742687143784;
 
                 (() => {
                     

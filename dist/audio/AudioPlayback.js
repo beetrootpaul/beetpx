@@ -9,9 +9,9 @@ export class AudioPlayback {
     startedAtMs;
     pausedAtMs;
     accumulatedPauseMs;
-    isPausedByEngine;
+    isPausedByFramework;
     isPausedByGame;
-    #isMutedByEngine;
+    #isMutedByFramework;
     #isMutedByGame;
     #audioContext;
     #targetNode;
@@ -34,9 +34,9 @@ export class AudioPlayback {
         this.#gainNode.gain.value = muteOnStart ? 0 : 1;
         this.#gainNode.connect(this.#targetNode);
         this.isPausedByGame = false;
-        this.isPausedByEngine = false;
+        this.isPausedByFramework = false;
         this.#isMutedByGame = muteOnStart;
-        this.#isMutedByEngine = false;
+        this.#isMutedByFramework = false;
         this.startedAtMs = this.#audioContext.currentTime * 1000;
         this.pausedAtMs = null;
         this.accumulatedPauseMs = 0;
@@ -46,21 +46,21 @@ export class AudioPlayback {
         if (this.#isMutedByGame)
             return;
         this.#isMutedByGame = true;
-        if (this.#isMutedByEngine)
+        if (this.#isMutedByFramework)
             return;
-        if (this.isPausedByGame || this.isPausedByEngine) {
+        if (this.isPausedByGame || this.isPausedByFramework) {
             return;
         }
         this.#muteImpl(fadeOutMillis);
     }
-    muteByEngine() {
-        Logger.debugBeetPx(`AudioPlayback.muteByEngine (id: ${this.id}, type: ${this.type})`);
-        if (this.#isMutedByEngine)
+    muteByFramework() {
+        Logger.debugBeetPx(`AudioPlayback.muteByFramework (id: ${this.id}, type: ${this.type})`);
+        if (this.#isMutedByFramework)
             return;
-        this.#isMutedByEngine = true;
+        this.#isMutedByFramework = true;
         if (this.#isMutedByGame)
             return;
-        if (this.isPausedByGame || this.isPausedByEngine) {
+        if (this.isPausedByGame || this.isPausedByFramework) {
             return;
         }
         this.#muteImpl(AudioApi.muteUnmuteDefaultFadeMillis);
@@ -73,21 +73,21 @@ export class AudioPlayback {
         if (!this.#isMutedByGame)
             return;
         this.#isMutedByGame = false;
-        if (this.#isMutedByEngine)
+        if (this.#isMutedByFramework)
             return;
-        if (this.isPausedByGame || this.isPausedByEngine) {
+        if (this.isPausedByGame || this.isPausedByFramework) {
             return;
         }
         this.#unmuteImpl(fadeInMillis);
     }
-    unmuteByEngine() {
-        Logger.debugBeetPx(`AudioPlayback.unmuteByEngine (id: ${this.id}, type: ${this.type})`);
-        if (!this.#isMutedByEngine)
+    unmuteByFramework() {
+        Logger.debugBeetPx(`AudioPlayback.unmuteByFramework (id: ${this.id}, type: ${this.type})`);
+        if (!this.#isMutedByFramework)
             return;
-        this.#isMutedByEngine = false;
+        this.#isMutedByFramework = false;
         if (this.#isMutedByGame)
             return;
-        if (this.isPausedByGame || this.isPausedByEngine) {
+        if (this.isPausedByGame || this.isPausedByFramework) {
             return;
         }
         this.#unmuteImpl(AudioApi.muteUnmuteDefaultFadeMillis);
@@ -97,13 +97,13 @@ export class AudioPlayback {
     }
     stop(fadeOutMillis) {
         Logger.debugBeetPx(`AudioPlayback.stop (id: ${this.id}, type: ${this.type}, fadeOutMillis: ${fadeOutMillis})`);
-        if (this.isPausedByGame || this.isPausedByEngine) {
+        if (this.isPausedByGame || this.isPausedByFramework) {
             this.onEnded();
             return;
         }
         AudioHelpers.muteGain(this.#gainNode, this.#audioContext.currentTime, fadeOutMillis, () => {
             this.stopAllNodes();
-            if (!this.isPausedByGame && !this.isPausedByEngine) {
+            if (!this.isPausedByGame && !this.isPausedByFramework) {
                 this.onEnded();
             }
         });
@@ -113,15 +113,15 @@ export class AudioPlayback {
         if (this.isPausedByGame)
             return;
         this.isPausedByGame = true;
-        if (this.isPausedByEngine)
+        if (this.isPausedByFramework)
             return;
         this.#pauseImpl();
     }
-    pauseByEngine() {
-        Logger.debugBeetPx(`AudioPlayback.pauseByEngine (id: ${this.id}, type: ${this.type}})`);
-        if (this.isPausedByEngine)
+    pauseByFramework() {
+        Logger.debugBeetPx(`AudioPlayback.pauseByFramework (id: ${this.id}, type: ${this.type}})`);
+        if (this.isPausedByFramework)
             return;
-        this.isPausedByEngine = true;
+        this.isPausedByFramework = true;
         if (this.isPausedByGame)
             return;
         this.#pauseImpl();
@@ -137,15 +137,15 @@ export class AudioPlayback {
         if (!this.isPausedByGame)
             return;
         this.isPausedByGame = false;
-        if (this.isPausedByEngine)
+        if (this.isPausedByFramework)
             return;
         this.#resumeImpl();
     }
-    resumeByEngine() {
-        Logger.debugBeetPx(`AudioPlayback.resumeByEngine (id: ${this.id}, type: ${this.type})`);
-        if (!this.isPausedByEngine)
+    resumeByFramework() {
+        Logger.debugBeetPx(`AudioPlayback.resumeByFramework (id: ${this.id}, type: ${this.type})`);
+        if (!this.isPausedByFramework)
             return;
-        this.isPausedByEngine = false;
+        this.isPausedByFramework = false;
         if (this.isPausedByGame)
             return;
         this.#resumeImpl();
@@ -153,7 +153,7 @@ export class AudioPlayback {
     #resumeImpl() {
         this.#gainNode = this.#audioContext.createGain();
         this.#gainNode.gain.value =
-            this.#isMutedByGame || this.isPausedByEngine ? 0 : 1;
+            this.#isMutedByGame || this.isPausedByFramework ? 0 : 1;
         this.#gainNode.connect(this.#targetNode);
         this.setupAndStartNodes();
         if (this.pausedAtMs != null) {
@@ -161,7 +161,7 @@ export class AudioPlayback {
                 this.#audioContext.currentTime * 1000 - this.pausedAtMs;
             this.pausedAtMs = null;
         }
-        if (!this.#isMutedByGame && !this.isPausedByEngine) {
+        if (!this.#isMutedByGame && !this.isPausedByFramework) {
             AudioHelpers.unmuteGain(this.#gainNode, this.#audioContext.currentTime, AudioApi.muteUnmuteDefaultFadeMillis, () => { });
         }
     }

@@ -4,8 +4,8 @@
 //       by TypeDoc looks like.
 //
 
-import type { BpxEngineConfig } from "./Engine";
-import { Engine } from "./Engine";
+import type { BpxFrameworkConfig } from "./Framework";
+import { Framework } from "./Framework";
 import type {
   BpxImageAsset,
   BpxImageUrl,
@@ -47,19 +47,19 @@ import type { BpxPersistedStateValueConstraints } from "./storage/StorageApi";
 export class BeetPx {
   private constructor() {}
 
-  static #dataStoredBeforeEngineStarted: {
+  static #dataStoredBeforeBeetPxStarted: {
     onStarted?: () => void;
     onUpdate?: () => void;
     onDraw?: () => void;
   } = {};
 
-  static #tryGetEngine(): Engine {
-    if (!Engine.engineSingleton) {
+  static #tryGetFramework(): Framework {
+    if (!Framework.frameworkSingleton) {
       throw Error(
         `Tried to access BeetPx API without calling BeetPx.start(…) first.`,
       );
     }
-    return Engine.engineSingleton;
+    return Framework.frameworkSingleton;
   }
 
   //
@@ -94,32 +94,32 @@ export class BeetPx {
    *
    * @category Game loop
    */
-  static async start(config: BpxEngineConfig): Promise<void> {
-    if (Engine.engineSingleton) {
+  static async start(config: BpxFrameworkConfig): Promise<void> {
+    if (Framework.frameworkSingleton) {
       throw Error("BeetPx is already started");
     }
 
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initializing…`);
-    Engine.engineSingleton = new Engine(config);
-    const { startGame } = await Engine.engineSingleton.init();
+    Framework.frameworkSingleton = new Framework(config);
+    const { startGame } = await Framework.frameworkSingleton.init();
     Logger.infoBeetPx(`BeetPx ${window.BEETPX__VERSION} : Initialized`);
 
-    if (this.#dataStoredBeforeEngineStarted.onStarted) {
-      Engine.engineSingleton.setOnStarted(
-        this.#dataStoredBeforeEngineStarted.onStarted,
+    if (this.#dataStoredBeforeBeetPxStarted.onStarted) {
+      Framework.frameworkSingleton.setOnStarted(
+        this.#dataStoredBeforeBeetPxStarted.onStarted,
       );
     }
-    if (this.#dataStoredBeforeEngineStarted.onUpdate) {
-      Engine.engineSingleton.setOnUpdate(
-        this.#dataStoredBeforeEngineStarted.onUpdate,
+    if (this.#dataStoredBeforeBeetPxStarted.onUpdate) {
+      Framework.frameworkSingleton.setOnUpdate(
+        this.#dataStoredBeforeBeetPxStarted.onUpdate,
       );
     }
-    if (this.#dataStoredBeforeEngineStarted.onDraw) {
-      Engine.engineSingleton.setOnDraw(
-        this.#dataStoredBeforeEngineStarted.onDraw,
+    if (this.#dataStoredBeforeBeetPxStarted.onDraw) {
+      Framework.frameworkSingleton.setOnDraw(
+        this.#dataStoredBeforeBeetPxStarted.onDraw,
       );
     }
-    this.#dataStoredBeforeEngineStarted = {};
+    this.#dataStoredBeforeBeetPxStarted = {};
 
     return await startGame();
   }
@@ -130,7 +130,7 @@ export class BeetPx {
 
   /**
    * Let's you know whether the debug mode is on or off. To be used in combination with:
-   * - {@link BpxEngineConfig}'s `debugMode.available` set to `true`
+   * - {@link BpxFrameworkConfig}'s `debugMode.available` set to `true`
    * - `;` key used to toggle the debug mode on/off
    *
    * @category Debug
@@ -140,12 +140,12 @@ export class BeetPx {
   }
 
   /**
-   * The canvas size as set in {@link BpxEngineConfig}'s `canvasSize`.
+   * The canvas size as set in {@link BpxFrameworkConfig}'s `canvasSize`.
    *
    * @category Graphics
    */
   static get canvasSize(): BpxVector2d {
-    return this.#tryGetEngine().canvasSize;
+    return this.#tryGetFramework().canvasSize;
   }
 
   /**
@@ -158,7 +158,7 @@ export class BeetPx {
    * @category Game loop
    */
   static get frameNumber(): number {
-    return this.#tryGetEngine().frameNumber;
+    return this.#tryGetFramework().frameNumber;
   }
 
   /**
@@ -171,24 +171,24 @@ export class BeetPx {
    * @category Game loop
    */
   static get frameNumberOutsidePause(): number {
-    return this.#tryGetEngine().frameNumberOutsidePause;
+    return this.#tryGetFramework().frameNumberOutsidePause;
   }
 
   /**
    * The effective FPS (frames per second) of render calls. This does *not* count the update calls.
    *
    * This value is used (with some averaging, to avoid quickly changing number) in the FPS display,
-   * which is active in debug mode if {@link BpxEngineConfig}'s
+   * which is active in debug mode if {@link BpxFrameworkConfig}'s
    * `debugMode.fpsDisplay.enabled` is set to `true`.
    *
    * @category Game loop
    */
   static get renderingFps(): number {
-    return this.#tryGetEngine().renderingFps;
+    return this.#tryGetFramework().renderingFps;
   }
 
   /**
-   * The type of a browser detected by the engine.
+   * The type of browser detected by the framework.
    * It is tightly related to the gamepad mapping detection.
    *
    * @see https://github.com/beetrootpaul/beetpx-examples/tree/main/input-tester
@@ -196,7 +196,7 @@ export class BeetPx {
    * @category Game input
    */
   static get detectedBrowserType(): BpxBrowserType {
-    return this.#tryGetEngine().detectedBrowserType;
+    return this.#tryGetFramework().detectedBrowserType;
   }
 
   //
@@ -241,10 +241,10 @@ export class BeetPx {
    * @category Game loop
    */
   static setOnStarted(onStarted?: () => void): void {
-    if (Engine.engineSingleton) {
-      Engine.engineSingleton.setOnStarted(onStarted);
+    if (Framework.frameworkSingleton) {
+      Framework.frameworkSingleton.setOnStarted(onStarted);
     } else {
-      this.#dataStoredBeforeEngineStarted.onStarted = onStarted;
+      this.#dataStoredBeforeBeetPxStarted.onStarted = onStarted;
     }
   }
 
@@ -276,15 +276,15 @@ export class BeetPx {
    * });
    * ```
    *
-   * @see {@link BpxEngineConfig.fixedTimestep}
+   * @see {@link BpxFrameworkConfig.fixedTimestep}
    *
    * @category Game loop
    */
   static setOnUpdate(onUpdate?: () => void): void {
-    if (Engine.engineSingleton) {
-      Engine.engineSingleton.setOnUpdate(onUpdate);
+    if (Framework.frameworkSingleton) {
+      Framework.frameworkSingleton.setOnUpdate(onUpdate);
     } else {
-      this.#dataStoredBeforeEngineStarted.onUpdate = onUpdate;
+      this.#dataStoredBeforeBeetPxStarted.onUpdate = onUpdate;
     }
   }
 
@@ -316,15 +316,15 @@ export class BeetPx {
    * });
    * ```
    *
-   * @see {@link BpxEngineConfig.fixedTimestep}
+   * @see {@link BpxFrameworkConfig.fixedTimestep}
    *
    * @category Game loop
    */
   static setOnDraw(onDraw?: () => void): void {
-    if (Engine.engineSingleton) {
-      Engine.engineSingleton.setOnDraw(onDraw);
+    if (Framework.frameworkSingleton) {
+      Framework.frameworkSingleton.setOnDraw(onDraw);
     } else {
-      this.#dataStoredBeforeEngineStarted.onDraw = onDraw;
+      this.#dataStoredBeforeBeetPxStarted.onDraw = onDraw;
     }
   }
 
@@ -340,7 +340,7 @@ export class BeetPx {
    * @category Game loop
    */
   static restart(): void {
-    this.#tryGetEngine().restart();
+    this.#tryGetFramework().restart();
   }
 
   //
@@ -354,7 +354,7 @@ export class BeetPx {
    * You can implement {@link BpxPrintDebug} on a given object if you want
    * it to be printed out in a custom way.
    *
-   * @see {@link BpxEngineConfig.debugMode}
+   * @see {@link BpxFrameworkConfig.debugMode}
    * @see {@link BpxPrintDebug}
    *
    * @category Logging
@@ -443,7 +443,7 @@ export class BeetPx {
   }
 
   /**
-   * Pauses the game. This works only if {@link BpxEngineConfig.gamePause}'s `available` is set to `true`.
+   * Pauses the game. This works only if {@link BpxFrameworkConfig.gamePause}'s `available` is set to `true`.
    *
    * The game pauses is by default toggled with the "menu" button, but this method allows you
    * to add other ways of activating the pause.
@@ -457,7 +457,7 @@ export class BeetPx {
   }
 
   /**
-   * Resumes the game. This works only if {@link BpxEngineConfig.gamePause}'s `available` is set to `true`.
+   * Resumes the game. This works only if {@link BpxFrameworkConfig.gamePause}'s `available` is set to `true`.
    *
    * The game pauses is by default toggled with the "menu" button, but this method allows you
    * to add other ways of deactivating the pause.
@@ -482,7 +482,7 @@ export class BeetPx {
    * @category Game input
    */
   static wasAnyButtonJustPressed(): boolean {
-    return this.#tryGetEngine().gameInput.gameButtons.wasAnyJustPressed();
+    return this.#tryGetFramework().gameInput.gameButtons.wasAnyJustPressed();
   }
 
   /**
@@ -491,7 +491,7 @@ export class BeetPx {
    * @category Game input
    */
   static wasButtonJustPressed(button: BpxGameButtonName): boolean {
-    return this.#tryGetEngine().gameInput.gameButtons.wasJustPressed(button);
+    return this.#tryGetFramework().gameInput.gameButtons.wasJustPressed(button);
   }
 
   /**
@@ -500,7 +500,9 @@ export class BeetPx {
    * @category Game input
    */
   static wasButtonJustReleased(button: BpxGameButtonName): boolean {
-    return this.#tryGetEngine().gameInput.gameButtons.wasJustReleased(button);
+    return this.#tryGetFramework().gameInput.gameButtons.wasJustReleased(
+      button,
+    );
   }
 
   /**
@@ -511,7 +513,7 @@ export class BeetPx {
    * @category Game input
    */
   static isAnyButtonPressed(): boolean {
-    return this.#tryGetEngine().gameInput.gameButtons.isAnyPressed();
+    return this.#tryGetFramework().gameInput.gameButtons.isAnyPressed();
   }
 
   /**
@@ -520,7 +522,7 @@ export class BeetPx {
    * @category Game input
    */
   static isButtonPressed(button: BpxGameButtonName): boolean {
-    return this.#tryGetEngine().gameInput.gameButtons.isPressed(button);
+    return this.#tryGetFramework().gameInput.gameButtons.isPressed(button);
   }
 
   /**
@@ -540,7 +542,7 @@ export class BeetPx {
    * @category Game input
    */
   static getPressedDirection(): BpxVector2d {
-    return this.#tryGetEngine().gameInput.gameButtons.getPressedDirection();
+    return this.#tryGetFramework().gameInput.gameButtons.getPressedDirection();
   }
 
   /**
@@ -558,7 +560,7 @@ export class BeetPx {
       loopedRepeatFrames: number | null;
     },
   ): void {
-    this.#tryGetEngine().gameInput.gameButtons.setButtonRepeating(
+    this.#tryGetFramework().gameInput.gameButtons.setButtonRepeating(
       button,
       repeating,
     );
@@ -574,7 +576,7 @@ export class BeetPx {
    * @category Game input
    */
   static getRecentInputMethods(): Set<BpxGameInputMethod> {
-    return this.#tryGetEngine().gameInput.getRecentInputMethods();
+    return this.#tryGetFramework().gameInput.getRecentInputMethods();
   }
 
   /**
@@ -583,14 +585,14 @@ export class BeetPx {
    * @category Game input
    */
   static isTouchInputMethodAvailable(): boolean {
-    return this.#tryGetEngine().gameInput.isTouchAvailable;
+    return this.#tryGetFramework().gameInput.isTouchAvailable;
   }
 
   /**
    * @category Game input
    */
   static getConnectedGamepadTypes(): Set<BpxGamepadType> {
-    return this.#tryGetEngine().gameInput.getConnectedGamepadTypes();
+    return this.#tryGetFramework().gameInput.getConnectedGamepadTypes();
   }
 
   /**
@@ -604,7 +606,7 @@ export class BeetPx {
    * @category Game input
    */
   static getEventsCapturedInLastUpdate(): Set<BpxGameInputEvent> {
-    return this.#tryGetEngine().gameInput.getEventsCapturedInLastUpdate();
+    return this.#tryGetFramework().gameInput.getEventsCapturedInLastUpdate();
   }
 
   //
@@ -617,7 +619,7 @@ export class BeetPx {
    * @category Audio
    */
   static isAudioMuted(): boolean {
-    return this.#tryGetEngine().audioApi.isAudioMuted();
+    return this.#tryGetFramework().audioApi.isAudioMuted();
   }
 
   /**
@@ -629,7 +631,7 @@ export class BeetPx {
    * @category Audio
    */
   static muteAudio(opts?: { fadeOutMillis?: number }): void {
-    this.#tryGetEngine().audioApi.muteAudio(opts);
+    this.#tryGetFramework().audioApi.muteAudio(opts);
   }
 
   /**
@@ -641,7 +643,7 @@ export class BeetPx {
    * @category Audio
    */
   static unmuteAudio(opts?: { fadeInMillis?: number }): void {
-    this.#tryGetEngine().audioApi.unmuteAudio(opts);
+    this.#tryGetFramework().audioApi.unmuteAudio(opts);
   }
 
   /**
@@ -658,7 +660,7 @@ export class BeetPx {
       onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
-    return this.#tryGetEngine().audioApi.startPlayback(soundUrl, opts);
+    return this.#tryGetFramework().audioApi.startPlayback(soundUrl, opts);
   }
 
   /**
@@ -675,7 +677,7 @@ export class BeetPx {
       onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
-    return this.#tryGetEngine().audioApi.startPlaybackLooped(soundUrl, opts);
+    return this.#tryGetFramework().audioApi.startPlaybackLooped(soundUrl, opts);
   }
 
   /**
@@ -694,7 +696,7 @@ export class BeetPx {
       onGamePause?: "pause" | "mute" | "ignore";
     },
   ): BpxAudioPlaybackId {
-    return this.#tryGetEngine().audioApi.startPlaybackSequence(
+    return this.#tryGetFramework().audioApi.startPlaybackSequence(
       soundSequence,
       opts,
     );
@@ -709,7 +711,7 @@ export class BeetPx {
     playbackId: BpxAudioPlaybackId,
     opts?: { fadeOutMillis?: number },
   ): void {
-    this.#tryGetEngine().audioApi.mutePlayback(playbackId, opts);
+    this.#tryGetFramework().audioApi.mutePlayback(playbackId, opts);
   }
 
   /**
@@ -721,7 +723,7 @@ export class BeetPx {
     playbackId: BpxAudioPlaybackId,
     opts?: { fadeInMillis?: number },
   ): void {
-    this.#tryGetEngine().audioApi.unmutePlayback(playbackId, opts);
+    this.#tryGetFramework().audioApi.unmutePlayback(playbackId, opts);
   }
 
   /**
@@ -733,7 +735,7 @@ export class BeetPx {
     playbackId: BpxAudioPlaybackId,
     opts?: { fadeOutMillis?: number },
   ): void {
-    this.#tryGetEngine().audioApi.stopPlayback(playbackId, opts);
+    this.#tryGetFramework().audioApi.stopPlayback(playbackId, opts);
   }
 
   /**
@@ -742,7 +744,7 @@ export class BeetPx {
    * @category Audio
    */
   static pausePlayback(playbackId: BpxAudioPlaybackId): void {
-    this.#tryGetEngine().audioApi.pausePlayback(playbackId);
+    this.#tryGetFramework().audioApi.pausePlayback(playbackId);
   }
 
   /**
@@ -751,7 +753,7 @@ export class BeetPx {
    * @category Audio
    */
   static resumePlayback(playbackId: BpxAudioPlaybackId): void {
-    this.#tryGetEngine().audioApi.resumePlayback(playbackId);
+    this.#tryGetFramework().audioApi.resumePlayback(playbackId);
   }
 
   /**
@@ -763,7 +765,7 @@ export class BeetPx {
    * @category Audio
    */
   static getAudioContext(): AudioContext {
-    return this.#tryGetEngine().audioApi.getAudioContext();
+    return this.#tryGetFramework().audioApi.getAudioContext();
   }
 
   //
@@ -778,7 +780,7 @@ export class BeetPx {
    * @category Full screen
    */
   static isFullScreenSupported(): boolean {
-    return this.#tryGetEngine().fullScreen.isFullScreenSupported();
+    return this.#tryGetFramework().fullScreen.isFullScreenSupported();
   }
 
   /**
@@ -789,7 +791,7 @@ export class BeetPx {
    * @category Full screen
    */
   static isInFullScreen(): boolean {
-    return this.#tryGetEngine().fullScreen.isInFullScreen();
+    return this.#tryGetFramework().fullScreen.isInFullScreen();
   }
 
   /**
@@ -800,7 +802,7 @@ export class BeetPx {
    * @category Full screen
    */
   static toggleFullScreen(): void {
-    this.#tryGetEngine().fullScreen.toggleFullScreen();
+    this.#tryGetFramework().fullScreen.toggleFullScreen();
   }
 
   //
@@ -820,7 +822,7 @@ export class BeetPx {
   static savePersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(value: PersistedStateValue): void {
-    this.#tryGetEngine().storageApi.savePersistedState<PersistedStateValue>(
+    this.#tryGetFramework().storageApi.savePersistedState<PersistedStateValue>(
       value,
     );
   }
@@ -838,7 +840,7 @@ export class BeetPx {
   static loadPersistedState<
     PersistedStateValue extends BpxPersistedStateValueConstraints,
   >(): Partial<PersistedStateValue> | null {
-    return this.#tryGetEngine().storageApi.loadPersistedState<PersistedStateValue>();
+    return this.#tryGetFramework().storageApi.loadPersistedState<PersistedStateValue>();
   }
 
   /**
@@ -847,7 +849,7 @@ export class BeetPx {
    * @category Storage
    */
   static clearPersistedState(): void {
-    this.#tryGetEngine().storageApi.clearPersistedState();
+    this.#tryGetFramework().storageApi.clearPersistedState();
   }
 
   //
@@ -861,12 +863,12 @@ export class BeetPx {
    * as the image retrieval happens under the hood for operations
    * like sprite drawing.
    *
-   * @see {@link BpxEngineConfig}'a `assets`
+   * @see {@link BpxFrameworkConfig}'a `assets`
    *
    * @category Assets
    */
   static getImageAsset(imageUrl: BpxImageUrl): BpxImageAsset {
-    return this.#tryGetEngine().assets.getImageAsset(imageUrl);
+    return this.#tryGetFramework().assets.getImageAsset(imageUrl);
   }
 
   /**
@@ -876,12 +878,12 @@ export class BeetPx {
    * as the sound retrieval happens under the hood for operations
    * like music playing.
    *
-   * @see {@link BpxEngineConfig}'a `assets`
+   * @see {@link BpxFrameworkConfig}'a `assets`
    *
    * @category Assets
    */
   static getSoundAsset(soundUrl: BpxSoundUrl): BpxSoundAsset {
-    return this.#tryGetEngine().assets.getSoundAsset(soundUrl);
+    return this.#tryGetFramework().assets.getSoundAsset(soundUrl);
   }
 
   /**
@@ -892,12 +894,12 @@ export class BeetPx {
    * Example use case for this method is when you develop your game level in [LDtk](https://ldtk.io/)
    * and want to read the level's file in the game code.
    *
-   * @see {@link BpxEngineConfig}'a `assets`
+   * @see {@link BpxFrameworkConfig}'a `assets`
    *
    * @category Assets
    */
   static getJsonAsset(jsonUrl: BpxJsonUrl): BpxJsonAsset {
-    return this.#tryGetEngine().assets.getJsonAsset(jsonUrl);
+    return this.#tryGetFramework().assets.getJsonAsset(jsonUrl);
   }
 }
 

@@ -2,7 +2,7 @@
 
 <img src="logo/BeetPx_logo_x5.png" width="80" alt="BeetP logo">
 
-> A TypeScript engine for pixel art browser games.
+> A TypeScript framework for pixel art browser games.
 
 ---
 
@@ -59,7 +59,7 @@ https://github.com/beetrootpaul/beetpx-examples/
 Also, you might want to take a look at how following projects are using BeetPx:
 
 | game                   | GitHub repository                                                                                   | screenshot                                                       |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+|------------------------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
 | **Hat Escape**         | [beetrootpaul/hat-escape](https://github.com/beetrootpaul/hat-escape)                               | <img src="misc/game-example-hat-escape.png" width="192">         |
 | **Dart-07**            | [beetrootpaul/dart-07-beetpx](https://github.com/beetrootpaul/dart-07-beetpx)                       | <img src="misc/game-example-dart-07.gif" width="192">            |
 | **Towers of Survival** | [beetrootpaul/towers-of-survival-beetpx](https://github.com/beetrootpaul/towers-of-survival-beetpx) | <img src="misc/game-example-towers-of-survival.png" width="192"> |
@@ -69,11 +69,11 @@ Also, you might want to take a look at how following projects are using BeetPx:
 
 <img src="misc/beetpx_controls.png" width="640">
 
-The BeetPx engine supports a following sets of game buttons and their mappings
+The BeetPx framework supports a following sets of game buttons and their mappings
 from physical devices:
 
 | game button                         | keyboard               | DualSense controller | Xbox controller |
-|-------------------------------------| ---------------------- | -------------------- | --------------- |
+|-------------------------------------|------------------------|----------------------|-----------------|
 | **O** (Maru)                        | `C` / `J` / `O`        | circle / square      | `A` / `Y`       |
 | **X** (Batsu)                       | `X` / `K`              | cross / triangle     | `B` / `X`       |
 | **menu**                            | `P` / `return` / `esc` | menu                 | menu            |
@@ -92,20 +92,20 @@ should they use – there is a chance they would try with just `O`+`X` on their
 keyboard.
 
 Regarding th game controllers – other controllers might works as well. For
-example, this engine has an implemented support for **8BitDo Lite 2**.
+example, this framework has an implemented support for **8BitDo Lite 2**.
 
 There are also **touch controls** in form of GUI buttons resembling a physical
 ones. You can see and use them on touch devices like e.g. an iPhone.
 
 Dev controls meant to be used by the game developer themselves and gated behind
-related engine config fields:
+related framework config fields:
 
 - **toggle debug**:
-  - on keyboard: `;`
+    - on keyboard: `;`
 - **toggle frame-by-frame**:
-  - on keyboard: `,`
+    - on keyboard: `,`
 - **jump to the next frame** (only while in frame-by-frame mode):
-  - on keyboard: `.`
+    - on keyboard: `.`
 
 ℹ️ To check if your controls work as expected, go to
 https://beetrootpaul.itch.io/beetpx-input-tester .
@@ -155,7 +155,7 @@ There are though some areas I would like differently:
   press of a in-game button on iOS Safari makes a system text selection
   to appear and prevents user from playing a game in a smoothly manner. Of course, this is
   something I could work around by adjusting an HTML template exported from
-  PICO-8. But since I decided to create my own engine, I am able to take care of
+  PICO-8. But since I decided to create my own framework, I am able to take care of
   browser iOS experience and do it the way I like.
 - Last but not least: I just wanted to have something created for public,
   [available on npm](https://www.npmjs.com/package/@beetpx/beetpx), something I
@@ -193,8 +193,7 @@ free to use). For more info see: https://www.lexaloffle.com/pico-8.php?page=faq
 ### Bresenham's Algorithm implementation
 
 I based the line and ellipse drawing methods on a Bresenham's Algorithm
-implementation by Alois Zingl:
-http://members.chello.at/easyfilter/bresenham.html
+implementation by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html and https://github.com/zingl/Bresenham
 
 ## Known Issues
 
@@ -209,36 +208,36 @@ http://members.chello.at/easyfilter/bresenham.html
 
 ### v0.54.0
 
-- CLI: Added `--htmlDeviceColor` option.  
-- `BeetPx:`: Added `isTouchInputMethodAvailable()`.  
+- CLI: Added `--htmlDeviceColor` option.
+- `BeetPx:`: Added `isTouchInputMethodAvailable()`.
 
 ### v0.53.0
 
-- Renamed `$` to `$x` for a better auto-import experience in WebStorm IDE.  
+- Renamed `$` to `$x` for a better auto-import experience in WebStorm IDE.
 - Drawing: Transparent (`null`) sprite pixels are now passed to the `BpxSpriteColorMapping`
   as well.
-- `BeetPxUtils`: Fixed `offset4Directions()` to return left/up/right/down 
+- `BeetPxUtils`: Fixed `offset4Directions()` to return left/up/right/down
   instead of diagonals.
-- `BeetPxUtils`: Renamed `offset4Directions()` to `adjacent4()`. 
-- `BeetPxUtils`: Renamed `offset8Directions()` to `adjacent8()`. 
+- `BeetPxUtils`: Renamed `offset4Directions()` to `adjacent4()`.
+- `BeetPxUtils`: Renamed `offset8Directions()` to `adjacent8()`.
 - `BpxVector2d`: Renamed `min(…)` to `minOf(…)`.
 - `BpxVector2d`: Renamed `max(…)` to `maxOf(…)`.
 - `BpxVector2d`: Renamed `minMax(…)` to `minMaxOf(…)`.
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `eq(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gt(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gte(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lt(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lte(…)`. 
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `eq(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gt(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gte(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lt(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lte(…)`.
 
 ### v0.52.1
 
-- Game input: Fixed an issue of `"touch"` input method not being listed among others 
+- Game input: Fixed an issue of `"touch"` input method not being listed among others
   in a set returned by `BeetPx.getRecentInputMethods()`.
 
 ### v0.52.0
 
-- Game loop: Fixed an issue of timers and animations behaving in the draw callback 
-  like if the next frame has already happened, even though its update callback was 
+- Game loop: Fixed an issue of timers and animations behaving in the draw callback
+  like if the next frame has already happened, even though its update callback was
   not called yet.
 
 ### v0.51.3

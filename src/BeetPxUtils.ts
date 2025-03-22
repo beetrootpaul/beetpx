@@ -15,7 +15,9 @@ import { drawTextWithOutline } from "./utils/drawTextWithOutline";
 import { identity } from "./utils/identity";
 import { lerp } from "./utils/lerp";
 import { mod } from "./utils/mod";
-import { randomElementOf } from "./utils/randomElementOf";
+import { rand } from "./utils/rand";
+import { randInt } from "./utils/randInt";
+import { randOf } from "./utils/randOf";
 import { range } from "./utils/range";
 import { repeatEachElement } from "./utils/repeatEachElement";
 import { throwError } from "./utils/throwError";
@@ -179,10 +181,68 @@ export class BeetPxUtils {
   }
 
   /**
+   * Picks a random value from a given range.
+   */
+  static rand(minInclusive: number, maxExclusive: number): number;
+  /**
+   * Picks a random vector from a given range.
+   */
+  static rand(
+    minInclusive: BpxVector2d,
+    maxExclusive: BpxVector2d,
+  ): BpxVector2d;
+  static rand(
+    minInclusive: number | BpxVector2d,
+    maxExclusive: number | BpxVector2d,
+  ): number | BpxVector2d {
+    return typeof minInclusive !== "number" || typeof maxExclusive !== "number"
+      ? BpxVector2d.of(
+          rand(
+            typeof minInclusive !== "number" ? minInclusive.x : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.x : maxExclusive,
+          ),
+          rand(
+            typeof minInclusive !== "number" ? minInclusive.y : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.y : maxExclusive,
+          ),
+        )
+      : rand(minInclusive, maxExclusive);
+  }
+
+  /**
+   * Picks a random integer value from a given range.
+   */
+  static randInt(minInclusive: number, maxExclusive: number): number;
+  /**
+   * Picks a random integer vector from a given range.
+   */
+  static randInt(
+    minInclusive: BpxVector2d,
+    maxExclusive: BpxVector2d,
+  ): BpxVector2d;
+  static randInt(
+    minInclusive: number | BpxVector2d,
+    maxExclusive: number | BpxVector2d,
+  ): number | BpxVector2d {
+    return typeof minInclusive !== "number" || typeof maxExclusive !== "number"
+      ? BpxVector2d.of(
+          randInt(
+            typeof minInclusive !== "number" ? minInclusive.x : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.x : maxExclusive,
+          ),
+          randInt(
+            typeof minInclusive !== "number" ? minInclusive.y : minInclusive,
+            typeof maxExclusive !== "number" ? maxExclusive.y : maxExclusive,
+          ),
+        )
+      : randInt(minInclusive, maxExclusive);
+  }
+
+  /**
    * Picks a random element from a given array.
    */
-  static randomElementOf<TElement>(array: TElement[]): TElement | undefined {
-    return randomElementOf<TElement>(array);
+  static randOf<TElement>(array: TElement[]): TElement | undefined {
+    return randOf<TElement>(array);
   }
 
   /**

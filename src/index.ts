@@ -81,7 +81,6 @@ export type { BpxRgbCssHex } from "./color/RgbColor";
 export type { BpxFpsDisplayPlacement } from "./debug/FpsDisplay";
 export type { BpxPrintDebug } from "./debug/PrintDebug";
 export type { BpxTextMeasurement } from "./draw_api/DrawApi";
-export type { BpxEngineConfig } from "./Engine";
 export type {
   BpxArrangedGlyph,
   BpxFontConfig,
@@ -89,6 +88,7 @@ export type {
   BpxKerningPrevSegmentMap,
   BpxTextColorMarkers,
 } from "./font/Font";
+export type { BpxFrameworkConfig } from "./Framework";
 export type { BpxGameButtonName } from "./game_input/buttons/GameButtons";
 export type {
   BpxGameInputEvent,

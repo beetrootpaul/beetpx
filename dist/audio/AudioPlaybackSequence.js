@@ -40,7 +40,7 @@ export class AudioPlaybackSequence extends AudioPlayback {
         this.#sourceNode.addEventListener("ended", () => {
             this.#sourceNode.disconnect();
             this.disconnectFromOutput();
-            if (!this.isPausedByGame && !this.isPausedByEngine) {
+            if (!this.isPausedByGame && !this.isPausedByFramework) {
                 this.onEnded();
             }
         });

@@ -14,7 +14,9 @@ export class DrawLine {
     this.#canvas = canvas;
   }
 
-  // Based on http://members.chello.at/easyfilter/bresenham.html
+  // Based on:
+  // - http://members.chello.at/easyfilter/bresenham.html
+  // - https://github.com/zingl/Bresenham
   draw(
     xy: BpxVector2d,
     wh: BpxVector2d,

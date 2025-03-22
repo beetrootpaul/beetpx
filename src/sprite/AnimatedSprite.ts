@@ -155,6 +155,13 @@ export class BpxAnimatedSprite {
   }
 
   /**
+   * Whether the animation is paused.
+   */
+  get isPaused(): boolean {
+    return this.#loop.isPaused;
+  }
+
+  /**
    * Pauses the animation.
    */
   pause(): void {

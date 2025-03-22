@@ -27,17 +27,17 @@ export class GamePause {
 
     if (GamePause.wasJustActivated) {
       for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
-        playback.pauseByEngine();
+        playback.pauseByFramework();
       }
       for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
-        playback.muteByEngine();
+        playback.muteByFramework();
       }
     } else if (GamePause.wasJustDeactivated) {
       for (const playback of AudioPlayback.playbacksToPauseOnGamePause) {
-        playback.resumeByEngine();
+        playback.resumeByFramework();
       }
       for (const playback of AudioPlayback.playbacksToMuteOnGamePause) {
-        playback.unmuteByEngine();
+        playback.unmuteByFramework();
       }
     }
   }

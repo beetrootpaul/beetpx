@@ -4,7 +4,7 @@ import { GamepadMapping } from "./GamepadMapping";
 /*
 
 env:
-  macOS Sonoma 14.1.1 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Engine Version 118.0.5993.88
+  macOS Sonoma 14.1.1 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Framework Version 118.0.5993.88
   macOS Sonoma 14.1.1 (Apple M1 Max), Brave 1.59.122 Chromium: 118.0.5993.96 (Official Build) (arm64)
   macOS Sonoma 14.1.1 (Apple M1 Max), Chrome 120.0.6099.129 (Official Build) (arm64)
   macOS Sonoma 14.1.1 (Apple M1 Max), Edge 120.0.2210.91 (Official build) (arm64)

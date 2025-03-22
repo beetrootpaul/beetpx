@@ -6,7 +6,7 @@ import { $font_pico8, $rgb_p8 } from "../shorthands";
 import { mod } from "../utils/mod";
 
 /**
- * @see {@link BpxEngineConfig}'s `debugMode.fpsDisplay.placement`
+ * @see {@link BpxFrameworkConfig}'s `debugMode.fpsDisplay.placement`
  *
  * @category Debug
  */

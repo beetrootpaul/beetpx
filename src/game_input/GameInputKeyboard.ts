@@ -100,7 +100,7 @@ export class GameInputKeyboard implements GameInputSpecialized {
     //   full screen back, user has to press the key twice: once to "release"
     //   the key, and second time to initiate the next full screen transition.
     // As a workaround we do not keep "full_screen" event "pressed", so the
-    //   engine will recognize it as a key being up immediately.
+    //   framework will recognize it as a key being up immediately.
     this.#eventsSinceLastUpdate.delete("full_screen");
 
     return anythingAdded;

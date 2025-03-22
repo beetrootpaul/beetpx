@@ -34,7 +34,7 @@ buttons:
   - right stick, vertical   -> 3 (  up -1.00 : 1.00 down )
 
 env:
-  macOS Ventura 13.5.2 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Engine Version 118.0.5993.88
+  macOS Ventura 13.5.2 (Apple M1 Max), Arc 1.13.1 (42579), Chromium Framework Version 118.0.5993.88
   macOS Ventura 13.5.2 (Apple M1 Max), Brave 1.59.122 Chromium: 118.0.5993.96 (Official Build) (arm64)
   macOS Ventura 13.5.2 (Apple M1 Max), Chrome 118.0.5993.88 (Official Build) (arm64)
   macOS Ventura 13.5.2 (Apple M1 Max), Edge 118.0.2088.61 (Official build) (arm64)

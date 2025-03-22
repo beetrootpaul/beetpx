@@ -40,6 +40,7 @@ function pickPropertyOfExpectedValues<TPhaseName extends string>(
     t: number;
     progress: number;
     framesLeft: number;
+    isPaused: boolean;
   }) => {
     return {
       // @ts-expect-error TS2536: Type 'TPhaseName' cannot be used to index type '{ tOverall: number; progressOverall: number; framesLeftOverall: number; hasFinishedOverall: boolean; hasJustFinishedOverall: boolean; justFinishedPhase: TPhaseName | null; currentPhase: TPhaseName | null; t: number; progress: number; framesLeft: number; }'.
@@ -63,6 +64,7 @@ const allPropertiesToTest = [
   "t",
   "progress",
   "framesLeft",
+  "isPaused",
 ];
 
 describe("TimerSequence", () => {
@@ -107,6 +109,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -127,6 +130,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesAaa,
               framesLeft: framesAaa - t,
+              isPaused: false,
             }),
           );
         });
@@ -145,6 +149,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesBbb,
+            isPaused: false,
           }),
         );
 
@@ -166,6 +171,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesBbb,
               framesLeft: framesBbb - t,
+              isPaused: false,
             }),
           );
         });
@@ -185,6 +191,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesCcc,
+            isPaused: false,
           }),
         );
 
@@ -207,6 +214,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesCcc,
               framesLeft: framesCcc - t,
+              isPaused: false,
             }),
           );
         });
@@ -225,6 +233,7 @@ describe("TimerSequence", () => {
             t: framesCcc,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
 
@@ -242,6 +251,7 @@ describe("TimerSequence", () => {
             t: framesCcc,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
       },
@@ -281,6 +291,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesBbb,
+            isPaused: false,
           }),
         );
 
@@ -298,6 +309,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesBbb,
+            isPaused: false,
           }),
         );
 
@@ -316,6 +328,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
 
@@ -334,6 +347,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: true,
           }),
         );
 
@@ -354,6 +368,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: true,
           }),
         );
 
@@ -372,6 +387,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
 
@@ -390,6 +406,7 @@ describe("TimerSequence", () => {
             t: 2,
             progress: 2 / framesBbb,
             framesLeft: framesBbb - 2,
+            isPaused: false,
           }),
         );
 
@@ -413,6 +430,7 @@ describe("TimerSequence", () => {
             t: 2,
             progress: 2 / framesBbb,
             framesLeft: framesBbb - 2,
+            isPaused: true,
           }),
         );
 
@@ -436,6 +454,7 @@ describe("TimerSequence", () => {
             t: 3,
             progress: 3 / framesBbb,
             framesLeft: framesBbb - 3,
+            isPaused: false,
           }),
         );
 
@@ -460,6 +479,7 @@ describe("TimerSequence", () => {
             t: framesBbb - 1,
             progress: (framesBbb - 1) / framesBbb,
             framesLeft: 1,
+            isPaused: true,
           }),
         );
 
@@ -480,6 +500,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesCcc,
+            isPaused: false,
           }),
         );
       },
@@ -522,6 +543,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: true,
           }),
         );
 
@@ -541,6 +563,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -562,6 +585,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: true,
           }),
         );
       },
@@ -602,6 +626,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
 
@@ -619,6 +644,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -639,6 +665,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
       },
@@ -677,6 +704,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -696,6 +724,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -713,6 +742,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -732,6 +762,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: true,
           }),
         );
 
@@ -754,6 +785,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
 
@@ -773,6 +805,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
       },
@@ -815,6 +848,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: true,
           }),
         );
 
@@ -836,6 +870,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -853,6 +888,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -873,6 +909,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesCcc,
             framesLeft: framesCcc - 1,
+            isPaused: false,
           }),
         );
 
@@ -892,6 +929,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
       },
@@ -932,6 +970,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -949,6 +988,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -966,6 +1006,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -986,6 +1027,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesCcc,
             framesLeft: framesCcc - 1,
+            isPaused: false,
           }),
         );
 
@@ -1005,6 +1047,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
       },
@@ -1049,6 +1092,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1069,6 +1113,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesDdd,
               framesLeft: framesDdd - t,
+              isPaused: false,
             }),
           );
         });
@@ -1087,6 +1132,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
 
@@ -1108,6 +1154,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesEee,
               framesLeft: framesEee - t,
+              isPaused: false,
             }),
           );
         });
@@ -1127,6 +1174,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesFff,
+            isPaused: false,
           }),
         );
 
@@ -1149,6 +1197,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesFff,
               framesLeft: framesFff - t,
+              isPaused: false,
             }),
           );
         });
@@ -1170,6 +1219,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1190,6 +1240,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesDdd,
               framesLeft: framesDdd - t,
+              isPaused: false,
             }),
           );
         });
@@ -1208,6 +1259,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
 
@@ -1229,6 +1281,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesEee,
               framesLeft: framesEee - t,
+              isPaused: false,
             }),
           );
         });
@@ -1248,6 +1301,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesFff,
+            isPaused: false,
           }),
         );
 
@@ -1270,6 +1324,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesFff,
               framesLeft: framesFff - t,
+              isPaused: false,
             }),
           );
         });
@@ -1288,6 +1343,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
       },
@@ -1327,6 +1383,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
 
@@ -1344,6 +1401,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
 
@@ -1362,6 +1420,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -1380,6 +1439,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: true,
           }),
         );
 
@@ -1400,6 +1460,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: true,
           }),
         );
 
@@ -1418,6 +1479,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -1436,6 +1498,7 @@ describe("TimerSequence", () => {
             t: 2,
             progress: 2 / framesEee,
             framesLeft: framesEee - 2,
+            isPaused: false,
           }),
         );
 
@@ -1459,6 +1522,7 @@ describe("TimerSequence", () => {
             t: 2,
             progress: 2 / framesEee,
             framesLeft: framesEee - 2,
+            isPaused: true,
           }),
         );
 
@@ -1482,6 +1546,7 @@ describe("TimerSequence", () => {
             t: 3,
             progress: 3 / framesEee,
             framesLeft: framesEee - 3,
+            isPaused: false,
           }),
         );
 
@@ -1506,6 +1571,7 @@ describe("TimerSequence", () => {
             t: framesDdd - 1,
             progress: (framesDdd - 1) / framesDdd,
             framesLeft: 1,
+            isPaused: true,
           }),
         );
 
@@ -1525,6 +1591,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
       },
@@ -1567,6 +1634,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: true,
           }),
         );
 
@@ -1586,6 +1654,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
 
@@ -1607,6 +1676,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: true,
           }),
         );
       },
@@ -1647,6 +1717,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -1664,6 +1735,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1684,6 +1756,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -1701,6 +1774,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1720,6 +1794,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1737,6 +1812,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
       },
@@ -1775,6 +1851,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1794,6 +1871,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1811,6 +1889,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
 
@@ -1830,6 +1909,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: true,
           }),
         );
 
@@ -1852,6 +1932,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -1871,6 +1952,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
       },
@@ -1913,6 +1995,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: true,
           }),
         );
 
@@ -1934,6 +2017,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -1951,6 +2035,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
 
@@ -1973,6 +2058,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesFff,
             framesLeft: framesFff - 1,
+            isPaused: false,
           }),
         );
 
@@ -1992,6 +2078,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
       },
@@ -2032,6 +2119,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -2049,6 +2137,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -2066,6 +2155,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
 
@@ -2088,6 +2178,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesFff,
             framesLeft: framesFff - 1,
+            isPaused: false,
           }),
         );
 
@@ -2107,6 +2198,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesDdd,
             framesLeft: framesDdd - 1,
+            isPaused: false,
           }),
         );
       },
@@ -2166,6 +2258,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -2200,6 +2293,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesAaa,
               framesLeft: framesAaa - t,
+              isPaused: false,
             }),
           );
         });
@@ -2226,6 +2320,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesBbb,
+            isPaused: false,
           }),
         );
 
@@ -2254,6 +2349,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesBbb,
               framesLeft: framesBbb - t,
+              isPaused: false,
             }),
           );
         });
@@ -2279,6 +2375,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesCcc,
+            isPaused: false,
           }),
         );
 
@@ -2307,6 +2404,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesCcc,
               framesLeft: framesCcc - t,
+              isPaused: false,
             }),
           );
         });
@@ -2335,6 +2433,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -2362,6 +2461,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesDdd,
               framesLeft: framesDdd - t,
+              isPaused: false,
             }),
           );
         });
@@ -2387,6 +2487,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
 
@@ -2414,6 +2515,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesEee,
               framesLeft: framesEee - t,
+              isPaused: false,
             }),
           );
         });
@@ -2439,6 +2541,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesFff,
+            isPaused: false,
           }),
         );
 
@@ -2472,6 +2575,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesFff,
               framesLeft: framesFff - t,
+              isPaused: false,
             }),
           );
         });
@@ -2494,6 +2598,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
 
@@ -2514,6 +2619,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesDdd,
               framesLeft: framesDdd - t,
+              isPaused: false,
             }),
           );
         });
@@ -2532,6 +2638,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
 
@@ -2553,6 +2660,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesEee,
               framesLeft: framesEee - t,
+              isPaused: false,
             }),
           );
         });
@@ -2572,6 +2680,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesFff,
+            isPaused: false,
           }),
         );
 
@@ -2594,6 +2703,7 @@ describe("TimerSequence", () => {
               t: t,
               progress: t / framesFff,
               framesLeft: framesFff - t,
+              isPaused: false,
             }),
           );
         });
@@ -2612,6 +2722,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesDdd,
+            isPaused: false,
           }),
         );
       },
@@ -2671,6 +2782,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesBbb,
+            isPaused: false,
           }),
         );
 
@@ -2696,6 +2808,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesBbb,
+            isPaused: false,
           }),
         );
 
@@ -2721,6 +2834,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
 
@@ -2746,6 +2860,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: true,
           }),
         );
 
@@ -2773,6 +2888,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: true,
           }),
         );
 
@@ -2798,6 +2914,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
 
@@ -2823,6 +2940,7 @@ describe("TimerSequence", () => {
             t: 2,
             progress: 2 / framesBbb,
             framesLeft: framesBbb - 2,
+            isPaused: false,
           }),
         );
 
@@ -2853,6 +2971,7 @@ describe("TimerSequence", () => {
             t: 2,
             progress: 2 / framesBbb,
             framesLeft: framesBbb - 2,
+            isPaused: true,
           }),
         );
 
@@ -2883,6 +3002,7 @@ describe("TimerSequence", () => {
             t: 3,
             progress: 3 / framesBbb,
             framesLeft: framesBbb - 3,
+            isPaused: false,
           }),
         );
 
@@ -2916,6 +3036,7 @@ describe("TimerSequence", () => {
             t: framesEee - 1,
             progress: (framesEee - 1) / framesEee,
             framesLeft: 1,
+            isPaused: true,
           }),
         );
 
@@ -2942,6 +3063,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesFff,
+            isPaused: false,
           }),
         );
 
@@ -2966,6 +3088,7 @@ describe("TimerSequence", () => {
             t: framesDdd - 1,
             progress: (framesDdd - 1) / framesDdd,
             framesLeft: 1,
+            isPaused: true,
           }),
         );
 
@@ -2985,6 +3108,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesEee,
+            isPaused: false,
           }),
         );
       },
@@ -3045,6 +3169,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: true,
           }),
         );
 
@@ -3078,6 +3203,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -3113,6 +3239,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: true,
           }),
         );
       },
@@ -3172,6 +3299,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesBbb,
             framesLeft: framesBbb - 1,
+            isPaused: false,
           }),
         );
 
@@ -3195,6 +3323,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -3221,6 +3350,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -3244,6 +3374,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -3273,6 +3404,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -3296,6 +3428,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
       },
@@ -3352,6 +3485,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -3377,6 +3511,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -3408,6 +3543,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -3441,6 +3577,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: true,
           }),
         );
 
@@ -3471,6 +3608,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesEee,
             framesLeft: framesEee - 1,
+            isPaused: false,
           }),
         );
 
@@ -3504,6 +3642,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
       },
@@ -3564,6 +3703,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: true,
           }),
         );
 
@@ -3591,6 +3731,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -3622,6 +3763,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -3653,6 +3795,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesFff,
             framesLeft: framesFff - 1,
+            isPaused: false,
           }),
         );
 
@@ -3686,6 +3829,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
       },
@@ -3744,6 +3888,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -3767,6 +3912,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: framesAaa,
+            isPaused: false,
           }),
         );
 
@@ -3798,6 +3944,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
 
@@ -3829,6 +3976,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesFff,
             framesLeft: framesFff - 1,
+            isPaused: false,
           }),
         );
 
@@ -3862,6 +4010,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1 / framesAaa,
             framesLeft: framesAaa - 1,
+            isPaused: false,
           }),
         );
       },
@@ -3889,6 +4038,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
 
@@ -3906,6 +4056,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
       },
@@ -3933,6 +4084,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
 
@@ -3950,6 +4102,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
       },
@@ -3977,6 +4130,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
 
@@ -3994,6 +4148,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
       },
@@ -4022,6 +4177,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
 
@@ -4039,6 +4195,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
       },
@@ -4104,6 +4261,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4121,6 +4279,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
 
@@ -4138,6 +4297,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 1,
             framesLeft: 0,
+            isPaused: false,
           }),
         );
       },
@@ -4165,6 +4325,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4182,6 +4343,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4199,6 +4361,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
       },
@@ -4227,6 +4390,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4244,6 +4408,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4261,6 +4426,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4278,6 +4444,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
       },
@@ -4307,6 +4474,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 2,
+            isPaused: false,
           }),
         );
 
@@ -4324,6 +4492,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 0.125,
             framesLeft: 7,
+            isPaused: false,
           }),
         );
 
@@ -4341,6 +4510,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 8,
+            isPaused: false,
           }),
         );
 
@@ -4358,6 +4528,7 @@ describe("TimerSequence", () => {
             t: 7,
             progress: 0.875,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4375,6 +4546,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 2,
+            isPaused: false,
           }),
         );
       },
@@ -4405,6 +4577,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 5,
+            isPaused: false,
           }),
         );
 
@@ -4425,6 +4598,7 @@ describe("TimerSequence", () => {
             t: 4,
             progress: 0.8,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4442,6 +4616,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 5,
+            isPaused: false,
           }),
         );
 
@@ -4462,6 +4637,7 @@ describe("TimerSequence", () => {
             t: 4,
             progress: 0.8,
             framesLeft: 1,
+            isPaused: false,
           }),
         );
 
@@ -4479,6 +4655,7 @@ describe("TimerSequence", () => {
             t: 0,
             progress: 0,
             framesLeft: 5,
+            isPaused: false,
           }),
         );
 
@@ -4496,6 +4673,7 @@ describe("TimerSequence", () => {
             t: 1,
             progress: 0.2,
             framesLeft: 4,
+            isPaused: false,
           }),
         );
       },
