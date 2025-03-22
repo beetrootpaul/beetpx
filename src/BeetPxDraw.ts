@@ -203,6 +203,7 @@ export class BeetPxDraw {
    * Draws a line.
    *
    * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   * and https://github.com/zingl/Bresenham
    *
    * @category Shapes
    */
@@ -269,6 +270,7 @@ export class BeetPxDraw {
    * Draws an ellipse, boundary only.
    *
    * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   * and https://github.com/zingl/Bresenham
    *
    * @param xy Left-top corner of a rectangle that the ellipse would fit into.
    *
@@ -286,6 +288,7 @@ export class BeetPxDraw {
    * Draws an ellipse, filled.
    *
    * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   * and https://github.com/zingl/Bresenham
    *
    * @param xy Left-top corner of a rectangle that the ellipse would fit into.
    *
@@ -307,6 +310,7 @@ export class BeetPxDraw {
    * Draws an ellipse, boundary only, and fills the entire canvas *around* the ellipse.
    *
    * @see An implementation of Bresenham's Algorithm by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html
+   * and https://github.com/zingl/Bresenham
    *
    * @param xy Left-top corner of a rectangle that the ellipse would fit into.
    *

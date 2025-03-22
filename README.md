@@ -59,7 +59,7 @@ https://github.com/beetrootpaul/beetpx-examples/
 Also, you might want to take a look at how following projects are using BeetPx:
 
 | game                   | GitHub repository                                                                                   | screenshot                                                       |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+|------------------------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
 | **Hat Escape**         | [beetrootpaul/hat-escape](https://github.com/beetrootpaul/hat-escape)                               | <img src="misc/game-example-hat-escape.png" width="192">         |
 | **Dart-07**            | [beetrootpaul/dart-07-beetpx](https://github.com/beetrootpaul/dart-07-beetpx)                       | <img src="misc/game-example-dart-07.gif" width="192">            |
 | **Towers of Survival** | [beetrootpaul/towers-of-survival-beetpx](https://github.com/beetrootpaul/towers-of-survival-beetpx) | <img src="misc/game-example-towers-of-survival.png" width="192"> |
@@ -73,7 +73,7 @@ The BeetPx framework supports a following sets of game buttons and their mapping
 from physical devices:
 
 | game button                         | keyboard               | DualSense controller | Xbox controller |
-|-------------------------------------| ---------------------- | -------------------- | --------------- |
+|-------------------------------------|------------------------|----------------------|-----------------|
 | **O** (Maru)                        | `C` / `J` / `O`        | circle / square      | `A` / `Y`       |
 | **X** (Batsu)                       | `X` / `K`              | cross / triangle     | `B` / `X`       |
 | **menu**                            | `P` / `return` / `esc` | menu                 | menu            |
@@ -101,11 +101,11 @@ Dev controls meant to be used by the game developer themselves and gated behind
 related framework config fields:
 
 - **toggle debug**:
-  - on keyboard: `;`
+    - on keyboard: `;`
 - **toggle frame-by-frame**:
-  - on keyboard: `,`
+    - on keyboard: `,`
 - **jump to the next frame** (only while in frame-by-frame mode):
-  - on keyboard: `.`
+    - on keyboard: `.`
 
 ℹ️ To check if your controls work as expected, go to
 https://beetrootpaul.itch.io/beetpx-input-tester .
@@ -193,8 +193,7 @@ free to use). For more info see: https://www.lexaloffle.com/pico-8.php?page=faq
 ### Bresenham's Algorithm implementation
 
 I based the line and ellipse drawing methods on a Bresenham's Algorithm
-implementation by Alois Zingl:
-http://members.chello.at/easyfilter/bresenham.html
+implementation by Alois Zingl: http://members.chello.at/easyfilter/bresenham.html and https://github.com/zingl/Bresenham
 
 ## Known Issues
 
@@ -209,36 +208,36 @@ http://members.chello.at/easyfilter/bresenham.html
 
 ### v0.54.0
 
-- CLI: Added `--htmlDeviceColor` option.  
-- `BeetPx:`: Added `isTouchInputMethodAvailable()`.  
+- CLI: Added `--htmlDeviceColor` option.
+- `BeetPx:`: Added `isTouchInputMethodAvailable()`.
 
 ### v0.53.0
 
-- Renamed `$` to `$x` for a better auto-import experience in WebStorm IDE.  
+- Renamed `$` to `$x` for a better auto-import experience in WebStorm IDE.
 - Drawing: Transparent (`null`) sprite pixels are now passed to the `BpxSpriteColorMapping`
   as well.
-- `BeetPxUtils`: Fixed `offset4Directions()` to return left/up/right/down 
+- `BeetPxUtils`: Fixed `offset4Directions()` to return left/up/right/down
   instead of diagonals.
-- `BeetPxUtils`: Renamed `offset4Directions()` to `adjacent4()`. 
-- `BeetPxUtils`: Renamed `offset8Directions()` to `adjacent8()`. 
+- `BeetPxUtils`: Renamed `offset4Directions()` to `adjacent4()`.
+- `BeetPxUtils`: Renamed `offset8Directions()` to `adjacent8()`.
 - `BpxVector2d`: Renamed `min(…)` to `minOf(…)`.
 - `BpxVector2d`: Renamed `max(…)` to `maxOf(…)`.
 - `BpxVector2d`: Renamed `minMax(…)` to `minMaxOf(…)`.
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `eq(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gt(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gte(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lt(…)`. 
-- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lte(…)`. 
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `eq(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gt(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `gte(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lt(…)`.
+- `BpxVector2d`: Added `(x: number, y: number): boolean` overload to `lte(…)`.
 
 ### v0.52.1
 
-- Game input: Fixed an issue of `"touch"` input method not being listed among others 
+- Game input: Fixed an issue of `"touch"` input method not being listed among others
   in a set returned by `BeetPx.getRecentInputMethods()`.
 
 ### v0.52.0
 
-- Game loop: Fixed an issue of timers and animations behaving in the draw callback 
-  like if the next frame has already happened, even though its update callback was 
+- Game loop: Fixed an issue of timers and animations behaving in the draw callback
+  like if the next frame has already happened, even though its update callback was
   not called yet.
 
 ### v0.51.3
