@@ -20,6 +20,7 @@
     * [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
   * [Known Issues](#known-issues)
   * [Release Notes](#release-notes)
+    * [v0.56.1](#v0561)
     * [v0.56.0](#v0560)
     * [v0.55.0](#v0550)
     * [v0.54.0](#v0540)
@@ -207,6 +208,10 @@ implementation by Alois Zingl: http://members.chello.at/easyfilter/bresenham.htm
   when trying to use game touch buttons.
 
 ## Release Notes
+
+### v0.56.1
+
+- Fixed region clipping for sprite drawing.
 
 ### v0.56.0
 
