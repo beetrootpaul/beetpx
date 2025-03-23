@@ -958,6 +958,36 @@ describe("DrawSprite", () => {
     });
   });
 
+  test("sprite vs region clipping", () => {
+    const dts = drawingTestSetup(6, 6, c0);
+    const image = new TestImage({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      image: `
+        # : % =
+        # : = %
+        # % : =
+        # = : %
+      `,
+    });
+    const s = $spr(image.uniqueUrl);
+    dts.assets.addImageAsset(image.uniqueUrl, image.asset);
+
+    dts.drawApi.setClippingRegion($v(2, 2), $v(2, 2));
+    dts.drawApi.drawSprite(s(4, 4, 0, 0), $v(1, 1));
+
+    dts.canvas.expectToEqual({
+      withMapping: { "-": c0, "#": c1, ":": c2, "%": c3, "=": c4 },
+      expectedImageAsAscii: `
+        - - - - - -
+        - - - - - -
+        - - : = - -
+        - - % : - -
+        - - - - - -
+        - - - - - -
+      `,
+    });
+  });
+
   test("transparency", () => {
     const dts = drawingTestSetup(4, 4, c0);
     const image = new TestImage({

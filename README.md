@@ -219,7 +219,7 @@ implementation by Alois Zingl: http://members.chello.at/easyfilter/bresenham.htm
 - `BeetPx:`: Fixed `wasJustPaused()` and `wasJustResumed()`.
 - `BeetPxDraw`: Added `cameraXy`.
 - `BpxCanvasSnapshotColorMapping`: Added `from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor]>` factory method.
-- `BpxColorMapper`: Made `x` and `y` optional. 
+- `BpxColorMapper`: Made `x` and `y` optional.
 - `BpxEasing`: Added more easing functions.
 - `BpxPersistedStateValueConstraints`: `undefined` values are now valid.
 - `BpxTimer`: Added `isPaused()`.
@@ -273,5 +273,4 @@ implementation by Alois Zingl: http://members.chello.at/easyfilter/bresenham.htm
 
 ### v0.51.1
 
-- `BpxVector2d`: Fixed `normalize()` method so it treats `(0,0)` vector in a
-  special by returning the `(0,0)`.
+- `BpxVector2d`: Fixed `normalize()` method so it treats `(0,0)` vector in a special way by returning the `(0,0)`.
