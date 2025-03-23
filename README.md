@@ -20,6 +20,7 @@
     * [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
   * [Known Issues](#known-issues)
   * [Release Notes](#release-notes)
+    * [v0.55.0](#v0550)
     * [v0.54.0](#v0540)
     * [v0.53.0](#v0530)
     * [v0.52.1](#v0521)
@@ -205,6 +206,19 @@ implementation by Alois Zingl: http://members.chello.at/easyfilter/bresenham.htm
   when trying to use game touch buttons.
 
 ## Release Notes
+
+### v0.55.0
+
+- Renamed `BpxEngineConfig` to `BpxFrameworkConfig`.
+- `BeetPx:`: Fixed `wasJustPaused()` and `wasJustResumed()`.
+- `BeetPxDraw`: Added `cameraXy`.
+- `BpxCanvasSnapshotColorMapping`: Added `from(colorMappingEntries: Array<[BpxRgbColor, BpxRgbColor]>` factory method.
+- `BpxColorMapper`: Made `x` and `y` optional. 
+- `BpxEasing`: Added more easing functions.
+- `BpxPersistedStateValueConstraints`: `undefined` values are now valid.
+- `BpxTimer`: Added `isPaused()`.
+- `BpxTimerSequence`: Added `isPaused()`.
+- `BpxUtils`: Added `rand(…)` and `randInt(…)`, rename `randomElementOf(…)` to `randOf(…)`.
 
 ### v0.54.0
 

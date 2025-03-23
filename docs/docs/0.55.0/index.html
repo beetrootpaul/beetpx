@@ -1,0 +1,321 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><link rel="canonical" href="https://beetpx.dev/docs/0.55.0/"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@beetpx/beetpx - v0.55.0</title><meta name="description" content="Documentation for @beetpx/beetpx"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="https://beetpx.dev" class="title">@beetpx/beetpx - v0.55.0</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>@beetpx/beetpx - v0.55.0</h2></div><div class="tsd-panel tsd-typography"><a id="md:beetpx" class="tsd-anchor"></a><h1 class="tsd-anchor-link">BeetPx<a href="#md:beetpx" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><img src="media/BeetPx_logo_x5.png" width="80" alt="BeetP logo">
+<blockquote>
+<p>A TypeScript framework for pixel art browser games.</p>
+</blockquote>
+<hr>
+<!-- TOC -->
+<ul>
+<li><a href="#md:beetpx">BeetPx</a>
+<ul>
+<li><a href="#md:getting-started">Getting Started</a>
+<ul>
+<li><a href="#md:examples">Examples</a></li>
+</ul>
+</li>
+<li><a href="#md:game-controls">Game Controls</a></li>
+<li><a href="#md:api">API</a></li>
+<li><a href="#md:development-setup">Development Setup</a></li>
+<li><a href="#md:the-origin">The Origin</a></li>
+<li><a href="#md:credits">Credits</a>
+<ul>
+<li><a href="#md:fonts">Fonts</a></li>
+<li><a href="#md:color-palettes">Color Palettes</a></li>
+<li><a href="#md:bresenhams-algorithm-implementation">Bresenham's Algorithm implementation</a></li>
+</ul>
+</li>
+<li><a href="#md:known-issues">Known Issues</a></li>
+<li><a href="#md:release-notes">Release Notes</a>
+<ul>
+<li><a href="#md:v0550">v0.55.0</a></li>
+<li><a href="#md:v0540">v0.54.0</a></li>
+<li><a href="#md:v0530">v0.53.0</a></li>
+<li><a href="#md:v0521">v0.52.1</a></li>
+<li><a href="#md:v0520">v0.52.0</a></li>
+<li><a href="#md:v0513">v0.51.3</a></li>
+<li><a href="#md:v0512">v0.51.2</a></li>
+<li><a href="#md:v0511">v0.51.1</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- TOC -->
+<hr>
+<a id="md:getting-started" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Getting Started<a href="#md:getting-started" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>In your terminal navigate to the parent folder in which you want to create your
+BeetPx game. Then run:</p>
+<pre><code class="shell"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">init</span><span class="hl-1"> </span><span class="hl-2">@beetpx/beetpx-game@latest</span><span class="hl-1"> </span><span class="hl-2">my-game</span><br/><span class="hl-0">cd</span><span class="hl-1"> </span><span class="hl-2">my-game</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span>
+</code><button type="button">Copy</button></pre>
+
+<p>where <code>my-game</code> is your desired directory/project name.</p>
+<p>To make sure things are working correctly, continue with:</p>
+<pre><code class="shell"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">tsc</span><br/><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">start</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:examples" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Examples<a href="#md:examples" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>To see how to use the API, check out the examples:
+<a href="https://github.com/beetrootpaul/beetpx-examples/">https://github.com/beetrootpaul/beetpx-examples/</a></p>
+<p>Also, you might want to take a look at how following projects are using BeetPx:</p>
+<table>
+<thead>
+<tr>
+<th>game</th>
+<th>GitHub repository</th>
+<th>screenshot</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hat Escape</strong></td>
+<td><a href="https://github.com/beetrootpaul/hat-escape">beetrootpaul/hat-escape</a></td>
+<td><img src="media/game-example-hat-escape.png" width="192"></td>
+</tr>
+<tr>
+<td><strong>Dart-07</strong></td>
+<td><a href="https://github.com/beetrootpaul/dart-07-beetpx">beetrootpaul/dart-07-beetpx</a></td>
+<td><img src="media/game-example-dart-07.gif" width="192"></td>
+</tr>
+<tr>
+<td><strong>Towers of Survival</strong></td>
+<td><a href="https://github.com/beetrootpaul/towers-of-survival-beetpx">beetrootpaul/towers-of-survival-beetpx</a></td>
+<td><img src="media/game-example-towers-of-survival.png" width="192"></td>
+</tr>
+<tr>
+<td><strong>Avoid Your Past</strong></td>
+<td><a href="https://github.com/beetrootpaul/avoid-your-past-beetpx">beetrootpaul/avoid-your-past-beetpx</a></td>
+<td><img src="media/game-example-avoid-your-past.png" width="192"></td>
+</tr>
+</tbody>
+</table>
+<a id="md:game-controls" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Game Controls<a href="#md:game-controls" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><img src="media/beetpx_controls.png" width="640">
+<p>The BeetPx framework supports a following sets of game buttons and their mappings
+from physical devices:</p>
+<table>
+<thead>
+<tr>
+<th>game button</th>
+<th>keyboard</th>
+<th>DualSense controller</th>
+<th>Xbox controller</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>O</strong> (Maru)</td>
+<td><code>C</code> / <code>J</code> / <code>O</code></td>
+<td>circle / square</td>
+<td><code>A</code> / <code>Y</code></td>
+</tr>
+<tr>
+<td><strong>X</strong> (Batsu)</td>
+<td><code>X</code> / <code>K</code></td>
+<td>cross / triangle</td>
+<td><code>B</code> / <code>X</code></td>
+</tr>
+<tr>
+<td><strong>menu</strong></td>
+<td><code>P</code> / <code>return</code> / <code>esc</code></td>
+<td>menu</td>
+<td>menu</td>
+</tr>
+<tr>
+<td><strong>directions</strong></td>
+<td>arrows / <code>WSAD</code></td>
+<td>D-pad / sticks</td>
+<td>D-pad / sticks</td>
+</tr>
+<tr>
+<td><strong>mute/unmute</strong></td>
+<td><code>M</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>full screen</strong></td>
+<td><code>F</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>take screenshot</strong> (if enabled)</td>
+<td><code>]</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>browse screenshots</strong> (if enabled)</td>
+<td><code>}</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Regarding the main game buttons on a keyboard, the intention is basically to
+either play with left hand on <code>X</code>+<code>C</code> and right hand on arrows, or to place the
+left hand on <code>WSAD</code>, then used <code>J</code>+<code>K</code> with the right hand. The <code>O</code> support is
+added in order to reduce to entry barrier for a situation when the game author
+uses the &quot;⭕️&quot; and &quot;❌&quot; on their sprites and a player doesn't realize what keys
+should they use – there is a chance they would try with just <code>O</code>+<code>X</code> on their
+keyboard.</p>
+<p>Regarding th game controllers – other controllers might works as well. For
+example, this framework has an implemented support for <strong>8BitDo Lite 2</strong>.</p>
+<p>There are also <strong>touch controls</strong> in form of GUI buttons resembling a physical
+ones. You can see and use them on touch devices like e.g. an iPhone.</p>
+<p>Dev controls meant to be used by the game developer themselves and gated behind
+related framework config fields:</p>
+<ul>
+<li><strong>toggle debug</strong>:
+<ul>
+<li>on keyboard: <code>;</code></li>
+</ul>
+</li>
+<li><strong>toggle frame-by-frame</strong>:
+<ul>
+<li>on keyboard: <code>,</code></li>
+</ul>
+</li>
+<li><strong>jump to the next frame</strong> (only while in frame-by-frame mode):
+<ul>
+<li>on keyboard: <code>.</code></li>
+</ul>
+</li>
+</ul>
+<p>ℹ️ To check if your controls work as expected, go to
+<a href="https://beetrootpaul.itch.io/beetpx-input-tester">https://beetrootpaul.itch.io/beetpx-input-tester</a> .</p>
+<a id="md:api" class="tsd-anchor"></a><h2 class="tsd-anchor-link">API<a href="#md:api" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>You can find docs at <a href="https://beetpx.dev">https://beetpx.dev</a> .</p>
+<p>ℹ️ For a quick start you can start by typing either <code>BeetPx.</code> and checking what
+your IDE suggests. Same for <code>BeetPxDraw.</code>, and <code>BeetPxUtils.</code>. Their shorthands
+are respectively: <code>$</code>, <code>$d</code>, and <code>$u</code>.</p>
+<a id="md:development-setup" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Development Setup<a href="#md:development-setup" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>This projects is developed on
+<a href="https://nodejs.org/docs/latest-v18.x/api/index.html">Node.js 18</a>.</p>
+<p>You might find it helpful to use
+<a href="https://github.com/nvm-sh/nvm#installing-and-updating">nvm</a> in order to make
+sure you use the same Node.js version as which is specified in <code>.nvmrc</code> file.</p>
+<p>There is no CI configured for this project. For now, it is developed by me only,
+and all tests as well as the compilation happen in a pre-commit hook.</p>
+<a id="md:the-origin" class="tsd-anchor"></a><h2 class="tsd-anchor-link">The Origin<a href="#md:the-origin" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>My idea for BeetPx came from a good time I had working on mini games in
+<a href="https://www.lexaloffle.com/pico-8.php">PICO-8</a>. That fantasy console hit a
+very sweet spot for me: in PICO-8 you are creating low resolution pixel art
+games, to do so you use a globally available simple API, and all your creations
+can easily run in a desktop browser or a mobile one.</p>
+<p>There are though some areas I would like differently:</p>
+<ul>
+<li>I prefer to use a typed language and a one which follows a standard. In PICO-8
+I had to use a custom version of Lua, which meant difficulties in finding a
+decent extension for an IDE of my choice.</li>
+<li>PICO-8 has a token limit, which generally means a limit on how much code you
+are allowed to write and an incentive to use a shorter language constructs
+rather than optimizing for a code maintenance. I understand this is a
+heated topic in PICO-8 community and I also see advantages of the limited
+approach – e.g. it helps to keep games low scoped and, in result finish them!
+Also, it is sometimes a real fun to come with clever solutions for hunting
+tokens down 😄. But, when it comes to my personal preferences, I more often was
+frustrated by the token limit rather then enjoying it.</li>
+<li>There is (was?) a minor issue with a browser build of PICO-8 games, where the long
+press of a in-game button on iOS Safari makes a system text selection
+to appear and prevents user from playing a game in a smoothly manner. Of course, this is
+something I could work around by adjusting an HTML template exported from
+PICO-8. But since I decided to create my own framework, I am able to take care of
+browser iOS experience and do it the way I like.</li>
+<li>Last but not least: I just wanted to have something created for public,
+<a href="https://www.npmjs.com/package/@beetpx/beetpx">available on npm</a>, something I
+feel I am capable to do and can be proud of later on ☺️</li>
+</ul>
+<p>That being said, I am very grateful that PICO-8 exists and there is a big
+and helpful community around it. If not for PICO-8, BeetPx would never be created 💛</p>
+<a id="md:credits" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Credits<a href="#md:credits" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:fonts" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Fonts<a href="#md:fonts" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>While you are able (and encouraged) to define your own font (as an
+implementation of <code>BpxFont</code> interface), there are 3 fonts ready to use in BeetPx
+out of the box:</p>
+<ul>
+<li><code>$font_pico8</code> (the default one)</li>
+<li><code>$font_saint11Minimal4</code></li>
+<li><code>$font_saint11Minimal5</code></li>
+</ul>
+<p>The first one is a font from PICO-8 fantasy console, available under a CC-0
+license (public domain, free to use). For more info see:
+<a href="https://www.lexaloffle.com/pico-8.php?page=faq">https://www.lexaloffle.com/pico-8.php?page=faq</a></p>
+<p>Two other fonts are created by <a href="https://saint11.org/about/">Saint11</a> and
+available on <a href="https://saint11.org/blog/fonts/">https://saint11.org/blog/fonts/</a> under a CC-0 license (public
+domain, free to use).</p>
+<a id="md:color-palettes" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Color Palettes<a href="#md:color-palettes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>There is a PICO-8 color palette ready to use, exported as <code>$rgb_p8</code>. That
+palette is created by zep and available under a CC-0 license (public domain,
+free to use). For more info see: <a href="https://www.lexaloffle.com/pico-8.php?page=faq">https://www.lexaloffle.com/pico-8.php?page=faq</a></p>
+<a id="md:bresenhams-algorithm-implementation" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Bresenham's Algorithm implementation<a href="#md:bresenhams-algorithm-implementation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>I based the line and ellipse drawing methods on a Bresenham's Algorithm
+implementation by Alois Zingl: <a href="http://members.chello.at/easyfilter/bresenham.html">http://members.chello.at/easyfilter/bresenham.html</a> and <a href="https://github.com/zingl/Bresenham">https://github.com/zingl/Bresenham</a></p>
+<a id="md:known-issues" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Known Issues<a href="#md:known-issues" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>Gamepad input seems to be laggy (at least on Firefox), unsuitable for fast
+paced games.</li>
+<li>In iOS web browsers (Safari, Firefox, etc.) it is possible to go to the
+previous page by swiping the finger from the left edge. Which means, it is
+possible to accidentally close the game (while playing it on e.g. <a href="http://itch.io">itch.io</a>)
+when trying to use game touch buttons.</li>
+</ul>
+<a id="md:release-notes" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Release Notes<a href="#md:release-notes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:v0550" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.55.0<a href="#md:v0550" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>Renamed <code>BpxEngineConfig</code> to <code>BpxFrameworkConfig</code>.</li>
+<li><code>BeetPx:</code>: Fixed <code>wasJustPaused()</code> and <code>wasJustResumed()</code>.</li>
+<li><code>BeetPxDraw</code>: Added <code>cameraXy</code>.</li>
+<li><code>BpxCanvasSnapshotColorMapping</code>: Added <code>from(colorMappingEntries: Array&lt;[BpxRgbColor, BpxRgbColor]&gt;</code> factory method.</li>
+<li><code>BpxColorMapper</code>: Made <code>x</code> and <code>y</code> optional.</li>
+<li><code>BpxEasing</code>: Added more easing functions.</li>
+<li><code>BpxPersistedStateValueConstraints</code>: <code>undefined</code> values are now valid.</li>
+<li><code>BpxTimer</code>: Added <code>isPaused()</code>.</li>
+<li><code>BpxTimerSequence</code>: Added <code>isPaused()</code>.</li>
+<li><code>BpxUtils</code>: Added <code>rand(…)</code> and <code>randInt(…)</code>, rename <code>randomElementOf(…)</code> to <code>randOf(…)</code>.</li>
+</ul>
+<a id="md:v0540" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.54.0<a href="#md:v0540" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>CLI: Added <code>--htmlDeviceColor</code> option.</li>
+<li><code>BeetPx:</code>: Added <code>isTouchInputMethodAvailable()</code>.</li>
+</ul>
+<a id="md:v0530" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.53.0<a href="#md:v0530" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>Renamed <code>$</code> to <code>$x</code> for a better auto-import experience in WebStorm IDE.</li>
+<li>Drawing: Transparent (<code>null</code>) sprite pixels are now passed to the <code>BpxSpriteColorMapping</code>
+as well.</li>
+<li><code>BeetPxUtils</code>: Fixed <code>offset4Directions()</code> to return left/up/right/down
+instead of diagonals.</li>
+<li><code>BeetPxUtils</code>: Renamed <code>offset4Directions()</code> to <code>adjacent4()</code>.</li>
+<li><code>BeetPxUtils</code>: Renamed <code>offset8Directions()</code> to <code>adjacent8()</code>.</li>
+<li><code>BpxVector2d</code>: Renamed <code>min(…)</code> to <code>minOf(…)</code>.</li>
+<li><code>BpxVector2d</code>: Renamed <code>max(…)</code> to <code>maxOf(…)</code>.</li>
+<li><code>BpxVector2d</code>: Renamed <code>minMax(…)</code> to <code>minMaxOf(…)</code>.</li>
+<li><code>BpxVector2d</code>: Added <code>(x: number, y: number): boolean</code> overload to <code>eq(…)</code>.</li>
+<li><code>BpxVector2d</code>: Added <code>(x: number, y: number): boolean</code> overload to <code>gt(…)</code>.</li>
+<li><code>BpxVector2d</code>: Added <code>(x: number, y: number): boolean</code> overload to <code>gte(…)</code>.</li>
+<li><code>BpxVector2d</code>: Added <code>(x: number, y: number): boolean</code> overload to <code>lt(…)</code>.</li>
+<li><code>BpxVector2d</code>: Added <code>(x: number, y: number): boolean</code> overload to <code>lte(…)</code>.</li>
+</ul>
+<a id="md:v0521" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.52.1<a href="#md:v0521" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>Game input: Fixed an issue of <code>&quot;touch&quot;</code> input method not being listed among others
+in a set returned by <code>BeetPx.getRecentInputMethods()</code>.</li>
+</ul>
+<a id="md:v0520" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.52.0<a href="#md:v0520" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>Game loop: Fixed an issue of timers and animations behaving in the draw callback
+like if the next frame has already happened, even though its update callback was
+not called yet.</li>
+</ul>
+<a id="md:v0513" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.51.3<a href="#md:v0513" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li><code>BpxAnimatedSprite</code>: Added <code>t</code> computed property.</li>
+</ul>
+<a id="md:v0512" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.51.2<a href="#md:v0512" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>Console GUI on touch devices: Fixed the &quot;O&quot; button's press animation.</li>
+<li><code>BpxVector2d</code>: Added <code>neg()</code> method.</li>
+<li><code>BpxVector2d</code>: Added <code>$v_0_1</code> shorthand.</li>
+<li><code>BpxVector2d</code>: Added <code>$v_1_0</code> shorthand.</li>
+</ul>
+<a id="md:v0511" class="tsd-anchor"></a><h3 class="tsd-anchor-link">v0.51.1<a href="#md:v0511" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li><code>BpxVector2d</code>: Fixed <code>normalize()</code> method so it treats <code>(0,0)</code> vector in a
+special by returning the <code>(0,0)</code>.</li>
+</ul>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:beetpx"><span>Beet<wbr/>Px</span></a><ul><li><a href="#md:getting-started"><span>Getting <wbr/>Started</span></a></li><li><ul><li><a href="#md:examples"><span>Examples</span></a></li></ul></li><li><a href="#md:game-controls"><span>Game <wbr/>Controls</span></a></li><li><a href="#md:api"><span>API</span></a></li><li><a href="#md:development-setup"><span>Development <wbr/>Setup</span></a></li><li><a href="#md:the-origin"><span>The <wbr/>Origin</span></a></li><li><a href="#md:credits"><span>Credits</span></a></li><li><ul><li><a href="#md:fonts"><span>Fonts</span></a></li><li><a href="#md:color-palettes"><span>Color <wbr/>Palettes</span></a></li><li><a href="#md:bresenhams-algorithm-implementation"><span>Bresenham&#39;s <wbr/>Algorithm implementation</span></a></li></ul></li><li><a href="#md:known-issues"><span>Known <wbr/>Issues</span></a></li><li><a href="#md:release-notes"><span>Release <wbr/>Notes</span></a></li><li><ul><li><a href="#md:v0550"><span>v0.55.0</span></a></li><li><a href="#md:v0540"><span>v0.54.0</span></a></li><li><a href="#md:v0530"><span>v0.53.0</span></a></li><li><a href="#md:v0521"><span>v0.52.1</span></a></li><li><a href="#md:v0520"><span>v0.52.0</span></a></li><li><a href="#md:v0513"><span>v0.51.3</span></a></li><li><a href="#md:v0512"><span>v0.51.2</span></a></li><li><a href="#md:v0511"><span>v0.51.1</span></a></li></ul></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="index.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>@beetpx/beetpx - v0.55.0</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a><br>
+            <span id="generation-date"></span>
+            <script>
+                window.GENERATION_DATE = 1742688583012;
+
+                (() => {
+                    
+        const formatter = new Intl.DateTimeFormat(navigator.language, {
+            dateStyle: 'medium'
+        });
+
+        document.getElementById('generation-date').innerText = formatter.format(window.GENERATION_DATE);
+    
+                })();
+            </script>
+        </p></footer><div class="overlay"></div></body></html>
