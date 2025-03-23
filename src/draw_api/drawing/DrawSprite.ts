@@ -80,13 +80,15 @@ export class DrawSprite {
 
     for (let cX = canvasXy1.x; cX < canvasXy2.x; cX += 1) {
       for (let cY = canvasXy1.y; cY < canvasXy2.y; cY += 1) {
-        const [sX, sY] = xyMapper.toSpriteXy(cX, cY);
+        if (this.#canvas.canSetAt(cX, cY)) {
+          const [sX, sY] = xyMapper.toSpriteXy(cX, cY);
 
-        if (pattern.hasPrimaryColorAt(cX, cY)) {
-          const color = ps.colors[sX]![sY]!;
-          const mappedColor = colorMapping.getMappedColor(color, sX, sY);
-          if (mappedColor) {
-            this.#canvas.set(mappedColor, cX, cY);
+          if (pattern.hasPrimaryColorAt(cX, cY)) {
+            const color = ps.colors[sX]![sY]!;
+            const mappedColor = colorMapping.getMappedColor(color, sX, sY);
+            if (mappedColor) {
+              this.#canvas.set(mappedColor, cX, cY);
+            }
           }
         }
       }
