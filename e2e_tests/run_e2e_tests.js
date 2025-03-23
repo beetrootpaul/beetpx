@@ -11,7 +11,6 @@ const devTestFiles = files.filter(f => f.endsWith(".dev.e2e.ts"));
 const prodTestFiles = files.filter(f => f.endsWith(".prod.e2e.ts"));
 const allowedNonTestFiles = [
   ".beetpx",
-  ".gitignore",
   "index.html",
   "playwright.config.ts",
   "public",
@@ -55,6 +54,11 @@ if (hasSucceeded) {
 
 function runTest(testFile, isProd) {
   console.log(`\n[e2e] ${testFile} ...\n`);
+
+  if (fs.existsSync("public")) {
+    fs.rmSync("public", { recursive: true });
+  }
+  fs.mkdirSync("public");
 
   if (fs.existsSync(playwrightConfigFile)) {
     fs.rmSync(playwrightConfigFile);

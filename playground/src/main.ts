@@ -63,18 +63,25 @@ $x.setOnUpdate(() => {
   bgXy = bgXy.add($x.getPressedDirection().normalize().mul(8));
 
   if ($x.wasButtonJustPressed("x") && $x.wasButtonJustPressed("o")) {
+    $x.logInfo("x+o");
     t.restart();
     tseq.restart();
     t2?.restart();
   } else if ($x.wasButtonJustPressed("x")) {
+    $x.logInfo("x");
     t.pause();
     tseq.pause();
     t2?.pause();
   } else if ($x.wasButtonJustPressed("o")) {
+    $x.logInfo("o");
     t.resume();
     tseq.resume();
     t2?.resume();
   }
+
+  $x.logInfo("t:", t.t);
+  $x.logInfo("t2:", t2?.t);
+  $x.logInfo("tseq:", tseq.t);
 
   if (tseq.hasJustFinishedOverall) {
     t2 = $timer(3, { loop: true });
