@@ -6,3 +6,13 @@
 
 # local playground etc.
 /tmp/
+
+#
+# Playwright E2E tests
+#
+
+/e2e_tests/.beetpx/
+# We ignore the config here, because we are generating it on the fly
+/e2e_tests/playwright.config.ts
+/e2e_tests/public/
+/e2e_tests/test-results/

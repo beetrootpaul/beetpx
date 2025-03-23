@@ -5,7 +5,7 @@
   "author": "Beetroot Paul",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "scripts": {
     "test": "vitest run",
@@ -14,13 +14,14 @@
     "zip": "beetpx build && beetpx zip",
     "format": "prettier --ignore-path .gitignore --write src/",
     "tsc": "tsc",
-    "tsc:watch": "tsc --watch"
+    "tsc:watch": "tsc --watch",
+    "checkForDepedencyUpdates": "npx npm-check-updates"
   },
   "devDependencies": {
     "@beetpx/beetpx": "file:../",
-    "prettier": "3.3.3",
-    "prettier-plugin-organize-imports": "4.0.0",
-    "typescript": "5.5.3",
+    "prettier": "3.5.3",
+    "prettier-plugin-organize-imports": "4.1.0",
+    "typescript": "5.8.2",
     "vitest": "3.0.9"
   }
 }

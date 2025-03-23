@@ -122,7 +122,7 @@ are respectively: `$`, `$d`, and `$u`.
 ## Development Setup
 
 This projects is developed on
-[Node.js 18](https://nodejs.org/docs/latest-v18.x/api/index.html).
+[Node.js 22](https://nodejs.org/docs/latest-v22.x/api/index.html).
 
 You might find it helpful to use
 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) in order to make
