@@ -20,6 +20,7 @@
     * [Bresenham's Algorithm implementation](#bresenhams-algorithm-implementation)
   * [Known Issues](#known-issues)
   * [Release Notes](#release-notes)
+    * [v0.56.0](#v0560)
     * [v0.55.0](#v0550)
     * [v0.54.0](#v0540)
     * [v0.53.0](#v0530)
@@ -206,6 +207,11 @@ implementation by Alois Zingl: http://members.chello.at/easyfilter/bresenham.htm
   when trying to use game touch buttons.
 
 ## Release Notes
+
+### v0.56.0
+
+- Updated Node.js used by the project from v18 to v22.
+- Updated TypeScript version used by the project from 5.5.3 to 5.8.2.
 
 ### v0.55.0
 
