@@ -1,0 +1,10 @@
+# Testing sandbox
+/test_sandbox/
+
+# JetBrains IDE's project settings
+/.idea/
+
+# Node.js: dependencies
+/node_modules/
+
+/tmp/

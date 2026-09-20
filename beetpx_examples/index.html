@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<title>tmp BeetPx web run</title>
+</head>
+
+<body>
+	<p>Open the browser dev tools console to see output.</p>
+	<script src="odin.js"></script>
+	<script>
+		window.odin.runWasm("game.wasm").catch((err) => {
+			console.error(err);
+			document.body.insertAdjacentHTML("beforeend",
+				"<p>Failed to load game.wasm - see the dev tools console.</p>");
+		});
+	</script>
+</body>
+
+</html>

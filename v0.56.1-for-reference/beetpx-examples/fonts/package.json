@@ -1,0 +1,21 @@
+{
+  "name": "@beetpx/example-fonts",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Beetroot Paul",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "start": "beetpx dev --open",
+    "prod": "beetpx build && beetpx preview --open",
+    "zip": "beetpx build && beetpx zip",
+    "tsc": "tsc",
+    "tsc:watch": "tsc --watch"
+  },
+  "devDependencies": {
+    "@beetpx/beetpx": "0.56.1",
+    "typescript": "5.8.2"
+  }
+}

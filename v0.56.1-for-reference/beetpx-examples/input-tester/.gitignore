@@ -1,0 +1,5 @@
+# BeetPx: generated and temporary files
+/.beetpx/
+
+# Node.js: dependencies
+/node_modules/

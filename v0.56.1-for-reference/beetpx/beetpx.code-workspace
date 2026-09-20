@@ -1,0 +1,48 @@
+{
+	"extensions": {
+		"recommendations": [
+			"esbenp.prettier-vscode",
+			"vitest.explorer"
+		]
+	},
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../beetpx-examples"
+		},
+		{
+			"path": "../beetpx-npm-init-game"
+		},
+		{
+			"path": "../avoid-your-past-beetpx"
+		},
+		{
+			"path": "../hat-escape"
+		},
+		{
+			"path": "../dart-07-beetpx"
+		},
+		{
+			"path": "../towers-of-survival-beetpx"
+		}
+	],
+	"settings": {
+		"[json]": {},
+		"[typescript]": {},
+		"files.exclude": {
+			".beetpx/": true,
+			".dist/": true,
+			".idea/": true,
+			"**/.DS_Store": true,
+			"**/.git": true,
+			"**/node_modules": true
+		},
+		"typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+		"typescript.inlayHints.parameterNames.enabled": "all",
+		"typescript.inlayHints.parameterTypes.enabled": true,
+		"typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+		"typescript.inlayHints.variableTypes.enabled": true
+	}
+}
