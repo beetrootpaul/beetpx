@@ -101,6 +101,19 @@ language like Zig:
   fields, so `bpx.draw.sprite(...)` becomes a flat, prefixed call in one
   `beetpx` package: `bpx.draw_sprite(...)`. This preserves "game imports only
   one thing" at the cost of nested-namespace readability.
+- **Losing the separate drawing namespace also loses its free phase check.**
+  In the current engine, `BeetPxDraw`/`$d`'s methods runtime-check that they
+  are only called from inside `setOnDraw` (or `setOnStarted`), logging a
+  warning otherwise; `BeetPx`/`$x` methods carry no such check and are
+  callable from anywhere in the game loop. That restriction exists because
+  `$d` is a thin façade over the engine's own `DrawApi` object, which owns
+  per-frame drawing state (camera, clipping region, pattern, active font) —
+  calling it outside the render phase would mutate state nothing then reads.
+  Folding `bpx.draw_*` into the same flat façade as everything else means
+  this enforcement is no longer inherited for free from a separate
+  namespace; if the rewrite still wants to catch drawing calls made from
+  `update` or elsewhere outside `draw`, it needs its own explicit runtime
+  check.
 - **No implicit callback discovery.** Odin has no compile-time duck-typing
   over arbitrary declarations, so `bpx.run` cannot discover which optional
   lifecycle methods a game type happens to implement. Instead the game passes
