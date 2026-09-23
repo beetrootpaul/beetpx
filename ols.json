@@ -1,0 +1,9 @@
+{
+	"$schema": "https://raw.githubusercontent.com/DanielGavin/ols/master/misc/ols.schema.json",
+	"collections": [
+		{
+			"name": "beetpx_core",
+			"path": "./beetpx_core/"
+		}
+	]
+}

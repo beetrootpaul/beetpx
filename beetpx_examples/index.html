@@ -1,21 +1,47 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>tmp BeetPx web run</title>
+    <style>
+      #beetpx_canvas {
+        border: 1px solid orange;
+        width: 512px;
+        height: 512px;
+        image-rendering: pixelated;
+      }
 
-<head>
-	<meta charset="utf-8" />
-	<title>tmp BeetPx web run</title>
-</head>
+      .critical_error {
+        border: 1px solid red;
+        padding: 1em;
+        color: red;
+        font-weight: 700;
 
-<body>
-	<p>Open the browser dev tools console to see output.</p>
-	<script src="odin.js"></script>
-	<script>
-		window.odin.runWasm("game.wasm").catch((err) => {
-			console.error(err);
-			document.body.insertAdjacentHTML("beforeend",
-				"<p>Failed to load game.wasm - see the dev tools console.</p>");
-		});
-	</script>
-</body>
+        p {
+          margin: 0.4em 0;
+        }
+      }
+    </style>
+  </head>
 
+  <body>
+    <p>Open the browser dev tools console to see output.</p>
+    <canvas id="beetpx_canvas" width="64" height="64"></canvas>
+    <script src="odin.js"></script>
+    <script>
+      const wasmFileName = "beetpx_game.wasm";
+      window.odin.runWasm(wasmFileName).catch((err) => {
+        console.error(err);
+        document.body.insertAdjacentHTML(
+          "afterbegin",
+          `
+				    <div class="critical_error">
+					    <p>Failed to load '${wasmFileName}'.</p>
+              <p>See the error in the dev tools console.</p>
+            </div>
+			    `.trim(),
+        );
+      });
+    </script>
+  </body>
 </html>
