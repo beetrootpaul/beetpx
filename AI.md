@@ -67,10 +67,17 @@ the code license does not cover.
 
 ## Repository state
 
-This checkout is on branch `v2`: a from-scratch Odin rewrite of BeetPx.
+This checkout is on branch `odin`: a from-scratch Odin rewrite of BeetPx, at
+an early stage.
 
-- **There is no Odin source yet** - zero `.odin` files. Do not go looking for
-  `src/`, a `beetpx` package, or a CLI; they are still unwritten.
+- `beetpx_core/` - the engine package, imported as the `beetpx_core`
+  collection. Platform-specific code lives in `platform_darwin.odin` and
+  `platform_js.odin`.
+- `beetpx_examples/` - example games (currently `basic/`), plus the
+  `index.html` page that hosts the web build.
+- `scripts/run_web.sh` and `scripts/run_macos.sh` build and run
+  `beetpx_examples/basic` for each target, writing output to `build/`
+  (gitignored). There is no CLI yet.
 - `other/cross-platform-rewrite-llm-braindump.md` - large design braindump for
   the rewrite (layer boundaries, flat `bpx.*` API sketch, phased plan). Read it
   for context, but treat it as a **non-binding draft**: do not quote it as a
@@ -86,11 +93,18 @@ This checkout is on branch `v2`: a from-scratch Odin rewrite of BeetPx.
 ## Toolchain
 
 - `odin` is already on PATH (homebrew, `dev-2026-09`). Relevant targets for
-  this rewrite: `js_wasm32` for the browser and native macOS.
-- No CI, no linter, no formatter, and no test suite are configured. `odinfmt`
-  and `ols` are **not** installed, so do not invoke them or assume a
-  format/typecheck step exists. Verification is planned as `odin test` with
-  `core:testing`, but no tests exist yet.
+  this rewrite: `js_wasm32` for the browser and native macOS (`darwin_arm64`).
+- `ols` (language server) and `odinfmt` (formatter) are used through the
+  `danielgavin.ols` VS Code extension, which bundles its own binaries. They are
+  **not** on PATH, so do not invoke them from the shell. Their configuration is
+  checked in at the repo root: `ols.json` (registers the `beetpx_core`
+  collection) and `odinfmt.json` (80-column lines, LF line endings). Write Odin
+  code that already conforms to those settings.
+- Shared editor settings live in `beetpx.code-workspace`. `.vscode/` is
+  gitignored and meant for personal, untracked settings, so do not put shared
+  configuration there.
+- No CI, no linter, and no test suite are configured. Verification is planned
+  as `odin test` with `core:testing`, but no tests exist yet.
 
 ## Odin language
 
