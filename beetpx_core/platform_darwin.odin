@@ -30,13 +30,21 @@ _platform_start :: proc() {
 		&_sdl_renderer,
 	)
 	if !ok {
-		fmt.eprintln("BeetPx: sdl.CreateWindowAndRenderer failed:", sdl.GetError())
+		fmt.eprintln(
+			"BeetPx: sdl.CreateWindowAndRenderer failed:",
+			sdl.GetError(),
+		)
 		return
 	}
 	defer sdl.DestroyRenderer(_sdl_renderer)
 	defer sdl.DestroyWindow(sdl_window)
 
-	sdl.SetRenderLogicalPresentation(_sdl_renderer, CANVAS_WIDTH, CANVAS_HEIGHT, .LETTERBOX)
+	sdl.SetRenderLogicalPresentation(
+		_sdl_renderer,
+		CANVAS_WIDTH,
+		CANVAS_HEIGHT,
+		.LETTERBOX,
+	)
 	sdl.SetRenderVSync(_sdl_renderer, 1)
 
 	previous_ticks := sdl.GetTicks()

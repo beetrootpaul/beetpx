@@ -12,7 +12,10 @@ _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
 @(private)
 _platform_start :: proc() {
-	ok := gl.CreateCurrentContextById(_CANVAS_ELEMENT_ID, gl.DEFAULT_CONTEXT_ATTRIBUTES)
+	ok := gl.CreateCurrentContextById(
+		_CANVAS_ELEMENT_ID,
+		gl.DEFAULT_CONTEXT_ATTRIBUTES,
+	)
 	if !ok {
 		fmt.eprintln(
 			"BeetPx: gl.CreateCurrentContextById failed for canvas id:",
@@ -30,7 +33,12 @@ _platform_present :: proc() {
 
 // TODO: Move it to core and draw pixel-by-pixel.
 draw_clear_canvas :: proc(color: color.Rgb) {
-	gl.ClearColor(f32(color.r) / 255, f32(color.g) / 255, f32(color.b) / 255, 1)
+	gl.ClearColor(
+		f32(color.r) / 255,
+		f32(color.g) / 255,
+		f32(color.b) / 255,
+		1,
+	)
 	// TODO: Do not use webgl for pixel-by-pixel drawing in BeetPx framework. There is no point.
 	gl.Clear(u32(gl.COLOR_BUFFER_BIT))
 }

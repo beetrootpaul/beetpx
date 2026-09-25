@@ -17,7 +17,8 @@ update :: proc() {
 draw :: proc() {
 	// BeetPx runs at 30 FPS, therefore here we change color every 1 second.
 	if (beetpx_core.frame_number / 30) % 2 == 0 {
-		// TODO: Move draw calls to dedicated draw API, which will prevent calling it outside "draw".
+		// TODO: Move draw calls to dedicated draw API, which will prevent
+		// calling it outside "draw".
 		beetpx_core.draw_clear_canvas(palettes.pico8_storm)
 	} else {
 		beetpx_core.draw_clear_canvas(palettes.pico8_lime)
