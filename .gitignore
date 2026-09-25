@@ -3,3 +3,6 @@
 
 # VS Code non-tracked workspace settings
 /.vscode/
+
+# AI
+.claude/
