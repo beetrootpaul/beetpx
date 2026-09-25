@@ -37,10 +37,9 @@ set_on_draw :: proc(on_draw: On_Draw_Proc) {
 
 // Starts the game. Might be blocking, depending on the platform.
 start :: proc() {
+	// Depending on the platform, this proc might be blocking. Therefore,
+	// whatever you put after it, will be run no earlier than on the app exit.
 	_platform_start()
-
-	// TODO: Use a custom logger.
-	fmt.println("BeetPx started")
 }
 
 // Runs any fixed-timestep ticks owed for the detla seconds of real time, then draws exactly once and again and again and again.

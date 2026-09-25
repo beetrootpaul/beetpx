@@ -24,6 +24,9 @@ _platform_start :: proc() {
 		return
 	}
 	gl.Viewport(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT)
+
+	// TODO: Use a custom logger.
+	fmt.println("BeetPx (js) started.")
 }
 
 @(private)

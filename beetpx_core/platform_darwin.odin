@@ -47,6 +47,9 @@ _platform_start :: proc() {
 	)
 	sdl.SetRenderVSync(_sdl_renderer, 1)
 
+	// TODO: Use a custom logger.
+	fmt.println("BeetPx (darwin) started.")
+
 	previous_ticks := sdl.GetTicks()
 	running := true
 	for running {
