@@ -21,8 +21,13 @@ not replace the symlinks with regular files.
   explicit permission first.
 - Never run scripts (e.g. anything under `scripts/`). Tell the user which
   script to run and with what arguments instead.
-- Never commit, amend, or push. The user owns all git operations; edit the
-  working tree and report what changed.
+- Never commit, amend, or push, whether with git or with jj. This is a
+  colocated jj repository, and the user owns all version-control operations:
+  do not create, describe, rewrite, abandon, or move changes or bookmarks
+  (e.g. `jj new`, `jj describe`, `jj commit`, `jj squash`, `jj abandon`,
+  `jj bookmark ...`, `jj git push`). Read-only commands such as `jj log`,
+  `jj diff`, `jj show`, and `jj status` are fine. Edit the working tree and
+  report what changed; jj snapshotting those edits into `@` is expected.
 
 ## Licensing and third-party code
 
@@ -69,6 +74,24 @@ the code license does not cover.
 
 This checkout is on branch `odin`: a from-scratch Odin rewrite of BeetPx, at
 an early stage.
+
+**Read `other/llm-state-of-migration-to-odin.md` at the start of a session.**
+It records what already works, what is temporary, and what has not started,
+so you do not have to re-derive that from the code. The file describes the
+repository as of the last change that touched it, so the changes it may not
+cover yet are the ones after that:
+
+```sh
+jj log -r 'heads(::@ & files("other/llm-state-of-migration-to-odin.md"))..@'
+# Without jj (this misses the uncommitted working-copy change):
+git log "$(git log -1 --format=%H -- other/llm-state-of-migration-to-odin.md)..HEAD"
+```
+
+When your change alters anything the file describes, update the file in the
+same change, including its "Last updated" line. Whenever you touch the file,
+bring all of it up to date, because the lookup above will treat everything
+before that change as covered. Keep it a snapshot of the present, not a
+changelog.
 
 - `beetpx_core/` - the engine package, imported as the `beetpx_core`
   collection. Platform-specific code lives in `platform_darwin.odin` and
