@@ -372,6 +372,89 @@ ticks on `js_wasm32` and native macOS. This guarantee depends on cross-target
 verification of Odin's floating-point codegen and `math.round` behavior.
 Make the clock/event source injectable in framework tests.
 
+### Tick spacing on host frames
+
+A known issue in the current Odin loop, and in v0.56.1's `GameLoop.ts` too.
+Not fixed yet.
+
+**Problem.** When the display refresh rate is a whole multiple of the tick
+rate, ticks should land on host frames in a steady rhythm. At 30 Hz ticks on
+a 60 Hz display, that is one tick every second frame (`0, 1, 0, 1, …` updates
+per frame). But the accumulator starts at 0, and the first host delta is 0 on
+both platforms. So on every frame where a tick is due, the accumulator sits
+almost exactly on `TICK_S`, and tiny jitter in the measured delta decides
+whether the tick runs on that frame or on the next one. Ticks end up 1, 2 or
+3 frames apart instead of always 2, which shows as stutter on anything that
+moves 1 px per tick. With 60 Hz ticks on a 60 Hz display, the same jitter
+produces a frame with 0 updates followed by a frame with 2.
+
+Game time stays correct overall: the accumulator keeps every remainder, so
+nothing drifts. Only the choice of host frame for each tick is uneven. The
+simulation itself is untouched, so the determinism guarantee above still
+holds.
+
+Sources of the jitter:
+
+- macOS: the loop measures time with `sdl.GetTicksNS()` after vsync returns,
+  so OS scheduling adds some noise.
+- Web: `odin.js` computes the delta from `requestAnimationFrame` timestamps.
+  Some browsers round those to coarser steps as a privacy measure, so the
+  jitter differs between browsers.
+- Displays that are not exactly 60 Hz (e.g. 59.94 Hz) slowly shift which
+  frames the ticks land on, so even a lucky starting phase does not last.
+
+**How to confirm it.** Temporarily log the number of ticks per host frame,
+and draw a sprite that moves 1 px per tick. Check macOS at 60 Hz and on a
+120 Hz ProMotion display, and Chrome, Firefox and Safari on the web.
+
+**Possible fix: snap the delta to the refresh interval.** In `_advance`,
+before adding `delta_s` to the accumulator: if it is within a small tolerance
+(around 0.5 ms) of the display's frame interval, or of a whole multiple of it
+(a skipped frame), replace it with that exact value. Two 60 Hz frames then
+add up to exactly one 30 Hz tick, and ticks land on a steady rhythm. Deltas
+far from any multiple (real hitches) pass through unchanged, and the catch-up
+cap still applies to them.
+
+- Snapping belongs in the core, since both platforms need it. A platform
+  adapter passes at most a refresh-rate hint.
+- macOS: SDL3 reports the refresh rate through
+  `sdl.GetCurrentDisplayMode(sdl.GetDisplayForWindow(window))`, either in the
+  `refresh_rate` field, or exactly as `refresh_rate_numerator` /
+  `refresh_rate_denominator`. Query it again on `WINDOW_DISPLAY_CHANGED` and
+  `DISPLAY_CURRENT_MODE_CHANGED` events.
+- Web: there is no API for the refresh rate. Either snap to a short list of
+  common intervals (60, 75, 90, 120, 144 Hz), or estimate the interval from an
+  average of recent deltas.
+- Variable refresh rate (ProMotion, adaptive sync): deltas that do not match
+  the interval are not snapped, so the loop falls back to the current
+  behavior.
+- Trade-off: when the snap target is a guess rather than the display's real
+  interval (e.g. 1/60 s on a 59.94 Hz display), game time runs about 0.1%
+  slow. Nobody will notice, unless something like music is later synced to
+  ticks. If that matters, keep the difference between the real and the
+  snapped delta in a separate counter, and occasionally add it back once it
+  grows past the tolerance.
+
+Tyler Glaiel's article "How to make your game run at 60fps" (2018) describes
+this problem and technique in more detail. No code here is taken from it.
+
+**Testability.** Pull the part of `_advance` that decides how many ticks a
+delta produces (accumulate, snap, cap, drop the backlog) into a pure proc
+without callbacks. Then an `odin test` can feed it synthetic delta sequences
+and assert the pattern of ticks per frame: 60 Hz with ±0.3 ms jitter, 120 Hz,
+a 59.94 Hz display, and a single long stall. This fits the injectable test
+clock described above.
+
+**Rejected alternatives.**
+
+- Starting the accumulator at an offset (e.g. a quarter of a tick) moves the
+  tick moments away from the threshold, but only for one refresh rate. On a
+  display slightly off 60 Hz, the phase drifts back to the threshold.
+- Interpolating between the last two tick states in `draw` is the usual fix
+  for smooth motion. But it produces positions between pixels, forces every
+  game to keep its previous state, and the initial release exposes no
+  interpolation anyway.
+
 ## Project, platform adapters, and configuration
 
 - BeetPx ships its own standalone `beetpx` CLI binary (prebuilt per host OS,

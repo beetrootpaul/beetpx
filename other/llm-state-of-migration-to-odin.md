@@ -6,7 +6,7 @@ history at the start of every session. It describes the present, not the past:
 history lives in git, and the intended direction lives in
 `cross-platform-rewrite-llm-braindump.md`, which is a non-binding draft.
 
-Last updated: 2026-09-25.
+Last updated: 2026-09-26.
 
 ## Summary
 
@@ -24,6 +24,11 @@ audio, assets, persistence, tests, or CLI yet.
     calls `start`.
   - `_advance(delta_s)` accumulates real time, runs at most
     `MAX_CATCHUP_TICKS` (5) updates, then draws and presents exactly once.
+    If the cap is hit, the rest of the backlog is dropped (the accumulator is
+    reset to 0), as in v0.56.1's `GameLoop.ts`.
+  - Ticks can land unevenly on host frames, which shows as stutter. This is
+    known and not fixed; the problem and a possible fix are written up in the
+    braindump's "Tick spacing on host frames" section.
   - `frame_number` is incremented right before each `on_update`, so the first
     update sees `1`.
   - Canvas size (64x64) and tick rate (30 Hz) are compile-time constants.
@@ -39,7 +44,8 @@ audio, assets, persistence, tests, or CLI yet.
 - **macOS platform** (`beetpx_core/platform_darwin.odin`)
   - Opens a resizable SDL3 window at 8x scale, with letterboxed logical
     presentation and vsync, and runs its own event and tick loop. `start`
-    blocks until the window is closed.
+    blocks until the window is closed. Frame deltas are measured with
+    `sdl.GetTicksNS()`.
 - **Example** (`beetpx_examples/basic/`)
   - Prints the frame number on every update and switches the clear color
     every second (30 frames).
@@ -49,7 +55,7 @@ audio, assets, persistence, tests, or CLI yet.
   - `scripts/run_macos.sh` builds and runs the native binary in
     `build/macos/`.
 
-Both targets passed `odin check` on 2026-09-25 with `dev-2026-09`. Runtime
+Both targets passed `odin check` on 2026-09-26 with `dev-2026-09`. Runtime
 behavior is verified only when the user runs the scripts.
 
 ## Temporary shortcuts

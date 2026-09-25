@@ -50,7 +50,7 @@ _platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (darwin) started.")
 
-	previous_ticks := sdl.GetTicks()
+	previous_ticks_ns := sdl.GetTicksNS()
 	running := true
 	for running {
 		event: sdl.Event
@@ -60,9 +60,9 @@ _platform_start :: proc() {
 			}
 		}
 
-		current_ticks := sdl.GetTicks()
-		delta_seconds := f64(current_ticks - previous_ticks) / 1000.0
-		previous_ticks = current_ticks
+		current_ticks_ns := sdl.GetTicksNS()
+		delta_seconds := f64(current_ticks_ns - previous_ticks_ns) / 1e9
+		previous_ticks_ns = current_ticks_ns
 
 		_advance(delta_seconds)
 	}

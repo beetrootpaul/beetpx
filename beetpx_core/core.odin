@@ -42,7 +42,7 @@ start :: proc() {
 	_platform_start()
 }
 
-// Runs any fixed-timestep ticks owed for the detla seconds of real time, then draws exactly once and again and again and again.
+// Runs any fixed-timestep ticks owed for the delta seconds of real time, then draws exactly once and again and again and again.
 @(private)
 _advance :: proc(delta_s: f64) {
 	_accumulated_s += delta_s
@@ -53,6 +53,13 @@ _advance :: proc(delta_s: f64) {
 		_on_update()
 		_accumulated_s -= TICK_S
 		ticks += 1
+	}
+
+	// If we hit the MAX_CATCHUP_TICKS above, then let's skip whatever else is
+	// left to be done. This way we avoid fast-forwarding through missing
+	// frames.
+	if _accumulated_s >= TICK_S {
+		_accumulated_s = 0
 	}
 
 	_on_draw()
