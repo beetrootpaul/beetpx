@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(odin root *)",
+      "Bash(odin check *)",
+      "WebFetch(domain:odin-lang.org)"
+    ]
+  }
+}
