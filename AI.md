@@ -140,3 +140,19 @@ recall, since Odin changes often and training data goes stale:
   https://odin-lang.org/docs/overview
 - **Official demo** - the reference for code style and idiomatic constructs:
   https://raw.githubusercontent.com/odin-lang/Odin/refs/heads/master/examples/demo/demo.odin
+- **Official examples repository** - short, practical programs showing how to
+  do specific things, including SDL3 and WASM (which is what the platform
+  adapters need). Browse it before designing anything platform-related:
+  https://github.com/odin-lang/examples
+- **Local Odin installation** - the authoritative source for the standard
+  library and the bundled `vendor` packages (e.g. `vendor:sdl3`,
+  `vendor:miniaudio`). It always matches the installed compiler, unlike the
+  web. Find it with `odin root`, then read the `.odin` sources under
+  `base/`, `core/` and `vendor/`. Prefer it over the web for any question
+  about an API's signatures or behavior. Note that the Homebrew install does
+  not ship `examples/`, so the demo and the examples repository above are
+  web-only.
+- **Package documentation** - a browsable index of the same `base`, `core` and
+  `vendor` packages, generated from their sources. Handy for discovering what
+  exists; when it differs from the local sources, trust the local sources:
+  https://pkg.odin-lang.org/
