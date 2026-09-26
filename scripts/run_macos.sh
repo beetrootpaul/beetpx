@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# TODO: Move this script to the basic example itself.
 # TODO: Hide most of this script boilerplate in BeetPx CLI.
-# TODO: Make the script cross-platform. Right now it won't run on Windows, right?
+# TODO: Make the script cross-platform. Right now it won't run on Windows, right? Let's add a .bat file maybe?
 
 # Go to the repo root, since the further script assumes relative paths from it.
 cd "$(dirname "${BASH_SOURCE[0]}")/.."

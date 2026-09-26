@@ -94,8 +94,11 @@ before that change as covered. Keep it a snapshot of the present, not a
 changelog.
 
 - `beetpx_core/` - the engine package, imported as the `beetpx_core`
-  collection. Platform-specific code lives in `platform_darwin.odin` and
-  `platform_js.odin`.
+  collection. `bpx.odin` is the facade and holds every public declaration;
+  every other file in the package is private (see "Code conventions"). Those
+  files are named by topic (`core`, `game_loop`, `draw`), and a `_darwin` or
+  `_js` suffix marks the platform-specific half of a topic, which Odin
+  compiles only for that target.
 - `beetpx_examples/` - example games (currently `basic/`), plus the
   `index.html` page that hosts the web build.
 - `scripts/run_web.sh` and `scripts/run_macos.sh` build and run
@@ -156,3 +159,24 @@ recall, since Odin changes often and training data goes stale:
   `vendor` packages, generated from their sources. Handy for discovering what
   exists; when it differs from the local sources, trust the local sources:
   https://pkg.odin-lang.org/
+
+## Code conventions
+
+- **Narrowest visibility by default; broader visibility only by explicit
+  opt-in.** Start every declaration as private as the language allows, and
+  widen it only when something actually needs it. In `beetpx_core/` this
+  means:
+  - Every file except `bpx.odin` starts with `#+private file`, so its
+    declarations are visible only inside that file.
+  - A declaration that another file of the package needs is marked
+    `@(private = "package")` (spaced as `odinfmt` formats it). Write it that
+    way rather than as plain `@(private)`, which inside such a file reads as
+    if it meant "file".
+  - Only `bpx.odin`, the facade that games use, declares public names.
+  - `@(export)` is only for symbols an outside host calls by name, such as
+    `step` for `odin.js`. It does not widen Odin-level visibility, so an
+    exported proc can stay file-private.
+- **Naming of private declarations.** Every private name starts with `_`. A
+  name marked `@(private = "package")` is also prefixed with its file's topic,
+  e.g. `_game_loop_advance` or `_core_start`. File-private names have no
+  topic prefix, e.g. `_TICK_HZ` or `_accumulated_s`.
