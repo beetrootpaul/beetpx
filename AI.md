@@ -19,8 +19,8 @@ not replace the symlinks with regular files.
   scope. Do not invent architecture or widen API surface on your own.
 - Never install packages or tools (e.g. via `brew`, `npm`) without the user's
   explicit permission first.
-- Never run scripts (e.g. anything under `scripts/`). Tell the user which
-  script to run and with what arguments instead.
+- Never run scripts (e.g. the `run_*.sh` scripts of the examples). Tell the
+  user which script to run and with what arguments instead.
 - Never commit, amend, or push, whether with git or with jj. This is a
   colocated jj repository, and the user owns all version-control operations:
   do not create, describe, rewrite, abandon, or move changes or bookmarks
@@ -101,9 +101,9 @@ changelog.
   compiles only for that target.
 - `beetpx_examples/` - example games (currently `basic/`), plus the
   `index.html` page that hosts the web build.
-- `scripts/run_web.sh` and `scripts/run_macos.sh` build and run
-  `beetpx_examples/basic` for each target, writing output to `build/`
-  (gitignored). There is no CLI yet.
+- `beetpx_examples/basic/run_web.sh` and `beetpx_examples/basic/run_macos.sh`
+  build and run that example for each target, writing output to the
+  repository root's `build/` (gitignored). There is no CLI yet.
 - `other/cross-platform-rewrite-llm-braindump.md` - large design braindump for
   the rewrite (layer boundaries, flat `bpx.*` API sketch, phased plan). Read it
   for context, but treat it as a **non-binding draft**: do not quote it as a

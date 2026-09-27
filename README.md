@@ -13,9 +13,9 @@ licensed under MIT.
 
 ## Scripts
 
-Run for web: `./scripts/run-web.sh`.
+Run the basic example for web: `./beetpx_examples/basic/run_web.sh`.
 
-Run for macOS: `./scripts/run-macos.sh`.
+Run the basic example for macOS: `./beetpx_examples/basic/run_macos.sh`.
 
 ## License
 

@@ -6,7 +6,7 @@ history at the start of every session. It describes the present, not the past:
 history lives in git, and the intended direction lives in
 `cross-platform-rewrite-llm-braindump.md`, which is a non-binding draft.
 
-Last updated: 2026-09-26.
+Last updated: 2026-09-27.
 
 ## Summary
 
@@ -85,11 +85,12 @@ audio, assets, persistence, tests, or CLI yet.
 - **Example** (`beetpx_examples/basic/`)
   - Prints the frame number on every update and switches the clear color
     every second (30 frames).
-- **Scripts**
-  - `scripts/run_web.sh` builds the WASM, copies `odin.js` and `index.html`
-    into `build/web/`, and serves it at http://127.0.0.1:8000.
-  - `scripts/run_macos.sh` builds and runs the native binary in
-    `build/macos/`.
+- **Scripts** (in `beetpx_examples/basic/`, run for that example only)
+  - `run_web.sh` builds the WASM, copies `odin.js` and `index.html` into
+    `build/web/` at the repository root, and serves it at
+    http://127.0.0.1:8000.
+  - `run_macos.sh` builds and runs the native binary in `build/macos/` at
+    the repository root.
 
 Both targets passed `odin check` on 2026-09-26 with `dev-2026-09`. Runtime
 behavior is verified only when the user runs the scripts.
