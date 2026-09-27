@@ -16,6 +16,7 @@ odin build ./beetpx_examples/basic \
 	-target:js_wasm32 \
 	-out:build/web/beetpx_game.wasm
 cp "$(odin root)/core/sys/wasm/js/odin.js" ./build/web/odin.js
+cp ./beetpx_core/beetpx.js ./build/web/beetpx.js
 cp ./beetpx_examples/index.html ./build/web/index.html
 
 echo "Serving ./build/web/ at http://127.0.0.1:8000 ..."

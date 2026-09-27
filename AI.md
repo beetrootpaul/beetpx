@@ -96,7 +96,7 @@ changelog.
 - `beetpx_core/` - the engine package, imported as the `beetpx_core`
   collection. `bpx.odin` is the facade and holds every public declaration;
   every other file in the package is private (see "Code conventions"). Those
-  files are named by topic (`core`, `game_loop`, `draw`), and a `_darwin` or
+  files are named by topic (`platform`, `game_loop`, `draw`), and a `_darwin` or
   `_js` suffix marks the platform-specific half of a topic, which Odin
   compiles only for that target.
 - `beetpx_examples/` - example games (currently `basic/`), plus the
@@ -173,10 +173,26 @@ recall, since Odin changes often and training data goes stale:
     way rather than as plain `@(private)`, which inside such a file reads as
     if it meant "file".
   - Only `bpx.odin`, the facade that games use, declares public names.
+    Odin has no attribute that makes a single declaration public inside a
+    `#+private file` file, so `bpx.odin` re-exports whatever games need from
+    the other files: a type or a constant by an alias
+    (`Rgb :: _Color_Rgb`), a proc by a wrapper proc (an alias of a private
+    proc stays private), and a variable by an accessor proc
+    (`frame_number`).
   - `@(export)` is only for symbols an outside host calls by name, such as
     `step` for `odin.js`. It does not widen Odin-level visibility, so an
     exported proc can stay file-private.
 - **Naming of private declarations.** Every private name starts with `_`. A
   name marked `@(private = "package")` is also prefixed with its file's topic,
-  e.g. `_game_loop_advance` or `_core_start`. File-private names have no
-  topic prefix, e.g. `_TICK_HZ` or `_accumulated_s`.
+  e.g. `_game_loop_advance`, `_platform_start`, or `_Color_Rgb` for a type. A
+  name that is the topic itself, such as `_Xy`, does not repeat it.
+  File-private names have no topic prefix, e.g. `_TICK_HZ` or
+  `_accumulated_s`.
+- **Comments and docs describe the code on its own terms.** BeetPx Odin will
+  ship as the next release of BeetPx, so it has to stand on its own. Do not
+  justify or explain anything by reference to v0.56.1, the TypeScript engine,
+  `v0.56.1-for-reference/`, or earlier decisions and iterations (e.g. avoid
+  "as in v0.56.1's `CanvasForProduction`" or "which v0.56.1 relied on").
+  Describe what the code does and why, as if no earlier version existed.
+  Consulting `v0.56.1-for-reference/` while porting is still fine; it just
+  must not leak into what gets written.

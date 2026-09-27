@@ -4,10 +4,21 @@
     <meta charset="utf-8" />
     <title>tmp BeetPx web run</title>
     <style>
+      body {
+        margin: 0;
+        height: 100dvh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* The canvas takes the rest of the window. Its size must not depend on
+         its content: BeetPx resizes its backing store to match that size. */
       #beetpx_canvas {
+        flex: 1 1 0;
+        min-height: 0;
+        width: 100%;
+        box-sizing: border-box;
         border: 1px solid orange;
-        width: 512px;
-        height: 512px;
         image-rendering: pixelated;
       }
 
@@ -26,11 +37,12 @@
 
   <body>
     <p>Open the browser dev tools console to see output.</p>
-    <canvas id="beetpx_canvas" width="64" height="64"></canvas>
+    <canvas id="beetpx_canvas"></canvas>
     <script src="odin.js"></script>
+    <script src="beetpx.js"></script>
     <script>
       const wasmFileName = "beetpx_game.wasm";
-      window.odin.runWasm(wasmFileName).catch((err) => {
+      window.beetpx.runWasm(wasmFileName).catch((err) => {
         console.error(err);
         document.body.insertAdjacentHTML(
           "afterbegin",

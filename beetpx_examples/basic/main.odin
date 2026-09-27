@@ -1,8 +1,10 @@
 package main
 
+// TODO: Rename collection to `beetpx`?
 import "beetpx_core:."
-import "beetpx_core:color/palettes"
+import "beetpx_core:palettes"
 import "core:fmt"
+import "core:math"
 
 main :: proc() {
 	beetpx_core.set_on_update(update)
@@ -11,7 +13,11 @@ main :: proc() {
 }
 
 update :: proc() {
-	fmt.printfln("Frame: %d", beetpx_core.frame_number())
+	// Printing on every frame floods the browser console, which can make the
+	// dev tools laggy.
+	if beetpx_core.frame_number() % 10 == 0 {
+		fmt.printfln("Frame: %d", beetpx_core.frame_number())
+	}
 }
 
 draw :: proc() {
@@ -23,4 +29,15 @@ draw :: proc() {
 	} else {
 		beetpx_core.draw_clear_canvas(palettes.pico8_lime)
 	}
+
+	// Marks 3 of the 4 canvas corners.
+	beetpx_core.draw_pixel({0, 0}, palettes.pico8_lemon)
+	beetpx_core.draw_pixel(
+		{beetpx_core.CANVAS_WIDTH - 1, 0},
+		palettes.pico8_ember,
+	)
+	beetpx_core.draw_pixel(
+		{0, beetpx_core.CANVAS_HEIGHT - 1},
+		palettes.pico8_black,
+	)
 }

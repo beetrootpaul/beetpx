@@ -4,7 +4,21 @@
       "path": ".",
     },
   ],
-  "settings": {},
+  "settings": {
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[javascript]": {
+      "editor.rulers": [80],
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[odin]": {
+      "editor.rulers": [80],
+    },
+  },
   "extensions": {
     "recommendations": ["danielgavin.ols"],
   },

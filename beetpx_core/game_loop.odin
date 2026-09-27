@@ -40,5 +40,5 @@ _game_loop_advance :: proc(delta_s: f64) {
 
 	_game_loop_on_draw()
 
-	_core_render()
+	_platform_render()
 }
