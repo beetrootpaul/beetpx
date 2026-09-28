@@ -93,12 +93,19 @@ bring all of it up to date, because the lookup above will treat everything
 before that change as covered. Keep it a snapshot of the present, not a
 changelog.
 
-- `beetpx_core/` - the engine package, imported as the `beetpx_core`
-  collection. `bpx.odin` is the facade and holds every public declaration;
-  every other file in the package is private (see "Code conventions"). Those
-  files are named by topic (`platform`, `game_loop`, `draw`), and a `_darwin` or
-  `_js` suffix marks the platform-specific half of a topic, which Odin
-  compiles only for that target.
+- `beetpx_core/` - the root of the `beetpx` collection. Each subdirectory is a
+  package that games import from it by name, e.g. `import "beetpx:bpx"`. Odin
+  names an import after the imported directory, not after its `package`
+  clause, so a package's directory name is the name games write in code.
+  - `bpx/` - the engine package. `bpx.odin` is the facade and holds every
+    public declaration; every other file in the package is private (see
+    "Code conventions"). Those files are named by topic (`platform`,
+    `game_loop`, `draw`), and a `_darwin` or `_js` suffix marks the
+    platform-specific half of a topic, which Odin compiles only for that
+    target.
+  - `palettes/` - color palettes games import directly.
+  - `beetpx.js` - the JavaScript half of the web platform, next to the
+    packages rather than inside one.
 - `beetpx_examples/` - example games (currently `basic/`), plus the
   `index.html` page that hosts the web build.
 - `beetpx_examples/basic/run_web.sh` and `beetpx_examples/basic/run_macos.sh`
@@ -123,7 +130,7 @@ changelog.
 - `ols` (language server) and `odinfmt` (formatter) are used through the
   `danielgavin.ols` VS Code extension, which bundles its own binaries. They are
   **not** on PATH, so do not invoke them from the shell. Their configuration is
-  checked in at the repo root: `ols.json` (registers the `beetpx_core`
+  checked in at the repo root: `ols.json` (registers the `beetpx`
   collection) and `odinfmt.json` (80-column lines, LF line endings). Write Odin
   code that already conforms to those settings.
 - Shared editor settings live in `beetpx.code-workspace`. `.vscode/` is
@@ -164,7 +171,7 @@ recall, since Odin changes often and training data goes stale:
 
 - **Narrowest visibility by default; broader visibility only by explicit
   opt-in.** Start every declaration as private as the language allows, and
-  widen it only when something actually needs it. In `beetpx_core/` this
+  widen it only when something actually needs it. In `beetpx_core/bpx/` this
   means:
   - Every file except `bpx.odin` starts with `#+private file`, so its
     declarations are visible only inside that file.

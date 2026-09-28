@@ -1,4 +1,4 @@
-package beetpx_core
+package bpx
 
 CANVAS_WIDTH :: 64
 CANVAS_HEIGHT :: 64

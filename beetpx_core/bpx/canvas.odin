@@ -1,5 +1,5 @@
 #+private file
-package beetpx_core
+package bpx
 
 import "core:fmt"
 import "core:slice"

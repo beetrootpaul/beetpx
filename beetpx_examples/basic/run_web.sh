@@ -12,7 +12,7 @@ mkdir -p ./build/web/
 
 # TODO: WASM file named after the specific game itself.
 odin build ./beetpx_examples/basic \
-	-collection:beetpx_core=./beetpx_core/ \
+	-collection:beetpx=./beetpx_core/ \
 	-target:js_wasm32 \
 	-out:build/web/beetpx_game.wasm
 cp "$(odin root)/core/sys/wasm/js/odin.js" ./build/web/odin.js

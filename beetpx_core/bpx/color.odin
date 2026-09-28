@@ -1,5 +1,5 @@
 #+private file
-package beetpx_core
+package bpx
 
 // TODO: Maybe use some union type to represent Rgb or Transparent? Otherwise
 // consider renaming the file to `rgb.odin` and exporting `_Rgb` (without

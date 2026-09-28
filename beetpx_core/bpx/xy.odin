@@ -1,5 +1,5 @@
 #+private file
-package beetpx_core
+package bpx
 
 @(private = "package")
 _Xy :: [2]f64

@@ -1,5 +1,5 @@
 #+private file
-package beetpx_core
+package bpx
 
 _TICK_HZ :: 30
 _TICK_S :: 1.0 / _TICK_HZ

@@ -21,9 +21,15 @@ or CLI yet.
 ## What exists
 
 - **Package layout**
-  - The engine is one `beetpx_core` package split into several files.
-    Sub-packages (`palettes/`) hold only what games import directly.
-  - `beetpx_core/bpx.odin` is the facade: it declares every public name of
+  - `beetpx_core/` is the root of the `beetpx` collection, and each of its
+    subdirectories is a package games import by name: `import "beetpx:bpx"`
+    and `import "beetpx:palettes"`. Odin names an import after the imported
+    directory, not after its `package` clause, so the engine lives in
+    `beetpx_core/bpx/` to let games write `bpx.start()` without an alias.
+    `beetpx_core/beetpx.js` sits next to the packages, not inside one.
+  - The engine is one package, `bpx`, split into several files. The other
+    packages (`palettes`) hold only what games import directly.
+  - `beetpx_core/bpx/bpx.odin` is the facade: it declares every public name of
     the package, and it is the only file without `#+private file`. Facade
     procs forward to private ones (`start` to `_platform_start`,
     `draw_pixel` to `_draw_pixel`). The public types `Xy` and `Rgb` are aliases of the
@@ -48,7 +54,7 @@ or CLI yet.
 - **Game loop**
   - Games register callbacks with `set_on_update` and `set_on_draw`, then
     call `start`.
-  - `beetpx_core/game_loop.odin` holds the file-private tick constants and
+  - `beetpx_core/bpx/game_loop.odin` holds the file-private tick constants and
     time accumulator, and the shared `_game_loop_on_update` and
     `_game_loop_on_draw` callbacks (empty procs by default, as in v0.56.1's
     `GameLoop.ts`), `_game_loop_frame_number`, and `_game_loop_advance`. The
@@ -67,7 +73,7 @@ or CLI yet.
   - Canvas size (64x64, public) and tick rate (30 Hz, private) are
     compile-time constants.
 - **Canvas and drawing**
-  - `beetpx_core/canvas.odin` holds the framebuffer: a file-private
+  - `beetpx_core/bpx/canvas.odin` holds the framebuffer: a file-private
     `[CANVAS_WIDTH * CANVAS_HEIGHT][4]u8` array of RGBA8 pixels, row by row
     from the top-left corner, as in v0.56.1's `CanvasForProduction.ts`. An
     `@(init)` proc sets every alpha byte to 255, so the canvas starts as
@@ -77,7 +83,7 @@ or CLI yet.
     the canvas), `_canvas_fill` (every pixel at once, with `slice.fill`), and
     `_canvas_can_set_at` (the bounds check for callers). The platforms read
     the framebuffer only through `_canvas_rgba8_bytes`.
-  - `beetpx_core/draw.odin` holds the drawing operations, as v0.56.1's
+  - `beetpx_core/bpx/draw.odin` holds the drawing operations, as v0.56.1's
     `DrawClear.ts` and `DrawPixel.ts`: `_draw_clear_canvas` fills the canvas,
     and `_draw_pixel` rounds its coordinates, then skips a pixel outside the
     canvas and sets it otherwise.
@@ -97,9 +103,9 @@ or CLI yet.
     public name.
   - The `beetpx_core/palettes/` package holds a partial PICO-8 palette in
     `pico8.odin`, using v0.56.1's color names. Games import it as
-    `beetpx_core:palettes`. It imports `beetpx_core` by relative path
-    (`"../"`) for `Rgb`.
-- **Web platform** (`beetpx_core/*_js.odin` and `beetpx_core/beetpx.js`)
+    `beetpx:palettes`. It imports `bpx` by relative path (`"../bpx"`) for
+    `Rgb`.
+- **Web platform** (`beetpx_core/bpx/*_js.odin` and `beetpx_core/beetpx.js`)
   - `platform_js.odin` declares two JavaScript procs in a `foreign import
     "beetpx"` block, and `beetpx.js`, the JavaScript half of the platform,
     implements them. Its `window.beetpx.runWasm(wasmPath)` passes them to
@@ -134,7 +140,7 @@ or CLI yet.
     per animation frame, and `step` passes the delta on to
     `_game_loop_advance`. `step` is `@(export)`ed to the WASM but file-private
     to Odin code, so neither games nor other engine files can call it.
-- **macOS platform** (`beetpx_core/*_darwin.odin`)
+- **macOS platform** (`beetpx_core/bpx/*_darwin.odin`)
   - `_platform_start` in `platform_darwin.odin` opens a resizable, high
     pixel density SDL3 window at 8x scale, with vsync and `INTEGER_SCALE`
     logical presentation, and creates a 64x64 streaming texture (`RGBA32`,
@@ -202,13 +208,11 @@ Raised in code comments and not decided yet:
 - Should `Rgb` become a union that can also be transparent? If not, should
   `color.odin` become `rgb.odin`, with `_Rgb` instead of `_Color_Rgb`?
 - Should the `palettes` package also be `#+private file` and re-export its
-  colors, to match `beetpx_core`?
+  colors, to match `bpx`?
 - Should `_round` in `draw.odin` be made public for reuse? And should it get
   a more specific name, since its `int` result is meant for indexing the
   framebuffer?
 - Should `frame_number` get a shorter name?
-- Should the `beetpx_core` collection be renamed to `beetpx`? (Asked in the
-  example's `main.odin`.)
 
 ## Not started
 

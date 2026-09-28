@@ -11,6 +11,6 @@ rm -rf ./build/macos/
 mkdir -p ./build/macos/
 
 odin run ./beetpx_examples/basic \
-	-collection:beetpx_core=./beetpx_core/ \
+	-collection:beetpx=./beetpx_core/ \
 	-target:darwin_arm64 \
 	-out:build/macos/basic
