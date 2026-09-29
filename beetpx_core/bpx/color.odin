@@ -1,4 +1,5 @@
 #+private file
+#+vet unused-procedures
 package bpx
 
 // Basic type for representing opaque RGB8 color.

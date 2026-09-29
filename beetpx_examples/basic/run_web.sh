@@ -2,6 +2,8 @@
 set -euo pipefail
 
 # Go to the repo root, since the further script assumes relative paths from it.
+#
+# TODO: Shouldn't we stay in the example's dir?
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
 # TODO: Hide most of this script boilerplate in BeetPx CLI.
@@ -10,16 +12,18 @@ cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 rm -rf ./build/web/
 mkdir -p ./build/web/
 
+# TODO: In CLI make build way more forgiving.
 # TODO: WASM file named after the specific game itself.
 odin build ./beetpx_examples/basic \
 	-collection:beetpx=./beetpx_core/ \
+	-disable-non-constant-globals \
 	-strict-style \
 	-vet \
 	-vet-cast \
 	-vet-tabs \
-	-vet-packages:main,bpx,palettes \
-	-vet-unused-procedures \
+	-vet-packages:main \
 	-vet-using-param \
+	-vet-using-stmt \
 	-warnings-as-errors \
 	-target:js_wasm32 \
 	-out:build/web/beetpx_game.wasm

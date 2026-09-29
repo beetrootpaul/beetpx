@@ -1,4 +1,5 @@
 #+private file
+#+vet unused-procedures
 package bpx
 
 // TODO: Rework the package structure.
