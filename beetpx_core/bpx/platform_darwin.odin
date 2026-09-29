@@ -89,6 +89,7 @@ _platform_render :: proc() {
 		CANVAS_WIDTH * 4,
 	)
 	sdl.RenderClear(_sdl_renderer)
+	// TODO: Add comments explaining both `nil` params.
 	sdl.RenderTexture(_sdl_renderer, _sdl_canvas_texture, nil, nil)
 	sdl.RenderPresent(_sdl_renderer)
 }

@@ -21,5 +21,8 @@ _draw_pixel :: proc(xy: Xy, color: _Color_Rgb) {
 // TODO: This one seems like something to be exported and re-used.
 // TODO: `int` is returend and the purpose is indexing the frame buffer. Consider renaming this to something more specific.
 _round :: proc(xy: _Xy) -> _Xy_Int {
-	return {int(math.floor(xy.x + 0.5)), int(math.floor(xy.y + 0.5))}
+	return {
+		int(math.floor(xy.x + 0.5)),
+		int(math.floor(xy.y + 0.5)),
+	}
 }

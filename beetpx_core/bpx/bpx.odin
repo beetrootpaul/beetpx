@@ -1,6 +1,6 @@
 package bpx
 
-CANVAS_WIDTH :: 64
+CANVAS_WIDTH  :: 64
 CANVAS_HEIGHT :: 64
 
 // Representation of a float (x,y) coordinates.
@@ -12,7 +12,7 @@ Xy :: _Xy
 Rgb :: _Color_Rgb
 
 On_Update_Proc :: proc()
-On_Draw_Proc :: proc()
+On_Draw_Proc   :: proc()
 
 // Registers a callback to be run once per fixed-timestep tick.
 //

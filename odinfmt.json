@@ -1,7 +1,10 @@
 {
   "$schema": "https://raw.githubusercontent.com/DanielGavin/ols/master/misc/odinfmt.schema.json",
   "align_comments": true,
+  "align_constant_definitions": true,
+  "align_struct_declarations": true,
   "character_width": 80,
+  "multiline_composite_literals": true,
   "newline_limit": 1,
   "newline_style": "LF"
 }

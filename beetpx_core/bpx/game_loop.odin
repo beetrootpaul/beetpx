@@ -2,7 +2,7 @@
 package bpx
 
 _TICK_HZ :: 30
-_TICK_S :: 1.0 / _TICK_HZ
+_TICK_S  :: 1.0 / _TICK_HZ
 // Prevents a death spiral if a host frame takes too long: run at most this
 // many catch-up ticks before giving up on the backlog for that frame.
 _MAX_CATCHUP_TICKS :: 5
