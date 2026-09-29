@@ -11,13 +11,13 @@ foreign import beetpx_js "beetpx"
 foreign beetpx_js {
 	// Prepares the `<canvas>` element with the given `id` to render a canvas
 	// of the given size. Returns `false` if that is not possible.
-	@(link_name = "init_canvas")
-	_init_canvas :: proc(canvas_element_id: string, width, height: int) -> bool ---
+	@(link_name = "html_canvas_init")
+	_html_canvas_init :: proc(canvas_element_id: string, width, height: int) -> bool ---
 
 	// Draws the RGBA8 bytes of the canvas onto the `<canvas>` element, scaled
 	// by the largest whole number that fits, and centered.
-	@(link_name = "render_canvas")
-	_render_canvas :: proc(rgba8_bytes: []u8) ---
+	@(link_name = "html_canvas_render")
+	_html_canvas_render :: proc(rgba8_bytes: []u8) ---
 }
 
 // Must match the `id` of the `<canvas>` element in the hosting HTML page.
@@ -27,7 +27,7 @@ _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
 @(private = "package")
 _platform_start :: proc() {
-	if !_init_canvas(_CANVAS_ELEMENT_ID, CANVAS_WIDTH, CANVAS_HEIGHT) {
+	if !_html_canvas_init(_CANVAS_ELEMENT_ID, CANVAS_WIDTH, CANVAS_HEIGHT) {
 		// TODO: Another case of a need for a shared unified logger… And look
 		// for other `fmt.` usages as well.
 		fmt.eprintln(
@@ -39,11 +39,13 @@ _platform_start :: proc() {
 
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (js) started.")
+
+	_canvas_fill_black()
 }
 
 @(private = "package")
 _platform_render :: proc() {
-	_render_canvas(_canvas_rgba8_bytes())
+	_html_canvas_render(_canvas_rgba8_bytes())
 }
 
 // Called once per host animation frame by `odin.js`.

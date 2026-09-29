@@ -1,23 +1,19 @@
 #+private file
 package bpx
 
+import "core:c"
 // TODO: Rework the package structure.
 
 import "core:math"
 
 @(private = "package")
-_draw_clear_canvas :: proc(color: Rgb) {
-	_canvas_fill(color)
+_draw_clear_canvas :: proc(c: _Color_Rgb) {
+	_canvas_fill(c)
 }
 
 @(private = "package")
-_draw_pixel :: proc(xy: Xy, color: Rgb) {
-	// TODO: Operate on Xy instead of x and y separately.
-	x, y := _round(xy.x), _round(xy.y)
-	if !_canvas_can_set_at(x, y) {
-		return
-	}
-	_canvas_set(x, y, color)
+_draw_pixel :: proc(xy: Xy, color: _Color_Rgb) {
+	_canvas_set(_round(xy), color)
 }
 
 // Rounds to the nearest whole number, with halves rounded up (e.g. 1.5 to 2,
@@ -25,6 +21,6 @@ _draw_pixel :: proc(xy: Xy, color: Rgb) {
 //
 // TODO: This one seems like something to be exported and re-used.
 // TODO: `int` is returend and the purpose is indexing the frame buffer. Consider renaming this to something more specific.
-_round :: proc(value: f64) -> int {
-	return int(math.floor(value + 0.5))
+_round :: proc(xy: _Xy) -> _Xy_Int {
+	return {int(math.floor(xy.x + 0.5)), int(math.floor(xy.y + 0.5))}
 }

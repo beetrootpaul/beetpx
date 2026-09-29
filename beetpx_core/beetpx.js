@@ -121,7 +121,7 @@
     const foreignImports = {
       beetpx: {
         // TODO: Review this implementation.
-        init_canvas: (idPtr, idLen, width, height) => {
+        html_canvas_init: (idPtr, idLen, width, height) => {
           const id = wasmMemoryInterface.loadString(idPtr, idLen);
           const htmlCanvas = document.getElementById(id);
           if (!(htmlCanvas instanceof HTMLCanvasElement)) {
@@ -131,7 +131,7 @@
           return renderCanvas !== null;
         },
         // TODO: Review this implementation.
-        render_canvas: (bytesPtr, bytesLen) => {
+        html_canvas_render: (bytesPtr, bytesLen) => {
           // A view on the WASM memory, not a copy. It is created anew on
           // every call, because the memory's buffer changes when it grows.
           renderCanvas(

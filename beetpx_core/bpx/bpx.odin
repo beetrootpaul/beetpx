@@ -3,7 +3,12 @@ package bpx
 CANVAS_WIDTH :: 64
 CANVAS_HEIGHT :: 64
 
+// Representation of a float (x,y) coordinates.
+//
+// NOTE: In BeetPx (x,y) starts at (0,0) at the top-left corner of the canvas.
 Xy :: _Xy
+
+// Representation of an opaque RGB8 color.
 Rgb :: _Color_Rgb
 
 On_Update_Proc :: proc()

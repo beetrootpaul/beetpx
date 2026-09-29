@@ -72,6 +72,8 @@ _platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (darwin) started.")
 
+	_canvas_fill_black()
+
 	_run_game_loop()
 }
 
