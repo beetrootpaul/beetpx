@@ -1,7 +1,6 @@
 #+private file
 package bpx
 
-import "core:c"
 // TODO: Rework the package structure.
 
 import "core:math"

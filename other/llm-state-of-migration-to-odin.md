@@ -6,7 +6,7 @@ history at the start of every session. It describes the present, not the past:
 history lives in git, and the intended direction lives in
 `cross-platform-rewrite-llm-braindump.md`, which is a non-binding draft.
 
-Last updated: 2026-09-28.
+Last updated: 2026-09-29.
 
 ## Summary
 
@@ -75,22 +75,24 @@ or CLI yet.
 - **Canvas and drawing**
   - `beetpx_core/bpx/canvas.odin` holds the framebuffer: a file-private
     `[CANVAS_WIDTH * CANVAS_HEIGHT][4]u8` array of RGBA8 pixels, row by row
-    from the top-left corner, as in v0.56.1's `CanvasForProduction.ts`. An
-    `@(init)` proc sets every alpha byte to 255, so the canvas starts as
-    opaque black, and every write keeps the alpha at 255.
+    from the top-left corner, as in v0.56.1's `CanvasForProduction.ts`. Each
+    platform's `_platform_start` calls `_canvas_fill_black` before the first
+    frame, so the canvas starts as opaque black, and every write keeps the
+    alpha at 255.
   - Every drawing operation goes through the canvas procs, which share one
-    color-to-pixel conversion: `_canvas_set` (one pixel, asserts it is inside
-    the canvas), `_canvas_fill` (every pixel at once, with `slice.fill`), and
-    `_canvas_can_set_at` (the bounds check for callers). The platforms read
-    the framebuffer only through `_canvas_rgba8_bytes`.
+    color-to-pixel conversion: `_canvas_set` (one pixel at an `_Xy_Int`,
+    silently skipped if outside the canvas), `_canvas_fill` (every pixel at
+    once, with `slice.fill`), and `_canvas_can_set_at` (the bounds check).
+    The platforms read the framebuffer only through `_canvas_rgba8_bytes`.
   - `beetpx_core/bpx/draw.odin` holds the drawing operations, as v0.56.1's
     `DrawClear.ts` and `DrawPixel.ts`: `_draw_clear_canvas` fills the canvas,
-    and `_draw_pixel` rounds its coordinates, then skips a pixel outside the
-    canvas and sets it otherwise.
+    and `_draw_pixel` rounds its coordinates with `_round` (an `_Xy` to an
+    `_Xy_Int`) and passes them to `_canvas_set`.
   - Coordinates are passed as `Xy :: [2]f64` rather than as a bare
-    `[2]f64`. Engine-private procs use it too, by its public name. It is `f64` rather than
-    `f32`, so that float values games declare with `:=`, which Odin types as
-    `f64`, mix with it without casts.
+    `[2]f64`. It is declared in `xy.odin` as `_Xy`, next to `_Xy_Int ::
+    [2]int` for rounded coordinates. It is `f64` rather than `f32`, so that
+    float values games declare with `:=`, which Odin types as `f64`, mix with
+    it without casts.
   - The public `draw_pixel` takes float coordinates (`xy: Xy`), as
     v0.56.1's `$d.pixel` does. They are rounded to `int` with
     `floor(x + 0.5)`, which matches JavaScript's `Math.round` that v0.56.1
@@ -99,8 +101,9 @@ or CLI yet.
     no camera, clipping region, or drawing pattern yet.
 - **Colors**
   - Colors are `Rgb :: [3]u8`, a public type declared in `color.odin` as
-    `_Color_Rgb` and re-exported by `bpx.odin`. Engine-private procs use its
-    public name.
+    `_Color_Rgb` and re-exported by `bpx.odin`. Engine-private procs use the
+    private names `_Color_Rgb` and `_Xy`, with one leftover: `_draw_pixel`
+    still takes `Xy`.
   - The `beetpx_core/palettes/` package holds a partial PICO-8 palette in
     `pico8.odin`, using v0.56.1's color names. Games import it as
     `beetpx:palettes`. It imports `bpx` by relative path (`"../bpx"`) for
@@ -118,14 +121,15 @@ or CLI yet.
     out the `<canvas id="beetpx_canvas">` to fill the window below a line
     of text. The canvas's CSS size must not depend on its content, since
     the engine resizes its backing store.
-  - `_platform_start` calls `init_canvas` with the element ID and the canvas
-    size, then returns. `init_canvas` gets a transparent 2D context on the
+  - `_platform_start` calls `html_canvas_init` (`_html_canvas_init` on the
+    Odin side) with the element ID and the canvas size, fills the canvas
+    black, then returns. `html_canvas_init` gets a transparent 2D context on the
     `<canvas>`, sets its CSS background to black, and creates a 64x64
     `OffscreenCanvas` with an opaque 2D context. A `ResizeObserver` keeps
     the `<canvas>` backing store at its size in device pixels, using
     `device-pixel-content-box` where the browser supports it, and CSS size
     times `devicePixelRatio` otherwise.
-  - `_platform_render` calls `present_canvas`, which wraps the framebuffer
+  - `_platform_render` calls `html_canvas_render`, which wraps the framebuffer
     bytes in an `ImageData` (a view on the WASM memory, not a copy),
     `putImageData`s it onto the offscreen canvas, and `drawImage`s that
     onto the `<canvas>` without smoothing. It uses the largest whole-number
@@ -146,7 +150,8 @@ or CLI yet.
     logical presentation, and creates a 64x64 streaming texture (`RGBA32`,
     `NEAREST` scaling). Together they make it pixel perfect: every canvas
     pixel is the same whole number of physical pixels, also on Retina
-    displays, and the rest of the window is black bars. It then calls the
+    displays, and the rest of the window is black bars. It then fills the
+    canvas black and calls the
     file-private `_run_game_loop`, which runs the event and tick loop, so
     `start` blocks until the window is closed. Frame deltas are measured with
     `sdl.GetTicksNS()`. The renderer and the texture are file-private to
@@ -166,9 +171,15 @@ or CLI yet.
     http://127.0.0.1:8000.
   - `run_macos.sh` builds and runs the native binary in `build/macos/` at
     the repository root.
+  - Both build with every vet check the compiler offers on the command line
+    (`-vet`, `-vet-cast`, `-vet-using-param`, `-vet-tabs`, `-strict-style`,
+    `-vet-unused-procedures`) for the `main`, `bpx` and `palettes` packages,
+    with `-warnings-as-errors`. No file uses a `#+vet` tag.
 
-Both targets passed `odin check` on 2026-09-28 with `dev-2026-09`.
-Runtime behavior is verified only when the user runs the scripts.
+As of 2026-09-29 with `dev-2026-09`, both targets pass a plain `odin check`,
+but fail it with the scripts' vet flags on two unused imports: `core:fmt` in
+`canvas.odin` and `core:c` in `draw.odin`. Runtime behavior is verified only
+when the user runs the scripts.
 
 ## Temporary shortcuts
 
@@ -179,9 +190,6 @@ Deliberate stopgaps, each marked with a `TODO` in the code:
   planned (`TODO`s in `bpx.odin` and in the example).
 - The package structure of drawing and of the palettes is meant to be
   reworked (`TODO`s in `draw.odin` and `pico8.odin`).
-- `_draw_pixel`, `_canvas_can_set_at` and `_canvas_set` handle x and y
-  separately instead of as one `Xy` (`TODO`s in `draw.odin` and
-  `canvas.odin`).
 - Logging uses `fmt.println`. A custom logger is planned.
 - The WASM file name is hard-coded as `beetpx_game.wasm`, instead of being
   named after the game.
@@ -198,13 +206,6 @@ Raised in code comments and not decided yet:
 - Should `_accumulated_s` in `game_loop.odin` really be a float?
 - Should the canvas element ID be configurable, or validated at build time
   against the HTML page?
-- Should the canvas be made opaque by an explicit call, instead of by the
-  less obvious `@(init)` proc in `canvas.odin`? And should that proc reuse
-  `_canvas_fill`?
-- Should `_canvas_set` reuse `_canvas_can_set_at` for its bounds check, and
-  should it assert at all?
-- Can the compiler be made to inline `_pixel_of` in `canvas.odin`, and is
-  that the right approach at all?
 - Should `Rgb` become a union that can also be transparent? If not, should
   `color.odin` become `rgb.odin`, with `_Rgb` instead of `_Color_Rgb`?
 - Should the `palettes` package also be `#+private file` and re-export its

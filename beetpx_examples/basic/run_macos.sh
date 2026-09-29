@@ -12,5 +12,13 @@ mkdir -p ./build/macos/
 
 odin run ./beetpx_examples/basic \
 	-collection:beetpx=./beetpx_core/ \
+	-strict-style \
+	-vet \
+	-vet-cast \
+	-vet-tabs \
+	-vet-packages:main,bpx,palettes \
+	-vet-unused-procedures \
+	-vet-using-param \
+	-warnings-as-errors \
 	-target:darwin_arm64 \
 	-out:build/macos/basic

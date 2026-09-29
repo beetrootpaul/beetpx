@@ -1,7 +1,6 @@
 #+private file
 package bpx
 
-import "core:fmt"
 import "core:slice"
 
 // A single pixel of the canvas, stored as RGBA8. Its alpha is always 255,
