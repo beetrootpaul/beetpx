@@ -10,8 +10,9 @@ Last updated: 2026-09-29.
 
 ## Summary
 
-The engine opens a 64x64 canvas on both targets, web (`js_wasm32`, Canvas2D)
-and macOS (`darwin_arm64`, SDL3). It runs a fixed-timestep loop at 30 ticks
+The engine opens a 64x64 canvas on two platforms: web (`js_wasm32`, Canvas2D)
+and desktop (SDL3). Of the desktop targets, only macOS (`darwin_arm64`) is
+built and run; `linux_amd64` and `windows_amd64` are only type-checked. It runs a fixed-timestep loop at 30 ticks
 per second and calls the game's `update` and `draw` callbacks. Drawing writes
 into an in-memory RGBA8 framebuffer owned by the core, which each platform
 only presents. The only drawing operations are clearing the whole canvas and
@@ -37,8 +38,10 @@ or CLI yet.
     Odin cannot make a single declaration public inside a `#+private file`
     file, so re-exporting through the facade is the only way out of it.
   - The private files are named by topic: `platform`, `game_loop`, `canvas`
-    and `draw`. A `_darwin` or `_js` suffix marks the platform-specific half
-    of a topic, which Odin compiles only for that target. A topic with only
+    and `draw`. A platform-specific file of a topic is marked either by a
+    `_js` suffix, which Odin compiles only for the web, or by a `#+build`
+    tag: `platform_sdl.odin` has `#+build darwin, linux, windows` (a comma
+    means OR), so one file serves every desktop target. A topic with only
     platform-specific files (`platform`) defines the same names in each
     platform file, so a platform missing one fails to compile. All
     platform-specific code lives in the `platform` files, so `game_loop.odin`
@@ -51,6 +54,9 @@ or CLI yet.
     - Used by any other file: marked `@(private = "package")` and prefixed
       with the topic, e.g. `_game_loop_advance`, `_platform_start`,
       `_canvas_set`.
+  - Every private `bpx` file has a `#+vet unused-procedures` tag, so an
+    unused file-private proc fails every build that uses `-vet`, including
+    the builds of games.
 - **Game loop**
   - Games register callbacks with `set_on_update` and `set_on_draw`, then
     call `start`.
@@ -144,18 +150,19 @@ or CLI yet.
     per animation frame, and `step` passes the delta on to
     `_game_loop_advance`. `step` is `@(export)`ed to the WASM but file-private
     to Odin code, so neither games nor other engine files can call it.
-- **macOS platform** (`beetpx_core/bpx/*_darwin.odin`)
-  - `_platform_start` in `platform_darwin.odin` opens a resizable, high
+- **Desktop platform** (`beetpx_core/bpx/platform_sdl.odin`, for `darwin`,
+  `linux` and `windows`)
+  - `_platform_start` opens a resizable, high
     pixel density SDL3 window at 8x scale, with vsync and `INTEGER_SCALE`
     logical presentation, and creates a 64x64 streaming texture (`RGBA32`,
     `NEAREST` scaling). Together they make it pixel perfect: every canvas
-    pixel is the same whole number of physical pixels, also on Retina
-    displays, and the rest of the window is black bars. It then fills the
-    canvas black and calls the
+    pixel is the same whole number of physical pixels, also on high-DPI
+    displays, and the rest of the window is black bars. It prints the OS
+    it started on (`ODIN_OS`), fills the canvas black, and calls the
     file-private `_run_game_loop`, which runs the event and tick loop, so
     `start` blocks until the window is closed. Frame deltas are measured with
     `sdl.GetTicksNS()`. The renderer and the texture are file-private to
-    `platform_darwin.odin`.
+    `platform_sdl.odin`.
   - `_platform_render` uploads the framebuffer with `sdl.UpdateTexture`, clears
     the window (so the letterbox bars are black), draws the texture, and
     calls `sdl.RenderPresent`.
@@ -165,21 +172,31 @@ or CLI yet.
     dev tools lagging. It also switches the clear color every second (30
     frames), and marks three corners of the canvas with single pixels:
     yellow top-left, red top-right, black bottom-left.
-- **Scripts** (in `beetpx_examples/basic/`, run for that example only)
-  - `run_web.sh` builds the WASM, copies `odin.js`, `beetpx.js` and
-    `index.html` into `build/web/` at the repository root, and serves it at
-    http://127.0.0.1:8000.
-  - `run_macos.sh` builds and runs the native binary in `build/macos/` at
-    the repository root.
-  - Both build with every vet check the compiler offers on the command line
-    (`-vet`, `-vet-cast`, `-vet-using-param`, `-vet-tabs`, `-strict-style`,
-    `-vet-unused-procedures`) for the `main`, `bpx` and `palettes` packages,
-    with `-warnings-as-errors`. No file uses a `#+vet` tag.
+- **Scripts**
+  - `beetpx_examples/basic/run_web.sh` builds the WASM, copies `odin.js`,
+    `beetpx.js` and `index.html` into `build/web/` at the repository root,
+    and serves it at http://127.0.0.1:8000.
+  - `beetpx_examples/basic/run_macos.sh` builds and runs the native binary
+    in `build/macos/` at the repository root.
+  - Both run scripts vet only the game's own package (`-vet-packages:main`),
+    with `-strict-style`, `-vet`, `-vet-cast`, `-vet-tabs`,
+    `-vet-using-param`, `-vet-using-stmt`, `-disable-non-constant-globals`
+    and `-warnings-as-errors`. The engine files are still vetted in game
+    builds through their `#+vet` tags.
+  - `scripts/check_core.sh` runs `odin check` on `bpx` and `palettes`
+    separately from any game, for `darwin_arm64`, `js_wasm32`,
+    `linux_amd64` and `windows_amd64`, with the same flags plus
+    `-no-entry-point` and `-vet-packages:bpx,palettes`.
+  - `format_all.sh` at the repository root runs `odinfmt -w` on
+    `beetpx_core` and `beetpx_examples`. It expects `odinfmt` on PATH,
+    which it is not by default (the VS Code extension bundles its own).
+    `odinfmt.json` aligns constant definitions and struct fields, and puts
+    composite literals that do not fit on one line one element per line.
 
-As of 2026-09-29 with `dev-2026-09`, both targets pass a plain `odin check`,
-but fail it with the scripts' vet flags on two unused imports: `core:fmt` in
-`canvas.odin` and `core:c` in `draw.odin`. Runtime behavior is verified only
-when the user runs the scripts.
+As of 2026-09-29 with `dev-2026-09`, `bpx` and `palettes` pass the
+`check_core.sh` flags on all four targets, and the basic example passes the
+run scripts' flags on all four. Runtime behavior is verified only when the
+user runs the scripts, and only on the web and macOS.
 
 ## Temporary shortcuts
 
@@ -220,8 +237,9 @@ Raised in code comments and not decided yet:
 Compared with the v0.56.1 engine: input, drawing primitives other than clear
 and pixel (lines, rects, ellipses, pixels from a string), drawing patterns,
 camera and clipping, canvas snapshots, sprites and assets, text and fonts,
-audio (miniaudio on macOS), persistence, pause and debug features, tests
-(`odin test`), the CLI, and native hot reload.
+audio (miniaudio on desktop), persistence, pause and debug features, tests
+(`odin test`), the CLI, and native hot reload. Linux and Windows have no run script and
+have never been built or run.
 
 ## Next steps
 

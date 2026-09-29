@@ -1,5 +1,6 @@
 #+private file
 #+vet unused-procedures
+#+build darwin, linux, windows
 package bpx
 
 import "core:fmt"
@@ -27,8 +28,10 @@ _platform_start :: proc() {
 		CANVAS_WIDTH * _INITIAL_SCALE,
 		CANVAS_HEIGHT * _INITIAL_SCALE,
 		// `HIGH_PIXEL_DENSITY` makes SDL render to all the physical pixels of
-		// a Retina display. Without it, SDL renders at a lower resolution, and
-		// macOS upscales the result, which can blur the pixel edges.
+		// a high-DPI display, such as Retina on macOS, a display scaled above
+		// 100% on Windows, or a scaled one on Wayland. Without it, SDL renders
+		// at a lower resolution, and the OS upscales the result, which can
+		// blur the pixel edges.
 		{.RESIZABLE, .HIGH_PIXEL_DENSITY},
 		&sdl_window,
 		&_sdl_renderer,
@@ -45,7 +48,7 @@ _platform_start :: proc() {
 
 	// `INTEGER_SCALE` scales the canvas only by whole numbers, so every canvas
 	// pixel is the same number of physical pixels wide and tall. The rest of
-	// the window is left as black bars, as in v0.56.1's `CanvasForProduction`.
+	// the window is left as black bars.
 	sdl.SetRenderLogicalPresentation(
 		_sdl_renderer,
 		CANVAS_WIDTH,
@@ -71,7 +74,7 @@ _platform_start :: proc() {
 	sdl.SetTextureScaleMode(_sdl_canvas_texture, .NEAREST)
 
 	// TODO: Use a custom logger.
-	fmt.println("BeetPx (darwin) started.")
+	fmt.printfln("BeetPx (%v) started.", ODIN_OS)
 
 	_canvas_fill_black()
 

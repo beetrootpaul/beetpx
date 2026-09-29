@@ -100,9 +100,10 @@ changelog.
   - `bpx/` - the engine package. `bpx.odin` is the facade and holds every
     public declaration; every other file in the package is private (see
     "Code conventions"). Those files are named by topic (`platform`,
-    `game_loop`, `draw`), and a `_darwin` or `_js` suffix marks the
-    platform-specific half of a topic, which Odin compiles only for that
-    target.
+    `game_loop`, `draw`). A platform-specific file of a topic is marked
+    either by a `_js` suffix, which Odin compiles only for the web, or by a
+    `#+build` tag listing the OSes it is for, as `platform_sdl.odin` does for
+    `darwin`, `linux` and `windows`.
   - `palettes/` - color palettes games import directly.
   - `beetpx.js` - the JavaScript half of the web platform, next to the
     packages rather than inside one.
@@ -127,6 +128,8 @@ changelog.
 
 - `odin` is already on PATH (homebrew, `dev-2026-09`). Relevant targets for
   this rewrite: `js_wasm32` for the browser and native macOS (`darwin_arm64`).
+  `scripts/check_core.sh` also checks `beetpx_core` for `linux_amd64` and
+  `windows_amd64`, which nothing builds or runs yet.
 - `ols` (language server) and `odinfmt` (formatter) are used through the
   `danielgavin.ols` VS Code extension, which bundles its own binaries. They are
   **not** on PATH, so do not invoke them from the shell. Their configuration is
