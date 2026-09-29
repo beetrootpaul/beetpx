@@ -11,9 +11,8 @@ _INITIAL_SCALE :: 8
 _sdl_renderer: ^sdl.Renderer
 _sdl_canvas_texture: ^sdl.Texture
 
-// TODO: Read SDL3 docs about everything that happens inside this proc.
-// TODO: Tinker with settings passed to SDL3 in this proc.
-// TODO: Review this implementation.
+// TODO: Check every SDL3 call here against the SDL3 docs, and tune the
+// settings.
 @(private = "package")
 _platform_start :: proc() {
 	if !sdl.Init({.VIDEO}) {
@@ -81,8 +80,7 @@ _platform_start :: proc() {
 	_run_game_loop()
 }
 
-// TODO: Read SDL3 docs about everything that happens inside this proc.
-// TODO: Review this implementation.
+// TODO: Check every SDL3 call here against the SDL3 docs.
 @(private = "package")
 _platform_render :: proc() {
 	sdl.UpdateTexture(
@@ -93,15 +91,14 @@ _platform_render :: proc() {
 		CANVAS_WIDTH * 4,
 	)
 	sdl.RenderClear(_sdl_renderer)
-	// TODO: Add comments explaining both `nil` params.
+	// TODO: Explain both `nil` params.
 	sdl.RenderTexture(_sdl_renderer, _sdl_canvas_texture, nil, nil)
 	sdl.RenderPresent(_sdl_renderer)
 }
 
 // Blocks until the window is closed.
 //
-// TODO: Read SDL3 docs about everything that happens inside this proc.
-// TODO: Review this implementation.
+// TODO: Check every SDL3 call here against the SDL3 docs.
 _run_game_loop :: proc() {
 	previous_ticks_ns := sdl.GetTicksNS()
 	running := true

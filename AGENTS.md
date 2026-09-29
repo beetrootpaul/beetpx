@@ -1,1 +1,1 @@
-AI.md
+ai/AI.md

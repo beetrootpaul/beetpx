@@ -19,10 +19,10 @@ update :: proc() {
 }
 
 draw :: proc() {
-	// BeetPx runs at 30 FPS, therefore here we change color every 1 second.
+	// There are 30 frames per second, so this switches the color every second.
 	if (bpx.frame_number() / 30) % 2 == 0 {
-		// TODO: Move draw calls to dedicated draw API, which will prevent
-		// calling it outside "draw".
+		// TODO: Move draw calls to a dedicated draw API, callable only inside
+		// `draw`.
 		bpx.draw_clear_canvas(palettes.pico8_storm)
 	} else {
 		bpx.draw_clear_canvas(palettes.pico8_lime)
@@ -30,8 +30,8 @@ draw :: proc() {
 
 	// Marks 3 of the 4 canvas corners.
 	//
-	// TODO: Move draw calls to dedicated draw API, which will prevent calling
-	// it outside "draw".
+	// TODO: Move draw calls to a dedicated draw API, callable only inside
+	// `draw`.
 	bpx.draw_pixel({0, 0}, palettes.pico8_lemon)
 	bpx.draw_pixel({bpx.CANVAS_WIDTH - 1, 0}, palettes.pico8_ember)
 	bpx.draw_pixel({0, bpx.CANVAS_HEIGHT - 1}, palettes.pico8_black)

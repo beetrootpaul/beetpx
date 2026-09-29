@@ -1,9 +1,11 @@
 # AI.md
 
-Starting point reference for AI coding assistants (Claude, OpenAI Codex, etc.) working in this repository.
+Starting point for AI coding assistants (Claude, OpenAI Codex, etc.) working
+in this repository.
 
-`AGENTS.md` and `CLAUDE.md` are symlinks to this file. Edit `AI.md` itself; do
-not replace the symlinks with regular files.
+`AGENTS.md` and `CLAUDE.md` in the repository root are symlinks to this file,
+`ai/AI.md`. Edit `ai/AI.md` itself; do not replace the symlinks with regular
+files.
 
 ## Working agreement
 
@@ -75,16 +77,16 @@ the code license does not cover.
 This checkout is on branch `odin`: a from-scratch Odin rewrite of BeetPx, at
 an early stage.
 
-**Read `other/llm-state-of-migration-to-odin.md` at the start of a session.**
+**Read `ai/rewrite_status.md` at the start of a session.**
 It records what already works, what is temporary, and what has not started,
 so you do not have to re-derive that from the code. The file describes the
 repository as of the last change that touched it, so the changes it may not
 cover yet are the ones after that:
 
 ```sh
-jj log -r 'heads(::@ & files("other/llm-state-of-migration-to-odin.md"))..@'
+jj log -r 'heads(::@ & files("ai/rewrite_status.md"))..@'
 # Without jj (this misses the uncommitted working-copy change):
-git log "$(git log -1 --format=%H -- other/llm-state-of-migration-to-odin.md)..HEAD"
+git log "$(git log -1 --format=%H -- ai/rewrite_status.md)..HEAD"
 ```
 
 When your change alters anything the file describes, update the file in the
@@ -92,6 +94,14 @@ same change, including its "Last updated" line. Whenever you touch the file,
 bring all of it up to date, because the lookup above will treat everything
 before that change as covered. Keep it a snapshot of the present, not a
 changelog.
+
+Record in it only what the code does not already say: intent, the reasons
+behind decisions, rejected alternatives, known problems, and what has been
+verified and when. For anything a quick read of a file answers (flag lists,
+proc names, the step-by-step logic of a proc), point to that file instead of
+restating it, since a restated copy goes stale as soon as the file changes.
+
+The repository layout:
 
 - `beetpx_core/` - the root of the `beetpx` collection. Each subdirectory is a
   package that games import from it by name, e.g. `import "beetpx:bpx"`. Odin
@@ -112,8 +122,9 @@ changelog.
 - `beetpx_examples/basic/run_web.sh` and `beetpx_examples/basic/run_macos.sh`
   build and run that example for each target, writing output to the
   repository root's `build/` (gitignored). There is no CLI yet.
-- `other/cross-platform-rewrite-llm-braindump.md` - large design braindump for
-  the rewrite (layer boundaries, flat `bpx.*` API sketch, phased plan). Read it
+- `ai/` - documents for AI assistants: this file, `rewrite_status.md` (see
+  above), and `rewrite_braindump.md`, a large design braindump for the rewrite
+  (layer boundaries, flat `bpx.*` API sketch, phased plan). Read the braindump
   for context, but treat it as a **non-binding draft**: do not quote it as a
   rule the user must follow, and do not edit it unless asked.
 - `v0.56.1-for-reference/` - frozen snapshots of the current engine

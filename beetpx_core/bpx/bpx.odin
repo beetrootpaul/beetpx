@@ -3,12 +3,10 @@ package bpx
 CANVAS_WIDTH  :: 64
 CANVAS_HEIGHT :: 64
 
-// Representation of a float (x,y) coordinates.
-//
-// NOTE: In BeetPx (x,y) starts at (0,0) at the top-left corner of the canvas.
+// Float (x, y) coordinates, where (0, 0) is the top-left corner of the canvas.
 Xy :: _Xy
 
-// Representation of an opaque RGB8 color.
+// An opaque RGB8 color.
 Rgb :: _Color_Rgb
 
 On_Update_Proc :: proc()
@@ -16,18 +14,16 @@ On_Draw_Proc   :: proc()
 
 // Registers a callback to be run once per fixed-timestep tick.
 //
-// Both `on_update` and `on_draw` should be treated as independent calls.
-// Sometimes, `on_update` might be called several times before the next
-// `on_draw`, and sometimes it might be not called at all.
+// Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
+// calls, `on_update` may run several times, or not at all.
 set_on_update :: proc(on_update: On_Update_Proc) {
 	_game_loop_on_update = on_update
 }
 
-// Registers a callback to be run when the game loop has an opportunity to draw.
+// Registers a callback to be run once per host frame, after any ticks.
 //
-// Both `on_update` and `on_draw` should be treated as independent calls.
-// Sometimes, `on_update` might be called several times before the next
-// `on_draw`, and sometimes it might be not called at all.
+// Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
+// calls, `on_update` may run several times, or not at all.
 set_on_draw :: proc(on_draw: On_Draw_Proc) {
 	_game_loop_on_draw = on_draw
 }
@@ -35,8 +31,8 @@ set_on_draw :: proc(on_draw: On_Draw_Proc) {
 // Starts the game. Might be blocking, depending on the platform.
 start :: proc() {
 	_platform_start()
-	// Whatever you put here, might run either immediately or on the app exit,
-	// depending on the platform specifis.
+	// Code placed here runs either right away or on app exit, depending on
+	// the platform.
 }
 
 // Returns the frame number, which is incremented once per fixed-timestep tick,

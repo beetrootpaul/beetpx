@@ -13,14 +13,13 @@ _Pixel :: [4]u8
 // top-left corner, so (x, y) is at index `y * CANVAS_WIDTH + x`.
 _pixels: [CANVAS_WIDTH * CANVAS_HEIGHT]_Pixel
 
-// Initializes the canvas with opaque black instead of whatever would be there
-// by deafult.
+// Sets the canvas to opaque black. The platforms call it before the first
+// frame, since the zero value would be transparent black.
 @(private = "package")
 _canvas_fill_black :: proc() {
 	_canvas_fill({0, 0, 0})
 }
 
-// TODO: Operate on Xy instead of x and y separately.
 @(private = "package")
 _canvas_can_set_at :: proc(xy: _Xy_Int) -> bool {
 	return(
@@ -43,7 +42,7 @@ _canvas_fill :: proc(c: _Color_Rgb) {
 	slice.fill(_pixels[:], _pixel_of(c))
 }
 
-// Returns the framebuffer as raw RGBA8 bytes,  for the platform to present.
+// Returns the framebuffer as raw RGBA8 bytes, for the platform to present.
 @(private = "package")
 _canvas_rgba8_bytes :: proc() -> []u8 {
 	return slice.to_bytes(_pixels[:])

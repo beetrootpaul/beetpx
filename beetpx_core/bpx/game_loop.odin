@@ -4,8 +4,8 @@ package bpx
 
 _TICK_HZ :: 30
 _TICK_S  :: 1.0 / _TICK_HZ
-// Prevents a death spiral if a host frame takes too long: run at most this
-// many catch-up ticks before giving up on the backlog for that frame.
+// The most ticks a single host frame runs. Any backlog above it is dropped,
+// so a slow frame cannot cause ever more catch-up work.
 _MAX_CATCHUP_TICKS :: 5
 
 @(private = "package")
@@ -19,7 +19,8 @@ _game_loop_frame_number: int
 // TODO: Should it really be float?
 _accumulated_s: f64
 
-// Runs any fixed-timestep ticks owed for the delta seconds of real time, then draws exactly once and again and again and again.
+// Runs the ticks owed for `delta_s` seconds of real time, then draws and
+// renders exactly once.
 @(private = "package")
 _game_loop_advance :: proc(delta_s: f64) {
 	_accumulated_s += delta_s
@@ -32,9 +33,8 @@ _game_loop_advance :: proc(delta_s: f64) {
 		ticks += 1
 	}
 
-	// If we hit the _MAX_CATCHUP_TICKS above, then let's skip whatever else is
-	// left to be done. This way we avoid fast-forwarding through missing
-	// frames.
+	// The cap was hit: drop the backlog instead of fast-forwarding through it
+	// on later frames.
 	if _accumulated_s >= _TICK_S {
 		_accumulated_s = 0
 	}

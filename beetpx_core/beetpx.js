@@ -1,6 +1,6 @@
-// The JavaScript half of the BeetPx web platform. It implements the procs
-// which `platform_js.odin` imports from JavaScript, and runs the game's WASM with
-// them through Odin's `odin.js`, which has to be loaded before this file.
+// The JavaScript half of the BeetPx web platform. It implements the procs that
+// `platform_js.odin` imports, and runs the game's WASM with them through Odin's
+// `odin.js`, which has to be loaded before this file.
 (function () {
   "use strict";
 
@@ -14,7 +14,7 @@
   // whole number of device pixels wide and tall. The rest of the element stays
   // transparent, and shows its background color.
   const setUpHtmlCanvas = (htmlCanvas, width, height) => {
-    // TODO: Throw error if failed?
+    // TODO: Throw an error if this fails?
     const htmlContext = htmlCanvas.getContext("2d", {
       colorSpace: "srgb",
       // Transparent, so the background color shows around the canvas.
@@ -27,20 +27,20 @@
     offscreenCanvas.width = width;
     offscreenCanvas.height = height;
 
-    // TODO: Throw error if failed?
+    // TODO: Throw an error if this fails?
     const offscreenContext = offscreenCanvas.getContext("2d", {
       colorSpace: "srgb",
       // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#turn_off_transparency
       alpha: false,
     });
 
-    // TODO: Initialize as non-transparent here instead of in the `@(init)` call?
+    // TODO: Fill the canvas black here, instead of in `_platform_start`?
 
     if (!htmlContext || !offscreenContext) {
       return null;
     }
 
-    // TODO: Make it configurable by the user?
+    // TODO: Make it configurable?
     htmlCanvas.style.backgroundColor = "#000000";
 
     // Resizing the backing store clears the `<canvas>` and resets all
@@ -147,7 +147,7 @@
 
     return window.odin.runWasm(
       wasmPath,
-      // TODO: What the undefined stands for here?
+      // TODO: What does `undefined` stand for here?
       undefined,
       foreignImports,
       wasmMemoryInterface,

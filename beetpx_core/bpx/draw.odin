@@ -17,10 +17,11 @@ _draw_pixel :: proc(xy: Xy, color: _Color_Rgb) {
 }
 
 // Rounds to the nearest whole number, with halves rounded up (e.g. 1.5 to 2,
-// and -1.5 to -1), as `Math.round` in JavaScript, which v0.56.1 relied on.
+// and -1.5 to -1).
 //
-// TODO: This one seems like something to be exported and re-used.
-// TODO: `int` is returend and the purpose is indexing the frame buffer. Consider renaming this to something more specific.
+// TODO: Make it public for games to reuse?
+// TODO: Give it a more specific name, since it returns `int`s for indexing
+// the framebuffer?
 _round :: proc(xy: _Xy) -> _Xy_Int {
 	return {
 		int(math.floor(xy.x + 0.5)),

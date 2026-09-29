@@ -374,8 +374,7 @@ Make the clock/event source injectable in framework tests.
 
 ### Tick spacing on host frames
 
-A known issue in the current Odin loop, and in v0.56.1's `GameLoop.ts` too.
-Not fixed yet.
+A known issue in the game loop, not fixed yet.
 
 **Problem.** When the display refresh rate is a whole multiple of the tick
 rate, ticks should land on host frames in a steady rhythm. At 30 Hz ticks on

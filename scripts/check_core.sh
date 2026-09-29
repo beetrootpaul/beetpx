@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Checks the correctness of the Odin code of the entire beetpx_core, for every
-# package and every supported target.
+# Checks all Odin code in `beetpx_core`, for every package and every supported
+# target.
 #
 # It uses every vet flag Odin has, except `-vet-unused-procedures`, which the
 # `#+vet` tags in the private `bpx` files enable for those files only. The

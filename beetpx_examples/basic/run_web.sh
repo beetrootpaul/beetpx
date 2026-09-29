@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Go to the repo root, since the further script assumes relative paths from it.
+# Go to the repo root, since the paths below are relative to it.
 #
-# TODO: Shouldn't we stay in the example's dir?
+# TODO: Stay in the example's directory instead?
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
 # TODO: Hide most of this script boilerplate in BeetPx CLI.
-# TODO: Make the script cross-platform. Right now it won't run on Windows, right? Let's add a .bat file maybe?
+# TODO: Make it run on Windows too, e.g. with a `.bat` file?
 
 rm -rf ./build/web/
 mkdir -p ./build/web/
 
-# TODO: In CLI make build way more forgiving.
-# TODO: WASM file named after the specific game itself.
+# TODO: Make the CLI's builds much more forgiving.
+# TODO: Name the WASM file after the game.
 odin build ./beetpx_examples/basic \
 	-collection:beetpx=./beetpx_core/ \
 	-disable-non-constant-globals \

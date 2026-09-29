@@ -23,14 +23,14 @@ foreign beetpx_js {
 
 // Must match the `id` of the `<canvas>` element in the hosting HTML page.
 //
-// TODO: Make the IDs configurable? Or run some validation on build to make sure they match?
+// TODO: Make the ID configurable, or check at build time that the page
+// matches?
 _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
 @(private = "package")
 _platform_start :: proc() {
 	if !_html_canvas_init(_CANVAS_ELEMENT_ID, CANVAS_WIDTH, CANVAS_HEIGHT) {
-		// TODO: Another case of a need for a shared unified logger… And look
-		// for other `fmt.` usages as well.
+		// TODO: Use a custom logger.
 		fmt.eprintln(
 			"BeetPx: failed to set up the canvas with id:",
 			_CANVAS_ELEMENT_ID,
