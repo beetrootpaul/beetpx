@@ -16,10 +16,11 @@ done
 
 # TODO: Maybe we can limit `packages` here to the external facing ones?
 packages=(
-	bpx
-	bpx_draw
+	core
+	draw
 	internal
 	palettes
+	utils
 )
 targets=(
 	darwin_arm64
@@ -41,7 +42,7 @@ run_check() {
 				-vet \
 				-vet-cast \
 				-vet-tabs \
-				-vet-packages:bpx,bpx_draw,internal,palettes \
+				-vet-packages:beetpx_core,beetpx_draw,beetpx_internal,beetpx_palettes,beetpx_utils \
 				-vet-using-param \
 				-vet-using-stmt \
 				-warnings-as-errors \

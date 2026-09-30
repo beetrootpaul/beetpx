@@ -1,4 +1,4 @@
-// The JavaScript half of the BeetPx web platform. It implements the procs that
+// The JavaScript part of the BeetPx web platform. It implements the procs that
 // `platform_js.odin` imports, and runs the game's WASM with them through Odin's
 // `odin.js`, which has to be loaded before this file.
 (function () {

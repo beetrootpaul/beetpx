@@ -1,20 +1,24 @@
 package main
 
-import "beetpx:bpx"
+import bc "beetpx:core"
+import bd "beetpx:draw"
+import bp "beetpx:palettes"
+import bu "beetpx:utils"
 
-color: bpx.Rgb = {128, 128, 0}
+color: bc.Rgb = {128, 128, 0}
 
 main :: proc() {
-	bpx.set_on_update(update)
-	bpx.set_on_draw(draw)
-	bpx.start()
+	bc.set_on_update(on_update)
+	bc.set_on_draw(bu.noop)
+	bc.set_on_draw(on_draw)
+	bc.start()
 }
 
-update :: proc() {
+on_update :: proc() {
 	color.b = color.b + 4
 }
 
-draw :: proc() {
-	bpx.draw_clear_canvas(color)
-	bpx.draw_pixel({1, 1}, 255 - color)
+on_draw :: proc() {
+	bd.clear_canvas(bp.pico8_storm)
+	bd.pixel({1, 1}, 255 - color)
 }

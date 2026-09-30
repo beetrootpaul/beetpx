@@ -1,13 +1,13 @@
-#+private file
-#+vet unused-procedures
-package bpx
+package beetpx_core
 
+import bi "../internal"
 import "core:fmt"
 
 // Implemented in JavaScript by `beetpx.js`, which passes them to
 // `odin.runWasm` as extra foreign imports under the "beetpx" key.
 foreign import beetpx_js "beetpx"
 
+@(private = "file")
 @(default_calling_convention = "contextless")
 foreign beetpx_js {
 	// Prepares the `<canvas>` element with the given `id` to render a canvas
@@ -25,11 +25,16 @@ foreign beetpx_js {
 //
 // TODO: Make the ID configurable, or check at build time that the page
 // matches?
+@(private = "file")
 _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
-@(private = "package")
+@(private)
 _platform_start :: proc() {
-	if !_html_canvas_init(_CANVAS_ELEMENT_ID, CANVAS_WIDTH, CANVAS_HEIGHT) {
+	if !_html_canvas_init(
+		_CANVAS_ELEMENT_ID,
+		bi.CANVAS_WIDTH,
+		bi.CANVAS_HEIGHT,
+	) {
 		// TODO: Use a custom logger.
 		fmt.eprintln(
 			"BeetPx: failed to set up the canvas with id:",
@@ -41,18 +46,21 @@ _platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (js) started.")
 
-	_canvas_fill_black()
+	bi.canvas_fill({0, 0, 0})
 }
 
-@(private = "package")
+@(private)
 _platform_render :: proc() {
-	_html_canvas_render(_canvas_rgba8_bytes())
+	_html_canvas_render(bi.canvas_rgba8_bytes())
 }
 
-// Called once per host animation frame by `odin.js`.
+// Called once per host animation frame by `odin.js`. Has to be called `step`.
 //
 // See: https://github.com/odin-lang/Odin/blob/f1fd03364d5e45a987e1cd354188a3f018f45d1c/core/sys/wasm/js/odin.js#L2258-L2284
+//
+// TODO: Clean up this export attribute and proc name.
 @(export)
+@(private = "file")
 step :: proc(delta_time: f64) -> bool {
 	_game_loop_advance(delta_time)
 	return true
