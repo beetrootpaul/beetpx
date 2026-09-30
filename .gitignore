@@ -1,5 +1,6 @@
 # Odin build output
 /build/
+/beetpx_examples/build/
 
 # VS Code non-tracked workspace settings
 /.vscode/

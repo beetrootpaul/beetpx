@@ -21,7 +21,7 @@ files.
   scope. Do not invent architecture or widen API surface on your own.
 - Never install packages or tools (e.g. via `brew`, `npm`) without the user's
   explicit permission first.
-- Never run scripts (e.g. the `run_*.sh` scripts of the examples). Tell the
+- Never run scripts (e.g. the examples' `run.sh`). Tell the
   user which script to run and with what arguments instead.
 - Never commit, amend, or push, whether with git or with jj. This is a
   colocated jj repository, and the user owns all version-control operations:
@@ -120,11 +120,10 @@ The repository layout:
 - `scripts/` - scripts that check and format `beetpx_core`.
 - `beetpx_examples/` - example games (currently `basic/`), plus the
   `index.html` page that hosts the web build.
-  - `scripts/` - scripts that check and format all examples. Each lists the
-    examples it covers explicitly, in an array.
-- `beetpx_examples/basic/run_web.sh` and `beetpx_examples/basic/run_macos.sh`
-  build and run that example for each target, writing output to the
-  repository root's `build/` (gitignored). There is no CLI yet.
+  - `scripts/` - scripts that check, format, and run the examples. Each lists
+    the examples it covers explicitly, in an array. `run.sh <target>
+<example>` builds and runs one example, writing output to the repository
+    root's `build/` (gitignored). There is no CLI yet.
 - `ai/` - documents for AI assistants: this file, `rewrite_status.md` (see
   above), and `rewrite_braindump.md`, a large design braindump for the rewrite
   (layer boundaries, flat `bpx.*` API sketch, phased plan). Read the braindump

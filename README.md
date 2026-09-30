@@ -13,9 +13,8 @@ licensed under MIT.
 
 ## Scripts
 
-Run the basic example for web: `./beetpx_examples/basic/run_web.sh`.
-
-Run the basic example for macOS: `./beetpx_examples/basic/run_macos.sh`.
+Run an example: `./beetpx_examples/scripts/run.sh <target> <example>`, where
+`<target>` is `js_wasm32` (web) or `darwin_arm64` (macOS), and `<example>` is one of dirs from `./beetpx_examples/`, e.g. `./beetpx_examples/scripts/run.sh js_wasm32 basic`.
 
 Check the BeetPx code: `./scripts/check_core.sh`.
 

@@ -70,12 +70,14 @@ tests, or CLI yet.
   because printing on every frame is the suspected cause of the browser dev
   tools lagging.
 - **Scripts**
-  - `beetpx_examples/basic/run_web.sh` and `run_macos.sh` build and run the
-    example, vetting only its `main` package.
+  - `beetpx_examples/scripts/run.sh <target> <example>` builds and runs one
+    example for `darwin_arm64` or `js_wasm32`, vetting only its `main`
+    package. Targets and examples are listed explicitly rather than inferred
+    from Odin or from the subdirectories.
   - `scripts/check_core.sh` checks `bpx` and `palettes` for all four targets,
     with every vet flag the compiler offers.
   - `beetpx_examples/scripts/check_all.sh` checks every example for the two
-    targets they run on, with the same flags as the run scripts.
+    targets they run on, with the same flags as `run.sh`.
   - With `--watch`, both check scripts re-run whenever an `.odin` file they
     depend on changes. They poll once a second rather than use a file watcher
     such as `fswatch`, so that they need nothing beyond what macOS ships.
@@ -95,7 +97,8 @@ Deliberate stopgaps, each marked with a `TODO` in the code:
 - The WASM file name is hard-coded as `beetpx_game.wasm`, instead of being
   named after the game.
 - The canvas element ID is hard-coded on both the Odin and the HTML side.
-- The run scripts are Bash-only and are meant to be replaced by a BeetPx CLI.
+- The scripts are Bash-only and are meant to be replaced by a BeetPx CLI.
+- `run.sh` supports only `darwin_arm64` and `js_wasm32`.
 - The PICO-8 palette defines only a few colors.
 - The SDL3 calls have not yet been checked against the SDL3 docs or tuned.
 
