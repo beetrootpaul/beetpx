@@ -17,6 +17,14 @@ Run the basic example for web: `./beetpx_examples/basic/run_web.sh`.
 
 Run the basic example for macOS: `./beetpx_examples/basic/run_macos.sh`.
 
+Check the BeetPx code: `./scripts/check_core.sh`.
+
+Check all examples: `./beetpx_examples/scripts/check_all.sh`.
+
+Add `--watch` to either check script to re-run it every time an `.odin` file it
+depends on changes, until you stop it with Ctrl+C. Watching works on macOS
+only.
+
 ## License
 
 Released under the [zlib license](LICENSE). You may use it for any purpose,

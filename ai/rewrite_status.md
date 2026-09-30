@@ -76,6 +76,9 @@ tests, or CLI yet.
     with every vet flag the compiler offers.
   - `beetpx_examples/scripts/check_all.sh` checks every example for the two
     targets they run on, with the same flags as the run scripts.
+  - With `--watch`, both check scripts re-run whenever an `.odin` file they
+    depend on changes. They poll once a second rather than use a file watcher
+    such as `fswatch`, so that they need nothing beyond what macOS ships.
   - `scripts/format_core.sh` and `beetpx_examples/scripts/format_all.sh` run
     `odinfmt`, which is not on PATH in this setup.
 

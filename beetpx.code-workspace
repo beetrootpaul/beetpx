@@ -18,6 +18,9 @@
     "[odin]": {
       "editor.rulers": [80],
     },
+    "[shellscript]": {
+      "editor.rulers": [80],
+    }
   },
   "extensions": {
     "recommendations": ["danielgavin.ols"],
