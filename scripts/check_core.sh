@@ -14,8 +14,11 @@ for arg in "$@"; do
 	esac
 done
 
+# TODO: Maybe we can limit `packages` here to the external facing ones?
 packages=(
 	bpx
+	bpx_draw
+	internal
 	palettes
 )
 targets=(
@@ -29,6 +32,8 @@ run_check() {
 	for package in "${packages[@]}"; do
 		for target in "${targets[@]}"; do
 			echo "Checking '${package}' for '${target}' ..."
+			# TODO: Maybe we can limit `-vet-packages` here to the currently
+			#       checked and the internals?
 			odin check "./beetpx_core/${package}" \
 				-disable-non-constant-globals \
 				-no-entry-point \
@@ -36,7 +41,7 @@ run_check() {
 				-vet \
 				-vet-cast \
 				-vet-tabs \
-				-vet-packages:bpx,palettes \
+				-vet-packages:bpx,bpx_draw,internal,palettes \
 				-vet-using-param \
 				-vet-using-stmt \
 				-warnings-as-errors \
@@ -78,6 +83,16 @@ while true; do
 	current_fingerprint="$(compute_fingerprint_of_odin_files)"
 	if [[ "${current_fingerprint}" != "${last_fingerprint}" ]]; then
 		last_fingerprint="${current_fingerprint}"
+		# Clears the terminal, so that only the output of the latest check is
+		# visible. The escape sequences are:
+		#   `\033[3J` - erases the scrollback,
+		#   `\033[2J` - erases the visible screen,
+		#   `\033[H`  - moves the cursor to the top-left corner.
+		# `-t 1` skips this when the output is not a terminal, e.g. when it
+		# is redirected to a file, which should not get the escape sequences.
+		if [[ -t 1 ]]; then
+			printf '\033[3J\033[2J\033[H'
+		fi
 		if run_check; then
 			echo "All checks passed."
 		fi

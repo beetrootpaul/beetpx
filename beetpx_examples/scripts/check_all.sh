@@ -79,6 +79,16 @@ while true; do
 	current_fingerprint="$(compute_fingerprint_of_odin_files)"
 	if [[ "${current_fingerprint}" != "${last_fingerprint}" ]]; then
 		last_fingerprint="${current_fingerprint}"
+		# Clears the terminal, so that only the output of the latest check is
+		# visible. The escape sequences are:
+		#   `\033[3J` - erases the scrollback,
+		#   `\033[2J` - erases the visible screen,
+		#   `\033[H`  - moves the cursor to the top-left corner.
+		# `-t 1` skips this when the output is not a terminal, e.g. when it
+		# is redirected to a file, which should not get the escape sequences.
+		if [[ -t 1 ]]; then
+			printf '\033[3J\033[2J\033[H'
+		fi
 		if run_check; then
 			echo "All checks passed."
 		fi
