@@ -16,4 +16,5 @@ update :: proc() {
 
 draw :: proc() {
 	bpx.draw_clear_canvas(color)
+	bpx.draw_pixel({1, 1}, 255 - color)
 }
