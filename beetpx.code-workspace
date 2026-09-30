@@ -20,6 +20,11 @@
     },
     "[shellscript]": {
       "editor.rulers": [80],
+    },
+    "files.exclude": {
+      ".vscode": true,
+      "**/.claude": true,
+      "**/build": true
     }
   },
   "extensions": {
