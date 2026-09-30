@@ -8,7 +8,7 @@ describes the present only. The intended direction is in
 It records only what the code does not say on its own: intent, reasons, known
 problems, and verification status. For details, read the files it points to.
 
-Last updated: 2026-09-29.
+Last updated: 2026-09-30.
 
 ## Summary
 
@@ -74,7 +74,10 @@ tests, or CLI yet.
     example, vetting only its `main` package.
   - `scripts/check_core.sh` checks `bpx` and `palettes` for all four targets,
     with every vet flag the compiler offers.
-  - `format_all.sh` runs `odinfmt`, which is not on PATH in this setup.
+  - `beetpx_examples/scripts/check_all.sh` checks every example for the two
+    targets they run on, with the same flags as the run scripts.
+  - `scripts/format_core.sh` and `beetpx_examples/scripts/format_all.sh` run
+    `odinfmt`, which is not on PATH in this setup.
 
 Runtime behavior is verified only when the user runs the scripts.
 

@@ -117,8 +117,11 @@ The repository layout:
   - `palettes/` - color palettes games import directly.
   - `beetpx.js` - the JavaScript half of the web platform, next to the
     packages rather than inside one.
+- `scripts/` - scripts that check and format `beetpx_core`.
 - `beetpx_examples/` - example games (currently `basic/`), plus the
   `index.html` page that hosts the web build.
+  - `scripts/` - scripts that check and format all examples. Each lists the
+    examples it covers explicitly, in an array.
 - `beetpx_examples/basic/run_web.sh` and `beetpx_examples/basic/run_macos.sh`
   build and run that example for each target, writing output to the
   repository root's `build/` (gitignored). There is no CLI yet.

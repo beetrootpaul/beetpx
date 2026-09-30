@@ -3,28 +3,25 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-packages=(
-	bpx
-	palettes
+examples=(
+	basic
 )
 targets=(
 	darwin_arm64
 	js_wasm32
-	linux_amd64
-	windows_amd64
 )
 
-for package in "${packages[@]}"; do
+for example in "${examples[@]}"; do
 	for target in "${targets[@]}"; do
-		echo "Checking '${package}' for '${target}' ..."
-		odin check "./beetpx_core/${package}" \
+		echo "Checking '${example}' for '${target}' ..."
+		odin check "./${example}" \
+			-collection:beetpx=../beetpx_core/ \
 			-disable-non-constant-globals \
-			-no-entry-point \
 			-strict-style \
 			-vet \
 			-vet-cast \
 			-vet-tabs \
-			-vet-packages:bpx,palettes \
+			-vet-packages:main \
 			-vet-using-param \
 			-vet-using-stmt \
 			-warnings-as-errors \

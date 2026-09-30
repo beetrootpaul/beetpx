@@ -4,8 +4,6 @@ set -euo pipefail
 # TODO: Hide most of this script boilerplate in BeetPx CLI.
 # TODO: Make it run on Windows too, e.g. with a `.bat` file?
 
-# Go to the repo root, since the paths below are relative to it.
-#
 # TODO: Stay in the example's directory instead?
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 

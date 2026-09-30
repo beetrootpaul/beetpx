@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Go to the repo root, since the paths below are relative to it.
-#
 # TODO: Stay in the example's directory instead?
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
