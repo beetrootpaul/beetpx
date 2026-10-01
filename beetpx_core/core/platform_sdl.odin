@@ -1,4 +1,5 @@
 #+build darwin, linux, windows
+#+private file
 package beetpx_core
 
 import bi "../internal"
@@ -15,7 +16,7 @@ _sdl_canvas_texture: ^sdl.Texture
 
 // TODO: Check every SDL3 call here against the SDL3 docs, and tune the
 // settings.
-@(private)
+@(private = "package")
 _platform_start :: proc() {
 	if !sdl.Init({.VIDEO}) {
 		fmt.eprintln("BeetPx: sdl.Init failed:", sdl.GetError())
@@ -83,7 +84,7 @@ _platform_start :: proc() {
 }
 
 // TODO: Check every SDL3 call here against the SDL3 docs.
-@(private)
+@(private = "package")
 _platform_render :: proc() {
 	sdl.UpdateTexture(
 		_sdl_canvas_texture,
@@ -101,7 +102,6 @@ _platform_render :: proc() {
 // Blocks until the window is closed.
 //
 // TODO: Check every SDL3 call here against the SDL3 docs.
-@(private = "file")
 _run_game_loop :: proc() {
 	previous_ticks_ns := sdl.GetTicksNS()
 	running := true

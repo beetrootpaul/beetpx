@@ -16,6 +16,7 @@ main :: proc() {
 
 on_update :: proc() {
 	color.b = color.b + 4
+	color.g = u8(bc.frame_number())
 }
 
 on_draw :: proc() {

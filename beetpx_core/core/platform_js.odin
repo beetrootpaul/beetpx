@@ -1,3 +1,4 @@
+#+private file
 package beetpx_core
 
 import bi "../internal"
@@ -7,7 +8,6 @@ import "core:fmt"
 // `odin.runWasm` as extra foreign imports under the "beetpx" key.
 foreign import beetpx_js "beetpx"
 
-@(private = "file")
 @(default_calling_convention = "contextless")
 foreign beetpx_js {
 	// Prepares the `<canvas>` element with the given `id` to render a canvas
@@ -25,10 +25,9 @@ foreign beetpx_js {
 //
 // TODO: Make the ID configurable, or check at build time that the page
 // matches?
-@(private = "file")
 _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
-@(private)
+@(private = "package")
 _platform_start :: proc() {
 	if !_html_canvas_init(
 		_CANVAS_ELEMENT_ID,
@@ -49,7 +48,7 @@ _platform_start :: proc() {
 	bi.canvas_fill({0, 0, 0})
 }
 
-@(private)
+@(private = "package")
 _platform_render :: proc() {
 	_html_canvas_render(bi.canvas_rgba8_bytes())
 }
@@ -60,7 +59,6 @@ _platform_render :: proc() {
 //
 // TODO: Clean up this export attribute and proc name.
 @(export)
-@(private = "file")
 step :: proc(delta_time: f64) -> bool {
 	_game_loop_advance(delta_time)
 	return true
