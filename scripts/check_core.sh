@@ -33,12 +33,21 @@ run_check() {
 	for package in "${packages[@]}"; do
 		for target in "${targets[@]}"; do
 			echo "Checking '${package}' for '${target}' ..."
+			# `-thread-count:1` works around an intermittent segmentation
+			# fault of the multithreaded checker, seen in Odin
+			# [`dev-2026-09:a2fb372b7`](https://github.com/odin-lang/Odin/releases/tag/dev-2026-09),
+			# about once in 20 runs.
+			#
+			# TODO: Consider reporting this crash to Odin. Unless it is already
+			#       fixed in a newer version.
+			# TODO: Remove the single-threading once the issue is fixed.
 			# TODO: Maybe we can limit `-vet-packages` here to the currently
 			#       checked and the internals?
 			odin check "./beetpx_core/${package}" \
 				-disable-non-constant-globals \
 				-no-entry-point \
 				-strict-style \
+				-thread-count:1 \
 				-vet \
 				-vet-cast \
 				-vet-tabs \

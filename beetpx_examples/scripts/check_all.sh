@@ -26,10 +26,19 @@ run_check() {
 	for example in "${examples[@]}"; do
 		for target in "${targets[@]}"; do
 			echo "Checking '${example}' for '${target}' ..."
+			# `-thread-count:1` works around an intermittent segmentation
+			# fault of the multithreaded checker, seen in Odin
+			# [`dev-2026-09:a2fb372b7`](https://github.com/odin-lang/Odin/releases/tag/dev-2026-09),
+			# about once in 20 runs.
+			#
+			# TODO: Consider reporting this crash to Odin. Unless it is already
+			#       fixed in a newer version.
+			# TODO: Remove the single-threading once the issue is fixed.
 			odin check "./${example}" \
 				-collection:beetpx=../beetpx_core/ \
 				-disable-non-constant-globals \
 				-strict-style \
+				-thread-count:1 \
 				-vet \
 				-vet-cast \
 				-vet-tabs \
