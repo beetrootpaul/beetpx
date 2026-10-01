@@ -1,7 +1,6 @@
-#+private file
 package beetpx_core
 
-import bi "../internal"
+import "../internal"
 import "core:fmt"
 
 // Implemented in JavaScript by `beetpx.js`, which passes them to
@@ -9,6 +8,7 @@ import "core:fmt"
 foreign import beetpx_js "beetpx"
 
 @(default_calling_convention = "contextless")
+@(private = "file")
 foreign beetpx_js {
 	// Prepares the `<canvas>` element with the given `id` to render a canvas
 	// of the given size. Returns `false` if that is not possible.
@@ -25,14 +25,15 @@ foreign beetpx_js {
 //
 // TODO: Make the ID configurable, or check at build time that the page
 // matches?
+@(private = "file")
 _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
-@(private = "package")
+@(private)
 _platform_start :: proc() {
 	if !_html_canvas_init(
 		_CANVAS_ELEMENT_ID,
-		bi.CANVAS_WIDTH,
-		bi.CANVAS_HEIGHT,
+		internal.CANVAS_WIDTH,
+		internal.CANVAS_HEIGHT,
 	) {
 		// TODO: Use a custom logger.
 		fmt.eprintln(
@@ -45,12 +46,12 @@ _platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (js) started.")
 
-	bi.canvas_fill({0, 0, 0})
+	internal.canvas_fill({0, 0, 0})
 }
 
-@(private = "package")
+@(private)
 _platform_render :: proc() {
-	_html_canvas_render(bi.canvas_rgba8_bytes())
+	_html_canvas_render(internal.canvas_rgba8_bytes())
 }
 
 // Called once per host animation frame by `odin.js`. Has to be called `step`.
@@ -59,6 +60,7 @@ _platform_render :: proc() {
 //
 // TODO: Clean up this export attribute and proc name.
 @(export)
+@(private = "file")
 step :: proc(delta_time: f64) -> bool {
 	_game_loop_advance(delta_time)
 	return true

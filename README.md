@@ -14,7 +14,9 @@ licensed under MIT.
 ## Scripts
 
 Run an example: `./examples/scripts/run.sh <target> <example>`, where
-`<target>` is `js_wasm32` (web) or `darwin_arm64` (macOS), and `<example>` is one of dirs from `./examples/`, e.g. `./examples/scripts/run.sh js_wasm32 basic`.
+`<target>` is `js_wasm32` (web) or `darwin_arm64` (macOS), and `<example>` is
+the name of an example's directory in `./examples/`, e.g.
+`./examples/scripts/run.sh js_wasm32 basic`.
 
 Check the BeetPx code: `./scripts/check_core.sh`.
 

@@ -62,7 +62,7 @@ compute_fingerprint_of_odin_files() {
 	# Lists every `.odin` file with its modification time, its size, and its
 	# path, one file per line, e.g.:
 	#   1790752809 244 ./basic/main.odin
-	#   1790752799 661 ../beetpx/draw/draw.odin
+	#   1790752799 661 ../beetpx/draw/pixel.odin
 	#
 	# `"${examples[@]/#/./}"` prefixes each example with `./`, so that `find`
 	# reads it as a path rather than as an option.

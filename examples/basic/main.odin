@@ -1,25 +1,24 @@
 package main
 
-import bc "beetpx:core"
-import bd "beetpx:draw"
-import bp "beetpx:palettes"
-import bu "beetpx:utils"
+import "beetpx:bpx"
 
-color: bc.Rgb = {128, 128, 0}
+color: bpx.Rgb = {128, 128, 0}
 
 main :: proc() {
-	bc.set_on_update(on_update)
-	bc.set_on_draw(bu.noop)
-	bc.set_on_draw(on_draw)
-	bc.start()
+	bpx.set_on_update(on_update)
+	bpx.set_on_draw(bpx.u_noop)
+	bpx.set_on_draw(on_draw)
+	bpx.start()
 }
 
 on_update :: proc() {
 	color.b = color.b + 4
-	color.g = u8(bc.frame_number())
+	// TODO: REMOVE
+	color.g = u8(bpx.frame_number())
 }
 
 on_draw :: proc() {
-	bd.clear_canvas(bp.pico8_storm)
-	bd.pixel({1, 1}, 255 - color)
+	bpx.d_clear_canvas(bpx.p_pico8_storm)
+	// TODO: REMOVE
+	bpx.d_pixel({1, 1}, 255 - color)
 }

@@ -16,6 +16,7 @@ done
 
 # TODO: Maybe we can limit `packages` here to the external facing ones?
 packages=(
+	bpx
 	core
 	draw
 	internal
@@ -51,7 +52,7 @@ run_check() {
 				-vet \
 				-vet-cast \
 				-vet-tabs \
-				-vet-packages:beetpx_core,beetpx_draw,beetpx_internal,beetpx_palettes,beetpx_utils \
+				-vet-packages:beetpx_bpx,beetpx_core,beetpx_draw,beetpx_internal,beetpx_palettes,beetpx_utils \
 				-vet-using-param \
 				-vet-using-stmt \
 				-warnings-as-errors \
@@ -69,7 +70,7 @@ fi
 compute_fingerprint_of_odin_files() {
 	# Lists every `.odin` file with its modification time, its size, and its
 	# path, one file per line, e.g.:
-	#   1790752799 661 ./beetpx/draw/draw.odin
+	#   1790752799 661 ./beetpx/draw/pixel.odin
 	#   1790752799 1728 ./beetpx/core/platform_js.odin
 	#
 	# TODO: Make this work on linux as well. There is a chance `-c` should be

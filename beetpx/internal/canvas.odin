@@ -1,27 +1,25 @@
-#+private file
 package beetpx_internal
 
 import "core:slice"
 
-@(private = "package")
-_CANVAS_WIDTH :: 64
-@(private = "package")
-_CANVAS_HEIGHT :: 64
+CANVAS_WIDTH  :: 64
+CANVAS_HEIGHT :: 64
 
+// TODO: Consider putting _frame_buffer into a  state struct.
+@(private)
 _frame_buffer: [CANVAS_WIDTH * CANVAS_HEIGHT][4]u8
 
-@(private = "package")
-_canvas_fill :: proc(c: _Color_Rgb) {
+canvas_fill :: proc(c: Rgb) {
 	slice.fill(_frame_buffer[:], [4]u8{c.r, c.g, c.b, 0xff})
 }
 
-@(private = "package")
-_canvas_set :: proc(xy: _Xy_Int, c: _Color_Rgb) {
-	if !_canvas_can_set_at(xy) do return
+canvas_set :: proc(xy: _Xy_Int, c: Rgb) {
+	if !_can_set_at(xy) do return
 	_frame_buffer[xy.y * CANVAS_WIDTH + xy.x] = {c.r, c.g, c.b, 0xff}
 }
 
-_canvas_can_set_at :: proc(xy: _Xy_Int) -> bool {
+@(private = "file")
+_can_set_at :: proc(xy: _Xy_Int) -> bool {
 	return(
 		0 <= xy.x &&
 		xy.x < CANVAS_WIDTH &&
@@ -30,7 +28,6 @@ _canvas_can_set_at :: proc(xy: _Xy_Int) -> bool {
 	)
 }
 
-@(private = "package")
-_canvas_rgba8_bytes :: proc() -> []u8 {
+canvas_rgba8_bytes :: proc() -> []u8 {
 	return slice.to_bytes(_frame_buffer[:])
 }
