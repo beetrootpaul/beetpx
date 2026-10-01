@@ -43,7 +43,7 @@ run_check() {
 			# TODO: Remove the single-threading once the issue is fixed.
 			# TODO: Maybe we can limit `-vet-packages` here to the currently
 			#       checked and the internals?
-			odin check "./beetpx_core/${package}" \
+			odin check "./beetpx/${package}" \
 				-disable-non-constant-globals \
 				-no-entry-point \
 				-strict-style \
@@ -69,14 +69,14 @@ fi
 compute_fingerprint_of_odin_files() {
 	# Lists every `.odin` file with its modification time, its size, and its
 	# path, one file per line, e.g.:
-	#   1790752799 661 ./beetpx_core/bpx/draw.odin
-	#   1790752799 1728 ./beetpx_core/bpx/platform_js.odin
+	#   1790752799 661 ./beetpx/draw/draw.odin
+	#   1790752799 1728 ./beetpx/core/platform_js.odin
 	#
 	# TODO: Make this work on linux as well. There is a chance `-c` should be
 	# used there instead of `-f`.
 	local files_list
 	files_list="$(
-		find ./beetpx_core \
+		find ./beetpx \
 			-type f \
 			-name '*.odin' \
 			-exec stat -f '%m %z %N' {} +

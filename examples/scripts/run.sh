@@ -55,7 +55,7 @@ fi
 
 # TODO: Make the CLI's builds much more forgiving than this here.
 odin_flags=(
-	-collection:beetpx=../beetpx_core/
+	-collection:beetpx=../beetpx/
 	-disable-non-constant-globals
 	-strict-style
 	-vet
@@ -86,8 +86,8 @@ js_wasm32)
 		"${odin_flags[@]}" \
 		-out:build/web/beetpx_game.wasm
 	cp "$(odin root)/core/sys/wasm/js/odin.js" ./build/web/odin.js
-	cp ../beetpx_core/beetpx.js ./build/web/beetpx.js
-	cp ../beetpx_examples/index.html ./build/web/index.html
+	cp ../beetpx/beetpx.js ./build/web/beetpx.js
+	cp ./index.html ./build/web/index.html
 
 	echo "Serving ./build/web/ at http://127.0.0.1:8000 ..."
 	python3 -m http.server 8000 \

@@ -3,7 +3,7 @@
 	"collections": [
 		{
 			"name": "beetpx",
-			"path": "./beetpx_core/"
+			"path": "./beetpx/"
 		}
 	]
 }

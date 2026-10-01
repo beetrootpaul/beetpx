@@ -35,7 +35,7 @@ run_check() {
 			#       fixed in a newer version.
 			# TODO: Remove the single-threading once the issue is fixed.
 			odin check "./${example}" \
-				-collection:beetpx=../beetpx_core/ \
+				-collection:beetpx=../beetpx/ \
 				-disable-non-constant-globals \
 				-strict-style \
 				-thread-count:1 \
@@ -57,12 +57,12 @@ if [[ "${watch}" == false ]]; then
 	exit
 fi
 
-# TODO: Consider removing beetpx_core and other deps from watched files.
+# TODO: Consider removing beetpx and other deps from watched files.
 compute_fingerprint_of_odin_files() {
 	# Lists every `.odin` file with its modification time, its size, and its
 	# path, one file per line, e.g.:
 	#   1790752809 244 ./basic/main.odin
-	#   1790752799 661 ../beetpx_core/bpx/draw.odin
+	#   1790752799 661 ../beetpx/draw/draw.odin
 	#
 	# `"${examples[@]/#/./}"` prefixes each example with `./`, so that `find`
 	# reads it as a path rather than as an option.
@@ -71,7 +71,7 @@ compute_fingerprint_of_odin_files() {
 	# used there instead of `-f`.
 	local files_list
 	files_list="$(
-		find "${examples[@]/#/./}" ../beetpx_core \
+		find "${examples[@]/#/./}" ../beetpx \
 			-type f \
 			-name '*.odin' \
 			-exec stat -f '%m %z %N' {} +
