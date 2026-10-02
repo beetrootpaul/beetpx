@@ -2,23 +2,26 @@ package main
 
 import "beetpx:bpx"
 
+MAX_B :: 255
+SPEED :: 4
+
 color: bpx.Rgb = {128, 128, 0}
 
 main :: proc() {
 	bpx.set_on_update(on_update)
-	bpx.set_on_draw(bpx.u_noop)
 	bpx.set_on_draw(on_draw)
 	bpx.start()
 }
 
+// TODO: Consider some shorter name for frame_number
 on_update :: proc() {
-	color.b = color.b + 4
-	// TODO: REMOVE
-	color.g = u8(bpx.frame_number())
+	// Change the blue portion of the color at a constant speed, from 0 to 255
+	// and back to 0, on repeat.
+	color.b = u8(
+		MAX_B - abs(int(bpx.frame_number() * SPEED) % (2 * MAX_B) - MAX_B),
+	)
 }
 
 on_draw :: proc() {
-	bpx.d_clear_canvas(bpx.p_pico8_storm)
-	// TODO: REMOVE
-	bpx.d_pixel({1, 1}, 255 - color)
+	bpx.d_clear_canvas(color)
 }
