@@ -52,4 +52,5 @@ p_pico8_lime  :: palettes.pico8_lime
 // A set of tools and helpers.
 //
 
-u_noop :: utils.noop
+u_noop      :: utils.noop
+u_ping_pong :: utils.ping_pong

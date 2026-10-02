@@ -13,13 +13,10 @@ main :: proc() {
 	bpx.start()
 }
 
-// TODO: Consider some shorter name for frame_number
 on_update :: proc() {
-	// Change the blue portion of the color at a constant speed, from 0 to 255
+	// Change the blue channel of the color at a constant speed, from 0 to 255
 	// and back to 0, on repeat.
-	color.b = u8(
-		MAX_B - abs(int(bpx.frame_number() * SPEED) % (2 * MAX_B) - MAX_B),
-	)
+	color.b = u8(bpx.u_ping_pong(int(bpx.frame_number() * SPEED), MAX_B))
 }
 
 on_draw :: proc() {
