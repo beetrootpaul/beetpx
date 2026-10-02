@@ -103,46 +103,31 @@ restating it, since a restated copy goes stale as soon as the file changes.
 
 The repository layout:
 
-- `beetpx_core/` - the root of the `beetpx` collection. Each subdirectory is a
-  package that games import from it by name, e.g. `import "beetpx:bpx"`. Odin
-  names an import after the imported directory, not after its `package`
-  clause, so a package's directory name is the name games write in code.
-  - `bpx/` - the engine package. `bpx.odin` is the facade and holds every
-    public declaration; every other file in the package is private (see
-    "Code conventions"). Those files are named by topic (`platform`,
-    `game_loop`, `draw`). A platform-specific file of a topic is marked
-    either by a `_js` suffix, which Odin compiles only for the web, or by a
-    `#+build` tag listing the OSes it is for, as `platform_sdl.odin` does for
-    `darwin`, `linux` and `windows`.
-  - `palettes/` - color palettes games import directly.
-  - `beetpx.js` - the JavaScript half of the web platform, next to the
-    packages rather than inside one.
-- `scripts/` - scripts that check and format `beetpx_core`.
-- `beetpx_examples/` - example games (currently `basic/`), plus the
-  `index.html` page that hosts the web build.
-  - `scripts/` - scripts that check, format, and run the examples. Each lists
-    the examples it covers explicitly, in an array. `run.sh <target>
-<example>` builds and runs one example, writing output to the repository
-    root's `build/` (gitignored). There is no CLI yet.
-- `ai/` - documents for AI assistants: this file, `rewrite_status.md` (see
-  above), and `rewrite_braindump.md`, a large design braindump for the rewrite
-  (layer boundaries, flat `bpx.*` API sketch, phased plan). Read the braindump
-  for context, but treat it as a **non-binding draft**: do not quote it as a
-  rule the user must follow, and do not edit it unless asked.
-- `v0.56.1-for-reference/` - frozen snapshots of the current engine
-  (`beetpx/`), its examples (`beetpx-examples/`), and the project generator
-  (`beetpx-npm-init-game/`). They have no git history of their own and exist
-  only to inspect behavior while porting. Do not modify them, and do not run
-  `npm install` there: `beetpx`'s `postinstall` runs `npx playwright install`.
-  Their husky hooks were deliberately removed, so `pre_commit_hook.sh` no
-  longer fires - that is intended, not a bug to fix.
+- `beetpx/` - the engine; the root of the `beetpx` collection. Each
+  subdirectory is a package:
+  - `bpx/` - the facade. Games import only this one (`import "beetpx:bpx"`).
+  - `core/` - game loop and platforms; `draw/`, `palettes/`, `utils/` - what
+    their names say; `internal/` - shared state and types (e.g. the canvas)
+    that games are not meant to use.
+  - `beetpx.js` - the JavaScript half of the web platform.
+- `examples/` - example games (currently `basic/`), the `index.html` that
+  hosts the web build, and `scripts/` to check, format, and run them.
+- `scripts/` - scripts that check and format `beetpx/`.
+- `ai/` - this file, `rewrite_status.md` (see above), and
+  `rewrite_braindump.md`, a design braindump for the rewrite. Read the
+  braindump for context, but treat it as a **non-binding draft**: do not quote
+  it as a rule the user must follow, and do not edit it unless asked.
+- `v0.56.1-for-reference/` - frozen snapshots of the previous TypeScript
+  engine, its examples, and its project generator, kept only to inspect
+  behavior while porting. Do not modify them, and do not run `npm install`
+  there (`beetpx`'s `postinstall` runs `npx playwright install`). Their husky
+  hooks were removed on purpose.
 
 ## Toolchain
 
-- `odin` is already on PATH (homebrew, `dev-2026-09`). Relevant targets for
-  this rewrite: `js_wasm32` for the browser and native macOS (`darwin_arm64`).
-  `scripts/check_core.sh` also checks `beetpx_core` for `linux_amd64` and
-  `windows_amd64`, which nothing builds or runs yet.
+- `odin` is already on PATH (homebrew, `dev-2026-09`). Games run on the web
+  (`js_wasm32`) and on macOS (`darwin_arm64`). `scripts/check_core.sh` also
+  type-checks `linux_amd64` and `windows_amd64`.
 - `ols` (language server) and `odinfmt` (formatter) are used through the
   `danielgavin.ols` VS Code extension, which bundles its own binaries. They are
   **not** on PATH, so do not invoke them from the shell. Their configuration is
@@ -185,37 +170,18 @@ recall, since Odin changes often and training data goes stale:
 
 ## Code conventions
 
-- **Narrowest visibility by default; broader visibility only by explicit
-  opt-in.** Start every declaration as private as the language allows, and
-  widen it only when something actually needs it. In `beetpx_core/bpx/` this
-  means:
-  - Every file except `bpx.odin` starts with `#+private file`, so its
-    declarations are visible only inside that file.
-  - A declaration that another file of the package needs is marked
-    `@(private = "package")` (spaced as `odinfmt` formats it). Write it that
-    way rather than as plain `@(private)`, which inside such a file reads as
-    if it meant "file".
-  - Only `bpx.odin`, the facade that games use, declares public names.
-    Odin has no attribute that makes a single declaration public inside a
-    `#+private file` file, so `bpx.odin` re-exports whatever games need from
-    the other files: a type or a constant by an alias
-    (`Rgb :: _Color_Rgb`), a proc by a wrapper proc (an alias of a private
-    proc stays private), and a variable by an accessor proc
-    (`frame_number`).
-  - `@(export)` is only for symbols an outside host calls by name, such as
-    `step` for `odin.js`. It does not widen Odin-level visibility, so an
-    exported proc can stay file-private.
-- **Naming of private declarations.** Every private name starts with `_`. A
-  name marked `@(private = "package")` is also prefixed with its file's topic,
-  e.g. `_game_loop_advance`, `_platform_start`, or `_Color_Rgb` for a type. A
-  name that is the topic itself, such as `_Xy`, does not repeat it.
-  File-private names have no topic prefix, e.g. `_TICK_HZ` or
-  `_accumulated_s`.
+- **Narrowest visibility by default.** Mark a declaration
+  `@(private = "file")` unless another file needs it; then `@(private)`
+  (package-wide). Make it public only when another package needs it.
+- **Games see only `bpx`.** `bpx/bpx.odin` re-exports, as constant aliases
+  (`start :: core.start`), whatever games need from the other packages.
+  Names from a package other than `core` get its prefix: `d_` for `draw`,
+  `p_` for `palettes`, `u_` for `utils`.
+- **Private names start with `_`**, whether file-private or package-wide.
+- `@(export)` is only for symbols an outside host calls by name, such as
+  `step` for `odin.js`. It does not change Odin-level visibility.
 - **Comments and docs describe the code on its own terms.** BeetPx Odin will
   ship as the next release of BeetPx, so it has to stand on its own. Do not
-  justify or explain anything by reference to v0.56.1, the TypeScript engine,
-  `v0.56.1-for-reference/`, or earlier decisions and iterations (e.g. avoid
-  "as in v0.56.1's `CanvasForProduction`" or "which v0.56.1 relied on").
-  Describe what the code does and why, as if no earlier version existed.
-  Consulting `v0.56.1-for-reference/` while porting is still fine; it just
-  must not leak into what gets written.
+  explain anything by reference to v0.56.1, the TypeScript engine, or earlier
+  iterations of the code. Consulting `v0.56.1-for-reference/` while porting
+  is fine; it just must not leak into what gets written.
