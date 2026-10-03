@@ -9,7 +9,10 @@ package beetpx_utils
 //
 // TODO: Consider making it work for floats as well.
 // TODO: Use `$T` to make it work for other types of integer numbers, so we
-//       don't have to `int(…)` cast it on the caller side.
+//       don't have to `int(…)` cast it on the caller side. Claude suggested
+//       `intrinsics` to check for the type's type, but I see a `$T/Foo`
+//       notation in the official demo: https://github.com/odin-lang/Odin/blob/master/examples/demo/demo.odin#L956-L957 .
+//       Maybe we can leverage that?
 // TODO: Is `max` a proper name?
 // TODO: Should we give it an inclusive or exclusive max value?
 // TODO: Write tests for this.
