@@ -15,7 +15,6 @@ package beetpx_utils
 //       Maybe we can leverage that?
 // TODO: Is `max` a proper name?
 // TODO: Should we give it an inclusive or exclusive max value?
-// TODO: Write tests for this.
 // TODO: Should this proc be named like this and placed in `utils`? Think about
 //       a bigger picture with ease, tween, lerp, clamp, waves (triangle, sine,
 //       etc.). Also consider aligning with common industry practices (should we

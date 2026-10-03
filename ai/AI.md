@@ -137,8 +137,8 @@ The repository layout:
 - Shared editor settings live in `beetpx.code-workspace`. `.vscode/` is
   gitignored and meant for personal, untracked settings, so do not put shared
   configuration there.
-- No CI, no linter, and no test suite are configured. Verification is planned
-  as `odin test` with `core:testing`, but no tests exist yet.
+- No CI and no linter are configured. Tests use `odin test` with
+  `core:testing`; `scripts/test_beetpx.sh` runs them (see "Tests" below).
 
 ## Odin language
 
@@ -185,3 +185,18 @@ recall, since Odin changes often and training data goes stale:
   explain anything by reference to v0.56.1, the TypeScript engine, or earlier
   iterations of the code. Consulting `v0.56.1-for-reference/` while porting
   is fine; it just must not leak into what gets written.
+
+## Tests
+
+- Tests for `foo.odin` go next to it, in `foo.test.odin`, in the same package.
+  The `.test` part of the name is only a convention; the compiler does not
+  treat it specially.
+- Every test file starts with `#+build !js`. `core:testing` does not compile
+  for `js_wasm32`, and an `import` cannot be guarded with `when ODIN_TEST`.
+  `@(test)` procs are left out of non-test builds on their own.
+- Test procs cannot be `@(private)` (the compiler rejects it), so they are the
+  one exception to the narrowest-visibility rule. Helpers in test files still
+  follow it.
+- `scripts/test_beetpx.sh [--watch]` runs `odin test` for every package under
+  `beetpx/` that has a `*.test.odin` file. Like the other scripts, tell the
+  user to run it rather than running it yourself.

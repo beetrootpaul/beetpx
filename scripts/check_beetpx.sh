@@ -67,6 +67,9 @@ if [[ "${watch}" == false ]]; then
 	exit
 fi
 
+# TODO: Can we share the `--watch` logic across scripts somehow? It's a lot of
+#       code repeated, both in beetpx scripts as well as in the examples' ones.
+
 compute_fingerprint_of_odin_files() {
 	# Lists every `.odin` file with its modification time, its size, and its
 	# path, one file per line, e.g.:
