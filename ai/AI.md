@@ -126,7 +126,7 @@ The repository layout:
 ## Toolchain
 
 - `odin` is already on PATH (homebrew, `dev-2026-09`). Games run on the web
-  (`js_wasm32`) and on macOS (`darwin_arm64`). `scripts/check_core.sh` also
+  (`js_wasm32`) and on macOS (`darwin_arm64`). `scripts/check_beetpx.sh` also
   type-checks `linux_amd64` and `windows_amd64`.
 - `ols` (language server) and `odinfmt` (formatter) are used through the
   `danielgavin.ols` VS Code extension, which bundles its own binaries. They are

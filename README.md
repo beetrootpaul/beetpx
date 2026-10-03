@@ -18,7 +18,7 @@ Run an example: `./examples/scripts/run.sh <target> <example>`, where
 the name of an example's directory in `./examples/`, e.g.
 `./examples/scripts/run.sh js_wasm32 basic`.
 
-Check the BeetPx code: `./scripts/check_core.sh`.
+Check the BeetPx code: `./scripts/check_beetpx.sh`.
 
 Check all examples: `./examples/scripts/check_all.sh`.
 
