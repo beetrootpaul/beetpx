@@ -16,14 +16,42 @@ examples=(
 	basic
 )
 
-usage="Usage: $0 <target> <example>"
+# Examples, from the repository root:
+#   ./examples/scripts/run.sh darwin_arm64 basic
+#   ./examples/scripts/run.sh js_wasm32 basic
+#   ./examples/scripts/run.sh darwin_arm64 basic --track-memory
+#   ./examples/scripts/run.sh darwin_arm64 basic --sanitize=address
+#   ./examples/scripts/run.sh darwin_arm64 basic --sanitize=thread
+#   ./examples/scripts/run.sh darwin_arm64 basic --track-memory --sanitize=address
+#   ./examples/scripts/run.sh js_wasm32 basic --track-memory
+#
+# `--track-memory` and `--sanitize=...` are for memory debugging. What they
+# report, and how that differs between desktop and web, is described at the
+# top of `beetpx/core/memory_tracking.odin`.
+usage="Usage: $0 <target> <example> [--track-memory] [--sanitize=<sanitizer>]"
 
-if [[ $# -ne 2 ]]; then
+positional_args=()
+track_memory=false
+sanitizer=""
+for arg in "$@"; do
+	case "${arg}" in
+	--track-memory) track_memory=true ;;
+	--sanitize=*) sanitizer="${arg#--sanitize=}" ;;
+	--*)
+		echo "Unknown option: '${arg}'." >&2
+		echo "${usage}" >&2
+		exit 1
+		;;
+	*) positional_args+=("${arg}") ;;
+	esac
+done
+
+if [[ ${#positional_args[@]} -ne 2 ]]; then
 	echo "${usage}" >&2
 	exit 1
 fi
-target="$1"
-example="$2"
+target="${positional_args[0]}"
+example="${positional_args[1]}"
 
 # Params:
 #   $1 - the actual value
@@ -67,6 +95,34 @@ odin_flags=(
 	-warnings-as-errors
 	-target:"${target}"
 )
+
+# Builds the engine with a tracking allocator, which prints the memory in use
+# whenever it changes, and the leaks on app exit. See `_TRACK_MEMORY` in
+# `beetpx/core/memory_tracking.odin`.
+if [[ "${track_memory}" == true ]]; then
+	odin_flags+=(-define:BPX_TRACK_MEMORY=true)
+fi
+
+# Builds the game with one of the LLVM sanitizers, which stop the app with a
+# report on the first error they detect:
+#   `address` - out-of-bounds accesses and uses of freed memory,
+#   `thread`  - data races between threads.
+# Odin allows only one sanitizer per build, and none on the web. There is also
+# `memory` (reads of uninitialized memory), which Odin supports only on Linux
+# and FreeBSD. `-debug` adds the debug info that turns the addresses in the
+# reports into file names and line numbers.
+if [[ -n "${sanitizer}" ]]; then
+	if [[ "${target}" == js_wasm32 ]]; then
+		echo "Sanitizers are not supported on '${target}'." >&2
+		exit 1
+	fi
+	if ! is_one_of "${sanitizer}" address thread; then
+		echo "Unsupported sanitizer: '${sanitizer}'. Supported: address thread." >&2
+		echo "${usage}" >&2
+		exit 1
+	fi
+	odin_flags+=(-sanitize:"${sanitizer}" -debug)
+fi
 
 case "${target}" in
 darwin_arm64)

@@ -44,6 +44,10 @@ set_on_draw :: proc(on_draw: On_Draw) {
 
 // Starts the game. Might be blocking, depending on the platform.
 start :: proc() {
+	when _TRACK_MEMORY {
+		_memory_tracking_init()
+	}
+
 	_platform_start()
 	// Code placed here runs either right away or on app exit, depending on
 	// the platform.
@@ -53,6 +57,13 @@ start :: proc() {
 // renders exactly once.
 @(private)
 _game_loop_advance :: proc(delta_s: f64) {
+	// `context` is scoped to this call, and `when` does not open a new scope,
+	// so the tracking allocator is in use until the end of this proc.
+	when _TRACK_MEMORY {
+		context.allocator = _memory_tracking_allocator()
+		defer _memory_tracking_report_change()
+	}
+
 	_accumulated_s += delta_s
 
 	ticks := 0

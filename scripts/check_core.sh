@@ -30,35 +30,52 @@ targets=(
 	windows_amd64
 )
 
+# Params:
+#   $1 - the package
+#   $2 - the target
+#   .. - extra flags for `odin check`, if any
+check_package() {
+	local package="$1"
+	local target="$2"
+	shift 2
+	# `-thread-count:1` works around an intermittent segmentation
+	# fault of the multithreaded checker, seen in Odin
+	# [`dev-2026-09:a2fb372b7`](https://github.com/odin-lang/Odin/releases/tag/dev-2026-09),
+	# about once in 20 runs.
+	#
+	# TODO: Consider reporting this crash to Odin. Unless it is already
+	#       fixed in a newer version.
+	# TODO: Remove the single-threading once the issue is fixed.
+	# TODO: Maybe we can limit `-vet-packages` here to the currently
+	#       checked and the internals?
+	odin check "./beetpx/${package}" \
+		-disable-non-constant-globals \
+		-no-entry-point \
+		-strict-style \
+		-thread-count:1 \
+		-vet \
+		-vet-cast \
+		-vet-tabs \
+		-vet-packages:beetpx_bpx,beetpx_core,beetpx_draw,beetpx_internal,beetpx_palettes,beetpx_utils \
+		-vet-using-param \
+		-vet-using-stmt \
+		-warnings-as-errors \
+		-target:"${target}" \
+		"$@"
+}
+
 run_check() {
 	for package in "${packages[@]}"; do
 		for target in "${targets[@]}"; do
 			echo "Checking '${package}' for '${target}' ..."
-			# `-thread-count:1` works around an intermittent segmentation
-			# fault of the multithreaded checker, seen in Odin
-			# [`dev-2026-09:a2fb372b7`](https://github.com/odin-lang/Odin/releases/tag/dev-2026-09),
-			# about once in 20 runs.
-			#
-			# TODO: Consider reporting this crash to Odin. Unless it is already
-			#       fixed in a newer version.
-			# TODO: Remove the single-threading once the issue is fixed.
-			# TODO: Maybe we can limit `-vet-packages` here to the currently
-			#       checked and the internals?
-			odin check "./beetpx/${package}" \
-				-disable-non-constant-globals \
-				-no-entry-point \
-				-strict-style \
-				-thread-count:1 \
-				-vet \
-				-vet-cast \
-				-vet-tabs \
-				-vet-packages:beetpx_bpx,beetpx_core,beetpx_draw,beetpx_internal,beetpx_palettes,beetpx_utils \
-				-vet-using-param \
-				-vet-using-stmt \
-				-warnings-as-errors \
-				-target:"${target}" ||
-				return 1
+			check_package "${package}" "${target}" || return 1
 		done
+	done
+	# The code under `when _TRACK_MEMORY` is skipped unless it is enabled.
+	for target in "${targets[@]}"; do
+		echo "Checking 'core' with memory tracking for '${target}' ..."
+		check_package core "${target}" -define:BPX_TRACK_MEMORY=true ||
+			return 1
 	done
 }
 

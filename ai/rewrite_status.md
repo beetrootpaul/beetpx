@@ -4,7 +4,7 @@ A snapshot of where the Odin rewrite stands, recording only what the code does
 not say on its own: intent, reasons, known problems, and verification status.
 The intended direction is in `rewrite_braindump.md`, a non-binding draft.
 
-Last updated: 2026-10-02.
+Last updated: 2026-10-03.
 
 ## Summary
 
@@ -28,6 +28,11 @@ Runtime behavior is verified only when the user runs the scripts.
 - **Platforms.** `core/platform_js.odin` and `core/platform_sdl.odin` define
   the same names, so a platform that misses one fails to compile. On desktop,
   `start` blocks until the window is closed.
+- **Memory debugging** (tracking allocator and LLVM sanitizers, opt-in via
+  `examples/scripts/run.sh` options) is set up before the engine allocates
+  anything, so the setup is known once allocations arrive. Usage, expected
+  output, and platform differences are in the comment at the top of
+  `core/memory_tracking.odin`.
 
 ## Known problems
 
@@ -36,6 +41,8 @@ Runtime behavior is verified only when the user runs the scripts.
 - The check scripts run `odin check` single-threaded to avoid an intermittent
   crash of the compiler.
 - The `--watch` mode of the check scripts works on macOS only.
+- The memory tracking and the sanitizers have been type-checked and built,
+  but not run yet.
 
 ## Temporary shortcuts
 
