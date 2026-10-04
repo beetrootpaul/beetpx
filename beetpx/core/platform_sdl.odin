@@ -114,9 +114,9 @@ _run_game_loop :: proc() {
 		}
 
 		current_ticks_ns := sdl.GetTicksNS()
-		delta_seconds := f64(current_ticks_ns - previous_ticks_ns) / 1e9
+		detla_s := f64(current_ticks_ns - previous_ticks_ns) / 1e9
 		previous_ticks_ns = current_ticks_ns
 
-		_game_loop_advance(delta_seconds)
+		_game_loop_advance(detla_s)
 	}
 }

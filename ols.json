@@ -5,5 +5,16 @@
       "name": "beetpx",
       "path": "./beetpx/"
     }
-  ]
+  ],
+  "enable_code_action_invert_if": true,
+  "enable_comp_lit_signature_help_use_docs": true,
+  "enable_document_symbols": true,
+  "enable_hover": true,
+  "enable_hover_layout": true,
+  "enable_inlay_hints_implicit_return": true,
+  "enable_inlay_hints_optional_result": true,
+  "enable_overload_resolution": true,
+  "enable_procedure_context": true,
+  "enable_semantic_tokens": true,
+  "enable_snippets": true
 }

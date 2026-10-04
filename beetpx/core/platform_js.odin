@@ -61,7 +61,7 @@ _platform_render :: proc() {
 // TODO: Clean up this export attribute and proc name.
 @(export)
 @(private = "file")
-step :: proc(delta_time: f64) -> bool {
-	_game_loop_advance(delta_time)
+step :: proc(delta_s: f64) -> bool {
+	_game_loop_advance(delta_s)
 	return true
 }
