@@ -12,6 +12,7 @@ A 64x64 canvas runs on the web (`js_wasm32`, Canvas2D) and on macOS (SDL3).
 A fixed-timestep loop calls the game's update and draw callbacks. The only
 drawing operations are clearing the canvas and drawing a pixel. There is no
 input, audio, assets, persistence, or CLI yet. Only `ping_pong` has tests.
+PICO-8 is the only built-in palette.
 
 Runtime behavior is verified only when the user runs the scripts.
 
@@ -29,6 +30,13 @@ reach package-private code.
   Retina and at any browser zoom).
 - **Coordinates** are `f64`, so that float values games declare with `:=` mix
   with them without casts. They are rounded to pixels with halves rounded up.
+- **Palettes** are exposed mainly as number-indexed arrays, since many
+  palettes have no natural color names; named constants are an extra where
+  names exist. `bpx` re-exports each array as an `@(rodata)` variable, because
+  a constant array cannot be indexed at run time or sliced. The cost is that
+  the compiler does not reject writes: on macOS a write crashes, and on the
+  web it probably goes through silently (not verified). A plain mutable
+  global was rejected for allowing writes without any crash.
 - **Platforms.** `core/platform_js.odin` and `core/platform_sdl.odin` define
   the same names, so a platform that misses one fails to compile. On desktop,
   `start` blocks until the window is closed.
@@ -54,7 +62,6 @@ reach package-private code.
   worked on macOS only. `watch`/`hwatch` were rejected because they re-run on
   a timer rather than on changes, `entr` because it does not run on Windows,
   and `nodemon` because it needs Node.js. Not yet verified by running it.
-- The PICO-8 palette defines only a few colors.
 - The SDL3 calls have not been checked against the SDL3 docs yet.
 
 Smaller open questions are left as `TODO`s in the code.

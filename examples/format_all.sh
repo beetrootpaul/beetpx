@@ -5,6 +5,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 examples=(
 	basic
+	palettes
 )
 
 for example in "${examples[@]}"; do

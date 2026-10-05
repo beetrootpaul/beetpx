@@ -5,6 +5,8 @@ Small "games" that show how to use BeetPx, one per directory:
 - [basic](basic/main.odin) - Very minimal example. It sets up the update
   and draw callbacks and fills the canvas with a color that changes every
   frame, so you can see that the game loop is running.
+- [palettes](palettes/main.odin) - Draws every color of each built-in
+  palette.
 
 ## Running an example
 
