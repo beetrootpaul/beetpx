@@ -90,6 +90,9 @@ js_wasm32)
 	cp ./index.html ./build/web/index.html
 
 	echo "Serving ./build/web/ at http://127.0.0.1:8000 ..."
+	# TODO: Make it no longer require python3 (Odin 1.0 is supposed to include
+	#       HTTP server) or make it explicit in the script (fail the script if
+	#       the dependency is not here?). Make sure it is cross-platform.
 	python3 -m http.server 8000 \
 		--bind 127.0.0.1 \
 		--directory ./build/web/

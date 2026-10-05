@@ -110,8 +110,14 @@ The repository layout:
     their names say; `internal/` - shared state and types (e.g. the canvas)
     that games are not meant to use.
   - `beetpx.js` - the JavaScript half of the web platform.
-- `examples/` - example games (currently `basic/`), the `index.html` that
-  hosts the web build, and the scripts that check, format, and run them.
+- `examples/` - example games, one per directory (e.g. `basic/`), the
+  `index.html` that hosts the web build, the scripts that check, format, and
+  run them, and a `README.md` that lists the examples and explains how to run
+  them. When you add, rename, or remove an example, update the `examples`
+  list in each of the scripts and the list in `examples/README.md`. Each entry
+  there links to the example's main file with the directory name as the link
+  label, followed by a one- or two-sentence description of what the example
+  shows.
 - `scripts/` - scripts that check and format `beetpx/`.
 - `ai/` - this file, `rewrite_status.md` (see above), and
   `rewrite_braindump.md`, a design braindump for the rewrite. Read the
