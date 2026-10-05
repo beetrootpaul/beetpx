@@ -1,7 +1,5 @@
 package beetpx_utils
 
-import "core:math"
-
 // Bounces back and forth between `0` and `range`.
 //
 // For a given `t`, it calculates the value that starts at `0` for `t=0` and
