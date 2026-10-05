@@ -62,55 +62,20 @@ run_check() {
 	done
 }
 
-if [[ "${watch}" == false ]]; then
-	run_check
-	exit
+if [[ "${watch}" == true ]]; then
+	if ! command -v watchexec >/dev/null; then
+		echo "'--watch' requires watchexec: https://watchexec.github.io/" >&2
+		exit 1
+	fi
+	# Runs this script without `--watch` once right away, and then again every
+	# time an `.odin` file under `./beetpx` changes. `--clear` clears the
+	# terminal before each run, so that only the output of the latest one is
+	# visible. The script is named by its path from the repository root,
+	# because `$0` might be relative to the directory this script has already
+	# left with `cd`.
+	exec watchexec --clear --exts odin --watch ./beetpx -- \
+		./scripts/check_beetpx.sh
 fi
 
-# TODO: Can we share the `--watch` logic across scripts somehow? It's a lot of
-#       code repeated, both in beetpx scripts as well as in the examples' ones.
-
-compute_fingerprint_of_odin_files() {
-	# Lists every `.odin` file with its modification time, its size, and its
-	# path, one file per line, e.g.:
-	#   1790752799 661 ./beetpx/draw/pixel.odin
-	#   1790752799 1728 ./beetpx/core/platform_js.odin
-	#
-	# TODO: Make this work on linux as well. There is a chance `-c` should be
-	# used there instead of `-f`.
-	local files_list
-	files_list="$(
-		find ./beetpx \
-			-type f \
-			-name '*.odin' \
-			-exec stat -f '%m %z %N' {} +
-	)"
-
-	# Reduces the list to a single SHA-1 hash, which differs whenever the
-	# list does, e.g.:
-	#   3f786850e387550fdab836ed7e6dc881de23001b  -
-	echo "${files_list}" | shasum
-}
-
-last_fingerprint=""
-while true; do
-	current_fingerprint="$(compute_fingerprint_of_odin_files)"
-	if [[ "${current_fingerprint}" != "${last_fingerprint}" ]]; then
-		last_fingerprint="${current_fingerprint}"
-		# Clears the terminal, so that only the output of the latest check is
-		# visible. The escape sequences are:
-		#   `\033[3J` - erases the scrollback,
-		#   `\033[2J` - erases the visible screen,
-		#   `\033[H`  - moves the cursor to the top-left corner.
-		# `-t 1` skips this when the output is not a terminal, e.g. when it
-		# is redirected to a file, which should not get the escape sequences.
-		if [[ -t 1 ]]; then
-			printf '\033[3J\033[2J\033[H'
-		fi
-		if run_check; then
-			echo "All checks passed."
-		fi
-		echo "Watching for changes (Ctrl+C to stop) ..."
-	fi
-	sleep 1
-done
+run_check
+echo "All checks passed."

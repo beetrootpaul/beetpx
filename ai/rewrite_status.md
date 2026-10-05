@@ -4,7 +4,7 @@ A snapshot of where the Odin rewrite stands, recording only what the code does
 not say on its own: intent, reasons, known problems, and verification status.
 The intended direction is in `rewrite_braindump.md`, a non-binding draft.
 
-Last updated: 2026-10-03.
+Last updated: 2026-10-05.
 
 ## Summary
 
@@ -39,7 +39,6 @@ reach package-private code.
   braindump's "Tick spacing on host frames" section.
 - The check scripts run `odin check` single-threaded to avoid an intermittent
   crash of the compiler.
-- The `--watch` mode of the check and test scripts works on macOS only.
 - Tests run on the host only, never on `js_wasm32`, because `core:testing`
   does not compile there.
 
@@ -49,6 +48,12 @@ reach package-private code.
 - Logging uses `fmt`; a custom logger is planned.
 - The WASM file name and the canvas element ID are hard-coded.
 - The scripts are Bash-only and meant to be replaced by a BeetPx CLI.
+- The scripts' `--watch` delegates to `watchexec` (Apache-2.0; a developer
+  tool, never shipped in games), which each developer installs on their own.
+  It replaced a hand-written polling loop that each script repeated and that
+  worked on macOS only. `watch`/`hwatch` were rejected because they re-run on
+  a timer rather than on changes, `entr` because it does not run on Windows,
+  and `nodemon` because it needs Node.js. Not yet verified by running it.
 - The PICO-8 palette defines only a few colors.
 - The SDL3 calls have not been checked against the SDL3 docs yet.
 

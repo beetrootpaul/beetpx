@@ -22,9 +22,12 @@ Check the BeetPx code: `./scripts/check_beetpx.sh`.
 
 Check all examples: `./examples/scripts/check_all.sh`.
 
-Add `--watch` to either check script to re-run it every time an `.odin` file it
-depends on changes, until you stop it with Ctrl+C. Watching works on macOS
-only.
+Test the BeetPx code: `./scripts/test_beetpx.sh`.
+
+Add `--watch` to any of the check or test scripts to re-run it every time an
+`.odin` file it depends on changes, until you stop it with Ctrl+C. Watching
+requires [watchexec](https://watchexec.github.io/) to be installed, e.g. with
+`brew install watchexec`.
 
 ## License
 
