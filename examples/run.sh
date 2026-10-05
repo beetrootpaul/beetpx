@@ -5,7 +5,7 @@ set -euo pipefail
 # TODO: Make it run on Windows too, e.g. with a `.bat` file? Also make sure it
 # runs on linux.
 
-cd "$(dirname "${BASH_SOURCE[0]}")/.."
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # TODO: Support more targets, e.g. `linux_amd64` and `windows_amd64`.
 targets=(

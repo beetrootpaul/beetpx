@@ -111,7 +111,7 @@ The repository layout:
     that games are not meant to use.
   - `beetpx.js` - the JavaScript half of the web platform.
 - `examples/` - example games (currently `basic/`), the `index.html` that
-  hosts the web build, and `scripts/` to check, format, and run them.
+  hosts the web build, and the scripts that check, format, and run them.
 - `scripts/` - scripts that check and format `beetpx/`.
 - `ai/` - this file, `rewrite_status.md` (see above), and
   `rewrite_braindump.md`, a design braindump for the rewrite. Read the

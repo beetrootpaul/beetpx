@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-cd "$(dirname "${BASH_SOURCE[0]}")/.."
+cd "$(dirname "${BASH_SOURCE[0]}")"
 
 watch=false
 for arg in "$@"; do
@@ -74,7 +74,7 @@ if [[ "${watch}" == true ]]; then
 	# script is named by its path from `./examples`, because `$0` might be
 	# relative to the directory this script has already left with `cd`.
 	exec watchexec --clear --exts odin "${watch_args[@]}" -- \
-		./scripts/check_all.sh
+		./check_all.sh
 fi
 
 run_check

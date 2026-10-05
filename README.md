@@ -13,14 +13,14 @@ licensed under MIT.
 
 ## Scripts
 
-Run an example: `./examples/scripts/run.sh <target> <example>`, where
+Run an example: `./examples/run.sh <target> <example>`, where
 `<target>` is `js_wasm32` (web) or `darwin_arm64` (macOS), and `<example>` is
 the name of an example's directory in `./examples/`, e.g.
-`./examples/scripts/run.sh js_wasm32 basic`.
+`./examples/run.sh js_wasm32 basic`.
 
 Check the BeetPx code: `./scripts/check_beetpx.sh`.
 
-Check all examples: `./examples/scripts/check_all.sh`.
+Check all examples: `./examples/check_all.sh`.
 
 Test the BeetPx code: `./scripts/test_beetpx.sh`.
 
