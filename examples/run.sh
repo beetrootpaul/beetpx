@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# TODO: Hide most of this script boilerplate in BeetPx CLI.
+# TODO: Hide most of this script boilerplate in BeetPx CLI. Ideally something 
+#       like `brew install beetpx`?
 # TODO: Make it run on Windows too, e.g. with a `.bat` file? Also make sure it
 # runs on linux.
 
@@ -29,7 +30,7 @@ example="$2"
 # Params:
 #   $1 - the actual value
 #   $2 - 1st allowed value
-#   $3 - 3nd allowed value
+#   $3 - 2nd allowed value
 #   .. - (and so on)
 is_one_of() {
 	local value="$1"

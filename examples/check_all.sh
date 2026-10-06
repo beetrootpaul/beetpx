@@ -69,12 +69,10 @@ if [[ "${watch}" == true ]]; then
 	for watched_path in "${examples[@]/#/./}" ../beetpx; do
 		watch_args+=(--watch "${watched_path}")
 	done
-	# Runs this script without `--watch` once right away, and then again every
-	# time a watched `.odin` file changes. `--clear` clears the terminal before
-	# each run, so that only the output of the latest one is visible. The
-	# script is named by its path from `./examples`, because `$0` might be
-	# relative to the directory this script has already left with `cd`.
-	exec watchexec --clear --exts odin "${watch_args[@]}" -- \
+	exec watchexec \
+		--clear \
+		--exts odin "${watch_args[@]}" \
+		-- \
 		./check_all.sh
 fi
 

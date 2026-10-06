@@ -67,13 +67,11 @@ if [[ "${watch}" == true ]]; then
 		echo "'--watch' requires watchexec: https://watchexec.github.io/" >&2
 		exit 1
 	fi
-	# Runs this script without `--watch` once right away, and then again every
-	# time an `.odin` file under `./beetpx` changes. `--clear` clears the
-	# terminal before each run, so that only the output of the latest one is
-	# visible. The script is named by its path from the repository root,
-	# because `$0` might be relative to the directory this script has already
-	# left with `cd`.
-	exec watchexec --clear --exts odin --watch ./beetpx -- \
+	exec watchexec \
+		--clear \
+		--exts odin \
+		--watch ./beetpx \
+		-- \
 		./scripts/check_beetpx.sh
 fi
 
