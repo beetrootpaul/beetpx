@@ -30,11 +30,8 @@ _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
 @(private)
 _platform_start :: proc() {
-	if !_html_canvas_init(
-		_CANVAS_ELEMENT_ID,
-		internal.CANVAS_WIDTH,
-		internal.CANVAS_HEIGHT,
-	) {
+	canvas_size := internal.canvas_size()
+	if !_html_canvas_init(_CANVAS_ELEMENT_ID, canvas_size.x, canvas_size.y) {
 		// TODO: Use a custom logger.
 		fmt.eprintln(
 			"BeetPx: failed to set up the canvas with id:",

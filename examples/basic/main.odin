@@ -10,7 +10,7 @@ color: bpx.Rgb = {128, 128, 0}
 main :: proc() {
 	bpx.set_on_update(on_update)
 	bpx.set_on_draw(on_draw)
-	bpx.start()
+	bpx.start(canvas_size = .Square_64, tick_rate = .Hz_30)
 }
 
 on_update :: proc() {

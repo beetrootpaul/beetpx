@@ -8,7 +8,7 @@ BACKGROUND :: bpx.Rgb{64, 64, 64}
 
 main :: proc() {
 	bpx.set_on_draw(on_draw)
-	bpx.start()
+	bpx.start(canvas_size = .Square_64, tick_rate = .Hz_30)
 }
 
 on_draw :: proc() {

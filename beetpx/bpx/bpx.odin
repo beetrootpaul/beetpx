@@ -6,6 +6,10 @@ import "../internal"
 import "../palettes"
 import "../utils"
 
+// TODO: When implementing a custom logger, enforce logs to end with `\n` on JS
+//       (e.g through calling ln-suffixed fmt procs), othewise the ooutput does
+//       not show up in the console.
+
 // TODO: Use odin doc (e.g. `odin doc beetpx/draw -collection:beetpx=beetpx -short`)
 //       to generate docs? Also, consider using it for linting if there are no
 //       private (prefixed with `_`) symbols leaking.
@@ -14,16 +18,29 @@ import "../utils"
 // core
 //
 // The main API, for controlling the game, exposing the building blocks, etc.
+// Includes some internals as well, where it felt convenient.
 //
 
-On_Update :: core.On_Update
-On_Draw   :: core.On_Draw
-Rgb       :: internal.Rgb
+// TODO: How do I feel about re-exporting a mix of core vs internal?
+
+Tick_Rate_Preset :: core.Tick_Rate_Preset
+On_Update        :: core.On_Update
+On_Draw          :: core.On_Draw
+
+Canvas_Size_Preset :: internal.Canvas_Size_Preset
+Rgb                :: internal.Rgb
+Xy                 :: internal.Xy
+Xy_Int             :: internal.Xy_Int
 
 start         :: core.start
 set_on_update :: core.set_on_update
 set_on_draw   :: core.set_on_draw
-frame_number  :: core.frame_number
+// TODO: Use it in some example.
+canvas_size :: internal.canvas_size
+// TODO: Use it in some example.
+tick_rate :: core.tick_rate
+// TODO: Use it in some example.
+frame_number :: core.frame_number
 
 //
 // draw
@@ -32,7 +49,8 @@ frame_number  :: core.frame_number
 //
 
 d_clear_canvas :: draw.clear_canvas
-d_pixel        :: draw.pixel
+// TODO: Use it in some example.
+d_pixel :: draw.pixel
 
 //
 // palettes
@@ -68,5 +86,6 @@ p_pico8 := palettes.pico8
 // A set of tools and helpers.
 //
 
+// TODO: Use it in some example.
 u_noop      :: utils.noop
 u_ping_pong :: utils.ping_pong

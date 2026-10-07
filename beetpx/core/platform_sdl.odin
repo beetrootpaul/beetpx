@@ -2,11 +2,19 @@
 package beetpx_core
 
 import "../internal"
+import "core:c"
 import "core:fmt"
 import sdl "vendor:sdl3"
 
+// The window opens with the canvas at the largest whole-number scale that
+// fits within this fraction of the display's usable area, so that it is
+// big, yet leaves some of the display free around it.
 @(private = "file")
-_INITIAL_SCALE :: 8
+_INITIAL_WINDOW_MAX_DISPLAY_FRACTION :: 0.75
+
+// The initial scale used when the display's usable area is unknown.
+@(private = "file")
+_FALLBACK_INITIAL_SCALE :: 4
 
 @(private = "file")
 _sdl_renderer: ^sdl.Renderer
@@ -23,11 +31,14 @@ _platform_start :: proc() {
 	}
 	defer sdl.Quit()
 
+	canvas_size := internal.canvas_size()
+	initial_scale := _initial_scale(canvas_size)
+
 	sdl_window: ^sdl.Window
 	ok := sdl.CreateWindowAndRenderer(
 		"BeetPx",
-		internal.CANVAS_WIDTH * _INITIAL_SCALE,
-		internal.CANVAS_HEIGHT * _INITIAL_SCALE,
+		c.int(canvas_size.x * initial_scale),
+		c.int(canvas_size.y * initial_scale),
 		// `HIGH_PIXEL_DENSITY` makes SDL render to all the physical pixels of
 		// a high-DPI display, such as Retina on macOS, a display scaled above
 		// 100% on Windows, or a scaled one on Wayland. Without it, SDL renders
@@ -52,8 +63,8 @@ _platform_start :: proc() {
 	// the window is left as black bars.
 	sdl.SetRenderLogicalPresentation(
 		_sdl_renderer,
-		internal.CANVAS_WIDTH,
-		internal.CANVAS_HEIGHT,
+		c.int(canvas_size.x),
+		c.int(canvas_size.y),
 		.INTEGER_SCALE,
 	)
 	sdl.SetRenderVSync(_sdl_renderer, 1)
@@ -64,8 +75,8 @@ _platform_start :: proc() {
 		_sdl_renderer,
 		.RGBA32,
 		.STREAMING,
-		internal.CANVAS_WIDTH,
-		internal.CANVAS_HEIGHT,
+		c.int(canvas_size.x),
+		c.int(canvas_size.y),
 	)
 	if _sdl_canvas_texture == nil {
 		fmt.eprintln("BeetPx: sdl.CreateTexture failed:", sdl.GetError())
@@ -90,12 +101,38 @@ _platform_render :: proc() {
 		nil,
 		raw_data(internal.canvas_rgba8_bytes()),
 		// Bytes per row: 4 bytes per RGBA8 pixel.
-		internal.CANVAS_WIDTH * 4,
+		c.int(internal.canvas_size().x * 4),
 	)
 	sdl.RenderClear(_sdl_renderer)
 	// TODO: Explain both `nil` params.
 	sdl.RenderTexture(_sdl_renderer, _sdl_canvas_texture, nil, nil)
 	sdl.RenderPresent(_sdl_renderer)
+}
+
+// Returns the largest whole-number scale at which the canvas fits within
+// `_INITIAL_WINDOW_MAX_DISPLAY_FRACTION` of the primary display's usable area,
+// but at least 1.
+//
+// TODO: Pick the display the window actually opens on, if it can differ from
+//       the primary one.
+@(private = "file")
+_initial_scale :: proc(canvas_size: internal.Xy_Int) -> int {
+	usable_area: sdl.Rect
+	if !sdl.GetDisplayUsableBounds(sdl.GetPrimaryDisplay(), &usable_area) {
+		// TODO: Use a custom logger.
+		fmt.eprintln(
+			"BeetPx: sdl.GetDisplayUsableBounds failed:",
+			sdl.GetError(),
+		)
+		return _FALLBACK_INITIAL_SCALE
+	}
+
+	max_width := f64(usable_area.w) * _INITIAL_WINDOW_MAX_DISPLAY_FRACTION
+	max_height := f64(usable_area.h) * _INITIAL_WINDOW_MAX_DISPLAY_FRACTION
+	scale := int(
+		min(max_width / f64(canvas_size.x), max_height / f64(canvas_size.y)),
+	)
+	return max(1, scale)
 }
 
 // Blocks until the window is closed.
