@@ -19,8 +19,6 @@ on_draw :: proc() {
 
 draw_palette :: proc(row: int, palette: []bpx.Rgb) {
 	for color, i in palette {
-		// TODO: Consider having a d_pixel overload which takes Xy_Int instead
-		//       of Xy.
-		bpx.d_pixel({f64(i), f64(row)}, color)
+		bpx.d_pixel(i, row, color)
 	}
 }

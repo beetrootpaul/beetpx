@@ -21,6 +21,9 @@
     "[shellscript]": {
       "editor.rulers": [80],
     },
+    "[markdown]": {
+      "editor.rulers": [80],
+    },
     "files.exclude": {
       ".vscode": true,
       "**/.claude": true,
