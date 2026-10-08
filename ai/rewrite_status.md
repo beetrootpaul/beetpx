@@ -1,5 +1,9 @@
 # State of the migration to Odin
 
+> **This file may be outdated.** It is updated only when the user asks for it,
+> not along with every change to the code. Where it disagrees with the code,
+> trust the code. `AI.md` shows how to list the changes it may not cover yet.
+
 A snapshot of where the Odin rewrite stands, recording only what the code does
 not say on its own: intent, reasons, known problems, and verification status.
 The intended direction is in `rewrite_braindump.md`, a non-binding draft.

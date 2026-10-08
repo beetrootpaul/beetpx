@@ -38,8 +38,8 @@ canvas_size :: proc() -> Xy_Int {
 }
 
 canvas_fill :: proc(c: Rgb) {
+	// TODO: Is there a way in Odin to say "multiply all array elements"?
 	slice.fill(
-		// TODO: Is there a way in Odin to say "multiply all array elements"?
 		_frame_buffer[:_size_px.x * _size_px.y],
 		[4]u8{c.r, c.g, c.b, 0xff},
 	)

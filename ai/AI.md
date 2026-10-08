@@ -1,5 +1,10 @@
 # AI.md
 
+> **This file may be outdated.** Markdown files in this repository are updated
+> only when the user asks for it, not along with every change to the code (see
+> "Working agreement"). The rules below apply regardless. Where a description
+> of the repository disagrees with the code, trust the code.
+
 Starting point for AI coding assistants (Claude, OpenAI Codex, etc.) working
 in this repository.
 
@@ -19,6 +24,13 @@ files.
      files, or refactoring code in ways that IDE tooling does not support well.
 - Writing implementation code is fine when the user names the file/API and the
   scope. Do not invent architecture or widen API surface on your own.
+- **Do not update Markdown files along with other changes.** When a change to
+  the code makes a `.md` file in this repository inaccurate, e.g. because the
+  BeetPx API changed, leave that file as it is. From time to time the user
+  explicitly asks for the Markdown files to be brought up to date, and only
+  then may you update them. This covers every Markdown file here, including
+  this one, `ai/rewrite_status.md`, and the READMEs. Editing one because the
+  user asked for that particular edit is fine, as always.
 - Never install packages or tools (e.g. via `brew`, `npm`) without the user's
   explicit permission first.
 - Never run scripts (e.g. the examples' `run.sh`). Tell the
@@ -89,11 +101,11 @@ jj log -r 'heads(::@ & files("ai/rewrite_status.md"))..@'
 git log "$(git log -1 --format=%H -- ai/rewrite_status.md)..HEAD"
 ```
 
-When your change alters anything the file describes, update the file in the
-same change, including its "Last updated" line. Whenever you touch the file,
-bring all of it up to date, because the lookup above will treat everything
-before that change as covered. Keep it a snapshot of the present, not a
-changelog.
+Like every Markdown file here, it is updated only when the user asks for it
+(see "Working agreement"), so do not update it along with your own changes.
+When the user does ask, bring all of it up to date, including its "Last
+updated" line, because the lookup above will treat everything before that
+change as covered. Keep it a snapshot of the present, not a changelog.
 
 Record in it only what the code does not already say: intent, the reasons
 behind decisions, rejected alternatives, known problems, and what has been
@@ -114,10 +126,11 @@ The repository layout:
   `index.html` that hosts the web build, the scripts that check, format, and
   run them, and a `README.md` that lists the examples and explains how to run
   them. When you add, rename, or remove an example, update the `examples`
-  list in each of the scripts and the list in `examples/README.md`. Each entry
-  there links to the example's main file with the directory name as the link
-  label, followed by a one- or two-sentence description of what the example
-  shows.
+  list in each of the scripts. The list in `examples/README.md` waits, like
+  any other Markdown file, until the user asks for it to be updated. Each
+  entry there links to the example's main file with the directory name as the
+  link label, followed by a one- or two-sentence description of what the
+  example shows.
 - `scripts/` - scripts that check and format `beetpx/`.
 - `ai/` - this file, `rewrite_status.md` (see above), and
   `rewrite_braindump.md`, a design braindump for the rewrite. Read the
