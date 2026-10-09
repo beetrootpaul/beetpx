@@ -59,7 +59,7 @@ canvas_rgba8_bytes :: proc() -> []u8 {
 	return slice.to_bytes(_frame_buffer[:_size_px.x * _size_px.y])
 }
 
-@(private="file")
+@(private = "file")
 _canvas_size_preset_as_px :: proc(preset: Canvas_Size_Preset) -> Xy_Int {
 	switch preset {
 	case .Square_256:
