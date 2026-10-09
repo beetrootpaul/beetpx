@@ -13,12 +13,12 @@ foreign beetpx_js {
 	// Prepares the `<canvas>` element with the given `id` to render a canvas
 	// of the given size. Returns `false` if that is not possible.
 	@(link_name = "html_canvas_init")
-	_html_canvas_init :: proc(canvas_element_id: string, width, height: int) -> bool ---
+	html_canvas_init :: proc(canvas_element_id: string, width, height: int) -> bool ---
 
 	// Draws the RGBA8 bytes of the canvas onto the `<canvas>` element, scaled
 	// by the largest whole number that fits, and centered.
 	@(link_name = "html_canvas_render")
-	_html_canvas_render :: proc(rgba8_bytes: []u8) ---
+	html_canvas_render :: proc(rgba8_bytes: []u8) ---
 }
 
 // Must match the `id` of the `<canvas>` element in the hosting HTML page.
@@ -26,16 +26,16 @@ foreign beetpx_js {
 // TODO: Make the ID configurable, or check at build time that the page
 // matches?
 @(private = "file")
-_CANVAS_ELEMENT_ID :: "beetpx_canvas"
+CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
 @(private)
-_platform_start :: proc() {
+platform_start :: proc() {
 	canvas_size := internal.canvas_size()
-	if !_html_canvas_init(_CANVAS_ELEMENT_ID, canvas_size.x, canvas_size.y) {
+	if !html_canvas_init(CANVAS_ELEMENT_ID, canvas_size.x, canvas_size.y) {
 		// TODO: Use a custom logger.
 		fmt.eprintln(
 			"BeetPx: failed to set up the canvas with id:",
-			_CANVAS_ELEMENT_ID,
+			CANVAS_ELEMENT_ID,
 		)
 		return
 	}
@@ -47,8 +47,8 @@ _platform_start :: proc() {
 }
 
 @(private)
-_platform_render :: proc() {
-	_html_canvas_render(internal.canvas_rgba8_bytes())
+platform_render :: proc() {
+	html_canvas_render(internal.canvas_rgba8_bytes())
 }
 
 // Called once per host animation frame by `odin.js`. Has to be called `step`.
@@ -59,6 +59,6 @@ _platform_render :: proc() {
 @(export)
 @(private = "file")
 step :: proc(delta_s: f64) -> bool {
-	_game_loop_advance(delta_s)
+	game_loop_advance(delta_s)
 	return true
 }
