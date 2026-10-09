@@ -50,7 +50,8 @@ frame_number :: core.frame_number
 
 d_clear_canvas :: draw.clear_canvas
 // TODO: Use it in some example.
-d_pixel :: draw.pixel
+d_pixel       :: draw.pixel
+d_rect_filled :: draw.rect_filled
 
 //
 // palettes
