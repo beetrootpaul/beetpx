@@ -115,7 +115,7 @@ on those frames, so tiny jitter in the measured delta moves a tick one frame
 earlier or later. Ticks then land 1, 2, or 3 frames apart, which shows as
 stutter on anything moving 1 px per tick. Game time itself stays correct.
 
-**Possible fix.** In `_game_loop_advance`, snap a delta that is within
+**Possible fix.** In `game_loop_advance`, snap a delta that is within
 ~0.5 ms of the display's frame interval (or a multiple of it) to that exact
 value. Real hitches are not snapped, and the catch-up cap still applies.
 SDL3 reports the refresh rate; the web has no API for it, so snap to common

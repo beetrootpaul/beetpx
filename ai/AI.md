@@ -196,7 +196,12 @@ recall, since Odin changes often and training data goes stale:
   (`start :: core.start`), whatever games need from the other packages.
   Names from a package other than `core` get its prefix: `d_` for `draw`,
   `p_` for `palettes`, `u_` for `utils`.
-- **Private names start with `_`**, whether file-private or package-wide.
+- **No `_` prefix for private names.** `@(private)` alone marks them. On a
+  name clash, pick a different descriptive name, not a prefix or suffix (e.g.
+  `current_frame_number` for the variable behind the `frame_number` proc).
+  Watch for clashes: a `@(private = "file")` name silently shadows a
+  package-level name of the same spelling within its file, with no compiler
+  error.
 - `@(export)` is only for symbols an outside host calls by name, such as
   `step` for `odin.js`. It does not change Odin-level visibility.
 - **Comments and docs describe the code on its own terms.** BeetPx Odin will
