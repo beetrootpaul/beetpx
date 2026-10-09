@@ -42,6 +42,10 @@ files.
   `jj bookmark ...`, `jj git push`). Read-only commands such as `jj log`,
   `jj diff`, `jj show`, and `jj status` are fine. Edit the working tree and
   report what changed; jj snapshotting those edits into `@` is expected.
+- The one exception to the rule above is Claude Code on the web, i.e. when
+  the `CLAUDE_CODE_REMOTE` env var is `true`. There, commit your work in small
+  steps and push it to your own `claude/...` branch. Never push to any other
+  branch, and never rewrite history that is already pushed.
 
 ## Licensing and third-party code
 
