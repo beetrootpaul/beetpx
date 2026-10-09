@@ -1,6 +1,5 @@
-package beetpx_core
+package beetpx_bpx
 
-import "../internal"
 import "core:fmt"
 
 // Implemented in JavaScript by `beetpx.js`, which passes them to
@@ -30,7 +29,7 @@ CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
 @(private)
 platform_start :: proc() {
-	canvas_size := internal.canvas_size()
+	canvas_size := canvas_size()
 	if !html_canvas_init(CANVAS_ELEMENT_ID, canvas_size.x, canvas_size.y) {
 		// TODO: Use a custom logger.
 		fmt.eprintln(
@@ -43,12 +42,12 @@ platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (js) started.")
 
-	internal.canvas_fill({0, 0, 0})
+	canvas_fill({0, 0, 0})
 }
 
 @(private)
 platform_render :: proc() {
-	html_canvas_render(internal.canvas_rgba8_bytes())
+	html_canvas_render(canvas_rgba8_bytes())
 }
 
 // Called once per host animation frame by `odin.js`. Has to be called `step`.

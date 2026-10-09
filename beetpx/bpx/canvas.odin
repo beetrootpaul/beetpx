@@ -1,4 +1,4 @@
-package beetpx_internal
+package beetpx_bpx
 
 import "core:slice"
 
@@ -25,6 +25,7 @@ size_px: Xy_Int
 frame_buffer: [MAX_SIZE_PX.x * MAX_SIZE_PX.y][4]u8
 
 // Sets the size of the canvas. Has to be called before the canvas is used.
+@(private)
 canvas_init :: proc(preset: Canvas_Size_Preset) {
 	size_px = canvas_size_preset_as_px(preset)
 	// TODO: Is there a way in Odin to say "all array elements have to be less
@@ -33,30 +34,26 @@ canvas_init :: proc(preset: Canvas_Size_Preset) {
 	assert(0 < size_px.y && size_px.y <= MAX_SIZE_PX.y)
 }
 
+// TODO: Use it in some example.
 canvas_size :: proc() -> Xy_Int {
 	return size_px
 }
 
+@(private)
 canvas_fill :: proc(c: Rgb) {
 	// TODO: Is there a way in Odin to say "multiply all array elements"?
-	slice.fill(
-		frame_buffer[:size_px.x * size_px.y],
-		[4]u8{c.r, c.g, c.b, 0xff},
-	)
+	slice.fill(canvas_rgba8(), [4]u8{c.r, c.g, c.b, 0xff})
 }
 
-canvas_set :: proc(xy: Xy_Int, c: Rgb) {
-	if !can_set_at(xy) do return
-	frame_buffer[xy.y * size_px.x + xy.x] = {c.r, c.g, c.b, 0xff}
+// The canvas's pixels, row by row, as RGBA8. Writing to them draws on the
+// canvas.
+canvas_rgba8 :: proc() -> [][4]u8 {
+	return frame_buffer[:size_px.x * size_px.y]
 }
 
-@(private = "file")
-can_set_at :: proc(xy: Xy_Int) -> bool {
-	return 0 <= xy.x && xy.x < size_px.x && 0 <= xy.y && xy.y < size_px.y
-}
-
+@(private)
 canvas_rgba8_bytes :: proc() -> []u8 {
-	return slice.to_bytes(frame_buffer[:size_px.x * size_px.y])
+	return slice.to_bytes(canvas_rgba8())
 }
 
 @(private = "file")

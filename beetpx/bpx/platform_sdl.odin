@@ -1,7 +1,6 @@
 #+build darwin, linux, windows
-package beetpx_core
+package beetpx_bpx
 
-import "../internal"
 import "core:c"
 import "core:fmt"
 import sdl "vendor:sdl3"
@@ -31,7 +30,7 @@ platform_start :: proc() {
 	}
 	defer sdl.Quit()
 
-	canvas_size := internal.canvas_size()
+	canvas_size := canvas_size()
 	initial_scale := initial_scale_for(canvas_size)
 
 	sdl_window: ^sdl.Window
@@ -88,7 +87,7 @@ platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.printfln("BeetPx (%v) started.", ODIN_OS)
 
-	internal.canvas_fill({0, 0, 0})
+	canvas_fill({0, 0, 0})
 
 	run_game_loop()
 }
@@ -99,9 +98,9 @@ platform_render :: proc() {
 	sdl.UpdateTexture(
 		sdl_canvas_texture,
 		nil,
-		raw_data(internal.canvas_rgba8_bytes()),
+		raw_data(canvas_rgba8_bytes()),
 		// Bytes per row: 4 bytes per RGBA8 pixel.
-		c.int(internal.canvas_size().x * 4),
+		c.int(canvas_size().x * 4),
 	)
 	sdl.RenderClear(sdl_renderer)
 	// TODO: Explain both `nil` params.
@@ -116,7 +115,7 @@ platform_render :: proc() {
 // TODO: Pick the display the window actually opens on, if it can differ from
 //       the primary one.
 @(private = "file")
-initial_scale_for :: proc(canvas_size: internal.Xy_Int) -> int {
+initial_scale_for :: proc(canvas_size: Xy_Int) -> int {
 	usable_area: sdl.Rect
 	if !sdl.GetDisplayUsableBounds(sdl.GetPrimaryDisplay(), &usable_area) {
 		// TODO: Use a custom logger.

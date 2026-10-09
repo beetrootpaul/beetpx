@@ -14,14 +14,9 @@ for arg in "$@"; do
 	esac
 done
 
-# TODO: Maybe we can limit `packages` here to the external facing ones?
 packages=(
 	bpx
-	core
-	draw
-	internal
-	palettes
-	utils
+	bpxd
 )
 targets=(
 	darwin_arm64
@@ -52,7 +47,7 @@ run_check() {
 				-vet \
 				-vet-cast \
 				-vet-tabs \
-				-vet-packages:beetpx_bpx,beetpx_core,beetpx_draw,beetpx_internal,beetpx_palettes,beetpx_utils \
+				-vet-packages:beetpx_bpx,beetpx_bpxd \
 				-vet-using-param \
 				-vet-using-stmt \
 				-warnings-as-errors \

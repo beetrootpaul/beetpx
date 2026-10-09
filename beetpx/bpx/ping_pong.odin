@@ -1,4 +1,4 @@
-package beetpx_utils
+package beetpx_bpx
 
 // Bounces back and forth between `0` and `range`.
 //
@@ -17,7 +17,7 @@ package beetpx_utils
 //       a bigger picture with ease, tween, lerp, clamp, waves (triangle, sine,
 //       etc.). Also consider aligning with common industry practices (should we
 //       operate on angles and turns)? Make sure procs are composable.
-ping_pong :: proc(t, range: int) -> int {
+u_ping_pong :: proc(t, range: int) -> int {
 	if range == 0 do return 0
 	modulo := t %% (2 * range)
 	return abs(modulo) <= abs(range) ? modulo : 2 * range - modulo

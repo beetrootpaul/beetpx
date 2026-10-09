@@ -1,6 +1,4 @@
-package beetpx_core
-
-import "../internal"
+package beetpx_bpx
 
 // How many times per second `on_update` tries to run.
 Tick_Rate_Preset :: enum {
@@ -59,11 +57,8 @@ set_on_draw :: proc(on_draw: On_Draw) {
 //       would then be known at compile time, so games could use it in
 //       constant expressions (e.g. array sizes), and the framebuffer could be
 //       sized exactly.
-start :: proc(
-	canvas_size: internal.Canvas_Size_Preset,
-	tick_rate: Tick_Rate_Preset,
-) {
-	internal.canvas_init(canvas_size)
+start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
+	canvas_init(canvas_size)
 	tick_rate_hz = tick_rate_as_hz(tick_rate)
 	tick_s = 1.0 / f64(tick_rate_hz)
 
@@ -99,6 +94,7 @@ game_loop_advance :: proc(delta_s: f64) {
 
 // TODO: Consider making the size a bigger value to avoid accidental overflows
 //       like `bpx.tick_rate() * 100`.
+// TODO: Use it in some example.
 tick_rate :: proc() -> u8 {
 	return tick_rate_hz
 }
