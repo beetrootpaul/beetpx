@@ -6,19 +6,29 @@ import "../internal"
 //
 // A negative `wh` extends the rectangle to the left or up from `xy`.
 rect_filled :: proc(xy: internal.Xy, wh: internal.Xy, color: internal.Rgb) {
+	_rect_filled_on(&internal.canvas, xy, wh, color)
+}
+
+// Same as `rect_filled`, but on a given canvas.
+@(private)
+_rect_filled_on :: proc(
+	c: ^internal.Canvas,
+	xy: internal.Xy,
+	wh: internal.Xy,
+	color: internal.Rgb,
+) {
 	a := internal.xy_round(xy)
 	b := internal.xy_round(xy + wh)
-	canvas_size := internal.canvas_size()
 
 	// Clamped to the canvas, so that pixels outside of it are not iterated.
 	x_min := max(min(a.x, b.x), 0)
 	y_min := max(min(a.y, b.y), 0)
-	x_max := min(max(a.x, b.x), canvas_size.x)
-	y_max := min(max(a.y, b.y), canvas_size.y)
+	x_max := min(max(a.x, b.x), c.size_px.x)
+	y_max := min(max(a.y, b.y), c.size_px.y)
 
 	for y in y_min ..< y_max {
 		for x in x_min ..< x_max {
-			internal.canvas_set(&internal.canvas, {x, y}, color)
+			internal.canvas_set(c, {x, y}, color)
 		}
 	}
 }
