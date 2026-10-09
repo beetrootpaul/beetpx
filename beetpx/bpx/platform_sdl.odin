@@ -16,6 +16,13 @@ INITIAL_WINDOW_MAX_DISPLAY_FRACTION :: 0.75
 FALLBACK_INITIAL_SCALE :: 4
 
 @(private = "file")
+WINDOW_TITLE :: "BeetPx"
+@(private = "file")
+WINDOW_TITLE_DEBUG :: "BeetPx [debug]"
+
+@(private = "file")
+sdl_window: ^sdl.Window
+@(private = "file")
 sdl_renderer: ^sdl.Renderer
 @(private = "file")
 sdl_canvas_texture: ^sdl.Texture
@@ -33,9 +40,8 @@ platform_start :: proc() {
 	canvas_size := canvas_size()
 	initial_scale := initial_scale_for(canvas_size)
 
-	sdl_window: ^sdl.Window
 	ok := sdl.CreateWindowAndRenderer(
-		"BeetPx",
+		WINDOW_TITLE,
 		c.int(canvas_size.x * initial_scale),
 		c.int(canvas_size.y * initial_scale),
 		// `HIGH_PIXEL_DENSITY` makes SDL render to all the physical pixels of
@@ -89,7 +95,17 @@ platform_start :: proc() {
 
 	canvas_fill({0, 0, 0})
 
+	platform_show_debug(debug())
+
 	run_game_loop()
+}
+
+// Shows whether the debug mode is on in the window title. Does nothing before
+// the window is created.
+@(private)
+platform_show_debug :: proc(enabled: bool) {
+	if sdl_window == nil do return
+	sdl.SetWindowTitle(sdl_window, enabled ? WINDOW_TITLE_DEBUG : WINDOW_TITLE)
 }
 
 // TODO: Check every SDL3 call here against the SDL3 docs.

@@ -115,6 +115,7 @@
     // Gives the procs below access to the WASM memory.
     const wasmMemoryInterface = new window.odin.WasmMemoryInterface();
 
+    let htmlCanvas = null;
     let renderCanvas = null;
 
     // Implements the `foreign beetpx_js` block of `platform_js.odin`.
@@ -123,10 +124,11 @@
         // TODO: Review this implementation.
         html_canvas_init: (idPtr, idLen, width, height) => {
           const id = wasmMemoryInterface.loadString(idPtr, idLen);
-          const htmlCanvas = document.getElementById(id);
-          if (!(htmlCanvas instanceof HTMLCanvasElement)) {
+          const element = document.getElementById(id);
+          if (!(element instanceof HTMLCanvasElement)) {
             return false;
           }
+          htmlCanvas = element;
           renderCanvas = setUpHtmlCanvas(htmlCanvas, width, height);
           return renderCanvas !== null;
         },
@@ -141,6 +143,10 @@
               bytesLen,
             ),
           );
+        },
+        // Does nothing before the canvas is set up.
+        html_canvas_show_debug: (enabled) => {
+          htmlCanvas?.classList.toggle("beetpx_debug", Boolean(enabled));
         },
       },
     };

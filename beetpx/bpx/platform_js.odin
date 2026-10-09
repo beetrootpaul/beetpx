@@ -18,6 +18,11 @@ foreign beetpx_js {
 	// by the largest whole number that fits, and centered.
 	@(link_name = "html_canvas_render")
 	html_canvas_render :: proc(rgba8_bytes: []u8) ---
+
+	// Shows on the `<canvas>` element whether the debug mode is on, by
+	// toggling its `beetpx_debug` CSS class. The hosting page styles it.
+	@(link_name = "html_canvas_show_debug")
+	html_canvas_show_debug :: proc(enabled: bool) ---
 }
 
 // Must match the `id` of the `<canvas>` element in the hosting HTML page.
@@ -43,6 +48,13 @@ platform_start :: proc() {
 	fmt.println("BeetPx (js) started.")
 
 	canvas_fill({0, 0, 0})
+
+	platform_show_debug(debug())
+}
+
+@(private)
+platform_show_debug :: proc(enabled: bool) {
+	html_canvas_show_debug(enabled)
 }
 
 @(private)
