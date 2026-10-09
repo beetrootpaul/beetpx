@@ -160,8 +160,11 @@ run_game_loop :: proc() {
 	for running {
 		event: sdl.Event
 		for sdl.PollEvent(&event) {
-			if event.type == .QUIT {
+			#partial switch event.type {
+			case .QUIT:
 				running = false
+			case .KEY_DOWN:
+				if !event.key.repeat do on_key_down(event.key.key)
 			}
 		}
 
@@ -170,5 +173,15 @@ run_game_loop :: proc() {
 		previous_ticks_ns = current_ticks_ns
 
 		game_loop_advance(detla_s)
+	}
+}
+
+// TODO: Use `scancode` (the physical key) instead of `key` (the character it
+//       types), to not depend on the keyboard layout?
+@(private = "file")
+on_key_down :: proc(key: sdl.Keycode) {
+	switch key {
+	case sdl.K_SEMICOLON:
+		input_key_down(.Semicolon)
 	}
 }

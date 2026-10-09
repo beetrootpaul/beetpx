@@ -75,6 +75,9 @@ game_loop_advance :: proc(delta_s: f64) {
 
 	ticks := 0
 	for accumulated_s >= tick_s && ticks < MAX_CATCHUP_TICKS {
+		input_update()
+		debug_update()
+
 		current_frame_number += 1
 		on_update_callback()
 		accumulated_s -= tick_s

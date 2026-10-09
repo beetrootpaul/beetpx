@@ -1,6 +1,7 @@
 package beetpx_bpx
 
 import "core:fmt"
+import "core:sys/wasm/js"
 
 // Implemented in JavaScript by `beetpx.js`, which passes them to
 // `odin.runWasm` as extra foreign imports under the "beetpx" key.
@@ -50,6 +51,19 @@ platform_start :: proc() {
 	canvas_fill({0, 0, 0})
 
 	platform_show_debug(debug())
+
+	js.add_window_event_listener(.Key_Down, nil, on_key_down)
+}
+
+// TODO: Use `e.key.code` (the physical key) instead of `e.key.key` (the
+//       character it types), to not depend on the keyboard layout?
+@(private = "file")
+on_key_down :: proc(e: js.Event) {
+	if e.key.repeat do return
+	switch e.key.key {
+	case ";":
+		input_key_down(.Semicolon)
+	}
 }
 
 @(private)

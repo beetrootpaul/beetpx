@@ -23,3 +23,9 @@ set_debug :: proc(enabled: bool) {
 	fmt.println("BeetPx: debug mode", enabled ? "on" : "off")
 	platform_show_debug(enabled)
 }
+
+// Toggles the debug mode on the debug key. Runs once per tick.
+@(private)
+debug_update :: proc() {
+	if key_just_pressed(.Semicolon) do set_debug(!debug_enabled)
+}
