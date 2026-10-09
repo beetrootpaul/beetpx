@@ -78,8 +78,10 @@ game_loop_advance :: proc(delta_s: f64) {
 		input_update()
 		debug_update()
 
-		current_frame_number += 1
-		on_update_callback()
+		if frame_by_frame_update() {
+			current_frame_number += 1
+			on_update_callback()
+		}
 		accumulated_s -= tick_s
 		ticks += 1
 	}
@@ -102,8 +104,8 @@ tick_rate :: proc() -> u8 {
 	return tick_rate_hz
 }
 
-// Returns the frame number, which is incremented once per fixed-timestep tick,
-// right before `on_update` runs.
+// Returns the frame number, which is incremented right before each
+// `on_update` run.
 //
 // TODO: Consider renaming it to something shorter.
 frame_number :: proc() -> u32 {

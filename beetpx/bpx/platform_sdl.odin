@@ -183,5 +183,9 @@ on_key_down :: proc(key: sdl.Keycode) {
 	switch key {
 	case sdl.K_SEMICOLON:
 		input_key_down(.Semicolon)
+	case sdl.K_COMMA:
+		input_key_down(.Comma)
+	case sdl.K_PERIOD:
+		input_key_down(.Period)
 	}
 }

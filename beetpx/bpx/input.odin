@@ -9,6 +9,10 @@ package beetpx_bpx
 Key :: enum u8 {
 	// `;`, toggles the debug mode.
 	Semicolon,
+	// `,`, toggles the frame-by-frame mode.
+	Comma,
+	// `.`, steps one frame in the frame-by-frame mode.
+	Period,
 }
 
 // Keys pressed since the last `input_update`. Kept separately from

@@ -63,6 +63,10 @@ on_key_down :: proc(e: js.Event) {
 	switch e.key.key {
 	case ";":
 		input_key_down(.Semicolon)
+	case ",":
+		input_key_down(.Comma)
+	case ".":
+		input_key_down(.Period)
 	}
 }
 
