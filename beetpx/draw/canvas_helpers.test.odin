@@ -22,8 +22,8 @@ _canvas_mutex: sync.Mutex
 @(private)
 _test_canvas_lock_and_reset :: proc() {
 	sync.mutex_lock(&_canvas_mutex)
-	internal.canvas_init(.Square_64)
-	internal.canvas_fill(_BG)
+	internal.canvas_init(&internal.canvas, .Square_64)
+	internal.canvas_fill(&internal.canvas, _BG)
 }
 
 @(private)
@@ -33,12 +33,12 @@ _test_canvas_unlock :: proc() {
 
 @(private)
 _test_canvas_reset :: proc() {
-	internal.canvas_fill(_BG)
+	internal.canvas_fill(&internal.canvas, _BG)
 }
 
 @(private)
 _test_is_set :: proc(xy: internal.Xy_Int) -> bool {
-	bytes := internal.canvas_rgba8_bytes()
+	bytes := internal.canvas_rgba8_bytes(&internal.canvas)
 	i := (xy.y * internal.canvas_size().x + xy.x) * 4
 	return internal.Rgb{bytes[i], bytes[i + 1], bytes[i + 2]} == _TEST_C
 }

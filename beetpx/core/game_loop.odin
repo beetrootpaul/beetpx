@@ -63,7 +63,7 @@ start :: proc(
 	canvas_size: internal.Canvas_Size_Preset,
 	tick_rate: Tick_Rate_Preset,
 ) {
-	internal.canvas_init(canvas_size)
+	internal.canvas_init(&internal.canvas, canvas_size)
 	_tick_rate_hz = _tick_rate_as_hz(tick_rate)
 	_tick_s = 1.0 / f64(_tick_rate_hz)
 

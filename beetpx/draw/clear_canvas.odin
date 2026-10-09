@@ -4,5 +4,5 @@ import "../internal"
 
 // Sets every pixel of the canvas to a given color.
 clear_canvas :: proc(color: internal.Rgb) {
-	internal.canvas_fill(color)
+	internal.canvas_fill(&internal.canvas, color)
 }

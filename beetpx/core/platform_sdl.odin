@@ -88,7 +88,7 @@ _platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.printfln("BeetPx (%v) started.", ODIN_OS)
 
-	internal.canvas_fill({0, 0, 0})
+	internal.canvas_fill(&internal.canvas, {0, 0, 0})
 
 	_run_game_loop()
 }
@@ -99,7 +99,7 @@ _platform_render :: proc() {
 	sdl.UpdateTexture(
 		_sdl_canvas_texture,
 		nil,
-		raw_data(internal.canvas_rgba8_bytes()),
+		raw_data(internal.canvas_rgba8_bytes(&internal.canvas)),
 		// Bytes per row: 4 bytes per RGBA8 pixel.
 		c.int(internal.canvas_size().x * 4),
 	)

@@ -15,7 +15,7 @@ pixel :: proc {
 
 @(private = "file")
 _pixel_xy :: proc(xy: internal.Xy, color: internal.Rgb) {
-	internal.canvas_set(internal.xy_round(xy), color)
+	internal.canvas_set(&internal.canvas, internal.xy_round(xy), color)
 }
 
 @(private = "file")

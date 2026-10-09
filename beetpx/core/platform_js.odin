@@ -43,12 +43,12 @@ _platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (js) started.")
 
-	internal.canvas_fill({0, 0, 0})
+	internal.canvas_fill(&internal.canvas, {0, 0, 0})
 }
 
 @(private)
 _platform_render :: proc() {
-	_html_canvas_render(internal.canvas_rgba8_bytes())
+	_html_canvas_render(internal.canvas_rgba8_bytes(&internal.canvas))
 }
 
 // Called once per host animation frame by `odin.js`. Has to be called `step`.

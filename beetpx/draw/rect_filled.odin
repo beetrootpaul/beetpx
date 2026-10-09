@@ -18,7 +18,7 @@ rect_filled :: proc(xy: internal.Xy, wh: internal.Xy, color: internal.Rgb) {
 
 	for y in y_min ..< y_max {
 		for x in x_min ..< x_max {
-			internal.canvas_set({x, y}, color)
+			internal.canvas_set(&internal.canvas, {x, y}, color)
 		}
 	}
 }

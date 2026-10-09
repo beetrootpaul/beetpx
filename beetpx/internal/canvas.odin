@@ -13,50 +13,56 @@ Canvas_Size_Preset :: enum {
 @(private = "file")
 _MAX_SIZE_PX: Xy_Int : {256, 256}
 
-@(private = "file")
-_size_px: Xy_Int
+// A canvas to draw on. Only the first `size_px.x * size_px.y` pixels of
+// `frame_buffer` are in use.
+Canvas :: struct {
+	size_px     : Xy_Int,
+	// Pixels, row by row, as RGBA8.
+	frame_buffer: [_MAX_SIZE_PX.x * _MAX_SIZE_PX.y][4]u8,
+}
 
-// The frame buffer with canvas's pixels, row by row, as RGBA8.
-//
-// Only its first `_size_px.x * _size_px.y` pixels are in use.
-//
-// TODO: Consider putting _frame_buffer into a state struct.
-@(private)
-_frame_buffer: [_MAX_SIZE_PX.x * _MAX_SIZE_PX.y][4]u8
+// The canvas the game draws on.
+canvas: Canvas
 
 // Sets the size of the canvas. Has to be called before the canvas is used.
-canvas_init :: proc(preset: Canvas_Size_Preset) {
-	_size_px = _canvas_size_preset_as_px(preset)
+canvas_init :: proc(c: ^Canvas, preset: Canvas_Size_Preset) {
+	c.size_px = _canvas_size_preset_as_px(preset)
 	// TODO: Is there a way in Odin to say "all array elements have to be less
 	//       than another array's corresponding elements"?
-	assert(0 < _size_px.x && _size_px.x <= _MAX_SIZE_PX.x)
-	assert(0 < _size_px.y && _size_px.y <= _MAX_SIZE_PX.y)
+	assert(0 < c.size_px.x && c.size_px.x <= _MAX_SIZE_PX.x)
+	assert(0 < c.size_px.y && c.size_px.y <= _MAX_SIZE_PX.y)
 }
 
+// The size of the canvas the game draws on (see `canvas`).
 canvas_size :: proc() -> Xy_Int {
-	return _size_px
+	return canvas.size_px
 }
 
-canvas_fill :: proc(c: Rgb) {
+canvas_fill :: proc(c: ^Canvas, color: Rgb) {
 	// TODO: Is there a way in Odin to say "multiply all array elements"?
 	slice.fill(
-		_frame_buffer[:_size_px.x * _size_px.y],
-		[4]u8{c.r, c.g, c.b, 0xff},
+		c.frame_buffer[:c.size_px.x * c.size_px.y],
+		[4]u8{color.r, color.g, color.b, 0xff},
 	)
 }
 
-canvas_set :: proc(xy: Xy_Int, c: Rgb) {
-	if !_can_set_at(xy) do return
-	_frame_buffer[xy.y * _size_px.x + xy.x] = {c.r, c.g, c.b, 0xff}
+canvas_set :: proc(c: ^Canvas, xy: Xy_Int, color: Rgb) {
+	if !_can_set_at(c, xy) do return
+	c.frame_buffer[xy.y * c.size_px.x + xy.x] = {
+		color.r,
+		color.g,
+		color.b,
+		0xff,
+	}
 }
 
 @(private = "file")
-_can_set_at :: proc(xy: Xy_Int) -> bool {
-	return 0 <= xy.x && xy.x < _size_px.x && 0 <= xy.y && xy.y < _size_px.y
+_can_set_at :: proc(c: ^Canvas, xy: Xy_Int) -> bool {
+	return 0 <= xy.x && xy.x < c.size_px.x && 0 <= xy.y && xy.y < c.size_px.y
 }
 
-canvas_rgba8_bytes :: proc() -> []u8 {
-	return slice.to_bytes(_frame_buffer[:_size_px.x * _size_px.y])
+canvas_rgba8_bytes :: proc(c: ^Canvas) -> []u8 {
+	return slice.to_bytes(c.frame_buffer[:c.size_px.x * c.size_px.y])
 }
 
 @(private = "file")
