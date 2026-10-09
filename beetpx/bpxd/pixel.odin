@@ -31,9 +31,9 @@ pixel_x_y :: proc(
 
 @(private = "file")
 set_pixel :: proc(xy: bpx.Xy_Int, c: bpx.Rgb) {
-	size := bpx.canvas_size()
+	pixels, size := canvas()
 	if xy.x < 0 || size.x <= xy.x || xy.y < 0 || size.y <= xy.y do return
-	bpx.canvas_rgba8()[xy.y * size.x + xy.x] = {c.r, c.g, c.b, 0xff}
+	pixels[xy.y * size.x + xy.x] = {c.r, c.g, c.b, 0xff}
 }
 
 // TODO: Make it public for games to reuse?
