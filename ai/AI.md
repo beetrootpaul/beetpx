@@ -35,17 +35,31 @@ files.
   explicit permission first.
 - Never run scripts (e.g. the examples' `run.sh`). Tell the
   user which script to run and with what arguments instead.
-- Never commit, amend, or push, whether with git or with jj. This is a
-  colocated jj repository, and the user owns all version-control operations:
-  do not create, describe, rewrite, abandon, or move changes or bookmarks
-  (e.g. `jj new`, `jj describe`, `jj commit`, `jj squash`, `jj abandon`,
-  `jj bookmark ...`, `jj git push`). Read-only commands such as `jj log`,
-  `jj diff`, `jj show`, and `jj status` are fine. Edit the working tree and
-  report what changed; jj snapshotting those edits into `@` is expected.
-- The one exception to the rule above is Claude Code on the web, i.e. when
+- Never commit, amend, or push, whether with git or with jj, unless one of the
+  two exceptions below applies. This is a colocated jj repository, and the
+  user owns all version-control operations: do not create, describe, rewrite,
+  abandon, or move changes or bookmarks (e.g. `jj new`, `jj describe`,
+  `jj commit`, `jj squash`, `jj abandon`, `jj bookmark ...`, `jj git push`).
+  Read-only commands such as `jj log`, `jj diff`, `jj show`, and `jj status`
+  are fine. Edit the working tree and report what changed; jj snapshotting
+  those edits into `@` is expected.
+- The first exception is an explicit request from the user, e.g. "commit
+  that" or "desc it". Then you may run `jj commit` (when asked to commit) or
+  `jj describe` (when asked to describe), with jj rather than git. The request
+  covers that one operation only: it is not a standing permission for the
+  rest of the session, and it does not extend to any other operation from the
+  list above. Never read such a request into anything less explicit, e.g.
+  into "done" or "looks good".
+- The second exception is Claude Code on the web, i.e. when
   the `CLAUDE_CODE_REMOTE` env var is `true`. There, commit your work in small
-  steps and push it to your own `claude/...` branch. Never push to any other
-  branch, and never rewrite history that is already pushed.
+  steps with plain `git commit` and push it with plain `git push` to your own
+  `claude/...` branch. Nothing more: never amend, squash, rebase, merge, reset,
+  cherry-pick, or force-push, even for commits that are not pushed yet, and
+  never push to any other branch.
+- End every commit message you write with an `Assisted-by: LLM (<model>)`
+  trailer, where `<model>` is the exact ID of the model you run as, e.g.
+  `Assisted-by: LLM (claude-opus-5-5)`. Do not add `Co-Authored-By:` or
+  `Claude-Session:` lines.
 
 ## Licensing and third-party code
 
