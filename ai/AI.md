@@ -60,6 +60,8 @@ files.
   trailer, where `<model>` is the exact ID of the model you run as, e.g.
   `Assisted-by: LLM (claude-opus-5-5)`. Do not add `Co-Authored-By:` or
   `Claude-Session:` lines.
+- Keep commit messages in the style of the existing ones: look at a few recent
+  commits first and match how short they are.
 
 ## Licensing and third-party code
 
@@ -222,6 +224,7 @@ recall, since Odin changes often and training data goes stale:
   explain anything by reference to v0.56.1, the TypeScript engine, or earlier
   iterations of the code. Consulting `v0.56.1-for-reference/` while porting
   is fine; it just must not leak into what gets written.
+- **Keep comments short.** Look at the comments nearby and mimic their style.
 
 ## Tests
 
