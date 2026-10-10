@@ -36,7 +36,7 @@ run_tests() {
 	while IFS= read -r package; do
 		echo "Testing '${package}' ..."
 		# `-thread-count:1` works around the same intermittent crash of the
-		# compiler as in `check_beetpx.sh`.
+		# compiler as in `check_code.sh`.
 		#
 		# `ODIN_TEST_FAIL_ON_BAD_MEMORY` makes a test fail when it leaks memory
 		# or frees memory it should not. Without it, the test runner only warns
@@ -71,7 +71,7 @@ if [[ "${watch}" == true ]]; then
 		--watch ./beetpx \
 		--watch ./tests \
 		-- \
-		./scripts/test_beetpx.sh
+		./scripts/test.sh
 fi
 
 run_tests

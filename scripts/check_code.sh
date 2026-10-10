@@ -94,7 +94,7 @@ if [[ "${watch}" == true ]]; then
 		--watch ./beetpx \
 		--watch ./tests \
 		-- \
-		./scripts/check_beetpx.sh
+		./scripts/check_code.sh
 fi
 
 run_check
