@@ -4,3 +4,4 @@ set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
 odinfmt -w ./beetpx
+odinfmt -w ./tests

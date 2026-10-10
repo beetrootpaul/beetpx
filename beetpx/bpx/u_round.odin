@@ -2,12 +2,12 @@ package beetpx_bpx
 
 import "core:math"
 
-// Prevent the check scripts from reporting unused `core:math` import when the
-// target is JS.
+// Prevent the check scripts from reporting an unused `core:math` import.
 //
-// We do not build tests for JS (due to dependency on OS package) and it makes
-// `u_round` also unused as a result. And since it is a polymorphic proc, it
-// gets this special strange treatment during the check.
+// `u_round` is a polymorphic proc, so its body is type-checked only when
+// something calls it. Nothing in this package does, and the tests live in a
+// separate package, so without this line the checker never sees `math` being
+// used.
 _ :: math
 
 // TODO: Make this accept various value types?

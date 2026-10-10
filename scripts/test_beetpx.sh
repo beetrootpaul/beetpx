@@ -15,12 +15,13 @@ for arg in "$@"; do
 done
 
 run_tests() {
-	# Tests live next to the code they test, in `*.test.odin` files, so only
-	# the packages that have such files are tested, e.g.:
-	#   ./beetpx/bpx
+	# Tests live in their own tree, which mirrors `./beetpx`: the tests of
+	# `./beetpx/bpx` are in `./tests/bpx`. Every directory there that has Odin
+	# files is a separate test package, e.g.:
+	#   ./tests/bpx
 	local packages
 	packages="$(
-		find ./beetpx -type f -name '*.test.odin' -exec dirname {} \; |
+		find ./tests -type f -name '*.odin' -exec dirname {} \; |
 			sort -u
 	)"
 	if [[ -z "${packages}" ]]; then
@@ -47,6 +48,7 @@ run_tests() {
 		# hides the runner's informational header, and `SHORT_LOGS` drops the
 		# date, time, and procedure name from every log line.
 		odin test "${package}" -thread-count:1 \
+			-collection:beetpx=./beetpx/ \
 			-define:ODIN_TEST_FAIL_ON_BAD_MEMORY=true \
 			-define:ODIN_TEST_LOG_LEVEL=warning \
 			-define:ODIN_TEST_SHORT_LOGS=true ||
@@ -67,6 +69,7 @@ if [[ "${watch}" == true ]]; then
 		--clear \
 		--exts odin \
 		--watch ./beetpx \
+		--watch ./tests \
 		-- \
 		./scripts/test_beetpx.sh
 fi
