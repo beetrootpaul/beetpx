@@ -1,6 +1,7 @@
 package main
 
 import "beetpx:bpx"
+import "beetpx:bpxd"
 
 // A color from outside of every palette, so that each palette color, black
 // included, stands out against it.
@@ -12,13 +13,13 @@ main :: proc() {
 }
 
 on_draw :: proc() {
-	bpx.d_clear_canvas(BACKGROUND)
+	bpxd.clear_canvas(BACKGROUND)
 	// TODO: Have more palettes.
 	draw_palette(row = 0, palette = bpx.p_pico8[:])
 }
 
 draw_palette :: proc(row: int, palette: []bpx.Rgb) {
 	for color, i in palette {
-		bpx.d_pixel(i, row, color)
+		bpxd.pixel(i, row, color)
 	}
 }

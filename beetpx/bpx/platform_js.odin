@@ -1,4 +1,4 @@
-package beetpx_core
+package beetpx_bpx
 
 import "../internal"
 import "core:fmt"
@@ -6,6 +6,10 @@ import "core:fmt"
 // Implemented in JavaScript by `beetpx.js`, which passes them to
 // `odin.runWasm` as extra foreign imports under the "beetpx" key.
 foreign import beetpx_js "beetpx"
+
+// TODO: When implementing a custom logger, enforce logs to end with `\n` on JS
+//       (e.g through calling ln-suffixed fmt procs), othewise the ooutput does
+//       not show up in the console.
 
 @(default_calling_convention = "contextless")
 @(private = "file")

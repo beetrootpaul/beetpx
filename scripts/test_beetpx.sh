@@ -17,7 +17,7 @@ done
 run_tests() {
 	# Tests live next to the code they test, in `*.test.odin` files, so only
 	# the packages that have such files are tested, e.g.:
-	#   ./beetpx/utils
+	#   ./beetpx/bpx
 	local packages
 	packages="$(
 		find ./beetpx -type f -name '*.test.odin' -exec dirname {} \; |

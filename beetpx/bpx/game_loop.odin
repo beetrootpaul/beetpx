@@ -1,4 +1,4 @@
-package beetpx_core
+package beetpx_bpx
 
 import "../internal"
 
@@ -59,11 +59,8 @@ set_on_draw :: proc(on_draw: On_Draw) {
 //       would then be known at compile time, so games could use it in
 //       constant expressions (e.g. array sizes), and the framebuffer could be
 //       sized exactly.
-start :: proc(
-	canvas_size: internal.Canvas_Size_Preset,
-	tick_rate: Tick_Rate_Preset,
-) {
-	internal.canvas_init(canvas_size)
+start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
+	internal.canvas_init(_canvas_size_preset_as_px(canvas_size))
 	_tick_rate_hz = _tick_rate_as_hz(tick_rate)
 	_tick_s = 1.0 / f64(_tick_rate_hz)
 
@@ -97,6 +94,7 @@ _game_loop_advance :: proc(delta_s: f64) {
 	_platform_render()
 }
 
+// TODO: Use it in some example.
 // TODO: Consider making the size a bigger value to avoid accidental overflows
 //       like `bpx.tick_rate() * 100`.
 tick_rate :: proc() -> u8 {
@@ -107,6 +105,7 @@ tick_rate :: proc() -> u8 {
 // right before `on_update` runs.
 //
 // TODO: Consider renaming it to something shorter.
+// TODO: Use it in some example.
 frame_number :: proc() -> u32 {
 	return _frame_number
 }

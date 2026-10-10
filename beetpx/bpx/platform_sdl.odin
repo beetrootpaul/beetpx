@@ -1,5 +1,5 @@
 #+build darwin, linux, windows
-package beetpx_core
+package beetpx_bpx
 
 import "../internal"
 import "core:c"
@@ -116,7 +116,7 @@ _platform_render :: proc() {
 // TODO: Pick the display the window actually opens on, if it can differ from
 //       the primary one.
 @(private = "file")
-_initial_scale :: proc(canvas_size: internal.Xy_Int) -> int {
+_initial_scale :: proc(canvas_size: Xy_Int) -> int {
 	usable_area: sdl.Rect
 	if !sdl.GetDisplayUsableBounds(sdl.GetPrimaryDisplay(), &usable_area) {
 		// TODO: Use a custom logger.

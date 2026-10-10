@@ -1,5 +1,6 @@
-package beetpx_draw
+package beetpx_bpxd
 
+import "../bpx"
 import "../internal"
 import "base:intrinsics"
 
@@ -14,15 +15,15 @@ pixel :: proc {
 }
 
 @(private = "file")
-_pixel_xy :: proc(xy: internal.Xy, color: internal.Rgb) {
-	internal.canvas_set(internal.xy_round(xy), color)
+_pixel_xy :: proc(xy: bpx.Xy, color: bpx.Rgb) {
+	internal.canvas_set(bpx.xy_round(xy), color)
 }
 
 @(private = "file")
 _pixel_x_y :: proc(
 	x: $X,
 	y: $Y,
-	color: internal.Rgb,
+	color: bpx.Rgb,
 ) where (intrinsics.type_is_integer(X) || intrinsics.type_is_float(X)),
 	(intrinsics.type_is_integer(Y) || intrinsics.type_is_float(Y)) {
 	_pixel_xy({f64(x), f64(y)}, color)
