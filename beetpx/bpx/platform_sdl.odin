@@ -86,7 +86,7 @@ _platform_start :: proc() {
 	sdl.SetTextureScaleMode(_sdl_canvas_texture, .NEAREST)
 
 	// TODO: Use a custom logger.
-	fmt.printfln("BeetPx (%v) started.", ODIN_OS)
+	fmt.printfln("BeetPx %v (%v) started.", BEETPX_VERSION, ODIN_OS)
 
 	internal.canvas_fill({0, 0, 0})
 
