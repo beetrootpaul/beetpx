@@ -16,6 +16,7 @@ targets=(
 examples=(
 	basic
 	palettes
+	shapes
 )
 
 usage="Usage: $0 <target> <example>"

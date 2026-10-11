@@ -17,6 +17,7 @@ done
 examples=(
 	basic
 	palettes
+	shapes
 )
 targets=(
 	darwin_arm64
