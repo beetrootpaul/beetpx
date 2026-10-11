@@ -225,6 +225,15 @@ recall, since Odin changes often and training data goes stale:
   iterations of the code. Consulting `v0.56.1-for-reference/` while porting
   is fine; it just must not leak into what gets written.
 - **Keep comments short.** Look at the comments nearby and mimic their style.
+- **Names of `(x,y)` pairs** follow what is known about them:
+  - Two of them in no known order are `xy_1` and `xy_2`. Either one may hold
+    the greater elements, e.g. `xy_2` may be the top-left one.
+  - When it is known which one is the top-left and which the bottom-right,
+    the former gets `_min` and the latter `_max`: `xy_min`, `x_min`, `y_min`,
+    and `xy_max`, `x_max`, `y_max`.
+  - When it matters whether a bound of a range is inclusive or exclusive,
+    e.g. to iterate from `x_min` to `x_max - 1`, it also gets `_incl` or
+    `_excl`: `x_min_incl`, `y_max_excl`.
 
 ## Tests
 
