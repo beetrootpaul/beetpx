@@ -56,18 +56,8 @@ if ! is_one_of "${example}" "${examples[@]}"; then
 	exit 1
 fi
 
-# TODO: Make the CLI's builds much more forgiving than this here.
 odin_flags=(
 	-collection:beetpx=../beetpx/
-	-disable-non-constant-globals
-	-strict-style
-	-vet
-	-vet-cast
-	-vet-tabs
-	-vet-packages:main
-	-vet-using-param
-	-vet-using-stmt
-	-warnings-as-errors
 	-target:"${target}"
 )
 

@@ -39,8 +39,6 @@ run_check() {
 	# TODO: Consider reporting this crash to Odin. Unless it is already
 	#       fixed in a newer version.
 	# TODO: Remove the single-threading once the issue is fixed.
-	# TODO: Maybe we can limit `-vet-packages` here to the currently
-	#       checked and the internals?
 	local flags=(
 		-disable-non-constant-globals
 		-no-entry-point
@@ -49,7 +47,6 @@ run_check() {
 		-vet
 		-vet-cast
 		-vet-tabs
-		-vet-packages:beetpx_bpx,beetpx_bpxd,beetpx_internal,tests_bpx
 		-vet-using-param
 		-vet-using-stmt
 		-warnings-as-errors
