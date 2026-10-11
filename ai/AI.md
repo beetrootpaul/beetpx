@@ -224,6 +224,13 @@ recall, since Odin changes often and training data goes stale:
   explain anything by reference to v0.56.1, the TypeScript engine, or earlier
   iterations of the code. Consulting `v0.56.1-for-reference/` while porting
   is fine; it just must not leak into what gets written.
+- **Base documenting comments on the v0.56.1 ones.** When the thing you
+  document has a counterpart in `v0.56.1-for-reference/`, find its documenting
+  comment first and reuse its wording to a reasonable extent, instead of
+  writing a new one from scratch. Adapt it to the Odin code: drop what does
+  not apply here (e.g. options that were not ported, TSDoc tags, links to
+  things that do not exist yet), correct its English where needed, and add
+  what is specific to the Odin version.
 - **Keep comments short.** Look at the comments nearby and mimic their style.
 - **Names of `(x,y)` pairs** follow what is known about them:
   - Two of them in no known order are `xy_1` and `xy_2`. Either one may hold

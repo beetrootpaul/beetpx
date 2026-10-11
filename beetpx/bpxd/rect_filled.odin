@@ -3,6 +3,7 @@ package beetpx_bpxd
 import "../bpx"
 import "../internal"
 
+// TODO: Tests.
 // TODO: Consider naming it `rect` and then handling the "filled" aspect through
 //       a proc param.
 

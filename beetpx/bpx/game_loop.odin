@@ -77,8 +77,14 @@ _game_loop_advance :: proc(delta_s: f64) {
 
 	ticks := 0
 	for _accumulated_s >= _tick_s && ticks < _MAX_CATCHUP_TICKS {
-		_frame_number += 1
 		_on_update()
+		// TODO: Once looped timer is introduced, write some tests to check if
+		//       starting with either 0 or 1 for the frame number makes the 
+		//       first loop iteration uneven.
+		// TODO: Will it be a problem that we return frame number of 0 in the 
+		//       first `_on_update` call? Is it common for games to divide by
+		//       the frame number?
+		_frame_number += 1
 		_accumulated_s -= _tick_s
 		ticks += 1
 	}
@@ -105,6 +111,7 @@ tick_rate :: proc() -> u8 {
 // right before `on_update` runs.
 //
 // TODO: Consider renaming it to something shorter.
+// TODO: Use `tick` instead of `frame`.
 // TODO: Use it in some example.
 frame_number :: proc() -> u32 {
 	return _frame_number

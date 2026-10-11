@@ -4,6 +4,7 @@ import "../bpx"
 import "../internal"
 import "base:intrinsics"
 
+// TODO: Tests.
 // TODO: Somewhere in README or some docs write down that:
 //       - (0, 0) is the top-left corner of the canvas,
 //       - `xy` is rounded to the nearest pixel, with halves rounded up.
