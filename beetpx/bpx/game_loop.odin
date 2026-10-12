@@ -8,35 +8,18 @@ Tick_Rate_Preset :: enum {
 	Hz_60,
 }
 
-// TODO: Decide whether the cap should be a duration instead, since the tick
-//       rate may vary.
-@(private = "file")
-_MAX_CATCHUP_TICKS :: 5
+On_Update :: internal.On_Update
+On_Draw   :: internal.On_Draw
 
 @(private = "file")
-_tick_rate_hz: u8
-
-On_Update :: proc()
-On_Draw   :: proc()
-
-@(private = "file")
-_on_update: On_Update = proc() {}
-@(private = "file")
-_on_draw: On_Draw = proc() {}
-
-// TODO: Should it really be just int, not like int64 or something?
-@(private = "file")
-_frame_number: u32
-
-@(private = "file")
-_tick_accumulator: internal.Tick_Accumulator
+_engine: internal.Engine
 
 // Registers a callback to be run once per fixed-timestep tick.
 //
 // Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
 // calls, `on_update` may run several times, or not at all.
 set_on_update :: proc(on_update: On_Update) {
-	_on_update = on_update
+	_engine.on_update = on_update
 }
 
 // Registers a callback to be run once per host frame, after any ticks.
@@ -44,7 +27,7 @@ set_on_update :: proc(on_update: On_Update) {
 // Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
 // calls, `on_update` may run several times, or not at all.
 set_on_draw :: proc(on_draw: On_Draw) {
-	_on_draw = on_draw
+	_engine.on_draw = on_draw
 }
 
 // Starts the game.
@@ -59,11 +42,7 @@ set_on_draw :: proc(on_draw: On_Draw) {
 //       sized exactly.
 start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 	internal.canvas_init(_canvas_size_preset_as_px(canvas_size))
-	_tick_rate_hz = _tick_rate_as_hz(tick_rate)
-	_tick_accumulator = internal.tick_accumulator_make(
-		tick_s = 1.0 / f64(_tick_rate_hz),
-		max_catchup_ticks = _MAX_CATCHUP_TICKS,
-	)
+	internal.engine_init(&_engine, _tick_rate_as_hz(tick_rate))
 
 	_platform_start()
 	// Code placed here runs either right away or on app exit, depending on
@@ -74,20 +53,7 @@ start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 // renders exactly once.
 @(private)
 _game_loop_advance :: proc(delta_s: f64) {
-	ticks := internal.tick_accumulator_advance(&_tick_accumulator, delta_s)
-	for _ in 0 ..< ticks {
-		_on_update()
-		// TODO: Once looped timer is introduced, write some tests to check if
-		//       starting with either 0 or 1 for the frame number makes the
-		//       first loop iteration uneven.
-		// TODO: Will it be a problem that we return frame number of 0 in the
-		//       first `_on_update` call? Is it common for games to divide by
-		//       the frame number?
-		_frame_number += 1
-	}
-
-	_on_draw()
-
+	internal.engine_advance(&_engine, {delta_s = delta_s})
 	_platform_render()
 }
 
@@ -95,7 +61,7 @@ _game_loop_advance :: proc(delta_s: f64) {
 // TODO: Consider making the size a bigger value to avoid accidental overflows
 //       like `bpx.tick_rate() * 100`.
 tick_rate :: proc() -> u8 {
-	return _tick_rate_hz
+	return internal.engine_tick_rate_hz(&_engine)
 }
 
 // Returns the frame number, which is incremented once per fixed-timestep tick,
@@ -105,7 +71,7 @@ tick_rate :: proc() -> u8 {
 // TODO: Use `tick` instead of `frame`.
 // TODO: Use it in some example.
 frame_number :: proc() -> u32 {
-	return _frame_number
+	return internal.engine_frame_number(&_engine)
 }
 
 @(private = "file")
