@@ -1,7 +1,6 @@
 #+test
 package beetpx_bpx
 
-// import "beetpx:internal"
 import tt "core:testing"
 
 @(test)

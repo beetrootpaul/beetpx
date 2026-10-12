@@ -8,6 +8,7 @@ _s := struct {
 	on_draw      : On_Draw,
 	tick_number  : u32,
 	accumulated_s: f64,
+	assets       : _Assets_State,
 	buttons      : _Buttons_State,
 } {
 	on_tick = u_noop,

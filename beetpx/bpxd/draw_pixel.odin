@@ -13,6 +13,8 @@ import "base:intrinsics"
 // Draws a single pixel at `(x,y)`.
 pixel :: proc {
 	_pixel_xy,
+	// TODO: _sprite_
+	// TODO: Do we really care about having the (x,y) variant?
 	_pixel_x_y,
 }
 

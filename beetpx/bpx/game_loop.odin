@@ -1,6 +1,7 @@
 package beetpx_bpx
 
 import "../internal"
+import "core:fmt"
 
 // How many times per second `on_tick` tries to run.
 Tick_Rate_Preset :: enum {
@@ -32,22 +33,42 @@ set_on_draw :: proc(on_draw: On_Draw) {
 	_s.on_draw = on_draw
 }
 
-// Starts the game.
-//
-// Might be blocking, depending on the platform.
-//
 // TODO: Consider moving `canvas_size` and `tick_rate` out of the code, into
 //       a `beetpx.json` read by the planned BeetPx CLI, which would pass them
 //       to the build as `-define`s for `#config` constants. The canvas size
 //       would then be known at compile time, so games could use it in
 //       constant expressions (e.g. array sizes), and the framebuffer could be
 //       sized exactly.
-start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
+
+// Starts the game.
+//
+// May block, depending on the platform.
+//
+// Inputs:
+// - assets: A list of file paths (relative to the `assets/` folder) of the
+//           assets that have to be loaded so they can be used later in the
+//           game. E.g. `"spritesheet.png"` or `"player/left.png"`. Later on,
+//           each asset is identified by its path.
+start :: proc(
+	canvas_size: Canvas_Size_Preset,
+	tick_rate: Tick_Rate_Preset,
+	assets: []string = nil,
+) {
+	// TODO: Use a custom logger.
+	fmt.printfln(
+		"BeetPx: starting. Version: %v OS: %v",
+		BEETPX_VERSION,
+		ODIN_OS,
+	)
+
 	internal.canvas_init(_canvas_size_preset_as_px(canvas_size))
 	_s.tick_rate_hz = _tick_rate_as_hz(tick_rate)
 	_s.tick_s = 1.0 / f64(_s.tick_rate_hz)
 
+	if !_assets_load(assets) do return
+
 	_platform_start()
+
 	// Code placed here runs either right away or on app exit, depending on
 	// the platform.
 }
@@ -55,14 +76,20 @@ start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 // Runs the ticks owed for `delta_s` seconds of real time, then draws and
 // renders exactly once.
 @(private)
-_game_loop_advance :: proc(delta_s: f64) {
+_game_loop_advance :: proc(delta_s: f64) -> (keep_running: bool) {
+	// TODO: Should I render here some loading state or maybe do it as a HTML
+	// overalay which then will gets hidden by adding a CSS class once all
+	// assets are loaded?
+	if _s.assets.failed_count > 0 do return false
+	if _s.assets.loading_count > 0 do return true
+
 	_s.accumulated_s += delta_s
 
 	ticks := 0
 	for _s.accumulated_s >= _s.tick_s && ticks < _MAX_CATCHUP_TICKS {
 		_s.on_tick()
 		_buttons_cleanup_after_tick(&_s.buttons)
-		
+
 		// TODO: Once looped timer is introduced, write some tests to check if
 		//       starting with either 0 or 1 for the tick number makes the
 		//       first loop iteration uneven.
@@ -83,6 +110,8 @@ _game_loop_advance :: proc(delta_s: f64) {
 	_s.on_draw()
 
 	_platform_render()
+
+	return true
 }
 
 // TODO: Use it in some example.

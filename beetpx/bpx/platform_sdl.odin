@@ -4,6 +4,8 @@ package beetpx_bpx
 import "../internal"
 import "core:c"
 import "core:fmt"
+import "core:os"
+import "core:strings"
 import sdl "vendor:sdl3"
 
 // The window opens with the canvas at the largest whole-number scale that
@@ -20,6 +22,34 @@ _FALLBACK_INITIAL_SCALE :: 4
 _sdl_renderer: ^sdl.Renderer
 @(private = "file")
 _sdl_canvas_texture: ^sdl.Texture
+
+// TODO: Re-think the entire assets loading and image decoding flow. It feels
+//       pretty convoluted.
+
+// Reads the asset synchronously, from the directory of the executable.
+//
+// TODO: Check whether `sdl.GetBasePath` may be called before `sdl.Init`.
+//
+// TODO: Check every SDL3 call here against the SDL3 docs, and tune the
+// settings.
+@(private)
+_platform_load_asset :: proc(path: string) {
+	full_path := strings.concatenate(
+		{string(sdl.GetBasePath()), path},
+		// TODO: Free the temp allocator e.g. once a frame, otherwise it is not
+		//       so temp right now.
+		context.temp_allocator,
+	)
+
+	bytes, err := os.read_entire_file_from_path(full_path, context.allocator)
+	if err != nil {
+		// TODO: Use a custom logger.
+		fmt.eprintln("BeetPx: failed to read an asset:", full_path, err)
+		_assets_on_asset_load_failed(path)
+		return
+	}
+	_assets_on_asset_loaded(path, bytes)
+}
 
 // TODO: Check every SDL3 call here against the SDL3 docs, and tune the
 // settings.
@@ -84,9 +114,6 @@ _platform_start :: proc() {
 	}
 	defer sdl.DestroyTexture(_sdl_canvas_texture)
 	sdl.SetTextureScaleMode(_sdl_canvas_texture, .NEAREST)
-
-	// TODO: Use a custom logger.
-	fmt.printfln("BeetPx %v (%v) started.", BEETPX_VERSION, ODIN_OS)
 
 	internal.canvas_fill({0, 0, 0})
 
@@ -174,7 +201,7 @@ _run_game_loop :: proc() {
 		delta_s := f64(current_ns - previous_ns) / 1e9
 		previous_ns = current_ns
 
-		_game_loop_advance(delta_s)
+		if !_game_loop_advance(delta_s) do running = false
 	}
 }
 

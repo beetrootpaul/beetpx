@@ -9,4 +9,5 @@ _s: struct {
 	//
 	// TODO: Consider putting _frame_buffer into a state struct.
 	frame_buffer: [_CANVAS_MAX_WH_PX.x * _CANVAS_MAX_WH_PX.y][4]u8,
+	images      : _Images_State,
 }

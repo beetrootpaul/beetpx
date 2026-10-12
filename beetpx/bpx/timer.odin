@@ -17,6 +17,9 @@ Timer :: struct {
 	_force_finished: bool,
 }
 
+// TODO: _sprite_
+// TODO: tests for `timer_make`?
+//
 // Makes a timer that finishes after a specific number of ticks.
 //
 // A negative `ticks` is treated as 0. `ticks` of 0 means a timer which has
@@ -38,7 +41,7 @@ timer_has_finished :: proc(t: Timer) -> bool {
 }
 
 // TODO: tests
-// TODO: I introduced this proc only to implement sash_collapse in ayp on 
+// TODO: I introduced this proc only to implement sash_collapse in ayp on
 //       timers. But maybe we should do Sash back on ttl and remove this proc
 //       here.
 timer_force_finish :: proc(t: ^Timer) {

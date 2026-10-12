@@ -21,6 +21,7 @@ examples=(
 	buttons
 	palettes
 	shapes
+	sprites
 )
 targets=(
 	darwin_arm64

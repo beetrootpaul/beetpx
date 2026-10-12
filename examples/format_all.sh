@@ -10,6 +10,7 @@ examples=(
 	buttons
 	palettes
 	shapes
+	sprites
 )
 
 for example in "${examples[@]}"; do

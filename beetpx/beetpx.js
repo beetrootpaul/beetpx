@@ -110,12 +110,26 @@
     };
   };
 
+  const fetchBytes = async (path) => {
+    const response = await fetch(path);
+    if (!response.ok) {
+      // TODO: Review this error message.
+      throw new Error(`Failed to fetch "${path}": HTTP ${response.status}`);
+    }
+    return new Uint8Array(await response.arrayBuffer());
+  };
+
   // Runs the game's WASM. Returns the promise of `odin.runWasm`.
   const runWasm = (wasmPath) => {
     // Gives the procs below access to the WASM memory.
     const wasmMemoryInterface = new window.odin.WasmMemoryInterface();
 
     let renderCanvas = null;
+
+    // The bytes of fetched assets, keyed by the asset path.
+    //
+    // Each asset gets deleted from here once its bytes get copied outside JS.
+    const fetchedAssets = new Map();
 
     // Implements the `foreign beetpx_js` block of `platform_js.odin`.
     const foreignImports = {
@@ -130,6 +144,7 @@
           renderCanvas = setUpHtmlCanvas(htmlCanvas, width, height);
           return renderCanvas !== null;
         },
+
         // TODO: Review this implementation.
         html_canvas_render: (bytesPtr, bytesLen) => {
           // A view on the WASM memory, not a copy. It is created anew on
@@ -141,6 +156,38 @@
               bytesLen,
             ),
           );
+        },
+
+        asset_fetch: (pathPtr, pathLen) => {
+          const path = wasmMemoryInterface.loadString(pathPtr, pathLen);
+          const exports = wasmMemoryInterface.exports;
+          const odinContext = exports.default_context_ptr();
+          fetchBytes(path).then(
+            (bytes) => {
+              fetchedAssets.set(path, bytes);
+              exports.beetpx_asset_fetch_success(
+                pathPtr,
+                pathLen,
+                bytes.length,
+                odinContext,
+              );
+            },
+            (err) => {
+              console.error(err);
+              exports.beetpx_asset_fetch_failure(pathPtr, pathLen, odinContext);
+            },
+          );
+        },
+
+        asset_copy_fetched_bytes: (pathPtr, pathLen, bytesPtr, bytesLen) => {
+          const path = wasmMemoryInterface.loadString(pathPtr, pathLen);
+          // TODO: Why this?
+          new Uint8Array(
+            wasmMemoryInterface.memory.buffer,
+            bytesPtr,
+            bytesLen,
+          ).set(fetchedAssets.get(path));
+          fetchedAssets.delete(path);
         },
       },
     };

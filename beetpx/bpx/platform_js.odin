@@ -18,12 +18,19 @@ foreign beetpx_js {
 	// Prepares the `<canvas>` element with the given `id` to render a canvas
 	// of the given size. Returns `false` if that is not possible.
 	@(link_name = "html_canvas_init")
-	_html_canvas_init :: proc(canvas_element_id: string, width, height: int) -> bool ---
+	_beetpx_js_html_canvas_init :: proc(canvas_element_id: string, width, height: int) -> bool ---
 
 	// Draws the RGBA8 bytes of the canvas onto the `<canvas>` element, scaled
 	// by the largest whole number that fits, and centered.
 	@(link_name = "html_canvas_render")
-	_html_canvas_render :: proc(rgba8_bytes: []u8) ---
+	_beetpx_js_html_canvas_render :: proc(rgba8_bytes: []u8) ---
+
+	// Starts fetching the asset from `path`, relative to the hosting HTML page.
+	@(link_name = "asset_fetch")
+	_beetpx_js_asset_fetch :: proc(path: string) ---
+
+	@(link_name = "asset_copy_fetched_bytes")
+	_beetpx_js_asset_copy_fetched_bytes :: proc(path: string, bytes: []u8) ---
 }
 
 // Must match the `id` of the `<canvas>` element in the hosting HTML page.
@@ -33,10 +40,39 @@ foreign beetpx_js {
 @(private = "file")
 _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
+// Starts fetching the asset in a non-blocking manner.
+@(private)
+_platform_load_asset :: proc(path: string) {
+	_beetpx_js_asset_fetch(path)
+}
+
+@(export, link_name = "beetpx_asset_fetch_success")
+@(private = "file")
+_on_asset_fetch_success :: proc(path: string, size: int) {
+	bytes := make([]u8, size)
+	// TODO: Can we make this flow easier to undestand?
+	//
+	// Here the data fetched by JS gets copied into `bytes`.
+	_beetpx_js_asset_copy_fetched_bytes(path, bytes)
+	_assets_on_asset_loaded(path, bytes)
+}
+
+@(export, link_name = "beetpx_asset_fetch_failure")
+@(private = "file")
+_on_asset_fetch_failure :: proc(path: string) {
+	// TODO: Use a custom logger.
+	fmt.eprintln("BeetPx: failed to fetch an asset:", path)
+	_assets_on_asset_load_failed(path)
+}
+
 @(private)
 _platform_start :: proc() {
 	canvas_size := internal.canvas_size()
-	if !_html_canvas_init(_CANVAS_ELEMENT_ID, canvas_size.x, canvas_size.y) {
+	if !_beetpx_js_html_canvas_init(
+		_CANVAS_ELEMENT_ID,
+		canvas_size.x,
+		canvas_size.y,
+	) {
 		// TODO: Use a custom logger.
 		fmt.eprintln(
 			"BeetPx: failed to set up the canvas with id:",
@@ -50,9 +86,6 @@ _platform_start :: proc() {
 	// Once the page loses focus, it no longer gets the events of the keys
 	// released from then on, so all of them are treated as released.
 	js.add_window_event_listener(.Blur, nil, _on_blur)
-
-	// TODO: Use a custom logger.
-	fmt.printfln("BeetPx %v (js) started.", BEETPX_VERSION)
 
 	internal.canvas_fill({0, 0, 0})
 }
@@ -106,10 +139,13 @@ _button_for_code :: proc(code: string) -> (button: Button, ok: bool) {
 
 @(private)
 _platform_render :: proc() {
-	_html_canvas_render(internal.canvas_rgba8_bytes())
+	_beetpx_js_html_canvas_render(internal.canvas_rgba8_bytes())
 }
 
 // Called once per host animation frame by `odin.js`. Has to be called `step`.
+//
+// Returns `false` to end the game, after which `odin.js` stops calling `step`
+// and ends the program.
 //
 // See: https://github.com/odin-lang/Odin/blob/f1fd03364d5e45a987e1cd354188a3f018f45d1c/core/sys/wasm/js/odin.js#L2258-L2284
 //
@@ -117,6 +153,6 @@ _platform_render :: proc() {
 @(export)
 @(private = "file")
 step :: proc(delta_s: f64) -> bool {
-	_game_loop_advance(delta_s)
-	return true
+	return _game_loop_advance(delta_s)
+
 }

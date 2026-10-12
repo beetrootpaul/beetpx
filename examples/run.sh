@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# TODO: Hide most of this script boilerplate in BeetPx CLI. Ideally something 
+# TODO: Hide most of this script boilerplate in BeetPx CLI. Ideally something
 #       like `brew install beetpx`?
 # TODO: Make it run on Windows too, e.g. with a `.bat` file? Also make sure it
 # runs on linux.
@@ -20,6 +20,7 @@ examples=(
 	buttons
 	palettes
 	shapes
+	sprites
 )
 
 usage="Usage: $0 <target> <example>"
@@ -59,6 +60,16 @@ if ! is_one_of "${example}" "${examples[@]}"; then
 	exit 1
 fi
 
+# TODO: Make copying assets a part of the BeetPx CLI.
+#
+# Copies the contents of `./assets/`, shared by all examples, into the given
+# directory, next to the game. Games refer to assets by their paths relative to
+# `./assets/`.
+copy_assets() {
+	local dest_dir="$1"
+	cp -R ./assets/. "${dest_dir}"
+}
+
 odin_flags=(
 	-collection:beetpx=../beetpx/
 	-target:"${target}"
@@ -68,6 +79,7 @@ case "${target}" in
 darwin_arm64)
 	rm -rf ./build/macos/
 	mkdir -p ./build/macos/
+	copy_assets ./build/macos/
 
 	odin run "./${example}" \
 		"${odin_flags[@]}" \
@@ -84,6 +96,7 @@ js_wasm32)
 	cp "$(odin root)/core/sys/wasm/js/odin.js" ./build/web/odin.js
 	cp ../beetpx/beetpx.js ./build/web/beetpx.js
 	cp ./index.html ./build/web/index.html
+	copy_assets ./build/web/
 
 	echo "Serving ./build/web/ at http://127.0.0.1:8000 ..."
 	# TODO: Make it no longer require python3 (Odin 1.0 is supposed to include
