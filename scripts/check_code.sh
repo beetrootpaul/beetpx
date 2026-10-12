@@ -62,6 +62,18 @@ run_check() {
 		done
 	done
 
+	for target in "${targets[@]}"; do
+		# The CLI is not checked for the web, since it is a desktop program.
+		if [[ "${target}" == js_wasm32 ]]; then
+			continue
+		fi
+		echo "Checking 'cli' for '${target}' ..."
+		odin check ./beetpx/cli \
+			"${flags[@]}" \
+			-target:"${target}" ||
+			return 1
+	done
+
 	for package in "${test_packages[@]}"; do
 		for target in "${targets[@]}"; do
 			# Tests are not checked for the web: they import `core:testing`,
