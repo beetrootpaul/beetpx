@@ -110,6 +110,108 @@
     };
   };
 
+  // Prepares playing sounds with the Web Audio API. Returns the procs which
+  // `platform_audio_js.odin` imports.
+  const setUpAudio = (wasmMemoryInterface) => {
+    const audioContext = new AudioContext();
+
+    // Browsers let audio play only after the user interacted with the page.
+    // Until then, the audio context is suspended, and started playbacks wait.
+    const resumeAudioContext = () => {
+      if (audioContext.state !== "running") {
+        audioContext.resume().catch((err) => console.error(err));
+      }
+    };
+    for (const eventType of [
+      "keydown",
+      "mousedown",
+      "pointerdown",
+      "pointerup",
+      "touchend",
+    ]) {
+      window.addEventListener(eventType, resumeAudioContext);
+    }
+
+    // `AudioBuffer`s, by the sound number.
+    const sounds = new Map();
+    // `GainNode`s of the playbacks that still play, by the playback ID.
+    const playbacks = new Map();
+
+    const fadeGain = (gainNode, value, fadeS) => {
+      const now = audioContext.currentTime;
+      gainNode.gain.cancelScheduledValues(now);
+      gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+      gainNode.gain.linearRampToValueAtTime(value, now + fadeS);
+    };
+
+    return {
+      audio_add_sound: (
+        sound,
+        dataPtr,
+        dataLen,
+        channels,
+        sampleRate,
+        bitsPerSample,
+      ) => {
+        const bytesPerSample = bitsPerSample / 8;
+        const frames = Math.floor(dataLen / (channels * bytesPerSample));
+        if (frames === 0) {
+          return;
+        }
+        const audioBuffer = audioContext.createBuffer(
+          channels,
+          frames,
+          sampleRate,
+        );
+        const data = new DataView(
+          wasmMemoryInterface.memory.buffer,
+          dataPtr,
+          dataLen,
+        );
+        for (let channel = 0; channel < channels; channel++) {
+          const samples = audioBuffer.getChannelData(channel);
+          for (let frame = 0; frame < frames; frame++) {
+            const offset = (frame * channels + channel) * bytesPerSample;
+            samples[frame] =
+              bitsPerSample === 8
+                ? (data.getUint8(offset) - 128) / 128
+                : data.getInt16(offset, true) / 32768;
+          }
+        }
+        sounds.set(sound, audioBuffer);
+      },
+      audio_start_playback: (playbackId, sound, looped, muted) => {
+        const audioBuffer = sounds.get(sound);
+        if (!audioBuffer) {
+          return;
+        }
+
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = muted ? 0 : 1;
+        gainNode.connect(audioContext.destination);
+
+        const sourceNode = audioContext.createBufferSource();
+        sourceNode.buffer = audioBuffer;
+        sourceNode.loop = !!looped;
+        sourceNode.connect(gainNode);
+        sourceNode.addEventListener("ended", () => {
+          sourceNode.disconnect();
+          gainNode.disconnect();
+          playbacks.delete(playbackId);
+        });
+        sourceNode.start();
+
+        playbacks.set(playbackId, gainNode);
+      },
+      audio_set_playback_muted: (playbackId, muted, fadeS) => {
+        const gainNode = playbacks.get(playbackId);
+        if (gainNode) {
+          fadeGain(gainNode, muted ? 0 : 1, fadeS);
+        }
+      },
+    };
+  };
+
   // Runs the game's WASM. Returns the promise of `odin.runWasm`.
   const runWasm = (wasmPath) => {
     // Gives the procs below access to the WASM memory.
@@ -117,9 +219,11 @@
 
     let renderCanvas = null;
 
-    // Implements the `foreign beetpx_js` block of `platform_js.odin`.
+    // Implements the `foreign` blocks of `platform_js.odin` and
+    // `platform_audio_js.odin`.
     const foreignImports = {
       beetpx: {
+        ...setUpAudio(wasmMemoryInterface),
         // TODO: Review this implementation.
         html_canvas_init: (idPtr, idLen, width, height) => {
           const id = wasmMemoryInterface.loadString(idPtr, idLen);

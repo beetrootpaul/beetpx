@@ -90,6 +90,9 @@ _platform_start :: proc() {
 
 	internal.canvas_fill({0, 0, 0})
 
+	_audio_device_open()
+	defer _audio_device_close()
+
 	_run_game_loop()
 }
 
