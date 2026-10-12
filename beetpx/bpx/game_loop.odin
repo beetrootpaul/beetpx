@@ -65,7 +65,7 @@ tick_rate :: proc() -> u8 {
 }
 
 // Returns the frame number, which is incremented once per fixed-timestep tick,
-// right before `on_update` runs.
+// right after `on_update` runs. The first `on_update` sees 0.
 //
 // TODO: Consider renaming it to something shorter.
 // TODO: Use `tick` instead of `frame`.
