@@ -145,8 +145,11 @@ _run_game_loop :: proc() {
 	for running {
 		event: sdl.Event
 		for sdl.PollEvent(&event) {
-			if event.type == .QUIT {
+			#partial switch event.type {
+			case .QUIT:
 				running = false
+			case .KEY_DOWN:
+				if !event.key.repeat do _on_key_down(event.key.scancode)
 			}
 		}
 
@@ -155,5 +158,21 @@ _run_game_loop :: proc() {
 		previous_ticks_ns = current_ticks_ns
 
 		_game_loop_advance(detla_s)
+	}
+}
+
+// Takes `scancode` (the physical key) rather than `key` (the character it
+// types).
+@(private = "file")
+_on_key_down :: proc(scancode: sdl.Scancode) {
+	#partial switch scancode {
+	case .LEFT:
+		_input_key_down(.Left)
+	case .RIGHT:
+		_input_key_down(.Right)
+	case .UP:
+		_input_key_down(.Up)
+	case .DOWN:
+		_input_key_down(.Down)
 	}
 }
