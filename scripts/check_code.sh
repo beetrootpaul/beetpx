@@ -22,6 +22,7 @@ packages=(
 )
 test_packages=(
 	bpx
+	internal
 )
 targets=(
 	darwin_arm64

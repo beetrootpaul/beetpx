@@ -15,8 +15,6 @@ _MAX_CATCHUP_TICKS :: 5
 
 @(private = "file")
 _tick_rate_hz: u8
-@(private = "file")
-_tick_s: f64
 
 On_Update :: proc()
 On_Draw   :: proc()
@@ -31,7 +29,7 @@ _on_draw: On_Draw = proc() {}
 _frame_number: u32
 
 @(private = "file")
-_accumulated_s: f64
+_tick_accumulator: internal.Tick_Accumulator
 
 // Registers a callback to be run once per fixed-timestep tick.
 //
@@ -62,7 +60,10 @@ set_on_draw :: proc(on_draw: On_Draw) {
 start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 	internal.canvas_init(_canvas_size_preset_as_px(canvas_size))
 	_tick_rate_hz = _tick_rate_as_hz(tick_rate)
-	_tick_s = 1.0 / f64(_tick_rate_hz)
+	_tick_accumulator = internal.tick_accumulator_make(
+		tick_s = 1.0 / f64(_tick_rate_hz),
+		max_catchup_ticks = _MAX_CATCHUP_TICKS,
+	)
 
 	_platform_start()
 	// Code placed here runs either right away or on app exit, depending on
@@ -73,26 +74,16 @@ start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 // renders exactly once.
 @(private)
 _game_loop_advance :: proc(delta_s: f64) {
-	_accumulated_s += delta_s
-
-	ticks := 0
-	for _accumulated_s >= _tick_s && ticks < _MAX_CATCHUP_TICKS {
+	ticks := internal.tick_accumulator_advance(&_tick_accumulator, delta_s)
+	for _ in 0 ..< ticks {
 		_on_update()
 		// TODO: Once looped timer is introduced, write some tests to check if
-		//       starting with either 0 or 1 for the frame number makes the 
+		//       starting with either 0 or 1 for the frame number makes the
 		//       first loop iteration uneven.
-		// TODO: Will it be a problem that we return frame number of 0 in the 
+		// TODO: Will it be a problem that we return frame number of 0 in the
 		//       first `_on_update` call? Is it common for games to divide by
 		//       the frame number?
 		_frame_number += 1
-		_accumulated_s -= _tick_s
-		ticks += 1
-	}
-
-	// The cap was hit: drop the backlog instead of fast-forwarding through it
-	// on later frames.
-	if _accumulated_s >= _tick_s {
-		_accumulated_s = 0
 	}
 
 	_on_draw()
