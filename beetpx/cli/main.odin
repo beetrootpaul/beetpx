@@ -1,4 +1,4 @@
-// The BeetPx CLI. It checks, formats, and runs a game.
+// The BeetPx CLI. It checks and runs a game.
 //
 // Run it from the game's root directory, which has the game's code in `src/`
 // and the web page in `index.html`:
@@ -21,7 +21,6 @@ _USAGE :: `Usage: beetpx <command> [args]
 
 Commands:
   check [--watch]   Checks the game for every target.
-  format            Formats the game's code.
   run <target>      Builds and runs the game for <target>.
 
 Targets: darwin_arm64, js_wasm32.`
@@ -45,8 +44,6 @@ main :: proc() {
 	switch command {
 	case "check":
 		ok = _check(args)
-	case "format":
-		ok = _format(args)
 	case "run":
 		ok = _run(args)
 	case "help", "-h", "-help", "--help":
