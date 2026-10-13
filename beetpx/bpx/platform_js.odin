@@ -1,15 +1,10 @@
 package beetpx_bpx
 
 import "../internal"
-import "core:fmt"
 
 // Implemented in JavaScript by `beetpx.js`, which passes them to
 // `odin.runWasm` as extra foreign imports under the "beetpx" key.
 foreign import beetpx_js "beetpx"
-
-// TODO: When implementing a custom logger, enforce logs to end with `\n` on JS
-//       (e.g through calling ln-suffixed fmt procs), othewise the ooutput does
-//       not show up in the console.
 
 @(default_calling_convention = "contextless")
 @(private = "file")
@@ -36,16 +31,14 @@ _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 _platform_start :: proc() {
 	canvas_size := internal.canvas_size()
 	if !_html_canvas_init(_CANVAS_ELEMENT_ID, canvas_size.x, canvas_size.y) {
-		// TODO: Use a custom logger.
-		fmt.eprintln(
-			"BeetPx: failed to set up the canvas with id:",
+		internal.log_error(
+			"failed to set up the canvas with id:",
 			_CANVAS_ELEMENT_ID,
 		)
 		return
 	}
 
-	// TODO: Use a custom logger.
-	fmt.println("BeetPx (js) started.")
+	internal.log_info("started on", ODIN_OS)
 
 	internal.canvas_fill({0, 0, 0})
 }

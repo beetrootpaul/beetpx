@@ -3,7 +3,6 @@ package beetpx_bpx
 
 import "../internal"
 import "core:c"
-import "core:fmt"
 import sdl "vendor:sdl3"
 
 // The window opens with the canvas at the largest whole-number scale that
@@ -26,7 +25,7 @@ _sdl_canvas_texture: ^sdl.Texture
 @(private)
 _platform_start :: proc() {
 	if !sdl.Init({.VIDEO}) {
-		fmt.eprintln("BeetPx: sdl.Init failed:", sdl.GetError())
+		internal.log_error("sdl.Init failed:", sdl.GetError())
 		return
 	}
 	defer sdl.Quit()
@@ -49,8 +48,8 @@ _platform_start :: proc() {
 		&_sdl_renderer,
 	)
 	if !ok {
-		fmt.eprintln(
-			"BeetPx: sdl.CreateWindowAndRenderer failed:",
+		internal.log_error(
+			"sdl.CreateWindowAndRenderer failed:",
 			sdl.GetError(),
 		)
 		return
@@ -79,14 +78,13 @@ _platform_start :: proc() {
 		c.int(canvas_size.y),
 	)
 	if _sdl_canvas_texture == nil {
-		fmt.eprintln("BeetPx: sdl.CreateTexture failed:", sdl.GetError())
+		internal.log_error("sdl.CreateTexture failed:", sdl.GetError())
 		return
 	}
 	defer sdl.DestroyTexture(_sdl_canvas_texture)
 	sdl.SetTextureScaleMode(_sdl_canvas_texture, .NEAREST)
 
-	// TODO: Use a custom logger.
-	fmt.printfln("BeetPx (%v) started.", ODIN_OS)
+	internal.log_info("started on", ODIN_OS)
 
 	internal.canvas_fill({0, 0, 0})
 
@@ -119,11 +117,7 @@ _platform_render :: proc() {
 _initial_scale :: proc(canvas_size: Xy_Int) -> int {
 	usable_area: sdl.Rect
 	if !sdl.GetDisplayUsableBounds(sdl.GetPrimaryDisplay(), &usable_area) {
-		// TODO: Use a custom logger.
-		fmt.eprintln(
-			"BeetPx: sdl.GetDisplayUsableBounds failed:",
-			sdl.GetError(),
-		)
+		internal.log_warn("sdl.GetDisplayUsableBounds failed:", sdl.GetError())
 		return _FALLBACK_INITIAL_SCALE
 	}
 
