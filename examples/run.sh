@@ -17,6 +17,8 @@ examples=(
 	basic
 	palettes
 	shapes
+	template_custom
+	template_minimal
 )
 
 usage="Usage: $0 <target> <example>"
@@ -80,7 +82,13 @@ js_wasm32)
 		-out:build/web/beetpx_game.wasm
 	cp "$(odin root)/core/sys/wasm/js/odin.js" ./build/web/odin.js
 	cp ../beetpx/beetpx.js ./build/web/beetpx.js
-	cp ./index.html ./build/web/index.html
+	# An example may have its own HTML template. Otherwise, it uses the shared
+	# one.
+	if [[ -f "./${example}/index.html" ]]; then
+		cp "./${example}/index.html" ./build/web/index.html
+	else
+		cp ./index.html ./build/web/index.html
+	fi
 
 	echo "Serving ./build/web/ at http://127.0.0.1:8000 ..."
 	# TODO: Make it no longer require python3 (Odin 1.0 is supposed to include

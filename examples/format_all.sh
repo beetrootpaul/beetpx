@@ -7,6 +7,8 @@ examples=(
 	basic
 	palettes
 	shapes
+	template_custom
+	template_minimal
 )
 
 for example in "${examples[@]}"; do

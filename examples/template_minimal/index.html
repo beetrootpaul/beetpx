@@ -1,0 +1,20 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>BeetPx minimal template</title>
+<style>
+  body {
+    margin: 0;
+  }
+  /* The canvas needs a size which does not depend on its content. */
+  #beetpx_canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+  }
+</style>
+<canvas id="beetpx_canvas"></canvas>
+<script src="odin.js"></script>
+<script src="beetpx.js"></script>
+<script>
+  window.beetpx.runWasm("beetpx_game.wasm");
+</script>

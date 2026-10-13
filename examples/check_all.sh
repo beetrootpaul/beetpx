@@ -18,6 +18,8 @@ examples=(
 	basic
 	palettes
 	shapes
+	template_custom
+	template_minimal
 )
 targets=(
 	darwin_arm64

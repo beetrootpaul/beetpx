@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BeetPx custom template</title>
+    <style>
+      :root {
+        --color-page-top: #1d2b53;
+        --color-page-bottom: #7e2553;
+        --color-device: #ffa300;
+        --color-device-shadow: #ab5236;
+        --color-screen-frame: #5f574f;
+        --color-text: #fff1e8;
+        --color-text-dim: #c2c3c7;
+        --color-error: #ff004d;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        padding: 1rem;
+        font-family: monospace;
+        color: var(--color-text);
+        background: linear-gradient(
+          var(--color-page-top),
+          var(--color-page-bottom)
+        );
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .device {
+        width: min(90vw, 70dvh);
+        padding: 1.5rem 1.5rem 3rem;
+        border-radius: 1rem 1rem 3rem 1rem;
+        background-color: var(--color-device);
+        box-shadow: 0.5rem 0.5rem 0 var(--color-device-shadow);
+      }
+
+      .screen_frame {
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background-color: var(--color-screen-frame);
+      }
+
+      /* The canvas needs a size which does not depend on its content. Here,
+         it is a square, the same as the game's canvas. BeetPx scales the game
+         by a whole number, and fills the space left around it with black. */
+      #beetpx_canvas {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1;
+      }
+
+      .hint {
+        margin: 0;
+        color: var(--color-text-dim);
+      }
+
+      /* Shown until the game starts. */
+      .loaded .hint_loading {
+        display: none;
+      }
+
+      .critical_error {
+        display: none;
+        padding: 1rem;
+        border: 2px solid var(--color-error);
+        color: var(--color-error);
+        background-color: #000000;
+      }
+      .error .critical_error {
+        display: block;
+      }
+      .error .hint_loading {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>My Game</h1>
+
+    <div class="device">
+      <div class="screen_frame">
+        <canvas id="beetpx_canvas"></canvas>
+      </div>
+    </div>
+
+    <p class="hint hint_loading">Loading...</p>
+    <p class="hint">Made with BeetPx</p>
+
+    <div class="critical_error">
+      Failed to start the game. See the browser dev tools console.
+    </div>
+
+    <script src="odin.js"></script>
+    <script src="beetpx.js"></script>
+    <script>
+      window.beetpx
+        .runWasm("beetpx_game.wasm")
+        .then(() => {
+          document.body.classList.add("loaded");
+        })
+        .catch((err) => {
+          console.error(err);
+          document.body.classList.add("error");
+        });
+    </script>
+  </body>
+</html>
