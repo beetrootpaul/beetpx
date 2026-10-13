@@ -11,6 +11,7 @@
         --color-device: #ffa300;
         --color-device-shadow: #ab5236;
         --color-screen-frame: #5f574f;
+        --color-screen: #c2c3c7;
         --color-text: #fff1e8;
         --color-text-dim: #c2c3c7;
         --color-error: #ff004d;
@@ -60,11 +61,12 @@
 
       /* The canvas needs a size which does not depend on its content. Here,
          it is a square, the same as the game's canvas. BeetPx scales the game
-         by a whole number, and fills the space left around it with black. */
+         by a whole number, and the background color shows around it. */
       #beetpx_canvas {
         display: block;
         width: 100%;
         aspect-ratio: 1;
+        background-color: var(--color-screen);
       }
 
       .hint {

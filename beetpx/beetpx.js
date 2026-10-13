@@ -12,7 +12,8 @@
   // size in device pixels, and the canvas is scaled by the largest whole
   // number that fits, then centered. This way every canvas pixel is the same
   // whole number of device pixels wide and tall. The rest of the element stays
-  // transparent, and shows its background color.
+  // transparent, and shows its background color. The page sets that color
+  // with CSS, e.g. `background-color` of the `<canvas>`.
   const setUpHtmlCanvas = (htmlCanvas, width, height) => {
     // TODO: Throw an error if this fails?
     const htmlContext = htmlCanvas.getContext("2d", {
@@ -39,9 +40,6 @@
     if (!htmlContext || !offscreenContext) {
       return null;
     }
-
-    // TODO: Make it configurable?
-    htmlCanvas.style.backgroundColor = "#000000";
 
     // Resizing the backing store clears the `<canvas>` and resets all
     // settings of its context, so they have to be set again.
