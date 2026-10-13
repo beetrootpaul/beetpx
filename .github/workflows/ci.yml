@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  # Runs only from the default branch.
+  schedule:
+    - cron: "0 5 * * *"
+
+jobs:
+  check:
+    name: Check (Odin ${{ matrix.odin }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # `pinned` is the version from `.odin-version`. `nightly` is the
+        # latest Odin build: it finds breakage from Odin changes early, but
+        # does not fail the run.
+        odin: [pinned, nightly]
+    continue-on-error: ${{ matrix.odin == 'nightly' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Odin
+        env:
+          ODIN_CHANNEL: ${{ matrix.odin }}
+        run: |
+          if [[ "${ODIN_CHANNEL}" == pinned ]]; then
+            version="$(cat .odin-version)"
+            url="https://github.com/odin-lang/Odin/releases/download/${version}/odin-linux-amd64-${version}.tar.gz"
+          else
+            # The same index the "Nightly builds" page of odin-lang.org uses.
+            url="$(
+              curl -fsSL https://f001.backblazeb2.com/file/odin-binaries/nightly.json |
+                jq -r '.files | to_entries | max_by(.key) | .value[]
+                  | select(.name | startswith("odin-linux-amd64-")) | .url'
+            )"
+          fi
+          echo "Downloading ${url} ..."
+          mkdir -p "${RUNNER_TEMP}/odin"
+          curl -fsSL "${url}" |
+            tar -xz -C "${RUNNER_TEMP}/odin" --strip-components=1
+          echo "${RUNNER_TEMP}/odin" >>"${GITHUB_PATH}"
+
+      # Odin links `js_wasm32` builds with `wasm-ld`, which comes with `lld`.
+      - name: Install wasm-ld
+        run: command -v wasm-ld || sudo apt-get install -y --no-install-recommends lld
+
+      - run: odin version
+
+      - name: Check BeetPx
+        run: ./scripts/check_code.sh
+
+      - name: Test BeetPx
+        run: ./scripts/test.sh
+
+      - name: Check examples
+        run: ./examples/check_all.sh
+
+      # `odin check` does not link, so a build finds what it misses.
+      - name: Build examples for the web
+        run: |
+          for main_file in examples/*/main.odin; do
+            example="$(basename "$(dirname "${main_file}")")"
+            echo "Building '${example}' for 'js_wasm32' ..."
+            mkdir -p "${RUNNER_TEMP}/web/${example}/"
+            # `-thread-count:1` works around the same intermittent crash of
+            # the compiler as in `scripts/check_code.sh`.
+            odin build "./examples/${example}" \
+              -collection:beetpx=./beetpx/ \
+              -target:js_wasm32 \
+              -thread-count:1 \
+              -out:"${RUNNER_TEMP}/web/${example}/beetpx_game.wasm"
+          done
