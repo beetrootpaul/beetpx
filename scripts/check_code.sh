@@ -62,6 +62,16 @@ run_check() {
 		done
 	done
 
+	# The code under `when _TRACK_MEMORY` is skipped unless it is enabled.
+	for target in "${targets[@]}"; do
+		echo "Checking 'bpx' with memory tracking for '${target}' ..."
+		odin check ./beetpx/bpx \
+			"${flags[@]}" \
+			-define:BPX_TRACK_MEMORY=true \
+			-target:"${target}" ||
+			return 1
+	done
+
 	for package in "${test_packages[@]}"; do
 		for target in "${targets[@]}"; do
 			# Tests are not checked for the web: they import `core:testing`,

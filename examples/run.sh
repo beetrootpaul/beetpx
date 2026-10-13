@@ -19,14 +19,28 @@ examples=(
 	shapes
 )
 
-usage="Usage: $0 <target> <example>"
+usage="Usage: $0 <target> <example> [--track-memory]"
 
-if [[ $# -ne 2 ]]; then
+positional_args=()
+track_memory=false
+for arg in "$@"; do
+	case "${arg}" in
+	--track-memory) track_memory=true ;;
+	--*)
+		echo "Unknown option: '${arg}'." >&2
+		echo "${usage}" >&2
+		exit 1
+		;;
+	*) positional_args+=("${arg}") ;;
+	esac
+done
+
+if [[ ${#positional_args[@]} -ne 2 ]]; then
 	echo "${usage}" >&2
 	exit 1
 fi
-target="$1"
-example="$2"
+target="${positional_args[0]}"
+example="${positional_args[1]}"
 
 # Params:
 #   $1 - the actual value
@@ -60,6 +74,12 @@ odin_flags=(
 	-collection:beetpx=../beetpx/
 	-target:"${target}"
 )
+
+# Prints the memory in use whenever it changes, and the leaks on app exit. See
+# `_TRACK_MEMORY` in `beetpx/bpx/memory_tracking.odin`.
+if [[ "${track_memory}" == true ]]; then
+	odin_flags+=(-define:BPX_TRACK_MEMORY=true)
+fi
 
 case "${target}" in
 darwin_arm64)

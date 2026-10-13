@@ -91,6 +91,10 @@ _platform_start :: proc() {
 	internal.canvas_fill({0, 0, 0})
 
 	_run_game_loop()
+
+	when _TRACK_MEMORY {
+		_memory_tracking_report_leaks()
+	}
 }
 
 // TODO: Check every SDL3 call here against the SDL3 docs.

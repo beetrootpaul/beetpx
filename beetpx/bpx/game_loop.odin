@@ -64,6 +64,10 @@ start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 	_tick_rate_hz = _tick_rate_as_hz(tick_rate)
 	_tick_s = 1.0 / f64(_tick_rate_hz)
 
+	when _TRACK_MEMORY {
+		_memory_tracking_init()
+	}
+
 	_platform_start()
 	// Code placed here runs either right away or on app exit, depending on
 	// the platform.
@@ -73,6 +77,14 @@ start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 // renders exactly once.
 @(private)
 _game_loop_advance :: proc(delta_s: f64) {
+	// Set per frame, not once in `start`, because on the web `odin.js` calls
+	// `step` with a fresh `context` every frame. `when` does not open a scope,
+	// so this lasts until the end of this proc.
+	when _TRACK_MEMORY {
+		context.allocator = _memory_tracking_allocator()
+		defer _memory_tracking_report_change()
+	}
+
 	_accumulated_s += delta_s
 
 	ticks := 0
