@@ -22,6 +22,9 @@ packages=(
 )
 test_packages=(
 	bpx
+	examples/basic
+	examples/palettes
+	examples/shapes
 	internal
 )
 targets=(
@@ -72,8 +75,13 @@ run_check() {
 				continue
 			fi
 			echo "Checking tests of '${package}' for '${target}' ..."
+			# `BEETPX_TESTING` includes the test helpers of `bpx`, as
+			# `odin test` does through `ODIN_TEST`. Packages which do not
+			# import `bpx` do not use it.
 			odin check "./tests/${package}" \
 				-collection:beetpx=./beetpx/ \
+				-define:BEETPX_TESTING=true \
+				-ignore-unused-defineables \
 				"${flags[@]}" \
 				-target:"${target}" ||
 				return 1

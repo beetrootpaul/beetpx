@@ -26,13 +26,18 @@ Engine :: struct {
 	_frame_number    : u32,
 }
 
-// Sets the tick rate. Keeps the callbacks, so they can be set before it.
+// Resets the engine and sets the tick rate. Keeps the callbacks, so they can
+// be set before it.
 engine_init :: proc(e: ^Engine, tick_rate_hz: u8) {
-	e._tick_rate_hz = tick_rate_hz
-	e._tick_accumulator = tick_accumulator_make(
-		tick_s = 1.0 / f64(tick_rate_hz),
-		max_catchup_ticks = _MAX_CATCHUP_TICKS,
-	)
+	e^ = {
+		on_update         = e.on_update,
+		on_draw           = e.on_draw,
+		_tick_rate_hz     = tick_rate_hz,
+		_tick_accumulator = tick_accumulator_make(
+			tick_s = 1.0 / f64(tick_rate_hz),
+			max_catchup_ticks = _MAX_CATCHUP_TICKS,
+		),
+	}
 }
 
 // Runs the ticks owed for one host frame, then draws exactly once. Does not

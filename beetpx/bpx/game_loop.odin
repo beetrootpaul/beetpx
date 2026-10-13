@@ -11,7 +11,7 @@ Tick_Rate_Preset :: enum {
 On_Update :: internal.On_Update
 On_Draw   :: internal.On_Draw
 
-@(private = "file")
+@(private)
 _engine: internal.Engine
 
 // Registers a callback to be run once per fixed-timestep tick.
@@ -32,7 +32,8 @@ set_on_draw :: proc(on_draw: On_Draw) {
 
 // Starts the game.
 //
-// Might be blocking, depending on the platform.
+// Might be blocking, depending on the platform. In tests, it starts no
+// platform and returns right away (see `test_scope`).
 //
 // TODO: Consider moving `canvas_size` and `tick_rate` out of the code, into
 //       a `beetpx.json` read by the planned BeetPx CLI, which would pass them
@@ -42,11 +43,15 @@ set_on_draw :: proc(on_draw: On_Draw) {
 //       sized exactly.
 start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 	internal.canvas_init(_canvas_size_preset_as_px(canvas_size))
+	internal.canvas_fill({0, 0, 0})
 	internal.engine_init(&_engine, _tick_rate_as_hz(tick_rate))
 
-	_platform_start()
-	// Code placed here runs either right away or on app exit, depending on
-	// the platform.
+	// In tests, the game loop is driven by `test_advance` instead.
+	when !_TESTING {
+		_platform_start()
+		// Code placed here runs either right away or on app exit, depending
+		// on the platform.
+	}
 }
 
 // Runs the ticks owed for `delta_s` seconds of real time, then draws and

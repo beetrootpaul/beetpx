@@ -88,8 +88,6 @@ _platform_start :: proc() {
 	// TODO: Use a custom logger.
 	fmt.printfln("BeetPx (%v) started.", ODIN_OS)
 
-	internal.canvas_fill({0, 0, 0})
-
 	_run_game_loop()
 }
 

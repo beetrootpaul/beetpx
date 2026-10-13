@@ -16,9 +16,12 @@ done
 
 run_tests() {
 	# Tests live in their own tree, which mirrors `./beetpx`: the tests of
-	# `./beetpx/bpx` are in `./tests/bpx`. Every directory there that has Odin
-	# files is a separate test package, e.g.:
+	# `./beetpx/bpx` are in `./tests/bpx`. Replays of the examples are in
+	# `./tests/examples`, one package per example, because each example is a
+	# `main` package and a program can have only one of those. Every directory
+	# there that has Odin files is a separate test package, e.g.:
 	#   ./tests/bpx
+	#   ./tests/examples/basic
 	local packages
 	packages="$(
 		find ./tests -type f -name '*.odin' -exec dirname {} \; |

@@ -46,8 +46,6 @@ _platform_start :: proc() {
 
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (js) started.")
-
-	internal.canvas_fill({0, 0, 0})
 }
 
 @(private)
