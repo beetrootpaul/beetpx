@@ -44,11 +44,15 @@ run_tests() {
 		#
 		# TODO: Remove the single-threading once the issue is fixed.
 		#
+		# `BEETPX_PLATFORM=nil` runs games with no window, so that tests can
+		# drive them with `bpx.nil_platform_step`.
+		#
 		# The `ODIN_TEST_*` defines shorten the output: `LOG_LEVEL=warning`
 		# hides the runner's informational header, and `SHORT_LOGS` drops the
 		# date, time, and procedure name from every log line.
 		odin test "${package}" -thread-count:1 \
 			-collection:beetpx=./beetpx/ \
+			-define:BEETPX_PLATFORM=nil \
 			-define:ODIN_TEST_FAIL_ON_BAD_MEMORY=true \
 			-define:ODIN_TEST_LOG_LEVEL=warning \
 			-define:ODIN_TEST_SHORT_LOGS=true ||

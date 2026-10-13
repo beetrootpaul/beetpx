@@ -71,8 +71,10 @@ run_check() {
 				continue
 			fi
 			echo "Checking tests of '${package}' for '${target}' ..."
+			# Tests run on the "nil" platform (see `test.sh`).
 			odin check "./tests/${package}" \
 				-collection:beetpx=./beetpx/ \
+				-define:BEETPX_PLATFORM=nil \
 				"${flags[@]}" \
 				-target:"${target}" ||
 				return 1

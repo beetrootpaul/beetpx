@@ -33,7 +33,7 @@ foreign beetpx_js {
 _CANVAS_ELEMENT_ID :: "beetpx_canvas"
 
 @(private)
-_platform_start :: proc() {
+_platform_js_start :: proc() {
 	canvas_size := internal.canvas_size()
 	if !_html_canvas_init(_CANVAS_ELEMENT_ID, canvas_size.x, canvas_size.y) {
 		// TODO: Use a custom logger.
@@ -51,7 +51,7 @@ _platform_start :: proc() {
 }
 
 @(private)
-_platform_render :: proc() {
+_platform_js_render :: proc() {
 	_html_canvas_render(internal.canvas_rgba8_bytes())
 }
 

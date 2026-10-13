@@ -24,7 +24,7 @@ _sdl_canvas_texture: ^sdl.Texture
 // TODO: Check every SDL3 call here against the SDL3 docs, and tune the
 // settings.
 @(private)
-_platform_start :: proc() {
+_platform_sdl_start :: proc() {
 	if !sdl.Init({.VIDEO}) {
 		fmt.eprintln("BeetPx: sdl.Init failed:", sdl.GetError())
 		return
@@ -95,7 +95,7 @@ _platform_start :: proc() {
 
 // TODO: Check every SDL3 call here against the SDL3 docs.
 @(private)
-_platform_render :: proc() {
+_platform_sdl_render :: proc() {
 	sdl.UpdateTexture(
 		_sdl_canvas_texture,
 		nil,
