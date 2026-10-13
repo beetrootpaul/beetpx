@@ -15,6 +15,7 @@ targets=(
 )
 examples=(
 	basic
+	canvas_snapshot
 	palettes
 	shapes
 )
