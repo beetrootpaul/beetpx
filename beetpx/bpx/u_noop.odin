@@ -1,3 +1,4 @@
+#+vet explicit-allocators
 package beetpx_bpx
 
 // No operation. A helpef proc useful in situations where we want to pass

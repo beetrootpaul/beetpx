@@ -1,3 +1,4 @@
+#+vet explicit-allocators
 #+build darwin, linux, windows
 package beetpx_bpx
 

@@ -1,3 +1,4 @@
+#+vet explicit-allocators
 package beetpx_bpx
 
 // TODO: Do palettes deserver their unique package and imported dir?

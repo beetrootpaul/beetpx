@@ -1,3 +1,4 @@
+#+vet explicit-allocators
 package beetpx_bpx
 
 // Bounces back and forth between `0` and `range`.

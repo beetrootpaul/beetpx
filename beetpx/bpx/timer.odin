@@ -1,3 +1,4 @@
+#+vet explicit-allocators
 package beetpx_bpx
 
 // TODO: Tests.
