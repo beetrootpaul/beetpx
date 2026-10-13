@@ -110,6 +110,48 @@
     };
   };
 
+  // How many times the favicon is scaled up from the given pixels. A whole
+  // power of 2, so browsers can scale it down to 16, 32, or 64 px without
+  // blurring the pixel art.
+  const FAVICON_SCALE = 8;
+
+  // Sets the favicon of the page to an image made of the given RGBA8 bytes,
+  // scaled up with no smoothing.
+  const setFavicon = (rgba8Bytes, width, height) => {
+    const pixelsCanvas = document.createElement("canvas");
+    pixelsCanvas.width = width;
+    pixelsCanvas.height = height;
+    pixelsCanvas
+      .getContext("2d")
+      .putImageData(new ImageData(rgba8Bytes, width, height), 0, 0);
+
+    const faviconCanvas = document.createElement("canvas");
+    faviconCanvas.width = FAVICON_SCALE * width;
+    faviconCanvas.height = FAVICON_SCALE * height;
+    const faviconContext = faviconCanvas.getContext("2d");
+    faviconContext.imageSmoothingEnabled = false;
+    faviconContext.drawImage(
+      pixelsCanvas,
+      0,
+      0,
+      faviconCanvas.width,
+      faviconCanvas.height,
+    );
+
+    let link = document.querySelector('link[rel="icon"]');
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "icon";
+      document.head.appendChild(link);
+    }
+    link.type = "image/png";
+    link.setAttribute(
+      "sizes",
+      `${faviconCanvas.width}x${faviconCanvas.height}`,
+    );
+    link.href = faviconCanvas.toDataURL("image/png");
+  };
+
   // Runs the game's WASM. Returns the promise of `odin.runWasm`.
   const runWasm = (wasmPath) => {
     // Gives the procs below access to the WASM memory.
@@ -140,6 +182,17 @@
               bytesPtr,
               bytesLen,
             ),
+          );
+        },
+        html_favicon_set: (bytesPtr, bytesLen, width, height) => {
+          setFavicon(
+            new Uint8ClampedArray(
+              wasmMemoryInterface.memory.buffer,
+              bytesPtr,
+              bytesLen,
+            ),
+            width,
+            height,
           );
         },
       },

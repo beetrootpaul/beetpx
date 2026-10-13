@@ -23,6 +23,11 @@ foreign beetpx_js {
 	// by the largest whole number that fits, and centered.
 	@(link_name = "html_canvas_render")
 	_html_canvas_render :: proc(rgba8_bytes: []u8) ---
+
+	// Sets the favicon of the page from the RGBA8 bytes of an image of the
+	// given size.
+	@(link_name = "html_favicon_set")
+	_html_favicon_set :: proc(rgba8_bytes: []u8, width, height: int) ---
 }
 
 // Must match the `id` of the `<canvas>` element in the hosting HTML page.
@@ -44,6 +49,8 @@ _platform_start :: proc() {
 		return
 	}
 
+	_platform_set_icon(_icon_rgba8_bytes())
+
 	// TODO: Use a custom logger.
 	fmt.println("BeetPx (js) started.")
 
@@ -53,6 +60,13 @@ _platform_start :: proc() {
 @(private)
 _platform_render :: proc() {
 	_html_canvas_render(internal.canvas_rgba8_bytes())
+}
+
+// Sets the favicon from RGBA8 bytes of size `_ICON_SIZE_PX` by
+// `_ICON_SIZE_PX`.
+@(private)
+_platform_set_icon :: proc(rgba8_bytes: []u8) {
+	_html_favicon_set(rgba8_bytes, _ICON_SIZE_PX, _ICON_SIZE_PX)
 }
 
 // Called once per host animation frame by `odin.js`. Has to be called `step`.

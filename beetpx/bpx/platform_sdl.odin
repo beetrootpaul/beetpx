@@ -16,6 +16,13 @@ _INITIAL_WINDOW_MAX_DISPLAY_FRACTION :: 0.75
 @(private = "file")
 _FALLBACK_INITIAL_SCALE :: 4
 
+// The icon's whole-number scales, besides 1, which SDL picks from to show it
+// at a high display scale, or at a big size, e.g. in the macOS Dock.
+@(private = "file")
+_ICON_ALTERNATE_SCALES :: [?]int{2, 4, 8, 16, 32}
+
+@(private = "file")
+_sdl_window: ^sdl.Window
 @(private = "file")
 _sdl_renderer: ^sdl.Renderer
 @(private = "file")
@@ -34,7 +41,6 @@ _platform_start :: proc() {
 	canvas_size := internal.canvas_size()
 	initial_scale := _initial_scale(canvas_size)
 
-	sdl_window: ^sdl.Window
 	ok := sdl.CreateWindowAndRenderer(
 		"BeetPx",
 		c.int(canvas_size.x * initial_scale),
@@ -45,7 +51,7 @@ _platform_start :: proc() {
 		// at a lower resolution, and the OS upscales the result, which can
 		// blur the pixel edges.
 		{.RESIZABLE, .HIGH_PIXEL_DENSITY},
-		&sdl_window,
+		&_sdl_window,
 		&_sdl_renderer,
 	)
 	if !ok {
@@ -56,7 +62,12 @@ _platform_start :: proc() {
 		return
 	}
 	defer sdl.DestroyRenderer(_sdl_renderer)
-	defer sdl.DestroyWindow(sdl_window)
+	defer {
+		sdl.DestroyWindow(_sdl_window)
+		_sdl_window = nil
+	}
+
+	_platform_set_icon(_icon_rgba8_bytes())
 
 	// `INTEGER_SCALE` scales the canvas only by whole numbers, so every canvas
 	// pixel is the same number of physical pixels wide and tall. The rest of
@@ -107,6 +118,54 @@ _platform_render :: proc() {
 	// TODO: Explain both `nil` params.
 	sdl.RenderTexture(_sdl_renderer, _sdl_canvas_texture, nil, nil)
 	sdl.RenderPresent(_sdl_renderer)
+}
+
+// Sets the window icon from RGBA8 bytes of size `_ICON_SIZE_PX` by
+// `_ICON_SIZE_PX`. Does nothing if there is no window yet.
+//
+// TODO: Check every SDL3 call here against the SDL3 docs.
+@(private)
+_platform_set_icon :: proc(rgba8_bytes: []u8) {
+	if _sdl_window == nil do return
+
+	icon := sdl.CreateSurfaceFrom(
+		_ICON_SIZE_PX,
+		_ICON_SIZE_PX,
+		.RGBA32,
+		raw_data(rgba8_bytes),
+		// Bytes per row: 4 bytes per RGBA8 pixel.
+		_ICON_SIZE_PX * 4,
+	)
+	if icon == nil {
+		// TODO: Use a custom logger.
+		fmt.eprintln("BeetPx: sdl.CreateSurfaceFrom failed:", sdl.GetError())
+		return
+	}
+	defer sdl.DestroySurface(icon)
+
+	// Scaled up here with `NEAREST`, to keep the pixel art sharp, instead of
+	// leaving it to SDL or the OS, which may smooth it.
+	for scale in _ICON_ALTERNATE_SCALES {
+		scaled := sdl.ScaleSurface(
+			icon,
+			c.int(_ICON_SIZE_PX * scale),
+			c.int(_ICON_SIZE_PX * scale),
+			.NEAREST,
+		)
+		if scaled == nil {
+			// TODO: Use a custom logger.
+			fmt.eprintln("BeetPx: sdl.ScaleSurface failed:", sdl.GetError())
+			continue
+		}
+		// The icon holds its own reference to `scaled` from now on.
+		sdl.AddSurfaceAlternateImage(icon, scaled)
+		sdl.DestroySurface(scaled)
+	}
+
+	if !sdl.SetWindowIcon(_sdl_window, icon) {
+		// TODO: Use a custom logger.
+		fmt.eprintln("BeetPx: sdl.SetWindowIcon failed:", sdl.GetError())
+	}
 }
 
 // Returns the largest whole-number scale at which the canvas fits within
