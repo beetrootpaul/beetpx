@@ -45,6 +45,12 @@ canvas_set :: proc(xy: [2]int, c: [3]u8) {
 	_frame_buffer[xy.y * _size_px.x + xy.x] = {c.r, c.g, c.b, 0xff}
 }
 
+canvas_get :: proc(xy: [2]int) -> [3]u8 {
+	if !_can_set_at(xy) do return {}
+	c := _frame_buffer[xy.y * _size_px.x + xy.x]
+	return {c.r, c.g, c.b}
+}
+
 @(private = "file")
 _can_set_at :: proc(xy: [2]int) -> bool {
 	return 0 <= xy.x && xy.x < _size_px.x && 0 <= xy.y && xy.y < _size_px.y
