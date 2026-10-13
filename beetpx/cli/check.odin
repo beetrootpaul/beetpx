@@ -1,13 +1,15 @@
 package beetpx_cli
 
 import "core:fmt"
+import "core:hash"
+import "core:mem"
 import "core:os"
 import "core:slice"
 import "core:strings"
+import "core:time"
 
 // Checks the game for every target. With `--watch`, re-runs the check every
-// time an `.odin` file in the game or in BeetPx changes. Watching requires
-// [watchexec](https://watchexec.github.io/) to be on `PATH`.
+// time an `.odin` file in the game or in BeetPx changes.
 @(private)
 _check :: proc(args: []string) -> bool {
 	watch := false
@@ -79,36 +81,64 @@ _check_once :: proc() -> bool {
 	return true
 }
 
-// Hands the watching over to `watchexec`, which runs this very executable
-// again on every change.
+// Re-runs the check every time an `.odin` file in the game or in BeetPx
+// changes. It polls the files, so that it needs no extra tool and works the
+// same on every OS.
 //
 // TODO: Consider removing BeetPx from the watched files.
 @(private = "file")
 _check_watch :: proc() -> bool {
-	if !_is_on_path("watchexec") {
-		fmt.eprintln(
-			"'--watch' requires watchexec: https://watchexec.github.io/",
-		)
-		return false
-	}
-	exe, err := os.get_executable_path(context.temp_allocator)
-	if err != nil {
-		fmt.eprintfln("Failed to find the path of this executable: %v", err)
-		return false
-	}
-	return _exec({
-		"watchexec",
-		"--clear",
-		"--exts",
-		"odin",
-		"--watch",
+	watched_dirs := [?]string {
 		_SRC_DIR,
-		"--watch",
-		_beetpx_dir(),
-		"--",
-		exe,
-		"check",
-	})
+		strings.clone(_beetpx_dir(), context.allocator),
+	}
+	for {
+		// Clears the terminal.
+		fmt.print("\x1b[2J\x1b[H")
+		if _check_once() {
+			fmt.println("All checks passed.")
+		}
+		fmt.println("Waiting for changes ...")
+
+		fingerprint := _odin_files_fingerprint(watched_dirs[:])
+		free_all(context.temp_allocator)
+		for {
+			time.sleep(_WATCH_POLL_INTERVAL)
+			changed := _odin_files_fingerprint(watched_dirs[:]) != fingerprint
+			free_all(context.temp_allocator)
+			if changed {
+				break
+			}
+		}
+	}
+}
+
+@(private = "file")
+_WATCH_POLL_INTERVAL :: 300 * time.Millisecond
+
+// A number that changes whenever an `.odin` file in the directories is added,
+// removed, or modified.
+@(private = "file")
+_odin_files_fingerprint :: proc(dirs: []string) -> (fingerprint: u64) {
+	for dir in dirs {
+		walker := os.walker_create(dir)
+		defer os.walker_destroy(&walker)
+		for info in os.walker_walk(&walker) {
+			if info.type != .Regular ||
+			   !strings.has_suffix(info.name, ".odin") {
+				continue
+			}
+			file_hash := hash.fnv64a(transmute([]byte)info.fullpath)
+			stamp := [2]i64 {
+				time.to_unix_nanoseconds(info.modification_time),
+				info.size,
+			}
+			file_hash = hash.fnv64a(mem.ptr_to_bytes(&stamp), file_hash)
+			// A sum does not depend on the order of the files.
+			fingerprint += file_hash
+		}
+	}
+	return
 }
 
 // Names of the packages in the game's code, sorted, without duplicates. Each

@@ -30,27 +30,3 @@ _exec :: proc(command: []string) -> bool {
 	}
 	return state.success && state.exit_code == 0
 }
-
-// Returns whether a program can be found on `PATH`.
-@(private)
-_is_on_path :: proc(program: string) -> bool {
-	path_var := os.get_env("PATH", context.temp_allocator)
-	dirs, err := os.split_path_list(path_var, context.temp_allocator)
-	if err != nil {
-		return false
-	}
-	file_name := program
-	when ODIN_OS == .Windows {
-		file_name = strings.concatenate(
-			{program, ".exe"},
-			context.temp_allocator,
-		)
-	}
-	for dir in dirs {
-		path, _ := os.join_path({dir, file_name}, context.temp_allocator)
-		if os.is_file(path) {
-			return true
-		}
-	}
-	return false
-}
