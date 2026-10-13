@@ -18,6 +18,13 @@ _size_px: [2]int
 @(private)
 _frame_buffer: [_MAX_SIZE_PX.x * _MAX_SIZE_PX.y][4]u8
 
+// A copy of `_frame_buffer`, made by `canvas_take_snapshot`.
+@(private = "file")
+_snapshot: [_MAX_SIZE_PX.x * _MAX_SIZE_PX.y][4]u8
+
+@(private = "file")
+_has_snapshot: bool
+
 // Sets the size of the canvas. Has to be called before the canvas is used.
 canvas_init :: proc(size_px: [2]int) {
 	_size_px = size_px
@@ -47,6 +54,31 @@ canvas_set :: proc(xy: [2]int, c: [3]u8) {
 @(private = "file")
 _can_set_at :: proc(xy: [2]int) -> bool {
 	return 0 <= xy.x && xy.x < _size_px.x && 0 <= xy.y && xy.y < _size_px.y
+}
+
+// Copies the current canvas pixels, so they can be read with
+// `canvas_snapshot_get` while drawing over them.
+canvas_take_snapshot :: proc() {
+	n := _size_px.x * _size_px.y
+	copy(_snapshot[:n], _frame_buffer[:n])
+	_has_snapshot = true
+}
+
+// Forgets the most recent snapshot. Called after each render, so a snapshot
+// never outlives the frame it was taken in.
+canvas_discard_snapshot :: proc() {
+	_has_snapshot = false
+}
+
+canvas_has_snapshot :: proc() -> bool {
+	return _has_snapshot
+}
+
+// Returns the color at `xy` of the most recent snapshot.
+canvas_snapshot_get :: proc(xy: [2]int) -> [3]u8 {
+	assert(_has_snapshot)
+	assert(_can_set_at(xy))
+	return _snapshot[xy.y * _size_px.x + xy.x].rgb
 }
 
 canvas_rgba8_bytes :: proc() -> []u8 {

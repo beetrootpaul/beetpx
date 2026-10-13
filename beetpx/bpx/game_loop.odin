@@ -98,6 +98,8 @@ _game_loop_advance :: proc(delta_s: f64) {
 	_on_draw()
 
 	_platform_render()
+
+	internal.canvas_discard_snapshot()
 }
 
 // TODO: Use it in some example.
