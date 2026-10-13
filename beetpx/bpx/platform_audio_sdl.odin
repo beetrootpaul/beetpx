@@ -6,24 +6,24 @@ import "core:c"
 import "core:fmt"
 import sdl "vendor:sdl3"
 
-// Playbacks are mixed into a single stream of this format. SDL converts it to
+// Sounds are mixed into a single stream of this format. SDL converts it to
 // whatever the audio device needs.
 @(private = "file")
 _OUTPUT_SAMPLE_RATE :: 48_000
 @(private = "file")
 _OUTPUT_CHANNELS :: 2
 
-// How many playbacks can play at the same time.
+// How many sounds can play at the same time.
 @(private = "file")
 _MAX_VOICES :: 16
 
 @(private = "file")
 _Voice :: struct {
-	playback_id: Audio_Playback_Id,
 	sound      : Sound,
+	clip       : Audio_Clip,
 	looped     : bool,
-	// In frames of the sound, which may have a different sample rate than
-	// the output.
+	// In frames of the audio clip, which may have a different sample rate
+	// than the output.
 	position   : f64,
 	gain       : f32,
 	target_gain: f32,
@@ -34,7 +34,7 @@ _Voice :: struct {
 @(private = "file")
 _audio_stream: ^sdl.AudioStream
 
-// A voice with `playback_id` of 0 is free.
+// A voice with `sound` of 0 is free.
 @(private = "file")
 _voices: [_MAX_VOICES]_Voice
 
@@ -80,24 +80,24 @@ _audio_device_close :: proc() {
 }
 
 @(private)
-_platform_audio_add_sound :: proc(_: Sound, _: _Wav) {
-	// The mixer reads `_sounds` directly.
+_platform_audio_add_clip :: proc(_: Audio_Clip, _: _Wav) {
+	// The mixer reads `_audio_clips` directly.
 }
 
 @(private)
-_platform_audio_start_playback :: proc(
-	playback_id: Audio_Playback_Id,
+_platform_audio_start_sound :: proc(
 	sound: Sound,
+	clip: Audio_Clip,
 	looped, muted: bool,
 ) {
 	_lock()
 	defer _unlock()
 
 	for &v in _voices {
-		if v.playback_id != 0 do continue
+		if v.sound != 0 do continue
 		v = {
-			playback_id = playback_id,
 			sound       = sound,
+			clip        = clip,
 			looped      = looped,
 			gain        = muted ? 0 : 1,
 			target_gain = muted ? 0 : 1,
@@ -109,17 +109,14 @@ _platform_audio_start_playback :: proc(
 }
 
 @(private)
-_platform_audio_set_playback_muted :: proc(
-	playback_id: Audio_Playback_Id,
-	muted: bool,
-) {
-	if playback_id == 0 do return
+_platform_audio_set_sound_muted :: proc(sound: Sound, muted: bool) {
+	if sound == 0 do return
 
 	_lock()
 	defer _unlock()
 
 	for &v in _voices {
-		if v.playback_id == playback_id {
+		if v.sound == sound {
 			v.target_gain = muted ? 0 : 1
 			return
 		}
@@ -169,9 +166,9 @@ _mix :: proc(out: [][_OUTPUT_CHANNELS]f32) {
 	for &frame in out do frame = 0
 
 	for &v in _voices {
-		if v.playback_id == 0 do continue
+		if v.sound == 0 do continue
 
-		wav := _sounds[v.sound - 1]
+		wav := _audio_clips[v.clip - 1]
 		frames := _wav_frames(wav)
 		if frames == 0 {
 			v = {}
@@ -195,14 +192,14 @@ _mix :: proc(out: [][_OUTPUT_CHANNELS]f32) {
 			}
 
 			// Linear interpolation between the two nearest frames of the
-			// sound.
+			// audio clip.
 			i := int(v.position)
 			next_i := i + 1
 			if next_i >= frames do next_i = v.looped ? 0 : i
 			t := f32(v.position - f64(i))
 
 			for ch in 0 ..< _OUTPUT_CHANNELS {
-				// A mono sound plays on both channels.
+				// A mono audio clip plays on both channels.
 				wav_ch := min(ch, wav.channels - 1)
 				a := _wav_sample(wav, i, wav_ch)
 				b := _wav_sample(wav, next_i, wav_ch)

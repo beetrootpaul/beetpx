@@ -116,7 +116,7 @@
     const audioContext = new AudioContext();
 
     // Browsers let audio play only after the user interacted with the page.
-    // Until then, the audio context is suspended, and started playbacks wait.
+    // Until then, the audio context is suspended, and started sounds wait.
     const resumeAudioContext = () => {
       if (audioContext.state !== "running") {
         audioContext.resume().catch((err) => console.error(err));
@@ -132,10 +132,10 @@
       window.addEventListener(eventType, resumeAudioContext);
     }
 
-    // `AudioBuffer`s, by the sound number.
+    // `AudioBuffer`s, by the audio clip number.
+    const clips = new Map();
+    // `GainNode`s of the sounds that still play, by the sound number.
     const sounds = new Map();
-    // `GainNode`s of the playbacks that still play, by the playback ID.
-    const playbacks = new Map();
 
     const fadeGain = (gainNode, value, fadeS) => {
       const now = audioContext.currentTime;
@@ -145,8 +145,8 @@
     };
 
     return {
-      audio_add_sound: (
-        sound,
+      audio_add_clip: (
+        clip,
         dataPtr,
         dataLen,
         channels,
@@ -178,10 +178,10 @@
                 : data.getInt16(offset, true) / 32768;
           }
         }
-        sounds.set(sound, audioBuffer);
+        clips.set(clip, audioBuffer);
       },
-      audio_start_playback: (playbackId, sound, looped, muted) => {
-        const audioBuffer = sounds.get(sound);
+      audio_start_sound: (sound, clip, looped, muted) => {
+        const audioBuffer = clips.get(clip);
         if (!audioBuffer) {
           return;
         }
@@ -197,14 +197,14 @@
         sourceNode.addEventListener("ended", () => {
           sourceNode.disconnect();
           gainNode.disconnect();
-          playbacks.delete(playbackId);
+          sounds.delete(sound);
         });
         sourceNode.start();
 
-        playbacks.set(playbackId, gainNode);
+        sounds.set(sound, gainNode);
       },
-      audio_set_playback_muted: (playbackId, muted, fadeS) => {
-        const gainNode = playbacks.get(playbackId);
+      audio_set_sound_muted: (sound, muted, fadeS) => {
+        const gainNode = sounds.get(sound);
         if (gainNode) {
           fadeGain(gainNode, muted ? 0 : 1, fadeS);
         }
