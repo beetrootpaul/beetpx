@@ -8,3 +8,7 @@
 # AI
 .claude/*
 !.claude/settings.json
+
+# Hot reload spike build output
+/spikes/hot_reload/out/
+/spikes/hot_reload/game
