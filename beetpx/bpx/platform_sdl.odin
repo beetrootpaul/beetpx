@@ -25,7 +25,7 @@ _sdl_canvas_texture: ^sdl.Texture
 // settings.
 @(private)
 _platform_start :: proc() {
-	if !sdl.Init({.VIDEO}) {
+	if !sdl.Init({.VIDEO, .GAMEPAD}) {
 		fmt.eprintln("BeetPx: sdl.Init failed:", sdl.GetError())
 		return
 	}
@@ -150,6 +150,21 @@ _run_game_loop :: proc() {
 				running = false
 			case .KEY_DOWN:
 				if !event.key.repeat do _on_key_down(event.key.scancode)
+			case .GAMEPAD_ADDED:
+				// Gamepads send their events only once opened.
+				if sdl.OpenGamepad(event.gdevice.which) == nil {
+					// TODO: Use a custom logger.
+					fmt.eprintln(
+						"BeetPx: sdl.OpenGamepad failed:",
+						sdl.GetError(),
+					)
+				}
+			case .GAMEPAD_REMOVED:
+				sdl.CloseGamepad(sdl.GetGamepadFromID(event.gdevice.which))
+			case .GAMEPAD_BUTTON_DOWN:
+				_on_gamepad_button_down(
+					sdl.GamepadButton(event.gbutton.button),
+				)
 			}
 		}
 
@@ -174,5 +189,19 @@ _on_key_down :: proc(scancode: sdl.Scancode) {
 		_input_key_down(.Up)
 	case .DOWN:
 		_input_key_down(.Down)
+	}
+}
+
+@(private = "file")
+_on_gamepad_button_down :: proc(button: sdl.GamepadButton) {
+	#partial switch button {
+	case .DPAD_LEFT:
+		_input_gamepad_button_down(.Dpad_Left)
+	case .DPAD_RIGHT:
+		_input_gamepad_button_down(.Dpad_Right)
+	case .DPAD_UP:
+		_input_gamepad_button_down(.Dpad_Up)
+	case .DPAD_DOWN:
+		_input_gamepad_button_down(.Dpad_Down)
 	}
 }

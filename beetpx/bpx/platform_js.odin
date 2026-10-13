@@ -75,6 +75,49 @@ _on_key_down :: proc(e: js.Event) {
 	if !e.key.repeat do _input_key_down(key)
 }
 
+// How many gamepads are polled. Browsers usually report up to 4.
+@(private = "file")
+_MAX_GAMEPADS :: 4
+
+// Indices of buttons in the "standard" gamepad mapping.
+@(private = "file")
+@(rodata)
+_STANDARD_GAMEPAD_BUTTONS := [Gamepad_Button]int {
+	.Dpad_Left  = 14,
+	.Dpad_Right = 15,
+	.Dpad_Up    = 12,
+	.Dpad_Down  = 13,
+}
+
+@(private = "file")
+_gamepad_buttons_pressed: [_MAX_GAMEPADS]bit_set[Gamepad_Button]
+
+// Browsers have no events for gamepad buttons, so they are polled, once per
+// host animation frame.
+//
+// TODO: Support gamepads without the "standard" mapping.
+@(private = "file")
+_poll_gamepads :: proc() {
+	for index in 0 ..< _MAX_GAMEPADS {
+		pressed: bit_set[Gamepad_Button]
+		state: js.Gamepad_State
+		if js.get_gamepad_state(index, &state) &&
+		   state.connected &&
+		   state.mapping == "standard" {
+			for button_index, button in _STANDARD_GAMEPAD_BUTTONS {
+				if button_index < state.button_count &&
+				   state.buttons[button_index].pressed {
+					pressed += {button}
+				}
+			}
+		}
+		for button in pressed - _gamepad_buttons_pressed[index] {
+			_input_gamepad_button_down(button)
+		}
+		_gamepad_buttons_pressed[index] = pressed
+	}
+}
+
 @(private)
 _platform_render :: proc() {
 	_html_canvas_render(internal.canvas_rgba8_bytes())
@@ -88,6 +131,7 @@ _platform_render :: proc() {
 @(export)
 @(private = "file")
 step :: proc(delta_s: f64) -> bool {
+	_poll_gamepads()
 	_game_loop_advance(delta_s)
 	return true
 }
