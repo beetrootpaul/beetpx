@@ -1,0 +1,148 @@
+package beetpx_bpx
+	The main API, for controlling the game, exposing the building blocks, etc.
+
+	Names prefixed with `p_` are a predefined set of colors based on some well
+	known existing palettes. Names prefixed with `u_` are a set of tools and
+	helpers.
+
+	constants
+		p_pico8_black :: Rgb{0, 0, 0}
+		p_pico8_dusk :: Rgb{131, 118, 156}
+		p_pico8_ember :: Rgb{255, 0, 77}
+		p_pico8_lemon :: Rgb{255, 236, 39}
+		p_pico8_lime :: Rgb{0, 228, 54}
+		p_pico8_moss :: Rgb{0, 135, 81}
+		p_pico8_orange :: Rgb{255, 163, 0}
+		p_pico8_peach :: Rgb{255, 204, 170}
+		p_pico8_pink :: Rgb{255, 119, 168}
+		p_pico8_silver :: Rgb{194, 195, 199}
+		p_pico8_sky :: Rgb{41, 173, 255}
+		p_pico8_slate :: Rgb{95, 87, 79}
+		p_pico8_storm :: Rgb{29, 43, 83}
+		p_pico8_tan :: Rgb{171, 82, 54}
+		p_pico8_white :: Rgb{255, 241, 232}
+		p_pico8_wine :: Rgb{126, 37, 83}
+
+	variables
+		p_pico8 := [16]Rgb{p_pico8_black, p_pico8_storm, p_pico8_wine, p_pico8_moss, p_pico8_tan, p_pico8_slate, p_pico8_silver, p_pico8_white, p_pico8_ember, p_pico8_orange, p_pico8_lemon, p_pico8_lime, p_pico8_sky, p_pico8_dusk, p_pico8_pink, p_pico8_peach}
+			All PICO-8 colors, indexed by their PICO-8 indexes.
+
+	procedures
+		canvas_size :: proc() -> Xy_Int {...}
+		frame_number :: proc() -> u32 {...}
+			Returns the frame number, which is incremented once per fixed-timestep tick,
+			right before `on_update` runs.
+
+			TODO: Consider renaming it to something shorter.
+			TODO: Use `tick` instead of `frame`.
+			TODO: Use it in some example.
+
+		set_on_draw :: proc(on_draw: On_Draw) {...}
+			Registers a callback to be run once per host frame, after any ticks.
+
+			Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
+			calls, `on_update` may run several times, or not at all.
+
+		set_on_update :: proc(on_update: On_Update) {...}
+			Registers a callback to be run once per fixed-timestep tick.
+
+			Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
+			calls, `on_update` may run several times, or not at all.
+
+		start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {...}
+			Starts the game.
+
+			Might be blocking, depending on the platform.
+
+			TODO: Consider moving `canvas_size` and `tick_rate` out of the code, into
+			      a `beetpx.json` read by the planned BeetPx CLI, which would pass them
+			      to the build as `-define`s for `#config` constants. The canvas size
+			      would then be known at compile time, so games could use it in
+			      constant expressions (e.g. array sizes), and the framebuffer could be
+			      sized exactly.
+
+		tick_rate :: proc() -> u8 {...}
+			TODO: Use it in some example.
+			TODO: Consider making the size a bigger value to avoid accidental overflows
+			      like `bpx.tick_rate() * 100`.
+
+		timer_has_finished :: proc(t: Timer) -> bool {...}
+			Whether the timer has finished already.
+
+		timer_make :: proc(ticks: u32) -> Timer {...}
+			Makes a timer that finishes after a specific number of ticks.
+
+			A negative `ticks` is treated as 0. `ticks` of 0 means a timer which has
+			already finished.
+
+		u_noop :: proc() {...}
+			No operation. A helpef proc useful in situations where we want to pass
+			something, but it can be a proc that does nothing.
+
+			TODO: Do we really need `noop` in Odin? Does it really help with anything?
+			TODO: Use it in some example.
+
+		u_ping_pong :: proc(t, range: int) -> int {...}
+			Bounces back and forth between `0` and `range`.
+
+			For a given `t`, it calculates the value that starts at `0` for `t=0` and
+			goes up to `range` (or down, if `range` is negative), then back to `0`, and
+			so on. For example, with `range` of 3, the results for `t=0..8` are
+			`0,1,2,3,2,1,0,1,2`.
+
+			TODO: Consider making it work for floats as well.
+			TODO: Use `$T` to make it work for other types of integer numbers, so we
+			      don't have to `int(…)` cast it on the caller side. Claude suggested
+			      `intrinsics` to check for the type's type, but I see a `$T/Foo`
+			      notation in the official demo: https://github.com/odin-lang/Odin/blob/master/examples/demo/demo.odin#L956-L957 .
+			      Maybe we can leverage that?
+			TODO: Should this proc be named like this and placed in `utils`? Think about
+			      a bigger picture with ease, tween, lerp, clamp, waves (triangle, sine,
+			      etc.). Also consider aligning with common industry practices (should we
+			      operate on angles and turns)? Make sure procs are composable.
+
+		u_round :: proc(values: [$N]f64) -> (rounded: [N]int) {...}
+			Rounds an array with all elements rounded up.
+
+			In contrary to built-in Odin's `math.round`, this proc rounds negative halves
+			up towards 0, not the other way. This decision was made to achieve
+			consistency in rounding of values across both negatives and positives.
+
+	types
+		Canvas_Size_Preset :: enum {Square_64, Square_128, Square_256}
+			The size of the game drawing canvas, in logical pixels.
+
+		On_Draw :: proc()
+		On_Update :: proc()
+		Rgb :: [3]u8
+			An opaque RGB8 color.
+
+		Tick_Rate_Preset :: enum {Hz_30, Hz_60}
+			How many times per second `on_update` tries to run.
+
+		Timer :: struct {_ticks: u32, _start_tick: u32}
+			A timer implementation, tightly integrated with the game loop. It
+			automatically counts ticks.
+
+		Xy :: [2]f64
+			Basic `(x,y)` coordinates type.
+
+		Xy_Int :: [2]int
+			Basic `(x,y)` coordinates type, as integers.
+
+package beetpx_bpxd
+	API for drawing things from inside `on_draw` proc.
+
+	procedures
+		clear_canvas :: proc(color: bpx.Rgb) {...}
+			Sets every pixel of the canvas to a given color.
+
+		rect_filled :: proc(xy: bpx.Xy, wh: bpx.Xy, color: bpx.Rgb) {...}
+			Draws a filled rectangle of size `wh`, with one of its corners at `xy`.
+
+			A negative width makes the rectangle extend from `xy` to the left, and
+			a negative height makes it extend from `xy` to the top.
+
+	proc_group
+		pixel :: proc{_pixel_xy, _pixel_x_y}
+			Draws a single pixel at `(x,y)`.

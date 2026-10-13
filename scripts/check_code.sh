@@ -80,6 +80,17 @@ run_check() {
 	done
 }
 
+check_api_snapshot() {
+	echo "Checking the API snapshot ..."
+	local generated
+	generated="$(./scripts/doc.sh)"
+	if ! diff -u ./beetpx/api.txt - <<<"${generated}"; then
+		echo "The API snapshot is out of date. Review the diff above, then" \
+			"update the snapshot: ./scripts/doc.sh > ./beetpx/api.txt" >&2
+		return 1
+	fi
+}
+
 if [[ "${watch}" == true ]]; then
 	if ! command -v watchexec >/dev/null; then
 		echo "'--watch' requires watchexec: https://watchexec.github.io/" >&2
@@ -95,4 +106,5 @@ if [[ "${watch}" == true ]]; then
 fi
 
 run_check
+check_api_snapshot
 echo "All checks passed."
