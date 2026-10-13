@@ -2,6 +2,7 @@ package beetpx_bpx
 
 import "../internal"
 import "core:fmt"
+import "core:sys/wasm/js"
 
 // Implemented in JavaScript by `beetpx.js`, which passes them to
 // `odin.runWasm` as extra foreign imports under the "beetpx" key.
@@ -48,6 +49,52 @@ _platform_start :: proc() {
 	fmt.println("BeetPx (js) started.")
 
 	internal.canvas_fill({0, 0, 0})
+
+	js.add_window_event_listener(.Key_Down, nil, _on_key_down)
+	js.add_window_event_listener(.Key_Up, nil, _on_key_up)
+	js.add_window_event_listener(.Blur, nil, proc(_: js.Event) {
+		_events_push(Event_Focus_Lost{})
+	})
+	js.add_window_event_listener(.Focus, nil, proc(_: js.Event) {
+		_events_push(Event_Focus_Gained{})
+	})
+	js.add_window_event_listener(.Resize, nil, proc(_: js.Event) {
+		_events_push(Event_Resize{})
+	})
+}
+
+@(private = "file")
+_on_key_down :: proc(e: js.Event) {
+	key, ok := _key_from_code(e.key.code)
+	if !ok do return
+	// Stops the browser from acting on the key too, e.g. from scrolling the
+	// page on arrow keys.
+	js.event_prevent_default()
+	if !e.key.repeat do _events_push(Event_Key_Down{key})
+}
+
+@(private = "file")
+_on_key_up :: proc(e: js.Event) {
+	key, ok := _key_from_code(e.key.code)
+	if !ok do return
+	js.event_prevent_default()
+	_events_push(Event_Key_Up{key})
+}
+
+// Takes `code` (the physical key) rather than `key` (the character it types).
+@(private = "file")
+_key_from_code :: proc(code: string) -> (key: Key, ok: bool) {
+	switch code {
+	case "ArrowLeft":
+		return .Left, true
+	case "ArrowRight":
+		return .Right, true
+	case "ArrowUp":
+		return .Up, true
+	case "ArrowDown":
+		return .Down, true
+	}
+	return
 }
 
 @(private)

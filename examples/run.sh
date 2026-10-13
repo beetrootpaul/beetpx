@@ -15,6 +15,7 @@ targets=(
 )
 examples=(
 	basic
+	events
 	palettes
 	shapes
 )
