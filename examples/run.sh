@@ -15,6 +15,7 @@ targets=(
 )
 examples=(
 	basic
+	gamepad
 	palettes
 	shapes
 )

@@ -16,6 +16,7 @@ done
 
 examples=(
 	basic
+	gamepad
 	palettes
 	shapes
 )
