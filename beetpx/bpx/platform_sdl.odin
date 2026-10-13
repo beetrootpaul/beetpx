@@ -90,6 +90,7 @@ _platform_start :: proc() {
 
 	internal.canvas_fill({0, 0, 0})
 
+	_game_loop_start()
 	_run_game_loop()
 }
 

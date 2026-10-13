@@ -48,6 +48,8 @@ _platform_start :: proc() {
 	fmt.println("BeetPx (js) started.")
 
 	internal.canvas_fill({0, 0, 0})
+
+	_game_loop_start()
 }
 
 @(private)

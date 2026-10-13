@@ -13,43 +13,31 @@ Tick_Rate_Preset :: enum {
 @(private = "file")
 _MAX_CATCHUP_TICKS :: 5
 
+// The callbacks point into the game's code, so they are kept out of
+// `internal.State`.
 @(private = "file")
-_tick_rate_hz: u8
-@(private = "file")
-_tick_s: f64
-
-On_Update :: proc()
-On_Draw   :: proc()
+_On_Callback :: proc(game_state: rawptr)
 
 @(private = "file")
-_on_update: On_Update = proc() {}
+_on_started: _On_Callback
 @(private = "file")
-_on_draw: On_Draw = proc() {}
-
-// TODO: Should it really be just int, not like int64 or something?
+_on_update: _On_Callback
 @(private = "file")
-_frame_number: u32
-
-@(private = "file")
-_accumulated_s: f64
-
-// Registers a callback to be run once per fixed-timestep tick.
-//
-// Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
-// calls, `on_update` may run several times, or not at all.
-set_on_update :: proc(on_update: On_Update) {
-	_on_update = on_update
-}
-
-// Registers a callback to be run once per host frame, after any ticks.
-//
-// Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
-// calls, `on_update` may run several times, or not at all.
-set_on_draw :: proc(on_draw: On_Draw) {
-	_on_draw = on_draw
-}
+_on_draw: _On_Callback
 
 // Starts the game.
+//
+// `S` is the type of the game's state. BeetPx allocates it, zeroed, and passes
+// it to every callback. Keep all the game's mutable state in it, not in
+// package globals.
+//
+// Every callback is optional:
+// - `on_started` runs once, before the first `on_update` and `on_draw`.
+// - `on_update` runs once per fixed-timestep tick.
+// - `on_draw` runs once per host frame, after any ticks.
+//
+// Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
+// calls, `on_update` may run several times, or not at all.
 //
 // Might be blocking, depending on the platform.
 //
@@ -59,43 +47,68 @@ set_on_draw :: proc(on_draw: On_Draw) {
 //       would then be known at compile time, so games could use it in
 //       constant expressions (e.g. array sizes), and the framebuffer could be
 //       sized exactly.
-start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
+start :: proc(
+	$S: typeid,
+	canvas_size: Canvas_Size_Preset,
+	tick_rate: Tick_Rate_Preset,
+	on_started: proc(s: ^S) = nil,
+	on_update: proc(s: ^S) = nil,
+	on_draw: proc(s: ^S) = nil,
+) {
+	state := internal.state()
+
 	internal.canvas_init(_canvas_size_preset_as_px(canvas_size))
-	_tick_rate_hz = _tick_rate_as_hz(tick_rate)
-	_tick_s = 1.0 / f64(_tick_rate_hz)
+	state.tick_rate_hz = _tick_rate_as_hz(tick_rate)
+	state.tick_s = 1.0 / f64(state.tick_rate_hz)
+	// Lives until the app exits.
+	state.game_state = new(S)
+
+	// Both are procs of a single pointer parameter, so they are called the
+	// same way.
+	_on_started = transmute(_On_Callback)on_started
+	_on_update = transmute(_On_Callback)on_update
+	_on_draw = transmute(_On_Callback)on_draw
 
 	_platform_start()
 	// Code placed here runs either right away or on app exit, depending on
 	// the platform.
 }
 
+// Runs once, after the platform is set up, before the first host frame.
+@(private)
+_game_loop_start :: proc() {
+	if _on_started != nil do _on_started(internal.state().game_state)
+}
+
 // Runs the ticks owed for `delta_s` seconds of real time, then draws and
 // renders exactly once.
 @(private)
 _game_loop_advance :: proc(delta_s: f64) {
-	_accumulated_s += delta_s
+	state := internal.state()
+
+	state.accumulated_s += delta_s
 
 	ticks := 0
-	for _accumulated_s >= _tick_s && ticks < _MAX_CATCHUP_TICKS {
-		_on_update()
+	for state.accumulated_s >= state.tick_s && ticks < _MAX_CATCHUP_TICKS {
+		if _on_update != nil do _on_update(state.game_state)
 		// TODO: Once looped timer is introduced, write some tests to check if
-		//       starting with either 0 or 1 for the frame number makes the 
+		//       starting with either 0 or 1 for the frame number makes the
 		//       first loop iteration uneven.
-		// TODO: Will it be a problem that we return frame number of 0 in the 
+		// TODO: Will it be a problem that we return frame number of 0 in the
 		//       first `_on_update` call? Is it common for games to divide by
 		//       the frame number?
-		_frame_number += 1
-		_accumulated_s -= _tick_s
+		state.frame_number += 1
+		state.accumulated_s -= state.tick_s
 		ticks += 1
 	}
 
 	// The cap was hit: drop the backlog instead of fast-forwarding through it
 	// on later frames.
-	if _accumulated_s >= _tick_s {
-		_accumulated_s = 0
+	if state.accumulated_s >= state.tick_s {
+		state.accumulated_s = 0
 	}
 
-	_on_draw()
+	if _on_draw != nil do _on_draw(state.game_state)
 
 	_platform_render()
 }
@@ -104,7 +117,7 @@ _game_loop_advance :: proc(delta_s: f64) {
 // TODO: Consider making the size a bigger value to avoid accidental overflows
 //       like `bpx.tick_rate() * 100`.
 tick_rate :: proc() -> u8 {
-	return _tick_rate_hz
+	return internal.state().tick_rate_hz
 }
 
 // Returns the frame number, which is incremented once per fixed-timestep tick,
@@ -114,7 +127,7 @@ tick_rate :: proc() -> u8 {
 // TODO: Use `tick` instead of `frame`.
 // TODO: Use it in some example.
 frame_number :: proc() -> u32 {
-	return _frame_number
+	return internal.state().frame_number
 }
 
 @(private = "file")
