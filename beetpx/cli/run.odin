@@ -5,9 +5,8 @@ import "core:os"
 import "core:slice"
 
 // Builds the game for a target and runs it. On the web, it builds the game
-// into `./build/web/` and serves it at <http://127.0.0.1:8000> with Python's
-// built-in HTTP server. On macOS, it builds the game into `./build/macos/` and
-// opens it in a window.
+// into `./build/web/` and serves it at <http://127.0.0.1:8000>. On macOS, it
+// builds the game into `./build/macos/` and opens it in a window.
 @(private)
 _run :: proc(args: []string) -> bool {
 	if len(args) != 1 {
@@ -59,19 +58,7 @@ _run :: proc(args: []string) -> bool {
 		) or_return
 		_copy_file(out_dir + "index.html", "./index.html") or_return
 
-		fmt.printfln("Serving %s at http://127.0.0.1:8000 ...", out_dir)
-		// TODO: Make it no longer require python3 (Odin 1.0 is supposed to
-		//       include HTTP server). Make sure it is cross-platform.
-		return _exec({
-			"python3",
-			"-m",
-			"http.server",
-			"8000",
-			"--bind",
-			"127.0.0.1",
-			"--directory",
-			out_dir,
-		})
+		return _serve(out_dir)
 	}
 	return false
 }
