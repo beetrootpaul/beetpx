@@ -36,6 +36,9 @@ reach package-private code.
 - **Coordinates** are `f64`, so that float values games declare with `:=` mix
   with them without casts. They are rounded to pixels with halves rounded up.
   Whole-pixel values, such as the canvas size, use the public `Xy_Int`.
+  `f32`, common in Odin game libraries (e.g. raylib, SDL3, Karl2D), was
+  rejected. Those libraries use it for GPU vertex data, while BeetPx rounds
+  coordinates into a CPU framebuffer, so `f32` would save nothing there.
 - **Palettes** are exposed mainly as number-indexed arrays, since many
   palettes have no natural color names; named constants are an extra where
   names exist. `bpx` re-exports each array as an `@(rodata)` variable, because
