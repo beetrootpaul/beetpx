@@ -77,6 +77,7 @@ _game_loop_advance :: proc(delta_s: f64) {
 
 	ticks := 0
 	for _accumulated_s >= _tick_s && ticks < _MAX_CATCHUP_TICKS {
+		_gamepad_update()
 		_on_update()
 		// TODO: Once looped timer is introduced, write some tests to check if
 		//       starting with either 0 or 1 for the frame number makes the 

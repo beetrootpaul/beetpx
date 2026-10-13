@@ -142,6 +142,18 @@
             ),
           );
         },
+        gamepad_buttons_pressed: () => {
+          let mask = 0;
+          for (const gamepad of navigator.getGamepads()) {
+            if (!gamepad) continue;
+            const count = Math.min(gamepad.buttons.length, 32);
+            for (let i = 0; i < count; i++) {
+              if (gamepad.buttons[i].pressed) mask |= 1 << i;
+            }
+          }
+          // Makes the result unsigned, in case bit 31 is set.
+          return mask >>> 0;
+        },
       },
     };
 

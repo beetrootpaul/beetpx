@@ -25,7 +25,7 @@ _sdl_canvas_texture: ^sdl.Texture
 // settings.
 @(private)
 _platform_start :: proc() {
-	if !sdl.Init({.VIDEO}) {
+	if !sdl.Init({.VIDEO, .GAMEPAD}) {
 		fmt.eprintln("BeetPx: sdl.Init failed:", sdl.GetError())
 		return
 	}
@@ -145,8 +145,20 @@ _run_game_loop :: proc() {
 	for running {
 		event: sdl.Event
 		for sdl.PollEvent(&event) {
-			if event.type == .QUIT {
+			#partial switch event.type {
+			case .QUIT:
 				running = false
+			// SDL sends it also for each gamepad connected before the start.
+			case .GAMEPAD_ADDED:
+				if sdl.OpenGamepad(event.gdevice.which) == nil {
+					// TODO: Use a custom logger.
+					fmt.eprintln(
+						"BeetPx: sdl.OpenGamepad failed:",
+						sdl.GetError(),
+					)
+				}
+			case .GAMEPAD_REMOVED:
+				sdl.CloseGamepad(sdl.GetGamepadFromID(event.gdevice.which))
 			}
 		}
 
@@ -156,4 +168,83 @@ _run_game_loop :: proc() {
 
 		_game_loop_advance(detla_s)
 	}
+}
+
+// How far a trigger has to be pulled to count as pressed, as a fraction of
+// its full range.
+@(private = "file")
+_TRIGGER_PRESSED_FRACTION :: 0.5
+
+// Returns the buttons pressed on any of the connected gamepads.
+//
+// TODO: Check every SDL3 call here against the SDL3 docs.
+@(private)
+_platform_gamepad_buttons_pressed :: proc() -> bit_set[Gamepad_Button] {
+	pressed: bit_set[Gamepad_Button]
+
+	count: c.int
+	ids := sdl.GetGamepads(&count)
+	if ids == nil do return pressed
+	defer sdl.free(ids)
+
+	for id in ids[:count] {
+		gamepad := sdl.GetGamepadFromID(id)
+		if gamepad == nil do continue
+		for button in Gamepad_Button {
+			if _is_pressed(gamepad, button) do pressed += {button}
+		}
+	}
+
+	return pressed
+}
+
+// SDL names the buttons by position too, so the mapping is the same for every
+// gamepad.
+@(private = "file")
+_is_pressed :: proc(gamepad: ^sdl.Gamepad, button: Gamepad_Button) -> bool {
+	switch button {
+	case .Left_Face_Up:
+		return sdl.GetGamepadButton(gamepad, .DPAD_UP)
+	case .Left_Face_Down:
+		return sdl.GetGamepadButton(gamepad, .DPAD_DOWN)
+	case .Left_Face_Left:
+		return sdl.GetGamepadButton(gamepad, .DPAD_LEFT)
+	case .Left_Face_Right:
+		return sdl.GetGamepadButton(gamepad, .DPAD_RIGHT)
+	case .Right_Face_Up:
+		return sdl.GetGamepadButton(gamepad, .NORTH)
+	case .Right_Face_Down:
+		return sdl.GetGamepadButton(gamepad, .SOUTH)
+	case .Right_Face_Left:
+		return sdl.GetGamepadButton(gamepad, .WEST)
+	case .Right_Face_Right:
+		return sdl.GetGamepadButton(gamepad, .EAST)
+	case .Middle_Face_Left:
+		return sdl.GetGamepadButton(gamepad, .BACK)
+	case .Middle_Face_Right:
+		return sdl.GetGamepadButton(gamepad, .START)
+	case .Left_Shoulder:
+		return sdl.GetGamepadButton(gamepad, .LEFT_SHOULDER)
+	case .Right_Shoulder:
+		return sdl.GetGamepadButton(gamepad, .RIGHT_SHOULDER)
+	case .Left_Trigger:
+		return _is_trigger_pressed(gamepad, .LEFT_TRIGGER)
+	case .Right_Trigger:
+		return _is_trigger_pressed(gamepad, .RIGHT_TRIGGER)
+	case .Left_Stick_Press:
+		return sdl.GetGamepadButton(gamepad, .LEFT_STICK)
+	case .Right_Stick_Press:
+		return sdl.GetGamepadButton(gamepad, .RIGHT_STICK)
+	}
+	return false
+}
+
+// SDL reads triggers as axes, from 0 (released) to the max of `Sint16`.
+@(private = "file")
+_is_trigger_pressed :: proc(
+	gamepad: ^sdl.Gamepad,
+	trigger: sdl.GamepadAxis,
+) -> bool {
+	value := sdl.GetGamepadAxis(gamepad, trigger)
+	return f64(value) >= f64(max(sdl.Sint16)) * _TRIGGER_PRESSED_FRACTION
 }
