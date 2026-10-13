@@ -5,8 +5,15 @@ import "../internal"
 
 // TODO: Tests.
 
-// Draws a sprite with its top-left corner at `xy`.
-sprite :: proc(sprite: bpx.Sprite, xy: bpx.Xy) {
+// Draws a sprite with its top-left corner at `xy`. For an animated sprite, it
+// draws its current frame.
+sprite :: proc {
+	_sprite_static,
+	_sprite_animated,
+}
+
+@(private = "file")
+_sprite_static :: proc(sprite: bpx.Sprite, xy: bpx.Xy) {
 	if sprite.image == nil do return
 	image := sprite.image^
 
@@ -25,4 +32,9 @@ sprite :: proc(sprite: bpx.Sprite, xy: bpx.Xy) {
 			)
 		}
 	}
+}
+
+@(private = "file")
+_sprite_animated :: proc(sprite: bpx.Animated_Sprite, xy: bpx.Xy) {
+	_sprite_static(bpx.animated_sprite_current(sprite), xy)
 }
