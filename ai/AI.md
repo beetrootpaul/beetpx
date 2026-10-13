@@ -53,7 +53,7 @@ files.
 - The second exception is Claude Code on the web, i.e. when
   the `CLAUDE_CODE_REMOTE` env var is `true`. There, commit your work in small
   steps with plain `git commit` and push it with plain `git push` to your own
-  `claude/...` branch. Nothing more: never amend, squash, rebase, merge, reset,
+  `cc/...` or `claude/...` branch. Nothing more: never amend, squash, rebase, merge, reset,
   cherry-pick, or force-push, even for commits that are not pushed yet, and
   never push to any other branch.
 - End every commit message you write with an `Assisted-by: LLM (<model>)`
