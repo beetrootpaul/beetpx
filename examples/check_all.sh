@@ -22,6 +22,8 @@ examples=(
 targets=(
 	darwin_arm64
 	js_wasm32
+	linux_amd64
+	windows_amd64
 )
 
 run_check() {
