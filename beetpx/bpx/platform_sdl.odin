@@ -145,8 +145,16 @@ _run_game_loop :: proc() {
 	for running {
 		event: sdl.Event
 		for sdl.PollEvent(&event) {
-			if event.type == .QUIT {
+			#partial switch event.type {
+			case .QUIT:
 				running = false
+			// SDL sends `KEY_UP` for held keys on focus loss, too.
+			case .KEY_DOWN:
+				key, ok := _key_from_scancode(event.key.scancode)
+				if ok do _input_key_down(key, repeat = event.key.repeat)
+			case .KEY_UP:
+				key, ok := _key_from_scancode(event.key.scancode)
+				if ok do _input_key_up(key)
 			}
 		}
 
@@ -156,4 +164,21 @@ _run_game_loop :: proc() {
 
 		_game_loop_advance(detla_s)
 	}
+}
+
+// Takes `scancode` (the physical key) rather than `key` (the character it
+// types).
+@(private = "file")
+_key_from_scancode :: proc(scancode: sdl.Scancode) -> (key: Key, ok: bool) {
+	#partial switch scancode {
+	case .LEFT:
+		return .Left, true
+	case .RIGHT:
+		return .Right, true
+	case .UP:
+		return .Up, true
+	case .DOWN:
+		return .Down, true
+	}
+	return {}, false
 }
