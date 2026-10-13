@@ -5,6 +5,10 @@ import "../bpx"
 import "../internal"
 
 // TODO: Tests.
+// TODO: `canvas_snapshot_delete` has to get the same allocator as
+//       `canvas_snapshot`, so the game has to remember which one it used.
+//       Consider keeping the allocator in `Canvas_Snapshot` instead, like
+//       `strings.Builder` does.
 
 // A copy of the canvas pixels, row by row.
 Canvas_Snapshot :: struct {

@@ -61,6 +61,11 @@ _platform_render :: proc() {
 // See: https://github.com/odin-lang/Odin/blob/f1fd03364d5e45a987e1cd354188a3f018f45d1c/core/sys/wasm/js/odin.js#L2258-L2284
 //
 // TODO: Clean up this export attribute and proc name.
+// TODO: `odin.js` calls it with a fresh default `context`, not the one from
+//       `main`. So if a game sets e.g. `context.allocator` in `main` (like
+//       a tracking allocator), the callbacks do not see it on the web. On
+//       desktop they do. Consider keeping the `context` from `start` and
+//       restoring it here.
 @(export)
 @(private = "file")
 step :: proc(delta_s: f64) -> bool {
