@@ -1,6 +1,9 @@
 # Odin build output
 /build/
 /examples/build/
+# Left by `odin run scripts`
+/scripts.bin
+/scripts.exe
 
 # VS Code non-tracked workspace settings
 /.vscode/
