@@ -98,6 +98,11 @@ _game_loop_advance :: proc(delta_s: f64) {
 	_on_draw()
 
 	_platform_render()
+
+	// Makes `context.temp_allocator` a per-frame arena: whatever a game
+	// allocates with it (e.g. through `fmt.tprint`) lives until the end of
+	// the frame.
+	free_all(context.temp_allocator)
 }
 
 // TODO: Use it in some example.
