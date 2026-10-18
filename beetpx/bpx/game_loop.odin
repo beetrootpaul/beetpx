@@ -75,8 +75,13 @@ start :: proc(canvas_size: Canvas_Size_Preset, tick_rate: Tick_Rate_Preset) {
 _game_loop_advance :: proc(delta_s: f64) {
 	_accumulated_s += delta_s
 
-	ticks := 0
-	for _accumulated_s >= _tick_s && ticks < _MAX_CATCHUP_TICKS {
+	ticks: int
+	ticks, _accumulated_s = internal.game_loop_ticks(
+		_accumulated_s,
+		_tick_s,
+		_MAX_CATCHUP_TICKS,
+	)
+	for _ in 0 ..< ticks {
 		_on_update()
 		// TODO: Once looped timer is introduced, write some tests to check if
 		//       starting with either 0 or 1 for the frame number makes the
@@ -85,14 +90,6 @@ _game_loop_advance :: proc(delta_s: f64) {
 		//       first `_on_update` call? Is it common for games to divide by
 		//       the frame number?
 		_frame_number += 1
-		_accumulated_s -= _tick_s
-		ticks += 1
-	}
-
-	// The cap was hit: drop the backlog instead of fast-forwarding through it
-	// on later frames.
-	if _accumulated_s >= _tick_s {
-		_accumulated_s = 0
 	}
 
 	_on_draw()
