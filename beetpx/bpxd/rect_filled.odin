@@ -2,6 +2,7 @@ package beetpx_bpxd
 
 import "../bpx"
 import "../internal"
+import "core:math/linalg"
 
 // TODO: Tests.
 // TODO: Consider naming it `rect` and then handling the "filled" aspect through
@@ -16,13 +17,11 @@ rect_filled :: proc(xy: bpx.Xy, wh: bpx.Xy, color: bpx.Rgb) {
 	xy_2 := bpx.u_round(xy + wh)
 
 	xy_limit := internal.canvas_size()
-	x_min_incl := max(min(xy_1.x, xy_2.x), 0)
-	y_min_incl := max(min(xy_1.y, xy_2.y), 0)
-	x_max_excl := min(max(xy_1.x, xy_2.x), xy_limit.x)
-	y_max_excl := min(max(xy_1.y, xy_2.y), xy_limit.y)
+	xy_min_incl := linalg.max(linalg.min(xy_1, xy_2), 0)
+	xy_max_excl := linalg.min(linalg.max(xy_1, xy_2), xy_limit)
 
-	for y in y_min_incl ..< y_max_excl {
-		for x in x_min_incl ..< x_max_excl {
+	for y in xy_min_incl.y ..< xy_max_excl.y {
+		for x in xy_min_incl.x ..< xy_max_excl.x {
 			internal.canvas_set({x, y}, color)
 		}
 	}

@@ -6,7 +6,7 @@ package beetpx_bpx
 // A timer implementation, tightly integrated with the game loop. It
 // automatically counts ticks.
 Timer :: struct {
-	// TODO: Consider introducing `bpx.Ticks` or something and using it in 
+	// TODO: Consider introducing `bpx.Ticks` or something and using it in
 	//       places like here, as well as the return type of `frame_number()`.
 	_ticks     : u32,
 	_start_tick: u32,

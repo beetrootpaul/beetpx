@@ -8,3 +8,5 @@
 # AI
 .claude/*
 !.claude/settings.json
+
+/tmp/
