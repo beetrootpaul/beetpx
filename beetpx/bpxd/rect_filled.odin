@@ -5,8 +5,8 @@ import "../internal"
 import "core:math/linalg"
 
 // TODO: Tests.
-// TODO: Consider naming it `rect` and then handling the "filled" aspect through
-//       a proc param.
+// TODO: Consider combining it with `rect` and then handling the "filled" aspect
+//       through a proc param.
 
 // Draws a filled rectangle of size `wh`, with one of its corners at `xy`.
 //

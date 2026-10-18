@@ -8,6 +8,7 @@ import "base:intrinsics"
 // TODO: Somewhere in README or some docs write down that:
 //       - (0, 0) is the top-left corner of the canvas,
 //       - `xy` is rounded to the nearest pixel, with halves rounded up.
+// TODO: Should we do the same xy vs x,y overloads for other bpxd procs?
 
 // Draws a single pixel at `(x,y)`.
 pixel :: proc {
