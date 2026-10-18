@@ -12,8 +12,8 @@ import "core:math/linalg"
 // A negative width makes the rectangle extend from `xy` to the left, and
 // a negative height makes it extend from `xy` to the top.
 rect :: proc(xy: bpx.Xy, wh: bpx.Xy, color: bpx.Rgb) {
-	xy_1 := bpx.u_round(xy)
-	xy_2 := bpx.u_round(xy + wh)
+	xy_1 := bpx.u_round(xy - _s.camera_xy)
+	xy_2 := bpx.u_round(xy - _s.camera_xy + wh)
 
 	xy_min_incl := linalg.min(xy_1, xy_2)
 	xy_max_excl := linalg.max(xy_1, xy_2)

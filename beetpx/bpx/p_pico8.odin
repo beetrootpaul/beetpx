@@ -5,6 +5,7 @@ package beetpx_bpx
 // TODO: Should we get rid ot our custom names for PICO-8 colors? Those are not
 //       some community agreed on names.
 // TODO: Consider changing `p_` to `pal_`.
+// TODO: Consider naming colors in UPPER_CASE.
 
 // The 16 colors of the PICO-8 system palette, created by zep for the PICO-8
 // fantasy console and free to use under CC0. They are declared in the order

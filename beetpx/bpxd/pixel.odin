@@ -18,7 +18,7 @@ pixel :: proc {
 
 @(private = "file")
 _pixel_xy :: proc(xy: bpx.Xy, color: bpx.Rgb) {
-	internal.canvas_set(bpx.u_round(xy), color)
+	internal.canvas_set(bpx.u_round(xy - _s.camera_xy), color)
 }
 
 @(private = "file")
