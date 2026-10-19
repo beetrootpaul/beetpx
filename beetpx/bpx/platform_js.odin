@@ -2,6 +2,7 @@ package beetpx_bpx
 
 import "../internal"
 import "core:fmt"
+import js "core:sys/wasm/js"
 
 // Implemented in JavaScript by `beetpx.js`, which passes them to
 // `odin.runWasm` as extra foreign imports under the "beetpx" key.
@@ -44,10 +45,63 @@ _platform_start :: proc() {
 		return
 	}
 
+	js.add_window_event_listener(.Key_Down, nil, _on_key_down)
+	js.add_window_event_listener(.Key_Up, nil, _on_key_up)
+	// Once the page loses focus, it no longer gets the events of the keys
+	// released from then on, so all of them are treated as released.
+	js.add_window_event_listener(.Blur, nil, _on_blur)
+
 	// TODO: Use a custom logger.
 	fmt.printfln("BeetPx %v (js) started.", BEETPX_VERSION)
 
 	internal.canvas_fill({0, 0, 0})
+}
+
+@(private = "file")
+_on_key_down :: proc(e: js.Event) {
+	button, ok := _button_for_code(e.key.code)
+	if !ok do return
+
+	// Stops the browser from acting on the key, e.g. from scrolling the page
+	// on an arrow key. This applies to the repeated events as well.
+	js.event_prevent_default()
+
+	// The host OS repeats the event while the key is held. The repeats are
+	// ignored, so that every game behaves the same on every host.
+	if e.key.repeat do return
+
+	_buttons_on_down(&_s.buttons, button)
+}
+
+@(private = "file")
+_on_key_up :: proc(e: js.Event) {
+	button, ok := _button_for_code(e.key.code)
+	if !ok do return
+
+	js.event_prevent_default()
+
+	_buttons_on_up(&_s.buttons, button)
+}
+
+@(private = "file")
+_on_blur :: proc(e: js.Event) {
+	_buttons_on_all_up(&_s.buttons)
+}
+
+// TODO: Let players remap the keys.
+@(private = "file")
+_button_for_code :: proc(code: string) -> (button: Button, ok: bool) {
+	switch code {
+	case "ArrowLeft":
+		return .Left, true
+	case "ArrowRight":
+		return .Right, true
+	case "ArrowUp":
+		return .Up, true
+	case "ArrowDown":
+		return .Down, true
+	}
+	return {}, false
 }
 
 @(private)

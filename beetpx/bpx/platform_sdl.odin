@@ -141,19 +141,60 @@ _initial_scale :: proc(canvas_size: Xy_Int) -> int {
 @(private = "file")
 _run_game_loop :: proc() {
 	previous_ticks_ns := sdl.GetTicksNS()
+
 	running := true
 	for running {
 		event: sdl.Event
 		for sdl.PollEvent(&event) {
-			if event.type == .QUIT {
+			#partial switch event.type {
+
+			case .QUIT:
 				running = false
+
+			case .KEY_DOWN:
+				// The host OS repeats the event while the key is held. We
+				// ignore those repeats here, so that every game behaves the
+				// same on every host.
+				if event.key.repeat do continue
+
+				button := _button_for_scancode(event.key.scancode) or_continue
+				_buttons_on_down(&_s.buttons, button)
+
+			case .KEY_UP:
+				button := _button_for_scancode(event.key.scancode) or_continue
+				_buttons_on_up(&_s.buttons, button)
+
+			case .WINDOW_FOCUS_LOST:
+				_buttons_on_all_up(&_s.buttons)
+
 			}
 		}
 
 		current_ticks_ns := sdl.GetTicksNS()
-		detla_s := f64(current_ticks_ns - previous_ticks_ns) / 1e9
+		delta_s := f64(current_ticks_ns - previous_ticks_ns) / 1e9
 		previous_ticks_ns = current_ticks_ns
 
-		_game_loop_advance(detla_s)
+		_game_loop_advance(delta_s)
 	}
+}
+
+// TODO: Let players remap the keys.
+@(private = "file")
+_button_for_scancode :: proc(
+	scancode: sdl.Scancode,
+) -> (
+	button: Button,
+	ok: bool,
+) {
+	#partial switch scancode {
+	case .LEFT:
+		return .Left, true
+	case .RIGHT:
+		return .Right, true
+	case .UP:
+		return .Up, true
+	case .DOWN:
+		return .Down, true
+	}
+	return {}, false
 }

@@ -14,8 +14,11 @@ for arg in "$@"; do
 	esac
 done
 
+# TODO: Consider making examples auto-discoverable… unless we expect any of them
+#       to not follow the same convention.
 examples=(
 	basic
+	buttons
 	palettes
 	shapes
 )

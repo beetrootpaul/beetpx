@@ -13,6 +13,9 @@ Tick_Rate_Preset :: enum {
 @(private = "file")
 _MAX_CATCHUP_TICKS :: 5
 
+// TODO: Rename all "update" instances to "tick". "on_tick" is more clear, since
+//       we already talk about "ticks" in the comments and they are also easier
+//       to talk about as a noun.
 On_Update :: proc()
 On_Draw   :: proc()
 
@@ -61,6 +64,8 @@ _game_loop_advance :: proc(delta_s: f64) {
 	ticks := 0
 	for _s.accumulated_s >= _s.tick_s && ticks < _MAX_CATCHUP_TICKS {
 		_s.on_update()
+		_buttons_cleanup_after_tick(&_s.buttons)
+		
 		// TODO: Once looped timer is introduced, write some tests to check if
 		//       starting with either 0 or 1 for the frame number makes the
 		//       first loop iteration uneven.

@@ -4,6 +4,8 @@ import "../bpx"
 import "../internal"
 import "core:math/linalg"
 
+// TODO: Consider shortening the name to `rectf` or `rect_f`… or `rect` with a
+//       param which turns on the fill mode?
 // TODO: Tests.
 // TODO: Consider combining it with `rect` and then handling the "filled" aspect
 //       through a proc param.
