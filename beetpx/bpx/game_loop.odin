@@ -13,6 +13,9 @@ Tick_Rate_Preset :: enum {
 @(private = "file")
 _MAX_CATCHUP_TICKS :: 5
 
+// TODO: Rename all "update" instances to "tick". "on_tick" is more clear, since
+//       we already talk about "ticks" in the comments and they are also easier
+//       to talk about as a noun.
 On_Update :: proc()
 On_Draw   :: proc()
 
@@ -60,6 +63,17 @@ _game_loop_advance :: proc(delta_s: f64) {
 
 	ticks := 0
 	for _s.accumulated_s >= _s.tick_s && ticks < _MAX_CATCHUP_TICKS {
+		// The buttons are sampled once per tick, not once per host frame:
+		// - When a frame runs several ticks to catch up, the first of them
+		//   gets the presses which happened since the previous tick, and the
+		//   following ones see no new presses.
+		// - When a frame runs no tick, e.g. on a display refreshing faster
+		//   than the tick rate, nothing gets sampled, so the presses wait for
+		//   the next tick instead of getting lost.
+		// `on_draw` sees the buttons as sampled for the last tick.
+		_buttons_tick()
+		// _buttons_tick(&_s.buttons)
+
 		_s.on_update()
 		// TODO: Once looped timer is introduced, write some tests to check if
 		//       starting with either 0 or 1 for the frame number makes the

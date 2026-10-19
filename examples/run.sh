@@ -13,8 +13,11 @@ targets=(
 	darwin_arm64
 	js_wasm32
 )
+# TODO: Consider making examples auto-discoverable… unless we expect any of them
+#       to not follow the same convention.
 examples=(
 	basic
+	buttons
 	palettes
 	shapes
 )

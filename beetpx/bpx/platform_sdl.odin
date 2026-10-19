@@ -16,6 +16,23 @@ _INITIAL_WINDOW_MAX_DISPLAY_FRACTION :: 0.75
 @(private = "file")
 _FALLBACK_INITIAL_SCALE :: 4
 
+// The keys mapped onto the game buttons, identified by their scancodes.
+// A scancode names the physical position of a key, the same on every keyboard
+// layout, unlike a keycode, which is the character the layout puts there.
+//
+// TODO: Let players remap the keys.
+// @(private = "file")
+// @(rodata)
+// _scancode_buttons := [?]struct {
+// 	scancode: sdl.Scancode,
+// 	button  : internal.Button,
+// } {
+// 	{.LEFT, .Left},
+// 	{.RIGHT, .Right},
+// 	{.UP, .Up},
+// 	{.DOWN, .Down},
+// }
+
 @(private = "file")
 _sdl_renderer: ^sdl.Renderer
 @(private = "file")
@@ -145,8 +162,26 @@ _run_game_loop :: proc() {
 	for running {
 		event: sdl.Event
 		for sdl.PollEvent(&event) {
-			if event.type == .QUIT {
+			#partial switch event.type {
+			case .QUIT:
 				running = false
+			// case .KEY_DOWN:
+			// 	// The host OS repeats the event while the key is held. The
+			// 	// repeats are ignored, so that every game behaves the same on
+			// 	// every host.
+			// 	if event.key.repeat do continue
+			// 	if button, ok := _button_for_scancode(event.key.scancode); ok {
+			// 		internal.buttons_on_down(&_s.buttons, button)
+			// 	}
+			// case .KEY_UP:
+			// 	if button, ok := _button_for_scancode(event.key.scancode); ok {
+			// 		internal.buttons_on_up(&_s.buttons, button)
+			// 	}
+			// case .WINDOW_FOCUS_LOST:
+			// 	// Once the window loses focus, it no longer gets the events of
+			// 	// the keys released from then on, so all of them are treated
+			// 	// as released.
+			// 	internal.buttons_on_all_up(&_s.buttons)
 			}
 		}
 
@@ -157,3 +192,16 @@ _run_game_loop :: proc() {
 		_game_loop_advance(detla_s)
 	}
 }
+
+// @(private = "file")
+// _button_for_scancode :: proc(
+// 	scancode: sdl.Scancode,
+// ) -> (
+// 	internal.Button,
+// 	bool,
+// ) {
+// 	for mapping in _scancode_buttons {
+// 		if mapping.scancode == scancode do return mapping.button, true
+// 	}
+// 	return {}, false
+// }

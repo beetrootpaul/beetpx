@@ -1,5 +1,7 @@
 package beetpx_bpx
 
+// import "../internal"
+
 @(private)
 _s := struct {
 	tick_rate_hz : u8,
@@ -8,6 +10,7 @@ _s := struct {
 	on_draw      : On_Draw,
 	frame_number : u32,
 	accumulated_s: f64,
+	// buttons      : internal.Buttons,
 } {
 	on_update = u_noop,
 	on_draw   = u_noop,
