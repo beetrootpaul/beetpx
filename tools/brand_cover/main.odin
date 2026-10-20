@@ -5,6 +5,8 @@ import "core:fmt"
 import "core:image"
 import "core:image/png"
 import "core:os"
+import "core:strings"
+import stbi "vendor:stb/image"
 
 // Brands a game cover: puts the BeetPx logo in its top-right corner.
 
@@ -79,11 +81,16 @@ _brand_cover :: proc(opts: _Options) -> (err: string) {
 		}
 	}
 
-	if write_err := os.write_entire_file(
-		opts.output,
-		_png_encode(cover, context.temp_allocator),
-	); write_err != nil {
-		return fmt.tprintf("cannot write '%s': %v", opts.output, write_err)
+	written := stbi.write_png(
+		strings.clone_to_cstring(opts.output, context.temp_allocator),
+		i32(cover.width),
+		i32(cover.height),
+		4,
+		raw_data(cover_px),
+		i32(4 * cover.width),
+	)
+	if written == 0 {
+		return fmt.tprintf("cannot write '%s'", opts.output)
 	}
 	return ""
 }
