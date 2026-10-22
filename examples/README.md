@@ -7,6 +7,8 @@ Small "games" that show how to use BeetPx, one per directory:
   frame, so you can see that the game loop is running.
 - [palettes](palettes/main.odin) - Draws every color of each built-in
   palette.
+- [shapes](shapes/main.odin) - Draws each of the basic shapes: a pixel, a
+  rectangle, and a filled rectangle.
 
 ## Running an example
 

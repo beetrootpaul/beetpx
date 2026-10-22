@@ -137,10 +137,12 @@ The repository layout:
 
 - `beetpx/` - the engine; the root of the `beetpx` collection. Each
   subdirectory is a package:
-  - `bpx/` - the facade. Games import only this one (`import "beetpx:bpx"`).
-  - `core/` - game loop and platforms; `draw/`, `palettes/`, `utils/` - what
-    their names say; `internal/` - shared state and types (e.g. the canvas)
-    that games are not meant to use.
+  - `bpx/` - the main API: the game loop, the platforms, colors, palettes,
+    and utils. Games import it as `import "beetpx:bpx"`.
+  - `bpxd/` - the drawing API, used from `on_draw`. Games import it as
+    `import "beetpx:bpxd"`.
+  - `internal/` - shared state and types (e.g. the canvas) that games are not
+    meant to use.
   - `beetpx.js` - the JavaScript half of the web platform.
 - `examples/` - example games, one per directory (e.g. `basic/`), the
   `index.html` that hosts the web build, the scripts that check, format, and
@@ -151,7 +153,8 @@ The repository layout:
   entry there links to the example's main file with the directory name as the
   link label, followed by a one- or two-sentence description of what the
   example shows.
-- `scripts/` - scripts that check and format `beetpx/`.
+- `scripts/` - scripts that check, test, and format `beetpx/`, and print the
+  docs of its public API.
 - `ai/` - this file, `rewrite_status.md` (see above), and
   `rewrite_braindump.md`, a design braindump for the rewrite. Read the
   braindump for context, but treat it as a **non-binding draft**: do not quote
@@ -165,7 +168,7 @@ The repository layout:
 ## Toolchain
 
 - `odin` is already on PATH (homebrew, `dev-2026-09`). Games run on the web
-  (`js_wasm32`) and on macOS (`darwin_arm64`). `scripts/check_beetpx.sh` also
+  (`js_wasm32`) and on macOS (`darwin_arm64`). `scripts/check.sh` also
   type-checks `linux_amd64` and `windows_amd64`.
 - `ols` (language server) and `odinfmt` (formatter) are used through the
   `danielgavin.ols` VS Code extension, which bundles its own binaries. They are
@@ -177,7 +180,7 @@ The repository layout:
   gitignored and meant for personal, untracked settings, so do not put shared
   configuration there.
 - No CI and no linter are configured. Tests use `odin test` with
-  `core:testing`; `scripts/test_beetpx.sh` runs them (see "Tests" below).
+  `core:testing`; `scripts/test.sh` runs them (see "Tests" below).
 
 ## Odin language
 
@@ -212,10 +215,11 @@ recall, since Odin changes often and training data goes stale:
 - **Narrowest visibility by default.** Mark a declaration
   `@(private = "file")` unless another file needs it; then `@(private)`
   (package-wide). Make it public only when another package needs it.
-- **Games see only `bpx`.** `bpx/bpx.odin` re-exports, as constant aliases
-  (`start :: core.start`), whatever games need from the other packages.
-  Names from a package other than `core` get its prefix: `d_` for `draw`,
-  `p_` for `palettes`, `u_` for `utils`.
+- **Games see only `bpx` and `bpxd`.** The public API is declared directly in
+  those packages, not re-exported through aliases from other packages, so
+  that `odin doc` shows it along with its documenting comments
+  (`scripts/doc.sh` prints it). In `bpx`, palette names start with `p_` and
+  util names with `u_`.
 - **Private names start with `_`**, whether file-private or package-wide.
 - `@(export)` is only for symbols an outside host calls by name, such as
   `step` for `odin.js`. It does not change Odin-level visibility.
@@ -247,12 +251,18 @@ recall, since Odin changes often and training data goes stale:
 - Tests for `foo.odin` go next to it, in `foo.test.odin`, in the same package.
   The `.test` part of the name is only a convention; the compiler does not
   treat it specially.
-- Every test file starts with `#+build !js`. `core:testing` does not compile
-  for `js_wasm32`, and an `import` cannot be guarded with `when ODIN_TEST`.
-  `@(test)` procs are left out of non-test builds on their own.
+- Every test file starts with `#+test`, so that only `odin test` compiles it.
+  Other builds, `odin check`, and `odin doc` skip it entirely. This keeps
+  `core:testing`, which does not compile for `js_wasm32`, out of game builds,
+  and keeps test procs out of the docs.
+- Being in the same package, tests can reach `@(private)` (package-wide)
+  code, but not `@(private = "file")` code.
+- Test procs share the namespace of the package they test, so their names
+  must not collide with the package's own names.
 - Test procs cannot be `@(private)` (the compiler rejects it), so they are the
   one exception to the narrowest-visibility rule. Helpers in test files still
   follow it.
-- `scripts/test_beetpx.sh [--watch]` runs `odin test` for every package under
-  `beetpx/` that has a `*.test.odin` file. Like the other scripts, tell the
-  user to run it rather than running it yourself.
+- `scripts/test.sh [--watch]` runs `odin test` for every package under
+  `beetpx/` that has a `*.test.odin` file, with the same lint flags as
+  `scripts/check.sh`, since `odin check` skips the test files. Like the other
+  scripts, tell the user to run it rather than running it yourself.

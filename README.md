@@ -18,14 +18,20 @@ Example "games", along with how to run them, live in
 
 ## Scripts
 
-Check the BeetPx code: `./scripts/check_beetpx.sh`.
+Check the BeetPx code: `./scripts/check.sh`.
 
-Test the BeetPx code: `./scripts/test_beetpx.sh`.
+Test the BeetPx code: `./scripts/test.sh`.
 
-Add `--watch` to any of the check or test scripts to re-run it every time an
-`.odin` file it depends on changes, until you stop it with Ctrl+C. Watching
-requires [watchexec](https://watchexec.github.io/) to be installed, e.g. with
+Add `--watch` to the check or test script to re-run it every time an `.odin`
+file it depends on changes, until you stop it with Ctrl+C. Watching requires
+[watchexec](https://watchexec.github.io/) to be installed, e.g. with
 `brew install watchexec`.
+
+Print the docs of the BeetPx public API: `./scripts/doc.sh`. Its output is
+colored in a terminal; add `--no-color` to turn that off.
+
+Format the BeetPx code (requires `odinfmt` on your `PATH`):
+`./scripts/format.sh`.
 
 ## License
 
