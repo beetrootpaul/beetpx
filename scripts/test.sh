@@ -15,13 +15,12 @@ for arg in "$@"; do
 done
 
 run_tests() {
-	# Tests live in their own tree, which mirrors `./beetpx`: the tests of
-	# `./beetpx/bpx` are in `./tests/bpx`. Every directory there that has Odin
-	# files is a separate test package, e.g.:
-	#   ./tests/bpx
+	# Tests live next to the code they test, in `*.test.odin` files of the same
+	# package. Every directory that has such a file is a package to test, e.g.:
+	#   ./beetpx/bpx
 	local packages
 	packages="$(
-		find ./tests -type f -name '*.odin' -exec dirname {} \; |
+		find ./beetpx -type f -name '*.test.odin' -exec dirname {} \; |
 			sort -u
 	)"
 	if [[ -z "${packages}" ]]; then
@@ -36,7 +35,7 @@ run_tests() {
 	while IFS= read -r package; do
 		echo "Testing '${package}' ..."
 		# `-thread-count:1` works around the same intermittent crash of the
-		# compiler as in `check_code.sh`.
+		# compiler as in `check.sh`.
 		#
 		# `ODIN_TEST_FAIL_ON_BAD_MEMORY` makes a test fail when it leaks memory
 		# or frees memory it should not. Without it, the test runner only warns
@@ -47,11 +46,26 @@ run_tests() {
 		# The `ODIN_TEST_*` defines shorten the output: `LOG_LEVEL=warning`
 		# hides the runner's informational header, and `SHORT_LOGS` drops the
 		# date, time, and procedure name from every log line.
+		#
+		# The `-vet*`, `-strict-style`, and `-warnings-as-errors` flags lint the
+		# test files here rather than in `check.sh`: `odin check` skips
+		# `#+test` files, and a separate test build there would only compile
+		# the same code a second time, for the host target only, since a test
+		# build has to link. The flags match `check.sh`, except
+		# `-disable-non-constant-globals`, which `core:testing` does not
+		# compile with, and `-no-entry-point`.
 		odin test "${package}" -thread-count:1 \
 			-collection:beetpx=./beetpx/ \
 			-define:ODIN_TEST_FAIL_ON_BAD_MEMORY=true \
 			-define:ODIN_TEST_LOG_LEVEL=warning \
-			-define:ODIN_TEST_SHORT_LOGS=true ||
+			-define:ODIN_TEST_SHORT_LOGS=true \
+			-strict-style \
+			-vet \
+			-vet-cast \
+			-vet-tabs \
+			-vet-using-param \
+			-vet-using-stmt \
+			-warnings-as-errors ||
 			failed=true
 	done <<<"${packages}"
 
@@ -69,7 +83,6 @@ if [[ "${watch}" == true ]]; then
 		--clear \
 		--exts odin \
 		--watch ./beetpx \
-		--watch ./tests \
 		-- \
 		./scripts/test.sh
 fi

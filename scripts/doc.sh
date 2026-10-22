@@ -25,7 +25,7 @@ public_api_packages=(
 )
 
 # `-thread-count:1` works around the same intermittent crash of the compiler
-# as in `check_code.sh`.
+# as in `check.sh`.
 #
 # TODO: Remove the single-threading once the issue is fixed.
 odin_flags=(

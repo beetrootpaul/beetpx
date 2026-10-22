@@ -5,9 +5,9 @@ import "core:math"
 // Prevent the check scripts from reporting an unused `core:math` import.
 //
 // `u_round` is a polymorphic proc, so its body is type-checked only when
-// something calls it. Nothing in this package does, and the tests live in a
-// separate package, so without this line the checker never sees `math` being
-// used.
+// something calls it. Nothing in this package does, and the tests are in a
+// `#+test` file, which only `odin test` compiles, so without this line the
+// checker never sees `math` being used.
 _ :: math
 
 // TODO: Make this accept various value types?
