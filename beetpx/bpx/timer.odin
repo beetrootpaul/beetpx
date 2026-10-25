@@ -8,8 +8,13 @@ package beetpx_bpx
 Timer :: struct {
 	// TODO: Consider introducing `bpx.Ticks` or something and using it in
 	//       places like here, as well as the return type of `frame_number()`.
-	_ticks     : u32,
-	_start_tick: u32,
+	_ticks         : u32,
+	_start_tick    : u32,
+	// TODO: Do we need a separate field for that? I thought about manipulating
+	//       _ticks or _start_tick to achieve the same, but I am afraid later it
+	//       would backfire when performing other checks on the timer
+	//       configuration.
+	_force_finished: bool,
 }
 
 // Makes a timer that finishes after a specific number of ticks.
@@ -23,9 +28,19 @@ timer_make :: proc(ticks: u32) -> Timer {
 	}
 }
 
+// TODO: tests
+//
 // Whether the timer has finished already.
 timer_has_finished :: proc(t: Timer) -> bool {
 	// TODO: Add tests proving that `fn - start >= ticks` would be safer than
 	//       `fn >= start + ticks` in terms of wrapping around an unsigned int.
-	return frame_number() >= t._start_tick + t._ticks
+	return t._force_finished || frame_number() >= t._start_tick + t._ticks
+}
+
+// TODO: tests
+// TODO: I introduced this proc only to implement sash_collapse in ayp on 
+//       timers. But maybe we should do Sash back on ttl and remove this proc
+//       here.
+timer_force_finish :: proc(t: ^Timer) {
+	t._force_finished = true
 }
