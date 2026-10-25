@@ -8,19 +8,21 @@ A snapshot of where the Odin rewrite stands, recording only what the code does
 not say on its own: intent, reasons, known problems, and verification status.
 The intended direction is in `rewrite_braindump.md`, a non-binding draft.
 
-Last updated: 2026-10-22.
+Last updated: 2026-10-25.
 
 ## Summary
 
 A canvas runs on the web (`js_wasm32`, Canvas2D) and on macOS (SDL3).
-A fixed-timestep loop calls the game's update and draw callbacks. Each game
+A fixed-timestep loop calls the game's tick and draw callbacks. Each game
 picks the canvas size (64, 128, or 256 px square) and the tick rate (30 or
 60 Hz) in its `start` call. Drawing covers clearing the canvas, pixels,
-rectangles, and filled rectangles, all offset by a camera position. A frame
+rectangles, and filled rectangles, all offset by a camera position. A tick
 counter and a first version of a timer built on it exist, but nothing uses
-the timer yet. There is no input, audio, sprites or other assets, text,
-persistence, or CLI yet. Only `u_ping_pong` and `u_round` have tests. PICO-8
-is the only built-in palette.
+the timer yet. Input covers four direction buttons, bound to the arrow keys
+only, which games poll with `pressed` and `just_pressed`. There is no audio,
+sprites or other assets, text, persistence, or CLI yet. Only `u_ping_pong`,
+`u_round`, and the button state have tests. PICO-8 is the only built-in
+palette.
 
 Runtime behavior is verified only when the user runs the scripts.
 
@@ -78,6 +80,8 @@ for `js_wasm32` of a package whose test file imports `core:testing`.
   the same flags, so it waits for the CLI. Embedding `beetpx.json` with
   `#load` and parsing it at run time also works, but a misspelled key or an
   unknown value silently falls back to the zero value.
+- **Buttons.** `pressed` still reports a button that went down and back up
+  between two ticks, so that a short tap is not lost.
 - **Platforms.** `bpx/platform_js.odin` and `bpx/platform_sdl.odin` define
   the same names, so a platform that misses one fails to compile. On desktop,
   `start` blocks until the window is closed.
@@ -114,9 +118,10 @@ Smaller open questions are left as `TODO`s in the code.
 
 ## Not started
 
-Input, sprites and assets, text, audio, persistence, clipping regions, pause
-and debug features, tests of drawing, the camera, and the timer, the CLI,
-native hot reload, and Linux and Windows builds.
+The `O`, `X`, and `Menu` buttons, key remapping, input other than the
+keyboard, sprites and assets, text, audio, persistence, clipping regions,
+pause and debug features, tests of drawing, the camera, and the timer, the
+CLI, native hot reload, and Linux and Windows builds.
 
 ## Next steps
 

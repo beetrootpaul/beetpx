@@ -2,9 +2,11 @@
 
 Small "games" that show how to use BeetPx, one per directory:
 
-- [basic](basic/main.odin) - Very minimal example. It sets up the update
+- [basic](basic/main.odin) - Very minimal example. It sets up the tick
   and draw callbacks and fills the canvas with a color that changes every
-  frame, so you can see that the game loop is running.
+  tick, so you can see that the game loop is running.
+- [buttons](buttons/main.odin) - Moves a small square with the arrow keys,
+  one step per press, using `bpx.pressed` and `bpx.just_pressed`.
 - [palettes](palettes/main.odin) - Draws every color of each built-in
   palette.
 - [shapes](shapes/main.odin) - Draws each of the basic shapes: a pixel, a

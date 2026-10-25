@@ -2,7 +2,7 @@ package beetpx_bpx
 
 import "../internal"
 
-// How many times per second `on_update` tries to run.
+// How many times per second `on_tick` tries to run.
 Tick_Rate_Preset :: enum {
 	Hz_30,
 	Hz_60,
@@ -13,24 +13,21 @@ Tick_Rate_Preset :: enum {
 @(private = "file")
 _MAX_CATCHUP_TICKS :: 5
 
-// TODO: Rename all "update" instances to "tick". "on_tick" is more clear, since
-//       we already talk about "ticks" in the comments and they are also easier
-//       to talk about as a noun.
-On_Update :: proc()
-On_Draw   :: proc()
+On_Tick :: proc()
+On_Draw :: proc()
 
 // Registers a callback to be run once per fixed-timestep tick.
 //
-// Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
-// calls, `on_update` may run several times, or not at all.
-set_on_update :: proc(on_update: On_Update) {
-	_s.on_update = on_update
+// Do not assume `on_tick` and `on_draw` alternate: between two `on_draw`
+// calls, `on_tick` may run several times, or not at all.
+set_on_tick :: proc(on_tick: On_Tick) {
+	_s.on_tick = on_tick
 }
 
 // Registers a callback to be run once per host frame, after any ticks.
 //
-// Do not assume `on_update` and `on_draw` alternate: between two `on_draw`
-// calls, `on_update` may run several times, or not at all.
+// Do not assume `on_tick` and `on_draw` alternate: between two `on_draw`
+// calls, `on_tick` may run several times, or not at all.
 set_on_draw :: proc(on_draw: On_Draw) {
 	_s.on_draw = on_draw
 }
@@ -63,16 +60,16 @@ _game_loop_advance :: proc(delta_s: f64) {
 
 	ticks := 0
 	for _s.accumulated_s >= _s.tick_s && ticks < _MAX_CATCHUP_TICKS {
-		_s.on_update()
+		_s.on_tick()
 		_buttons_cleanup_after_tick(&_s.buttons)
 		
 		// TODO: Once looped timer is introduced, write some tests to check if
-		//       starting with either 0 or 1 for the frame number makes the
+		//       starting with either 0 or 1 for the tick number makes the
 		//       first loop iteration uneven.
-		// TODO: Will it be a problem that we return frame number of 0 in the
-		//       first `_on_update` call? Is it common for games to divide by
-		//       the frame number?
-		_s.frame_number += 1
+		// TODO: Will it be a problem that we return tick number of 0 in the
+		//       first `on_tick` call? Is it common for games to divide by
+		//       the tick number?
+		_s.tick_number += 1
 		_s.accumulated_s -= _s.tick_s
 		ticks += 1
 	}
@@ -95,14 +92,13 @@ tick_rate :: proc() -> u8 {
 	return _s.tick_rate_hz
 }
 
-// Returns the frame number, which is incremented once per fixed-timestep tick,
-// right before `on_update` runs.
+// Returns the tick number, which is incremented once per fixed-timestep tick,
+// right before `on_tick` runs.
 //
 // TODO: Consider renaming it to something shorter.
-// TODO: Use `tick` instead of `frame`.
 // TODO: Use it in some example.
-frame_number :: proc() -> u32 {
-	return _s.frame_number
+tick_number :: proc() -> u32 {
+	return _s.tick_number
 }
 
 @(private = "file")

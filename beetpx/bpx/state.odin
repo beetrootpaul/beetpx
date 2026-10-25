@@ -4,12 +4,12 @@ package beetpx_bpx
 _s := struct {
 	tick_rate_hz : u8,
 	tick_s       : f64,
-	on_update    : On_Update,
+	on_tick      : On_Tick,
 	on_draw      : On_Draw,
-	frame_number : u32,
+	tick_number  : u32,
 	accumulated_s: f64,
 	buttons      : _Buttons_State,
 } {
-	on_update = u_noop,
-	on_draw   = u_noop,
+	on_tick = u_noop,
+	on_draw = u_noop,
 }

@@ -140,7 +140,7 @@ _initial_scale :: proc(canvas_size: Xy_Int) -> int {
 // TODO: Check every SDL3 call here against the SDL3 docs.
 @(private = "file")
 _run_game_loop :: proc() {
-	previous_ticks_ns := sdl.GetTicksNS()
+	previous_ns := sdl.GetTicksNS()
 
 	running := true
 	for running {
@@ -170,9 +170,9 @@ _run_game_loop :: proc() {
 			}
 		}
 
-		current_ticks_ns := sdl.GetTicksNS()
-		delta_s := f64(current_ticks_ns - previous_ticks_ns) / 1e9
-		previous_ticks_ns = current_ticks_ns
+		current_ns := sdl.GetTicksNS()
+		delta_s := f64(current_ns - previous_ns) / 1e9
+		previous_ns = current_ns
 
 		_game_loop_advance(delta_s)
 	}

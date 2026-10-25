@@ -17,12 +17,12 @@ xy := CENTER
 color := bpx.p_pico8_slate
 
 main :: proc() {
-	bpx.set_on_update(on_update)
+	bpx.set_on_tick(on_tick)
 	bpx.set_on_draw(on_draw)
 	bpx.start(canvas_size = .Square_128, tick_rate = .Hz_60)
 }
 
-on_update :: proc() {
+on_tick :: proc() {
 	// TODO: This example is a bit strange… Do a better one once we support more
 	//       buttons.
 	//
