@@ -22,7 +22,7 @@ _Hot_Offsets :: struct {
 	bpx, internal, game, end: int,
 }
 
-// Reused by every `_hot_save`.
+// Reused by every `_hot_save` and `_hot_buffer`.
 @(private = "file")
 _hot_snapshot: [dynamic]u8
 
@@ -52,6 +52,14 @@ _hot_save :: proc() -> []u8 {
 		offsets.end - offsets.game,
 	)
 
+	return _hot_snapshot[:]
+}
+
+// The bytes of the last `_hot_save`, resized to `len`. Lets a platform pass
+// a snapshot between modules which do not share memory.
+@(private)
+_hot_buffer :: proc(len: int) -> []u8 {
+	resize(&_hot_snapshot, len)
 	return _hot_snapshot[:]
 }
 

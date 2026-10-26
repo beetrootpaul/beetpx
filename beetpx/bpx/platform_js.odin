@@ -4,8 +4,8 @@ import "../internal"
 import "core:fmt"
 import js "core:sys/wasm/js"
 
-// Implemented in JavaScript by `beetpx.js`, which passes them to
-// `odin.runWasm` as extra foreign imports under the "beetpx" key.
+// Implemented in JavaScript by `beetpx.js`, which passes them to the WASM
+// module as imports under the "beetpx" key.
 foreign import beetpx_js "beetpx"
 
 // TODO: When implementing a custom logger, enforce logs to end with `\n` on JS
@@ -104,9 +104,7 @@ _button_for_code :: proc(code: string) -> (button: Button, ok: bool) {
 	return {}, false
 }
 
-// Called once per host animation frame by `odin.js`. Has to be called `step`.
-//
-// See: https://github.com/odin-lang/Odin/blob/f1fd03364d5e45a987e1cd354188a3f018f45d1c/core/sys/wasm/js/odin.js#L2258-L2284
+// Called once per host animation frame by `beetpx.js`.
 //
 // TODO: Clean up this export attribute and proc name.
 @(export)
@@ -115,4 +113,44 @@ step :: proc(delta_s: f64) -> bool {
 	_game_loop_advance(delta_s)
 	_html_canvas_render(internal.canvas_rgba8_bytes())
 	return true
+}
+
+// What `beetpx.js` calls to swap the module for a new one, and to pass the
+// state over to it.
+when _HOT {
+	// Saves a snapshot of the state, and returns its size. Its bytes are at
+	// `bpx_hot_buffer(size)`.
+	@(export)
+	@(private = "file")
+	bpx_hot_save :: proc() -> int {
+		return len(_hot_save())
+	}
+
+	// Returns the address of the snapshot buffer, resized to `size` bytes.
+	@(export)
+	@(private = "file")
+	bpx_hot_buffer :: proc(size: int) -> rawptr {
+		return raw_data(_hot_buffer(size))
+	}
+
+	// Loads the snapshot written to `bpx_hot_buffer(size)`. A `size` of 0
+	// means the first load.
+	@(export)
+	@(private = "file")
+	bpx_hot_load :: proc(size: int) {
+		if size == 0 {
+			// TODO: Use a custom logger.
+			fmt.println("BeetPx: hot reload is on.")
+		}
+		_hot_load(_hot_buffer(size))
+	}
+
+	// Stops reacting to the page's events, once the new module runs.
+	@(export)
+	@(private = "file")
+	bpx_hot_unload :: proc() {
+		js.remove_window_event_listener(.Key_Down, nil, _on_key_down)
+		js.remove_window_event_listener(.Key_Up, nil, _on_key_up)
+		js.remove_window_event_listener(.Blur, nil, _on_blur)
+	}
 }
