@@ -106,8 +106,8 @@ _start :: proc(
 	// the platform.
 }
 
-// Runs the ticks owed for `delta_s` seconds of real time, then draws and
-// renders exactly once.
+// Runs the ticks owed for `delta_s` seconds of real time, then draws exactly
+// once. The platform renders the canvas afterwards.
 @(private)
 _game_loop_advance :: proc(delta_s: f64) {
 	if !_s.started {
@@ -142,8 +142,6 @@ _game_loop_advance :: proc(delta_s: f64) {
 	}
 
 	if _callbacks.on_draw != nil do _callbacks.on_draw(_game_state.ptr)
-
-	_platform_render()
 }
 
 // TODO: Use it in some example.

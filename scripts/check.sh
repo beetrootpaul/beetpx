@@ -26,6 +26,11 @@ targets=(
 	linux_amd64
 	windows_amd64
 )
+desktop_targets=(
+	darwin_arm64
+	linux_amd64
+	windows_amd64
+)
 
 run_check() {
 	# `-thread-count:1` works around an intermittent segmentation fault of the
@@ -57,6 +62,24 @@ run_check() {
 				-target:"${target}" ||
 				return 1
 		done
+	done
+
+	for target in "${targets[@]}"; do
+		echo "Checking 'bpx' for hot reload for '${target}' ..."
+		odin check ./beetpx/bpx \
+			"${flags[@]}" \
+			-define:BPX_HOT=true \
+			-target:"${target}" ||
+			return 1
+	done
+
+	# The hot reload host runs on desktop only.
+	for target in "${desktop_targets[@]}"; do
+		echo "Checking 'hot_host' for '${target}' ..."
+		odin check ./beetpx/hot_host \
+			"${flags[@]}" \
+			-target:"${target}" ||
+			return 1
 	done
 
 	# Test files start with `#+test`, so `odin check` skips them. `test.sh`

@@ -1,5 +1,7 @@
 #+build darwin, linux, windows
-package beetpx_bpx
+// The desktop platform, on SDL3. Both a release build of a game and the hot
+// reload host run it.
+package beetpx_platform_sdl
 
 import "../internal"
 import "core:c"
@@ -20,18 +22,23 @@ _FALLBACK_INITIAL_SCALE :: 4
 _sdl_renderer: ^sdl.Renderer
 @(private = "file")
 _sdl_canvas_texture: ^sdl.Texture
+// The canvas size that `_sdl_canvas_texture` was created for. It can change
+// on hot reload.
+@(private = "file")
+_sdl_canvas_texture_size: [2]int
 
+// Opens a window and runs the game in it. Blocks until the window is closed.
+//
 // TODO: Check every SDL3 call here against the SDL3 docs, and tune the
 // settings.
-@(private)
-_platform_start :: proc() {
+run :: proc(game: internal.Platform_Game) {
 	if !sdl.Init({.VIDEO}) {
 		fmt.eprintln("BeetPx: sdl.Init failed:", sdl.GetError())
 		return
 	}
 	defer sdl.Quit()
 
-	canvas_size := internal.canvas_size()
+	canvas_size := game.canvas_size()
 	initial_scale := _initial_scale(canvas_size)
 
 	sdl_window: ^sdl.Window
@@ -58,6 +65,25 @@ _platform_start :: proc() {
 	defer sdl.DestroyRenderer(_sdl_renderer)
 	defer sdl.DestroyWindow(sdl_window)
 
+	sdl.SetRenderVSync(_sdl_renderer, 1)
+
+	if !_prepare_canvas_texture(canvas_size) do return
+	defer sdl.DestroyTexture(_sdl_canvas_texture)
+
+	_run_game_loop(game)
+}
+
+// Creates the texture for the canvas, in place of the previous one, if any.
+//
+// TODO: Check every SDL3 call here against the SDL3 docs.
+@(private = "file")
+_prepare_canvas_texture :: proc(canvas_size: [2]int) -> bool {
+	if _sdl_canvas_texture != nil {
+		sdl.DestroyTexture(_sdl_canvas_texture)
+	}
+	// Set even if the creation fails, so that it is not retried every frame.
+	_sdl_canvas_texture_size = canvas_size
+
 	// `INTEGER_SCALE` scales the canvas only by whole numbers, so every canvas
 	// pixel is the same number of physical pixels wide and tall. The rest of
 	// the window is left as black bars.
@@ -67,7 +93,6 @@ _platform_start :: proc() {
 		c.int(canvas_size.y),
 		.INTEGER_SCALE,
 	)
-	sdl.SetRenderVSync(_sdl_renderer, 1)
 
 	// `RGBA32` means the R, G, B, A bytes in this order in memory, on any
 	// endianness, which is how the canvas stores its pixels.
@@ -80,28 +105,29 @@ _platform_start :: proc() {
 	)
 	if _sdl_canvas_texture == nil {
 		fmt.eprintln("BeetPx: sdl.CreateTexture failed:", sdl.GetError())
-		return
+		return false
 	}
-	defer sdl.DestroyTexture(_sdl_canvas_texture)
+
 	sdl.SetTextureScaleMode(_sdl_canvas_texture, .NEAREST)
 
-	// TODO: Use a custom logger.
-	fmt.printfln("BeetPx %v (%v) started.", BEETPX_VERSION, ODIN_OS)
-
-	internal.canvas_fill({0, 0, 0})
-
-	_run_game_loop()
+	return true
 }
 
 // TODO: Check every SDL3 call here against the SDL3 docs.
-@(private)
-_platform_render :: proc() {
+@(private = "file")
+_render :: proc(game: internal.Platform_Game) {
+	canvas_size := game.canvas_size()
+	if canvas_size != _sdl_canvas_texture_size {
+		_prepare_canvas_texture(canvas_size)
+	}
+	if _sdl_canvas_texture == nil do return
+
 	sdl.UpdateTexture(
 		_sdl_canvas_texture,
 		nil,
-		raw_data(internal.canvas_rgba8_bytes()),
+		raw_data(game.rgba8_bytes()),
 		// Bytes per row: 4 bytes per RGBA8 pixel.
-		c.int(internal.canvas_size().x * 4),
+		c.int(canvas_size.x * 4),
 	)
 	sdl.RenderClear(_sdl_renderer)
 	// TODO: Explain both `nil` params.
@@ -116,7 +142,7 @@ _platform_render :: proc() {
 // TODO: Pick the display the window actually opens on, if it can differ from
 //       the primary one.
 @(private = "file")
-_initial_scale :: proc(canvas_size: Xy_Int) -> int {
+_initial_scale :: proc(canvas_size: [2]int) -> int {
 	usable_area: sdl.Rect
 	if !sdl.GetDisplayUsableBounds(sdl.GetPrimaryDisplay(), &usable_area) {
 		// TODO: Use a custom logger.
@@ -139,7 +165,7 @@ _initial_scale :: proc(canvas_size: Xy_Int) -> int {
 //
 // TODO: Check every SDL3 call here against the SDL3 docs.
 @(private = "file")
-_run_game_loop :: proc() {
+_run_game_loop :: proc(game: internal.Platform_Game) {
 	previous_ns := sdl.GetTicksNS()
 
 	running := true
@@ -157,15 +183,15 @@ _run_game_loop :: proc() {
 				// same on every host.
 				if event.key.repeat do continue
 
-				button := _button_for_scancode(event.key.scancode) or_continue
-				_buttons_on_down(&_s.buttons, button)
+				key := _key_for_scancode(event.key.scancode) or_continue
+				game.key_down(key)
 
 			case .KEY_UP:
-				button := _button_for_scancode(event.key.scancode) or_continue
-				_buttons_on_up(&_s.buttons, button)
+				key := _key_for_scancode(event.key.scancode) or_continue
+				game.key_up(key)
 
 			case .WINDOW_FOCUS_LOST:
-				_buttons_on_all_up(&_s.buttons)
+				game.all_keys_up()
 
 			}
 		}
@@ -174,27 +200,27 @@ _run_game_loop :: proc() {
 		delta_s := f64(current_ns - previous_ns) / 1e9
 		previous_ns = current_ns
 
-		_game_loop_advance(delta_s)
+		game.advance(delta_s)
+		_render(game)
 	}
 }
 
-// TODO: Let players remap the keys.
 @(private = "file")
-_button_for_scancode :: proc(
+_key_for_scancode :: proc(
 	scancode: sdl.Scancode,
 ) -> (
-	button: Button,
+	key: internal.Key,
 	ok: bool,
 ) {
 	#partial switch scancode {
 	case .LEFT:
-		return .Left, true
+		return .Arrow_Left, true
 	case .RIGHT:
-		return .Right, true
+		return .Arrow_Right, true
 	case .UP:
-		return .Up, true
+		return .Arrow_Up, true
 	case .DOWN:
-		return .Down, true
+		return .Arrow_Down, true
 	}
 	return {}, false
 }

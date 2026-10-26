@@ -104,11 +104,6 @@ _button_for_code :: proc(code: string) -> (button: Button, ok: bool) {
 	return {}, false
 }
 
-@(private)
-_platform_render :: proc() {
-	_html_canvas_render(internal.canvas_rgba8_bytes())
-}
-
 // Called once per host animation frame by `odin.js`. Has to be called `step`.
 //
 // See: https://github.com/odin-lang/Odin/blob/f1fd03364d5e45a987e1cd354188a3f018f45d1c/core/sys/wasm/js/odin.js#L2258-L2284
@@ -118,5 +113,6 @@ _platform_render :: proc() {
 @(private = "file")
 step :: proc(delta_s: f64) -> bool {
 	_game_loop_advance(delta_s)
+	_html_canvas_render(internal.canvas_rgba8_bytes())
 	return true
 }
