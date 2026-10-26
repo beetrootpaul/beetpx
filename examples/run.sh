@@ -22,14 +22,23 @@ examples=(
 	shapes
 )
 
-usage="Usage: $0 <target> <example>"
+usage="Usage: $0 <target> <example> [--hot]"
 
-if [[ $# -ne 2 ]]; then
+if [[ $# -lt 2 || $# -gt 3 ]]; then
 	echo "${usage}" >&2
 	exit 1
 fi
 target="$1"
 example="$2"
+hot=false
+if [[ $# -eq 3 ]]; then
+	if [[ "$3" != --hot ]]; then
+		echo "Unknown argument: '$3'." >&2
+		echo "${usage}" >&2
+		exit 1
+	fi
+	hot=true
+fi
 
 # Params:
 #   $1 - the actual value
@@ -64,8 +73,61 @@ odin_flags=(
 	-target:"${target}"
 )
 
+# Prints a command which builds the example for hot reload into the file `$1`,
+# with the extra Odin flags `$2`, `$3`, and so on. It builds into a temp file
+# first, and then renames it, so that a half-written file is never loaded.
+hot_build_command() {
+	local out="$1"
+	shift
+	local tmp
+	tmp="$(dirname "${out}")/tmp_$(basename "${out}")"
+	printf '%q ' odin build "./${example}" \
+		"${odin_flags[@]}" \
+		-define:BPX_HOT=true \
+		"$@" \
+		-out:"${tmp}"
+	printf '&& mv %q %q' "${tmp}" "${out}"
+}
+
+# Runs the command `$1` in the background whenever an `.odin` file of the
+# example or of BeetPx changes, until this script exits.
+rerun_on_changes() {
+	if ! command -v watchexec >/dev/null; then
+		echo "'--hot' requires watchexec: https://watchexec.github.io/" >&2
+		exit 1
+	fi
+	watchexec \
+		--postpone \
+		--shell=bash \
+		--exts odin \
+		--watch "./${example}" \
+		--watch ../beetpx \
+		-- "$1" &
+	# shellcheck disable=SC2064 # Expands `$!` now, on purpose.
+	trap "kill $!" EXIT
+}
+
 case "${target}" in
 darwin_arm64)
+	if [[ "${hot}" == true ]]; then
+		rm -rf ./build/macos_hot/
+		mkdir -p ./build/macos_hot/
+
+		# The host runs the example from the library, and reloads it
+		# whenever the file changes.
+		odin build ../beetpx/hot_host \
+			-target:"${target}" \
+			-out:build/macos_hot/hot_host
+
+		lib="build/macos_hot/${example}.dylib"
+		build_lib="$(hot_build_command "${lib}" -build-mode:dll)"
+		eval "${build_lib}"
+		rerun_on_changes "${build_lib}"
+
+		./build/macos_hot/hot_host "${lib}"
+		exit
+	fi
+
 	rm -rf ./build/macos/
 	mkdir -p ./build/macos/
 
@@ -78,9 +140,17 @@ js_wasm32)
 	mkdir -p ./build/web/
 
 	# TODO: Name the WASM file after the game ID or something.
-	odin build "./${example}" \
-		"${odin_flags[@]}" \
-		-out:build/web/beetpx_game.wasm
+	if [[ "${hot}" == true ]]; then
+		# The page swaps the running example for the new one whenever the
+		# file changes.
+		build_wasm="$(hot_build_command build/web/beetpx_game.wasm)"
+		eval "${build_wasm}"
+		rerun_on_changes "${build_wasm}"
+	else
+		odin build "./${example}" \
+			"${odin_flags[@]}" \
+			-out:build/web/beetpx_game.wasm
+	fi
 	cp "$(odin root)/core/sys/wasm/js/odin.js" ./build/web/odin.js
 	cp ../beetpx/beetpx.js ./build/web/beetpx.js
 	cp ./index.html ./build/web/index.html
