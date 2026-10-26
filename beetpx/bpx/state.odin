@@ -1,15 +1,14 @@
 package beetpx_bpx
 
+// The state of `bpx`. It holds only data, so that it can be copied over to
+// new code on hot reload. That is why the callbacks are kept elsewhere.
 @(private)
-_s := struct {
+_s: struct {
 	tick_rate_hz : u8,
 	tick_s       : f64,
-	on_tick      : On_Tick,
-	on_draw      : On_Draw,
 	tick_number  : u32,
 	accumulated_s: f64,
 	buttons      : _Buttons_State,
-} {
-	on_tick = u_noop,
-	on_draw = u_noop,
+	// Whether `on_started` has run already.
+	started      : bool,
 }

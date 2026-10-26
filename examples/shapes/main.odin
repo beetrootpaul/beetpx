@@ -3,12 +3,18 @@ package main
 import "beetpx:bpx"
 import "beetpx:bpxd"
 
+State :: struct {}
+
 main :: proc() {
-	bpx.set_on_draw(on_draw)
-	bpx.start(canvas_size = .Square_64, tick_rate = .Hz_30)
+	bpx.start(
+		State,
+		canvas_size = .Square_64,
+		tick_rate = .Hz_30,
+		on_draw = on_draw,
+	)
 }
 
-on_draw :: proc() {
+on_draw :: proc(_: ^State) {
 	bpxd.clear_canvas(bpx.p_pico8_storm)
 
 	bpxd.pixel({1, 1}, bpx.p_pico8_orange)

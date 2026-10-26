@@ -7,12 +7,18 @@ import "beetpx:bpxd"
 // included, stands out against it.
 BACKGROUND :: bpx.Rgb{64, 64, 64}
 
+State :: struct {}
+
 main :: proc() {
-	bpx.set_on_draw(on_draw)
-	bpx.start(canvas_size = .Square_64, tick_rate = .Hz_30)
+	bpx.start(
+		State,
+		canvas_size = .Square_64,
+		tick_rate = .Hz_30,
+		on_draw = on_draw,
+	)
 }
 
-on_draw :: proc() {
+on_draw :: proc(_: ^State) {
 	bpxd.clear_canvas(BACKGROUND)
 	// TODO: Have more palettes.
 	draw_palette(row = 0, palette = bpx.p_pico8[:])
